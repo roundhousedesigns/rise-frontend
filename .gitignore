@@ -1,3 +1,6 @@
+# Local
+.env
+
 # Dependencies
 /node_modules
 
