@@ -5,12 +5,9 @@
 import { gql, useQuery } from "@apollo/client";
 
 export const QUERY_USERS = gql`
-	query AllUsersQuery {
-		users {
+	query QueryUsersByRole($role: UserRoleEnum = ADMINISTRATOR) {
+		users(where: { role: $role }) {
 			nodes {
-				userBasic {
-					middlename
-				}
 				firstName
 				lastName
 			}
@@ -19,7 +16,11 @@ export const QUERY_USERS = gql`
 `;
 
 export const useAllUsers = () => {
-	const result = useQuery(QUERY_USERS);
+	const result = useQuery(QUERY_USERS, {
+		variables: {
+			role: "CREW_MEMBER",
+		},
+	});
 
 	return result;
 };
