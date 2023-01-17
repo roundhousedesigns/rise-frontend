@@ -1,9 +1,11 @@
+import React from "react";
+import Header from "./components/Header";
 import "./App.css";
 
 import Dev from "./Dev";
 
 export default function App() {
-	// Header
+	return <Header />;
 
 	// Main
 
