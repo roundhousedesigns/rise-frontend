@@ -1,28 +1,30 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import "./index.css";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+import { Grommet } from 'grommet';
+import { theme } from './theme';
 
 import {
 	ApolloClient,
 	InMemoryCache,
 	ApolloProvider,
 	createHttpLink,
-} from "@apollo/client";
+} from '@apollo/client';
 
-import reportWebVitals from "./reportWebVitals";
+import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 const backend = import.meta.env.VITE_BACKEND_URL
 	? import.meta.env.VITE_BACKEND_URL
-	: "";
+	: '';
 
 /**
  * Apollo client.
  */
 const httpLink = createHttpLink({
 	uri: backend,
-	credentials: "include",
+	credentials: 'include',
 });
 
 const client = new ApolloClient({
@@ -32,9 +34,12 @@ const client = new ApolloClient({
 
 root.render(
 	<React.StrictMode>
-		<ApolloProvider client={client}>
-			<App />
-		</ApolloProvider>
+		{/* TODO Grommet: plain --> custom theming */}
+		<Grommet theme={theme}>
+			<ApolloProvider client={client}>
+				<App />
+			</ApolloProvider>
+		</Grommet>
 	</React.StrictMode>
 );
 
