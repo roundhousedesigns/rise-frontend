@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-
 import { Grommet } from 'grommet';
 import { theme } from './theme';
+
+import App from './App';
+import './App.css';
 
 import {
 	ApolloClient,
@@ -34,8 +35,7 @@ const client = new ApolloClient({
 
 root.render(
 	<React.StrictMode>
-		{/* TODO Grommet: plain --> custom theming */}
-		<Grommet theme={theme}>
+		<Grommet theme={theme} themeMode="light">
 			<ApolloProvider client={client}>
 				<App />
 			</ApolloProvider>

@@ -4,11 +4,11 @@ import logo from '@/assets/gtw-logo-horizontal.svg';
 
 export default function PageHeader() {
 	return (
-		<Header>
+		<Header background={'background-back-inverted'} pad="xsmall" position="relative">
 			<img
 				src={logo}
 				alt="Get To Work logo"
-				style={{ width: '300px', height: 'auto', position: 'relative' }}
+				style={{ width: 'auto', height: '60px', position: 'relative' }}
 			/>
 		</Header>
 	);

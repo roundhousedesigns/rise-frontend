@@ -9,20 +9,26 @@ import Dev from './Dev';
 export default function App() {
 	return (
 		<Grid
-			rows={['xxsmall', 'flex', 'small']}
+			fill
+			rows={['auto', 'flex', 'small']}
 			columns={['small', 'auto', 'small']}
 			areas={[
 				{ name: 'header', start: [0, 0], end: [2, 0] },
 				{ name: 'main', start: [0, 1], end: [2, 1] },
 				{ name: 'footer', start: [0, 2], end: [2, 2] },
 			]}
+			gap="xsmall"
+			border={false}
 			alignContent="stretch"
+			margin="none"
 		>
-			<Box gridArea="header" background={'black'}>
+			<Box gridArea="header" background="background-back">
 				<PageHeader />
 			</Box>
-			<Box gridArea="main">hi!</Box>
-			<Box gridArea="footer"></Box>
+			<Box gridArea="main" pad="small">
+				bonker! hi!
+			</Box>
+			<Box gridArea="footer" pad="small" background="magenta"></Box>
 		</Grid>
 	);
 
@@ -31,5 +37,5 @@ export default function App() {
 	// Footer
 
 	// Dev only.
-	return <Dev />;
+	// return <Dev />;
 }
