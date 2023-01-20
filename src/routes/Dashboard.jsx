@@ -1,26 +1,29 @@
 import React from 'react';
-import { Container, Heading, Text, Card } from '@chakra-ui/react';
-import SearchList from '../components/SearchList';
+import { Grid, GridItem, Heading } from '@chakra-ui/react';
+import GridCard from '@/components/common/GridCard';
+import SearchList from '@/components/common/SearchList';
 
 export default function DashboardView() {
 	return (
 		<>
-			<Heading as="h1">Dashboard!</Heading>
-			<Text>Allll your stufffff</Text>
+			<Heading variant="pageTitle">Dashboard!</Heading>
 
-			<Container w="full" align="center">
-				<Card my={4}>
-					<Heading as='h3'>Saved Searches</Heading>
-					<SearchList
-						items={[
-							'Recent search one',
-							'Recent search two',
-							'Recent search three',
-						]}
-					/>
-				</Card>
-				<Card my={4}>
-					<Heading as='h3'>Recent Searches</Heading>
+			<Grid variant="cards" templateColumns="2" templateRows="2" gap={4} my={4}>
+				<GridItem colSpan={2}>
+					<GridCard heading="Saved candidates">People!</GridCard>
+				</GridItem>
+				<GridItem w="full">
+					<GridCard heading="Saved Searches">
+						<SearchList
+							items={[
+								'Recent search one',
+								'Recent search two',
+								'Recent search three',
+							]}
+						/>
+					</GridCard>
+				</GridItem>
+				<GridCard heading="Recent Searches">
 					<SearchList
 						items={[
 							'Saved search one',
@@ -28,8 +31,8 @@ export default function DashboardView() {
 							'Saved search three',
 						]}
 					/>
-				</Card>
-			</Container>
+				</GridCard>
+			</Grid>
 		</>
 	);
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Heading } from '@chakra-ui/react';
 
-export default function Profile() {
+export default function Settings() {
 	return (
 		<>
-			<Heading variant="pageTitle">My Crew Profile</Heading>
+			<Heading variant="pageTitle">Settings</Heading>
 		</>
 	);
 }

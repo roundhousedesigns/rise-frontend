@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
 	Flex,
@@ -12,6 +13,7 @@ import {
 	Spacer,
 	Container,
 	HStack,
+	Link,
 } from '@chakra-ui/react';
 import { FiUser } from 'react-icons/fi';
 
@@ -20,16 +22,13 @@ import logo from '@/assets/gtw-logo-horizontal.svg';
 
 export default function Header() {
 	return (
-		<Box id="header" w="full" bg="black" px={8} py={4} align="center">
-			<Container centerContent={true} w="full" maxWidth={1600}>
+		<Box id="header" w="full" bg="black" py={3} align="center">
+			<Container centerContent={true} w="full" maxWidth="9xl">
 				<Flex w="100%" justify="center" align="center" flexWrap={true}>
 					<HStack>
-						<NavMenuItem styles={{ color: 'whiteAlpha.900' }} linkTo="/">
-							Dashboard
-						</NavMenuItem>
-						<NavMenuItem styles={{ color: 'whiteAlpha.900' }} linkTo="/search">
-							Search
-						</NavMenuItem>
+						<NavMenuItem linkTo="/">Dashboard</NavMenuItem>
+						<NavMenuItem linkTo="/search">Search</NavMenuItem>
+						<NavMenuItem linkTo="/profile">Crew Profile</NavMenuItem>
 					</HStack>
 					<Spacer />
 					<Image
@@ -60,8 +59,11 @@ export default function Header() {
 									}
 								></MenuButton>
 								<MenuList>
-									<MenuItem>Profile</MenuItem>
-									<MenuItem>Settings</MenuItem>
+									<MenuItem>
+										<Link to="/settings" as={RouterLink}>
+											Settings
+										</Link>
+									</MenuItem>
 									<MenuDivider />
 									<MenuItem>Logout</MenuItem>
 								</MenuList>

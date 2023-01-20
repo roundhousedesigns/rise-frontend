@@ -5,7 +5,7 @@ export default function SearchList({ items }) {
 	return (
 		<VStack alignItems="center" justifyContent="center" p={4}>
 			{items.map((i, index) => (
-				<Box key={index} px={4} py={2} my={2}>
+				<Box key={index} px={4}>
 					<Text>{i}</Text>
 					<Text as="small">(Parameters)</Text>
 				</Box>
