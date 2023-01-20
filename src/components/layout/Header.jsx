@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
 	Box,
 	Flex,
@@ -8,10 +9,14 @@ import {
 	MenuButton,
 	MenuList,
 	MenuItem,
+	MenuDivider,
 	Spacer,
 	Container,
+	HStack,
 } from '@chakra-ui/react';
 import { FiUser } from 'react-icons/fi';
+
+import NavMenuItem from '@/components/common/NavMenuItem';
 import logo from '@/assets/gtw-logo-horizontal.svg';
 
 export default function Header() {
@@ -19,6 +24,14 @@ export default function Header() {
 		<Box id="header" w="full" bg="black" px={8} py={4} align="center">
 			<Container centerContent={true} w="full" maxWidth={1600}>
 				<Flex w="100%" justify="center" align="center" flexWrap={true}>
+					<HStack>
+						<NavMenuItem styles={{ color: 'whiteAlpha.900' }} linkTo="/">
+							Dashboard
+						</NavMenuItem>
+						<NavMenuItem styles={{ color: 'whiteAlpha.900' }} linkTo="/search">
+							Search
+						</NavMenuItem>
+					</HStack>
 					<Spacer />
 					<Image
 						src={logo}
@@ -48,11 +61,10 @@ export default function Header() {
 									}
 								></MenuButton>
 								<MenuList>
-									{['Dashboard', 'Search', 'Profile', 'Settings'].map(
-										(i, index) => (
-											<MenuItem key={index}>{i}</MenuItem>
-										)
-									)}
+									<MenuItem>Profile</MenuItem>
+									<MenuItem>Settings</MenuItem>
+									<MenuDivider />
+									<MenuItem>Logout</MenuItem>
 								</MenuList>
 							</>
 						)}

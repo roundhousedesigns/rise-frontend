@@ -1,5 +1,7 @@
 // Profile view.
 
-export default function ProfileView() {
+export default function Profile() {
+	// Public view
+	//
 	// Edit button --> <EditProfile />
 }

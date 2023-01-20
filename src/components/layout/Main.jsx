@@ -1,19 +1,25 @@
 import React from 'react';
-import { Box, Heading } from '@chakra-ui/react';
+import { Routes, Route } from 'react-router-dom';
+import { Box, Text } from '@chakra-ui/react';
+
+import Dashboard from '@/routes/Dashboard';
+import Search from '@/routes/Search';
 
 export default function Main() {
 	return (
 		<Box
 			w="full"
-			h="fill"
+			minH="35vh"
 			background="none"
 			align="center"
 			justifyContent="center"
+			alignItems="center"
 			p={8}
 		>
-			<Heading as="h2" textAlign="left">
-				Welcome, Name!
-			</Heading>
+			<Routes>
+				<Route path="/" element={<Dashboard />} />
+				<Route path="/search" element={<Search />} />
+			</Routes>
 		</Box>
 	);
 }

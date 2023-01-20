@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import '@fontsource/poppins/700.css';
+import '@fontsource/poppins/500.css';
+import '@fontsource/poppins/400.css';
 import theme from './theme/index';
 
 import App from './App';
-import './App.css';
 
 import {
 	ApolloClient,
@@ -35,11 +38,13 @@ const client = new ApolloClient({
 
 root.render(
 	<React.StrictMode>
-		<ChakraProvider resetCSS={true} theme={theme}>
+		<BrowserRouter>
 			<ApolloProvider client={client}>
-				<App />
+				<ChakraProvider resetCSS={true} theme={theme}>
+					<App />
+				</ChakraProvider>
 			</ApolloProvider>
-		</ChakraProvider>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 
