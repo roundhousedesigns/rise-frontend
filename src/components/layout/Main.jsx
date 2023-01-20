@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 import Dashboard from '@/routes/Dashboard';
 import Search from '@/routes/Search';

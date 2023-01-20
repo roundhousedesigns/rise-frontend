@@ -13,7 +13,9 @@ class User {
 class CrewMember extends User {
 	// TODO build the `CrewMember` class.
 
-	constructor(...params) {}
+	constructor(...params) {
+		super();
+	}
 }
 
 class Search {
