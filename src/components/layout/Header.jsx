@@ -48,7 +48,7 @@ export default function Header() {
 									}
 								></MenuButton>
 								<MenuList>
-									{['Search', 'Dashboard', 'Profile', 'Settings'].map(
+									{['Dashboard', 'Search', 'Profile', 'Settings'].map(
 										(i, index) => (
 											<MenuItem key={index}>{i}</MenuItem>
 										)
