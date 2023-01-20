@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Grommet } from 'grommet';
-import { theme } from './theme';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from './theme/index';
 
 import App from './App';
 import './App.css';
@@ -35,11 +35,11 @@ const client = new ApolloClient({
 
 root.render(
 	<React.StrictMode>
-		<Grommet theme={theme} themeMode="light">
+		<ChakraProvider resetCSS={true} theme={theme}>
 			<ApolloProvider client={client}>
 				<App />
 			</ApolloProvider>
-		</Grommet>
+		</ChakraProvider>
 	</React.StrictMode>
 );
 
