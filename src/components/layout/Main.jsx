@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
+import { Box, Container } from '@chakra-ui/react';
 
 import Dashboard from '@/routes/Dashboard';
 import Search from '@/routes/Search';
@@ -8,6 +8,7 @@ import Search from '@/routes/Search';
 export default function Main() {
 	return (
 		<Box
+			id="main"
 			w="full"
 			minH="35vh"
 			background="none"
@@ -16,10 +17,12 @@ export default function Main() {
 			alignItems="center"
 			p={8}
 		>
-			<Routes>
-				<Route path="/" element={<Dashboard />} />
-				<Route path="/search" element={<Search />} />
-			</Routes>
+			<Container w="full">
+				<Routes>
+					<Route path="/" element={<Dashboard />} />
+					<Route path="/search" element={<Search />} />
+				</Routes>
+			</Container>
 		</Box>
 	);
 }
