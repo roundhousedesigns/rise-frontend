@@ -2,7 +2,6 @@
  * Dummy data, assorted dev detritus, and some sprinkles.
  */
 
-import { randomColor } from '@chakra-ui/theme-tools';
 import Chance from 'chance';
 var chance = new Chance();
 

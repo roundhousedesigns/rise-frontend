@@ -12,7 +12,7 @@ export default function Candidate({ item }) {
 				flexWrap={{ base: 'wrap', md: 'nowrap' }}
 				gap={{ base: 'initial', md: 0 }}
 			>
-				<Heading size="md" fontWeight="normal" mb={{ base: 1, lg: 0 }}>
+				<Heading size="sm" fontWeight="normal" mb={{ base: 1, lg: 0 }}>
 					{item}
 				</Heading>
 				<Text fontSize="sm" ml={{ base: '0 !important', lg: 'initial' }}>
