@@ -1,3 +1,7 @@
+/**
+ * Theme color tokens.
+ */
+
 export const colors = {
 	brand: {
 		red: '#ed1d24',

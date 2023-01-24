@@ -1,8 +1,19 @@
 import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
 
-const circle = defineStyle({
+const round = defineStyle({
 	border: '2px solid',
 	borderRadius: 'full',
 });
 
-export default defineStyleConfig({ variants: { circle } });
+const invisible = defineStyle({
+	border: 'none',
+	background: 'transparent',
+	_hover: {
+		background: 'transparent',
+	},
+	_active: {
+		background: 'transparent',
+	},
+});
+
+export default defineStyleConfig({ variants: { round, invisible } });

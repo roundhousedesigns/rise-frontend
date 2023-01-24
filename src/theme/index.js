@@ -1,5 +1,8 @@
 import { extendTheme } from '@chakra-ui/react';
 
+// Global overrides
+import { styles } from '@/theme/global';
+
 // Foundational style overrides
 import { colors } from '@/theme/foundations/colors';
 import { fonts } from '@/theme/foundations/fonts';
@@ -13,6 +16,7 @@ import buttonTheme from '@/theme/components/Button';
 import menuTheme from '@/theme/components/Menu';
 
 const overrides = {
+	styles,
 	fonts,
 	colors,
 	sizes,

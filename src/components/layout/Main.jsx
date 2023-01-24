@@ -2,10 +2,10 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
 
-import Dashboard from '@/routes/Dashboard';
-import Search from '@/routes/Search';
-import Profile from '@/routes/Profile';
-import Settings from '@/routes/Settings';
+import Dashboard from '@/views/Dashboard';
+import Search from '@/views/Search';
+import Profile from '@/views/Profile';
+import Settings from '@/views/Settings';
 
 export default function Main() {
 	return (
@@ -13,12 +13,12 @@ export default function Main() {
 			id="main"
 			w="full"
 			h="auto"
-			minH="2xl"
 			background="none"
 			align="center"
 			justifyContent="center"
 			alignItems="center"
 			py={8}
+			mb={10}
 		>
 			<Container w="full" maxW="8xl">
 				<Routes>

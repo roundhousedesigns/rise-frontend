@@ -3,9 +3,9 @@ import { VStack, Box, Text } from '@chakra-ui/react';
 
 export default function SearchList({ items }) {
 	return (
-		<VStack alignItems="center" justifyContent="center" p={4}>
+		<VStack alignItems="center" justifyContent="center">
 			{items.map((i, index) => (
-				<Box key={index} px={4}>
+				<Box key={index}>
 					<Text>{i}</Text>
 					<Text as="small">(Parameters)</Text>
 				</Box>

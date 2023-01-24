@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody } from '@chakra-ui/react';
 
 export default function GridCard({ heading, children }) {
 	return (
-		<Card p={4}>
+		<Card px={2} py={6}>
 			<CardHeader>{heading}</CardHeader>
 			<CardBody>{children}</CardBody>
 		</Card>

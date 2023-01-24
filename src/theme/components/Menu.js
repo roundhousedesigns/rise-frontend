@@ -5,7 +5,7 @@ const { definePartsStyle, defineMultiStyleConfig } =
 	createMultiStyleConfigHelpers(menuAnatomy.keys);
 
 const variants = {
-	circle: definePartsStyle({
+	round: definePartsStyle({
 		button: {
 			border: '2px solid',
 			borderRadius: 'full',
