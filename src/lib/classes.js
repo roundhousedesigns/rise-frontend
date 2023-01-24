@@ -19,5 +19,7 @@ class CrewMember extends User {
 }
 
 class Search {
+	//TODO build the `Search` class.
+
 	constructor(...params) {}
 }

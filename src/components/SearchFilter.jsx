@@ -6,7 +6,7 @@ import { simpleWordsArray } from '@/dummydata';
 export default function SearchFilter({ tempNumItems, heading }) {
 	return (
 		<Box width="full" my={8}>
-			<Heading size="lg" align="center">
+			<Heading size="lg" align="center" mb={2}>
 				{heading}
 			</Heading>
 			<Flex
