@@ -1,11 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-	MenuList,
-	MenuItem,
-	MenuDivider,
-	useColorMode,
-} from '@chakra-ui/react';
+import { MenuList, MenuItem, MenuDivider } from '@chakra-ui/react';
 
 export default function MainMenu() {
 	return (
