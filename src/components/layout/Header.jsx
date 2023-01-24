@@ -20,7 +20,6 @@ import {
 	DrawerContent,
 	DrawerHeader,
 	DrawerBody,
-	useMediaQuery,
 	Heading,
 } from '@chakra-ui/react';
 import { FiUser, FiX, FiSearch } from 'react-icons/fi';
@@ -56,7 +55,7 @@ export default function Header() {
 								onClick={onOpen}
 							/>
 							<Link to="/" as={RouterLink} fontWeight="bold">
-								Dashboard
+								Dash
 							</Link>
 						</Stack>
 						<Spacer flex={{ base: 0, md: 1 }} />
@@ -104,7 +103,12 @@ export default function Header() {
 					</Flex>
 				</Container>
 			</Box>
-			<Drawer isOpen={isOpen} onClose={onClose} placement="left" size="full">
+			<Drawer
+				isOpen={isOpen}
+				onClose={onClose}
+				placement="left"
+				size={{ base: 'full', md: 'xl' }}
+			>
 				<DrawerOverlay />
 				<DrawerContent>
 					<DrawerHeader
