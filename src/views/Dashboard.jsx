@@ -8,7 +8,7 @@ import CandidateList from '@/components/CandidateList';
 export default function DashboardView() {
 	return (
 		<>
-			<Heading variant="pageTitle">Dashboard!</Heading>
+			<Heading variant="pageTitle">Hi, Firstname!</Heading>
 			<Grid variant="cards" templateColumns="2" templateRows="2" gap={3}>
 				<GridItem colSpan={2}>
 					<GridCard heading="Saved candidates">

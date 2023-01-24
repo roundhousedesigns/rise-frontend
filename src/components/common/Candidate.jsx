@@ -15,7 +15,7 @@ export default function Candidate({ item }) {
 				<Heading size="sm" fontWeight="normal" mb={{ base: 1, lg: 0 }}>
 					{item}
 				</Heading>
-				<Text fontSize="sm" ml={{ base: '0', lg: 'initial' }}>
+				<Text fontSize="sm" ml={{ base: '0 !important', lg: 'initial' }}>
 					Department &bull; Job &bull; Something else
 				</Text>
 			</Stack>

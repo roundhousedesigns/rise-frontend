@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Heading, Flex, Button } from '@chakra-ui/react';
 
+// Dev.
 import { simpleWordsArray } from '@/dummydata';
 
 export default function SearchFilter({ tempNumItems, heading }) {

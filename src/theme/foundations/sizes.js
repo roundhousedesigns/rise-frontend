@@ -3,7 +3,7 @@
  */
 
 export const sizes = {
-	onehalf: '50%',
-	onethird: '33%',
-	onequarter: '25%',
+	// onehalf: '50%',
+	// onethird: '33%',
+	// onequarter: '25%',
 };

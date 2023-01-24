@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import '@fontsource/poppins/700.css';
 import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/400.css';
@@ -41,6 +41,7 @@ root.render(
 		<BrowserRouter>
 			<ApolloProvider client={client}>
 				<ChakraProvider resetCSS={true} theme={theme}>
+					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<App />
 				</ChakraProvider>
 			</ApolloProvider>
