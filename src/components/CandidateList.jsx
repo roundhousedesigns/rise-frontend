@@ -11,8 +11,8 @@ import { simpleWordsArray } from '@/dummydata';
 export default function CandidateList() {
 	return (
 		<List
-			justifyContent="flex-start"
-			alignItems="center"
+			// justifyContent="flex-start"
+			alignItems="left"
 			height="auto"
 			width="full"
 			gap={4}
@@ -20,7 +20,7 @@ export default function CandidateList() {
 			flexWrap="wrap"
 		>
 			{simpleWordsArray(5).map((i) => (
-				<ListItem key={i}>
+				<ListItem key={i} width="full">
 					<Candidate item={i} />
 				</ListItem>
 			))}
