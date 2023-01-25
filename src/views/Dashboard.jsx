@@ -9,7 +9,7 @@ export default function DashboardView() {
 	return (
 		<>
 			<Heading variant="pageTitle">Hi, Firstname!</Heading>
-			<Grid variant="cards" templateColumns="2" templateRows="2" gap={3}>
+			<Grid variant="cards" templateColumns="2" templateRows="2" gap={6}>
 				<GridItem colSpan={2}>
 					<GridCard heading="Saved candidates">
 						<CandidateList />

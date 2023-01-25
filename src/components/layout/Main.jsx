@@ -20,7 +20,7 @@ export default function Main() {
 			py={8}
 			mb={10}
 		>
-			<Container w="full" maxW="8xl">
+			<Container w="full" maxW="7xl">
 				<Routes>
 					<Route path="/" element={<Dashboard />} />
 					<Route path="/search" element={<Search />} />
