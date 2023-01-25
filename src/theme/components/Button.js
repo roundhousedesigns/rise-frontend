@@ -1,4 +1,4 @@
-import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
+import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
 	baseStyle: {
@@ -17,6 +17,18 @@ export default defineStyleConfig({
 			},
 			_active: {
 				background: 'transparent',
+			},
+		},
+		toggle: {
+			fontWeight: 'normal',
+			border: '1px solid',
+			bg: 'gray.200',
+			borderColor: 'gray.200',
+			_hover: {
+				bg: 'gray.100',
+			},
+			_checked: {
+				bg: 'cyan.100',
 			},
 		},
 	},

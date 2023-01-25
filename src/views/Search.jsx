@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormControl, Button } from '@chakra-ui/react';
 
 import SearchFilter from '@/components/common/SearchFilter';
 
@@ -6,17 +7,28 @@ import SearchFilter from '@/components/common/SearchFilter';
 
 export default function Search() {
 	return (
-		<>
+		<FormControl>
 			<SearchFilter
-				tempNumItems={12}
+				_devNumItems={12}
+				_devReturnElement="button"
 				heading="What department are you hiring for?"
 			/>
 			<SearchFilter
-				tempNumItems={10}
+				_devNumItems={10}
+				_devReturnElement="button"
 				heading="What skills does the position require?"
 			/>
-			<SearchFilter tempNumItems={3} heading="Where are you looking to hire?" />
-			<SearchFilter tempNumItems={3} heading="Anything else?" />
-		</>
+			<SearchFilter
+				_devNumItems={3}
+				_devReturnElement="select"
+				heading="Where are you looking to hire?"
+			/>
+			<SearchFilter
+				_devNumItems={3}
+				_devReturnElement="select"
+				heading="Anything else?"
+			/>
+			<Button type="submit" size="lg">Search</Button>
+		</FormControl>
 	);
 }
