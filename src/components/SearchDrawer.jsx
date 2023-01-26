@@ -29,7 +29,7 @@ const _devSavedSearches = [
 	'Saved search three',
 ];
 
-export default function SearchDrawer({ isOpen, onClose }) {
+export default function SearchWizard({ isOpen, onClose }) {
 	const btnRef = React.useRef();
 
 	return (

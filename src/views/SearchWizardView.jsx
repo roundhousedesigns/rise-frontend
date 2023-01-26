@@ -3,9 +3,9 @@ import { FormControl, Button } from '@chakra-ui/react';
 
 import SearchFilter from '../components/common/SearchFilter';
 
-export default function SearchDrawer() {
+export default function SearchWizardView() {
 	return (
-		<FormControl>
+		<FormControl textAlign="left">
 			<SearchFilter
 				_devNumItems={12}
 				_devReturnElement="button"

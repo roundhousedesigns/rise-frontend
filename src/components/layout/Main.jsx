@@ -6,6 +6,7 @@ import Dashboard from '../../routes/Dashboard';
 import Search from '../../routes/Search';
 import Profile from '../../routes/Profile';
 import Settings from '../../routes/Settings';
+import Account from '../../routes/Account';
 
 export default function Main() {
 	return (
@@ -25,6 +26,7 @@ export default function Main() {
 					<Route path="/" element={<Dashboard />} />
 					<Route path="/search" element={<Search />} />
 					<Route path="/profile" element={<Profile />} />
+					<Route path="/account" element={<Account />} />
 					<Route path="/settings" element={<Settings />} />
 				</Routes>
 			</Container>
