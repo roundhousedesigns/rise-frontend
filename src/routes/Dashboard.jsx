@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, GridItem, Heading } from '@chakra-ui/react';
+import { Grid, GridItem } from '@chakra-ui/react';
 
 import Page from '../components/common/Page';
 import GridCard from '../components/common/GridCard';

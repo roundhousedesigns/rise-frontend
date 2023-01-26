@@ -4,8 +4,6 @@ import {
 	FormControl,
 	FormLabel,
 	Heading,
-	List,
-	ListItem,
 	Switch,
 } from '@chakra-ui/react';
 import React from 'react';
