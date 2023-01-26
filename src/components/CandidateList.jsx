@@ -1,8 +1,8 @@
 import React from 'react';
 import { List, ListItem } from '@chakra-ui/react';
 
-import Candidate from '@/components/common/Candidate';
-import { simpleWordsArray } from '@/dummydata';
+import Candidate from './common/Candidate';
+import { simpleWordsArray } from '../dummydata';
 
 // TODO This will either take a prop containing a collection of Crew Members,
 // or it will access it from a store.
@@ -11,7 +11,6 @@ import { simpleWordsArray } from '@/dummydata';
 export default function CandidateList() {
 	return (
 		<List
-			// justifyContent="flex-start"
 			alignItems="left"
 			height="auto"
 			width="full"

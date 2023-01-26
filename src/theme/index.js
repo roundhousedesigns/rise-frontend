@@ -1,19 +1,19 @@
 import { extendTheme } from '@chakra-ui/react';
 
 // Global overrides
-import { styles } from '@/theme/styles';
+import { styles } from './styles';
 
 // Foundational style overrides
-import { colors } from '@/theme/foundations/colors';
-import { fonts } from '@/theme/foundations/fonts';
-import { sizes } from '@/theme/foundations/sizes';
+import { colors } from './foundations/colors';
+import { fonts } from './foundations/fonts';
+import { sizes } from './foundations/sizes';
 
 // Component style overrides
-import headingTheme from '@/theme/components/Heading';
-import textTheme from '@/theme/components/Text';
-import cardTheme from '@/theme/components/Card';
-import buttonTheme from '@/theme/components/Button';
-import menuTheme from '@/theme/components/Menu';
+import headingTheme from './components/Heading';
+import textTheme from './components/Text';
+import cardTheme from './components/Card';
+import buttonTheme from './components/Button';
+import menuTheme from './components/Menu';
 
 // Config
 const config = {

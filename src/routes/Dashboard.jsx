@@ -1,14 +1,14 @@
 import React from 'react';
 import { Grid, GridItem, Heading } from '@chakra-ui/react';
 
-import GridCard from '@/components/common/GridCard';
-import SearchList from '@/components/common/SearchList';
-import CandidateList from '@/components/CandidateList';
+import GridCard from '../components/common/GridCard';
+import SearchList from '../components/common/SearchList';
+import CandidateList from '../components/CandidateList';
+import Page from '../components/common/Page';
 
-export default function DashboardView() {
+export default function Dashboard() {
 	return (
-		<>
-			<Heading variant="pageTitle">Hi, Firstname!</Heading>
+		<Page title="Hi, Firstname!">
 			<Grid variant="cards" templateColumns="2" templateRows="2" gap={6}>
 				<GridItem colSpan={2}>
 					<GridCard heading="Saved candidates">
@@ -38,6 +38,6 @@ export default function DashboardView() {
 					</GridCard>
 				</GridItem>
 			</Grid>
-		</>
+		</Page>
 	);
 }

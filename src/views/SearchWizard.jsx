@@ -1,11 +1,9 @@
 import React from 'react';
 import { FormControl, Button } from '@chakra-ui/react';
 
-import SearchFilter from '@/components/common/SearchFilter';
+import SearchFilter from '../components/common/SearchFilter';
 
-// graphql
-
-export default function Search() {
+export default function SearchDrawer() {
 	return (
 		<FormControl>
 			<SearchFilter
@@ -28,7 +26,9 @@ export default function Search() {
 				_devReturnElement="select"
 				heading="Anything else?"
 			/>
-			<Button type="submit" size="lg">Search</Button>
+			<Button type="submit" size="lg">
+				Search
+			</Button>
 		</FormControl>
 	);
 }

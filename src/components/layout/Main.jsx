@@ -2,10 +2,10 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
 
-import Dashboard from '@/views/Dashboard';
-import Search from '@/views/Search';
-import Profile from '@/views/Profile';
-import Settings from '@/views/Settings';
+import Dashboard from '../../routes/Dashboard';
+import Search from '../../routes/Search';
+import Profile from '../../routes/Profile';
+import Settings from '../../routes/Settings';
 
 export default function Main() {
 	return (

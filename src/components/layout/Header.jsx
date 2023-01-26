@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
 	Flex,
@@ -6,30 +7,22 @@ import {
 	Image,
 	Menu,
 	MenuButton,
-	Spacer,
 	Container,
-	Drawer,
-	Stack,
 	useDisclosure,
-	DrawerOverlay,
-	DrawerContent,
-	DrawerHeader,
-	DrawerBody,
-	Heading,
-	Text,
-	useMediaQuery,
 	LightMode,
+	Spacer,
+	Link,
+	Stack,
 } from '@chakra-ui/react';
-import { FiUser, FiX, FiSearch } from 'react-icons/fi';
+import { FiUser, FiMoreHorizontal } from 'react-icons/fi';
 
-import Search from '@/views/Search';
 import MainMenu from '../MainMenu';
-import logo from '@/assets/gtw-logo-horizontal.svg';
+import SearchDrawer from '../SearchDrawer';
+import logo from '../../assets/gtw-logo-horizontal.svg';
 
 export default function Header() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const btnRef = useRef();
-	const isLargerThan768 = useMediaQuery('(min-width: 768px)');
 
 	return (
 		<>
@@ -45,37 +38,18 @@ export default function Header() {
 					<Container centerContent={true} w="full" maxWidth="9xl">
 						<Flex
 							w="100%"
-							justifyContent={{ base: 'space-between', sm: 'center' }}
+							justifyContent="space-between"
 							align="center"
 							flexWrap={true}
 						>
-							<Stack
-								direction="row"
-								align="left"
-								alignItems="center"
-								fontSize="lg"
-								gap={2}
-							>
-								<IconButton
-									ref={btnRef}
-									icon={<FiSearch />}
-									aria-label="Search for candidates"
-									variant="invisible"
-									align="center"
-									fontSize="1.4em"
-									onClick={onOpen}
-								/>
-								{isLargerThan768 && (
-									<Text
-										size="md"
-										marginInlineStart="-0.25em !important"
-										color="white"
-									>
-										Find Crew
-									</Text>
-								)}
-							</Stack>
-							<Spacer />
+							<IconButton
+								ref={btnRef}
+								icon={<FiMoreHorizontal />}
+								aria-label="Search for candidates"
+								variant="invisible"
+								fontSize="3xl"
+								onClick={onOpen}
+							/>
 							<Image
 								src={logo}
 								alt="Get To Work logo"
@@ -85,6 +59,22 @@ export default function Header() {
 								flexShrink={1}
 								mr={2}
 							/>
+							<Spacer />
+							<Stack
+								direction="row"
+								spacing={4}
+								mr={6}
+								align="center"
+								fontSize="lg"
+								textTransform="uppercase"
+							>
+								<Link as={RouterLink} to="/search">
+									Search
+								</Link>
+								<Link as={RouterLink} to="/profile">
+									My Profile
+								</Link>
+							</Stack>
 							<Menu>
 								{({ isOpen }) => (
 									<>
@@ -114,42 +104,7 @@ export default function Header() {
 					</Container>
 				</Box>
 			</LightMode>
-			<Drawer
-				isOpen={isOpen}
-				onClose={onClose}
-				placement="left"
-				size={{ base: 'full', md: 'xl' }}
-			>
-				<DrawerOverlay />
-				<DrawerContent>
-					<DrawerHeader
-						borderBottomWidth="1px"
-						fontSize="2xl"
-						py={6}
-						bg="blackAlpha.800"
-						color="whiteAlpha.900"
-						borderBottom="2px solid pink"
-					>
-						<Stack direction="row" justifyContent="space-between">
-							<Heading size="lg" color="white">
-								Find Crew
-							</Heading>
-							<IconButton
-								ref={btnRef}
-								icon={<FiX />}
-								color="white"
-								aria-label="Close"
-								fontSize="1.4em"
-								onClick={onClose}
-								variant="invisible"
-							/>
-						</Stack>
-					</DrawerHeader>
-					<DrawerBody py={8}>
-						<Search />
-					</DrawerBody>
-				</DrawerContent>
-			</Drawer>
+			<SearchDrawer isOpen={isOpen} onClose={onClose} />
 		</>
 	);
 }

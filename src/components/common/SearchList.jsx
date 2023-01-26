@@ -1,15 +1,14 @@
 import React from 'react';
-import { VStack, Box, Text } from '@chakra-ui/react';
+import { List, ListItem, Text } from '@chakra-ui/react';
 
 export default function SearchList({ items }) {
 	return (
-		<VStack alignItems="center" justifyContent="center">
+		<List>
 			{items.map((i, index) => (
-				<Box key={index}>
+				<ListItem key={index} pl={4} mb={4}>
 					<Text>{i}</Text>
-					<Text as="small">(Parameters)</Text>
-				</Box>
+				</ListItem>
 			))}
-		</VStack>
+		</List>
 	);
 }

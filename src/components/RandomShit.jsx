@@ -1,8 +1,8 @@
 import React from 'react';
 import { Spinner, Heading, List, ListItem, Divider } from '@chakra-ui/react';
 
-import { useCredits } from '@/hooks/queries/useCredits';
-import { useAllUsers } from '@/hooks/queries/useUsers';
+import { useCredits } from '../hooks/queries/useCredits';
+import { useAllUsers } from '../hooks/queries/useUsers';
 
 export default function RandomShit() {
 	const { data: creditsData, loading: creditsLoading } = useCredits();
