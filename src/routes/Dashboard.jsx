@@ -1,10 +1,10 @@
 import React from 'react';
 import { Grid, GridItem, Heading } from '@chakra-ui/react';
 
+import Page from '../components/common/Page';
 import GridCard from '../components/common/GridCard';
 import SearchList from '../components/common/SearchList';
 import CandidateList from '../components/CandidateList';
-import Page from '../components/common/Page';
 
 export default function Dashboard() {
 	return (
