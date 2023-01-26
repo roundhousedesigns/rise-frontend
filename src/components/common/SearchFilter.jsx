@@ -1,9 +1,6 @@
 import React from 'react';
 import { Box, Heading, Flex, Button, Select } from '@chakra-ui/react';
 
-// TODO Replace with real data
-
-// Dev.
 import { simpleWordsArray } from '../../dummydata';
 
 export default function SearchFilter({
