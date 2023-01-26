@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Flex, Button, Select } from '@chakra-ui/react';
+import { Box, Heading, Wrap, Button, Select } from '@chakra-ui/react';
 
 import { simpleWordsArray } from '../../dummydata';
 
@@ -22,11 +22,10 @@ export default function SearchFilter({
 			>
 				{heading}
 			</Heading>
-			<Flex
+			<Wrap
 				justifyContent="flex-start"
 				alignItems="center"
 				width="full"
-				flexWrap="wrap"
 				gap={4}
 				mb={4}
 			>
@@ -52,7 +51,7 @@ export default function SearchFilter({
 							</Button>
 					  ))
 					: null}
-			</Flex>
+			</Wrap>
 		</Box>
 	);
 }

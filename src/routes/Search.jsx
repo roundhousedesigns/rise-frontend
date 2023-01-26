@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchWizard from '../views/SearchWizard';
+import SearchWizard from '../views/SearchWizardView';
 import Page from '../components/common/Page';
 
 export default function Search() {

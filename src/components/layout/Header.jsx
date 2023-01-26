@@ -2,11 +2,8 @@ import React, { useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
-	Flex,
 	IconButton,
 	Image,
-	Menu,
-	MenuButton,
 	Container,
 	useDisclosure,
 	LightMode,
@@ -14,7 +11,7 @@ import {
 	Link,
 	Stack,
 } from '@chakra-ui/react';
-import { FiUser, FiMoreHorizontal } from 'react-icons/fi';
+import { FiMoreHorizontal } from 'react-icons/fi';
 
 import MainMenu from '../MainMenu';
 import SearchDrawer from '../SearchDrawer';
@@ -36,7 +33,8 @@ export default function Header() {
 					color="white"
 				>
 					<Container centerContent={true} w="full" maxWidth="9xl">
-						<Flex
+						<Stack
+							direction="row"
 							w="100%"
 							justifyContent="space-between"
 							align="center"
@@ -57,7 +55,6 @@ export default function Header() {
 								w="auto"
 								maxH="40px"
 								flexShrink={1}
-								mr={2}
 							/>
 							<Spacer />
 							<Stack
@@ -75,35 +72,13 @@ export default function Header() {
 									My Profile
 								</Link>
 							</Stack>
-							<Menu>
-								{({ isOpen }) => (
-									<>
-										<MenuButton
-											as={IconButton}
-											icon={
-												<FiUser /> /* TODO implement Avatar when logged in */
-											}
-											variant="round"
-											isActive={isOpen}
-											color={isOpen ? 'black' : 'white'}
-											bg={isOpen ? 'white' : 'black'}
-											borderColor="white"
-											_hover={
-												isOpen
-													? {}
-													: {
-															bg: 'whiteAlpha.300',
-													  }
-											}
-										/>
-										<MainMenu />
-									</>
-								)}
-							</Menu>
-						</Flex>
+
+							<MainMenu />
+						</Stack>
 					</Container>
 				</Box>
 			</LightMode>
+
 			<SearchDrawer isOpen={isOpen} onClose={onClose} />
 		</>
 	);
