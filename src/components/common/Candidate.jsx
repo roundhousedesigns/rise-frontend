@@ -1,24 +1,35 @@
 import React from 'react';
-import { Card, Heading, Stack, Text } from '@chakra-ui/react';
+import { Avatar, Text, Stack } from '@chakra-ui/react';
 
 // A candidate with image, name, and some data.
 
 export default function Candidate({ item }) {
 	return (
-		<Card py={3} textAlign="left">
-			<Stack
-				direction="row"
-				justifyContent="space-between"
-				flexWrap={{ base: 'wrap', md: 'nowrap' }}
-				gap={{ base: 'initial', md: 0 }}
+		<Stack
+			direction="row"
+			justifyContent="flex-start"
+			alignItems="baseline"
+			flexWrap={{ base: 'wrap', md: 'nowrap' }}
+			gap={{ base: 'initial', md: 0 }}
+		>
+			<Avatar size="sm" name={item} flex="0 0 auto" mr={2} />
+			<Text
+				fontSize="md"
+				fontWeight="normal"
+				textAlign="left"
+				flex="1"
+				mb={{ base: 1, lg: 0 }}
 			>
-				<Heading size="sm" fontWeight="normal" mb={{ base: 1, lg: 0 }}>
-					{item}
-				</Heading>
-				<Text fontSize="sm" ml={{ base: '0 !important', lg: 'initial' }}>
-					Department &bull; Job &bull; Something else
-				</Text>
-			</Stack>
-		</Card>
+				{item}
+			</Text>
+			<Text
+				fontSize="sm"
+				textAlign="right"
+				ml={{ base: '0 !important', lg: 'initial' }}
+				flex="1"
+			>
+				Department &bull; Job &bull; Something else
+			</Text>
+		</Stack>
 	);
 }

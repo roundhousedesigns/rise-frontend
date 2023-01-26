@@ -13,7 +13,19 @@ var chance = new Chance();
  */
 export const simpleWordsArray = (len, words = 3) =>
 	[...Array(len)].map(() => {
-		return [...Array(words)].map(
-			(i, index) => chance.word() + (index < words ? ' ' : '')
-		);
+		return [...Array(words)]
+			.map((i, index) => chance.word() + (index < words ? ' ' : ''))
+			.join(' ');
 	});
+
+export const _devRecentSearches = [
+	'Recent search one',
+	'Recent search two',
+	'Recent search three',
+];
+
+export const _devSavedSearches = [
+	'Saved search one',
+	'Saved search two',
+	'Saved search three',
+];

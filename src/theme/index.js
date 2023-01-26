@@ -14,6 +14,7 @@ import textTheme from './components/Text';
 import cardTheme from './components/Card';
 import buttonTheme from './components/Button';
 import menuTheme from './components/Menu';
+import accordionTheme from './components/Accordion';
 
 // Config
 const config = {
@@ -33,6 +34,7 @@ const overrides = {
 		Card: cardTheme,
 		Button: buttonTheme,
 		Menu: menuTheme,
+		Accordion: accordionTheme,
 	},
 };
 

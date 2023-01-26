@@ -18,7 +18,7 @@ export default function WidgetAccordionItem({ children, heading }) {
 					<AccordionIcon />
 				</AccordionButton>
 			</h2>
-			<AccordionPanel pb={4}>{children}</AccordionPanel>
+			<AccordionPanel pb={4} mb={4}>{children}</AccordionPanel>
 		</AccordionItem>
 	);
 }

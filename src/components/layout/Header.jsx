@@ -10,16 +10,21 @@ import {
 	Spacer,
 	Link,
 	Stack,
+	useMediaQuery,
 } from '@chakra-ui/react';
-import { FiMoreHorizontal } from 'react-icons/fi';
+import { FiMoreHorizontal, FiUser } from 'react-icons/fi';
 
-import MainMenu from '../MainMenu';
-import SearchDrawer from '../SearchDrawer';
-import logo from '../../assets/gtw-logo-horizontal.svg';
+import Drawer from './SearchDrawer';
+import logo from '../../assets/images/gtw-logo-horizontal.svg';
 
 export default function Header() {
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const {
+		isOpen: drawerIsOpen,
+		onOpen: drawerOnOpen,
+		onClose: drawerOnClose,
+	} = useDisclosure();
 	const btnRef = useRef();
+	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
 	return (
 		<>
@@ -46,40 +51,51 @@ export default function Header() {
 								aria-label="Search for candidates"
 								variant="invisible"
 								fontSize="3xl"
-								onClick={onOpen}
+								onClick={drawerOnOpen}
 							/>
-							<Image
-								src={logo}
-								alt="Get To Work logo"
-								loading="eager"
-								w="auto"
-								maxH="40px"
-								flexShrink={1}
-							/>
-							<Spacer />
-							<Stack
-								direction="row"
-								spacing={4}
-								mr={6}
-								align="center"
-								fontSize="lg"
-								textTransform="uppercase"
-							>
-								<Link as={RouterLink} to="/search">
-									Search
-								</Link>
-								<Link as={RouterLink} to="/profile">
-									My Profile
-								</Link>
-							</Stack>
+							<Link as={RouterLink} to="/">
+								<Image
+									src={logo}
+									alt="Get To Work logo"
+									loading="eager"
+									w="auto"
+									h="40px"
+								/>
+							</Link>
+							{isLargerThan768 ? (
+								<>
+									<Spacer />
+									<Stack
+										direction="row"
+										spacing={4}
+										mr={6}
+										align="center"
+										fontSize="lg"
+										textTransform="uppercase"
+									>
+										<Link as={RouterLink} to="/search">
+											Search
+										</Link>
+										<Link as={RouterLink} to="/profile">
+											My Profile
+										</Link>
+									</Stack>
+								</>
+							) : null}
 
-							<MainMenu />
+							<Link as={RouterLink} to="/profile">
+								<IconButton
+									variant="round"
+									borderColor="white"
+									icon={<FiUser /> /* TODO implement Avatar when logged in */}
+								/>
+							</Link>
 						</Stack>
 					</Container>
 				</Box>
 			</LightMode>
 
-			<SearchDrawer isOpen={isOpen} onClose={onClose} />
+			<Drawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
 		</>
 	);
 }

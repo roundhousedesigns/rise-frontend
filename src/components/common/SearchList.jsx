@@ -5,7 +5,7 @@ export default function SearchList({ items }) {
 	return (
 		<List>
 			{items.map((i, index) => (
-				<ListItem key={index} pl={4} mb={4}>
+				<ListItem key={index} mb={4}>
 					<Text>{i}</Text>
 				</ListItem>
 			))}

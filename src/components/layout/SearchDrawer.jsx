@@ -13,23 +13,14 @@ import {
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
-import CandidateList from './CandidateList';
-import SearchList from './common/SearchList';
-import WidgetAccordionItem from './common/WidgetAccordionItem';
+import CandidateList from '../CandidateList';
+import SearchList from '../common/SearchList';
+import WidgetAccordionItem from '../common/WidgetAccordionItem';
 
-// DUMMY DATA
-const _devRecentSearches = [
-	'Recent search one',
-	'Recent search two',
-	'Recent search three',
-];
-const _devSavedSearches = [
-	'Saved search one',
-	'Saved search two',
-	'Saved search three',
-];
+// TODO: Remove this when we have real data
+import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
 
-export default function SearchWizard({ isOpen, onClose }) {
+export default function SearchDrawer({ isOpen, onClose }) {
 	const btnRef = React.useRef();
 
 	return (
@@ -64,7 +55,8 @@ export default function SearchWizard({ isOpen, onClose }) {
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
-					<Accordion allowToggle index={[0, 1, 2]}>
+					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload) */}
+					<Accordion allowToggle defaultIndex={[0, 1, 2]}>
 						<WidgetAccordionItem heading="Saved Candidates">
 							<CandidateList />
 						</WidgetAccordionItem>
