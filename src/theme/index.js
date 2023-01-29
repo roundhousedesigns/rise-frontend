@@ -6,7 +6,6 @@ import { styles } from './styles';
 // Foundational style overrides
 import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
-import { sizes } from './foundations/sizes';
 
 // Component style overrides
 import headingTheme from './components/Heading';
@@ -27,7 +26,6 @@ const overrides = {
 	styles,
 	fonts,
 	colors,
-	sizes,
 	components: {
 		Heading: headingTheme,
 		Text: textTheme,

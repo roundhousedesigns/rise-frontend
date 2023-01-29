@@ -14,12 +14,11 @@ export default function Main() {
 			id="main"
 			w="full"
 			h="auto"
-			background="none"
-			align="center"
-			justifyContent="center"
-			alignItems="center"
 			py={8}
 			mb={10}
+			background="none"
+			justifyContent="center"
+			alignItems="center"
 		>
 			<Container w="full" maxW="7xl">
 				<Routes>

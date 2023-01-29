@@ -55,8 +55,8 @@ export default function SearchDrawer({ isOpen, onClose }) {
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
-					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload) */}
-					<Accordion allowToggle defaultIndex={[0, 1, 2]}>
+					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload tho) */}
+					<Accordion allowToggle defaultIndex={0}>
 						<WidgetAccordionItem heading="Saved Candidates">
 							<CandidateList />
 						</WidgetAccordionItem>
