@@ -7,7 +7,12 @@ import {
 	AccordionPanel,
 } from '@chakra-ui/react';
 
-export default function WidgetAccordionItem({ children, heading }) {
+interface Props {
+	heading: string;
+	children: React.ReactNode;
+}
+
+export default function WidgetAccordionItem({ heading, children }: Props) {
 	return (
 		<AccordionItem>
 			<h2>
@@ -18,7 +23,9 @@ export default function WidgetAccordionItem({ children, heading }) {
 					<AccordionIcon />
 				</AccordionButton>
 			</h2>
-			<AccordionPanel pb={4} mb={4}>{children}</AccordionPanel>
+			<AccordionPanel pb={4} mb={4}>
+				{children}
+			</AccordionPanel>
 		</AccordionItem>
 	);
 }

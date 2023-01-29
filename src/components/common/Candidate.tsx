@@ -1,9 +1,11 @@
 import React from 'react';
 import { Avatar, Text, Stack } from '@chakra-ui/react';
 
-// A candidate with image, name, and some data.
+interface Props {
+	item: string;
+}
 
-export default function Candidate({ item }) {
+export default function Candidate({ item }: Props) {
 	return (
 		<Stack
 			direction="row"

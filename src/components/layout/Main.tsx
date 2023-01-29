@@ -20,7 +20,7 @@ export default function Main() {
 			justifyContent="center"
 			alignItems="center"
 		>
-			<Container w="full" maxW="7xl">
+			<Container w="full" maxW="7xl" px={6}>
 				<Routes>
 					<Route path="/" element={<Dashboard />} />
 					<Route path="/search" element={<Search />} />

@@ -20,9 +20,12 @@ import WidgetAccordionItem from '../common/WidgetAccordionItem';
 // TODO: Remove this when we have real data
 import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
 
-export default function SearchDrawer({ isOpen, onClose }) {
-	const btnRef = React.useRef();
+interface Props {
+	isOpen: boolean;
+	onClose: () => void;
+}
 
+export default function SearchDrawer({ isOpen, onClose }: Props) {
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement="left" size="sm">
 			<DrawerOverlay />
@@ -44,7 +47,6 @@ export default function SearchDrawer({ isOpen, onClose }) {
 							HEADING
 						</Heading>
 						<IconButton
-							ref={btnRef}
 							icon={<FiX />}
 							color="white"
 							aria-label="Close"
@@ -56,7 +58,7 @@ export default function SearchDrawer({ isOpen, onClose }) {
 				</DrawerHeader>
 				<DrawerBody py={8}>
 					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload tho) */}
-					<Accordion allowToggle defaultIndex={0}>
+					<Accordion allowMultiple={true}>
 						<WidgetAccordionItem heading="Saved Candidates">
 							<CandidateList />
 						</WidgetAccordionItem>

@@ -6,8 +6,13 @@ export default defineStyleConfig({
 	},
 	variants: {
 		round: {
-			border: '1px solid',
 			borderRadius: 'full',
+		},
+		socialRound: {
+			borderRadius: 'full',
+			border: 'none',
+			bg: 'blackAlpha.700',
+			color: 'white',
 		},
 		invisible: {
 			border: 'none',

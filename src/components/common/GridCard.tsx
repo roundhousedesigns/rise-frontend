@@ -1,7 +1,12 @@
 import React from 'react';
 import { Card, CardHeader, CardBody } from '@chakra-ui/react';
 
-export default function GridCard({ heading, children }) {
+interface Props {
+	heading: string;
+	children: React.ReactNode;
+}
+
+export default function GridCard({ heading, children }: Props) {
 	return (
 		<Card px={2} py={6}>
 			<CardHeader>{heading}</CardHeader>

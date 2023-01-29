@@ -15,7 +15,7 @@ export default function Dashboard() {
 	return (
 		<Page title="Hi, Firstname!">
 			<Container maxW="4xl">
-				<Grid variant="cards" templateColumns="2" templateRows="3" gap={6}>
+				<Grid templateColumns="2" templateRows="3" gap={6}>
 					<GridItem colSpan={2}>
 						<GridCard heading="Notes and Bulletins">
 							<Text>Notes and Bulletins go here</Text>

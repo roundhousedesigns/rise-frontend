@@ -10,7 +10,7 @@ export const colors = {
 		green: '#39b54a',
 		teal: '#78b69d',
 		cyan: '#00aeef',
-		navy: '#323896',
+		blue: '#323896',
 		pink: '#ee008c',
 	},
 	orange: {
@@ -98,6 +98,3 @@ export const colors = {
 		900: '#33001E',
 	},
 };
-
-
-console.debug('har');

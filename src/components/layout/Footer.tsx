@@ -10,9 +10,12 @@ export default function Footer() {
 			w="full"
 			h="20vh"
 			py={8}
-			background="brand.cyan"
 			alignItems="center"
 			justifyContent="center"
+			background="brand.cyan"
+			_dark={{
+				background: 'brand.blue',
+			}}
 		>
 			<Heading variant="pageSubtitle">Footer</Heading>
 

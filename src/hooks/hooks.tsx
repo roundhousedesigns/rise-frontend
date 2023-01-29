@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from 'react';
+
 /**
  * Custom hooks.
  */
@@ -14,16 +16,22 @@
  * @param {{serialize: Function, deserialize: Function}} options The serialize and deserialize functions to use (defaults to JSON.stringify and JSON.parse respectively)
  */
 export const useLocalStorage = (
-	key,
-	defaultValue = "",
-	{ serialize = JSON.stringify, deserialize = JSON.parse } = {}
+	key: string,
+	defaultValue: any = '',
+	{
+		serialize = JSON.stringify,
+		deserialize = JSON.parse,
+	}: {
+		serialize?: (val: any) => string;
+		deserialize?: (val: string) => any;
+	} = {}
 ) => {
 	const [state, setState] = useState(() => {
 		const valueInLocalStorage = window.localStorage.getItem(key);
 		if (valueInLocalStorage) {
 			return deserialize(valueInLocalStorage);
 		}
-		return typeof defaultValue === "function" ? defaultValue() : defaultValue;
+		return typeof defaultValue === 'function' ? defaultValue() : defaultValue;
 	});
 
 	const prevKeyRef = useRef(key);

@@ -18,7 +18,10 @@ import {
 
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(
+	document.getElementById('root') as HTMLElement
+);
+
 const backend = import.meta.env.VITE_BACKEND_URL
 	? import.meta.env.VITE_BACKEND_URL
 	: '';
@@ -40,7 +43,7 @@ root.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<ApolloProvider client={client}>
-				<ChakraProvider resetCSS={true} theme={theme}>
+				<ChakraProvider resetCSS theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<App />
 				</ChakraProvider>

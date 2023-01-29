@@ -1,7 +1,12 @@
 import React from 'react';
 import { Box, Flex, Heading } from '@chakra-ui/react';
 
-export default function HeadingCenterline({ lineColor, children }) {
+interface Props {
+	lineColor: string;
+	children: React.ReactNode;
+}
+
+export default function HeadingCenterline({ lineColor, children }: Props) {
 	return (
 		<Flex
 			alignItems="center"
@@ -19,7 +24,7 @@ export default function HeadingCenterline({ lineColor, children }) {
 			></Box>
 			<Heading
 				size="lg"
-				bg="whiteAlpha.900"
+				bg="white"
 				_dark={{
 					bg: 'gray.800',
 					color: 'whiteAlpha.900',

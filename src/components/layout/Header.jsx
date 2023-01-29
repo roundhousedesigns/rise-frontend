@@ -37,13 +37,13 @@ export default function Header() {
 					align="center"
 					color="white"
 				>
-					<Container centerContent={true} w="full" maxWidth="9xl">
+					<Container centerContent w="full" maxWidth="9xl">
 						<Stack
 							direction="row"
 							w="100%"
 							justifyContent="space-between"
 							align="center"
-							flexWrap={true}
+							flexWrap
 						>
 							<IconButton
 								ref={btnRef}

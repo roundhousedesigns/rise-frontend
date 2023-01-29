@@ -11,43 +11,69 @@ import {
 	List,
 	ListItem,
 	Card,
+	useMediaQuery,
+	Avatar,
+	Tag,
 } from '@chakra-ui/react';
 import { UserProfile } from '../lib/classes';
 import { _devProfileData } from '../lib/_devData';
 import HeadingCenterline from '../components/common/HeadingCenterline';
+import SocialLinks from '../components/common/SocialLinks';
+
+interface Props {
+	profile: UserProfile;
+}
 
 /**
  * @param {UserProfile} profile The user profile data.
- * @returns {JSX.Element} The ProfileView component.
+ * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile }) {
+export default function ProfileView({ profile }: Props) {
+	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
+
 	return profile ? (
 		<Stack direction="column" flexWrap="nowrap" gap={6}>
 			<Card py={6} bg="blackAlpha.100" mb={2}>
 				<Flex gap={5}>
-					<Image
-						src={profile.image}
-						alt={`${profile.name}'s picture`}
-						loading="eager"
-						fit="cover"
-					/>
+					{isLargerThan768 ? (
+						<Image
+							src={profile.image}
+							alt={`${profile.name}'s picture`}
+							loading="eager"
+							fit="cover"
+						/>
+					) : (
+						<Avatar
+							size="2xl"
+							src={profile.image}
+							name={`${profile.name}'s picture`}
+						/>
+					)}
+
 					<Stack
 						direction="column"
 						textAlign="left"
 						justifyContent="center"
 						h="full"
 					>
-						<Flex alignItems="baseline">
-							<Heading size="xl" mr={6}>
+						<Flex alignItems="center">
+							<Heading size="xl" mr={2}>
 								{profile.name}
 							</Heading>
-							<Text>{profile.pronouns}</Text>
+							<Tag colorScheme="cyan" size="sm">
+								{profile.pronouns}
+							</Tag>
 						</Flex>
 						<Box>
-							<Text fontSize="xl">{profile.jobList()}</Text>
+							<Text fontSize="xl" lineHeight="short" margin={0}>
+								{profile.jobList()}
+							</Text>
 						</Box>
 						<Box>
-							<Text>{/* profile.socials */}-- social icons --</Text>
+							<SocialLinks
+								socials={profile.socials}
+								website={profile.website}
+							/>
 						</Box>
 						<Box>
 							<Heading size="md">Unions/Guilds</Heading>
@@ -61,7 +87,12 @@ export default function ProfileView({ profile }) {
 							<Heading size="md">Willing to travel</Heading>
 							<Text>{profile.willTravel}</Text>
 						</Box>
-						<ButtonGroup>
+						<ButtonGroup
+							colorScheme="blue"
+							flexWrap="wrap"
+							gap={2}
+							justifyContent="flex-start"
+						>
 							<Button>Resume{/* profile.resume */}</Button>
 							<Button>Email{/* profile.email */}</Button>
 							<Button>Phone{/* profile.phone */}</Button>
@@ -72,7 +103,7 @@ export default function ProfileView({ profile }) {
 			</Card>
 			<Box mt={0}>
 				<HeadingCenterline lineColor="brand.cyan">Credits</HeadingCenterline>
-				<List textAlign="left" fontSize="lg">
+				<List textAlign="left" fontSize="lg" mt={2} spacing={1}>
 					<ListItem>
 						<Box as="span">Credit 1</Box> (Job Title) Venue, Year
 					</ListItem>
@@ -107,13 +138,9 @@ export default function ProfileView({ profile }) {
 			</Box>
 			<Box mt={0}>
 				<HeadingCenterline lineColor="brand.green">Education</HeadingCenterline>
-				<List textAlign="left" fontSize="lg">
-					<ListItem>
-						<Text>MFA - Some Cool School</Text>
-					</ListItem>
-					<ListItem>
-						<Text>BA - Some Other Cool School</Text>
-					</ListItem>
+				<List textAlign="left" fontSize="lg" spacing={1} mt={2}>
+					<ListItem>MFA - Some Cool School</ListItem>
+					<ListItem>BA - Some Other Cool School</ListItem>
 				</List>
 			</Box>
 			<Box mt={0}>

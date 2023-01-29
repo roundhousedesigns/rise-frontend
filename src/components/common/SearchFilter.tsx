@@ -3,18 +3,23 @@ import { Box, Heading, Wrap, Button, Select } from '@chakra-ui/react';
 
 import { simpleWordsArray } from '../../lib/_devData';
 
+interface Props {
+	heading: string;
+	_devNumItems?: number;
+	_devReturnElement?: string;
+}
+
 export default function SearchFilter({
 	heading,
 	_devNumItems,
 	_devReturnElement,
-}) {
+}: Props) {
 	const _devDummyData = simpleWordsArray(_devNumItems ? _devNumItems : 8);
 
 	return (
 		<Box width="full" my={8}>
 			<Heading
 				size="md"
-				align="center"
 				mb={3}
 				width="full"
 				borderBottom="2px"

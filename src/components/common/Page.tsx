@@ -1,7 +1,12 @@
 import React from 'react';
 import { Heading } from '@chakra-ui/react';
 
-export default function Page({ children, title }) {
+interface Props {
+	title?: string;
+	children: React.ReactNode;
+}
+
+export default function Page({ title, children }: Props) {
 	return (
 		<>
 			{title ? (
