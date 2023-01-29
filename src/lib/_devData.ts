@@ -11,7 +11,10 @@ import { UserProfile } from './classes';
  * @param {Number} words (default: 3) The number of words per sentence.
  * @returns {Array} The one-dimensional array of dummy data.
  */
-export const simpleWordsArray = (len, words = 3) => {
+export const simpleWordsArray = (
+	len: Number,
+	words: Number = 3
+): Array<String> => {
 	var chance = new Chance();
 	return [...Array(len)].map(() => {
 		return [...Array(words)]
@@ -34,6 +37,7 @@ export const _devSavedSearches = [
 
 export const _devProfileData = new UserProfile({
 	name: 'Bob Bobbson',
+	email: 'bob@bobbson.com',
 	image: 'https://picsum.photos/300/400',
 	pronouns: 'he/him',
 	phone: '555-555-5555',
@@ -43,7 +47,7 @@ export const _devProfileData = new UserProfile({
 	location: 'Los Angeles, CA',
 	willTravel: true,
 	resume: 'https://picsum.photos',
-	social: {
+	socials: {
 		twitter: 'bob_bobbson',
 		linkedin: 'bob-bobbson',
 		instagram: 'bob_bobbson',
