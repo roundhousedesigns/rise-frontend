@@ -16,7 +16,6 @@ import {
 	Tag,
 } from '@chakra-ui/react';
 import { UserProfile } from '../lib/classes';
-import { _devProfileData } from '../lib/_devData';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 
