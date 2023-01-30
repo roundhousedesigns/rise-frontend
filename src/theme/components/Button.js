@@ -27,8 +27,7 @@ export default defineStyleConfig({
 		toggle: {
 			fontWeight: 'normal',
 			border: '1px solid',
-			bg: 'gray.200',
-			borderColor: 'gray.200',
+			colorScheme: 'gray',
 			_hover: {
 				bg: 'gray.100',
 			},

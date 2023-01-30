@@ -6,10 +6,17 @@ export interface Socials {
 }
 
 class User {
+	id: string;
 	name: string;
 	email: string;
 	image: string;
-	constructor(params: { name: string; email: string; image: string }) {
+	constructor(params: {
+		id: string;
+		name: string;
+		email: string;
+		image: string;
+	}) {
+		this.id = params.id;
 		this.name = params.name;
 		this.email = params.email;
 		this.image = params.image;
@@ -17,6 +24,7 @@ class User {
 }
 
 interface UserProfileParams {
+	id: string;
 	name: string;
 	email: string;
 	pronouns?: string;
@@ -45,6 +53,7 @@ class UserProfile extends User {
 	socials: Socials;
 	constructor(params: UserProfileParams) {
 		super({
+			id: params.id,
 			name: params.name,
 			email: params.email || '',
 			image: params.image || '',
