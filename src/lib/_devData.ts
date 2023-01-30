@@ -36,6 +36,7 @@ export const _devSavedSearches = [
 ];
 
 export const _devProfileData = new UserProfile({
+	id: '12345',
 	name: 'Bob Bobbson',
 	email: 'bob@bobbson.com',
 	image: 'https://picsum.photos/300/400',
