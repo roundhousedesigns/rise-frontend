@@ -4,6 +4,6 @@
 
 export const styles = {
 	global: {
-		body: {},
+		body: { fontSize: '18px' },
 	},
 };

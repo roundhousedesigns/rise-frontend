@@ -6,8 +6,13 @@ export default defineStyleConfig({
 	},
 	variants: {
 		round: {
-			border: '1px solid',
 			borderRadius: 'full',
+		},
+		socialRound: {
+			borderRadius: 'full',
+			border: 'none',
+			bg: 'blackAlpha.700',
+			color: 'white',
 		},
 		invisible: {
 			border: 'none',
@@ -22,8 +27,7 @@ export default defineStyleConfig({
 		toggle: {
 			fontWeight: 'normal',
 			border: '1px solid',
-			bg: 'gray.200',
-			borderColor: 'gray.200',
+			colorScheme: 'gray',
 			_hover: {
 				bg: 'gray.100',
 			},
