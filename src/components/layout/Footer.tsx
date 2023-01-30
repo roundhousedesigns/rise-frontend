@@ -1,3 +1,4 @@
+import React from 'react';
 import { Flex, Heading, IconButton, useColorMode } from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 

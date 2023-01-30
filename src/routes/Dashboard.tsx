@@ -1,3 +1,4 @@
+import React from 'react';
 import { Container, Grid, GridItem, Text } from '@chakra-ui/react';
 
 import Page from '../components/common/Page';

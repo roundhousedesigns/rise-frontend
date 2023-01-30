@@ -1,3 +1,4 @@
+import React from 'react';
 import SearchWizard from '../views/SearchWizardView';
 import Page from '../components/common/Page';
 
