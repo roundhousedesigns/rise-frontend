@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Key } from 'react';
 import { List, ListItem } from '@chakra-ui/react';
 
 import Candidate from './common/Candidate';
@@ -18,8 +18,8 @@ export default function CandidateList() {
 			display="flex"
 			flexWrap="wrap"
 		>
-			{simpleWordsArray(5, 2).map((i) => (
-				<ListItem key={i} width="full">
+			{simpleWordsArray(5, 2).map((i: string, index: Key) => (
+				<ListItem key={index} width="full">
 					<Candidate item={i} />
 				</ListItem>
 			))}

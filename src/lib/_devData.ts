@@ -14,7 +14,7 @@ import { UserProfile } from './classes';
 export const simpleWordsArray = (
 	len: Number,
 	words: Number = 3
-): Array<String> => {
+): Array<string> => {
 	var chance = new Chance();
 	return [...Array(len)].map(() => {
 		return [...Array(words)]
