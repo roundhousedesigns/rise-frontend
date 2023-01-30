@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Heading, Wrap, Button, Select } from '@chakra-ui/react';
 
 import { simpleWordsArray } from '../../lib/_devData';

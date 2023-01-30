@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	Box,
 	Heading,
@@ -28,10 +27,10 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile }: Props) {
+export default function ProfileView({ profile }: Props): JSX.Element {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
-	return profile ? (
+	return (
 		<Stack direction="column" flexWrap="nowrap" gap={6}>
 			<Card py={6} bg="blackAlpha.100" mb={2}>
 				<Flex
@@ -105,52 +104,61 @@ export default function ProfileView({ profile }: Props) {
 					</Stack>
 				</Flex>
 			</Card>
-			<Box mt={0}>
-				<HeadingCenterline lineColor="brand.cyan">Credits</HeadingCenterline>
-				<List textAlign="left" fontSize="lg" mt={2} spacing={1}>
-					<ListItem>
-						<Box as="span">Credit 1</Box> (Job Title) Venue, Year
-					</ListItem>
-					<ListItem>
-						<Box as="span">Credit 2</Box> (Job Title) Venue, Year
-					</ListItem>
-					<ListItem>
-						<Box as="span">Credit 3</Box> (Job Title) Venue, Year
-					</ListItem>
-				</List>
-			</Box>
-			<Box mt={0}>
-				<HeadingCenterline lineColor="brand.pink">About</HeadingCenterline>
-				<Text>
-					Pirate Round port jolly boat fathom poop deck jack bilged on her
-					anchor me flogging splice the main brace. Fire ship nipper quarter
-					crack Jennys tea cup Sail ho brigantine plunder driver ye sheet. Bilge
-					code of conduct flogging boom grapple starboard walk the plank blow
-					the man down Jack Ketch lookout. Sail ho sutler piracy ye bilge rat
-					landlubber or just lubber dance the hempen jig trysail bowsprit
-					barkadeer.
-				</Text>
-				<Text>
-					Lugger Corsair run a rig yardarm keel blow the man down tender careen
-					interloper jack. Parrel rigging salmagundi hogshead pillage Jack Ketch
-					reef sails nipperkin me lass. Barkadeer wench rum snow run a shot
-					across the bow chantey fire in the hole poop deck brig man-of-war.
-					Piracy square-rigged gaff to go on account Plate Fleet Jolly Roger jib
-					trysail flogging Shiver me timbers. Keel lee capstan long boat lanyard
-					me fore carouser tack driver.
-				</Text>
-			</Box>
-			<Box mt={0}>
-				<HeadingCenterline lineColor="brand.green">Education</HeadingCenterline>
-				<List textAlign="left" fontSize="lg" spacing={1} mt={2}>
-					<ListItem>MFA - Some Cool School</ListItem>
-					<ListItem>BA - Some Other Cool School</ListItem>
-				</List>
-			</Box>
-			<Box mt={0}>
-				<HeadingCenterline lineColor="brand.cyan">Media</HeadingCenterline>
-				<Text>-- video --</Text>
-			</Box>
+
+			{profile ? (
+				<>
+					<Box mt={0}>
+						<HeadingCenterline lineColor="brand.cyan">
+							Credits
+						</HeadingCenterline>
+						<List textAlign="left" fontSize="lg" mt={2} spacing={1}>
+							<ListItem>
+								<Box as="span">Credit 1</Box> (Job Title) Venue, Year
+							</ListItem>
+							<ListItem>
+								<Box as="span">Credit 2</Box> (Job Title) Venue, Year
+							</ListItem>
+							<ListItem>
+								<Box as="span">Credit 3</Box> (Job Title) Venue, Year
+							</ListItem>
+						</List>
+					</Box>
+					<Box mt={0}>
+						<HeadingCenterline lineColor="brand.pink">About</HeadingCenterline>
+						<Text>
+							Pirate Round port jolly boat fathom poop deck jack bilged on her
+							anchor me flogging splice the main brace. Fire ship nipper quarter
+							crack Jennys tea cup Sail ho brigantine plunder driver ye sheet.
+							Bilge code of conduct flogging boom grapple starboard walk the
+							plank blow the man down Jack Ketch lookout. Sail ho sutler piracy
+							ye bilge rat landlubber or just lubber dance the hempen jig
+							trysail bowsprit barkadeer.
+						</Text>
+						<Text>
+							Lugger Corsair run a rig yardarm keel blow the man down tender
+							careen interloper jack. Parrel rigging salmagundi hogshead pillage
+							Jack Ketch reef sails nipperkin me lass. Barkadeer wench rum snow
+							run a shot across the bow chantey fire in the hole poop deck brig
+							man-of-war. Piracy square-rigged gaff to go on account Plate Fleet
+							Jolly Roger jib trysail flogging Shiver me timbers. Keel lee
+							capstan long boat lanyard me fore carouser tack driver.
+						</Text>
+					</Box>
+					<Box mt={0}>
+						<HeadingCenterline lineColor="brand.green">
+							Education
+						</HeadingCenterline>
+						<List textAlign="left" fontSize="lg" spacing={1} mt={2}>
+							<ListItem>MFA - Some Cool School</ListItem>
+							<ListItem>BA - Some Other Cool School</ListItem>
+						</List>
+					</Box>
+					<Box mt={0}>
+						<HeadingCenterline lineColor="brand.cyan">Media</HeadingCenterline>
+						<Text>-- video --</Text>
+					</Box>
+				</>
+			) : null}
 		</Stack>
-	) : null;
+	);
 }

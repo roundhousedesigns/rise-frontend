@@ -1,4 +1,3 @@
-import React from 'react';
 import { Avatar, Text, Stack } from '@chakra-ui/react';
 
 interface Props {
