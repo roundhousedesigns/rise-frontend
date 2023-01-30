@@ -29,13 +29,17 @@ interface Props {
  * @returns {JSX.Element} The Props component.
  */
 export default function ProfileView({ profile }: Props) {
-	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	return profile ? (
 		<Stack direction="column" flexWrap="nowrap" gap={6}>
 			<Card py={6} bg="blackAlpha.100" mb={2}>
-				<Flex gap={5}>
-					{isLargerThan768 ? (
+				<Flex
+					gap={5}
+					flexWrap={{ base: 'wrap', md: 'nowrap' }}
+					justifyContent={{ base: 'center', md: 'flex-start' }}
+				>
+					{isLargerThanMd ? (
 						<Image
 							src={profile.image}
 							alt={`${profile.name}'s picture`}
