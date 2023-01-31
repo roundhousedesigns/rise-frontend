@@ -9,6 +9,7 @@ export default function Footer() {
 		<Flex
 			w="full"
 			h="20vh"
+			flex="0 0 auto"
 			py={8}
 			alignItems="center"
 			justifyContent="center"

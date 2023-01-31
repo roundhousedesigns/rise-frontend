@@ -26,6 +26,8 @@ const backend = import.meta.env.VITE_BACKEND_URL
 	? import.meta.env.VITE_BACKEND_URL
 	: '';
 
+import { AuthContextProvider } from './context/AuthContext';
+
 /**
  * Apollo client.
  */
@@ -43,9 +45,11 @@ root.render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<ApolloProvider client={client}>
-				<ChakraProvider resetCSS theme={theme}>
+				<ChakraProvider resetCSS={true} theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-					<App />
+					<AuthContextProvider>
+						<App />
+					</AuthContextProvider>
 				</ChakraProvider>
 			</ApolloProvider>
 		</BrowserRouter>

@@ -47,3 +47,39 @@ export const useLocalStorage = (
 
 	return [state, setState];
 };
+
+/**
+ * Format a login error message.
+ *
+ * @param {string} errorCode The login error message returned by the server.
+ * @returns {string} The message to print.
+ */
+export function useLoginError(errorCode?: string): string {
+	if (!errorCode) return '';
+
+	var message = '';
+
+	switch (errorCode) {
+		case 'invalid_username':
+		case 'invalid_email':
+			message = 'Invalid username or email address.';
+			break;
+
+		case 'incorrect_password':
+			message = 'Incorrect password.';
+			break;
+
+		case 'empty_login':
+			message = 'Please enter a username or email address.';
+			break;
+
+		case 'empty_password':
+			message = 'Please enter your password.';
+			break;
+
+		default:
+			message = 'Unspecified error.';
+	}
+
+	return message;
+}

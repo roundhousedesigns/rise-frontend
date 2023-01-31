@@ -9,17 +9,11 @@ class User {
 	id: string;
 	name: string;
 	email: string;
-	image: string;
-	constructor(params: {
-		id: string;
-		name: string;
-		email: string;
-		image: string;
-	}) {
+
+	constructor(params: { id: string; name: string; email: string }) {
 		this.id = params.id;
 		this.name = params.name;
 		this.email = params.email;
-		this.image = params.image;
 	}
 }
 
@@ -27,9 +21,9 @@ interface UserProfileParams {
 	id: string;
 	name: string;
 	email: string;
+	image?: string;
 	pronouns?: string;
 	phone?: string;
-	image?: string;
 	bio?: string;
 	unions?: string[];
 	jobTitles?: string[];
@@ -41,23 +35,24 @@ interface UserProfileParams {
 }
 
 class UserProfile extends User {
-	bio: string;
-	pronouns: string;
-	phone: string;
-	unions: string[];
-	jobTitles: string[];
-	website: string;
-	location: string;
-	willTravel: boolean | null;
-	resume: string;
-	socials: Socials;
+	image?: string;
+	bio?: string;
+	pronouns?: string;
+	phone?: string;
+	unions?: string[];
+	jobTitles?: string[];
+	website?: string;
+	location?: string;
+	willTravel?: boolean | null;
+	resume?: string;
+	socials?: Socials;
 	constructor(params: UserProfileParams) {
 		super({
 			id: params.id,
 			name: params.name,
 			email: params.email || '',
-			image: params.image || '',
 		});
+		this.image = params.image || '';
 		this.bio = params.bio || '';
 		this.pronouns = params.pronouns || '';
 		this.phone = params.phone || '';
@@ -75,12 +70,25 @@ class UserProfile extends User {
 		};
 	}
 
+	/**
+	 * Returns a comma separated list of job titles
+	 *
+	 * @returns {string} comma separated list of job titles
+	 */
 	jobList(): string {
-		return this.jobTitles.join(', ');
+		const { jobTitles } = this;
+
+		return jobTitles && jobTitles.length ? jobTitles.join(', ') : '';
 	}
 
+	/**
+	 * Returns a comma separated list of unions
+	 *
+	 * @returns {string} comma separated list of unions
+	 */
 	unionList(): string {
-		return this.unions.join(', ');
+		const { unions } = this;
+		return unions && unions.length ? unions.join(', ') : '';
 	}
 
 	socialLink(network: string): string | undefined {

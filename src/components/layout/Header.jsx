@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
@@ -12,8 +12,10 @@ import {
 	Stack,
 	useMediaQuery,
 } from '@chakra-ui/react';
-import { FiMoreHorizontal, FiUser } from 'react-icons/fi';
+import { FiMoreHorizontal, FiLogOut } from 'react-icons/fi';
 
+import { useLogout } from '../../hooks/mutations/useLogout';
+import { AuthContext } from '../../context/AuthContext';
 import Drawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
 
@@ -26,8 +28,15 @@ export default function Header() {
 	const btnRef = useRef();
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
+	const { setUserIsLoggedIn } = useContext(AuthContext);
+	const { logoutMutation } = useLogout();
+
+	const handleLogout = () => {
+		logoutMutation().then(() => setUserIsLoggedIn(false));
+	};
+
 	return (
-		<>
+		<Box flex="0 0 auto" w="full">
 			<LightMode>
 				<Box
 					id="header"
@@ -83,19 +92,19 @@ export default function Header() {
 								</>
 							) : null}
 
-							<Link as={RouterLink} to="/profile">
-								<IconButton
-									variant="round"
-									borderColor="white"
-									icon={<FiUser /> /* TODO implement Avatar when logged in */}
-								/>
-							</Link>
+							<IconButton
+								variant="round"
+								borderColor="white"
+								aria-label="Log out"
+								icon={<FiLogOut />}
+								onClick={handleLogout}
+							/>
 						</Stack>
 					</Container>
 				</Box>
 			</LightMode>
 
 			<Drawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
-		</>
+		</Box>
 	);
 }

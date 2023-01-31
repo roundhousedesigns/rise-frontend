@@ -41,6 +41,7 @@ export default function SearchFilter({
 								variant="outline"
 								placeholder="Choose an option"
 								flex={1}
+								cursor="pointer"
 							>
 								{[...Array(3)].map((_, index) => (
 									<option key={index} value="something">
