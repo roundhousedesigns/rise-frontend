@@ -42,7 +42,7 @@ export const _devProfileData = new UserProfile({
 	image: 'https://picsum.photos/300/400',
 	pronouns: 'he/him',
 	phone: '555-555-5555',
-	unions: ['AFL-CIO', 'SAG-AFTRA'],
+	unions: ['IATSE', 'SAG-AFTRA'],
 	jobTitles: ['Stage Manager', 'Assistant Stage Manager', 'Production Manager'],
 	website: 'https://picsum.photos',
 	location: 'Los Angeles, CA',
@@ -54,4 +54,5 @@ export const _devProfileData = new UserProfile({
 		instagram: 'bob_bobbson',
 		facebook: 'https://www.facebook.com/bob.bobbson',
 	},
+	education: ['MFA - Some Cool School', 'BA - Some Other Cool School'],
 });

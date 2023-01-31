@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Key } from 'react';
 import {
 	Box,
 	Heading,
@@ -15,6 +15,7 @@ import {
 	Avatar,
 	Tag,
 } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
 import { UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
@@ -27,7 +28,7 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile }: Props): JSX.Element {
+export default function ProfileView({ profile }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	return profile ? (
@@ -72,12 +73,16 @@ export default function ProfileView({ profile }: Props): JSX.Element {
 								{profile.jobList()}
 							</Text>
 						</Box>
-						<Box>
-							<SocialLinks
-								socials={profile.socials ? profile.socials : {}}
-								website={profile.website}
-							/>
-						</Box>
+
+						{profile.socials && !isEmpty(profile.socials) && (
+							<Box pt={2} pb={4}>
+								<SocialLinks
+									socials={profile.socials}
+									website={profile.website}
+								/>
+							</Box>
+						)}
+
 						<Box>
 							<Heading size="md">Unions/Guilds</Heading>
 							<Text>{profile.unionList()}</Text>
@@ -141,17 +146,18 @@ export default function ProfileView({ profile }: Props): JSX.Element {
 			</Box>
 			<Box mt={0}>
 				<HeadingCenterline lineColor="brand.green">Education</HeadingCenterline>
-				<List textAlign="left" fontSize="lg" spacing={1} mt={2}>
-					<ListItem>MFA - Some Cool School</ListItem>
-					<ListItem>BA - Some Other Cool School</ListItem>
-				</List>
+				{profile.education && (
+					<List textAlign="left" fontSize="lg" spacing={1} mt={2}>
+						{profile.education.map((item: string, index: React.Key) => (
+							<ListItem key={index}>{item}</ListItem>
+						))}
+					</List>
+				)}
 			</Box>
 			<Box mt={0}>
 				<HeadingCenterline lineColor="brand.cyan">Media</HeadingCenterline>
 				<Text>-- video --</Text>
 			</Box>
 		</Stack>
-	) : (
-		<Heading>No Profile</Heading>
-	);
+	) : null;
 }

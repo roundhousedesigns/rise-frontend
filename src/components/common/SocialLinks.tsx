@@ -15,7 +15,7 @@ interface Props {
 	website?: string;
 }
 
-export default function SocialLinks({ socials, website }: Props) {
+export default function SocialLinks({ socials, website }: Props): JSX.Element {
 	const { facebook, twitter, instagram, linkedin } = socials;
 
 	return (
