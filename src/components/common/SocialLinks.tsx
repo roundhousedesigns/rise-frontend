@@ -20,34 +20,46 @@ export default function SocialLinks({ socials, website }: Props) {
 
 	return (
 		<Stack direction="row" spacing={4}>
-			<Link as={RouterLink} to={facebook} isExternal>
-				<IconButton
-					variant="socialRound"
-					aria-label="Facebook"
-					icon={<FiFacebook />}
-				/>
-			</Link>
-			<Link as={RouterLink} to={twitter} isExternal>
-				<IconButton
-					variant="socialRound"
-					aria-label="Twitter"
-					icon={<FiTwitter />}
-				/>
-			</Link>
-			<Link as={RouterLink} to={instagram} isExternal>
-				<IconButton
-					variant="socialRound"
-					aria-label="Instagram"
-					icon={<FiInstagram />}
-				/>
-			</Link>
-			<Link as={RouterLink} to={linkedin} isExternal>
-				<IconButton
-					variant="socialRound"
-					aria-label="LinkedIn"
-					icon={<FiLinkedin />}
-				/>
-			</Link>
+			{facebook && (
+				<Link as={RouterLink} to={facebook} isExternal>
+					<IconButton
+						variant="socialRound"
+						aria-label="Facebook"
+						icon={<FiFacebook />}
+					/>
+				</Link>
+			)}
+
+			{twitter && (
+				<Link as={RouterLink} to={twitter} isExternal>
+					<IconButton
+						variant="socialRound"
+						aria-label="Twitter"
+						icon={<FiTwitter />}
+					/>
+				</Link>
+			)}
+
+			{instagram && (
+				<Link as={RouterLink} to={instagram} isExternal>
+					<IconButton
+						variant="socialRound"
+						aria-label="Instagram"
+						icon={<FiInstagram />}
+					/>
+				</Link>
+			)}
+
+			{linkedin && (
+				<Link as={RouterLink} to={linkedin} isExternal>
+					<IconButton
+						variant="socialRound"
+						aria-label="LinkedIn"
+						icon={<FiLinkedin />}
+					/>
+				</Link>
+			)}
+
 			{website ? (
 				<Link as={RouterLink} to={website} isExternal>
 					<IconButton

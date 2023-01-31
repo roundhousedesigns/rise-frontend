@@ -74,7 +74,7 @@ export default function ProfileView({ profile }: Props): JSX.Element {
 						</Box>
 						<Box>
 							<SocialLinks
-								socials={profile.socials}
+								socials={profile.socials ? profile.socials : {}}
 								website={profile.website}
 							/>
 						</Box>

@@ -1,8 +1,8 @@
 export interface Socials {
-	twitter: string;
-	linkedin: string;
-	instagram: string;
-	facebook: string;
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
 }
 
 class User {
