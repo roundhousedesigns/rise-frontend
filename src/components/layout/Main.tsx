@@ -9,6 +9,9 @@ import Profile from '../../routes/Profile';
 import Settings from '../../routes/Settings';
 import Account from '../../routes/Account';
 
+// DEV
+import _devScratch from '../../routes/_devScratch';
+
 import { AuthContext } from '../../context/AuthContext';
 
 export default function Main() {
@@ -44,6 +47,9 @@ export default function Main() {
 					<Route path="/profile" element={<Profile />} />
 					<Route path="/account" element={<Account />} />
 					<Route path="/settings" element={<Settings />} />
+
+					{/* SCRATCHPAD */}
+					<Route path="/_scratch" element={<_devScratch />} />
 				</Routes>
 			</Container>
 		</Box>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
 	Card,
 	Button,
+	Code,
 	FormControl,
 	FormLabel,
 	Input,
@@ -52,7 +53,12 @@ export default function LoginView() {
 	return (
 		<Container>
 			<Heading size="lg">Please sign in.</Heading>
-			<Card p={4} my={8}>
+			<Code my={4}>
+				User: test
+				<br />
+				Pass: test
+			</Code>
+			<Card p={4} my={4}>
 				<form onSubmit={handleLoginSubmit}>
 					<FormControl isInvalid={!!errorMessage}>
 						<Input
