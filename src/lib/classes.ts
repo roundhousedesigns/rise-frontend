@@ -66,15 +66,15 @@ interface UserProfileParams {
 	pronouns?: string;
 	phone?: string;
 	bio?: string;
-	jobTitles?: string[];
-	socials?: Socials;
 	website?: string;
 	location?: string;
-	willTravel?: boolean;
 	resume?: string;
+	willTravel?: boolean;
+	jobTitles?: string[];
 	unions?: string[];
 	education?: string[];
 	media?: string[];
+	socials?: Socials;
 }
 
 /**
@@ -85,18 +85,18 @@ interface UserProfileParams {
  */
 class UserProfile extends User {
 	image?: string;
-	bio?: string;
 	pronouns?: string;
 	phone?: string;
-	unions?: string[];
-	jobTitles?: string[];
+	bio?: string;
 	website?: string;
 	location?: string;
-	willTravel?: boolean | null;
 	resume?: string;
-	socials?: Socials;
+	willTravel?: boolean | null;
+	jobTitles?: string[];
+	unions?: string[];
 	education?: string[];
 	media?: string[];
+	socials?: Socials;
 
 	constructor(params: UserProfileParams) {
 		super({
@@ -109,23 +109,23 @@ class UserProfile extends User {
 			this,
 			{
 				image: '',
-				bio: '',
 				pronouns: '',
 				phone: '',
-				unions: [],
-				jobTitles: [],
+				bio: '',
 				website: '',
 				location: '',
-				willTravel: null,
 				resume: '',
+				willTravel: null,
+				jobTitles: [],
+				unions: [],
+				education: [],
+				media: [],
 				socials: {
 					twitter: '',
 					linkedin: '',
 					instagram: '',
 					facebook: '',
 				},
-				education: [],
-				media: [],
 			},
 			params
 		);
@@ -150,27 +150,6 @@ class UserProfile extends User {
 	unionList(): string {
 		const { unions } = this;
 		return unions && unions.length ? unions.join(', ') : '';
-	}
-
-	/**
-	 * Generate a link to a social media profile.
-	 *
-	 * @param {string} network The social media network name.
-	 * @returns {string | undefined} The link to the social media profile.
-	 */
-	socialLink(network: string): string | undefined {
-		const socialLinkBases: Socials = {
-			twitter: 'https://twitter.com/',
-			linkedin: 'https://www.linkedin.com/in/',
-			instagram: 'https://www.instagram.com/',
-			facebook: '',
-		};
-
-		if (!(network in socialLinkBases)) {
-			return;
-		}
-
-		return socialLinkBases[network] + this.socials?.[network];
 	}
 }
 
