@@ -33,6 +33,7 @@ export const _devProfileData = new UserProfile({
 	pronouns: 'he/him',
 	phone: '555-555-5555',
 	website: 'https://picsum.photos',
+	bio: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
 	location: 'Los Angeles, CA',
 	media: ['https://www.youtube.com/watch?v=arZRYbtb20M'],
 	resume: 'https://picsum.photos',

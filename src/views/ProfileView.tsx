@@ -61,13 +61,7 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
 					)}
 
-					<Stack
-						direction='column'
-						textAlign='left'
-						justifyContent='flex-start'
-						gap={1}
-						lineHeight={1}
-					>
+					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
 						<Flex alignItems='center'>
 							<Heading size='xl' mr={2}>
 								{profile.name}
@@ -77,13 +71,13 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 							</Tag>
 						</Flex>
 						<Box>
-							<Text fontSize='xl' lineHeight='short'>
+							<Text fontSize='xl' lineHeight='short' my={0}>
 								{profile.selfTitle && profile.selfTitle}
 							</Text>
 						</Box>
 
 						{profile.socials && !isEmpty(profile.socials) && (
-							<Box>
+							<Box pb={3}>
 								<SocialLinks socials={profile.socials} website={profile.website} />
 							</Box>
 						)}
@@ -107,7 +101,13 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 								</Stack>
 							</Box>
 						</Stack>
-						<ButtonGroup colorScheme='blue' flexWrap='wrap' gap={2} justifyContent='flex-start'>
+						<ButtonGroup
+							colorScheme='blue'
+							flexWrap='wrap'
+							gap={2}
+							justifyContent='flex-start'
+							pt={2}
+						>
 							<Button>Resume{/* profile.resume */}</Button>
 							<Button>Email{/* profile.email */}</Button>
 							<Button>Phone{/* profile.phone */}</Button>

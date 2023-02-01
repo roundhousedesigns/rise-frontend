@@ -66,31 +66,7 @@ export class UserProfile extends User {
 			name: params.name,
 		});
 
-		Object.assign(
-			this,
-			{
-				selfTitle: '',
-				email: '',
-				image: '',
-				pronouns: '',
-				phone: '',
-				bio: '',
-				website: '',
-				location: '',
-				resume: '',
-				willTravel: null,
-				unions: [],
-				education: [],
-				media: [],
-				socials: {
-					twitter: '',
-					linkedin: '',
-					instagram: '',
-					facebook: '',
-				},
-			},
-			params
-		);
+		Object.assign(this, params);
 	}
 }
 
