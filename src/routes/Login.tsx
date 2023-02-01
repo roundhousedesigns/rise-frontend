@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AuthContext } from '../context/AuthContext';
@@ -6,7 +6,7 @@ import Page from '../components/common/Page';
 import LoginView from '../views/LoginView';
 
 export default function Login() {
-	const { loggedInUser } = React.useContext(AuthContext);
+	const { loggedInUser } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	/**

@@ -1,4 +1,3 @@
-import React from 'react';
 import { List, ListItem, Text } from '@chakra-ui/react';
 
 interface Props {

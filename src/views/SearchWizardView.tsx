@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormControl, Button } from '@chakra-ui/react';
 
 import SearchFilter from '../components/common/SearchFilter';

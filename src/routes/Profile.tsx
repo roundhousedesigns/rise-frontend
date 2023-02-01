@@ -1,4 +1,3 @@
-import React from 'react';
 import Page from '../components/common/Page';
 import ProfileView from '../views/ProfileView';
 

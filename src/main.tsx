@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
@@ -9,22 +9,13 @@ import theme from './theme/index';
 
 import App from './App';
 
-import {
-	ApolloClient,
-	InMemoryCache,
-	ApolloProvider,
-	createHttpLink,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(
-	document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const backend = import.meta.env.VITE_BACKEND_URL
-	? import.meta.env.VITE_BACKEND_URL
-	: '';
+const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
 
 import { AuthContextProvider } from './context/AuthContext';
 
@@ -42,7 +33,7 @@ const client = new ApolloClient({
 });
 
 root.render(
-	<React.StrictMode>
+	<StrictMode>
 		<BrowserRouter>
 			<ApolloProvider client={client}>
 				<ChakraProvider resetCSS={true} theme={theme}>
@@ -53,7 +44,7 @@ root.render(
 				</ChakraProvider>
 			</ApolloProvider>
 		</BrowserRouter>
-	</React.StrictMode>
+	</StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
