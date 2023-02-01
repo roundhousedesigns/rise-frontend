@@ -1,28 +1,23 @@
 import React, { Key } from 'react';
-import { List, ListItem } from '@chakra-ui/react';
+import { List, ListItem, Text } from '@chakra-ui/react';
 
-import Candidate from './common/Candidate';
-import { simpleWordsArray } from '../lib/_devData';
+import CandidateItem from './common/CandidateItem';
+import { Candidate } from '../lib/classes';
 
-// TODO This will either take a prop containing a collection of Crew Members,
-// or it will access it from a store.
-//
-// For now, it just shoots blanks.
-export default function CandidateList() {
-	return (
-		<List
-			alignItems="left"
-			height="auto"
-			width="full"
-			gap={4}
-			display="flex"
-			flexWrap="wrap"
-		>
-			{simpleWordsArray(5, 2).map((i: string, index: Key) => (
-				<ListItem key={index} width="full">
-					<Candidate item={i} />
+interface Props {
+	candidates: Candidate[];
+}
+
+export default function CandidateList({ candidates }: Props): JSX.Element {
+	return candidates ? (
+		<List alignItems='left' height='auto' width='full' gap={4} display='flex' flexWrap='wrap'>
+			{candidates.map((candidate: Candidate, index: Key) => (
+				<ListItem key={index} width='full'>
+					<CandidateItem candidate={candidate} />
 				</ListItem>
 			))}
 		</List>
+	) : (
+		<Text>No candidates to show.</Text>
 	);
 }

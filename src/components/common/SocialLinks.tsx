@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Stack, IconButton, Link } from '@chakra-ui/react';
 import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
-import { Socials } from '../../lib/classes';
+import { Socials } from '../../lib/types';
 import { socialLink } from '../../lib/utils';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (
 	<Link href={socialLink(name, value)} isExternal>
-		<IconButton variant="socialRound" aria-label={label} icon={icon} />
+		<IconButton variant='socialRound' aria-label={label} icon={icon} />
 	</Link>
 );
 
@@ -28,7 +28,7 @@ export default function SocialLinks({ socials, website }: Props): JSX.Element {
 	const { facebook, twitter, instagram, linkedin } = socials;
 
 	return (
-		<Stack direction="row" spacing={4}>
+		<Stack direction='row' spacing={4}>
 			{linkedin && socialIcon('LinkedIn', 'linkedin', linkedin, <FiLinkedin />)}
 			{facebook && socialIcon('Facebook', 'facebook', facebook, <FiFacebook />)}
 			{twitter && socialIcon('Twitter', 'twitter', twitter, <FiTwitter />)}
@@ -36,7 +36,7 @@ export default function SocialLinks({ socials, website }: Props): JSX.Element {
 
 			{website ? (
 				<Link href={website} isExternal>
-					<IconButton variant="socialRound" aria-label="Personal website" icon={<FiGlobe />} />
+					<IconButton variant='socialRound' aria-label='Personal website' icon={<FiGlobe />} />
 				</Link>
 			) : null}
 		</Stack>

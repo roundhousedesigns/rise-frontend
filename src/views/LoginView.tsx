@@ -15,18 +15,18 @@ import {
 
 import { AuthContext } from '../context/AuthContext';
 
-import { useLoginWithCookies } from '../hooks/mutations/useLoginWithCookies';
+import { useLoginMutation } from '../hooks/mutations/useLoginMutation';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	const { setUserIsLoggedIn } = useContext(AuthContext);
+	const { setLoggedInUser } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const [credentials, setCredentials] = useState({
 		login: '',
 		password: '',
 	});
 	const [errorCode, setErrorCode] = useState('');
-	const { loginMutation } = useLoginWithCookies();
+	const { loginMutation } = useLoginMutation();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -42,8 +42,14 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
-				if ('SUCCESS' === results.data.loginWithCookies.status) {
-					setUserIsLoggedIn(true);
+				const {
+					data: {
+						login: { id, status },
+					},
+				} = results;
+
+				if ('SUCCESS' === status) {
+					setLoggedInUser(id);
 					navigate('/');
 				}
 			})
@@ -52,37 +58,35 @@ export default function LoginView() {
 
 	return (
 		<Container>
-			<Heading size="lg">Please sign in.</Heading>
-			<Code my={4}>
-				User: test
-				<br />
-				Pass: test
+			<Heading size='lg'>Please sign in.</Heading>
+			<Code my={4} colorScheme='yellow'>
+				<strong>User:</strong>test &bull; <strong>Pass:</strong> test
 			</Code>
 			<Card p={4} my={4}>
 				<form onSubmit={handleLoginSubmit}>
 					<FormControl isInvalid={!!errorMessage}>
 						<Input
-							name="login"
-							id="login"
-							type="text"
-							variant="filled"
-							bg="white"
+							name='login'
+							id='login'
+							type='text'
+							variant='filled'
+							bg='white'
 							isRequired
 							onChange={handleInputChange}
 						/>
-						<FormLabel htmlFor="login">Username or Email</FormLabel>
+						<FormLabel htmlFor='login'>Username or Email</FormLabel>
 						<Input
-							name="password"
-							id="password"
-							type="password"
-							variant="filled"
-							bg="white"
+							name='password'
+							id='password'
+							type='password'
+							variant='filled'
+							bg='white'
 							isRequired
 							onChange={handleInputChange}
 						/>
-						<FormLabel htmlFor="password">Password</FormLabel>
-						<Flex gap={6} alignItems="center" mt={6}>
-							<Button type="submit" colorScheme="gray">
+						<FormLabel htmlFor='password'>Password</FormLabel>
+						<Flex gap={6} alignItems='center' mt={6}>
+							<Button type='submit' colorScheme='blue'>
 								Submit
 							</Button>
 							<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>

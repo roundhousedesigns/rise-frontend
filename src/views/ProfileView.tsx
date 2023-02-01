@@ -33,9 +33,18 @@ interface Props {
 export default function ProfileView({ profile, credits }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
+	/**
+	 * Generate the text to display for the 'will travel' field.
+	 * @returns {string} The text to display.
+	 */
+	const willTravelText = (): string => {
+		const str = 'Willing to travel';
+		return profile.willTravel ? str : `Not ${str.toLowerCase()}`;
+	};
+
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<Card py={6} bg='blackAlpha.100' mb={2}>
+			<Card py={6} bg='blackAlpha.100'>
 				<Flex
 					gap={5}
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -52,7 +61,13 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
 					)}
 
-					<Stack direction='column' textAlign='left' justifyContent='center' h='full'>
+					<Stack
+						direction='column'
+						textAlign='left'
+						justifyContent='flex-start'
+						gap={1}
+						lineHeight={1}
+					>
 						<Flex alignItems='center'>
 							<Heading size='xl' mr={2}>
 								{profile.name}
@@ -62,29 +77,36 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 							</Tag>
 						</Flex>
 						<Box>
-							<Text fontSize='xl' lineHeight='short' margin={0}>
-								{profile.jobList()}
+							<Text fontSize='xl' lineHeight='short'>
+								{profile.selfTitle && profile.selfTitle}
 							</Text>
 						</Box>
 
 						{profile.socials && !isEmpty(profile.socials) && (
-							<Box pt={1} pb={4}>
+							<Box>
 								<SocialLinks socials={profile.socials} website={profile.website} />
 							</Box>
 						)}
 
 						<Box>
 							<Heading size='md'>Unions/Guilds</Heading>
-							<Text>{profile.unionList()}</Text>
+							<Text>{profile.unions?.join(', ')}</Text>
 						</Box>
-						<Box>
-							<Heading size='md'>Location/Homebase</Heading>
-							<Text>{profile.location}</Text>
-						</Box>
-						<Box>
-							<Heading size='md'>Willing to travel</Heading>
-							<Text>{profile.willTravel}</Text>
-						</Box>
+						<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
+							<Box w='auto'>
+								<Heading size='md'>Location/Homebase</Heading>
+								<Stack direction='row' justifyContent='flex-start' alignItems='center'>
+									<Text my={1} flex='1' mr={2}>
+										{profile.location}
+									</Text>
+									{profile.willTravel !== undefined && (
+										<Tag size='md' colorScheme={profile.willTravel ? 'green' : 'orange'}>
+											{willTravelText()}
+										</Tag>
+									)}
+								</Stack>
+							</Box>
+						</Stack>
 						<ButtonGroup colorScheme='blue' flexWrap='wrap' gap={2} justifyContent='flex-start'>
 							<Button>Resume{/* profile.resume */}</Button>
 							<Button>Email{/* profile.email */}</Button>

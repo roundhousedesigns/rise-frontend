@@ -8,7 +8,7 @@ export const QUERY_USERS = gql`
 	query UsersTest {
 		users(where: { role: CREW_MEMBER }) {
 			nodes {
-				id
+				databaseId
 				firstName
 				lastName
 				pronouns

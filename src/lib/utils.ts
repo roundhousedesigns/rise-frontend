@@ -2,7 +2,7 @@
  * Utilities.
  */
 
-import { Socials } from './classes';
+import { Socials } from './types';
 
 /** Generate a link to a social media profile.
  *

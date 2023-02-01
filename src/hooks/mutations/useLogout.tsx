@@ -20,7 +20,7 @@ export const useLogout = () => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'loginWithCookiesMutation',
+					clientMutationId: 'loginMutation',
 				},
 			},
 		});

@@ -17,7 +17,7 @@ import SearchList from '../common/SearchList';
 import WidgetAccordionItem from '../common/WidgetAccordionItem';
 
 // TODO: Remove this when we have real data
-import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
+import { _devSavedSearches, _devRecentSearches, _devSavedCandidates } from '../../lib/_devData';
 
 interface Props {
 	isOpen: boolean;
@@ -26,45 +26,41 @@ interface Props {
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement="left" size="sm">
+		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='sm'>
 			<DrawerOverlay />
 			<DrawerContent>
 				<DrawerHeader
-					borderBottomWidth="1px"
-					fontSize="2xl"
+					borderBottomWidth='1px'
+					fontSize='2xl'
 					py={6}
-					bg="blackAlpha.800"
-					color="whiteAlpha.900"
-					borderBottom="2px solid pink"
+					bg='blackAlpha.800'
+					color='whiteAlpha.900'
+					borderBottom='2px solid pink'
 				>
-					<Stack
-						direction="row"
-						justifyContent="space-between"
-						alignItems="center"
-					>
-						<Heading size="lg" color="white">
+					<Stack direction='row' justifyContent='space-between' alignItems='center'>
+						<Heading size='lg' color='white'>
 							HEADING
 						</Heading>
 						<IconButton
 							icon={<FiX />}
-							color="white"
-							aria-label="Close"
-							fontSize="1.4em"
+							color='white'
+							aria-label='Close'
+							fontSize='1.4em'
 							onClick={onClose}
-							variant="invisible"
+							variant='invisible'
 						/>
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
-					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload tho) */}
+					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}
 					<Accordion allowMultiple={true}>
-						<WidgetAccordionItem heading="Saved Candidates">
-							<CandidateList />
+						<WidgetAccordionItem heading='Saved Candidates'>
+							<CandidateList candidates={_devSavedCandidates} />
 						</WidgetAccordionItem>
-						<WidgetAccordionItem heading="Saved Searches">
+						<WidgetAccordionItem heading='Saved Searches'>
 							<SearchList items={_devSavedSearches} />
 						</WidgetAccordionItem>
-						<WidgetAccordionItem heading="Recent Searches">
+						<WidgetAccordionItem heading='Recent Searches'>
 							<SearchList items={_devRecentSearches} />
 						</WidgetAccordionItem>
 					</Accordion>

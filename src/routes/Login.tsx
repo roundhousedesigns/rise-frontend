@@ -6,20 +6,20 @@ import Page from '../components/common/Page';
 import LoginView from '../views/LoginView';
 
 export default function Login() {
-	const { userIsLoggedIn } = React.useContext(AuthContext);
+	const { loggedInUser } = React.useContext(AuthContext);
 	const navigate = useNavigate();
 
 	/**
 	 * Check for changes in login status and redirect to login page if user is not logged in.
 	 */
 	useEffect(() => {
-		if (userIsLoggedIn === true) {
+		if (loggedInUser) {
 			navigate('/');
 		}
-	}, [userIsLoggedIn]);
+	}, [loggedInUser]);
 
 	return (
-		<Page title="Welcome">
+		<Page title='Welcome'>
 			<LoginView />
 		</Page>
 	);

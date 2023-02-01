@@ -20,72 +20,49 @@ import Drawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
 
 export default function Header() {
-	const {
-		isOpen: drawerIsOpen,
-		onOpen: drawerOnOpen,
-		onClose: drawerOnClose,
-	} = useDisclosure();
+	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const btnRef = useRef();
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
-	const { setUserIsLoggedIn } = useContext(AuthContext);
+	const { setLoggedInUser } = useContext(AuthContext);
 	const { logoutMutation } = useLogout();
 
 	const handleLogout = () => {
-		logoutMutation().then(() => setUserIsLoggedIn(false));
+		logoutMutation().then(() => setLoggedInUser(0));
 	};
 
 	return (
-		<Box flex="0 0 auto" w="full">
+		<Box flex='0 0 auto' w='full'>
 			<LightMode>
-				<Box
-					id="header"
-					w="full"
-					bg="black"
-					py={3}
-					align="center"
-					color="white"
-				>
-					<Container centerContent w="full" maxWidth="9xl">
-						<Stack
-							direction="row"
-							w="100%"
-							justifyContent="space-between"
-							align="center"
-							flexWrap
-						>
+				<Box id='header' w='full' bg='black' py={3} align='center' color='white'>
+					<Container centerContent w='full' maxWidth='9xl'>
+						<Stack direction='row' w='100%' justifyContent='space-between' align='center' flexWrap>
 							<IconButton
 								ref={btnRef}
 								icon={<FiMoreHorizontal />}
-								aria-label="Search for candidates"
-								variant="invisible"
-								fontSize="3xl"
+								aria-label='Search for candidates'
+								variant='invisible'
+								fontSize='3xl'
 								onClick={drawerOnOpen}
 							/>
-							<Link as={RouterLink} to="/">
-								<Image
-									src={logo}
-									alt="Get To Work logo"
-									loading="eager"
-									w="auto"
-									h="40px"
-								/>
+							<Link as={RouterLink} to='/'>
+								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
 							</Link>
 							{isLargerThan768 ? (
 								<>
 									<Spacer />
 									<Stack
-										direction="row"
+										direction='row'
 										spacing={4}
 										mr={6}
-										align="center"
-										fontSize="lg"
-										textTransform="uppercase"
+										align='center'
+										fontSize='lg'
+										textTransform='uppercase'
 									>
-										<Link as={RouterLink} to="/search">
+										<Link as={RouterLink} to='/search'>
 											Search
 										</Link>
-										<Link as={RouterLink} to="/profile">
+										<Link as={RouterLink} to='/profile'>
 											My Profile
 										</Link>
 									</Stack>
@@ -93,9 +70,9 @@ export default function Header() {
 							) : null}
 
 							<IconButton
-								variant="round"
-								borderColor="white"
-								aria-label="Log out"
+								variant='round'
+								borderColor='white'
+								aria-label='Log out'
 								icon={<FiLogOut />}
 								onClick={handleLogout}
 							/>

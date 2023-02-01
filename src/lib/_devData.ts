@@ -3,7 +3,7 @@
  */
 
 import Chance from 'chance';
-import { UserProfile, Credit } from './classes';
+import { UserProfile, Credit, Candidate } from './classes';
 
 /**
  * Generate a one-d dummy data array of random nonsense words.
@@ -27,6 +27,7 @@ export const _devSavedSearches = ['Saved search one', 'Saved search two', 'Saved
 export const _devProfileData = new UserProfile({
 	id: '12345',
 	name: 'Bob Bobbson',
+	selfTitle: 'One Awesome Carpenter',
 	email: 'bob@bobbson.com',
 	image: 'https://picsum.photos/300/400',
 	pronouns: 'he/him',
@@ -36,7 +37,6 @@ export const _devProfileData = new UserProfile({
 	media: ['https://www.youtube.com/watch?v=arZRYbtb20M'],
 	resume: 'https://picsum.photos',
 	willTravel: true,
-	jobTitles: ['Stage Manager', 'Assistant Stage Manager', 'Production Manager'],
 	unions: ['IATSE', 'SAG-AFTRA'],
 	education: ['MFA - Some Cool School', 'BA - Some Other Cool School'],
 	socials: {
@@ -57,8 +57,21 @@ export const _devCreditsData = [
 	new Credit({ title: 'A Sad Tale', jobTitle: 'Peon', venue: 'The Dumps', year: '2020' }),
 	new Credit({
 		title: 'Future Me: A Retrospective',
-		jobTitle: 'Everywhen',
+		jobTitle: 'Head Electrician',
 		venue: 'The Universe',
 		year: 'Unknowable',
+	}),
+];
+
+export const _devSavedCandidates = [
+	new Candidate({
+		id: '23456',
+		name: 'Jim Jimmson',
+		selfTitle: 'Head Cheesemaker',
+	}),
+	new Candidate({
+		id: '34567',
+		name: 'Sally Sallyberries',
+		selfTitle: 'Headcheese Maker',
 	}),
 ];

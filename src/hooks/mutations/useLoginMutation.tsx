@@ -5,18 +5,17 @@
 import { gql, useMutation } from '@apollo/client';
 
 const MUTATE_LOGIN = gql`
-	mutation loginWithCookies(
-		$input: LoginWithCookiesInput = { login: "", password: "" }
-	) {
-		loginWithCookies(input: $input) {
+	mutation LoginUser($input: LoginInput = { login: "", password: "" }) {
+		login(input: $input) {
 			clientMutationId
+			id
 			status
 		}
 	}
 `;
 
-export const useLoginWithCookies = () => {
-	const [mutation, mutationResults] = useMutation(MUTATE_LOGIN);
+export const useLoginMutation = () => {
+	const [mutation, results] = useMutation(MUTATE_LOGIN);
 
 	interface loginInput {
 		login: string;
@@ -27,7 +26,7 @@ export const useLoginWithCookies = () => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'loginWithCookiesMutation',
+					clientMutationId: 'loginMutation',
 					login: login,
 					password: password,
 				},
@@ -35,5 +34,5 @@ export const useLoginWithCookies = () => {
 		});
 	};
 
-	return { loginMutation, results: mutationResults };
+	return { loginMutation, results };
 };
