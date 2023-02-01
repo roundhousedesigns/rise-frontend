@@ -1,3 +1,9 @@
+interface UserParams {
+	id: string;
+	name: string;
+	email: string;
+}
+
 /**
  * A basic user.
  *
@@ -12,7 +18,7 @@ class User {
 	name: string;
 	email: string;
 
-	constructor(params: { id: string; name: string; email: string }) {
+	constructor(params: UserParams) {
 		this.id = params.id;
 		this.name = params.name;
 		this.email = params.email;
@@ -153,9 +159,35 @@ class UserProfile extends User {
 	}
 }
 
+interface CreditParams {
+	title: string;
+	jobTitle: string;
+	venue: string;
+	year: string;
+}
+
+/**
+ * A production credit.
+ * @param {CreditParams} params
+ * @property {string} title
+ * @property {string} jobTitle
+ * @property {string} venue
+ * @property {string} year
+ */
+class Credit {
+	title: string = '';
+	jobTitle: string = '';
+	venue: string = '';
+	year: string = '';
+
+	constructor(params: CreditParams) {
+		Object.assign(this, params);
+	}
+}
+
 // TODO build Search class
 class Search {
 	constructor(...params: any[]) {}
 }
 
-export { User, UserProfile, Search };
+export { User, UserProfile, Credit, Search };
