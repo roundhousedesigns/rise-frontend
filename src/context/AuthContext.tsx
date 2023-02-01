@@ -1,6 +1,5 @@
 import { createContext } from 'react';
 import { useLocalStorage } from '../hooks/hooks';
-import { User } from '../lib/classes';
 
 export const AuthContext = createContext({
 	loggedInUser: 0,

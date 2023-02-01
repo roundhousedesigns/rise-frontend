@@ -1,7 +1,6 @@
 import React from 'react';
 import { Avatar, Text, Stack } from '@chakra-ui/react';
 import { Candidate } from '../../lib/classes';
-import { identity } from 'lodash';
 
 interface Props {
 	candidate: Candidate;

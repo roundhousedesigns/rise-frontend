@@ -12,8 +12,6 @@ import Account from '../../routes/Account';
 // DEV
 import _devScratch from '../../routes/_devScratch';
 
-import { AuthContext } from '../../context/AuthContext';
-
 export default function Main() {
 	return (
 		<Box

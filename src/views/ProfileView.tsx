@@ -117,7 +117,7 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 				</Flex>
 			</Card>
 
-			{credits && credits.length && (
+			{credits && credits.length > 0 && (
 				// MAYBE click-to-expand more Credit details?
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
@@ -152,7 +152,7 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 				</Box>
 			)}
 
-			{profile.media && profile.media.length && (
+			{profile.media && profile.media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<List mt={4}>

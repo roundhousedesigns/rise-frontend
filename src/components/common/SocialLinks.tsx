@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Stack, IconButton, Link } from '@chakra-ui/react';
 import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
 import { Socials } from '../../lib/types';
