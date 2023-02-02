@@ -1,9 +1,9 @@
 # Frontend TODO
 
-## Trivial
-- Favicon (index.html)
+## TODO
+- [] Implement `getLoggedInUserQuery`
 
-## Mastering
+## Production
 - Improve chunking:
 	- (!) Some chunks are larger than 500 kBs after minification. Consider:
   	- Using dynamic import() to code-split the application
@@ -17,7 +17,5 @@
   - No Candidates saved, but saved/recent present
     - Search view
 
-## Scratch
-- global override: <Select /> should have cursor: pointer maybe?
-- find out if there's an extension for VSCode that's like a notepad for underneath the file list on the left
--
+## Trivial
+- Favicon (index.html)

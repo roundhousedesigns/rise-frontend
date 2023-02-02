@@ -1,5 +1,4 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { SetStateAction, useContext, useState } from 'react';
 import {
 	Card,
 	Button,
@@ -15,18 +14,17 @@ import {
 
 import { AuthContext } from '../context/AuthContext';
 
-import { useLoginMutation } from '../hooks/mutations/useLoginMutation';
+import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	const { setLoggedInUser } = useContext(AuthContext);
-	const navigate = useNavigate();
+	const { setUserIsLoggedIn } = useContext(AuthContext);
 	const [credentials, setCredentials] = useState({
 		login: '',
 		password: '',
 	});
 	const [errorCode, setErrorCode] = useState('');
-	const { loginMutation } = useLoginMutation();
+	const { loginMutation } = useLogin();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -42,18 +40,12 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
-				const {
-					data: {
-						login: { id, status },
-					},
-				} = results;
-
-				if ('SUCCESS' === status) {
-					setLoggedInUser(id);
-					navigate('/');
+				if ('SUCCESS' === results.data.loginWithCookies.status) {
+					setUserIsLoggedIn(true);
 				}
 			})
-			.catch((errors) => setErrorCode(errors.message));
+			// TODO check if SetStateAction<string> is the correct type
+			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 	};
 
 	return (

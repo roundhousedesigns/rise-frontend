@@ -24,11 +24,13 @@ export default function Header() {
 	const btnRef = useRef();
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
-	const { setLoggedInUser } = useContext(AuthContext);
+	const { setUserIsLoggedIn } = useContext(AuthContext);
 	const { logoutMutation } = useLogout();
 
 	const handleLogout = () => {
-		logoutMutation().then(() => setLoggedInUser(0));
+		logoutMutation().then(() => {
+			setUserIsLoggedIn(false);
+		});
 	};
 
 	return (
@@ -59,6 +61,9 @@ export default function Header() {
 										fontSize='lg'
 										textTransform='uppercase'
 									>
+										<Link as={RouterLink} to='/_scratch'>
+											_Scratch
+										</Link>
 										<Link as={RouterLink} to='/search'>
 											Search
 										</Link>

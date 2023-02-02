@@ -59,8 +59,6 @@ export function useLoginError(errorCode?: string): string {
 
 	var message = '';
 
-	console.info('errorCode', errorCode);
-
 	switch (errorCode) {
 		case 'invalid_username':
 		case 'invalid_email':
