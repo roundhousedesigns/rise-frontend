@@ -23,3 +23,14 @@ export const socialLink = (network: string, value: string): string => {
 
 	return socialLinkBases[network] + value;
 };
+
+/**
+ * Generate a full name from a first and last name.
+ *
+ * @param {string} firstName The first name.
+ * @param {string} lastName The last name.
+ * @returns {string} The full name.
+ */
+export function fullName(firstName: string, lastName: string): string {
+	return `${firstName} ${lastName}`;
+}

@@ -4,7 +4,7 @@
 
 import { gql, useQuery } from '@apollo/client';
 
-export const QUERY_USERS = gql`
+const QUERY_USERS = gql`
 	query UsersTest {
 		users(where: { role: CREW_MEMBER }) {
 			nodes {

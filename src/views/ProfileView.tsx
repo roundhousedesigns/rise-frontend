@@ -41,6 +41,8 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 		return profile.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
 
+	console.info(profile.media);
+
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<Card py={6} bg='blackAlpha.100'>
@@ -55,6 +57,7 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 							alt={`${profile.name}'s picture`}
 							loading='eager'
 							fit='cover'
+							w='xs'
 						/>
 					) : (
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
@@ -75,9 +78,9 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 							</Text>
 						</Box>
 
-						{profile.socials && !isEmpty(profile.socials) && (
+						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.url)) && (
 							<Box pb={3}>
-								<SocialLinks socials={profile.socials} website={profile.website} />
+								<SocialLinks socials={profile.socials} url={profile.url} />
 							</Box>
 						)}
 
@@ -133,10 +136,10 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 				</Box>
 			)}
 
-			{profile.bio && (
+			{profile.description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{profile.bio}</Text>
+					<Text>{profile.description}</Text>
 				</Box>
 			)}
 
@@ -154,13 +157,13 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 			{profile.media && profile.media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<List mt={4}>
+					<Flex mt={4} w='full' flexWrap='wrap'>
 						{profile.media.map((item: string, index: React.Key) => (
-							<ListItem key={index}>
+							<Box flex='1 1 33%' key={index}>
 								<ReactPlayer url={item} controls={true} />
-							</ListItem>
+							</Box>
 						))}
-					</List>
+					</Flex>
 				</Box>
 			)}
 		</Stack>

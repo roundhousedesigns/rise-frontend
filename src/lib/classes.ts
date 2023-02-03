@@ -1,3 +1,4 @@
+import { asyncMap } from '@apollo/client/utilities';
 import { UserParams, CandidateData, UserProfileParams, CreditParams, Socials } from './types';
 
 /**
@@ -5,17 +6,15 @@ import { UserParams, CandidateData, UserProfileParams, CreditParams, Socials } f
  *
  * @class User
  * @param {Object} params
- * @property {string} id
- * @property {string} name
  * @implements {UserParams}
  */
 export class User {
-	id: string;
-	name: string;
+	id: Number = 0;
+	firstName: string = '';
+	lastName: string = '';
 
 	constructor(params: UserParams) {
-		this.id = params.id;
-		this.name = params.name;
+		Object.assign(this, params);
 	}
 }
 
@@ -26,12 +25,14 @@ export class User {
  * @implements {CandidateData}
  */
 export class Candidate extends User {
-	selfTitle: string = '';
+	fullName: string = '';
+	selfTitle?: string;
 
 	constructor(params: CandidateData) {
 		super({
 			id: params.id,
-			name: params.name,
+			firstName: params.firstName,
+			lastName: params.lastName,
 		});
 
 		Object.assign(this, params);
@@ -45,28 +46,40 @@ export class Candidate extends User {
  * @implements {Socials}
  */
 export class UserProfile extends User {
+	name: string = '';
 	selfTitle?: string;
 	email?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;
-	bio?: string;
-	website?: string;
+	description?: string;
+	url?: string;
 	location?: string;
 	resume?: string;
 	willTravel?: boolean | null;
-	unions?: string[];
 	education?: string[];
+	unions?: string[];
 	media?: string[];
 	socials?: Socials;
 
 	constructor(params: UserProfileParams) {
 		super({
 			id: params.id,
-			name: params.name,
+			firstName: params.firstName,
+			lastName: params.lastName,
 		});
 
-		Object.assign(this, params);
+		Object.assign(this, params, {
+			name: `${params.firstName} ${params.lastName}`,
+			// Set the image to the imageConnection node link if it exists, otherwise use the image param.
+			image: params.image
+				? params.image
+				: params.imageConnection?.node.mediaItemUrl
+				? params.imageConnection.node.mediaItemUrl
+				: '',
+			education: params.education ? params.education.split('|') : [],
+			media: params.media ? params.media.split('|') : [],
+		});
 	}
 }
 
@@ -87,6 +100,6 @@ export class Credit {
 }
 
 // TODO build Search class
-class Search {
-	constructor(...params: any[]) {}
-}
+// class Search {
+// 	constructor(...params: any[]) {}
+// }

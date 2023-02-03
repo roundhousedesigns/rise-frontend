@@ -6,7 +6,7 @@ import { socialLink } from '../../lib/utils';
 
 interface Props {
 	socials: Socials;
-	website?: string;
+	url?: string;
 }
 
 /**
@@ -24,7 +24,7 @@ const socialIcon = (label: string, name: string, value: string, icon: React.Reac
 	</Link>
 );
 
-export default function SocialLinks({ socials, website }: Props): JSX.Element {
+export default function SocialLinks({ socials, url }: Props): JSX.Element {
 	const { facebook, twitter, instagram, linkedin } = socials;
 
 	return (
@@ -34,9 +34,9 @@ export default function SocialLinks({ socials, website }: Props): JSX.Element {
 			{twitter && socialIcon('Twitter', 'twitter', twitter, <FiTwitter />)}
 			{instagram && socialIcon('Instagram', 'instagram', instagram, <FiInstagram />)}
 
-			{website ? (
-				<Link href={website} isExternal>
-					<IconButton variant='socialRound' aria-label='Personal website' icon={<FiGlobe />} />
+			{url ? (
+				<Link href={url} isExternal>
+					<IconButton variant='socialRound' aria-label='Personal url' icon={<FiGlobe />} />
 				</Link>
 			) : null}
 		</Stack>

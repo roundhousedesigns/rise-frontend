@@ -24,12 +24,12 @@ export default function Header() {
 	const btnRef = useRef();
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
-	const { setUserIsLoggedIn } = useContext(AuthContext);
+	const { setLoggedInUser } = useContext(AuthContext);
 	const { logoutMutation } = useLogout();
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
-			setUserIsLoggedIn(false);
+			setLoggedInUser('');
 		});
 	};
 

@@ -10,13 +10,13 @@ import { AuthContext } from './context/AuthContext';
 import LoginView from './views/LoginView';
 
 export default function App() {
-	const { userIsLoggedIn } = useContext(AuthContext);
+	const { loggedInUser } = useContext(AuthContext);
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{userIsLoggedIn ? (
+				{loggedInUser !== '' && loggedInUser !== '0' ? (
 					<>
 						<Header />
 						<Main />

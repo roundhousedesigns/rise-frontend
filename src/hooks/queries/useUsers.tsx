@@ -4,7 +4,7 @@
 
 import { gql, useQuery } from "@apollo/client";
 
-export const QUERY_USERS = gql`
+const QUERY_USERS = gql`
 	query QueryUsersByRole($role: UserRoleEnum = ADMINISTRATOR) {
 		users(where: { role: $role }) {
 			nodes {

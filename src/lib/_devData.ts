@@ -25,21 +25,22 @@ export const _devRecentSearches = ['Recent search one', 'Recent search two', 'Re
 export const _devSavedSearches = ['Saved search one', 'Saved search two', 'Saved search three'];
 
 export const _devProfileData = new UserProfile({
-	id: '12345',
-	name: 'Bob Bobbson',
+	id: 27846,
+	firstName: 'Bob',
+	lastName: 'Bobbson',
 	selfTitle: 'One Awesome Carpenter',
 	email: 'bob@bobbson.com',
 	image: 'https://picsum.photos/300/400',
 	pronouns: 'he/him',
 	phone: '555-555-5555',
-	website: 'https://picsum.photos',
-	bio: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
+	url: 'https://picsum.photos',
+	description: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
 	location: 'Los Angeles, CA',
-	media: ['https://www.youtube.com/watch?v=arZRYbtb20M'],
+	media: 'https://www.youtube.com/watch?v=arZRYbtb20M',
 	resume: 'https://picsum.photos',
 	willTravel: true,
 	unions: ['IATSE', 'SAG-AFTRA'],
-	education: ['MFA - Some Cool School', 'BA - Some Other Cool School'],
+	education: 'MFA - Some Cool School|BA - Some Other Cool School',
 	socials: {
 		twitter: 'bob_bobbson',
 		linkedin: 'bob-bobbson',
@@ -66,13 +67,15 @@ export const _devCreditsData = [
 
 export const _devSavedCandidates = [
 	new Candidate({
-		id: '23456',
-		name: 'Jim Jimmson',
+		id: 23456,
+		firstName: 'Jim',
+		lastName: 'Jimmson',
 		selfTitle: 'Head Cheesemaker',
 	}),
 	new Candidate({
-		id: '34567',
-		name: 'Sally Sallyberries',
+		id: 34567,
+		firstName: 'Sally',
+		lastName: 'Sallyberries',
 		selfTitle: 'Headcheese Maker',
 	}),
 ];

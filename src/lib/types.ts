@@ -2,16 +2,18 @@
  * The data shape for a User.
  */
 export interface UserParams {
-	[id: string]: string;
-	name: string;
+	id: Number;
+	firstName: string;
+	lastName: string;
 }
 
 /**
  * The data shape for a Candidate.
  */
 export interface CandidateData {
-	[id: string]: string;
-	name: string;
+	id: Number;
+	firstName: string;
+	lastName: string;
 	selfTitle: string;
 }
 
@@ -29,21 +31,25 @@ export interface Socials {
  * The data shape for a User Profile.
  */
 export interface UserProfileParams {
-	id: string;
-	name: string;
-	selfTitle: string;
+	id: Number;
+	firstName: string;
+	lastName: string;
+	selfTitle?: string;
 	email: string;
 	image?: string;
+	imageConnection?: {
+		[key: string]: any;
+	};
 	pronouns?: string;
 	phone?: string;
-	bio?: string;
-	website?: string;
+	description?: string;
+	url?: string;
 	location?: string;
 	resume?: string;
 	willTravel?: boolean;
+	education?: string;
+	media?: string;
 	unions?: string[];
-	education?: string[];
-	media?: string[];
 	socials?: Socials;
 }
 
@@ -55,4 +61,12 @@ export interface CreditParams {
 	jobTitle: string;
 	venue: string;
 	year: string;
+}
+
+/**
+ * The data shape for login input.
+ */
+export interface LoginInput {
+	login: string;
+	password: string;
 }

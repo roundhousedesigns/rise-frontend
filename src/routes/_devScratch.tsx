@@ -1,6 +1,7 @@
 import { Heading, Container, List, ListItem } from '@chakra-ui/react';
 import Page from '../components/common/Page';
 import { useTestUsers } from '../hooks/queries/useTestUsers';
+import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 /**
  *
@@ -9,20 +10,23 @@ import { useTestUsers } from '../hooks/queries/useTestUsers';
  */
 
 export default function _devScratch() {
-	const { data, loading, error } = useTestUsers();
+	// const { data, loading, error } = useTestUsers();
+	// const { data, loading, error } = useUserProfile();
 
-	if (loading) {
-		return <div>Loading...</div>;
-	}
+	// if (loading) {
+	// 	return <div>Loading...</div>;
+	// }
 
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
+	// if (error) {
+	// 	return <div>Error: {error.message}</div>;
+	// }
+
+	// console.log(data);
 
 	return (
-		<Page title="Scratch pad">
+		<Page title='Scratch pad'>
 			<Container>
-				<Heading size="lg">Users</Heading>
+				{/* <Heading size="lg">Users</Heading>
 				<List>
 					{data?.users?.nodes?.map(
 						(user: {
@@ -36,7 +40,9 @@ export default function _devScratch() {
 							>{`${user.firstName} ${user.lastName} (${user.pronouns})`}</ListItem>
 						)
 					)}
-				</List>
+				</List> */}
+
+				<Heading size='lg'>User ID: 2 (logged to console)</Heading>
 			</Container>
 		</Page>
 	);

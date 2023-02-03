@@ -1,12 +1,15 @@
 import { Avatar, Text, Stack } from '@chakra-ui/react';
 import { Candidate } from '../../lib/classes';
+import { fullName } from '../../lib/utils';
 
 interface Props {
 	candidate: Candidate;
 }
 
 export default function CandidateItem({ candidate }: Props) {
-	const { name, selfTitle } = candidate;
+	const { firstName, lastName, selfTitle } = candidate;
+
+	const name = fullName(firstName, lastName);
 
 	return (
 		<Stack

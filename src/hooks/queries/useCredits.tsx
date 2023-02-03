@@ -6,7 +6,7 @@
 
 import { gql, useQuery } from "@apollo/client";
 
-export const QUERY_CREDITS = gql`
+const QUERY_CREDITS = gql`
 	query CreditsQuery($postsPerPage: Int = 10) {
 		credits(first: $postsPerPage) {
 			nodes {

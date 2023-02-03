@@ -18,7 +18,7 @@ import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	const { setUserIsLoggedIn } = useContext(AuthContext);
+	const { setLoggedInUser } = useContext(AuthContext);
 	const [credentials, setCredentials] = useState({
 		login: '',
 		password: '',
@@ -40,8 +40,9 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
+				console.info('results', results.data.loginWithCookies.id);
 				if ('SUCCESS' === results.data.loginWithCookies.status) {
-					setUserIsLoggedIn(true);
+					setLoggedInUser(results.data.loginWithCookies.id);
 				}
 			})
 			// TODO check if SetStateAction<string> is the correct type
