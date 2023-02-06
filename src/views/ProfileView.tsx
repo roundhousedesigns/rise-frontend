@@ -8,7 +8,6 @@ import {
 	ButtonGroup,
 	Button,
 	Stack,
-	List,
 	ListItem,
 	Card,
 	useMediaQuery,

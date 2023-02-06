@@ -5,7 +5,6 @@ import ProfileView from '../views/ProfileView';
 import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
-import { _devProfileData, _devCreditsData } from '../lib/_devData';
 import { UserProfile } from '../lib/classes';
 
 export default function Profile() {
@@ -16,7 +15,15 @@ export default function Profile() {
 
 	return (
 		<Page title='My Profile'>
-			<ProfileView profile={profile} loading={loading} />
+			{profile && !loading && !error ? (
+				<ProfileView profile={profile} loading={loading} />
+			) : loading ? (
+				<>Loading...</>
+			) : error ? (
+				<>{error}</>
+			) : (
+				''
+			)}
 		</Page>
 	);
 }

@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { LoginInput } from '../../lib/types';
+import { LoginInput } from '../../../lib/types';
 
 // TODO get more user data from this mutation
 const MUTATE_LOGIN = gql`

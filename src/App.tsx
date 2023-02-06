@@ -16,7 +16,7 @@ export default function App() {
 	return (
 		<>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{loggedInUser && loggedInUser !== 0 ? (
+				{loggedInUser ? (
 					<>
 						<Header />
 						<Main />

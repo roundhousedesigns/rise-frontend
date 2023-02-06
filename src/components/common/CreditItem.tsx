@@ -1,5 +1,5 @@
 import { Credit } from '../../lib/classes';
-import { Flex, Box, Text } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 import { PositionData } from '../../lib/types';
 
