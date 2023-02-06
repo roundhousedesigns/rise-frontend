@@ -1,5 +1,12 @@
 import { asyncMap } from '@apollo/client/utilities';
-import { UserParams, CandidateData, UserProfileParams, CreditParams, Socials } from './types';
+import {
+	UserParams,
+	CandidateData,
+	UserProfileParams,
+	CreditParams,
+	Socials,
+	DepartmentParams,
+} from './types';
 
 /**
  * A basic user.
@@ -47,13 +54,13 @@ export class Candidate extends User {
  */
 export class UserProfile extends User {
 	name: string = '';
+	contactEmail: string = '';
 	selfTitle?: string;
-	email?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	url?: string;
+	websiteUrl?: string;
 	location?: string;
 	resume?: string;
 	willTravel?: boolean | null;
@@ -61,24 +68,26 @@ export class UserProfile extends User {
 	unions?: string[];
 	media?: string[];
 	socials?: Socials;
+	credits?: Credit[];
 
-	constructor(params: UserProfileParams) {
+	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		super({
-			id: params.id,
-			firstName: params.firstName,
-			lastName: params.lastName,
+			id: userParams.id,
+			firstName: userParams.firstName,
+			lastName: userParams.lastName,
 		});
 
-		Object.assign(this, params, {
-			name: `${params.firstName} ${params.lastName}`,
-			// Set the image to the imageConnection node link if it exists, otherwise use the image param.
-			image: params.image
-				? params.image
-				: params.imageConnection?.node.mediaItemUrl
-				? params.imageConnection.node.mediaItemUrl
-				: '',
-			education: params.education ? params.education.split('|') : [],
-			media: params.media ? params.media.split('|') : [],
+		Object.assign(this, userParams, {
+			name: `${userParams.firstName} ${userParams.lastName}`,
+			education: userParams.education ? userParams.education.split('##') : [],
+			media: userParams.media ? userParams.media.split('##') : [],
+			credits: credits && credits.length > 0 ? [...credits] : [],
+			socials: {
+				twitter: userParams.twitter || '',
+				linkedin: userParams.linkedin || '',
+				instagram: userParams.instagram || '',
+				facebook: userParams.facebook || '',
+			},
 		});
 	}
 }
@@ -93,6 +102,7 @@ export class Credit {
 	jobTitle: string = '';
 	venue: string = '';
 	year: string = '';
+	department?: DepartmentParams;
 
 	constructor(params: CreditParams) {
 		Object.assign(this, params);

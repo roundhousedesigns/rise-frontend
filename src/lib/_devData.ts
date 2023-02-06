@@ -7,11 +7,11 @@ import { UserProfile, Credit, Candidate } from './classes';
 
 /**
  * Generate a one-d dummy data array of random nonsense words.
- * @param {Number} len The desired array length.
- * @param {Number} words (default: 3) The number of words per sentence.
+ * @param {number} len The desired array length.
+ * @param {number} words (default: 3) The number of words per sentence.
  * @returns {Array} The one-dimensional array of dummy data.
  */
-export const simpleWordsArray = (len: Number, words: Number = 3): Array<string> => {
+export const simpleWordsArray = (len: number, words: number = 3): Array<string> => {
 	var chance = new Chance();
 	return [...Array(len)].map(() => {
 		return [...Array(words)]
@@ -33,20 +33,18 @@ export const _devProfileData = new UserProfile({
 	image: 'https://picsum.photos/300/400',
 	pronouns: 'he/him',
 	phone: '555-555-5555',
-	url: 'https://picsum.photos',
+	websiteUrl: 'https://picsum.photos',
 	description: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
 	location: 'Los Angeles, CA',
 	media: 'https://www.youtube.com/watch?v=arZRYbtb20M',
 	resume: 'https://picsum.photos',
 	willTravel: true,
 	unions: ['IATSE', 'SAG-AFTRA'],
-	education: 'MFA - Some Cool School|BA - Some Other Cool School',
-	socials: {
-		twitter: 'bob_bobbson',
-		linkedin: 'bob-bobbson',
-		instagram: 'bob_bobbson',
-		facebook: 'https://www.facebook.com/bob.bobbson',
-	},
+	education: 'MFA - Some Cool School##BA - Some Other Cool School',
+	twitter: 'bob_bobbson',
+	linkedin: 'bob-bobbson',
+	instagram: 'bob_bobbson',
+	facebook: 'https://www.facebook.com/bob.bobbson',
 });
 
 export const _devCreditsData = [

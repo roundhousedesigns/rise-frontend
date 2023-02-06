@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { useLocalStorage } from '../hooks/hooks';
 
 export const AuthContext = createContext({
-	loggedInUser: '',
+	loggedInUser: 0,
 	setLoggedInUser: (id: string) => id,
 });
 
@@ -14,7 +14,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 	const [loggedInUser, setLoggedInUser] = useLocalStorage('loggedInUser', 0);
 
 	const contextValue = {
-		loggedInUser,
+		loggedInUser: parseInt(loggedInUser),
 		setLoggedInUser,
 	};
 

@@ -2,7 +2,7 @@
  * The data shape for a User.
  */
 export interface UserParams {
-	id: Number;
+	id: number;
 	firstName: string;
 	lastName: string;
 }
@@ -11,7 +11,7 @@ export interface UserParams {
  * The data shape for a Candidate.
  */
 export interface CandidateData {
-	id: Number;
+	id: number;
 	firstName: string;
 	lastName: string;
 	selfTitle: string;
@@ -31,36 +31,45 @@ export interface Socials {
  * The data shape for a User Profile.
  */
 export interface UserProfileParams {
-	id: Number;
+	id: number;
 	firstName: string;
 	lastName: string;
 	selfTitle?: string;
 	email: string;
 	image?: string;
-	imageConnection?: {
-		[key: string]: any;
-	};
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	url?: string;
 	location?: string;
 	resume?: string;
 	willTravel?: boolean;
 	education?: string;
 	media?: string;
 	unions?: string[];
-	socials?: Socials;
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
+	websiteUrl?: string;
+}
+
+/**
+ * The data shape for a Production Department.
+ */
+export interface DepartmentParams {
+	slug: string;
+	name: string;
 }
 
 /**
  * The data shape for a Credit.
  */
 export interface CreditParams {
-	[title: string]: string;
+	title: string;
 	jobTitle: string;
 	venue: string;
 	year: string;
+	department?: DepartmentParams;
 }
 
 /**

@@ -12,13 +12,11 @@ export default function Profile() {
 	const { loggedInUser } = useContext(AuthContext);
 	const { data, loading, error } = useUserProfile(loggedInUser);
 
-	const profile = data?.user ? new UserProfile(data.user) : null;
+	const profile = data?.user ? new UserProfile(data.user, data.credits.nodes) : null;
 
-	return profile ? (
+	return (
 		<Page title='My Profile'>
-			<ProfileView profile={profile} credits={_devCreditsData} />
+			<ProfileView profile={profile} loading={loading} />
 		</Page>
-	) : (
-		<>Nada</>
 	);
 }

@@ -1,13 +1,17 @@
 # Frontend TODO
 
+## NOT WORKING
+
+- User emails returning `null` on profile view
+
 ## TODO
 
-- [] Implement `getLoggedInUserQuery`
 - TSLint config
 
 ## Production
 
 - Improve chunking:
+
   - (!) Some chunks are larger than 500 kBs after minification. Consider:
 
     - Using dynamic import() to code-split the application

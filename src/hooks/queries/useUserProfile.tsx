@@ -5,27 +5,19 @@
 import { gql, useQuery } from '@apollo/client';
 
 const QUERY_USER = gql`
-	query UserQuery($id: ID = "") {
+	query UserQuery($last: Int = 5, $id: ID = 2, $author: Int = 2) {
 		user(id: $id, idType: DATABASE_ID) {
 			id: databaseId
-			firstName
 			lastName
-			selftitle(format: RENDERED)
-			imageConnection: image {
-				node {
-					mediaItemUrl
-				}
-			}
+			contactEmail
+			selfTitle
+			image
 			pronouns
-			phone(format: RENDERED)
+			phone
 			description
-			url
+			websiteUrl
 			location
-			resume {
-				node {
-					link
-				}
-			}
+			resume
 			willTravel
 			media
 			unions
@@ -34,14 +26,32 @@ const QUERY_USER = gql`
 			instagram
 			linkedin
 			facebook
+			firstName
+		}
+		credits(where: { author: $author }, last: $last) {
+			nodes {
+				databaseId
+				venue(format: RENDERED)
+				year
+				departments {
+					nodes {
+						name
+						slug
+					}
+				}
+				title(format: RENDERED)
+			}
 		}
 	}
 `;
 
-export const useUserProfile = (id: string) => {
+// FIXME $author not used
+export const useUserProfile = (id: number) => {
 	const results = useQuery(QUERY_USER, {
 		variables: {
 			id,
+			author: id,
+			last: 5,
 		},
 	});
 

@@ -40,7 +40,6 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
-				console.info('results', results.data.loginWithCookies.id);
 				if ('SUCCESS' === results.data.loginWithCookies.status) {
 					setLoggedInUser(results.data.loginWithCookies.id);
 				}

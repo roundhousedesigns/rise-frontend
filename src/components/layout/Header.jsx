@@ -29,7 +29,7 @@ export default function Header() {
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
-			setLoggedInUser('');
+			setLoggedInUser(0);
 		});
 	};
 

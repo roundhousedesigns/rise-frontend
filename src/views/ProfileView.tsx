@@ -1,3 +1,4 @@
+import { Key } from 'react';
 import {
 	Box,
 	Heading,
@@ -13,23 +14,26 @@ import {
 	useMediaQuery,
 	Avatar,
 	Tag,
+	Spinner,
+	UnorderedList,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { isEmpty } from 'lodash';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
+import CreditItem from '../components/common/CreditItem';
 
 interface Props {
-	profile: UserProfile;
-	credits: Credit[];
+	profile: UserProfile | null;
+	loading: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, credits }: Props): JSX.Element | null {
+export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	/**
@@ -38,10 +42,8 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 	 */
 	const willTravelText = (): string => {
 		const str = 'Willing to travel';
-		return profile.willTravel ? str : `Not ${str.toLowerCase()}`;
+		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
-
-	console.info(profile.media);
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
@@ -51,6 +53,7 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					justifyContent={{ base: 'center', md: 'flex-start' }}
 				>
+					{loading && <Spinner alignSelf='center' />}
 					{isLargerThanMd ? (
 						<Image
 							src={profile.image}
@@ -78,9 +81,9 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 							</Text>
 						</Box>
 
-						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.url)) && (
+						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
 							<Box pb={3}>
-								<SocialLinks socials={profile.socials} url={profile.url} />
+								<SocialLinks socials={profile.socials} websiteUrl={profile.websiteUrl} />
 							</Box>
 						)}
 
@@ -119,20 +122,13 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 				</Flex>
 			</Card>
 
-			{credits && credits.length > 0 && (
+			{profile.credits && profile.credits.length > 0 && (
 				// MAYBE click-to-expand more Credit details?
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					<List textAlign='left' fontSize='lg' mt={2} spacing={1}>
-						{credits.map((credit: Credit, index: React.Key) => (
-							<ListItem key={index}>
-								<Box as='span' fontStyle='italic' fontSize='xl'>
-									{credit.title}
-								</Box>{' '}
-								({credit.jobTitle}) &bull; {credit.venue} &bull; {credit.year}
-							</ListItem>
-						))}
-					</List>
+					{profile.credits.map((credit: Credit, index: Key) => (
+						<CreditItem key={index} credit={credit} />
+					))}
 				</Box>
 			)}
 
@@ -146,20 +142,21 @@ export default function ProfileView({ profile, credits }: Props): JSX.Element | 
 			{profile.education && (
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education</HeadingCenterline>
-					<List textAlign='left' fontSize='lg' spacing={1} mt={2}>
+					<UnorderedList textAlign='left' fontSize='lg' spacing={1} mt={2}>
 						{profile.education.map((item: string, index: React.Key) => (
 							<ListItem key={index}>{item}</ListItem>
 						))}
-					</List>
+					</UnorderedList>
 				</Box>
 			)}
 
 			{profile.media && profile.media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Flex mt={4} w='full' flexWrap='wrap'>
+					<Flex mt={4} w='full' flexWrap='wrap' gap={4}>
 						{profile.media.map((item: string, index: React.Key) => (
-							<Box flex='1 1 33%' key={index}>
+							// TODO make these videos responsive, but still maintain aspect ratio in the <Flex>
+							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />
 							</Box>
 						))}
