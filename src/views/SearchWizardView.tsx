@@ -8,7 +8,7 @@ export default function SearchWizardView() {
 			<SearchFilter
 				_devNumItems={12}
 				_devReturnElement="button"
-				heading="What department are you hiring for?"
+				heading="What position are you hiring for?"
 			/>
 			<SearchFilter
 				_devNumItems={10}

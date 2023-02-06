@@ -50,16 +50,21 @@ export const _devProfileData = new UserProfile({
 export const _devCreditsData = [
 	new Credit({
 		title: "Big Bob's Big Musicale",
-		jobTitle: 'Main Boss Guy',
 		venue: 'Big Ole Theatre',
 		year: '2017',
+		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
 	}),
-	new Credit({ title: 'A Sad Tale', jobTitle: 'Peon', venue: 'The Dumps', year: '2020' }),
+	new Credit({
+		title: 'A Sad Tale',
+		venue: 'The Dumps',
+		year: '2020',
+		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
+	}),
 	new Credit({
 		title: 'Future Me: A Retrospective',
-		jobTitle: 'Head Electrician',
 		venue: 'The Universe',
 		year: 'Unknowable',
+		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
 	}),
 ];
 

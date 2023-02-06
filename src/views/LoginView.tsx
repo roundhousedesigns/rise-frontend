@@ -44,7 +44,6 @@ export default function LoginView() {
 					setLoggedInUser(results.data.loginWithCookies.id);
 				}
 			})
-			// TODO check if SetStateAction<string> is the correct type
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 	};
 

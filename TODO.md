@@ -1,12 +1,9 @@
 # Frontend TODO
 
-## NOT WORKING
-
-- User emails returning `null` on profile view
-
 ## TODO
 
 - TSLint config
+- Set up login cookie expirations, and a "remember me" option for a longer expiration
 
 ## Production
 

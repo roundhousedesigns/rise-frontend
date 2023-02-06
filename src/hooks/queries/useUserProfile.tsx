@@ -31,15 +31,15 @@ const QUERY_USER = gql`
 		credits(where: { author: $author }, last: $last) {
 			nodes {
 				databaseId
+				title(format: RENDERED)
 				venue(format: RENDERED)
-				year
-				departments {
+				year(format: RENDERED)
+				positions {
 					nodes {
 						name
 						slug
 					}
 				}
-				title(format: RENDERED)
 			}
 		}
 	}

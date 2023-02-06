@@ -5,7 +5,7 @@ import {
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	DepartmentParams,
+	PositionData,
 } from './types';
 
 /**
@@ -98,11 +98,12 @@ export class UserProfile extends User {
  * @implements {CreditParams}
  */
 export class Credit {
-	title: string = '';
-	jobTitle: string = '';
+	title!: string;
 	venue: string = '';
 	year: string = '';
-	department?: DepartmentParams;
+	positions!: {
+		nodes: PositionData[];
+	};
 
 	constructor(params: CreditParams) {
 		Object.assign(this, params);

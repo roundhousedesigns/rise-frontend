@@ -54,9 +54,9 @@ export interface UserProfileParams {
 }
 
 /**
- * The data shape for a Production Department.
+ * The data shape for a Production Position.
  */
-export interface DepartmentParams {
+export interface PositionData {
 	slug: string;
 	name: string;
 }
@@ -66,10 +66,11 @@ export interface DepartmentParams {
  */
 export interface CreditParams {
 	title: string;
-	jobTitle: string;
 	venue: string;
 	year: string;
-	department?: DepartmentParams;
+	positions: {
+		nodes: PositionData[];
+	};
 }
 
 /**
