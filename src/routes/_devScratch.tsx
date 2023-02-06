@@ -1,4 +1,4 @@
-import { Heading, Container, List, ListItem } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 import Page from '../components/common/Page';
 
 /**
