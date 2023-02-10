@@ -1,5 +1,4 @@
 import { createContext, useReducer } from 'react';
-import { toggleArrayString } from '../lib/utils';
 
 interface SearchState {
 	position: {
