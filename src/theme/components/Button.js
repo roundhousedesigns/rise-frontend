@@ -24,6 +24,7 @@ export default defineStyleConfig({
 				background: 'transparent',
 			},
 		},
+		// TODO purge and clear this variant
 		toggle: {
 			fontWeight: 'normal',
 			border: '1px solid',

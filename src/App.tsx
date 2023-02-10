@@ -6,6 +6,7 @@ import Footer from './components/layout/Footer';
 import logo from './assets/images/gtw-logo-horizontal.svg';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
+import { SearchContextProvider } from './context/SearchContext';
 import { AuthContext } from './context/AuthContext';
 import LoginView from './views/LoginView';
 
@@ -14,7 +15,7 @@ export default function App() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<>
+		<SearchContextProvider>
 			<Stack direction='column' alignItems='center' minH='100vh'>
 				{loggedInUser ? (
 					<>
@@ -53,6 +54,6 @@ export default function App() {
 				m={2}
 				onClick={toggleColorMode}
 			/>
-		</>
+		</SearchContextProvider>
 	);
 }

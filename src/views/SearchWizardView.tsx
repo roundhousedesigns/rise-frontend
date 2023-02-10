@@ -1,33 +1,39 @@
-import { FormControl, Button } from '@chakra-ui/react';
+import { FormControl, Flex, Button } from '@chakra-ui/react';
+import { useContext } from 'react';
 
-import SearchFilter from '../components/common/SearchFilter';
+import SearchFilterDepartment from '../components/SearchFilterDepartment';
+import SearchFilterJob from '../components/SearchFilterJob';
+
+import { SearchContext } from '../context/SearchContext';
 
 export default function SearchWizardView() {
+	const {
+		search: { position },
+		searchDispatch,
+	} = useContext(SearchContext);
+
+	const handleReset = () => {
+		searchDispatch({
+			type: 'RESET',
+		});
+	};
+
 	return (
-		<FormControl textAlign="left">
-			<SearchFilter
-				_devNumItems={12}
-				_devReturnElement="button"
-				heading="What position are you hiring for?"
-			/>
-			<SearchFilter
-				_devNumItems={10}
-				_devReturnElement="button"
-				heading="What skills does the position require?"
-			/>
-			<SearchFilter
-				_devNumItems={3}
-				_devReturnElement="select"
-				heading="Where are you looking to hire?"
-			/>
-			<SearchFilter
-				_devNumItems={3}
-				_devReturnElement="select"
-				heading="Anything else?"
-			/>
-			<Button type="submit" size="lg">
-				Search
-			</Button>
+		<FormControl textAlign='left'>
+			{/* Step 1 */}
+			<SearchFilterDepartment heading='Which department are you hiring for?' />
+
+			{/* Step 2 */}
+			{position.department ? <SearchFilterJob heading='What job are you looking to fill?' /> : ''}
+
+			<Flex gap={2}>
+				<Button type='submit' size='lg'>
+					Search
+				</Button>
+				<Button type='reset' size='lg' onClick={handleReset}>
+					Reset
+				</Button>
+			</Flex>
 		</FormControl>
 	);
 }

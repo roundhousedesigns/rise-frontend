@@ -4,7 +4,7 @@ import {
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	PositionData,
+	PositionTerm,
 } from './types';
 
 /**
@@ -101,7 +101,7 @@ export class Credit {
 	venue: string = '';
 	year: string = '';
 	positions!: {
-		nodes: PositionData[];
+		nodes: PositionTerm[];
 	};
 
 	constructor(params: CreditParams) {

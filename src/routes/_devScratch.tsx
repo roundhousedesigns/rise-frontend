@@ -1,5 +1,6 @@
-import { Container } from '@chakra-ui/react';
+import { List, ListItem } from '@chakra-ui/react';
 import Page from '../components/common/Page';
+import { usePositions } from '../hooks/queries/usePositions';
 
 /**
  *
@@ -8,9 +9,17 @@ import Page from '../components/common/Page';
  */
 
 export default function _devScratch() {
-	return (
-		<Page title='Scratch pad'>
-			<Container>Nothing to see atm...</Container>
-		</Page>
-	);
+	// const { data } = usePositions();
+	// return (
+	// 	data && (
+	// 		<Page title='Scratch pad'>
+	// 			<List>
+	// 				{data.positions?.nodes &&
+	// 					data.positions.nodes.map((item: { [key: string]: string }, index: React.Key) => (
+	// 						<ListItem key={index}>{item.name}</ListItem>
+	// 					))}
+	// 			</List>
+	// 		</Page>
+	// 	)
+	// );
 }

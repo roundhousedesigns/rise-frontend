@@ -34,3 +34,13 @@ export const socialLink = (network: string, value: string): string => {
 export function fullName(firstName: string, lastName: string): string {
 	return `${firstName} ${lastName}`;
 }
+
+/**
+ * Toggle a string in a collection.
+ *
+ * @param array The array of strings.
+ * @param str The string to add or remove.
+ * @returns The filtered array.
+ */
+export const toggleArrayString = (array: string[], str: string): string[] =>
+	array.includes(str) ? array.filter((x) => x !== str) : array.concat(str);

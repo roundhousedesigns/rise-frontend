@@ -56,7 +56,9 @@ export interface UserProfileParams {
 /**
  * The data shape for a Production Position.
  */
-export interface PositionData {
+export interface PositionTerm {
+	id: number;
+	parentId: number;
 	slug: string;
 	name: string;
 }
@@ -69,7 +71,7 @@ export interface CreditParams {
 	venue: string;
 	year: string;
 	positions: {
-		nodes: PositionData[];
+		nodes: PositionTerm[];
 	};
 }
 
