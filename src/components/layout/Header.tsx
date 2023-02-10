@@ -71,9 +71,6 @@ export default function Header() {
 											fontSize='lg'
 											textTransform='uppercase'
 										>
-											<Link as={RouterLink} to='/_scratch'>
-												_Scratch
-											</Link>
 											<Link as={RouterLink} to='/search'>
 												Search
 											</Link>
