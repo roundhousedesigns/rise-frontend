@@ -1,4 +1,3 @@
-import { position } from '@chakra-ui/react';
 import { createContext, useReducer } from 'react';
 import { toggleArrayString } from '../lib/utils';
 
@@ -14,7 +13,7 @@ interface SearchAction {
 	type: string;
 	payload?: {
 		department?: string;
-		job?: string;
+		jobs?: string[];
 		skills?: string[];
 	};
 }
@@ -47,14 +46,14 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 			};
 
-		case 'TOGGLE_JOBS':
-			if (!action.payload?.job) return state;
+		case 'SET_JOBS':
+			if (!action.payload?.jobs) return state;
 
 			return {
 				...state,
 				position: {
 					...state.position,
-					jobs: toggleArrayString(state.position.jobs, action.payload.job),
+					jobs: action.payload.jobs,
 				},
 			};
 

@@ -24,7 +24,15 @@ export default function SearchWizardView() {
 			<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 			{/* Step 2 */}
-			{position.department ? <SearchFilterJob heading='What job are you looking to fill?' /> : ''}
+			{position.department ? (
+				<SearchFilterJob heading='What job(s) are you looking to fill?' />
+			) : (
+				''
+			)}
+
+			{/* Step 3 */}
+			{/* TODO */}
+			{/* <SearchFilterSkills heading='What skills are you looking for?' /> */}
 
 			<Flex gap={2}>
 				<Button type='submit' size='lg'>

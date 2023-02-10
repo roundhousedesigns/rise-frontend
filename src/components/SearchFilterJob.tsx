@@ -1,27 +1,40 @@
-import { useContext } from 'react';
-import { Heading, Wrap, CheckboxGroup, Checkbox } from '@chakra-ui/react';
+import { useContext, useEffect } from 'react';
+import { Heading, Wrap, useCheckboxGroup } from '@chakra-ui/react';
 import { PositionTerm } from '../lib/types';
 import { usePositions } from '../hooks/queries/usePositions';
 
 import { SearchContext } from '../context/SearchContext';
+import { CheckboxButton } from './common/CheckboxButton';
 
 interface Props {
 	heading: string;
 }
 
-export default function SearchFilterJob({ heading }: Props) {
+export default function SearchFilterDepartment({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const { data, loading, error } = usePositions(parseInt(search.position.department));
 
-	// TODO improve event typing
-	const handleChange = (term: any) => {
+	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
-			type: 'TOGGLE_JOBS',
+			type: 'SET_JOBS',
 			payload: {
-				job: term.currentTarget.id,
+				jobs: terms,
 			},
 		});
 	};
+
+	// Subscribe to Reset events in the Search Context
+	// BUG Clicking a main department term doesn't stick, and immediately resets.
+	// useEffect(() => {
+	// 	if (search.position.jobs.length === 0) {
+	// 		setValue([]);
+	// 	}
+	// }, [search.position.jobs]);
+
+	const { getCheckboxProps, setValue } = useCheckboxGroup({
+		defaultValue: [],
+		onChange: handleToggleTerm,
+	});
 
 	return !loading && !error ? (
 		<>
@@ -29,18 +42,15 @@ export default function SearchFilterJob({ heading }: Props) {
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' width='full' gap={4} mb={4}>
-				<CheckboxGroup value={search.position.jobs}>
-					{data.positions.nodes.map((term: PositionTerm) => (
-						<Checkbox
-							key={term.id}
-							id={term.id.toString()}
-							value={term.id.toString()}
-							onChange={handleChange}
-						>
+				{data.positions.nodes.map((term: PositionTerm) => {
+					const checkbox = getCheckboxProps({ value: term.id.toString() });
+
+					return (
+						<CheckboxButton key={term.id} {...checkbox}>
 							{term.name}
-						</Checkbox>
-					))}
-				</CheckboxGroup>
+						</CheckboxButton>
+					);
+				})}
 			</Wrap>
 		</>
 	) : loading ? (

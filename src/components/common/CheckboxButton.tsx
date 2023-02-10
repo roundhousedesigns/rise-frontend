@@ -1,11 +1,11 @@
-import { Box, useRadio } from '@chakra-ui/react';
+import { Box, useCheckbox } from '@chakra-ui/react';
 
 interface Props {
 	[key: string]: any;
 }
 
-export function RadioButton(props: Props): React.ReactElement {
-	const { getInputProps, getCheckboxProps } = useRadio(props);
+export function CheckboxButton(props: Props): React.ReactElement {
+	const { getInputProps, getCheckboxProps, htmlProps, getLabelProps } = useCheckbox(props);
 	const { children } = props;
 
 	const input = getInputProps();
@@ -17,6 +17,7 @@ export function RadioButton(props: Props): React.ReactElement {
 			{/* // TODO Dark mode */}
 			<Box
 				{...checkbox}
+				{...htmlProps}
 				cursor='pointer'
 				borderWidth='1px'
 				borderColor='gray.800'
@@ -35,7 +36,7 @@ export function RadioButton(props: Props): React.ReactElement {
 				px={5}
 				py={3}
 			>
-				{children}
+				<Box {...getLabelProps}>{children}</Box>
 			</Box>
 		</Box>
 	);

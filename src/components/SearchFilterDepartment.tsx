@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import { Heading, Wrap, RadioGroup, Radio, useRadioGroup } from '@chakra-ui/react';
+import { useContext, useEffect } from 'react';
+import { Heading, Wrap, useRadioGroup } from '@chakra-ui/react';
 import { PositionTerm } from '../lib/types';
 import { usePositions } from '../hooks/queries/usePositions';
 import { RadioButton } from './common/RadioButton';
@@ -12,7 +12,7 @@ interface Props {
 
 export default function SearchFilterDepartment({ heading }: Props) {
 	const { data, loading, error } = usePositions();
-	const { searchDispatch } = useContext(SearchContext);
+	const { search, searchDispatch } = useContext(SearchContext);
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
@@ -23,7 +23,14 @@ export default function SearchFilterDepartment({ heading }: Props) {
 		});
 	};
 
-	const { getRootProps, getRadioProps } = useRadioGroup({
+	// Subscribe to Reset events in the Search Context
+	useEffect(() => {
+		if (search.position.department === '') {
+			setValue('');
+		}
+	}, [search.position.department]);
+
+	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
 		name: 'department',
 		defaultValue: '',
 		onChange: handleToggleTerm,
