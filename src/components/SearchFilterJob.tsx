@@ -24,12 +24,11 @@ export default function SearchFilterDepartment({ heading }: Props) {
 	};
 
 	// Subscribe to Reset events in the Search Context
-	// BUG Clicking a main department term doesn't stick, and immediately resets.
-	// useEffect(() => {
-	// 	if (search.position.jobs.length === 0) {
-	// 		setValue([]);
-	// 	}
-	// }, [search.position.jobs]);
+	useEffect(() => {
+		if (search.position.jobs.length === 0) {
+			setValue([]);
+		}
+	}, [search.position.jobs.length]);
 
 	const { getCheckboxProps, setValue } = useCheckboxGroup({
 		defaultValue: [],
