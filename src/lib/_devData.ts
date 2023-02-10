@@ -24,49 +24,49 @@ export const _devRecentSearches = ['Recent search one', 'Recent search two', 'Re
 
 export const _devSavedSearches = ['Saved search one', 'Saved search two', 'Saved search three'];
 
-export const _devProfileData = new UserProfile({
-	id: 27846,
-	firstName: 'Bob',
-	lastName: 'Bobbson',
-	selfTitle: 'One Awesome Carpenter',
-	email: 'bob@bobbson.com',
-	image: 'https://picsum.photos/300/400',
-	pronouns: 'he/him',
-	phone: '555-555-5555',
-	websiteUrl: 'https://picsum.photos',
-	description: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
-	location: 'Los Angeles, CA',
-	media: 'https://www.youtube.com/watch?v=arZRYbtb20M',
-	resume: 'https://picsum.photos',
-	willTravel: true,
-	unions: ['IATSE', 'SAG-AFTRA'],
-	education: 'MFA - Some Cool School##BA - Some Other Cool School',
-	twitter: 'bob_bobbson',
-	linkedin: 'bob-bobbson',
-	instagram: 'bob_bobbson',
-	facebook: 'https://www.facebook.com/bob.bobbson',
-});
+// export const _devProfileData = new UserProfile({
+// 	id: 27846,
+// 	firstName: 'Bob',
+// 	lastName: 'Bobbson',
+// 	selfTitle: 'One Awesome Carpenter',
+// 	email: 'bob@bobbson.com',
+// 	image: 'https://picsum.photos/300/400',
+// 	pronouns: 'he/him',
+// 	phone: '555-555-5555',
+// 	websiteUrl: 'https://picsum.photos',
+// 	description: 'I am a carpenter. I am awesome. I am Bob Bobbson.',
+// 	location: 'Los Angeles, CA',
+// 	media: 'https://www.youtube.com/watch?v=arZRYbtb20M',
+// 	resume: 'https://picsum.photos',
+// 	willTravel: true,
+// 	unions: ['IATSE', 'SAG-AFTRA'],
+// 	education: 'MFA - Some Cool School##BA - Some Other Cool School',
+// 	twitter: 'bob_bobbson',
+// 	linkedin: 'bob-bobbson',
+// 	instagram: 'bob_bobbson',
+// 	facebook: 'https://www.facebook.com/bob.bobbson',
+// });
 
-export const _devCreditsData = [
-	new Credit({
-		title: "Big Bob's Big Musicale",
-		venue: 'Big Ole Theatre',
-		year: '2017',
-		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
-	}),
-	new Credit({
-		title: 'A Sad Tale',
-		venue: 'The Dumps',
-		year: '2020',
-		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
-	}),
-	new Credit({
-		title: 'Future Me: A Retrospective',
-		venue: 'The Universe',
-		year: 'Unknowable',
-		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
-	}),
-];
+// export const _devCreditsData = [
+// 	new Credit({
+// 		title: "Big Bob's Big Musicale",
+// 		venue: 'Big Ole Theatre',
+// 		year: '2017',
+// 		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
+// 	}),
+// 	new Credit({
+// 		title: 'A Sad Tale',
+// 		venue: 'The Dumps',
+// 		year: '2020',
+// 		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
+// 	}),
+// 	new Credit({
+// 		title: 'Future Me: A Retrospective',
+// 		venue: 'The Universe',
+// 		year: 'Unknowable',
+// 		positions: { nodes: [{ slug: 'thing', name: 'Thing' }] },
+// 	}),
+// ];
 
 export const _devSavedCandidates = [
 	new Candidate({
