@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import Page from '../components/common/Page';
+import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 
 import { AuthContext } from '../context/AuthContext';
@@ -8,10 +8,14 @@ import { useUserProfile } from '../hooks/queries/useUserProfile';
 import { UserProfile } from '../lib/classes';
 
 export default function Profile() {
-	const { loggedInUser } = useContext(AuthContext);
-	const { data, loading, error } = useUserProfile(loggedInUser);
+	const {
+		loggedInUser: { id: loggedInId },
+	} = useContext(AuthContext);
+	const { data, loading, error } = useUserProfile(loggedInId);
 
 	const profile = data?.user ? new UserProfile(data.user, data.credits.nodes) : null;
+
+	console.info(profile, loading, error);
 
 	return (
 		<Page title='My Profile'>
@@ -20,7 +24,7 @@ export default function Profile() {
 			) : loading ? (
 				<>Loading...</>
 			) : error ? (
-				<>{error}</>
+				<>{error.message}</>
 			) : (
 				''
 			)}

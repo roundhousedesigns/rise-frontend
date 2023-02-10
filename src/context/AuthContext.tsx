@@ -1,9 +1,15 @@
 import { createContext } from 'react';
 import { useLocalStorage } from '../hooks/hooks';
+import { User } from '../lib/classes';
+import { UserParams } from '../lib/types';
 
 export const AuthContext = createContext({
-	loggedInUser: 0,
-	setLoggedInUser: (id: string) => id,
+	loggedInUser: {
+		...new User(),
+	},
+	setLoggedInUser: (user: UserParams) => {
+		return new User({ ...user });
+	},
 });
 
 interface Props {
@@ -11,10 +17,10 @@ interface Props {
 }
 
 export const AuthContextProvider = ({ children }: Props) => {
-	const [loggedInUser, setLoggedInUser] = useLocalStorage('loggedInUser', 0);
+	const [loggedInUser, setLoggedInUser] = useLocalStorage('loggedInUser', new User());
 
 	const contextValue = {
-		loggedInUser: parseInt(loggedInUser),
+		loggedInUser,
 		setLoggedInUser,
 	};
 

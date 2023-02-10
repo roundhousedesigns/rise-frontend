@@ -1,4 +1,4 @@
-import Page from '../components/common/Page';
+import Page from '../components/Page';
 import LoginView from '../views/LoginView';
 
 export default function Login() {

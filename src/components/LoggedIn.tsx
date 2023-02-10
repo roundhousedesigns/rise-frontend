@@ -8,14 +8,16 @@ interface Props {
 }
 
 export default function LoggedIn({ redirect, children }: Props) {
-	const { loggedInUser } = useContext(AuthContext);
+	const {
+		loggedInUser: { id: loggedInId },
+	} = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (redirect && (!loggedInUser || loggedInUser === 0)) {
+		if (redirect && loggedInId === 0) {
 			navigate('/login');
 		}
-	}, [loggedInUser]);
+	}, [loggedInId]);
 
 	return <>{children}</>;
 }

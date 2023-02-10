@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { FiMoreHorizontal, FiLogOut } from 'react-icons/fi';
 
-import { useLogout } from './mutations/useLogout';
+import { useLogout } from '../../hooks/mutations/useLogout';
 import { AuthContext } from '../../context/AuthContext';
 import Drawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
@@ -30,7 +30,7 @@ export default function Header() {
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
-			setLoggedInUser('');
+			setLoggedInUser({ id: 0, firstName: '', lastName: '' });
 		});
 	};
 

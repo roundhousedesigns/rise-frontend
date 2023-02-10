@@ -3,15 +3,18 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { LoginInput } from '../../../lib/types';
+import { User } from '../../lib/classes';
+import { LoginInput } from '../../lib/types';
 
 // MAYBE get more user data from this mutation
 const MUTATE_LOGIN = gql`
-	mutation LoginWithCookies($input: LoginWithCookiesInput = { login: "", password: "" }) {
-		loginWithCookies(input: $input) {
+	mutation Login($input: LoginInput = { login: "", password: "" }) {
+		login(input: $input) {
 			clientMutationId
-			id
 			status
+			id
+			firstName
+			lastName
 		}
 	}
 `;

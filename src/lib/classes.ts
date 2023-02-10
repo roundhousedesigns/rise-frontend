@@ -15,12 +15,14 @@ import {
  * @implements {UserParams}
  */
 export class User {
-	id: Number = 0;
+	id!: number;
 	firstName: string = '';
 	lastName: string = '';
 
-	constructor(params: UserParams) {
-		Object.assign(this, params);
+	constructor(params?: UserParams) {
+		Object.assign(this, params, {
+			id: params && params.id ? Number(params.id) : 0,
+		});
 	}
 }
 
@@ -51,6 +53,7 @@ export class Candidate extends User {
  * @implements {UserProfileParams}
  * @implements {Socials}
  */
+// TODO Does this really need to extend the `User` class?
 export class UserProfile extends User {
 	name: string = '';
 	contactEmail: string = '';

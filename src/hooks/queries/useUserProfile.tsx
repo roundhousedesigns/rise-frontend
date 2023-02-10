@@ -50,7 +50,7 @@ export const useUserProfile = (id: number) => {
 	const results = useQuery(QUERY_USER, {
 		variables: {
 			id,
-			author: id,
+			author: Number(id),
 			last: 5,
 		},
 	});

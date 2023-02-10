@@ -1,4 +1,4 @@
-import Page from '../components/common/Page';
+import Page from '../components/Page';
 
 export default function Settings() {
 	return <Page title="Settings">Settings</Page>;

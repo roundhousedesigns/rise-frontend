@@ -14,7 +14,7 @@ import {
 
 import { AuthContext } from '../context/AuthContext';
 
-import { useLogin } from '../components/layout/mutations/useLogin';
+import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
@@ -40,8 +40,8 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
-				if ('SUCCESS' === results.data.loginWithCookies.status) {
-					setLoggedInUser(results.data.loginWithCookies.id);
+				if ('SUCCESS' === results.data.login.status) {
+					setLoggedInUser(results.data.login);
 				}
 			})
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));

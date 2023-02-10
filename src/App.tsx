@@ -11,13 +11,15 @@ import { AuthContext } from './context/AuthContext';
 import LoginView from './views/LoginView';
 
 export default function App() {
-	const { loggedInUser } = useContext(AuthContext);
+	const {
+		loggedInUser: { id: loggedInId },
+	} = useContext(AuthContext);
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<SearchContextProvider>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{loggedInUser ? (
+				{loggedInId ? (
 					<>
 						<Header />
 						<Main />

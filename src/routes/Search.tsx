@@ -1,5 +1,5 @@
 import SearchWizard from '../views/SearchWizardView';
-import Page from '../components/common/Page';
+import Page from '../components/Page';
 
 export default function Search() {
 	return (
