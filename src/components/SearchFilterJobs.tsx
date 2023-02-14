@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, useCheckboxGroup, Box } from '@chakra-ui/react';
 import { PositionTerm } from '../lib/types';
-import { usePositions } from '../hooks/queries/usePositions';
+import CheckboxButton from './common/CheckboxButton';
 
+import { usePositions } from '../hooks/queries/usePositions';
 import { SearchContext } from '../context/SearchContext';
-import { CheckboxButton } from './common/CheckboxButton';
 
 interface Props {
 	heading: string;

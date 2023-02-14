@@ -113,7 +113,7 @@ export class Credit {
 	}
 }
 
-// TODO build Search class
+// TODO build SearchFilters class
 // class Search {
 // 	constructor(...params: any[]) {}
 // }

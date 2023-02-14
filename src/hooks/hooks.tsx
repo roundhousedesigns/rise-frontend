@@ -1,3 +1,4 @@
+import { Alert } from '@chakra-ui/react';
 import { useState, useEffect, useRef } from 'react';
 
 /**
@@ -54,7 +55,7 @@ export const useLocalStorage = (
  * @param {string} errorCode The login error message returned by the server.
  * @returns {string} The message to print.
  */
-export function useLoginError(errorCode?: string): string {
+export const useLoginError = (errorCode?: string): string => {
 	if (!errorCode) return '';
 
 	var message = '';
@@ -82,4 +83,4 @@ export function useLoginError(errorCode?: string): string {
 	}
 
 	return message;
-}
+};

@@ -4,7 +4,7 @@ interface Props {
 	[key: string]: any;
 }
 
-export function CheckboxButton(props: Props): React.ReactElement {
+export default function CheckboxButton(props: Props): React.ReactElement {
 	const { getInputProps, getCheckboxProps, htmlProps, getLabelProps } = useCheckbox(props);
 	const { children } = props;
 

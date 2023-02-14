@@ -9,7 +9,7 @@ import { Socials } from './types';
  * @param {string} network The social media network name.
  * @returns {string} The link to the social media profile.
  */
-export const socialLink = (network: string, value: string): string => {
+export function socialLink(network: string, value: string): string {
 	const socialLinkBases: Socials = {
 		twitter: 'https://twitter.com/',
 		linkedin: 'https://www.linkedin.com/in/',
@@ -22,7 +22,7 @@ export const socialLink = (network: string, value: string): string => {
 	}
 
 	return socialLinkBases[network] + value;
-};
+}
 
 /**
  * Generate a full name from a first and last name.

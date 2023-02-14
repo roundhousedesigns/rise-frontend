@@ -3,7 +3,6 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { User } from '../../lib/classes';
 import { LoginInput } from '../../lib/types';
 
 // MAYBE get more user data from this mutation

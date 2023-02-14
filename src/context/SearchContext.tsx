@@ -1,5 +1,7 @@
 import { createContext, useReducer } from 'react';
 
+// TODO convert `filters` to an instance of `SearchFilters` class
+
 interface SearchState {
 	filters: {
 		position: {

@@ -16,7 +16,9 @@ export default function SearchWizardView() {
 		searchDispatch,
 	} = useContext(SearchContext);
 	const navigate = useNavigate();
-	const { data, loading, error, refetch } = useCandidateSearch(filters);
+
+	// TODO implement loading and error states
+	const { data, refetch /* loading, error, */ } = useCandidateSearch(filters);
 
 	// Any time we change the filters, refetch the results
 	useEffect(() => {

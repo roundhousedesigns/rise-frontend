@@ -1,12 +1,13 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
+import ErrorAlert from '../components/common/ErrorAlert';
 
 import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { UserProfile } from '../lib/classes';
-import { useParams } from 'react-router-dom';
 
 export default function Profile() {
 	const {
@@ -27,7 +28,7 @@ export default function Profile() {
 			) : loading ? (
 				<>Loading...</>
 			) : error ? (
-				<>{error.message}</>
+				<ErrorAlert message={error.message} />
 			) : (
 				''
 			)}

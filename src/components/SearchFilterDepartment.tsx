@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Box, Heading, Wrap, useRadioGroup } from '@chakra-ui/react';
 import { PositionTerm } from '../lib/types';
 import { usePositions } from '../hooks/queries/usePositions';
-import { RadioButton } from './common/RadioButton';
+import RadioButton from './common/RadioButton';
 
 import { SearchContext } from '../context/SearchContext';
 

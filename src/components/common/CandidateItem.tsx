@@ -20,7 +20,7 @@ export default function CandidateItem({ candidate }: Props) {
 				flexWrap={{ base: 'wrap', md: 'nowrap' }}
 				gap={{ base: 'initial', md: 0 }}
 			>
-				<Avatar size='sm' name={name} flex='0 0 auto' mr={2} src={candidate?.image} />
+				<Avatar size='sm' name={name} flex='0 0 auto' mr={2} src={candidate.image} />
 				<Text
 					fontSize='md'
 					fontWeight='normal'
@@ -40,7 +40,7 @@ export default function CandidateItem({ candidate }: Props) {
 					flex='1'
 					noOfLines={1}
 				>
-					{candidate?.selfTitle}
+					{candidate.selfTitle}
 				</Text>
 			</Flex>
 		</Card>

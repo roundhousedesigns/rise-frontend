@@ -4,7 +4,7 @@ interface Props {
 	[key: string]: any;
 }
 
-export function RadioButton(props: Props): React.ReactElement {
+export default function RadioButton(props: Props): React.ReactElement {
 	const { getInputProps, getCheckboxProps } = useRadio(props);
 	const { children } = props;
 

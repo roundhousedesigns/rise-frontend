@@ -3,8 +3,9 @@ import { Heading, Wrap, useCheckboxGroup, Box, Text, Alert } from '@chakra-ui/re
 import { SkillTerm } from '../lib/types';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
+import ErrorAlert from './common/ErrorAlert';
+import CheckboxButton from './common/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
-import { CheckboxButton } from './common/CheckboxButton';
 
 interface Props {
 	heading: string;
@@ -64,7 +65,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 	) : loading ? (
 		<>Loading...</>
 	) : error ? (
-		<>{error.message}</>
+		<ErrorAlert message={error.message} />
 	) : (
 		// TODO implement "All Skills" button, which will append remaining Skills (excluding those already present) to the list.
 		// Same as "More Skills", but without "exclude" parameter.
