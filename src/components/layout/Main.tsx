@@ -30,6 +30,7 @@ export default function Main() {
 					<Route path='/search' element={<Search />} />
 					<Route path='/results' element={<Results />} />
 					<Route path='/profile' element={<Profile />} />
+					<Route path='/profile/:userId' element={<Profile />} />
 					<Route path='/account' element={<Account />} />
 					<Route path='/settings' element={<Settings />} />
 				</Routes>

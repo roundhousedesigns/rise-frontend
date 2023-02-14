@@ -1,4 +1,5 @@
-import { Card, Avatar, Text, Flex } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Card, Avatar, Text, Flex, Link } from '@chakra-ui/react';
 import { fullName } from '../../lib/utils';
 
 import { Candidate } from '../../lib/classes';
@@ -28,7 +29,9 @@ export default function CandidateItem({ candidate }: Props) {
 					mt={0}
 					mb={{ base: 1, lg: 0 }}
 				>
-					{name}
+					<Link as={RouterLink} to={`/profile/${candidate.id}`}>
+						{name}
+					</Link>
 				</Text>
 				<Text
 					fontSize='sm'

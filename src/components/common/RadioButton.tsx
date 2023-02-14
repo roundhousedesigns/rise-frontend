@@ -18,10 +18,8 @@ export function RadioButton(props: Props): React.ReactElement {
 			<Box
 				{...checkbox}
 				cursor='pointer'
-				borderWidth='1px'
-				borderColor='gray.800'
 				borderRadius='sm'
-				bg='gray.50'
+				bg='gray.100'
 				_hover={{
 					bg: 'blue.100',
 				}}
@@ -32,8 +30,17 @@ export function RadioButton(props: Props): React.ReactElement {
 				_focus={{
 					outline: '1px',
 				}}
+				_dark={{
+					bg: 'gray.900',
+					_hover: {
+						bg: 'blue.700',
+					},
+					_checked: {
+						bg: 'blue.500',
+					},
+				}}
 				px={5}
-				py={3}
+				py={2}
 			>
 				{children}
 			</Box>

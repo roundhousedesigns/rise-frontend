@@ -12,6 +12,7 @@ import {
 	IconButton,
 	Button,
 	Spacer,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
@@ -30,6 +31,9 @@ interface Props {
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
+
+	// TODO implement Search button here
+	const handleSearchSubmit = () => {};
 
 	const handleSearchReset = () => {
 		searchDispatch({
@@ -55,9 +59,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						</Heading>
 						<Spacer flex='0 0 1em' />
 						{search.searchActive ? (
-							<Button colorScheme='red' onClick={handleSearchReset} size='md'>
-								Reset Filters
-							</Button>
+							<ButtonGroup>
+								<Button colorScheme='blue' onClick={handleSearchSubmit} size='md'>
+									Search
+								</Button>
+								<Button colorScheme='whiteAlpha' onClick={handleSearchReset} size='md'>
+									Reset Filters
+								</Button>
+							</ButtonGroup>
 						) : null}
 						<Spacer />
 						<IconButton
@@ -73,7 +82,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				<DrawerBody py={8}>
 					<SearchWizardView />
 				</DrawerBody>
-				<DrawerFooter bg='gray.100' mt={0}>
+				<DrawerFooter mt={0} fontSize='sm'>
 					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}
 					<Accordion allowMultiple={true} width='full'>
 						<WidgetAccordionItem heading='Saved Searches'>

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import CandidateItem from '../components/common/CandidateItem';
+import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/common/CandidateList';
 
 import { SearchContext } from '../context/SearchContext';
@@ -9,5 +9,14 @@ export default function SearchResultsView() {
 		search: { results },
 	} = useContext(SearchContext);
 
-	return results.length > 0 ? <CandidateList userIds={results} /> : <p>No results.</p>;
+	return results.length > 0 ? (
+		<Box>
+			<Text fontSize='sm' pb={2}>
+				Showing X of Y search results.
+			</Text>
+			<CandidateList userIds={results} />
+		</Box>
+	) : (
+		<p>No results.</p>
+	);
 }
