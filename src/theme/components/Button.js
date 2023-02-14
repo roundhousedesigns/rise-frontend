@@ -24,17 +24,5 @@ export default defineStyleConfig({
 				background: 'transparent',
 			},
 		},
-		// TODO purge and clear this variant
-		toggle: {
-			fontWeight: 'normal',
-			border: '1px solid',
-			colorScheme: 'gray',
-			_hover: {
-				bg: 'gray.100',
-			},
-			_checked: {
-				bg: 'cyan.100',
-			},
-		},
 	},
 });
