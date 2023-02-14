@@ -12,21 +12,29 @@ import {
 	Stack,
 	useMediaQuery,
 } from '@chakra-ui/react';
-import { FiMoreHorizontal, FiLogOut } from 'react-icons/fi';
 
-import { useLogout } from '../../hooks/mutations/useLogout';
-import { AuthContext } from '../../context/AuthContext';
-import Drawer from './SearchDrawer';
+// TODO switch logout icon to simple nav menu w/ logout in it
+import { FiMoreVertical, FiLogOut, FiSearch } from 'react-icons/fi';
+
+import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
 import LoggedIn from '../LoggedIn';
 
+import { useLogout } from '../../hooks/mutations/useLogout';
+import { AuthContext } from '../../context/AuthContext';
+import { SearchContext } from '../../context/SearchContext';
+
 export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
-	const btnRef = useRef(null);
-	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
+	const drawerButtonRef = useRef(null);
 
 	const { setLoggedInUser } = useContext(AuthContext);
+	const {
+		search: { results: searchResults },
+	} = useContext(SearchContext);
 	const { logoutMutation } = useLogout();
+
+	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
@@ -47,14 +55,16 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<LoggedIn>
-								<IconButton
-									ref={btnRef}
-									icon={<FiMoreHorizontal />}
-									aria-label='Search for candidates'
-									variant='invisible'
-									fontSize='3xl'
-									onClick={drawerOnOpen}
-								/>
+								{searchResults.length > 0 && (
+									<IconButton
+										ref={drawerButtonRef}
+										icon={<FiSearch />}
+										aria-label='Search for candidates'
+										variant='invisible'
+										fontSize='3xl'
+										onClick={drawerOnOpen}
+									/>
+								)}
 							</LoggedIn>
 							<Link as={RouterLink} to='/'>
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
@@ -94,7 +104,7 @@ export default function Header() {
 				</Box>
 			</LightMode>
 
-			<Drawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
+			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
 		</Box>
 	);
 }

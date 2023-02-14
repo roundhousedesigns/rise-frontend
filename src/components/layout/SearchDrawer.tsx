@@ -5,15 +5,16 @@ import {
 	DrawerHeader,
 	DrawerBody,
 	DrawerFooter,
-	DrawerCloseButton,
 	Accordion,
 	Stack,
 	Heading,
 	IconButton,
+	ButtonGroup,
+	Button,
+	Spacer,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
-import CandidateList from '../common/CandidateList';
 import SearchList from '../common/SearchList';
 import WidgetAccordionItem from '../common/WidgetAccordionItem';
 
@@ -26,9 +27,12 @@ interface Props {
 	onClose: () => void;
 }
 
+const handleSearchSubmit = () => {};
+const handleSearchReset = () => {};
+
 export default function SearchDrawer({ isOpen, onClose }: Props) {
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='md'>
+		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='lg'>
 			<DrawerOverlay />
 			<DrawerContent>
 				<DrawerHeader
@@ -43,9 +47,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						<Heading size='lg' color='white'>
 							Search
 						</Heading>
+						<Spacer flex='0 0 1em' />
+						<Button colorScheme='red' onClick={handleSearchReset} size='md'>
+							Reset Filters
+						</Button>
+						<Spacer />
 						<IconButton
 							icon={<FiX />}
-							color='white'
+							colorScheme='white'
 							aria-label='Close'
 							fontSize='1.4em'
 							onClick={onClose}
@@ -56,7 +65,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				<DrawerBody py={8}>
 					<SearchWizardView />
 				</DrawerBody>
-				<DrawerFooter>
+				<DrawerFooter bg='gray.100' mt={0}>
 					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}
 					<Accordion allowMultiple={true} width='full'>
 						<WidgetAccordionItem heading='Saved Searches'>
