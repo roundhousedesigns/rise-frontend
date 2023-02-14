@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Heading, Wrap, useCheckboxGroup, Box } from '@chakra-ui/react';
+import { Heading, Wrap, useCheckboxGroup, Box, Text, Alert } from '@chakra-ui/react';
 import { SkillTerm } from '../lib/types';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
@@ -68,6 +68,6 @@ export default function SearchFilterSkills({ heading }: Props) {
 	) : (
 		// TODO implement "All Skills" button, which will append remaining Skills (excluding those already present) to the list.
 		// Same as "More Skills", but without "exclude" parameter.
-		<>No job-specific skills found. Show all?</>
+		<Alert status='info'>No job-specific skills found.</Alert>
 	);
 }

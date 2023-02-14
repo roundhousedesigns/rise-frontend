@@ -16,11 +16,17 @@ export default function SearchWizardView() {
 		searchDispatch,
 	} = useContext(SearchContext);
 	const navigate = useNavigate();
-	const { data, loading, error } = useCandidateSearch(filters);
+	const { data, loading, error, refetch } = useCandidateSearch(filters);
 
-	// Any time we have new results, update the SearchContext
+	// Any time we change the filters, refetch the results
 	useEffect(() => {
-		// TODO probably memoize this
+		if (!filters.position.department || !filters.position.jobs) return;
+
+		refetch({ ...filters });
+	}, [filters]);
+
+	// Update the SearchContext with the new results whenever the query returns
+	useEffect(() => {
 		if (isEqual(data?.filteredCandidates, results)) return;
 
 		searchDispatch({
@@ -29,7 +35,7 @@ export default function SearchWizardView() {
 				results: data?.filteredCandidates,
 			},
 		});
-	}, [data?.filteredCandidates, results]);
+	}, [data?.filteredCandidates]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();

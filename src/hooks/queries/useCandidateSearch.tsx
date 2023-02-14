@@ -1,5 +1,5 @@
 /**
- * useCandidateSearch hook.
+ * useCandidateSearch hook. Query candidates (users) based on selected search parameters.
  *
  * // TODO Document me.
  */
@@ -8,8 +8,8 @@ import { gql, useQuery } from '@apollo/client';
 import { SearchParams } from '../../lib/types';
 
 const QUERY_CANDIDATES = gql`
-	query FilteredCandidates($skills: [ID] = []) {
-		filteredCandidates(skills: $skills)
+	query FilteredCandidates($skills: [ID] = [], $department: String = "", $jobs: [ID] = "") {
+		filteredCandidates(skills: $skills, department: $department, jobs: $jobs)
 	}
 `;
 
@@ -18,18 +18,20 @@ const QUERY_CANDIDATES = gql`
  *
  * Queries candidates (users) based on selected search parameters.
  *
- * @param {Array} skills - An array of skill IDs.
- *
- * @returns {object} The query result object.
+ * @param {SearchParams} filters The search parameters.
+ * @returns {object} The query result and the filters.
  */
 export const useCandidateSearch = (filters: SearchParams) => {
-	const result = useQuery(QUERY_CANDIDATES, {
+	const {
+		position: { department, jobs },
+		skills,
+	} = filters;
+
+	return useQuery(QUERY_CANDIDATES, {
 		variables: {
-			department: filters.department,
-			jobs: filters.jobs && filters.jobs.length > 0 ? filters.jobs : [],
-			skills: filters.skills && filters.skills.length > 0 ? filters.skills : [],
+			department: department ? department : '',
+			jobs: jobs && jobs.length > 0 ? jobs : [],
+			skills: skills && skills.length > 0 ? skills : [],
 		},
 	});
-
-	return result;
 };

@@ -94,7 +94,9 @@ export interface LoginInput {
  * The data shape for a search query.
  */
 export interface SearchParams {
+	position: {
+		department?: string;
+		jobs?: string[];
+	};
 	skills?: string[];
-	department?: string;
-	jobs?: string[];
 }
