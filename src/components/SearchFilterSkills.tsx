@@ -26,17 +26,22 @@ export default function SearchFilterSkills({ heading }: Props) {
 		});
 	};
 
+	const { getCheckboxProps, setValue } = useCheckboxGroup({
+		defaultValue: [],
+		onChange: handleToggleTerm,
+	});
+
+	// Set the RadioGroup value on initial render
+	useEffect(() => {
+		setValue(search.skills);
+	}, []);
+
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
 		if (search.skills.length === 0) {
 			setValue([]);
 		}
 	}, [search.skills.length]);
-
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
 
 	return data?.jobSkills?.length > 0 && !loading && !error ? (
 		<Box>

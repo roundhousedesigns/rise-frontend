@@ -23,6 +23,11 @@ export default function SearchFilterDepartment({ heading }: Props) {
 		});
 	};
 
+	// Set the CheckboxGroup value on initial render
+	useEffect(() => {
+		setValue(search.position.jobs);
+	}, []);
+
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
 		if (search.position.jobs.length === 0) {

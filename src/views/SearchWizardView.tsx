@@ -56,12 +56,12 @@ export default function SearchWizardView() {
 					)}
 
 					<Flex gap={2}>
-						{position.department && position.jobs.length && skills.length > 0 && (
-							//  TODO Close Drawer if open when submitting a Search
+						{position.department && position.jobs.length > 0 ? (
+							// TODO Close Drawer if open when submitting a Search
 							<Button type='submit' size='lg'>
 								Search
 							</Button>
-						)}
+						) : null}
 						<Button type='reset' size='lg' onClick={handleReset}>
 							Reset
 						</Button>

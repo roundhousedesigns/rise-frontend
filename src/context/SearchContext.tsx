@@ -6,6 +6,7 @@ interface SearchState {
 		jobs: string[];
 	};
 	skills: string[];
+	searchActive: boolean;
 	results: number[];
 }
 
@@ -25,6 +26,7 @@ const initialSearchState: SearchState = {
 		jobs: [],
 	},
 	skills: [],
+	searchActive: false,
 	results: [],
 };
 
@@ -46,6 +48,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					jobs:
 						action.payload.department === state.position.department ? [...state.position.jobs] : [],
 				},
+				searchActive: true,
 			};
 
 		case 'SET_JOBS':
@@ -57,6 +60,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.position,
 					jobs: action.payload.jobs,
 				},
+				searchActive: true,
 			};
 
 		case 'SET_SKILLS':
@@ -65,6 +69,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			return {
 				...state,
 				skills: action.payload.skills,
+				searchActive: true,
 			};
 
 		case 'SET_RESULTS':

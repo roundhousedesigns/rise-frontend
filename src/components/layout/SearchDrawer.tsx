@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
 	Drawer,
 	DrawerOverlay,
@@ -9,7 +10,6 @@ import {
 	Stack,
 	Heading,
 	IconButton,
-	ButtonGroup,
 	Button,
 	Spacer,
 } from '@chakra-ui/react';
@@ -17,6 +17,7 @@ import { FiX } from 'react-icons/fi';
 
 import SearchList from '../common/SearchList';
 import WidgetAccordionItem from '../common/WidgetAccordionItem';
+import { SearchContext } from '../../context/SearchContext';
 
 // TODO: Remove this when we have real data
 import { _devSavedSearches, _devRecentSearches, _devSavedCandidates } from '../../lib/_devData';
@@ -27,10 +28,15 @@ interface Props {
 	onClose: () => void;
 }
 
-const handleSearchSubmit = () => {};
-const handleSearchReset = () => {};
-
 export default function SearchDrawer({ isOpen, onClose }: Props) {
+	const { search, searchDispatch } = useContext(SearchContext);
+
+	const handleSearchReset = () => {
+		searchDispatch({
+			type: 'RESET',
+		});
+	};
+
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='lg'>
 			<DrawerOverlay />
@@ -48,9 +54,11 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							Search
 						</Heading>
 						<Spacer flex='0 0 1em' />
-						<Button colorScheme='red' onClick={handleSearchReset} size='md'>
-							Reset Filters
-						</Button>
+						{search.searchActive ? (
+							<Button colorScheme='red' onClick={handleSearchReset} size='md'>
+								Reset Filters
+							</Button>
+						) : null}
 						<Spacer />
 						<IconButton
 							icon={<FiX />}

@@ -23,18 +23,23 @@ export default function SearchFilterDepartment({ heading }: Props) {
 		});
 	};
 
+	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+		name: 'department',
+		defaultValue: '',
+		onChange: handleToggleTerm,
+	});
+
+	// Set the RadioGroup value on initial render
+	useEffect(() => {
+		setValue(search.position.department);
+	}, []);
+
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
 		if (search.position.department === '') {
 			setValue('');
 		}
 	}, [search.position.department]);
-
-	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
-		name: 'department',
-		defaultValue: '',
-		onChange: handleToggleTerm,
-	});
 
 	const group = getRootProps();
 
