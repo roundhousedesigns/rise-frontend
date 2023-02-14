@@ -11,10 +11,16 @@ import {
 	Link,
 	Stack,
 	useMediaQuery,
+	Menu,
+	MenuButton,
+	MenuList,
+	MenuItem,
+	MenuDivider,
+	MenuOptionGroup,
 } from '@chakra-ui/react';
 
 // TODO switch logout icon to simple nav menu w/ logout in it
-import { FiMoreVertical, FiLogOut, FiSearch } from 'react-icons/fi';
+import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
@@ -55,7 +61,7 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<LoggedIn>
-								{searchActive && (
+								{searchActive ? (
 									<IconButton
 										ref={drawerButtonRef}
 										icon={<FiSearch />}
@@ -64,7 +70,7 @@ export default function Header() {
 										fontSize='3xl'
 										onClick={drawerOnOpen}
 									/>
-								)}
+								) : null}
 							</LoggedIn>
 							<Link as={RouterLink} to='/'>
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
@@ -91,13 +97,34 @@ export default function Header() {
 									</>
 								) : null}
 
-								<IconButton
-									variant='round'
-									borderColor='white'
-									aria-label='Log out'
-									icon={<FiLogOut />}
-									onClick={handleLogout}
-								/>
+								<Box>
+									{/* HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug. */}
+									<Menu>
+										<MenuButton
+											aria-label='Menu'
+											as={IconButton}
+											variant='round'
+											bg='brand.blue'
+											_active={{ bg: 'brand.cyan' }}
+											icon={<FiMenu />}
+											size='lg'
+										/>
+										<MenuList color='black'>
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+													Dashboard
+												</MenuItem>
+												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+													Settings
+												</MenuItem>
+											</MenuOptionGroup>
+											<MenuDivider />
+											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
+								</Box>
 							</LoggedIn>
 						</Stack>
 					</Container>
