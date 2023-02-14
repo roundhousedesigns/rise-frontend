@@ -20,6 +20,7 @@ export default function SearchWizardView() {
 
 	// Any time we have new results, update the SearchContext
 	useEffect(() => {
+		// TODO probably memoize this
 		if (isEqual(data?.filteredCandidates, results)) return;
 
 		searchDispatch({
@@ -50,16 +51,16 @@ export default function SearchWizardView() {
 					<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 					{/* Step 2 */}
-					{filters.position.department && (
+					{filters.position.department ? (
 						<SearchFilterJobs heading='What job(s) are you looking to fill?' />
-					)}
+					) : null}
 
 					{/* Step 3 */}
 					{filters.position.department &&
-						filters.position.jobs &&
-						filters.position.jobs.length > 0 && (
-							<SearchFilterSkills heading='What skills are you looking for?' />
-						)}
+					filters.position.jobs &&
+					filters.position.jobs.length > 0 ? (
+						<SearchFilterSkills heading='What skills are you looking for?' />
+					) : null}
 
 					<Flex gap={2}>
 						{searchActive ? (

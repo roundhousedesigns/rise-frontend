@@ -16,7 +16,7 @@ const QUERY_CANDIDATES = gql`
 /**
  * useCandidateSearch hook.
  *
- * Queries `skill` terms related to a department and/or job (`department` taxonomy)
+ * Queries candidates (users) based on selected search parameters.
  *
  * @param {Array} skills - An array of skill IDs.
  *
