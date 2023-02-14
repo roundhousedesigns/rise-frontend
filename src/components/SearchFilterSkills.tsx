@@ -13,8 +13,8 @@ interface Props {
 export default function SearchFilterSkills({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const { data, loading, error } = useRelatedSkills(
-		search.position.department,
-		search.position.jobs
+		search.filters.position.department,
+		search.filters.position.jobs
 	);
 
 	const handleToggleTerm = (terms: string[]) => {
@@ -33,15 +33,15 @@ export default function SearchFilterSkills({ heading }: Props) {
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
-		setValue(search.skills);
+		setValue(search.filters.skills);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.skills.length === 0) {
+		if (search.filters.skills.length === 0) {
 			setValue([]);
 		}
-	}, [search.skills.length]);
+	}, [search.filters.skills.length]);
 
 	return data?.jobSkills?.length > 0 && !loading && !error ? (
 		<Box>

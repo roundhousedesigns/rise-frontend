@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isEqual } from 'lodash';
 import { FormControl, Flex, Button, Stack } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
@@ -7,27 +8,30 @@ import SearchFilterJobs from '../components/SearchFilterJobs';
 import SearchFilterSkills from '../components/SearchFilterSkills';
 
 import { SearchContext } from '../context/SearchContext';
-import { useUsersWithSkills } from '../hooks/queries/useUsersWithSkills';
+import { useCandidateSearch } from '../hooks/queries/useCandidateSearch';
 
 export default function SearchWizardView() {
 	const {
-		search: { position, skills },
+		search: { filters, searchActive, results },
 		searchDispatch,
 	} = useContext(SearchContext);
-
 	const navigate = useNavigate();
+	const { data, loading, error } = useCandidateSearch(filters);
 
-	const { data, loading, error } = useUsersWithSkills(skills);
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
+	// Any time we have new results, update the SearchContext
+	useEffect(() => {
+		if (isEqual(data?.filteredCandidates, results)) return;
 
 		searchDispatch({
 			type: 'SET_RESULTS',
 			payload: {
-				results: data.usersWithSkills,
+				results: data?.filteredCandidates,
 			},
 		});
+	}, [data?.filteredCandidates, results]);
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
 
 		navigate('/results');
 	};
@@ -46,17 +50,19 @@ export default function SearchWizardView() {
 					<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 					{/* Step 2 */}
-					{position.department && (
+					{filters.position.department && (
 						<SearchFilterJobs heading='What job(s) are you looking to fill?' />
 					)}
 
 					{/* Step 3 */}
-					{position.department && position.jobs.length > 0 && (
-						<SearchFilterSkills heading='What skills are you looking for?' />
-					)}
+					{filters.position.department &&
+						filters.position.jobs &&
+						filters.position.jobs.length > 0 && (
+							<SearchFilterSkills heading='What skills are you looking for?' />
+						)}
 
 					<Flex gap={2}>
-						{position.department && position.jobs.length > 0 ? (
+						{searchActive ? (
 							// TODO Close Drawer if open when submitting a Search
 							<Button type='submit' size='lg'>
 								Search

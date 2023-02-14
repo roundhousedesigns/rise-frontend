@@ -89,3 +89,12 @@ export interface LoginInput {
 	login: string;
 	password: string;
 }
+
+/**
+ * The data shape for a search query.
+ */
+export interface SearchParams {
+	skills?: string[];
+	department?: string;
+	jobs?: string[];
+}

@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
 	Drawer,
 	DrawerOverlay,
@@ -21,7 +22,7 @@ import WidgetAccordionItem from '../common/WidgetAccordionItem';
 import { SearchContext } from '../../context/SearchContext';
 
 // TODO: Remove this when we have real data
-import { _devSavedSearches, _devRecentSearches, _devSavedCandidates } from '../../lib/_devData';
+import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
 import SearchWizardView from '../../views/SearchWizardView';
 
 interface Props {
@@ -31,9 +32,12 @@ interface Props {
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
+	const navigate = useNavigate();
 
-	// TODO implement Search button here
-	const handleSearchSubmit = () => {};
+	const handleSearchSubmit = () => {
+		onClose();
+		navigate('/results');
+	};
 
 	const handleSearchReset = () => {
 		searchDispatch({

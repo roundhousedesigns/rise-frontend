@@ -1,11 +1,13 @@
 import { createContext, useReducer } from 'react';
 
 interface SearchState {
-	position: {
-		department: string;
-		jobs: string[];
+	filters: {
+		position: {
+			department: string;
+			jobs: string[];
+		};
+		skills: string[];
 	};
-	skills: string[];
 	searchActive: boolean;
 	results: number[];
 }
@@ -21,11 +23,13 @@ interface SearchAction {
 }
 
 const initialSearchState: SearchState = {
-	position: {
-		department: '',
-		jobs: [],
+	filters: {
+		position: {
+			department: '',
+			jobs: [],
+		},
+		skills: [],
 	},
-	skills: [],
 	searchActive: false,
 	results: [],
 };
@@ -42,11 +46,12 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 
 			return {
 				...state,
-				position: {
-					...state.position,
-					department: action.payload.department,
-					jobs:
-						action.payload.department === state.position.department ? [...state.position.jobs] : [],
+				filters: {
+					...state.filters,
+					position: {
+						...state.filters.position,
+						department: action.payload.department,
+					},
 				},
 				searchActive: true,
 			};
@@ -56,9 +61,12 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 
 			return {
 				...state,
-				position: {
-					...state.position,
-					jobs: action.payload.jobs,
+				filters: {
+					...state.filters,
+					position: {
+						...state.filters.position,
+						jobs: action.payload.jobs,
+					},
 				},
 				searchActive: true,
 			};
@@ -68,7 +76,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 
 			return {
 				...state,
-				skills: action.payload.skills,
+				filters: {
+					...state.filters,
+					skills: action.payload.skills,
+				},
 				searchActive: true,
 			};
 

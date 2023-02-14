@@ -30,7 +30,7 @@ export default function Header() {
 
 	const { setLoggedInUser } = useContext(AuthContext);
 	const {
-		search: { results: searchResults },
+		search: { searchActive },
 	} = useContext(SearchContext);
 	const { logoutMutation } = useLogout();
 
@@ -55,7 +55,7 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<LoggedIn>
-								{searchResults.length > 0 && (
+								{searchActive && (
 									<IconButton
 										ref={drawerButtonRef}
 										icon={<FiSearch />}

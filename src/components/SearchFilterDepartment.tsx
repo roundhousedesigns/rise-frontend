@@ -31,15 +31,15 @@ export default function SearchFilterDepartment({ heading }: Props) {
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
-		setValue(search.position.department);
+		setValue(search.filters.position.department);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.position.department === '') {
+		if (search.filters.position.department === '') {
 			setValue('');
 		}
-	}, [search.position.department]);
+	}, [search.filters.position.department]);
 
 	const group = getRootProps();
 

@@ -12,7 +12,7 @@ interface Props {
 
 export default function SearchFilterDepartment({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const { data, loading, error } = usePositions(parseInt(search.position.department));
+	const { data, loading, error } = usePositions(parseInt(search.filters.position.department));
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -25,15 +25,15 @@ export default function SearchFilterDepartment({ heading }: Props) {
 
 	// Set the CheckboxGroup value on initial render
 	useEffect(() => {
-		setValue(search.position.jobs);
+		setValue(search.filters.position.jobs);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.position.jobs.length === 0) {
+		if (search.filters.position.jobs.length === 0) {
 			setValue([]);
 		}
-	}, [search.position.jobs.length]);
+	}, [search.filters.position.jobs.length]);
 
 	const { getCheckboxProps, setValue } = useCheckboxGroup({
 		defaultValue: [],
