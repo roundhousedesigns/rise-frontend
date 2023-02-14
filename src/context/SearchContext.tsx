@@ -6,6 +6,7 @@ interface SearchState {
 		jobs: string[];
 	};
 	skills: string[];
+	results: number[];
 }
 
 interface SearchAction {
@@ -14,6 +15,7 @@ interface SearchAction {
 		department?: string;
 		jobs?: string[];
 		skills?: string[];
+		results?: number[];
 	};
 }
 
@@ -23,6 +25,7 @@ const initialSearchState: SearchState = {
 		jobs: [],
 	},
 	skills: [],
+	results: [],
 };
 
 export const SearchContext = createContext({
@@ -54,6 +57,22 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.position,
 					jobs: action.payload.jobs,
 				},
+			};
+
+		case 'SET_SKILLS':
+			if (!action.payload?.skills) return state;
+
+			return {
+				...state,
+				skills: action.payload.skills,
+			};
+
+		case 'SET_RESULTS':
+			if (!action.payload?.results) return state;
+
+			return {
+				...state,
+				results: action.payload.results,
 			};
 
 		case 'RESET':

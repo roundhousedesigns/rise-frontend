@@ -4,6 +4,8 @@ import {
 	DrawerContent,
 	DrawerHeader,
 	DrawerBody,
+	DrawerFooter,
+	DrawerCloseButton,
 	Accordion,
 	Stack,
 	Heading,
@@ -11,12 +13,13 @@ import {
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
-import CandidateList from '../CandidateList';
+import CandidateList from '../common/CandidateList';
 import SearchList from '../common/SearchList';
 import WidgetAccordionItem from '../common/WidgetAccordionItem';
 
 // TODO: Remove this when we have real data
 import { _devSavedSearches, _devRecentSearches, _devSavedCandidates } from '../../lib/_devData';
+import SearchWizardView from '../../views/SearchWizardView';
 
 interface Props {
 	isOpen: boolean;
@@ -25,7 +28,7 @@ interface Props {
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='sm'>
+		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='md'>
 			<DrawerOverlay />
 			<DrawerContent>
 				<DrawerHeader
@@ -38,7 +41,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading size='lg' color='white'>
-							HEADING
+							Search
 						</Heading>
 						<IconButton
 							icon={<FiX />}
@@ -51,11 +54,11 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
+					<SearchWizardView />
+				</DrawerBody>
+				<DrawerFooter>
 					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}
-					<Accordion allowMultiple={true}>
-						<WidgetAccordionItem heading='Saved Candidates'>
-							<CandidateList candidates={_devSavedCandidates} />
-						</WidgetAccordionItem>
+					<Accordion allowMultiple={true} width='full'>
 						<WidgetAccordionItem heading='Saved Searches'>
 							<SearchList items={_devSavedSearches} />
 						</WidgetAccordionItem>
@@ -63,7 +66,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							<SearchList items={_devRecentSearches} />
 						</WidgetAccordionItem>
 					</Accordion>
-				</DrawerBody>
+				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
 	);

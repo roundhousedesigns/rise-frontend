@@ -15,6 +15,7 @@ export interface CandidateData {
 	firstName: string;
 	lastName: string;
 	selfTitle: string;
+	image?: string;
 }
 
 /**
@@ -59,6 +60,12 @@ export interface UserProfileParams {
 export interface PositionTerm {
 	id: number;
 	parentId: number;
+	slug: string;
+	name: string;
+}
+
+export interface SkillTerm {
+	id: number;
 	slug: string;
 	name: string;
 }

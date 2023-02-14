@@ -27,6 +27,8 @@ const QUERY_CREDITS = gql`
  *
  * Queries `position` terms. Specify 0
  *
+ * @param {number} parent - The parent term ID.
+ *
  * @returns {object} The query result object.
  */
 export const usePositions = (parent = 0) => {

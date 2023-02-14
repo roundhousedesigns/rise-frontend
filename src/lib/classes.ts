@@ -35,6 +35,7 @@ export class User {
 export class Candidate extends User {
 	fullName: string = '';
 	selfTitle?: string;
+	image?: string;
 
 	constructor(params: CandidateData) {
 		super({

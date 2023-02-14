@@ -32,5 +32,7 @@ export const socialLink = (network: string, value: string): string => {
  * @returns {string} The full name.
  */
 export function fullName(firstName: string, lastName: string): string {
-	return `${firstName} ${lastName}`;
+	if (firstName && lastName) return `${firstName} ${lastName}`;
+	else if (firstName && !lastName) return firstName;
+	else return lastName;
 }

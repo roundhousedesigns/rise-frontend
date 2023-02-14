@@ -15,8 +15,6 @@ export default function Profile() {
 
 	const profile = data?.user ? new UserProfile(data.user, data.credits.nodes) : null;
 
-	console.info(profile, loading, error);
-
 	return (
 		<Page title='My Profile'>
 			{profile && !loading && !error ? (

@@ -1,9 +1,9 @@
-import SearchWizard from '../views/SearchWizardView';
 import Page from '../components/Page';
+import SearchWizard from '../views/SearchWizardView';
 
 export default function Search() {
 	return (
-		<Page title="Search">
+		<Page title='Search'>
 			<SearchWizard />
 		</Page>
 	);

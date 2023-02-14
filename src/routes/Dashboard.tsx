@@ -5,7 +5,6 @@ import { AuthContext } from '../context/AuthContext';
 
 export default function Dashboard() {
 	const { loggedInUser } = useContext(AuthContext);
-	console.info(loggedInUser);
 
 	return (
 		<Page title={`Hi, ${loggedInUser.firstName}!`}>
