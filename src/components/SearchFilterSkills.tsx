@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Heading, Wrap, useCheckboxGroup, Box, Text, Alert } from '@chakra-ui/react';
+import { Heading, Wrap, useCheckboxGroup, Box, Alert } from '@chakra-ui/react';
 import { SkillTerm } from '../lib/types';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 

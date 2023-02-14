@@ -1,4 +1,4 @@
-import { Alert, Container, List, ListItem, Text } from '@chakra-ui/react';
+import { List, ListItem, Text } from '@chakra-ui/react';
 import { Candidate } from '../../lib/classes';
 
 import CandidateItem from './CandidateItem';
