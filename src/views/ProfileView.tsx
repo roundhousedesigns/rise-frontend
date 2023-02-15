@@ -157,14 +157,14 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{profile.media && profile.media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Flex mt={4} w='full' flexWrap='wrap' gap={4}>
+					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
 						{profile.media.map((item: string, index: React.Key) => (
-							// TODO make these videos responsive, but still maintain aspect ratio in the <Flex>
+							// TODO Improve video display w/ responsiveness and grid
 							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />
 							</Box>
 						))}
-					</Flex>
+					</Stack>
 				</Box>
 			)}
 		</Stack>
