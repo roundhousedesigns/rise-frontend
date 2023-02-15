@@ -8,7 +8,7 @@ export default function SearchList({ items }: Props) {
 	return (
 		<List>
 			{items.map((i) => (
-				<ListItem key={i} mb={4}>
+				<ListItem key={i} mb={2}>
 					<Text>{i}</Text>
 				</ListItem>
 			))}
