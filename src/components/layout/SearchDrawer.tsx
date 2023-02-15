@@ -36,6 +36,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	const handleSearchSubmit = () => {
 		navigate('/results');
+		onClose();
 	};
 
 	const handleSearchReset = () => {
@@ -46,7 +47,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='lg'>
-			<DrawerOverlay />
+			<DrawerOverlay bg='blackAlpha.200' />
 			<DrawerContent>
 				<DrawerHeader
 					borderBottomWidth='1px'

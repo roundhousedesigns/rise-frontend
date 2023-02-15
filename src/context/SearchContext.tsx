@@ -53,6 +53,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					position: {
 						...state.filters.position,
 						department: action.payload.department,
+						// Clear jobs
+						jobs: [],
 					},
 				},
 				searchActive: true,
@@ -69,6 +71,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 						...state.filters.position,
 						jobs: action.payload.jobs,
 					},
+					// Clear skills
+					skills: [],
 				},
 				searchActive: true,
 			};

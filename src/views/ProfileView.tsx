@@ -22,6 +22,7 @@ import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
+import profilePlaceholder from '../assets/_devimages/doggo-2.jpg';
 
 interface Props {
 	profile: UserProfile | null;
@@ -54,13 +55,17 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				>
 					{loading && <Spinner alignSelf='center' />}
 					{isLargerThanMd ? (
-						<Image
-							src={profile.image}
-							alt={`${profile.name}'s picture`}
-							loading='eager'
-							fit='cover'
-							w='xs'
-						/>
+						profile.image ? (
+							<Image
+								src={profile.image}
+								alt={`${profile.name}'s picture`}
+								loading='eager'
+								fit='cover'
+								w='xs'
+							/>
+						) : (
+							<Avatar size='2xl' name={`${profile.name}'s picture`} mx={2} />
+						)
 					) : (
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
 					)}

@@ -10,6 +10,10 @@ import SearchFilterSkills from '../components/SearchFilterSkills';
 import { SearchContext } from '../context/SearchContext';
 import { useCandidateSearch } from '../hooks/queries/useCandidateSearch';
 
+interface Props {
+	showButtons?: boolean;
+}
+
 export default function SearchWizardView({ showButtons = true }: Props) {
 	const {
 		search: { filters, searchActive, results },

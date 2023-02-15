@@ -9,10 +9,17 @@ export default function SearchResultsView() {
 		search: { results },
 	} = useContext(SearchContext);
 
+	const resultsString =
+		results.length === 0
+			? 'No results.'
+			: results.length === 1
+			? '1 result.'
+			: `${results.length} results.`;
+
 	return results.length > 0 ? (
 		<Box>
 			<Text fontSize='sm' pb={2}>
-				Showing X of Y search results.
+				{resultsString}
 			</Text>
 			<CandidateList userIds={results} />
 		</Box>
