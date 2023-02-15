@@ -94,8 +94,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'RESET':
-		default:
 			return initialSearchState;
+
+		default:
+			console.info('SearchContext default case... this probably indicates a bug, friendo.');
+			return state;
 	}
 }
 

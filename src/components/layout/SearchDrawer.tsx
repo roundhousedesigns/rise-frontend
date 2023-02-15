@@ -35,7 +35,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const navigate = useNavigate();
 
 	const handleSearchSubmit = () => {
-		onClose();
 		navigate('/results');
 	};
 
@@ -84,7 +83,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
-					<SearchWizardView />
+					<SearchWizardView showButtons={false} />
 				</DrawerBody>
 				<DrawerFooter mt={0} fontSize='sm'>
 					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}

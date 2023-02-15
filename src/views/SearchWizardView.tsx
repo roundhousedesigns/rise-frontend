@@ -10,7 +10,7 @@ import SearchFilterSkills from '../components/SearchFilterSkills';
 import { SearchContext } from '../context/SearchContext';
 import { useCandidateSearch } from '../hooks/queries/useCandidateSearch';
 
-export default function SearchWizardView() {
+export default function SearchWizardView({ showButtons = true }: Props) {
 	const {
 		search: { filters, searchActive, results },
 		searchDispatch,
@@ -70,17 +70,19 @@ export default function SearchWizardView() {
 						<SearchFilterSkills heading='What skills are you looking for?' />
 					) : null}
 
-					<Flex gap={2}>
-						{searchActive ? (
-							// TODO Close Drawer if open when submitting a Search
-							<Button type='submit' size='lg'>
-								Search
+					{showButtons ? (
+						<Flex gap={2}>
+							{searchActive ? (
+								// TODO Close Drawer if open when submitting a Search
+								<Button type='submit' size='lg'>
+									Search
+								</Button>
+							) : null}
+							<Button type='reset' size='lg' onClick={handleReset}>
+								Reset
 							</Button>
-						) : null}
-						<Button type='reset' size='lg' onClick={handleReset}>
-							Reset
-						</Button>
-					</Flex>
+						</Flex>
+					) : null}
 				</Stack>
 			</FormControl>
 		</form>

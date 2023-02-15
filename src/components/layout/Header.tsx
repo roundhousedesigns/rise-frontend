@@ -35,9 +35,9 @@ export default function Header() {
 	const drawerButtonRef = useRef(null);
 
 	const { setLoggedInUser } = useContext(AuthContext);
-	const {
-		search: { searchActive },
-	} = useContext(SearchContext);
+	// const {
+	// 	search: { searchActive },
+	// } = useContext(SearchContext);
 	const { logoutMutation } = useLogout();
 
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
@@ -61,16 +61,16 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<LoggedIn>
-								{searchActive ? (
-									<IconButton
-										ref={drawerButtonRef}
-										icon={<FiSearch />}
-										aria-label='Search for candidates'
-										variant='invisible'
-										fontSize='3xl'
-										onClick={drawerOnOpen}
-									/>
-								) : null}
+								{/* {searchActive ? ( */}
+								<IconButton
+									ref={drawerButtonRef}
+									icon={<FiSearch />}
+									aria-label='Search for candidates'
+									variant='invisible'
+									fontSize='3xl'
+									onClick={drawerOnOpen}
+								/>
+								{/* ) : null} */}
 							</LoggedIn>
 							<Link as={RouterLink} to='/'>
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />

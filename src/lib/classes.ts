@@ -112,8 +112,3 @@ export class Credit {
 		Object.assign(this, params);
 	}
 }
-
-// TODO build SearchFilters class
-// class Search {
-// 	constructor(...params: any[]) {}
-// }
