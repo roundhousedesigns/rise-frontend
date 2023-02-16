@@ -22,7 +22,6 @@ import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
-import profilePlaceholder from '../assets/_devimages/doggo-2.jpg';
 
 interface Props {
 	profile: UserProfile | null;

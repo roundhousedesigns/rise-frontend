@@ -28,16 +28,12 @@ import LoggedIn from '../LoggedIn';
 
 import { useLogout } from '../../hooks/mutations/useLogout';
 import { AuthContext } from '../../context/AuthContext';
-import { SearchContext } from '../../context/SearchContext';
 
 export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
 	const { setLoggedInUser } = useContext(AuthContext);
-	// const {
-	// 	search: { searchActive },
-	// } = useContext(SearchContext);
 	const { logoutMutation } = useLogout();
 
 	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
