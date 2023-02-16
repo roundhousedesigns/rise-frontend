@@ -10,11 +10,14 @@ import {
 	Stack,
 	ListItem,
 	Card,
-	useMediaQuery,
 	Avatar,
 	Tag,
 	Spinner,
 	UnorderedList,
+	Editable,
+	EditablePreview,
+	EditableInput,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { isEmpty } from 'lodash';
@@ -26,13 +29,14 @@ import CreditItem from '../components/common/CreditItem';
 interface Props {
 	profile: UserProfile | null;
 	loading: boolean;
+	editable: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
+export default function ProfileView({ profile, loading, editable }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	/**
@@ -71,18 +75,19 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
 						<Flex alignItems='center'>
-							<Heading size='xl' mr={2}>
-								{profile.name}
-							</Heading>
-							<Tag colorScheme='cyan' size='sm'>
-								{profile.pronouns}
-							</Tag>
+							<Editable defaultValue={profile.name} isDisabled={!editable}>
+								<EditablePreview as={Heading} mr={2} fontWeight='medium' />
+								<EditableInput fontSize='3xl' />
+							</Editable>
+
+							<Editable defaultValue={profile.pronouns} isDisabled={!editable}>
+								<EditablePreview as={Tag} colorScheme='cyan' size='sm' />
+								<EditableInput />
+							</Editable>
 						</Flex>
-						<Box>
-							<Text fontSize='xl' lineHeight='short' my={0}>
-								{profile.selfTitle && profile.selfTitle}
-							</Text>
-						</Box>
+						<Text fontSize='xl' lineHeight='short' my={0}>
+							{profile.selfTitle && profile.selfTitle}
+						</Text>
 
 						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
 							<Box pb={3}>
