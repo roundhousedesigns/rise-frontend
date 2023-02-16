@@ -5,6 +5,7 @@ import {
 	CreditParams,
 	Socials,
 	PositionTerm,
+	SkillTerm,
 } from './types';
 
 /**
@@ -104,11 +105,14 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions!: {
-		nodes: PositionTerm[];
-	};
+	positions: PositionTerm[]; // TODO Split this collection into departments and jobs.
+	skills: SkillTerm[] = [];
 
 	constructor(params: CreditParams) {
-		Object.assign(this, params);
+		this.title = params.title;
+		this.venue = params.venue;
+		this.year = params.year;
+		this.positions = params.positions.nodes;
+		this.skills = params.skills.nodes;
 	}
 }

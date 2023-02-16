@@ -80,6 +80,9 @@ export interface CreditParams {
 	positions: {
 		nodes: PositionTerm[];
 	};
+	skills: {
+		nodes: SkillTerm[];
+	};
 }
 
 /**

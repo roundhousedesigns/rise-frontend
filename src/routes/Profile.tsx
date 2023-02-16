@@ -7,7 +7,8 @@ import ErrorAlert from '../components/common/ErrorAlert';
 import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
-import { UserProfile } from '../lib/classes';
+import { CreditParams } from '../lib/types';
+import { Credit, UserProfile } from '../lib/classes';
 
 export default function Profile() {
 	const {
@@ -19,7 +20,9 @@ export default function Profile() {
 	const userId = params.userId ? parseInt(params.userId) : loggedInId;
 	const { data, loading, error } = useUserProfile(userId);
 
-	const profile = data?.user ? new UserProfile(data.user, data.credits.nodes) : null;
+	const preparedCredits = data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
+
+	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
 	return (
 		<Page title={params.userId ? '' : 'My Profile'}>
