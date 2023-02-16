@@ -1,5 +1,5 @@
 import { Credit } from '../../lib/classes';
-import { Box, Text } from '@chakra-ui/react';
+import { Card, Text, useMediaQuery } from '@chakra-ui/react';
 
 import { PositionTerm } from '../../lib/types';
 
@@ -9,42 +9,41 @@ interface Props {
 
 export default function CreditItem({ credit }: Props) {
 	const { title, positions, venue, year } = credit;
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const positionsString = () =>
 		positions.nodes.map((position: PositionTerm) => position.name).join(', ');
 
-	const Separator = () => (
-		<Text as='span' px={2}>
-			{' '}
-			&bull;
-		</Text>
-	);
+	const Separator = () =>
+		isLargerThanMd ? (
+			<Text as='span' px={1}>
+				&bull;
+			</Text>
+		) : (
+			<br />
+		);
 
 	// TODO Accordion the first line, pull down to expose skills
 
 	return (
-		<Box>
+		<Card my={3}>
 			<Text fontSize='lg'>
 				<Text as='span' fontWeight='bold'>
 					{title}
-				</Text>{' '}
-				<Text as='span' color='gray.700' fontStyle='italic' pl={{ base: 0, md: 2 }}>
+					{year ? ` (${year})` : ''}
+				</Text>
+				<Separator />
+				<Text as='span' color='gray.700' fontStyle='italic' pl={{ base: 0, md: 2 }} fontSize='md'>
 					{venue}
 				</Text>
-				{positions.nodes && positions.nodes.length > 0 && (
-					<Text as='span'>
+				{positions.nodes && positions.nodes.length > 0 ? (
+					<Text as='span' fontSize='md'>
 						{' '}
 						<Separator />
 						<Text as='span'>{positionsString()}</Text>
 					</Text>
-				)}
-				{year && (
-					<Text as='span'>
-						{' '}
-						<Separator /> {year}
-					</Text>
-				)}
+				) : null}
 			</Text>
-		</Box>
+		</Card>
 	);
 }

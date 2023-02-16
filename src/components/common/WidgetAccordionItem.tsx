@@ -16,12 +16,12 @@ export default function WidgetAccordionItem({ heading, children }: Props) {
 	return (
 		<AccordionItem>
 			<AccordionButton>
-				<Box as='span' flex='1' textAlign='left'>
+				<Box as='span' flex='1' textAlign='left' fontSize='md'>
 					{heading}
 				</Box>
 				<AccordionIcon />
 			</AccordionButton>
-			<AccordionPanel pb={4} mb={4}>
+			<AccordionPanel pb={2} mb={2} fontSize='sm'>
 				{children}
 			</AccordionPanel>
 		</AccordionItem>

@@ -77,7 +77,6 @@ export default function SearchWizardView({ showButtons = true }: Props) {
 					{showButtons ? (
 						<Flex gap={2}>
 							{searchActive ? (
-								// TODO Close Drawer if open when submitting a Search
 								<Button type='submit' size='lg'>
 									Search
 								</Button>

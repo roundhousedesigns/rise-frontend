@@ -14,8 +14,7 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 	return (
 		<Box as='label'>
 			<input {...input} hidden />
-			{/* TODO Dark mode */}
-			{/* TODO Accessibility using a div as a checkbox? */}
+			{/* TODO Check accessibility using a div as a checkbox? */}
 			<Box
 				{...checkbox}
 				{...htmlProps}

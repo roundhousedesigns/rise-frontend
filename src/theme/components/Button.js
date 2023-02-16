@@ -13,6 +13,9 @@ export default defineStyleConfig({
 			border: 'none',
 			bg: 'blackAlpha.700',
 			color: 'white',
+			_hover: {
+				bg: 'blackAlpha.600',
+			},
 		},
 		invisible: {
 			border: 'none',

@@ -19,8 +19,7 @@ import {
 	MenuOptionGroup,
 } from '@chakra-ui/react';
 
-// TODO switch logout icon to simple nav menu w/ logout in it
-import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome } from 'react-icons/fi';
+import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
@@ -36,7 +35,7 @@ export default function Header() {
 	const { setLoggedInUser } = useContext(AuthContext);
 	const { logoutMutation } = useLogout();
 
-	const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
@@ -72,7 +71,7 @@ export default function Header() {
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
 							</Link>
 							<LoggedIn redirect={false}>
-								{isLargerThan768 ? (
+								{isLargerThanMd ? (
 									<>
 										<Spacer />
 										<Stack
@@ -93,8 +92,11 @@ export default function Header() {
 									</>
 								) : null}
 
-								<Box>
-									{/* HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug. */}
+								<Box pl={2}>
+									{
+										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+									}
 									<Menu>
 										<MenuButton
 											aria-label='Menu'
@@ -106,6 +108,19 @@ export default function Header() {
 											size='lg'
 										/>
 										<MenuList color='black'>
+											{isLargerThanMd ? (
+												<>
+													<MenuOptionGroup>
+														<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
+															My Profile
+														</MenuItem>
+														<MenuItem as={RouterLink} to='/search' icon={<FiSearch />}>
+															Search
+														</MenuItem>
+													</MenuOptionGroup>
+													<MenuDivider />
+												</>
+											) : null}
 											<MenuOptionGroup>
 												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
 													Dashboard
