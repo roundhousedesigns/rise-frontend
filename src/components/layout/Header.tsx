@@ -19,7 +19,6 @@ import {
 	MenuOptionGroup,
 } from '@chakra-ui/react';
 
-// TODO switch logout icon to simple nav menu w/ logout in it
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
@@ -96,8 +95,11 @@ export default function Header() {
 									</>
 								) : null}
 
-								<Box>
-									{/* HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug. */}
+								<Box pl={2}>
+									{
+										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+									}
 									<Menu>
 										<MenuButton
 											aria-label='Menu'

@@ -13,8 +13,7 @@ export default function RadioButton(props: Props): React.ReactElement {
 
 	return (
 		<Box as='label'>
-			<input {...input} hidden />
-			{/* // TODO Dark mode */}
+ 			<input {...input} hidden />
 			<Box
 				{...checkbox}
 				cursor='pointer'

@@ -27,6 +27,8 @@ const socialIcon = (label: string, name: string, value: string, icon: React.Reac
 export default function SocialLinks({ socials, websiteUrl }: Props): JSX.Element {
 	const { facebook, twitter, instagram, linkedin } = socials;
 
+	// TODO Unify socials and websites in a less hacky way
+
 	return (
 		<Stack direction='row' spacing={4}>
 			{linkedin && socialIcon('LinkedIn', 'linkedin', linkedin, <FiLinkedin />)}

@@ -26,7 +26,7 @@ export default function CreditItem({ credit }: Props) {
 	// TODO Accordion the first line, pull down to expose skills
 
 	return (
-		<Card my={2}>
+		<Card my={3}>
 			<Text fontSize='lg'>
 				<Text as='span' fontWeight='bold'>
 					{title}

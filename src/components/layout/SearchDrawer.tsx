@@ -87,7 +87,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<SearchWizardView showButtons={false} />
 				</DrawerBody>
 				<DrawerFooter mt={0}>
-					{/* TODO Store persistent expand/collapse state (doesn't have to persist on reload, though) */}
 					<Accordion allowMultiple={true} width='full'>
 						<WidgetAccordionItem heading='Saved Searches'>
 							<SearchList items={_devSavedSearches} />
