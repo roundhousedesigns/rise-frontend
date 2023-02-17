@@ -14,6 +14,7 @@ import cardTheme from './components/Card';
 import buttonTheme from './components/Button';
 import menuTheme from './components/Menu';
 import accordionTheme from './components/Accordion';
+import { MultiSelectTheme } from 'chakra-multiselect';
 
 // Config
 const config = {
@@ -33,6 +34,7 @@ const overrides = {
 		Button: buttonTheme,
 		Menu: menuTheme,
 		Accordion: accordionTheme,
+		MultiSelect: MultiSelectTheme,
 	},
 };
 

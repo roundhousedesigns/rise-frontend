@@ -14,9 +14,6 @@ import {
 	Tag,
 	Spinner,
 	UnorderedList,
-	Editable,
-	EditablePreview,
-	EditableInput,
 	useMediaQuery,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
@@ -25,6 +22,7 @@ import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
+import TextInput from '../components/common/inputs/TextInput';
 
 interface Props {
 	profile: UserProfile | null;
@@ -50,7 +48,7 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<Card py={6} bg='blackAlpha.100'>
+			<Card py={6} bg='blackAlpha.100' gap={4}>
 				<Flex
 					gap={5}
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -73,37 +71,39 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
 					)}
 
-					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
+					<Box>
 						<Flex alignItems='center'>
-							<Editable
+							<TextInput
 								defaultValue={profile.name}
-								isDisabled={!editable}
+								editable={editable}
 								as={Heading}
 								mr={2}
 								fontWeight='medium'
-							>
-								<EditablePreview />
-								<EditableInput />
-							</Editable>
+								placeholder='your name'
+							/>
 
-							<Editable
-								defaultValue={profile.pronouns}
-								isDisabled={!editable}
+							{/* TODO `Tag` Editable sucks right now. */}
+							<TextInput
+								defaultValue={profile.pronouns ? profile.pronouns : ''}
+								editable={editable}
 								as={Tag}
 								bg='cyan.200'
 								fontSize='xs'
-							>
-								<EditablePreview />
-								<EditableInput />
-							</Editable>
+								placeholder='your pronouns'
+								styles={{ display: 'block' }}
+							/>
 						</Flex>
-						<Editable fontSize='xl' lineHeight='short' my={0} defaultValue={profile.selfTitle}>
-							<EditablePreview />
-							<EditableInput />
-						</Editable>
+
+						<TextInput
+							defaultValue={profile.selfTitle ? profile.selfTitle : ''}
+							editable={editable}
+							as={Text}
+							placeholder='your profession or title'
+						/>
 
 						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
 							<Box pb={3}>
+								{/* TODO Edit social links inline */}
 								<SocialLinks socials={profile.socials} websiteUrl={profile.websiteUrl} />
 							</Box>
 						)}
@@ -139,8 +139,18 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 							<Button>Phone{/* profile.phone */}</Button>
 							<Button>Save{/* bookmark this user */}</Button>
 						</ButtonGroup>
-					</Stack>
+					</Box>
 				</Flex>
+				{editable && (
+					<Box bg='whiteAlpha.600' flex='1 1 25%' borderRadius='lg' p={4}>
+						<Heading size='md' textAlign='left' color='blackAlpha.700'>
+							Personal Info
+						</Heading>
+						<Text fontSize='sm'>
+							These optional fields will be searchable, but will not appear on your public profile.
+						</Text>
+					</Box>
+				)}
 			</Card>
 
 			{profile.credits && profile.credits.length > 0 && (
@@ -156,7 +166,7 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 			{profile.description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{profile.description}</Text>
+					<TextInput defaultValue={profile.description} editable={editable} textarea />
 				</Box>
 			)}
 
