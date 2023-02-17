@@ -34,7 +34,7 @@ interface Props {
 
 /**
  * @param {UserProfile} profile The user profile data.
- * @returns {JSX.Element} The Props component.
+ * @returns {JSX.Element} The profile view.
  */
 export default function ProfileView({ profile, loading, editable }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
@@ -75,19 +75,32 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 
 					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
 						<Flex alignItems='center'>
-							<Editable defaultValue={profile.name} isDisabled={!editable}>
-								<EditablePreview as={Heading} mr={2} fontWeight='medium' />
-								<EditableInput fontSize='3xl' />
+							<Editable
+								defaultValue={profile.name}
+								isDisabled={!editable}
+								as={Heading}
+								mr={2}
+								fontWeight='medium'
+							>
+								<EditablePreview />
+								<EditableInput />
 							</Editable>
 
-							<Editable defaultValue={profile.pronouns} isDisabled={!editable}>
-								<EditablePreview as={Tag} colorScheme='cyan' size='sm' />
+							<Editable
+								defaultValue={profile.pronouns}
+								isDisabled={!editable}
+								as={Tag}
+								bg='cyan.200'
+								fontSize='xs'
+							>
+								<EditablePreview />
 								<EditableInput />
 							</Editable>
 						</Flex>
-						<Text fontSize='xl' lineHeight='short' my={0}>
-							{profile.selfTitle && profile.selfTitle}
-						</Text>
+						<Editable fontSize='xl' lineHeight='short' my={0} defaultValue={profile.selfTitle}>
+							<EditablePreview />
+							<EditableInput />
+						</Editable>
 
 						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
 							<Box pb={3}>
