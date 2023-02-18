@@ -1,14 +1,15 @@
+import { useEffect, useRef } from 'react';
 import {
 	BoxProps,
 	Editable,
-	EditableInput,
+	EditableTextarea,
 	EditablePreview,
 	useEditableControls,
 	IconButton,
 	ButtonGroup,
-	Tooltip,
 } from '@chakra-ui/react';
-import { FiCheck, FiX } from 'react-icons/fi';
+import autosize from 'autosize';
+import { FiCheck, FiX, FiEdit } from 'react-icons/fi';
 
 interface Props extends BoxProps {
 	defaultValue: string;
@@ -45,11 +46,28 @@ function EditableControls(): JSX.Element | null {
 	) : null;
 }
 
-export default function TextInput({ defaultValue, editable, styles, ...rest }: Props): JSX.Element {
+export default function TextareaInput({
+	defaultValue,
+	editable,
+	styles,
+	...rest
+}: Props): JSX.Element {
+	const ref = useRef();
+
+	useEffect(() => {
+		if (!ref.current) return;
+
+		autosize(ref.current);
+		return () => {
+			ref.current && autosize.destroy(ref.current);
+		};
+	}, []);
+
 	return (
 		<Editable defaultValue={defaultValue} isDisabled={!editable} {...styles} {...rest}>
 			<EditablePreview />
-			<EditableInput />
+			{/* TODO fix ref typing */}
+			<EditableTextarea rows={8} ref={ref} />
 			<EditableControls />
 		</Editable>
 	);

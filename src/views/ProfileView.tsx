@@ -23,6 +23,7 @@ import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
 import TextInput from '../components/common/inputs/TextInput';
+import TextareaInput from '../components/common/inputs/TextareaInput';
 
 interface Props {
 	profile: UserProfile | null;
@@ -166,7 +167,7 @@ export default function ProfileView({ profile, loading, editable }: Props): JSX.
 			{profile.description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<TextInput defaultValue={profile.description} editable={editable} textarea />
+					<TextareaInput defaultValue={profile.description} editable={editable} />
 				</Box>
 			)}
 
