@@ -10,11 +10,11 @@ import {
 	Stack,
 	ListItem,
 	Card,
-	useMediaQuery,
 	Avatar,
 	Tag,
 	Spinner,
 	UnorderedList,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { isEmpty } from 'lodash';
@@ -22,6 +22,8 @@ import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
+import TextInput from '../components/common/inputs/TextInput';
+import TextareaInput from '../components/common/inputs/TextareaInput';
 
 interface Props {
 	profile: UserProfile | null;
@@ -30,9 +32,9 @@ interface Props {
 
 /**
  * @param {UserProfile} profile The user profile data.
- * @returns {JSX.Element} The Props component.
+ * @returns {JSX.Element} The profile view.
  */
-export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
+export default function EditProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	/**
@@ -46,7 +48,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<Card py={6} bg='blackAlpha.100'>
+			<Card py={6} bg='blackAlpha.100' gap={4}>
 				<Flex
 					gap={5}
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -69,23 +71,36 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
 					)}
 
-					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
+					<Box>
 						<Flex alignItems='center'>
-							<Heading size='xl' mr={2}>
-								{profile.name}
-							</Heading>
-							<Tag colorScheme='cyan' size='sm'>
-								{profile.pronouns}
-							</Tag>
+							<TextInput
+								defaultValue={profile.name}
+								as={Heading}
+								mr={2}
+								fontWeight='medium'
+								placeholder='your name'
+							/>
+
+							{/* TODO `Tag` Editable sucks right now. */}
+							<TextInput
+								defaultValue={profile.pronouns ? profile.pronouns : ''}
+								as={Tag}
+								bg='cyan.200'
+								fontSize='xs'
+								placeholder='your pronouns'
+								styles={{ display: 'block' }}
+							/>
 						</Flex>
-						<Box>
-							<Text fontSize='xl' lineHeight='short' my={0}>
-								{profile.selfTitle && profile.selfTitle}
-							</Text>
-						</Box>
+
+						<TextInput
+							defaultValue={profile.selfTitle ? profile.selfTitle : ''}
+							as={Text}
+							placeholder='your profession or title'
+						/>
 
 						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
 							<Box pb={3}>
+								{/* TODO Edit social links inline */}
 								<SocialLinks socials={profile.socials} websiteUrl={profile.websiteUrl} />
 							</Box>
 						)}
@@ -121,8 +136,16 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<Button>Phone{/* profile.phone */}</Button>
 							<Button>Save{/* bookmark this user */}</Button>
 						</ButtonGroup>
-					</Stack>
+					</Box>
 				</Flex>
+				<Box bg='whiteAlpha.600' flex='1 1 25%' borderRadius='lg' p={4}>
+					<Heading size='md' textAlign='left' color='blackAlpha.700'>
+						Personal Info
+					</Heading>
+					<Text fontSize='sm'>
+						These optional fields will be searchable, but will not appear on your public profile.
+					</Text>
+				</Box>
 			</Card>
 
 			{profile.credits && profile.credits.length > 0 && (
@@ -138,7 +161,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{profile.description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{profile.description}</Text>
+					<TextareaInput defaultValue={profile.description} />
 				</Box>
 			)}
 

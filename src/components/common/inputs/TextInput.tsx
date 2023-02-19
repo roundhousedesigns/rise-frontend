@@ -12,7 +12,6 @@ import { FiCheck, FiX } from 'react-icons/fi';
 
 interface Props extends BoxProps {
 	defaultValue: string;
-	editable: boolean;
 	styles?: any;
 }
 
@@ -45,9 +44,9 @@ function EditableControls(): JSX.Element | null {
 	) : null;
 }
 
-export default function TextInput({ defaultValue, editable, styles, ...rest }: Props): JSX.Element {
+export default function TextInput({ defaultValue, styles, ...rest }: Props): JSX.Element {
 	return (
-		<Editable defaultValue={defaultValue} isDisabled={!editable} {...styles} {...rest}>
+		<Editable defaultValue={defaultValue} {...styles} {...rest}>
 			<EditablePreview />
 			<EditableInput />
 			<EditableControls />

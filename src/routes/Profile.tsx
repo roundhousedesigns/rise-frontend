@@ -27,7 +27,7 @@ export default function Profile() {
 	return (
 		<Page title={params.userId ? '' : 'My Profile'}>
 			{profile && !loading && !error ? (
-				<ProfileView profile={profile} loading={loading} editable={loggedInId === userId} />
+				<ProfileView profile={profile} loading={loading} />
 			) : loading ? (
 				<>Loading...</>
 			) : error ? (

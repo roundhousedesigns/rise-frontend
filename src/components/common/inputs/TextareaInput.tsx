@@ -13,7 +13,6 @@ import { FiCheck, FiX, FiEdit } from 'react-icons/fi';
 
 interface Props extends BoxProps {
 	defaultValue: string;
-	editable: boolean;
 	styles?: any;
 }
 
@@ -46,13 +45,8 @@ function EditableControls(): JSX.Element | null {
 	) : null;
 }
 
-export default function TextareaInput({
-	defaultValue,
-	editable,
-	styles,
-	...rest
-}: Props): JSX.Element {
-	const ref = useRef();
+export default function TextareaInput({ defaultValue, styles, ...rest }: Props): JSX.Element {
+	const ref = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -64,9 +58,8 @@ export default function TextareaInput({
 	}, []);
 
 	return (
-		<Editable defaultValue={defaultValue} isDisabled={!editable} {...styles} {...rest}>
+		<Editable defaultValue={defaultValue} {...styles} {...rest}>
 			<EditablePreview />
-			{/* TODO fix ref typing */}
 			<EditableTextarea rows={8} ref={ref} />
 			<EditableControls />
 		</Editable>
