@@ -17,6 +17,8 @@ export default function Page({ title, actions, children }: Props) {
 			) : null}
 			{actions ? actions : null}
 
+			{/* bastards. */}
+
 			{children}
 		</Wrap>
 	);
