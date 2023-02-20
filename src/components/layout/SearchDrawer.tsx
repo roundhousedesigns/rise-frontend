@@ -50,7 +50,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			<DrawerOverlay bg='blackAlpha.200' />
 			<DrawerContent>
 				<DrawerHeader
-					borderBottomWidth='1px'
+					borderBottomw='1px'
 					fontSize='2xl'
 					py={6}
 					bg='blackAlpha.800'
@@ -87,7 +87,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<SearchWizardView showButtons={false} />
 				</DrawerBody>
 				<DrawerFooter mt={0}>
-					<Accordion allowMultiple={true} width='full'>
+					<Accordion allowMultiple={true} w='full'>
 						<WidgetAccordionItem heading='Saved Searches'>
 							<SearchList items={_devSavedSearches} />
 						</WidgetAccordionItem>

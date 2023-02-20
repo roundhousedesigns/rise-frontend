@@ -25,6 +25,19 @@ export class User {
 			id: params && params.id ? Number(params.id) : 0,
 		});
 	}
+
+	/**
+	 * Generate a full name from a first and last name.
+	 *
+	 * @returns {string} The full name.
+	 */
+	fullName(): string {
+		const { firstName, lastName } = this;
+
+		if (firstName && lastName) return `${firstName} ${lastName}`;
+		else if (firstName && !lastName) return firstName;
+		else return lastName;
+	}
 }
 
 /**
@@ -34,7 +47,6 @@ export class User {
  * @implements {CandidateData}
  */
 export class Candidate extends User {
-	fullName: string = '';
 	selfTitle?: string;
 	image?: string;
 
@@ -47,6 +59,10 @@ export class Candidate extends User {
 
 		Object.assign(this, params);
 	}
+
+	fullName() {
+		return super.fullName();
+	}
 }
 
 /**
@@ -55,7 +71,6 @@ export class Candidate extends User {
  * @implements {UserProfileParams}
  * @implements {Socials}
  */
-// TODO Does this really need to extend the `User` class?
 export class UserProfile extends User {
 	name: string = '';
 	contactEmail: string = '';
@@ -93,6 +108,10 @@ export class UserProfile extends User {
 				facebook: userParams.facebook || '',
 			},
 		});
+	}
+
+	fullName() {
+		return super.fullName();
 	}
 }
 

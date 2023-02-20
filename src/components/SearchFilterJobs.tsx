@@ -42,10 +42,10 @@ export default function SearchFilterDepartment({ heading }: Props) {
 
 	return !loading && !error ? (
 		<Box>
-			<Heading size='lg' mb={6} width='full' borderBottom='2px' borderColor='gray.600'>
+			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' width='full'>
+			<Wrap justifyContent='flex-start' alignItems='center' w='full'>
 				{data.positions.nodes.map((term: PositionTerm) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });
 

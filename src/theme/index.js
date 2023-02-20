@@ -1,7 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 
 // Global overrides
-import { styles } from './styles';
+import { styles } from './global';
 
 // Foundational style overrides
 import { colors } from './foundations/colors';
@@ -14,6 +14,7 @@ import cardTheme from './components/Card';
 import buttonTheme from './components/Button';
 import menuTheme from './components/Menu';
 import accordionTheme from './components/Accordion';
+import editableTheme from './components/Editable';
 
 // Config
 const config = {
@@ -33,6 +34,7 @@ const overrides = {
 		Button: buttonTheme,
 		Menu: menuTheme,
 		Accordion: accordionTheme,
+		Editable: editableTheme,
 	},
 };
 

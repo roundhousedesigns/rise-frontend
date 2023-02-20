@@ -46,10 +46,10 @@ export default function SearchFilterSkills({ heading }: Props) {
 
 	return data?.jobSkills?.length > 0 && !loading && !error ? (
 		<Box>
-			<Heading size='lg' mb={6} width='full' borderBottom='2px' borderColor='gray.600'>
+			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' width='full'>
+			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
 				{data.jobSkills?.map((term: SkillTerm) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });
 

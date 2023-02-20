@@ -7,6 +7,10 @@
 - Saved searches
 - Might not need MultiSelect component
 
+## FIX
+
+- [ ] Fix usage of `<FormControl>`, which I believe should be used on individual inputs, not groups of them. See <https://chakra-ui.com/docs/components/form-control>
+
 ## Dashboard
 
 - Home (cases):

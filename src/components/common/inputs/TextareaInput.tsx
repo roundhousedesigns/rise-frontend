@@ -7,6 +7,7 @@ import {
 	useEditableControls,
 	IconButton,
 	ButtonGroup,
+	// Tooltip,
 } from '@chakra-ui/react';
 import autosize from 'autosize';
 import { FiCheck, FiX, FiEdit } from 'react-icons/fi';
@@ -45,7 +46,7 @@ function EditableControls(): JSX.Element | null {
 	) : null;
 }
 
-export default function TextareaInput({ defaultValue, styles, ...rest }: Props): JSX.Element {
+export default function EditableTextareaInput({ defaultValue, styles, ...rest }: Props): JSX.Element {
 	const ref = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
@@ -60,7 +61,7 @@ export default function TextareaInput({ defaultValue, styles, ...rest }: Props):
 	return (
 		<Editable defaultValue={defaultValue} {...styles} {...rest}>
 			<EditablePreview />
-			<EditableTextarea rows={8} ref={ref} />
+			<EditableTextarea rows={6} ref={ref} />
 			<EditableControls />
 		</Editable>
 	);

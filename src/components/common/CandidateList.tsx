@@ -19,9 +19,9 @@ export default function CandidateList({ userIds }: Props): JSX.Element {
 	} = useCandidates(userIds);
 
 	return preparedCandidates && !loading && !error ? (
-		<List alignItems='left' height='auto' width='full' gap={4} display='flex' flexWrap='wrap'>
+		<List alignItems='left'h='auto' w='full' gap={4} display='flex' flexWrap='wrap'>
 			{preparedCandidates.map((candidate: Candidate) => (
-				<ListItem key={candidate.id} width='full'>
+				<ListItem key={candidate.id} w='full'>
 					<CandidateItem candidate={candidate} />
 				</ListItem>
 			))}

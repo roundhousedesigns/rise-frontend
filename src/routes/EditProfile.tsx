@@ -1,8 +1,7 @@
 import { useContext } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import Page from '../components/Page';
-import ProfileView from '../views/ProfileView';
+import EditProfileView from '../views/EditProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
 
 import { AuthContext } from '../context/AuthContext';
@@ -11,15 +10,10 @@ import { useUserProfile } from '../hooks/queries/useUserProfile';
 import { CreditParams } from '../lib/types';
 import { Credit, UserProfile } from '../lib/classes';
 
-export default function Profile() {
+export default function EditProfile() {
 	const {
-		loggedInUser: { id: loggedInId },
+		loggedInUser: { id: userId },
 	} = useContext(AuthContext);
-	const params = useParams();
-
-	// If no user ID is in the route, use the logged in user's ID.
-	const userId = params.userId ? parseInt(params.userId) : loggedInId;
-	const isLoggedIn = userId === loggedInId;
 
 	const { data, loading, error } = useUserProfile(userId);
 
@@ -27,12 +21,13 @@ export default function Profile() {
 
 	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
-	const EditButton = () => <Button as={Link} to='/profile/edit'>Edit Profile</Button>;
+	// TODO Implement Profile save
+	const SaveButton = () => <Button onClick={() => alert('save')}>Save</Button>;
 
 	return (
-		<Page title={isLoggedIn ? 'My Profile' : ''} actions={<EditButton />}>
+		<Page title={'Update Profile'} actions={<SaveButton />}>
 			{profile && !loading && !error ? (
-				<ProfileView profile={profile} loading={loading} />
+				<EditProfileView profile={profile} loading={loading} />
 			) : loading ? (
 				<>Loading...</>
 			) : error ? (
