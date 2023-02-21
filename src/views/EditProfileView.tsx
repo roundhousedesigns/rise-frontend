@@ -21,7 +21,6 @@ import {
 	EditableTextarea,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { isEmpty } from 'lodash';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import SocialLinks from '../components/common/SocialLinks';

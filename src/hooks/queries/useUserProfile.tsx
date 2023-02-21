@@ -27,6 +27,9 @@ const QUERY_USER = gql`
 			linkedin
 			facebook
 			firstName
+			genderIdentity(format: RENDERED)
+			identifyAs(format: RENDERED)
+			race(format: RENDERED)
 		}
 		credits(where: { author: $author }, last: $last) {
 			nodes {
