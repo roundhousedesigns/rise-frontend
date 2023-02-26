@@ -8,7 +8,6 @@ import {
 	VisuallyHidden,
 	// Tooltip,
 } from '@chakra-ui/react';
-import { FiCheck, FiX } from 'react-icons/fi';
 
 interface Props extends BoxProps {
 	defaultValue: string;

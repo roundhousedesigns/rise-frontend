@@ -39,6 +39,26 @@ interface Props {
  */
 export default function EditProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+	const {
+		image,
+		name,
+		firstName,
+		lastName,
+		pronouns,
+		selfTitle,
+		socials,
+		websiteUrl,
+		unions,
+		location,
+		education,
+		willTravel,
+		media,
+		description,
+		credits,
+		resume,
+		contactEmail,
+		phone,
+	} = profile || {};
 
 	/**
 	 * Generate the text to display for the 'will travel' field.
@@ -60,25 +80,19 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 					>
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
-							profile.image ? (
-								<Image
-									src={profile.image}
-									alt={`${profile.name}'s picture`}
-									loading='eager'
-									fit='cover'
-									w='xs'
-								/>
+							image ? (
+								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
 							) : (
-								<Avatar size='2xl' name={`${profile.name}'s picture`} mx={2} />
+								<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
 							)
 						) : (
-							<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
+							<Avatar size='2xl' src={image} name={`${name}'s picture`} />
 						)}
 
 						<Stack direction='column' gap={4}>
 							<Flex alignItems='flex-end'>
 								<EditableTextInput
-									defaultValue={profile.firstName}
+									defaultValue={firstName ? firstName : ''}
 									as={Heading}
 									mr={2}
 									fontWeight='medium'
@@ -86,7 +100,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									label='First Name'
 								/>
 								<EditableTextInput
-									defaultValue={profile.lastName}
+									defaultValue={lastName ? lastName : ''}
 									as={Heading}
 									label='Last Name'
 									mr={2}
@@ -96,7 +110,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 								{/* TODO `Tag` Editable sucks right now. */}
 								<EditableTextInput
-									defaultValue={profile.pronouns ? profile.pronouns : ''}
+									defaultValue={pronouns ? pronouns : ''}
 									as={Tag}
 									label='Pronouns'
 									fontSize='xs'
@@ -106,19 +120,20 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Flex>
 
 							<EditableTextInput
-								defaultValue={profile.selfTitle ? profile.selfTitle : ''}
+								defaultValue={selfTitle ? selfTitle : ''}
 								placeholder='Title'
 								label='Title/Trade/Profession'
 							/>
 
 							<Box pb={3}>
-								<SocialLinks socials={profile.socials} websiteUrl={profile.websiteUrl} />
+								{/* TODO Individal text fields for social links */}
+								<SocialLinks socials={socials} websiteUrl={websiteUrl} />
 							</Box>
 
 							<Box>
 								{/* TODO get all union fields */}
 								<Heading size='md'>Unions/Guilds</Heading>
-								<Text>{profile.unions?.join(', ')}</Text>
+								<Text>{unions?.join(', ')}</Text>
 							</Box>
 
 							<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
@@ -126,11 +141,11 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<Heading size='md'>Location/Homebase</Heading>
 									<Stack direction='row' justifyContent='flex-start' alignItems='center'>
 										<EditableTextInput
-											defaultValue={profile.location ? profile.location : ''}
+											defaultValue={location ? location : ''}
 											label='Location/Homebase'
 											labelVisuallyHidden={true}
 										/>
-										<Tag size='md' colorScheme={profile.willTravel ? 'green' : 'orange'}>
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
 											{willTravelText()}
 										</Tag>
 									</Stack>
@@ -143,9 +158,9 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								justifyContent='flex-start'
 								pt={2}
 							>
-								<Button>Resume{/* profile.resume */}</Button>
-								<Button>Email{/* profile.email */}</Button>
-								<Button>Phone{/* profile.phone */}</Button>
+								<Button>Resume{/* resume */}</Button>
+								<Button>Email{/* email */}</Button>
+								<Button>Phone{/* phone */}</Button>
 								<Button>Save{/* bookmark this user */}</Button>
 							</ButtonGroup>
 						</Stack>
@@ -164,20 +179,20 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{profile.credits.map((credit: Credit, index: Key) => (
+					{credits.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} />
 					))}
 				</Box>
 
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<EditableTextareaInput defaultValue={profile.description} />
+					<EditableTextareaInput defaultValue={description} />
 				</Box>
 
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
 					<UnorderedList textAlign='left' fontSize='lg' spacing={1} mt={2}>
-						{profile.education.map((item: string, index: React.Key) => (
+						{education.map((item: string, index: React.Key) => (
 							<ListItem key={index}>{item}</ListItem>
 						))}
 					</UnorderedList>
@@ -186,7 +201,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{profile.media.map((item: string, index: React.Key) => (
+						{media.map((item: string, index: React.Key) => (
 							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />
 							</Box>
