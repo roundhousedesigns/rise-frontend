@@ -15,10 +15,6 @@ import {
 	Spinner,
 	UnorderedList,
 	useMediaQuery,
-	FormControl,
-	FormLabel,
-	Textarea,
-	EditableTextarea,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
@@ -27,6 +23,9 @@ import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
 import EditableTextInput from '../components/common/inputs/EditableTextInput';
 import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 
 interface Props {
 	profile: UserProfile | null;
@@ -48,7 +47,6 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		selfTitle,
 		socials,
 		websiteUrl,
-		unions,
 		location,
 		education,
 		willTravel,
@@ -59,6 +57,15 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		contactEmail,
 		phone,
 	} = profile || {};
+
+	const {
+		data: {
+			genderIdentities: { nodes: genderIdentities = [] } = {},
+			personalIdentities: { nodes: personalIdentities = [] } = {},
+			racialIdentities: { nodes: racialIdentities = [] } = {},
+			unions: { nodes: unions = [] } = {},
+		} = {},
+	} = useUserTaxonomies() || {};
 
 	/**
 	 * Generate the text to display for the 'will travel' field.
@@ -131,9 +138,11 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Box>
 
 							<Box>
-								{/* TODO get all union fields */}
 								<Heading size='md'>Unions/Guilds</Heading>
-								<Text>{unions?.join(', ')}</Text>
+
+								<Box fontSize='xs'>
+									<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
+								</Box>
 							</Box>
 
 							<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
@@ -173,7 +182,38 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 						<Text fontSize='sm'>
 							These optional fields will be searchable, but will not appear on your public profile.
 						</Text>
-						{/* TODO advanced search */}
+						<Flex>
+							<Box flex='1 0 33%'>
+								<Heading size='md'>Gender Identity</Heading>
+								<Box fontSize='xs'>
+									<ProfileCheckboxGroup
+										filter='genderIdentity'
+										items={genderIdentities}
+										checked={[]}
+									/>
+								</Box>
+							</Box>
+							<Box flex='1 0 33%'>
+								<Heading size='md'>Racial Identity</Heading>
+								<Box fontSize='xs'>
+									<ProfileCheckboxGroup
+										filter='racialIdentity'
+										items={racialIdentities}
+										checked={[]}
+									/>
+								</Box>
+							</Box>
+							<Box flex='1 0 33%'>
+								<Heading size='md'>Personal Identity</Heading>
+								<Box fontSize='xs'>
+									<ProfileCheckboxGroup
+										filter='personalIdentity'
+										items={personalIdentities}
+										checked={[]}
+									/>
+								</Box>
+							</Box>
+						</Flex>
 					</Box>
 				</Card>
 

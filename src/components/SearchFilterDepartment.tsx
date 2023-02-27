@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
-import { Box, Heading, Wrap, useRadioGroup } from '@chakra-ui/react';
-import { PositionTerm } from '../lib/types';
+import { Box, Heading, Wrap, useRadioGroup, Spinner } from '@chakra-ui/react';
+import { FilterItem } from '../lib/types';
 import { usePositions } from '../hooks/queries/usePositions';
 import RadioButton from './common/RadioButton';
 
@@ -49,7 +49,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
-				{data.positions.nodes.map((term: PositionTerm) => {
+				{data.positions.nodes.map((term: FilterItem) => {
 					const radio = getRadioProps({ value: term.id.toString() });
 
 					return (
@@ -61,7 +61,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 			</Wrap>
 		</Box>
 	) : loading ? (
-		<>Loading...</>
+		<Spinner />
 	) : error ? (
 		<>Error</>
 	) : (

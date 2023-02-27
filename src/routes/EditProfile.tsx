@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Spinner } from '@chakra-ui/react';
 import Page from '../components/Page';
 import EditProfileView from '../views/EditProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
@@ -29,7 +29,7 @@ export default function EditProfile() {
 			{profile && !loading && !error ? (
 				<EditProfileView profile={profile} loading={loading} />
 			) : loading ? (
-				<>Loading...</>
+				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
 			) : (

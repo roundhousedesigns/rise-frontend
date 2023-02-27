@@ -7,6 +7,9 @@ interface SearchState {
 			jobs: string[];
 		};
 		skills: string[];
+		personal: {
+			unions: string[];
+		};
 	};
 	searchActive: boolean;
 	results: number[];
@@ -19,6 +22,10 @@ interface SearchAction {
 		jobs?: string[];
 		skills?: string[];
 		results?: number[];
+		personal?: {
+			filter: string;
+			items: string[];
+		};
 	};
 }
 
@@ -29,6 +36,9 @@ const initialSearchState: SearchState = {
 			jobs: [],
 		},
 		skills: [],
+		personal: {
+			unions: [],
+		},
 	},
 	searchActive: false,
 	results: [],
@@ -87,6 +97,20 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
+		case 'SET_PERSONAL_FILTER':
+			if (!action.payload?.personal) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					personal: {
+						...state.filters.personal,
+						[action.payload.personal.filter]: action.payload.personal.items,
+					},
+				},
+			};
+
 		case 'SET_RESULTS':
 			if (!action.payload?.results) return state;
 
@@ -95,11 +119,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				results: action.payload.results,
 			};
 
-		case 'RESET':
+		case 'RESET_SEARCH_FILTERS':
 			return initialSearchState;
 
 		default:
-			console.info('SearchContext default case... this probably indicates a bug, friendo.');
 			return state;
 	}
 }

@@ -29,6 +29,13 @@ const QUERY_USER_TAXONOMIES = gql`
 				name
 			}
 		}
+		unions {
+			nodes {
+				id: databaseId
+				slug
+				name
+			}
+		}
 	}
 `;
 
@@ -39,8 +46,10 @@ const QUERY_USER_TAXONOMIES = gql`
  *
  * @returns {object} The query result object.
  */
-export const useUserTaxonomies = () => {
+const useUserTaxonomies = () => {
 	const result = useQuery(QUERY_USER_TAXONOMIES);
 
 	return result;
 };
+
+export default useUserTaxonomies;

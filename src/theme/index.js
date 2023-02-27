@@ -15,6 +15,7 @@ import buttonTheme from './components/Button';
 import menuTheme from './components/Menu';
 import accordionTheme from './components/Accordion';
 import editableTheme from './components/Editable';
+import spinnerTheme from './components/Spinner';
 
 // Config
 const config = {
@@ -35,6 +36,7 @@ const overrides = {
 		Menu: menuTheme,
 		Accordion: accordionTheme,
 		Editable: editableTheme,
+		Spinner: spinnerTheme,
 	},
 };
 

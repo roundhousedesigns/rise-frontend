@@ -41,7 +41,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	const handleSearchReset = () => {
 		searchDispatch({
-			type: 'RESET',
+			type: 'RESET_SEARCH_FILTERS',
 		});
 	};
 

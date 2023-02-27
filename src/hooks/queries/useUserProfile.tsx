@@ -20,7 +20,6 @@ const QUERY_USER = gql`
 			resume
 			willTravel
 			media
-			unions
 			education
 			twitter
 			instagram

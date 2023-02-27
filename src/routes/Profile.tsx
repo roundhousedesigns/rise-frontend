@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button, ButtonGroup, Spinner } from '@chakra-ui/react';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
@@ -34,7 +34,7 @@ export default function Profile() {
 			{profile && !loading && !error ? (
 				<ProfileView profile={profile} loading={loading} />
 			) : loading ? (
-				<>Loading...</>
+				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
 			) : (

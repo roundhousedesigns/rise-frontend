@@ -4,8 +4,7 @@ import {
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	PositionTerm,
-	SkillTerm,
+	FilterItem,
 } from './types';
 
 /**
@@ -124,8 +123,8 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: PositionTerm[]; // TODO Split this collection into departments and jobs.
-	skills: SkillTerm[] = [];
+	positions: FilterItem[]; // TODO Split this collection into departments and jobs.
+	skills: FilterItem[] = [];
 
 	constructor(params: CreditParams) {
 		this.title = params.title;
