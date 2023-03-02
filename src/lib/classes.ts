@@ -82,7 +82,7 @@ export class UserProfile extends User {
 	location?: string;
 	resume?: string;
 	willTravel?: boolean | null;
-	education?: string[];
+	education?: string;
 	unions?: string[];
 	media?: string[];
 	socials?: Socials;
@@ -97,7 +97,8 @@ export class UserProfile extends User {
 
 		Object.assign(this, userParams, {
 			name: `${userParams.firstName} ${userParams.lastName}`,
-			education: userParams.education ? userParams.education.split('##') : [],
+			description: userParams.description ? userParams.description : '',
+			education: userParams.education ? userParams.education : '',
 			media: userParams.media ? userParams.media.split('##') : [],
 			credits: credits && credits.length > 0 ? [...credits] : [],
 			socials: {

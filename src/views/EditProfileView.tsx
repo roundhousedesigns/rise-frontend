@@ -226,16 +226,12 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<EditableTextareaInput defaultValue={description} />
+					<EditableTextareaInput defaultValue={description ? description : ''} />
 				</Box>
 
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<UnorderedList textAlign='left' fontSize='lg' spacing={1} mt={2}>
-						{education.map((item: string, index: React.Key) => (
-							<ListItem key={index}>{item}</ListItem>
-						))}
-					</UnorderedList>
+					<EditableTextareaInput defaultValue={education ? education : ''} />
 				</Box>
 
 				<Box>
