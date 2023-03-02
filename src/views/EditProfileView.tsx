@@ -134,7 +134,8 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 							<Box pb={3}>
 								{/* TODO Individal text fields for social links */}
-								<SocialLinks socials={socials} websiteUrl={websiteUrl} />
+								--SOCIAL LINK EDIT--
+								{/* <SocialLinks socials={socials} websiteUrl={websiteUrl} /> */}
 							</Box>
 
 							<Box>
@@ -219,7 +220,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits.map((credit: Credit, index: Key) => (
+					{credits?.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} />
 					))}
 				</Box>
@@ -237,7 +238,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media.map((item: string, index: React.Key) => (
+						{media?.map((item: string, index: React.Key) => (
 							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />
 							</Box>
