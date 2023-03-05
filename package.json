@@ -20,7 +20,7 @@
     "@fontsource/poppins": "^4.5.10",
     "framer-motion": "^8.5.0",
     "graphql": "^16.6.0",
-    "html-react-parser": "^3.0.8",
+    "html-react-parser": "^3.0.9",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
