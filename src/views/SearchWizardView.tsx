@@ -51,7 +51,7 @@ export default function SearchWizardView({ showButtons = true }: Props) {
 
 	const handleReset = () => {
 		searchDispatch({
-			type: 'RESET',
+			type: 'RESET_SEARCH_FILTERS',
 		});
 	};
 
@@ -59,6 +59,7 @@ export default function SearchWizardView({ showButtons = true }: Props) {
 		<form onSubmit={handleSubmit}>
 			<FormControl textAlign='left'>
 				<Stack direction='column' gap={8}>
+					{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
 					{/* Step 1 */}
 					<SearchFilterDepartment heading='Which department are you hiring for?' />
 

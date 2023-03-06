@@ -8,7 +8,7 @@ export default function Dashboard() {
 
 	return (
 		<Page title={`Hi, ${loggedInUser.firstName}!`}>
-			<Text>A Big Ole Dashboard Goes Here</Text>
+			<Text>A Dashboard with notices, alerts, settings, and/or links goes here.</Text>
 		</Page>
 	);
 }

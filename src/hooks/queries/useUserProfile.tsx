@@ -20,7 +20,6 @@ const QUERY_USER = gql`
 			resume
 			willTravel
 			media
-			unions
 			education
 			twitter
 			instagram
@@ -30,7 +29,7 @@ const QUERY_USER = gql`
 		}
 		credits(where: { author: $author }, last: $last) {
 			nodes {
-				databaseId
+				id: databaseId
 				title(format: RENDERED)
 				venue(format: RENDERED)
 				year(format: RENDERED)

@@ -6,6 +6,7 @@ import Login from '../../routes/Login';
 import Search from '../../routes/Search';
 import Results from '../../routes/Results';
 import Profile from '../../routes/Profile';
+import EditProfile from '../../routes/EditProfile';
 import Settings from '../../routes/Settings';
 import Account from '../../routes/Account';
 
@@ -29,8 +30,10 @@ export default function Main() {
 					<Route path='/login' element={<Login />} />
 					<Route path='/search' element={<Search />} />
 					<Route path='/results' element={<Results />} />
+					{/* MAYBE rethink /profile endpoints all being the same */}
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />
+					<Route path='/profile/edit' element={<EditProfile />} />
 					<Route path='/account' element={<Account />} />
 					<Route path='/settings' element={<Settings />} />
 				</Routes>

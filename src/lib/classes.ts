@@ -4,8 +4,7 @@ import {
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	PositionTerm,
-	SkillTerm,
+	FilterItem,
 } from './types';
 
 /**
@@ -25,6 +24,19 @@ export class User {
 			id: params && params.id ? Number(params.id) : 0,
 		});
 	}
+
+	/**
+	 * Generate a full name from a first and last name.
+	 *
+	 * @returns {string} The full name.
+	 */
+	fullName(): string {
+		const { firstName, lastName } = this;
+
+		if (firstName && lastName) return `${firstName} ${lastName}`;
+		else if (firstName && !lastName) return firstName;
+		else return lastName;
+	}
 }
 
 /**
@@ -34,7 +46,6 @@ export class User {
  * @implements {CandidateData}
  */
 export class Candidate extends User {
-	fullName: string = '';
 	selfTitle?: string;
 	image?: string;
 
@@ -47,6 +58,10 @@ export class Candidate extends User {
 
 		Object.assign(this, params);
 	}
+
+	fullName() {
+		return super.fullName();
+	}
 }
 
 /**
@@ -55,7 +70,6 @@ export class Candidate extends User {
  * @implements {UserProfileParams}
  * @implements {Socials}
  */
-// TODO Does this really need to extend the `User` class?
 export class UserProfile extends User {
 	name: string = '';
 	contactEmail: string = '';
@@ -68,7 +82,7 @@ export class UserProfile extends User {
 	location?: string;
 	resume?: string;
 	willTravel?: boolean | null;
-	education?: string[];
+	education?: string;
 	unions?: string[];
 	media?: string[];
 	socials?: Socials;
@@ -83,7 +97,8 @@ export class UserProfile extends User {
 
 		Object.assign(this, userParams, {
 			name: `${userParams.firstName} ${userParams.lastName}`,
-			education: userParams.education ? userParams.education.split('##') : [],
+			description: userParams.description ? userParams.description : '',
+			education: userParams.education ? userParams.education : '',
 			media: userParams.media ? userParams.media.split('##') : [],
 			credits: credits && credits.length > 0 ? [...credits] : [],
 			socials: {
@@ -93,6 +108,10 @@ export class UserProfile extends User {
 				facebook: userParams.facebook || '',
 			},
 		});
+	}
+
+	fullName() {
+		return super.fullName();
 	}
 }
 
@@ -105,8 +124,8 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: PositionTerm[]; // TODO Split this collection into departments and jobs.
-	skills: SkillTerm[] = [];
+	positions: FilterItem[]; // TODO Split this collection into departments and jobs.
+	skills: FilterItem[] = [];
 
 	constructor(params: CreditParams) {
 		this.title = params.title;

@@ -8,8 +8,8 @@ import { gql, useQuery } from '@apollo/client';
 import { SearchParams } from '../../lib/types';
 
 const QUERY_CANDIDATES = gql`
-	query FilteredCandidates($skills: [ID] = [], $department: String = "", $jobs: [ID] = "") {
-		filteredCandidates(skills: $skills, department: $department, jobs: $jobs)
+	query FilteredCandidates($skills: [ID] = [], $jobs: [ID] = "") {
+		filteredCandidates(skills: $skills, jobs: $jobs)
 	}
 `;
 
@@ -23,15 +23,16 @@ const QUERY_CANDIDATES = gql`
  */
 export const useCandidateSearch = (filters: SearchParams) => {
 	const {
-		position: { department, jobs },
+		position: { jobs },
 		skills,
 	} = filters;
 
-	return useQuery(QUERY_CANDIDATES, {
+	const result = useQuery(QUERY_CANDIDATES, {
 		variables: {
-			department: department ? department : '',
 			jobs: jobs && jobs.length > 0 ? jobs : [],
 			skills: skills && skills.length > 0 ? skills : [],
 		},
 	});
+
+	return result;
 };
