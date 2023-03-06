@@ -1,16 +1,16 @@
 import { useContext, useEffect } from 'react';
-import { Heading, Wrap, useCheckboxGroup, Box } from '@chakra-ui/react';
-import { PositionTerm } from '../lib/types';
+import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
+import { FilterItem } from '../lib/types';
+import { usePositions } from '../hooks/queries/usePositions';
 import CheckboxButton from './common/CheckboxButton';
 
-import { usePositions } from '../hooks/queries/usePositions';
 import { SearchContext } from '../context/SearchContext';
 
 interface Props {
 	heading: string;
 }
 
-export default function SearchFilterDepartment({ heading }: Props) {
+export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const { data, loading, error } = usePositions(parseInt(search.filters.position.department));
 
@@ -22,6 +22,11 @@ export default function SearchFilterDepartment({ heading }: Props) {
 			},
 		});
 	};
+
+	const { getCheckboxProps, setValue } = useCheckboxGroup({
+		defaultValue: [],
+		onChange: handleToggleTerm,
+	});
 
 	// Set the CheckboxGroup value on initial render
 	useEffect(() => {
@@ -35,33 +40,32 @@ export default function SearchFilterDepartment({ heading }: Props) {
 		}
 	}, [search.filters.position.jobs.length]);
 
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
-
-	return !loading && !error ? (
+	return (
 		<Box>
-			<Heading size='lg' mb={6} width='full' borderBottom='2px' borderColor='gray.600'>
-				{heading}
-			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' width='full'>
-				{data.positions.nodes.map((term: PositionTerm) => {
-					const checkbox = getCheckboxProps({ value: term.id.toString() });
+			{!loading && !error ? (
+				<>
+					<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
+						{heading}
+					</Heading>
+					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
+						{data.positions.nodes.map((term: FilterItem) => {
+							const checkbox = getCheckboxProps({ value: term.id.toString() });
 
-					return (
-						<CheckboxButton key={term.id} {...checkbox}>
-							{term.name}
-						</CheckboxButton>
-					);
-				})}
-			</Wrap>
+							return (
+								<CheckboxButton key={term.id} {...checkbox}>
+									{term.name}
+								</CheckboxButton>
+							);
+						})}
+					</Wrap>
+				</>
+			) : loading ? (
+				<Spinner />
+			) : error ? (
+				<>Error</>
+			) : (
+				<>Nada</>
+			)}
 		</Box>
-	) : loading ? (
-		<>Loading...</>
-	) : error ? (
-		<>Error</>
-	) : (
-		<>Nada</>
 	);
 }

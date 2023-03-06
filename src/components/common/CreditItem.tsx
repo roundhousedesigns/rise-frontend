@@ -1,7 +1,7 @@
 import { Credit } from '../../lib/classes';
 import { Card, Heading, Text, Flex, useMediaQuery, Tag } from '@chakra-ui/react';
 
-import { PositionTerm } from '../../lib/types';
+import { FilterItem } from '../../lib/types';
 
 interface Props {
 	credit: Credit;
@@ -11,7 +11,7 @@ export default function CreditItem({ credit }: Props) {
 	const { title, positions, venue, year, skills } = credit;
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
-	const positionsString = () => positions.map((position: PositionTerm) => position.name).join(', ');
+	const positionsString = () => positions.map((position: FilterItem) => position.name).join(', ');
 
 	// TODO Accordion the first line, pull down to expose skills
 
@@ -28,18 +28,12 @@ export default function CreditItem({ credit }: Props) {
 			</Flex>
 			<Flex alignItems='center'>
 				{positions && positions.length > 0 ? (
-					<Text fontSize='md'>
-						{/* TODO If jobs selected, show those. If not, just show departments. */}
-						<Text>{positionsString()}</Text>
-					</Text>
+					// TODO If jobs selected, show those. If not, just show departments.
+					<Text fontSize='md'>{positionsString()}</Text>
 				) : null}
-				{skills && skills.length > 0 ? (
-					<Text fontSize='md'>
-						{skills.map((skill) => (
-							<Tag key={skill.slug}>{skill.name}</Tag>
-						))}
-					</Text>
-				) : null}
+				{skills && skills.length > 0
+					? skills.map((skill) => <Tag key={skill.slug}>{skill.name}</Tag>)
+					: null}
 			</Flex>
 		</Card>
 	);
