@@ -1,19 +1,25 @@
 import React from 'react';
-import { Heading } from '@chakra-ui/react';
+import { Wrap, Heading } from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
+	actions?: React.ReactNode;
 	children: React.ReactNode;
 }
 
-export default function Page({ title, children }: Props) {
+export default function Page({ title, actions, children }: Props) {
 	return (
 		<>
-			{title ? (
-				<Heading variant="pageTitle" as="h1">
-					{title}
-				</Heading>
-			) : null}
+			<Wrap mb='8'>
+				{title ? (
+					<Heading variant='pageTitle' as='h1'>
+						{title}
+					</Heading>
+				) : null}
+
+				{actions ? actions : null}
+			</Wrap>
+
 			{children}
 		</>
 	);

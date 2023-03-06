@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
-import { Heading, Wrap, useCheckboxGroup, Box, Alert } from '@chakra-ui/react';
-import { SkillTerm } from '../lib/types';
+import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
+import { FilterItem } from '../lib/types';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
@@ -13,10 +13,7 @@ interface Props {
 
 export default function SearchFilterSkills({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const { data, loading, error } = useRelatedSkills(
-		search.filters.position.department,
-		search.filters.position.jobs
-	);
+	const { data, loading, error } = useRelatedSkills(search.filters.position.jobs);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -46,11 +43,11 @@ export default function SearchFilterSkills({ heading }: Props) {
 
 	return data?.jobSkills?.length > 0 && !loading && !error ? (
 		<Box>
-			<Heading size='lg' mb={6} width='full' borderBottom='2px' borderColor='gray.600'>
+			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' width='full'>
-				{data.jobSkills?.map((term: SkillTerm) => {
+			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
+				{data.jobSkills?.map((term: FilterItem) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 					return (
@@ -63,7 +60,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 			{/* TODO implement "More Skills" button, which will append remaining Skills (excluding those already present) to the list. */}
 		</Box>
 	) : loading ? (
-		<>Loading...</>
+		<Spinner />
 	) : error ? (
 		<ErrorAlert message={error.message} />
 	) : (
