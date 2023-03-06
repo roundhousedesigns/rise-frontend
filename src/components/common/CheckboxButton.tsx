@@ -41,7 +41,7 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 						bg: 'blue.500',
 					},
 				}}
-				px={5}
+				px={3}
 				py={2}
 			>
 				<Box {...getLabelProps}>{children}</Box>

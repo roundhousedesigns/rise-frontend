@@ -1,6 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Link } from '@chakra-ui/react';
-import { fullName } from '../../lib/utils';
 
 import { Candidate } from '../../lib/classes';
 
@@ -9,8 +8,6 @@ interface Props {
 }
 
 export default function CandidateItem({ candidate }: Props) {
-	const name = fullName(candidate.firstName, candidate.lastName);
-
 	return (
 		<Card py={2}>
 			<Flex
@@ -20,7 +17,13 @@ export default function CandidateItem({ candidate }: Props) {
 				flexWrap={{ base: 'wrap', md: 'nowrap' }}
 				gap={{ base: 'initial', md: 0 }}
 			>
-				<Avatar size='sm' name={name} flex='0 0 auto' mr={2} src={candidate.image} />
+				<Avatar
+					size='sm'
+					name={candidate.fullName()}
+					flex='0 0 auto'
+					mr={2}
+					src={candidate.image}
+				/>
 				<Text
 					fontSize='md'
 					fontWeight='normal'
@@ -30,7 +33,7 @@ export default function CandidateItem({ candidate }: Props) {
 					mb={{ base: 1, lg: 0 }}
 				>
 					<Link as={RouterLink} to={`/profile/${candidate.id}`}>
-						{name}
+						{candidate.fullName()}
 					</Link>
 				</Text>
 				<Text

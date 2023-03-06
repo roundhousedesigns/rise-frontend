@@ -47,7 +47,7 @@ export default function Header() {
 		<Box flex='0 0 auto' w='full'>
 			<LightMode>
 				<Box id='header' w='full' bg='black' py={3} color='white'>
-					<Container centerContent w='full' maxWidth='9xl'>
+					<Container centerContent w='full' maxW='9xl'>
 						<Stack
 							direction='row'
 							w='100%'

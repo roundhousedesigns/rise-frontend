@@ -1,4 +1,4 @@
-import { List, ListItem, Text } from '@chakra-ui/react';
+import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
 import { Candidate } from '../../lib/classes';
 
 import CandidateItem from './CandidateItem';
@@ -19,15 +19,15 @@ export default function CandidateList({ userIds }: Props): JSX.Element {
 	} = useCandidates(userIds);
 
 	return preparedCandidates && !loading && !error ? (
-		<List alignItems='left' height='auto' width='full' gap={4} display='flex' flexWrap='wrap'>
+		<List alignItems='left' h='auto' w='full' gap={4} display='flex' flexWrap='wrap'>
 			{preparedCandidates.map((candidate: Candidate) => (
-				<ListItem key={candidate.id} width='full'>
+				<ListItem key={candidate.id} w='full'>
 					<CandidateItem candidate={candidate} />
 				</ListItem>
 			))}
 		</List>
 	) : loading ? (
-		<Text>Loading...</Text>
+		<Spinner />
 	) : error ? (
 		<ErrorAlert message={error.message} />
 	) : (

@@ -23,16 +23,3 @@ export function socialLink(network: string, value: string): string {
 
 	return socialLinkBases[network] + value;
 }
-
-/**
- * Generate a full name from a first and last name.
- *
- * @param {string} firstName The first name.
- * @param {string} lastName The last name.
- * @returns {string} The full name.
- */
-export function fullName(firstName: string, lastName: string): string {
-	if (firstName && lastName) return `${firstName} ${lastName}`;
-	else if (firstName && !lastName) return firstName;
-	else return lastName;
-}

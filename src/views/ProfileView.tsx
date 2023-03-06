@@ -145,11 +145,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{profile.education && (
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<UnorderedList textAlign='left' fontSize='lg' spacing={1} mt={2}>
-						{profile.education.map((item: string, index: React.Key) => (
-							<ListItem key={index}>{item}</ListItem>
-						))}
-					</UnorderedList>
+					<Text>{profile.education}</Text>
 				</Box>
 			)}
 

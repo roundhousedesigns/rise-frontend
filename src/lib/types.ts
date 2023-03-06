@@ -55,16 +55,9 @@ export interface UserProfileParams {
 }
 
 /**
- * The data shape for a Production Position.
+ * The data shape for an individual search filter.
  */
-export interface PositionTerm {
-	id: number;
-	parentId: number;
-	slug: string;
-	name: string;
-}
-
-export interface SkillTerm {
+export interface FilterItem {
 	id: number;
 	slug: string;
 	name: string;
@@ -78,10 +71,10 @@ export interface CreditParams {
 	venue: string;
 	year: string;
 	positions: {
-		nodes: PositionTerm[];
+		nodes: FilterItem[];
 	};
 	skills: {
-		nodes: SkillTerm[];
+		nodes: FilterItem[];
 	};
 }
 
