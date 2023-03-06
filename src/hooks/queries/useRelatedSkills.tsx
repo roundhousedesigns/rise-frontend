@@ -7,8 +7,8 @@
 import { gql, useQuery } from '@apollo/client';
 
 const QUERY_RELATED_SKILLS = gql`
-	query RelatedSkillsQuery($department: String, $jobs: [ID!]) {
-		jobSkills(department: $department, jobs: $jobs) {
+	query RelatedSkillsQuery($jobs: [ID!]) {
+		jobSkills(jobs: $jobs) {
 			name
 			slug
 			id: databaseId
@@ -19,17 +19,15 @@ const QUERY_RELATED_SKILLS = gql`
 /**
  * usePositions hook.
  *
- * Queries `skill` terms related to a department and/or job (`department` taxonomy)
+ * Queries `skill` terms related to a job (`position` taxonomy)
  *
- * @param {string} department - An array of department IDs.
  * @param {Array} jobs - An array of job IDs.
  *
  * @returns {object} The query result object.
  */
-export const useRelatedSkills = (department: string = '', jobs: string[] = []) => {
+export const useRelatedSkills = (jobs: string[] = []) => {
 	const result = useQuery(QUERY_RELATED_SKILLS, {
 		variables: {
-			department,
 			jobs,
 		},
 	});

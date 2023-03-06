@@ -13,10 +13,7 @@ interface Props {
 
 export default function SearchFilterSkills({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const { data, loading, error } = useRelatedSkills(
-		search.filters.position.department,
-		search.filters.position.jobs
-	);
+	const { data, loading, error } = useRelatedSkills(search.filters.position.jobs);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
