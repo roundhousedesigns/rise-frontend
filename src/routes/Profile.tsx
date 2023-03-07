@@ -8,6 +8,7 @@ import ErrorAlert from '../components/common/ErrorAlert';
 import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
+import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
 import { CreditParams } from '../lib/types';
 import { Credit, UserProfile } from '../lib/classes';
 
@@ -18,8 +19,8 @@ export default function Profile() {
 	const params = useParams();
 
 	// If no user ID is in the route, use the logged in user's ID.
-	const userId = params.userId ? parseInt(params.userId) : loggedInId;
-	const isLoggedIn = userId === loggedInId;
+	const userId = params.userId ? maybeParseInt(params.userId) : loggedInId;
+	const isLoggedInUser = isEqualNumberlike(userId, loggedInId);
 
 	const { data, loading, error } = useUserProfile(userId);
 
@@ -27,10 +28,17 @@ export default function Profile() {
 
 	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
-	const EditButton = () => <Button as={Link} to='/profile/edit'>Edit Profile</Button>;
+	const EditButton = () => (
+		<Button as={Link} to='/profile/edit'>
+			Edit Profile
+		</Button>
+	);
 
 	return (
-		<Page title={isLoggedIn ? 'My Profile' : ''} actions={<EditButton />}>
+		<Page
+			title={isLoggedInUser ? 'My Profile' : ''}
+			actions={isLoggedInUser ? <EditButton /> : null}
+		>
 			{profile && !loading && !error ? (
 				<ProfileView profile={profile} loading={loading} />
 			) : loading ? (
