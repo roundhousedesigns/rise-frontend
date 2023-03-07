@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Flex, Button, Stack } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';

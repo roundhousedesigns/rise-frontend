@@ -8,13 +8,11 @@ import {
 	ButtonGroup,
 	Button,
 	Stack,
-	ListItem,
 	Card,
 	useMediaQuery,
 	Avatar,
 	Tag,
 	Spinner,
-	UnorderedList,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { isEmpty } from 'lodash';

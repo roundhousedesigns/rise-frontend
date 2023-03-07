@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Wrap, Box, useCheckboxGroup } from '@chakra-ui/react';
 import CheckboxButton from './CheckboxButton';
 import { FilterItem } from '../../lib/types';

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/common/CandidateList';
 

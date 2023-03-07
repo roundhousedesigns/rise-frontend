@@ -70,7 +70,7 @@ export default function Header() {
 										fontSize='4xl'
 										onClick={drawerOnOpen}
 									/>
-									{results.length ? (
+									{searchActive && results.length ? (
 										<Badge bg='none' color='orange'>
 											{results.length}
 										</Badge>

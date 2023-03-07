@@ -8,18 +8,15 @@ import {
 	ButtonGroup,
 	Button,
 	Stack,
-	ListItem,
 	Card,
 	Avatar,
 	Tag,
 	Spinner,
-	UnorderedList,
 	useMediaQuery,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
-import SocialLinks from '../components/common/SocialLinks';
 import CreditItem from '../components/common/CreditItem';
 import EditableTextInput from '../components/common/inputs/EditableTextInput';
 import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';

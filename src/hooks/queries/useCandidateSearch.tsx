@@ -4,8 +4,7 @@
  * // TODO Document me.
  */
 
-import { gql, LazyQueryResultTuple, useLazyQuery, useQuery } from '@apollo/client';
-import { SearchParams } from '../../lib/types';
+import { gql, useLazyQuery } from '@apollo/client';
 
 export const QUERY_CANDIDATES = gql`
 	query FilteredCandidates($skills: [ID] = [], $jobs: [ID] = [], $exclude: [ID] = []) {

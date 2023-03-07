@@ -10,7 +10,7 @@ import {
 	// Tooltip,
 } from '@chakra-ui/react';
 import autosize from 'autosize';
-import { FiCheck, FiX, FiEdit } from 'react-icons/fi';
+import { FiCheck, FiX } from 'react-icons/fi';
 
 interface Props extends BoxProps {
 	defaultValue: string;
@@ -23,7 +23,7 @@ interface Props extends BoxProps {
  * @returns {JSX.Element} The editable field.
  */
 function EditableControls(): JSX.Element | null {
-	const { isEditing, getSubmitButtonProps, getCancelButtonProps, getEditButtonProps } =
+	const { isEditing, getSubmitButtonProps, getCancelButtonProps } =
 		useEditableControls();
 
 	return isEditing ? (
