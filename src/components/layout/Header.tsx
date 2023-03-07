@@ -27,12 +27,17 @@ import LoggedIn from '../LoggedIn';
 
 import { useLogout } from '../../hooks/mutations/useLogout';
 import { AuthContext } from '../../context/AuthContext';
+import { SearchContext } from '../../context/SearchContext';
+import Badge from '../common/Badge';
 
 export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
 	const { setLoggedInUser } = useContext(AuthContext);
+	const {
+		search: { searchActive, results },
+	} = useContext(SearchContext);
 	const { logoutMutation } = useLogout();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
@@ -56,16 +61,21 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<LoggedIn>
-								{/* {searchActive ? ( */}
-								<IconButton
-									ref={drawerButtonRef}
-									icon={<FiSearch />}
-									aria-label='Search for candidates'
-									variant='invisible'
-									fontSize='3xl'
-									onClick={drawerOnOpen}
-								/>
-								{/* ) : null} */}
+								<Box position='relative'>
+									<IconButton
+										ref={drawerButtonRef}
+										icon={<FiSearch />}
+										aria-label='Search for candidates'
+										variant='invisible'
+										fontSize='4xl'
+										onClick={drawerOnOpen}
+									/>
+									{results.length ? (
+										<Badge bg='none' color='orange'>
+											{results.length}
+										</Badge>
+									) : null}
+								</Box>
 							</LoggedIn>
 							<Link as={RouterLink} to='/'>
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
@@ -82,7 +92,7 @@ export default function Header() {
 											fontSize='lg'
 											textTransform='uppercase'
 										>
-											<Link as={RouterLink} to='/search'>
+											<Link ref={drawerButtonRef} onClick={drawerOnOpen}>
 												Search
 											</Link>
 											<Link as={RouterLink} to='/profile'>

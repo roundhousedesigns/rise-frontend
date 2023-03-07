@@ -20,10 +20,11 @@ const QUERY_CANDIDATES = gql`
 	}
 `;
 
-export const useCandidates = ($include: number[]) => {
+export const useCandidates = (include_ids: number[]) => {
+	let include = include_ids && include_ids.length > 0 ? include_ids : [0];
 	const result = useQuery(QUERY_CANDIDATES, {
 		variables: {
-			include: $include,
+			include: include,
 		},
 	});
 

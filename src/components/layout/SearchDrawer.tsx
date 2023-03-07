@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
+import { isEqual } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import {
 	Drawer,
@@ -19,11 +20,14 @@ import { FiX } from 'react-icons/fi';
 
 import SearchList from '../common/SearchList';
 import WidgetAccordionItem from '../common/WidgetAccordionItem';
+import SearchWizardView from '../../views/SearchWizardView';
+import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
+
+import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
 
 // TODO: Remove this when we have real data
 import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
-import SearchWizardView from '../../views/SearchWizardView';
 
 interface Props {
 	isOpen: boolean;
@@ -31,10 +35,45 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const { search, searchDispatch } = useContext(SearchContext);
+	const { loggedInUser } = useContext(AuthContext);
+	const {
+		search: {
+			filters: {
+				position: { jobs },
+				skills,
+			},
+			searchActive,
+			results,
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
+	const [getSearchResults, { data /* loading, error, */ }] = useCandidateSearch();
 	const navigate = useNavigate();
 
-	const handleSearchSubmit = () => {
+	// Update SearchContext with the new results whenever the query returns.
+	useEffect(() => {
+		if (isEqual(data?.filteredCandidates, results)) return;
+
+		searchDispatch({
+			type: 'SET_RESULTS',
+			payload: {
+				results: data?.filteredCandidates,
+			},
+		});
+	}, [data?.filteredCandidates]);
+
+	// Handle form submission
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		getSearchResults({
+			variables: {
+				jobs: jobs && jobs.length > 0 ? jobs : [],
+				skills: skills && skills.length > 0 ? skills : [],
+				exclude: loggedInUser.id,
+			},
+		});
+
 		navigate('/results');
 		onClose();
 	};
@@ -46,7 +85,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='left' size='lg'>
+		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size='full'>
 			<DrawerOverlay bg='blackAlpha.200' />
 			<DrawerContent>
 				<DrawerHeader
@@ -61,9 +100,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							Search
 						</Heading>
 						<Spacer flex='0 0 1em' />
-						{search.searchActive ? (
+						{searchActive ? (
 							<ButtonGroup>
-								<Button colorScheme='blue' onClick={handleSearchSubmit} size='md'>
+								<Button
+									colorScheme='blue'
+									onClick={handleSubmit}
+									size='md'
+									form='search-candidates'
+								>
 									Search
 								</Button>
 								<Button colorScheme='whiteAlpha' onClick={handleSearchReset} size='md'>
@@ -83,7 +127,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					</Stack>
 				</DrawerHeader>
 				<DrawerBody py={8}>
-					<SearchWizardView showButtons={false} />
+					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
 				</DrawerBody>
 				<DrawerFooter mt={0}>
 					<Accordion allowMultiple={true} w='full'>

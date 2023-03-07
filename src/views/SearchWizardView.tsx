@@ -1,53 +1,22 @@
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { isEqual } from 'lodash';
-import { FormControl, Flex, Button, Stack } from '@chakra-ui/react';
+import { Flex, Button, Stack } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
 import SearchFilterJobs from '../components/SearchFilterJobs';
 import SearchFilterSkills from '../components/SearchFilterSkills';
 
 import { SearchContext } from '../context/SearchContext';
-import { useCandidateSearch } from '../hooks/queries/useCandidateSearch';
 
 interface Props {
 	showButtons?: boolean;
+	onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default function SearchWizardView({ showButtons = true }: Props) {
+export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 	const {
-		search: { filters, searchActive, results },
+		search: { filters, searchActive },
 		searchDispatch,
 	} = useContext(SearchContext);
-	const navigate = useNavigate();
-
-	// TODO implement loading and error states
-	const { data, refetch /* loading, error, */ } = useCandidateSearch(filters);
-
-	// Any time we change the filters, refetch the results
-	useEffect(() => {
-		if (!filters.position.department || !filters.position.jobs) return;
-
-		refetch({ ...filters });
-	}, [filters]);
-
-	// Update the SearchContext with the new results whenever the query returns
-	useEffect(() => {
-		if (isEqual(data?.filteredCandidates, results)) return;
-
-		searchDispatch({
-			type: 'SET_RESULTS',
-			payload: {
-				results: data?.filteredCandidates,
-			},
-		});
-	}, [data?.filteredCandidates]);
-
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-
-		navigate('/results');
-	};
 
 	const handleReset = () => {
 		searchDispatch({
@@ -56,39 +25,37 @@ export default function SearchWizardView({ showButtons = true }: Props) {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<FormControl textAlign='left'>
-				<Stack direction='column' gap={8}>
-					{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
-					{/* Step 1 */}
-					<SearchFilterDepartment heading='Which department are you hiring for?' />
+		<form id='search-candidates' onSubmit={onSubmit}>
+			<Stack direction='column' gap={8}>
+				{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
+				{/* Step 1 */}
+				<SearchFilterDepartment heading='Which department are you hiring for?' />
 
-					{/* Step 2 */}
-					{filters.position.department ? (
-						<SearchFilterJobs heading='What job(s) are you looking to fill?' />
-					) : null}
+				{/* Step 2 */}
+				{filters.position.department ? (
+					<SearchFilterJobs heading='What job(s) are you looking to fill?' />
+				) : null}
 
-					{/* Step 3 */}
-					{filters.position.department &&
-					filters.position.jobs &&
-					filters.position.jobs.length > 0 ? (
-						<SearchFilterSkills heading='What skills are you looking for?' />
-					) : null}
+				{/* Step 3 */}
+				{filters.position.department &&
+				filters.position.jobs &&
+				filters.position.jobs.length > 0 ? (
+					<SearchFilterSkills heading='What skills are you looking for?' />
+				) : null}
 
-					{showButtons ? (
-						<Flex gap={2}>
-							{searchActive ? (
-								<Button type='submit' size='lg'>
-									Search
-								</Button>
-							) : null}
-							<Button type='reset' size='lg' onClick={handleReset}>
-								Reset
+				{showButtons ? (
+					<Flex gap={2}>
+						{searchActive ? (
+							<Button type='submit' size='lg'>
+								Search
 							</Button>
-						</Flex>
-					) : null}
-				</Stack>
-			</FormControl>
+						) : null}
+						<Button type='reset' size='lg' onClick={handleReset}>
+							Reset
+						</Button>
+					</Flex>
+				) : null}
+			</Stack>
 		</form>
 	);
 }
