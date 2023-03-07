@@ -6,6 +6,7 @@ import {
 	Socials,
 	FilterItem,
 } from './types';
+import { maybeParseInt } from './utils';
 
 /**
  * A basic user.
@@ -21,7 +22,7 @@ export class User {
 
 	constructor(params?: UserParams) {
 		Object.assign(this, params, {
-			id: params && params.id ? Number(params.id) : 0,
+			id: params ? maybeParseInt(params.id) : 0,
 		});
 	}
 

@@ -2,6 +2,7 @@
  * Utilities.
  */
 
+import { isEqual } from 'lodash';
 import { Socials } from './types';
 
 /** Generate a link to a social media profile.
@@ -22,4 +23,29 @@ export function socialLink(network: string, value: string): string {
 	}
 
 	return socialLinkBases[network] + value;
+}
+
+/**
+ * Parse a string to an integer if it is a string.
+ *
+ * @param value
+ * @returns
+ */
+export function maybeParseInt(value: string | number): number {
+	if (typeof value === 'string') {
+		return parseInt(value, 10);
+	}
+
+	return value;
+}
+
+/**
+ * Check if two numbers or strings are equal.
+ *
+ * @param {string|number} a
+ * @param {string|number} b
+ * @returns {boolean} Whether the numbers are equal.
+ */
+export function isEqualNumberlike(a: number | string, b: number | string): boolean {
+	return isEqual(Number(a), Number(b));
 }
