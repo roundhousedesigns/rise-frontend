@@ -8,11 +8,9 @@ import {
 	gql,
 	LazyQueryExecFunction,
 	QueryResult,
-	LazyQueryHookOptions,
 	useLazyQuery,
 	LazyQueryResultTuple,
 } from '@apollo/client';
-import { TargetAndTransition } from 'framer-motion';
 
 export const QUERY_CANDIDATES = gql`
 	query FilteredCandidates($skills: [ID] = [], $jobs: [ID] = [], $exclude: [ID] = []) {

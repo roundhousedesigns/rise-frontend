@@ -56,7 +56,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 	} = profile || {};
 
 	const [{ genderIdentities, personalIdentities, racialIdentities, unions }] =
-		useUserTaxonomies() || {};
+		useUserTaxonomies() || [];
 
 	/**
 	 * Generate the text to display for the 'will travel' field.
