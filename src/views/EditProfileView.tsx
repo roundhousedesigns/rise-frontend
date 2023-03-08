@@ -50,22 +50,17 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		media,
 		description,
 		credits,
+		email,
 		resume,
-		contactEmail,
 		phone,
 	} = profile || {};
 
-	const {
-		data: {
-			genderIdentities: { nodes: genderIdentities = [] } = {},
-			personalIdentities: { nodes: personalIdentities = [] } = {},
-			racialIdentities: { nodes: racialIdentities = [] } = {},
-			unions: { nodes: unions = [] } = {},
-		} = {},
-	} = useUserTaxonomies() || {};
+	const [{ genderIdentities, personalIdentities, racialIdentities, unions }] =
+		useUserTaxonomies() || {};
 
 	/**
 	 * Generate the text to display for the 'will travel' field.
+	 *
 	 * @returns {string} The text to display.
 	 */
 	const willTravelText = (): string => {
@@ -115,7 +110,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								{/* TODO `Tag` Editable sucks right now. */}
 								<EditableTextInput
 									defaultValue={pronouns ? pronouns : ''}
-									as={Tag}
+									as={Text}
 									label='Pronouns'
 									fontSize='xs'
 									placeholder='your pronouns'
@@ -136,7 +131,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Box>
 
 							<Box>
-								<Heading size='md'>Unions/Guilds</Heading>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 
 								<Box fontSize='xs'>
 									<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
@@ -145,7 +140,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 							<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
 								<Box w='auto'>
-									<Heading size='md'>Location/Homebase</Heading>
+									<Heading variant='contentTitle'>Location/Homebase</Heading>
 									<Stack direction='row' justifyContent='flex-start' alignItems='center'>
 										<EditableTextInput
 											defaultValue={location ? location : ''}
@@ -174,7 +169,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 					</Flex>
 
 					<Box bg='whiteAlpha.600' flex='1 1 25%' borderRadius='lg' p={4}>
-						<Heading size='md' textAlign='left' color='blackAlpha.700'>
+						<Heading variant='contentTitle' textAlign='left' color='blackAlpha.700'>
 							Personal Info
 						</Heading>
 						<Text fontSize='sm'>
@@ -182,7 +177,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 						</Text>
 						<Flex>
 							<Box flex='1 0 33%'>
-								<Heading size='md'>Gender Identity</Heading>
+								<Heading variant='contentTitle'>Gender Identity</Heading>
 								<Box fontSize='xs'>
 									<ProfileCheckboxGroup
 										filter='genderIdentity'
@@ -192,7 +187,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading size='md'>Racial Identity</Heading>
+								<Heading variant='contentTitle'>Racial Identity</Heading>
 								<Box fontSize='xs'>
 									<ProfileCheckboxGroup
 										filter='racialIdentity'
@@ -202,7 +197,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading size='md'>Personal Identity</Heading>
+								<Heading variant='contentTitle'>Personal Identity</Heading>
 								<Box fontSize='xs'>
 									<ProfileCheckboxGroup
 										filter='personalIdentity'

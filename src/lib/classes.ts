@@ -1,10 +1,11 @@
+import { unescape } from 'lodash';
 import {
 	UserParams,
 	CandidateData,
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	WPItem,
+	WPItemParams,
 } from './types';
 import { maybeParseInt } from './utils';
 
@@ -73,7 +74,7 @@ export class Candidate extends User {
  */
 export class UserProfile extends User {
 	name: string = '';
-	contactEmail: string = '';
+	email: string = '';
 	selfTitle?: string;
 	image?: string;
 	pronouns?: string;
@@ -134,5 +135,22 @@ export class Credit {
 		this.year = params.year;
 		this.positions = params.positions.nodes;
 		this.skills = params.skills.nodes;
+	}
+}
+
+/**
+ * A generic WordPress item. Used for taxonomy terms, post objects, etc.
+ * @param {WPItemParams} params
+ * @implements {WPItemParams}
+ */
+export class WPItem {
+	id!: number;
+	name!: string;
+	slug!: string;
+
+	constructor(params: WPItemParams) {
+		this.id = maybeParseInt(params.id);
+		this.name = unescape(params.name);
+		this.slug = params.slug;
 	}
 }

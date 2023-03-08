@@ -10,7 +10,7 @@ const QUERY_USER = gql`
 			id: databaseId
 			firstName
 			lastName
-			contactEmail
+			email: contactEmail
 			selfTitle
 			image
 			pronouns
@@ -40,12 +40,14 @@ const QUERY_USER = gql`
 				year(format: RENDERED)
 				positions {
 					nodes {
+						id: databaseId
 						name
 						slug
 					}
 				}
 				skills {
 					nodes {
+						id: databaseId
 						name
 						slug
 					}
@@ -55,7 +57,7 @@ const QUERY_USER = gql`
 	}
 `;
 
-// FIXME $author not used
+// FIXME $author not used?
 export const useUserProfile = (id: number) => {
 	const result = useQuery(QUERY_USER, {
 		variables: {
@@ -64,6 +66,8 @@ export const useUserProfile = (id: number) => {
 			last: 5,
 		},
 	});
+
+	// TODO prepare userProfile result
 
 	return result;
 };

@@ -3,6 +3,7 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
+import { omit } from 'lodash';
 import { Candidate } from '../../lib/classes';
 import { CandidateData } from '../../lib/types';
 
@@ -33,5 +34,5 @@ export const useCandidates = (include_ids: number[]) => {
 		return new Candidate({ ...candidate, id });
 	});
 
-	return { result, preparedCandidates };
+	return [preparedCandidates, omit(result, ['data'])];
 };

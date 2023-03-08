@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
-import { WPItem } from '../lib/types';
+import { WPItem } from '../lib/classes';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
@@ -13,7 +13,7 @@ interface Props {
 
 export default function SearchFilterSkills({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const { data, loading, error } = useRelatedSkills(search.filters.position.jobs);
+	const [data, { loading, error }] = useRelatedSkills(search.filters.position.jobs);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -41,13 +41,13 @@ export default function SearchFilterSkills({ heading }: Props) {
 		}
 	}, [search.filters.skills.length]);
 
-	return data?.jobSkills?.length > 0 && !loading && !error ? (
+	return data?.length > 0 && !loading && !error ? (
 		<Box>
 			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
-				{data.jobSkills?.map((term: WPItem) => {
+				{data.map((term: WPItem) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 					return (

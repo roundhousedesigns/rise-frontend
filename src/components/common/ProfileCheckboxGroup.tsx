@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Wrap, Box, useCheckboxGroup } from '@chakra-ui/react';
+import { WPItem } from '../../lib/classes';
 import CheckboxButton from './CheckboxButton';
-import { WPItem } from '../../lib/types';
 
 interface Props {
 	filter: string;
@@ -22,7 +22,7 @@ export default function ProfileCheckboxGroup({ filter, items, checked }: Props) 
 		setValue(checked);
 	}, []);
 
-	return (
+	return items ? (
 		<Box>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full'>
 				{items.map((item: WPItem) => {
@@ -36,5 +36,5 @@ export default function ProfileCheckboxGroup({ filter, items, checked }: Props) 
 				})}
 			</Wrap>
 		</Box>
-	);
+	) : null;
 }

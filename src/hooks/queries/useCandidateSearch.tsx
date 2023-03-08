@@ -4,7 +4,15 @@
  * // TODO Document me.
  */
 
-import { gql, useLazyQuery } from '@apollo/client';
+import {
+	gql,
+	LazyQueryExecFunction,
+	QueryResult,
+	LazyQueryHookOptions,
+	useLazyQuery,
+	LazyQueryResultTuple,
+} from '@apollo/client';
+import { TargetAndTransition } from 'framer-motion';
 
 export const QUERY_CANDIDATES = gql`
 	query FilteredCandidates($skills: [ID] = [], $jobs: [ID] = [], $exclude: [ID] = []) {
@@ -20,6 +28,9 @@ export const QUERY_CANDIDATES = gql`
  * @param {SearchParams} filters The search parameters.
  * @returns {LazyQueryResultTuple} The query result and the filters.
  */
-export const useCandidateSearch = () => {
+export const useCandidateSearch = (): LazyQueryResultTuple<
+	LazyQueryExecFunction<any, any>,
+	QueryResult
+> => {
 	return useLazyQuery(QUERY_CANDIDATES);
 };

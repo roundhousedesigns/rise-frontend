@@ -1,7 +1,13 @@
-export interface WPItem {
+import { WPItem } from './classes';
+
+/**
+ * The data shape for a generic WordPress item.
+ */
+export interface WPItemParams {
 	id: number;
 	slug: string;
 	name: string;
+	parentId?: number;
 }
 
 /**

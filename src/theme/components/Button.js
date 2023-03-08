@@ -3,6 +3,7 @@ import { defineStyleConfig } from '@chakra-ui/react';
 export default defineStyleConfig({
 	baseStyle: {
 		borderRadius: 'sm',
+		fontWeight: 'medium',
 	},
 	variants: {
 		round: {
