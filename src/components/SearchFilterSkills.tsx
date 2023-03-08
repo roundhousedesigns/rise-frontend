@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
-import { FilterItem } from '../lib/types';
+import { WPItem } from '../lib/types';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
@@ -47,7 +47,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
-				{data.jobSkills?.map((term: FilterItem) => {
+				{data.jobSkills?.map((term: WPItem) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 					return (

@@ -90,7 +90,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 						<Box>
 							<Heading size='md'>Unions/Guilds</Heading>
-							<Text>{profile.unions?.join(', ')}</Text>
+							<Text>{profile.unions?.map((item) => item.name).join(', ')}</Text>
 						</Box>
 						<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
 							<Box w='auto'>

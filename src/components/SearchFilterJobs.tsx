@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
-import { FilterItem } from '../lib/types';
+import { WPItem } from '../lib/types';
 import { usePositions } from '../hooks/queries/usePositions';
 import CheckboxButton from './common/CheckboxButton';
 
@@ -48,7 +48,7 @@ export default function SearchFilterJobs({ heading }: Props) {
 						{heading}
 					</Heading>
 					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
-						{data.positions.nodes.map((term: FilterItem) => {
+						{data.positions.nodes.map((term: WPItem) => {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 							return (

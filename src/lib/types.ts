@@ -1,3 +1,9 @@
+export interface WPItem {
+	id: number;
+	slug: string;
+	name: string;
+}
+
 /**
  * The data shape for a User.
  */
@@ -46,21 +52,12 @@ export interface UserProfileParams {
 	willTravel?: boolean;
 	education?: string;
 	media?: string;
-	unions?: string[];
+	unions?: WPItem[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
 	websiteUrl?: string;
-}
-
-/**
- * The data shape for an individual search filter.
- */
-export interface FilterItem {
-	id: number;
-	slug: string;
-	name: string;
 }
 
 /**
@@ -71,10 +68,10 @@ export interface CreditParams {
 	venue: string;
 	year: string;
 	positions: {
-		nodes: FilterItem[];
+		nodes: WPItem[];
 	};
 	skills: {
-		nodes: FilterItem[];
+		nodes: WPItem[];
 	};
 }
 

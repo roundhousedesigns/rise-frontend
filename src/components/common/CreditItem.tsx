@@ -1,7 +1,7 @@
 import { Credit } from '../../lib/classes';
 import { Card, Heading, Text, Flex, useMediaQuery, Tag } from '@chakra-ui/react';
 
-import { FilterItem } from '../../lib/types';
+import { WPItem } from '../../lib/types';
 
 interface Props {
 	credit: Credit;
@@ -11,7 +11,7 @@ export default function CreditItem({ credit }: Props) {
 	const { title, positions, venue, year, skills } = credit;
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
-	const positionsString = () => positions.map((position: FilterItem) => position.name).join(', ');
+	const positionsString = () => positions.map((position: WPItem) => position.name).join(', ');
 
 	// TODO Accordion the first line, pull down to expose skills
 

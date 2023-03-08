@@ -121,20 +121,17 @@ export default function Header() {
 											{isLargerThanMd ? (
 												<>
 													<MenuOptionGroup>
+														<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+															Dashboard
+														</MenuItem>
 														<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
 															My Profile
-														</MenuItem>
-														<MenuItem as={RouterLink} to='/search' icon={<FiSearch />}>
-															Search
 														</MenuItem>
 													</MenuOptionGroup>
 													<MenuDivider />
 												</>
 											) : null}
 											<MenuOptionGroup>
-												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-													Dashboard
-												</MenuItem>
 												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
 													Settings
 												</MenuItem>

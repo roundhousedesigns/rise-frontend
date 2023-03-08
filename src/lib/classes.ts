@@ -4,7 +4,7 @@ import {
 	UserProfileParams,
 	CreditParams,
 	Socials,
-	FilterItem,
+	WPItem,
 } from './types';
 import { maybeParseInt } from './utils';
 
@@ -84,7 +84,7 @@ export class UserProfile extends User {
 	resume?: string;
 	willTravel?: boolean | null;
 	education?: string;
-	unions?: string[];
+	unions?: WPItem[];
 	media?: string[];
 	socials?: Socials;
 	credits?: Credit[];
@@ -125,8 +125,8 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: FilterItem[]; // TODO Split this collection into departments and jobs.
-	skills: FilterItem[] = [];
+	positions: WPItem[]; // TODO Split this collection into departments and jobs.
+	skills: WPItem[] = [];
 
 	constructor(params: CreditParams) {
 		this.title = params.title;
