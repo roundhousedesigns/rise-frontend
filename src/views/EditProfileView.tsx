@@ -81,144 +81,154 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 	return profile ? (
 		<form>
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
-				<Card py={6} bg='blackAlpha.100' gap={4}>
-					<Flex
-						gap={5}
-						flexWrap={{ base: 'wrap', md: 'nowrap' }}
-						justifyContent={{ base: 'center', md: 'flex-start' }}
-					>
-						{loading && <Spinner alignSelf='center' />}
-						{isLargerThanMd ? (
-							image ? (
-								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+				<StackItem>
+					<Card py={6} gap={4}>
+						<Flex
+							gap={5}
+							flexWrap={{ base: 'wrap', md: 'nowrap' }}
+							justifyContent={{ base: 'center', md: 'flex-start' }}
+						>
+							{loading && <Spinner alignSelf='center' />}
+							{isLargerThanMd ? (
+								image ? (
+									<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+								) : (
+									<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
+								)
 							) : (
-								<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
-							)
-						) : (
-							<Avatar size='2xl' src={image} name={`${name}'s picture`} />
-						)}
+								<Avatar size='2xl' src={image} name={`${name}'s picture`} />
+							)}
 
-						<Stack direction='column' gap={4}>
-							<StackItem>
-								<Flex alignItems='flex-end'>
+							<Stack direction='column' gap={4}>
+								<StackItem>
+									<Flex alignItems='flex-end'>
+										<EditableTextInput
+											defaultValue={firstName ? firstName : ''}
+											as={Heading}
+											mr={2}
+											fontWeight='medium'
+											placeholder='First'
+											label='First Name'
+										/>
+										<EditableTextInput
+											defaultValue={lastName ? lastName : ''}
+											as={Heading}
+											label='Last Name'
+											mr={2}
+											fontWeight='medium'
+											placeholder='Last'
+										/>
+										<EditableTextInput
+											defaultValue={pronouns ? pronouns : ''}
+											as={Text}
+											label='Pronouns'
+											fontSize='xs'
+											placeholder='your pronouns'
+											styles={{ display: 'block' }}
+										/>
+									</Flex>
+
 									<EditableTextInput
-										defaultValue={firstName ? firstName : ''}
-										as={Heading}
-										mr={2}
-										fontWeight='medium'
-										placeholder='First'
-										label='First Name'
+										defaultValue={selfTitle ? selfTitle : ''}
+										placeholder='Title'
+										label='Title/Trade/Profession'
 									/>
-									<EditableTextInput
-										defaultValue={lastName ? lastName : ''}
-										as={Heading}
-										label='Last Name'
-										mr={2}
-										fontWeight='medium'
-										placeholder='Last'
-									/>
-									<EditableTextInput
-										defaultValue={pronouns ? pronouns : ''}
-										as={Text}
-										label='Pronouns'
-										fontSize='xs'
-										placeholder='your pronouns'
-										styles={{ display: 'block' }}
-									/>
-								</Flex>
+								</StackItem>
 
-								<EditableTextInput
-									defaultValue={selfTitle ? selfTitle : ''}
-									placeholder='Title'
-									label='Title/Trade/Profession'
-								/>
-							</StackItem>
-
-							<StackItem>
-								<Heading variant='contentTitle'>Social + Links</Heading>
-								<EditTextWithIcon
-									value={socials?.linkedin}
-									icon={FiLinkedin}
-									label='LinkedIn'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={socials?.facebook}
-									icon={FiFacebook}
-									label='Facebook'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={socials?.instagram}
-									icon={FiInstagram}
-									label='Instagram'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={socials?.twitter}
-									icon={FiTwitter}
-									label='Twitter'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={socials?.website}
-									icon={FiGlobe}
-									label='Website'
-									labelVisuallyHidden={true}
-								/>
-							</StackItem>
-
-							<StackItem>
-								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
-								</Box>
-							</StackItem>
-
-							<StackItem>
-								<Heading variant='contentTitle'>Location/Homebase</Heading>
-								<Flex justifyContent='flex-start' alignItems='center'>
+								<StackItem>
+									<Heading variant='contentTitle'>Social + Links</Heading>
 									<EditTextWithIcon
-										value={location}
-										icon={FiMapPin}
-										label='Location/Homebase'
+										value={socials?.linkedin}
+										icon={FiLinkedin}
+										label='LinkedIn'
 										labelVisuallyHidden={true}
 									/>
-									<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} mx={2}>
-										{willTravelText()}
-									</Tag>
-								</Flex>
-							</StackItem>
+									<EditTextWithIcon
+										value={socials?.facebook}
+										icon={FiFacebook}
+										label='Facebook'
+										labelVisuallyHidden={true}
+									/>
+									<EditTextWithIcon
+										value={socials?.instagram}
+										icon={FiInstagram}
+										label='Instagram'
+										labelVisuallyHidden={true}
+									/>
+									<EditTextWithIcon
+										value={socials?.twitter}
+										icon={FiTwitter}
+										label='Twitter'
+										labelVisuallyHidden={true}
+									/>
+									<EditTextWithIcon
+										value={socials?.website}
+										icon={FiGlobe}
+										label='Website'
+										labelVisuallyHidden={true}
+									/>
+								</StackItem>
 
-							<StackItem>
-								<Heading variant='contentTitle'>Contact</Heading>
-								<EditTextWithIcon
-									value={email}
-									icon={FiMail}
-									label='Mail'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={phone}
-									icon={FiPhone}
-									label='Phone'
-									labelVisuallyHidden={true}
-								/>
-								<EditTextWithIcon
-									value={resume}
-									icon={FiDownload}
-									label='PDF Resume'
-									labelVisuallyHidden={true}
-								/>
-							</StackItem>
-						</Stack>
-					</Flex>
+								<StackItem>
+									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
+									</Box>
+								</StackItem>
 
-					<Box bg='whiteAlpha.600' flex='1 1 25%' borderRadius='lg' p={4}>
-						<Heading variant='contentTitle' textAlign='left' color='blackAlpha.700'>
-							Personal Info
-						</Heading>
-						<Text fontSize='sm'>
+								<StackItem>
+									<Heading variant='contentTitle'>Location/Homebase</Heading>
+									<Flex justifyContent='flex-start' alignItems='center'>
+										<EditTextWithIcon
+											value={location}
+											icon={FiMapPin}
+											label='Location/Homebase'
+											labelVisuallyHidden={true}
+										/>
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} mx={2}>
+											{willTravelText()}
+										</Tag>
+									</Flex>
+								</StackItem>
+
+								<StackItem>
+									<Heading variant='contentTitle'>Contact</Heading>
+									<EditTextWithIcon
+										value={email}
+										icon={FiMail}
+										label='Mail'
+										labelVisuallyHidden={true}
+									/>
+									<EditTextWithIcon
+										value={phone}
+										icon={FiPhone}
+										label='Phone'
+										labelVisuallyHidden={true}
+									/>
+									<EditTextWithIcon
+										value={resume}
+										icon={FiDownload}
+										label='PDF Resume'
+										labelVisuallyHidden={true}
+									/>
+								</StackItem>
+							</Stack>
+						</Flex>
+					</Card>
+				</StackItem>
+
+				<StackItem>
+					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
+					{credits?.map((credit: Credit, index: Key) => (
+						<CreditItem key={index} credit={credit} />
+					))}
+				</StackItem>
+
+				<StackItem>
+					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
+					<EditableTextareaInput defaultValue={description ? description : ''} />
+					<Card gap={4} mt={4} mb={2} py={4}>
+						<Text fontSize='md' pb={2} color='blackAlpha.800'>
 							These optional fields will be searchable, but will not appear on your public profile.
 						</Text>
 						<Flex>
@@ -253,19 +263,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								</Box>
 							</Box>
 						</Flex>
-					</Box>
-				</Card>
-
-				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} />
-					))}
-				</StackItem>
-
-				<StackItem>
-					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<EditableTextareaInput defaultValue={description ? description : ''} />
+					</Card>
 				</StackItem>
 
 				<StackItem>

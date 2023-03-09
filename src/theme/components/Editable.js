@@ -15,9 +15,6 @@ const baseStyle = definePartsStyle({
 		px: 4,
 		py: 1,
 		m: 1,
-		_hover: {
-			bg: 'gray.100',
-		},
 	},
 	input: {
 		borderWidth: '3px',
@@ -26,6 +23,11 @@ const baseStyle = definePartsStyle({
 		px: 4,
 		py: 1,
 		m: 1,
+	},
+	textarea: {
+		borderWidth: '3px',
+		borderStyle: 'solid',
+		borderRadius: 'lg',
 	},
 });
 
