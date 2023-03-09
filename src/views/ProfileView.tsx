@@ -15,16 +15,16 @@ import {
 	Spinner,
 	UnorderedList,
 	ListItem,
-	Link,
-	Icon,
-	Wrap,
+	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
+import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
-import SocialLinks from '../components/common/SocialLinks';
+import LinkWithIcon from '../components/common/LinkWithIcon';
+import PersonalIconLinks from '../components/common/PersonalIconLinks';
 import CreditItem from '../components/common/CreditItem';
-import { FiDownload, FiMail, FiPhone } from 'react-icons/fi';
+import TextWithIcon from '../components/common/TextWithIcon';
 
 interface Props {
 	profile: UserProfile | null;
@@ -44,7 +44,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		pronouns,
 		selfTitle,
 		socials,
-		websiteUrl,
 		unions,
 		location,
 		willTravel,
@@ -68,110 +67,107 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<Card py={6} bg='blackAlpha.100'>
-				<Flex
-					gap={5}
-					flexWrap={{ base: 'wrap', md: 'nowrap' }}
-					justifyContent={{ base: 'center', md: 'flex-start' }}
-				>
-					{loading && <Spinner alignSelf='center' />}
-					{isLargerThanMd ? (
-						image ? (
-							<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+			<StackItem>
+				<Card py={6} bg='blackAlpha.100'>
+					<Flex
+						gap={5}
+						flexWrap={{ base: 'wrap', md: 'nowrap' }}
+						justifyContent={{ base: 'center', md: 'flex-start' }}
+					>
+						{loading && <Spinner alignSelf='center' />}
+						{isLargerThanMd ? (
+							image ? (
+								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+							) : (
+								<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
+							)
 						) : (
-							<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
-						)
-					) : (
-						<Avatar size='2xl' src={image} name={`${name}'s picture`} />
-					)}
-
-					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
-						<Flex>
-							<Heading size='xl' mr={2} lineHeight='none'>
-								{name}
-							</Heading>
-							<Tag colorScheme='cyan' size='md'>
-								{pronouns}
-							</Tag>
-						</Flex>
-						<Box>
-							<Text fontSize='xl' lineHeight='short' my={0}>
-								{selfTitle && selfTitle}
-							</Text>
-						</Box>
-
-						{socials && (!isEmpty(socials) || !isEmpty(websiteUrl)) && (
-							<Box pb={3}>
-								<SocialLinks socials={socials} websiteUrl={websiteUrl} />
-							</Box>
+							<Avatar size='2xl' src={image} name={`${name}'s picture`} />
 						)}
 
-						<Box>
-							<Heading variant='contentTitle'>Unions/Guilds</Heading>
-							<Text>{unions?.map((item) => item.name).join(', ')}</Text>
-						</Box>
-						<Box w='auto'>
-							<Heading variant='contentTitle'>Location/Homebase</Heading>
-							<Wrap justifyContent='flex-start' alignItems='center'>
-								<Text pr={2}>{location}</Text>
-								{willTravel !== undefined && (
-									<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
-										{willTravelText()}
-									</Tag>
-								)}
-							</Wrap>
-						</Box>
-						<Heading variant='contentTitle'>Contact</Heading>
-						<UnorderedList listStyleType='none' fontSize='md'>
-							{email ? (
-								<ListItem>
-									<Link
-										href={`mailto:${email} `}
-										variant='dotted'
-										display='flex'
-										alignItems='center'
-									>
-										<Icon as={FiMail} mr={2} />
-										{email}
-									</Link>
-								</ListItem>
-							) : null}
-							{phone ? (
-								<ListItem>
-									<Link href={`tel:${phone} `} variant='dotted' display='flex' alignItems='center'>
-										<Icon as={FiPhone} mr={2} />
-										{phone}
-									</Link>
-								</ListItem>
-							) : null}
-							{resume ? (
-								<ListItem>
-									<Link
-										href={resume}
-										variant='dotted'
-										display='flex'
-										alignItems='center'
-										isExternal
-									>
-										<Icon as={FiDownload} mr={2} />
-										Resume
-									</Link>
-								</ListItem>
-							) : null}
-							<Button>Save{/* bookmark this user */}</Button>
-						</UnorderedList>
-					</Stack>
-				</Flex>
-			</Card>
+						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>
+							<StackItem display='flex' flexWrap='wrap'>
+								<Heading size='xl' mr={2} lineHeight='none'>
+									{name}
+								</Heading>
+								<Tag colorScheme='cyan' size='md'>
+									{pronouns}
+								</Tag>
+								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
+									{selfTitle && selfTitle}
+								</Text>
+							</StackItem>
+							{socials && !isEmpty(socials) && (
+								<StackItem>
+									<PersonalIconLinks socials={socials} />
+								</StackItem>
+							)}
+							<StackItem>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<TextWithIcon icon={FiUsers}>
+									{unions?.map((item) => item.name).join(', ')}
+								</TextWithIcon>
+							</StackItem>
+							<StackItem>
+								<Heading variant='contentTitle'>Location/Homebase</Heading>
+								<Flex alignItems='center'>
+									<TextWithIcon icon={FiMapPin}>{location}</TextWithIcon>
+									{willTravel !== undefined && (
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
+											{willTravelText()}
+										</Tag>
+									)}
+								</Flex>
+							</StackItem>
+							<StackItem>
+								<Heading variant='contentTitle'>Contact</Heading>
+								<UnorderedList listStyleType='none' m={0}>
+									{email ? (
+										<ListItem>
+											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
+												{email}
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+									{phone ? (
+										<ListItem>
+											<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
+												{phone}
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+									{resume ? (
+										<ListItem>
+											<LinkWithIcon href={resume} icon={FiDownload} isExternal>
+												Resume
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+								</UnorderedList>
+							</StackItem>
+							<StackItem>
+								<Button
+									colorScheme='green'
+									onClick={() => {
+										alert('Pin!');
+									}}
+								>
+									Pin This Pro{/* bookmark this user */}
+								</Button>
+							</StackItem>
+						</Stack>
+					</Flex>
+				</Card>
+			</StackItem>
 
 			{credits && credits.length > 0 && (
 				// MAYBE click-to-expand more Credit details?
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					{credits.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} />
 					))}
-				</Box>
+				</StackItem>
 			)}
 
 			{description && (

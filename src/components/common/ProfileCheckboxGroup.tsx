@@ -1,15 +1,16 @@
 import { useEffect } from 'react';
-import { Wrap, Box, useCheckboxGroup } from '@chakra-ui/react';
+import { Wrap, useCheckboxGroup } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
 import CheckboxButton from './CheckboxButton';
 
 interface Props {
+	// TODO use 'filter' as an ID for submission, or remove it.
 	filter: string;
 	items: WPItem[];
 	checked: string[];
 }
 
-export default function ProfileCheckboxGroup({ filter, items, checked }: Props) {
+export default function ProfileCheckboxGroup({ filter, items, checked, ...rest }: Props) {
 	const handleToggleItem = (items: string[]) => {};
 
 	const { getCheckboxProps, setValue } = useCheckboxGroup({
@@ -23,18 +24,16 @@ export default function ProfileCheckboxGroup({ filter, items, checked }: Props) 
 	}, []);
 
 	return items ? (
-		<Box>
-			<Wrap justifyContent='flex-start' alignItems='center' w='full'>
-				{items.map((item: WPItem) => {
-					const checkbox = getCheckboxProps({ value: item.id.toString() });
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2}>
+			{items.map((item: WPItem) => {
+				const checkbox = getCheckboxProps({ value: item.id.toString() });
 
-					return (
-						<CheckboxButton key={item.id} {...checkbox}>
-							{item.name}
-						</CheckboxButton>
-					);
-				})}
-			</Wrap>
-		</Box>
+				return (
+					<CheckboxButton key={item.id} {...checkbox}>
+						{item.name}
+					</CheckboxButton>
+				);
+			})}
+		</Wrap>
 	) : null;
 }

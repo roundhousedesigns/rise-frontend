@@ -16,7 +16,7 @@ const QUERY_USER = gql`
 			pronouns
 			phone
 			description
-			websiteUrl
+			website: websiteUrl
 			location
 			resume
 			willTravel
@@ -66,8 +66,6 @@ export const useUserProfile = (id: number) => {
 			last: 5,
 		},
 	});
-
-	// TODO prepare userProfile result
 
 	return result;
 };

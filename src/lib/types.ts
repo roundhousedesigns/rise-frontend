@@ -33,11 +33,12 @@ export interface CandidateData {
 /**
  * The data shape for a social media account.
  */
-export interface Socials {
-	[twitter: string]: string;
-	linkedin: string;
-	instagram: string;
-	facebook: string;
+export interface PersonalLinksParams {
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
+	website?: string;
 }
 
 /**
@@ -63,7 +64,7 @@ export interface UserProfileParams {
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
-	websiteUrl?: string;
+	website?: string;
 }
 
 /**

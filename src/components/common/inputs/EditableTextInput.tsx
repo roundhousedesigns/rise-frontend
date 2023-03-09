@@ -23,8 +23,6 @@ export default function EditableTextInput({
 	styles,
 	...rest
 }: Props): JSX.Element {
-	// FIXME Selected text items shift position slightly when activated.
-
 	return (
 		<FormControl>
 			<Editable defaultValue={defaultValue} {...styles} {...rest}>

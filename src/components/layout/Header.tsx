@@ -121,7 +121,7 @@ export default function Header() {
 												size='md'
 												bg='whiteAlpha.600'
 												_hover={{ bg: 'whiteAlpha.700' }}
-												transition='all 0.2s ease'
+												transitionDuration='normal'
 											/>
 										</Link>
 									</Stack>

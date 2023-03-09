@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { Socials } from './types';
+import { PersonalLinks } from './classes';
 
 /** Generate a link to a social media profile.
  *
@@ -11,18 +11,19 @@ import { Socials } from './types';
  * @returns {string} The link to the social media profile.
  */
 export function socialLink(network: string, value: string): string {
-	const socialLinkBases: Socials = {
+	const socialLinkBases: PersonalLinks = {
 		twitter: 'https://twitter.com/',
 		linkedin: 'https://www.linkedin.com/in/',
 		instagram: 'https://www.instagram.com/',
 		facebook: '',
+		website: '',
 	};
 
 	if (!(network in socialLinkBases)) {
 		return '';
 	}
 
-	return socialLinkBases[network] + value;
+	return socialLinkBases[network as keyof PersonalLinks] + value;
 }
 
 /**
@@ -42,10 +43,23 @@ export function maybeParseInt(value: string | number): number {
 /**
  * Check if two numbers or strings are equal.
  *
- * @param {string|number} a
- * @param {string|number} b
+ * @param {string|number} a The first value
+ * @param {string|number} b The second value
  * @returns {boolean} Whether the numbers are equal.
  */
 export function isEqualNumberlike(a: number | string, b: number | string): boolean {
 	return isEqual(Number(a), Number(b));
+}
+
+/**
+ *
+ * @param {string} str The string to decode.
+ * @returns {string} The decoded string.
+ */
+export function decodeString(str: string): string {
+	let txt = document.createElement('textarea');
+
+	txt.innerHTML = str;
+
+	return txt.value;
 }

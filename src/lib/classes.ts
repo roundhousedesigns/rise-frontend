@@ -4,7 +4,7 @@ import {
 	CandidateData,
 	UserProfileParams,
 	CreditParams,
-	Socials,
+	PersonalLinksParams,
 	WPItemParams,
 } from './types';
 import { maybeParseInt } from './utils';
@@ -70,7 +70,7 @@ export class Candidate extends User {
  * A user profile
  * @param {Object} params
  * @implements {UserProfileParams}
- * @implements {Socials}
+ * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
 	name: string = '';
@@ -80,14 +80,13 @@ export class UserProfile extends User {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	websiteUrl?: string;
 	location?: string;
 	resume?: string;
-	willTravel?: boolean | null;
+	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
 	unions?: WPItem[];
 	media?: string[];
-	socials?: Socials;
+	socials?: PersonalLinks;
 	credits?: Credit[];
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
@@ -103,17 +102,35 @@ export class UserProfile extends User {
 			education: userParams.education ? userParams.education : '',
 			media: userParams.media ? userParams.media.split('##') : [],
 			credits: credits && credits.length > 0 ? [...credits] : [],
-			socials: {
+			socials: new PersonalLinks({
 				twitter: userParams.twitter || '',
 				linkedin: userParams.linkedin || '',
 				instagram: userParams.instagram || '',
 				facebook: userParams.facebook || '',
-			},
+				website: userParams.website || '',
+			}),
 		});
 	}
 
 	fullName() {
 		return super.fullName();
+	}
+}
+
+/**
+ * A collection of personal links and social media handles.
+ * @param {PersonalLinksParams} params
+ * @implements {PersonalLinksParams}
+ */
+export class PersonalLinks {
+	twitter: string = '';
+	linkedin: string = '';
+	instagram: string = '';
+	facebook: string = '';
+	website: string = '';
+
+	constructor(params: PersonalLinksParams) {
+		Object.assign(this, params);
 	}
 }
 

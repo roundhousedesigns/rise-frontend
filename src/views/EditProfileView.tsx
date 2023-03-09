@@ -5,14 +5,13 @@ import {
 	Image,
 	Flex,
 	Text,
-	ButtonGroup,
-	Button,
 	Stack,
 	Card,
 	Avatar,
 	Tag,
 	Spinner,
 	useMediaQuery,
+	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
@@ -23,6 +22,18 @@ import EditableTextareaInput from '../components/common/inputs/EditableTextareaI
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import {
+	FiDownload,
+	FiFacebook,
+	FiGlobe,
+	FiInstagram,
+	FiLinkedin,
+	FiMail,
+	FiMapPin,
+	FiPhone,
+	FiTwitter,
+} from 'react-icons/fi';
+import EditTextWithIcon from '../components/common/EditTextWithIcon';
 
 interface Props {
 	profile: UserProfile | null;
@@ -43,7 +54,6 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		pronouns,
 		selfTitle,
 		socials,
-		websiteUrl,
 		location,
 		education,
 		willTravel,
@@ -89,82 +99,118 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 						)}
 
 						<Stack direction='column' gap={4}>
-							<Flex alignItems='flex-end'>
+							<StackItem>
+								<Flex alignItems='flex-end'>
+									<EditableTextInput
+										defaultValue={firstName ? firstName : ''}
+										as={Heading}
+										mr={2}
+										fontWeight='medium'
+										placeholder='First'
+										label='First Name'
+									/>
+									<EditableTextInput
+										defaultValue={lastName ? lastName : ''}
+										as={Heading}
+										label='Last Name'
+										mr={2}
+										fontWeight='medium'
+										placeholder='Last'
+									/>
+									<EditableTextInput
+										defaultValue={pronouns ? pronouns : ''}
+										as={Text}
+										label='Pronouns'
+										fontSize='xs'
+										placeholder='your pronouns'
+										styles={{ display: 'block' }}
+									/>
+								</Flex>
+
 								<EditableTextInput
-									defaultValue={firstName ? firstName : ''}
-									as={Heading}
-									mr={2}
-									fontWeight='medium'
-									placeholder='First'
-									label='First Name'
+									defaultValue={selfTitle ? selfTitle : ''}
+									placeholder='Title'
+									label='Title/Trade/Profession'
 								/>
-								<EditableTextInput
-									defaultValue={lastName ? lastName : ''}
-									as={Heading}
-									label='Last Name'
-									mr={2}
-									fontWeight='medium'
-									placeholder='Last'
+							</StackItem>
+
+							<StackItem>
+								<Heading variant='contentTitle'>Social + Links</Heading>
+								<EditTextWithIcon
+									value={socials?.linkedin}
+									icon={FiLinkedin}
+									label='LinkedIn'
+									labelVisuallyHidden={true}
 								/>
-
-								{/* TODO `Tag` Editable sucks right now. */}
-								<EditableTextInput
-									defaultValue={pronouns ? pronouns : ''}
-									as={Text}
-									label='Pronouns'
-									fontSize='xs'
-									placeholder='your pronouns'
-									styles={{ display: 'block' }}
+								<EditTextWithIcon
+									value={socials?.facebook}
+									icon={FiFacebook}
+									label='Facebook'
+									labelVisuallyHidden={true}
 								/>
-							</Flex>
+								<EditTextWithIcon
+									value={socials?.instagram}
+									icon={FiInstagram}
+									label='Instagram'
+									labelVisuallyHidden={true}
+								/>
+								<EditTextWithIcon
+									value={socials?.twitter}
+									icon={FiTwitter}
+									label='Twitter'
+									labelVisuallyHidden={true}
+								/>
+								<EditTextWithIcon
+									value={socials?.website}
+									icon={FiGlobe}
+									label='Website'
+									labelVisuallyHidden={true}
+								/>
+							</StackItem>
 
-							<EditableTextInput
-								defaultValue={selfTitle ? selfTitle : ''}
-								placeholder='Title'
-								label='Title/Trade/Profession'
-							/>
-
-							<Box pb={3}>
-								{/* TODO Individal text fields for social links */}
-								--SOCIAL LINK EDIT--
-								{/* <SocialLinks socials={socials} websiteUrl={websiteUrl} /> */}
-							</Box>
-
-							<Box>
+							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-
-								<Box fontSize='xs'>
+								<Box fontSize='sm'>
 									<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
 								</Box>
-							</Box>
+							</StackItem>
 
-							<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
-								<Box w='auto'>
-									<Heading variant='contentTitle'>Location/Homebase</Heading>
-									<Stack direction='row' justifyContent='flex-start' alignItems='center'>
-										<EditableTextInput
-											defaultValue={location ? location : ''}
-											label='Location/Homebase'
-											labelVisuallyHidden={true}
-										/>
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
-											{willTravelText()}
-										</Tag>
-									</Stack>
-								</Box>
-							</Stack>
-							<ButtonGroup
-								colorScheme='blue'
-								flexWrap='wrap'
-								gap={2}
-								justifyContent='flex-start'
-								pt={2}
-							>
-								<Button>Resume{/* resume */}</Button>
-								<Button>Email{/* email */}</Button>
-								<Button>Phone{/* phone */}</Button>
-								<Button>Save{/* bookmark this user */}</Button>
-							</ButtonGroup>
+							<StackItem>
+								<Heading variant='contentTitle'>Location/Homebase</Heading>
+								<Flex justifyContent='flex-start' alignItems='center'>
+									<EditTextWithIcon
+										value={location}
+										icon={FiMapPin}
+										label='Location/Homebase'
+										labelVisuallyHidden={true}
+									/>
+									<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} mx={2}>
+										{willTravelText()}
+									</Tag>
+								</Flex>
+							</StackItem>
+
+							<StackItem>
+								<Heading variant='contentTitle'>Contact</Heading>
+								<EditTextWithIcon
+									value={email}
+									icon={FiMail}
+									label='Mail'
+									labelVisuallyHidden={true}
+								/>
+								<EditTextWithIcon
+									value={phone}
+									icon={FiPhone}
+									label='Phone'
+									labelVisuallyHidden={true}
+								/>
+								<EditTextWithIcon
+									value={resume}
+									icon={FiDownload}
+									label='PDF Resume'
+									labelVisuallyHidden={true}
+								/>
+							</StackItem>
 						</Stack>
 					</Flex>
 
@@ -178,7 +224,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 						<Flex>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Gender Identity</Heading>
-								<Box fontSize='xs'>
+								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										filter='genderIdentity'
 										items={genderIdentities}
@@ -188,7 +234,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Box>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Racial Identity</Heading>
-								<Box fontSize='xs'>
+								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										filter='racialIdentity'
 										items={racialIdentities}
@@ -198,7 +244,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Box>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Personal Identity</Heading>
-								<Box fontSize='xs'>
+								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										filter='personalIdentity'
 										items={personalIdentities}
@@ -210,24 +256,24 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 					</Box>
 				</Card>
 
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					{credits?.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} />
 					))}
-				</Box>
+				</StackItem>
 
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<EditableTextareaInput defaultValue={description ? description : ''} />
-				</Box>
+				</StackItem>
 
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
 					<EditableTextareaInput defaultValue={education ? education : ''} />
-				</Box>
+				</StackItem>
 
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
 						{media?.map((item: string, index: React.Key) => (
@@ -236,7 +282,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							</Box>
 						))}
 					</Stack>
-				</Box>
+				</StackItem>
 			</Stack>
 		</form>
 	) : null;

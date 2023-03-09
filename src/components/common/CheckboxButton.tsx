@@ -21,7 +21,10 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 				// TODO Make these display props sharable between components
 				cursor='pointer'
 				borderRadius='sm'
-				bg='gray.100'
+				bg='blue.50'
+				borderWidth={1}
+				borderColor='gray.300'
+				transitionDuration='normal'
 				_hover={{
 					bg: 'blue.100',
 				}}
