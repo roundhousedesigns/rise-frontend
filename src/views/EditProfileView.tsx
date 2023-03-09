@@ -65,8 +65,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		phone,
 	} = profile || {};
 
-	const [{ genderIdentities, personalIdentities, racialIdentities, unions }] =
-		useUserTaxonomies() || [];
+	const [{ genderIdentities, personalIdentities, racialIdentities, unions }] = useUserTaxonomies();
 
 	/**
 	 * Generate the text to display for the 'will travel' field.
