@@ -1,7 +1,7 @@
 import { Credit } from '../../lib/classes';
 import { Card, Heading, Text, Flex, useMediaQuery, Tag } from '@chakra-ui/react';
 
-import { WPItem } from '../../lib/types';
+import { WPItem } from '../../lib/classes';
 
 interface Props {
 	credit: Credit;
