@@ -9,7 +9,8 @@ import theme from './theme/index';
 
 import App from './App';
 
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -22,7 +23,7 @@ import { AuthContextProvider } from './context/AuthContext';
 /**
  * Apollo client.
  */
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
 	uri: backend,
 	credentials: 'include',
 });

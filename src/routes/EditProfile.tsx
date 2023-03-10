@@ -21,11 +21,8 @@ export default function EditProfile() {
 
 	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
-	// TODO Implement Profile save
-	const SaveButton = () => <Button onClick={() => alert('save')}>Save</Button>;
-
 	return (
-		<Page title={'Update Profile'} actions={<SaveButton />}>
+		<Page title={'Update Profile'}>
 			{profile && !loading && !error ? (
 				<EditProfileView profile={profile} loading={loading} />
 			) : loading ? (

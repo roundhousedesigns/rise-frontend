@@ -152,7 +152,8 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 										alert('Pin!');
 									}}
 								>
-									Pin This Pro{/* bookmark this user */}
+									{/* TODO Bookmark a user */}
+									Save This Candidate
 								</Button>
 							</StackItem>
 						</Stack>

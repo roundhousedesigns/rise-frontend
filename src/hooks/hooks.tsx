@@ -26,6 +26,7 @@ export const useLocalStorage = (
 		deserialize?: (val: string) => any;
 	} = {}
 ) => {
+	// TODO type useState
 	const [state, setState] = useState(() => {
 		const valueInLocalStorage = window.localStorage.getItem(key);
 		if (valueInLocalStorage) {

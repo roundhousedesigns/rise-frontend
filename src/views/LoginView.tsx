@@ -19,10 +19,12 @@ import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
 	const { setLoggedInUser } = useContext(AuthContext);
+	// TODO type useState
 	const [credentials, setCredentials] = useState({
 		login: '',
 		password: '',
 	});
+	// TODO type useState
 	const [errorCode, setErrorCode] = useState('');
 	const { loginMutation } = useLogin();
 

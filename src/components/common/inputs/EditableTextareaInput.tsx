@@ -4,19 +4,34 @@ import {
 	Editable,
 	EditableTextarea,
 	EditablePreview,
+	FormControl,
+	FormLabel,
+	VisuallyHidden,
 	// Tooltip,
 } from '@chakra-ui/react';
 import autosize from 'autosize';
 
 interface Props extends BoxProps {
 	defaultValue: string;
+	name: string;
+	label: string;
+	labelVisuallyHidden?: boolean;
+	outerProps?: {
+		[key: string]: any;
+	};
+	handleChange: (name: string) => (value: string) => void;
 	styles?: any;
 }
 
 export default function EditableTextareaInput({
 	defaultValue,
+	name,
+	label,
+	labelVisuallyHidden,
+	handleChange,
 	styles,
-	...rest
+	outerProps,
+	...inputProps
 }: Props): JSX.Element {
 	const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -30,10 +45,19 @@ export default function EditableTextareaInput({
 	}, []);
 
 	return (
-		// TODO Bio textarea placeholder text
-		<Editable defaultValue={defaultValue} {...styles} {...rest}>
-			<EditablePreview minHeight={20} w='full' />
-			<EditableTextarea rows={4} ref={ref} p={2} />
-		</Editable>
+		<FormControl {...outerProps}>
+			<FormLabel ml={2}>
+				{labelVisuallyHidden ? <VisuallyHidden>{label}</VisuallyHidden> : label}
+			</FormLabel>
+			<Editable
+				defaultValue={defaultValue}
+				onChange={handleChange(name)}
+				{...styles}
+				{...inputProps}
+			>
+				<EditablePreview minHeight={20} w='full' />
+				<EditableTextarea rows={4} ref={ref} p={2} />
+			</Editable>
+		</FormControl>
 	);
 }

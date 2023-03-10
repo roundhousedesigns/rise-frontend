@@ -2,7 +2,7 @@ import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
 	baseStyle: {
-		borderRadius: 'sm',
+		borderRadius: 'lg',
 		fontWeight: 'medium',
 	},
 	variants: {
@@ -27,6 +27,12 @@ export default defineStyleConfig({
 			_active: {
 				background: 'transparent',
 			},
+		},
+		oversized: {
+			fontSize: 'xl',
+			px: '6',
+			py: '4',
+			borderRadius: 'lg',
 		},
 	},
 });

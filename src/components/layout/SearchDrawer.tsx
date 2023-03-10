@@ -96,7 +96,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					borderBottom='2px solid pink'
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
-						<Heading size='lg' color='white'>
+						<Heading size='lg' color='text.light'>
 							Search
 						</Heading>
 						<Spacer flex='0 0 1em' />
@@ -118,9 +118,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						<Spacer />
 						<IconButton
 							icon={<FiX />}
-							colorScheme='white'
 							aria-label='Close'
-							fontSize='1.4em'
+							fontSize='5xl'
 							onClick={onClose}
 							variant='invisible'
 						/>

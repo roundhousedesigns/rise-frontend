@@ -91,7 +91,7 @@ export default function Header() {
 	return (
 		<Box flex='0 0 auto' w='full'>
 			<DarkMode>
-				<Box id='header' w='full' bg='black' py={3} color='white'>
+				<Box id='header' w='full' bg='text.dark' py={3} color='text.light'>
 					<Container centerContent w='full' maxW='9xl'>
 						<Stack
 							direction='row'
@@ -144,7 +144,7 @@ export default function Header() {
 												icon={<FiMenu />}
 												size='lg'
 											/>
-											<MenuList color='black'>
+											<MenuList color='text.dark'>
 												{isLargerThanMd ? (
 													<>
 														<MenuOptionGroup>
