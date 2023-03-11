@@ -76,18 +76,24 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
-								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+								<Image
+									src={image}
+									alt={`${profile.fullName()}'s picture`}
+									loading='eager'
+									fit='cover'
+									w='xs'
+								/>
 							) : (
-								<Avatar size='2xl' name={`${name}'s picture`} mx={2} />
+								<Avatar size='2xl' name={`${profile.fullName()}'s picture`} mx={2} />
 							)
 						) : (
-							<Avatar size='2xl' src={image} name={`${name}'s picture`} />
+							<Avatar size='2xl' src={image} name={`${profile.fullName()}'s picture`} />
 						)}
 
 						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
 								<Heading size='xl' mr={2} lineHeight='none'>
-									{name}
+									{profile.fullName()}
 								</Heading>
 								<Tag colorScheme='cyan' size='md'>
 									{pronouns}

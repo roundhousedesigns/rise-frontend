@@ -83,10 +83,10 @@ export class UserProfile extends User {
 	resume?: string;
 	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
-	unions?: number[];
-	genderIdentities?: number[];
-	racialIdentities?: number[];
-	personalIdentities?: number[];
+	unions?: WPItem[];
+	genderIdentities?: WPItem[];
+	racialIdentities?: WPItem[];
+	personalIdentities?: WPItem[];
 	media?: string[];
 	socials?: PersonalLinks;
 	credits?: Credit[];
