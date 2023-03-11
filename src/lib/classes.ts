@@ -142,7 +142,9 @@ export class UserProfile extends User {
 			{
 				unions: unions && unions.length > 0 ? unions.map((item) => item.id) : [],
 				genderIdentities:
-					genderIdentities.length > 0 ? genderIdentities.map((item) => item.id) : [],
+					genderIdentities && genderIdentities.length > 0
+						? genderIdentities.map((item) => item.id)
+						: [],
 				racialIdentities:
 					racialIdentities && racialIdentities.length > 0
 						? racialIdentities.map((item) => item.id)
