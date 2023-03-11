@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Box, Heading, Wrap, useRadioGroup, Spinner } from '@chakra-ui/react';
-import { FilterItem } from '../lib/types';
+import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
 import RadioButton from './common/RadioButton';
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function SearchFilterDepartment({ heading }: Props) {
-	const { data, loading, error } = usePositions();
+	const [data, { loading, error }] = usePositions();
 	const { search, searchDispatch } = useContext(SearchContext);
 
 	const handleToggleTerm = (term: string) => {
@@ -49,7 +49,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
-				{data.positions.nodes.map((term: FilterItem) => {
+				{data.map((term: WPItem) => {
 					const radio = getRadioProps({ value: term.id.toString() });
 
 					return (

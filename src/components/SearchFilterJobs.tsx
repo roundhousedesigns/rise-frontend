@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
-import { FilterItem } from '../lib/types';
+import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
 import CheckboxButton from './common/CheckboxButton';
 
@@ -12,7 +12,7 @@ interface Props {
 
 export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const { data, loading, error } = usePositions(parseInt(search.filters.position.department));
+	const [data, { loading, error }] = usePositions(parseInt(search.filters.position.department));
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -48,7 +48,7 @@ export default function SearchFilterJobs({ heading }: Props) {
 						{heading}
 					</Heading>
 					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
-						{data.positions.nodes.map((term: FilterItem) => {
+						{data.map((term: WPItem) => {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 							return (

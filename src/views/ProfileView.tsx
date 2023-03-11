@@ -1,11 +1,11 @@
 import { Key } from 'react';
+import { isEmpty } from 'lodash';
 import {
 	Box,
 	Heading,
 	Image,
 	Flex,
 	Text,
-	ButtonGroup,
 	Button,
 	Stack,
 	Card,
@@ -13,13 +13,18 @@ import {
 	Avatar,
 	Tag,
 	Spinner,
+	UnorderedList,
+	ListItem,
+	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { isEmpty } from 'lodash';
+import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
-import SocialLinks from '../components/common/SocialLinks';
+import LinkWithIcon from '../components/common/LinkWithIcon';
+import PersonalIconLinks from '../components/common/PersonalIconLinks';
 import CreditItem from '../components/common/CreditItem';
+import TextWithIcon from '../components/common/TextWithIcon';
 
 interface Props {
 	profile: UserProfile | null;
@@ -33,6 +38,23 @@ interface Props {
 export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
+	const {
+		image,
+		pronouns,
+		selfTitle,
+		socials,
+		unions,
+		location,
+		willTravel,
+		email,
+		phone,
+		resume,
+		credits,
+		description,
+		media,
+		education,
+	} = profile || {};
+
 	/**
 	 * Generate the text to display for the 'will travel' field.
 	 * @returns {string} The text to display.
@@ -44,114 +66,135 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<Card py={6} bg='blackAlpha.100'>
-				<Flex
-					gap={5}
-					flexWrap={{ base: 'wrap', md: 'nowrap' }}
-					justifyContent={{ base: 'center', md: 'flex-start' }}
-				>
-					{loading && <Spinner alignSelf='center' />}
-					{isLargerThanMd ? (
-						profile.image ? (
-							<Image
-								src={profile.image}
-								alt={`${profile.name}'s picture`}
-								loading='eager'
-								fit='cover'
-								w='xs'
-							/>
+			<StackItem>
+				<Card py={6} bg='blackAlpha.100'>
+					<Flex
+						gap={5}
+						flexWrap={{ base: 'wrap', md: 'nowrap' }}
+						justifyContent={{ base: 'center', md: 'flex-start' }}
+					>
+						{loading && <Spinner alignSelf='center' />}
+						{isLargerThanMd ? (
+							image ? (
+								<Image
+									src={image}
+									alt={`${profile.fullName()}'s picture`}
+									loading='eager'
+									fit='cover'
+									w='xs'
+								/>
+							) : (
+								<Avatar size='2xl' name={`${profile.fullName()}'s picture`} mx={2} />
+							)
 						) : (
-							<Avatar size='2xl' name={`${profile.name}'s picture`} mx={2} />
-						)
-					) : (
-						<Avatar size='2xl' src={profile.image} name={`${profile.name}'s picture`} />
-					)}
-
-					<Stack direction='column' justifyContent='stretch' gap={1} lineHeight={1}>
-						<Flex alignItems='center'>
-							<Heading size='xl' mr={2}>
-								{profile.name}
-							</Heading>
-							<Tag colorScheme='cyan' size='sm'>
-								{profile.pronouns}
-							</Tag>
-						</Flex>
-						<Box>
-							<Text fontSize='xl' lineHeight='short' my={0}>
-								{profile.selfTitle && profile.selfTitle}
-							</Text>
-						</Box>
-
-						{profile.socials && (!isEmpty(profile.socials) || !isEmpty(profile.websiteUrl)) && (
-							<Box pb={3}>
-								<SocialLinks socials={profile.socials} websiteUrl={profile.websiteUrl} />
-							</Box>
+							<Avatar size='2xl' src={image} name={`${profile.fullName()}'s picture`} />
 						)}
 
-						<Box>
-							<Heading size='md'>Unions/Guilds</Heading>
-							<Text>{profile.unions?.join(', ')}</Text>
-						</Box>
-						<Stack direction='row' flexWrap='wrap' alignItems='flex-end'>
-							<Box w='auto'>
-								<Heading size='md'>Location/Homebase</Heading>
-								<Stack direction='row' justifyContent='flex-start' alignItems='center'>
-									<Text my={1} flex='1' mr={2}>
-										{profile.location}
-									</Text>
-									{profile.willTravel !== undefined && (
-										<Tag size='md' colorScheme={profile.willTravel ? 'green' : 'orange'}>
+						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>
+							<StackItem display='flex' flexWrap='wrap'>
+								<Heading size='xl' mr={2} lineHeight='none'>
+									{profile.fullName()}
+								</Heading>
+								<Tag colorScheme='cyan' size='md'>
+									{pronouns}
+								</Tag>
+								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
+									{selfTitle && selfTitle}
+								</Text>
+							</StackItem>
+							{socials && !isEmpty(socials) && (
+								<StackItem>
+									<PersonalIconLinks socials={socials} />
+								</StackItem>
+							)}
+							<StackItem>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<TextWithIcon icon={FiUsers}>
+									{unions?.map((item) => item.name).join(', ')}
+								</TextWithIcon>
+							</StackItem>
+							<StackItem>
+								<Heading variant='contentTitle'>Location/Homebase</Heading>
+								<Flex alignItems='center'>
+									<TextWithIcon icon={FiMapPin}>{location}</TextWithIcon>
+									{willTravel !== undefined && (
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
 											{willTravelText()}
 										</Tag>
 									)}
-								</Stack>
-							</Box>
+								</Flex>
+							</StackItem>
+							<StackItem>
+								<Heading variant='contentTitle'>Contact</Heading>
+								<UnorderedList listStyleType='none' m={0}>
+									{email ? (
+										<ListItem>
+											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
+												{email}
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+									{phone ? (
+										<ListItem>
+											<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
+												{phone}
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+									{resume ? (
+										<ListItem>
+											<LinkWithIcon href={resume} icon={FiDownload} isExternal>
+												Resume
+											</LinkWithIcon>
+										</ListItem>
+									) : null}
+								</UnorderedList>
+							</StackItem>
+							<StackItem>
+								<Button
+									colorScheme='green'
+									onClick={() => {
+										alert('Pin!');
+									}}
+								>
+									{/* TODO Bookmark a user */}
+									Save This Candidate
+								</Button>
+							</StackItem>
 						</Stack>
-						<ButtonGroup
-							colorScheme='blue'
-							flexWrap='wrap'
-							gap={2}
-							justifyContent='flex-start'
-							pt={2}
-						>
-							<Button>Resume{/* profile.resume */}</Button>
-							<Button>Email{/* profile.email */}</Button>
-							<Button>Phone{/* profile.phone */}</Button>
-							<Button>Save{/* bookmark this user */}</Button>
-						</ButtonGroup>
-					</Stack>
-				</Flex>
-			</Card>
+					</Flex>
+				</Card>
+			</StackItem>
 
-			{profile.credits && profile.credits.length > 0 && (
+			{credits && credits.length > 0 && (
 				// MAYBE click-to-expand more Credit details?
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{profile.credits.map((credit: Credit, index: Key) => (
+					{credits.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} />
 					))}
-				</Box>
+				</StackItem>
 			)}
 
-			{profile.description && (
+			{description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{profile.description}</Text>
+					<Text>{description}</Text>
 				</Box>
 			)}
 
-			{profile.education && (
+			{education && (
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text>{profile.education}</Text>
+					<Text>{education}</Text>
 				</Box>
 			)}
 
-			{profile.media && profile.media.length > 0 && (
+			{media && media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{profile.media.map((item: string, index: React.Key) => (
+						{media.map((item: string, index: Key) => (
 							// TODO Improve video display w/ responsiveness and grid
 							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />

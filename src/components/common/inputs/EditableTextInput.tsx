@@ -11,21 +11,35 @@ import {
 
 interface Props extends BoxProps {
 	defaultValue: string;
+	name: string;
 	label: string;
 	labelVisuallyHidden?: boolean;
+	handleChange: (name: string) => (value: string) => void;
+	outerProps?: {
+		[key: string]: any;
+	};
 	styles?: any;
 }
 
 export default function EditableTextInput({
 	defaultValue,
+	name,
 	label,
 	labelVisuallyHidden,
 	styles,
-	...rest
+	handleChange,
+	outerProps,
+	...inputProps
 }: Props): JSX.Element {
+
 	return (
-		<FormControl>
-			<Editable defaultValue={defaultValue} {...styles} {...rest}>
+		<FormControl {...outerProps}>
+			<Editable
+				defaultValue={defaultValue}
+				onChange={handleChange(name)}
+				{...styles}
+				{...inputProps}
+			>
 				<EditablePreview display='block' />
 				<EditableInput display='block' />
 			</Editable>

@@ -1,10 +1,11 @@
+import { unescape } from 'lodash';
 import {
 	UserParams,
 	CandidateData,
 	UserProfileParams,
 	CreditParams,
-	Socials,
-	FilterItem,
+	PersonalLinksParams,
+	WPItemParams,
 } from './types';
 import { maybeParseInt } from './utils';
 
@@ -69,50 +70,122 @@ export class Candidate extends User {
  * A user profile
  * @param {Object} params
  * @implements {UserProfileParams}
- * @implements {Socials}
+ * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
-	name: string = '';
-	contactEmail: string = '';
+	email: string = '';
 	selfTitle?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	websiteUrl?: string;
 	location?: string;
 	resume?: string;
-	willTravel?: boolean | null;
+	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
-	unions?: string[];
+	unions?: WPItem[];
+	genderIdentities?: WPItem[];
+	racialIdentities?: WPItem[];
+	personalIdentities?: WPItem[];
 	media?: string[];
-	socials?: Socials;
+	socials?: PersonalLinks;
 	credits?: Credit[];
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
+		const {
+			id,
+			firstName,
+			lastName,
+			selfTitle,
+			email,
+			image,
+			pronouns,
+			phone,
+			description,
+			location,
+			resume,
+			willTravel,
+			education,
+			twitter,
+			linkedin,
+			instagram,
+			facebook,
+			website,
+			unions,
+			genderIdentities,
+			racialIdentities,
+			personalIdentities,
+			// media,
+			// credits,
+		} = userParams;
+
 		super({
-			id: userParams.id,
-			firstName: userParams.firstName,
-			lastName: userParams.lastName,
+			id: id,
+			firstName: firstName,
+			lastName: lastName,
 		});
 
-		Object.assign(this, userParams, {
-			name: `${userParams.firstName} ${userParams.lastName}`,
-			description: userParams.description ? userParams.description : '',
-			education: userParams.education ? userParams.education : '',
-			media: userParams.media ? userParams.media.split('##') : [],
-			credits: credits && credits.length > 0 ? [...credits] : [],
-			socials: {
-				twitter: userParams.twitter || '',
-				linkedin: userParams.linkedin || '',
-				instagram: userParams.instagram || '',
-				facebook: userParams.facebook || '',
+		Object.assign(
+			this,
+			{
+				selfTitle,
+				email,
+				image,
+				pronouns,
+				phone,
+				description,
+				location,
+				resume,
+				willTravel,
+				education,
 			},
-		});
+			{
+				unions: unions && unions.length > 0 ? unions.map((item) => item.id) : [],
+				genderIdentities:
+					genderIdentities && genderIdentities.length > 0
+						? genderIdentities.map((item) => item.id)
+						: [],
+				racialIdentities:
+					racialIdentities && racialIdentities.length > 0
+						? racialIdentities.map((item) => item.id)
+						: [],
+				personalIdentities:
+					personalIdentities && personalIdentities.length > 0
+						? personalIdentities.map((item) => item.id)
+						: [],
+				// media: media && media.length > 0 ? media : [],
+				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
+				// credits: credits && credits.length > 0 ? credits.map((credit) => new Credit(credit)) : [],
+				socials: new PersonalLinks({
+					twitter: twitter || '',
+					linkedin: linkedin || '',
+					instagram: instagram || '',
+					facebook: facebook || '',
+					website: website || '',
+				}),
+			}
+		);
 	}
 
 	fullName() {
 		return super.fullName();
+	}
+}
+
+/**
+ * A collection of personal links and social media handles.
+ * @param {PersonalLinksParams} params
+ * @implements {PersonalLinksParams}
+ */
+export class PersonalLinks {
+	twitter: string = '';
+	linkedin: string = '';
+	instagram: string = '';
+	facebook: string = '';
+	website: string = '';
+
+	constructor(params: PersonalLinksParams) {
+		Object.assign(this, params);
 	}
 }
 
@@ -125,8 +198,8 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: FilterItem[]; // TODO Split this collection into departments and jobs.
-	skills: FilterItem[] = [];
+	positions: WPItem[]; // TODO Split this collection into departments and jobs.
+	skills: WPItem[] = [];
 
 	constructor(params: CreditParams) {
 		this.title = params.title;
@@ -134,5 +207,22 @@ export class Credit {
 		this.year = params.year;
 		this.positions = params.positions.nodes;
 		this.skills = params.skills.nodes;
+	}
+}
+
+/**
+ * A generic WordPress item. Used for taxonomy terms, post objects, etc.
+ * @param {WPItemParams} params
+ * @implements {WPItemParams}
+ */
+export class WPItem {
+	id!: number;
+	name!: string;
+	slug!: string;
+
+	constructor(params: WPItemParams) {
+		this.id = maybeParseInt(params.id);
+		this.name = unescape(params.name);
+		this.slug = params.slug;
 	}
 }

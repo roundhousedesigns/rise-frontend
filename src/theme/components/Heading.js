@@ -12,11 +12,15 @@ export default defineStyleConfig({
 	variants: {
 		pageTitle: {
 			fontSize: '4xl',
-			mb: 8,
-			textAlign: 'left',
 		},
 		pageSubtitle: {
 			fontSize: '3xl',
+		},
+		contentTitle: {
+			fontSize: '2xl',
+			fontWeight: 'bold',
+			mb: 0,
+			pb: 0,
 		},
 	},
 });

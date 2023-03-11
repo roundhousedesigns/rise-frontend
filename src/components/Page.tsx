@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wrap, Heading } from '@chakra-ui/react';
+import { Wrap, Heading, Box } from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
@@ -9,8 +9,8 @@ interface Props {
 
 export default function Page({ title, actions, children }: Props) {
 	return (
-		<>
-			<Wrap mb='8'>
+		<Box mt={3}>
+			<Wrap>
 				{title ? (
 					<Heading variant='pageTitle' as='h1'>
 						{title}
@@ -21,6 +21,6 @@ export default function Page({ title, actions, children }: Props) {
 			</Wrap>
 
 			{children}
-		</>
+		</Box>
 	);
 }

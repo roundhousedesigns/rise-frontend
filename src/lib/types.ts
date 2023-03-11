@@ -1,3 +1,15 @@
+import { WPItem } from './classes';
+
+/**
+ * The data shape for a generic WordPress item.
+ */
+export interface WPItemParams {
+	id: number;
+	slug: string;
+	name: string;
+	parentId?: number;
+}
+
 /**
  * The data shape for a User.
  */
@@ -21,11 +33,12 @@ export interface CandidateData {
 /**
  * The data shape for a social media account.
  */
-export interface Socials {
-	[twitter: string]: string;
-	linkedin: string;
-	instagram: string;
-	facebook: string;
+export interface PersonalLinksParams {
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
+	website?: string;
 }
 
 /**
@@ -46,21 +59,15 @@ export interface UserProfileParams {
 	willTravel?: boolean;
 	education?: string;
 	media?: string;
-	unions?: string[];
+	unions?: WPItem[];
+	genderIdentities?: WPItem[];
+	racialIdentities?: WPItem[];
+	personalIdentities?: WPItem[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
-	websiteUrl?: string;
-}
-
-/**
- * The data shape for an individual search filter.
- */
-export interface FilterItem {
-	id: number;
-	slug: string;
-	name: string;
+	website?: string;
 }
 
 /**
@@ -71,10 +78,10 @@ export interface CreditParams {
 	venue: string;
 	year: string;
 	positions: {
-		nodes: FilterItem[];
+		nodes: WPItem[];
 	};
 	skills: {
-		nodes: FilterItem[];
+		nodes: WPItem[];
 	};
 }
 

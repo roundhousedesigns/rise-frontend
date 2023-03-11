@@ -3,6 +3,10 @@
  */
 
 export const colors = {
+	text: {
+		light: '#ddd',
+		dark: '#222',
+	},
 	brand: {
 		red: '#ed1c24',
 		orange: '#f15a29',

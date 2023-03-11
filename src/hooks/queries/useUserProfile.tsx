@@ -5,29 +5,49 @@
 import { gql, useQuery } from '@apollo/client';
 
 const QUERY_USER = gql`
-	query UserQuery($last: Int = 5, $id: ID!, $author: Int!) {
+	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {
 		user(id: $id, idType: DATABASE_ID) {
 			id: databaseId
+			firstName
 			lastName
-			contactEmail
+			pronouns
+			email: contactEmail
 			selfTitle
 			image
-			pronouns
 			phone
 			description
-			websiteUrl
 			location
 			resume
 			willTravel
 			media
 			education
+			website: websiteUrl
 			twitter
 			instagram
 			linkedin
 			facebook
-			firstName
+			unions {
+				id: databaseId
+				name
+				slug
+			}
+			genderIdentities {
+				id: databaseId
+				name
+				slug
+			}
+			racialIdentities {
+				id: databaseId
+				name
+				slug
+			}
+			personalIdentities {
+				id: databaseId
+				name
+				slug
+			}
 		}
-		credits(where: { author: $author }, last: $last) {
+		credits(where: { author: $author }, last: $lastCredits) {
 			nodes {
 				id: databaseId
 				title(format: RENDERED)
@@ -35,12 +55,14 @@ const QUERY_USER = gql`
 				year(format: RENDERED)
 				positions {
 					nodes {
+						id: databaseId
 						name
 						slug
 					}
 				}
 				skills {
 					nodes {
+						id: databaseId
 						name
 						slug
 					}
@@ -50,7 +72,7 @@ const QUERY_USER = gql`
 	}
 `;
 
-// FIXME $author not used
+// FIXME $author not used?
 export const useUserProfile = (id: number) => {
 	const result = useQuery(QUERY_USER, {
 		variables: {

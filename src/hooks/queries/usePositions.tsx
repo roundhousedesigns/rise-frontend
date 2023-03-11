@@ -5,6 +5,9 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
+import { WPItemParams } from '../../lib/types';
+import { WPItem } from '../../lib/classes';
+import { omit } from 'lodash';
 
 // Using `first: 40` to as a guess at a safe, but not excessive,
 // number of terms to return.
@@ -28,15 +31,16 @@ const QUERY_CREDITS = gql`
  * Queries `position` terms. Specify 0
  *
  * @param {number} parent - The parent term ID.
- *
- * @returns {object} The query result object.
+ * @returns {Array} A tuple of a prepared data object and a query result object.
  */
-export const usePositions = (parent = 0) => {
+export const usePositions = (parent: number = 0): [WPItem[], any] => {
 	const result = useQuery(QUERY_CREDITS, {
 		variables: {
 			parent,
 		},
 	});
 
-	return result;
+	const preparedResult = result.data?.positions.nodes.map((term: WPItemParams) => new WPItem(term));
+
+	return [preparedResult, omit(result, ['data'])];
 };

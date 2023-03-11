@@ -6,7 +6,7 @@ import {
 	Image,
 	Container,
 	useDisclosure,
-	LightMode,
+	DarkMode,
 	Spacer,
 	Link,
 	Stack,
@@ -17,6 +17,9 @@ import {
 	MenuItem,
 	MenuDivider,
 	MenuOptionGroup,
+	LightMode,
+	Avatar,
+	Badge,
 } from '@chakra-ui/react';
 
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
@@ -28,7 +31,7 @@ import LoggedIn from '../LoggedIn';
 import { useLogout } from '../../hooks/mutations/useLogout';
 import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
-import Badge from '../common/Badge';
+// import Badge from '../common/Badge';
 
 export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
@@ -48,10 +51,47 @@ export default function Header() {
 		});
 	};
 
+	const SearchButton = () => (
+		<Box position='relative'>
+			<IconButton
+				ref={drawerButtonRef}
+				icon={<FiSearch />}
+				aria-label='Search for candidates'
+				variant='invisible'
+				bg='whiteAlpha.400'
+				borderRadius='full'
+				size='lg'
+				fontSize='3xl'
+				_hover={{ bg: 'whiteAlpha.600' }}
+				_active={{ bg: 'whiteAlpha.600' }}
+				onClick={drawerOnOpen}
+			/>
+			{searchActive && results.length ? (
+				<Badge
+					fontSize='xs'
+					px={2}
+					py='0.1em'
+					display='flex'
+					alignItems='center'
+					justifyContent='center'
+					borderRadius='full'
+					color='brand.cyan'
+					bg='white'
+					position='absolute'
+					bottom='-11px'
+					left='30px'
+					textAlign='left'
+				>
+					{results.length}
+				</Badge>
+			) : null}
+		</Box>
+	);
+
 	return (
 		<Box flex='0 0 auto' w='full'>
-			<LightMode>
-				<Box id='header' w='full' bg='black' py={3} color='white'>
+			<DarkMode>
+				<Box id='header' w='full' bg='text.dark' py={3} color='text.light'>
 					<Container centerContent w='full' maxW='9xl'>
 						<Stack
 							direction='row'
@@ -60,97 +100,82 @@ export default function Header() {
 							align='center'
 							flexWrap='wrap'
 						>
-							<LoggedIn>
-								<Box position='relative'>
-									<IconButton
-										ref={drawerButtonRef}
-										icon={<FiSearch />}
-										aria-label='Search for candidates'
-										variant='invisible'
-										fontSize='4xl'
-										onClick={drawerOnOpen}
-									/>
-									{searchActive && results.length ? (
-										<Badge bg='none' color='orange'>
-											{results.length}
-										</Badge>
-									) : null}
-								</Box>
-							</LoggedIn>
 							<Link as={RouterLink} to='/'>
 								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
 							</Link>
 							<LoggedIn redirect={false}>
+								<Spacer />
 								{isLargerThanMd ? (
-									<>
-										<Spacer />
-										<Stack
-											direction='row'
-											spacing={4}
-											mr={6}
-											align='center'
-											fontSize='lg'
-											textTransform='uppercase'
-										>
-											<Link ref={drawerButtonRef} onClick={drawerOnOpen}>
-												Search
-											</Link>
-											<Link as={RouterLink} to='/profile'>
-												My Profile
-											</Link>
-										</Stack>
-									</>
+									<Stack
+										color='white'
+										direction='row'
+										spacing={4}
+										mr={6}
+										align='center'
+										fontSize='lg'
+										textTransform='uppercase'
+									>
+										<SearchButton />
+										<Link variant='nav' as={RouterLink} to='/profile'>
+											<Avatar
+												size='md'
+												bg='whiteAlpha.600'
+												_hover={{ bg: 'whiteAlpha.700' }}
+												transitionDuration='normal'
+											/>
+										</Link>
+									</Stack>
 								) : null}
 
 								<Box pl={2}>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
-									<Menu>
-										<MenuButton
-											aria-label='Menu'
-											as={IconButton}
-											variant='round'
-											bg='brand.blue'
-											_active={{ bg: 'brand.cyan' }}
-											icon={<FiMenu />}
-											size='lg'
-										/>
-										<MenuList color='black'>
-											{isLargerThanMd ? (
-												<>
-													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
-															My Profile
-														</MenuItem>
-														<MenuItem as={RouterLink} to='/search' icon={<FiSearch />}>
-															Search
-														</MenuItem>
-													</MenuOptionGroup>
-													<MenuDivider />
-												</>
-											) : null}
-											<MenuOptionGroup>
-												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-													Dashboard
+									<LightMode>
+										{
+											// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+											// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+										}
+										<Menu>
+											<MenuButton
+												aria-label='Menu'
+												as={IconButton}
+												variant='round'
+												bg='whiteAlpha.700'
+												_hover={{ bg: 'whiteAlpha.800' }}
+												_active={{ bg: 'blue.300' }}
+												icon={<FiMenu />}
+												size='lg'
+											/>
+											<MenuList color='text.dark'>
+												{isLargerThanMd ? (
+													<>
+														<MenuOptionGroup>
+															<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+																Dashboard
+															</MenuItem>
+															<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
+																My Profile
+															</MenuItem>
+														</MenuOptionGroup>
+														<MenuDivider />
+													</>
+												) : null}
+												<MenuOptionGroup>
+													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+														Settings
+													</MenuItem>
+												</MenuOptionGroup>
+												<MenuDivider />
+												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+													Logout
 												</MenuItem>
-												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-													Settings
-												</MenuItem>
-											</MenuOptionGroup>
-											<MenuDivider />
-											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-												Logout
-											</MenuItem>
-										</MenuList>
-									</Menu>
+											</MenuList>
+										</Menu>
+									</LightMode>
 								</Box>
 							</LoggedIn>
 						</Stack>
 					</Container>
 				</Box>
-			</LightMode>
+			</DarkMode>
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
 		</Box>

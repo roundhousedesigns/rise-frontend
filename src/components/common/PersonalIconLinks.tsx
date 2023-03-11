@@ -1,12 +1,11 @@
 import React from 'react';
-import { Stack, IconButton, Link } from '@chakra-ui/react';
+import { Wrap, IconButton, Link } from '@chakra-ui/react';
 import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
-import { Socials } from '../../lib/types';
+import { PersonalLinks } from '../../lib/classes';
 import { socialLink } from '../../lib/utils';
 
 interface Props {
-	socials: Socials;
-	websiteUrl?: string;
+	socials: PersonalLinks;
 }
 
 /**
@@ -19,28 +18,23 @@ interface Props {
  * @returns
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (
-	<Link href={socialLink(name, value)} isExternal>
+	<Link href={socialLink(name, value)} isExternal display='block'>
 		<IconButton variant='socialRound' aria-label={label} icon={icon} />
 	</Link>
 );
 
-export default function SocialLinks({ socials, websiteUrl }: Props): JSX.Element {
-	const { facebook, twitter, instagram, linkedin } = socials;
+export default function PersonalIconLinks({ socials }: Props): JSX.Element {
+	const { facebook, twitter, instagram, linkedin, website } = socials;
 
-	// TODO Unify socials and websites in a less hacky way
+	// TODO Change socials to only provide a link and let backend handle handle/url formatting.
 
 	return (
-		<Stack direction='row' spacing={4}>
+		<Wrap direction='row' spacing={4}>
 			{linkedin && socialIcon('LinkedIn', 'linkedin', linkedin, <FiLinkedin />)}
 			{facebook && socialIcon('Facebook', 'facebook', facebook, <FiFacebook />)}
 			{twitter && socialIcon('Twitter', 'twitter', twitter, <FiTwitter />)}
 			{instagram && socialIcon('Instagram', 'instagram', instagram, <FiInstagram />)}
-
-			{websiteUrl ? (
-				<Link href={websiteUrl} isExternal>
-					<IconButton variant='socialRound' aria-label='Personal url' icon={<FiGlobe />} />
-				</Link>
-			) : null}
-		</Stack>
+			{website && socialIcon('Website', 'website', website, <FiGlobe />)}
+		</Wrap>
 	);
 }

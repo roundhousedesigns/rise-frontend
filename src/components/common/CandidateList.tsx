@@ -13,10 +13,7 @@ interface Props {
 // TODO Set up search results pagination in GraphQL
 
 export default function CandidateList({ userIds }: Props): JSX.Element {
-	const {
-		result: { loading, error },
-		preparedCandidates,
-	} = useCandidates(userIds);
+	const [preparedCandidates, { loading, error }] = useCandidates(userIds);
 
 	return preparedCandidates && !loading && !error ? (
 		<List alignItems='left' h='auto' w='full' gap={4} display='flex' flexWrap='wrap'>

@@ -7,17 +7,41 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 
 const baseStyle = definePartsStyle({
 	preview: {
-		borderWidth: '3px',
-		borderColor: 'gray.500',
-		borderStyle: 'dashed',
-		borderRadius: 'lg',
-		cursor: 'pointer',
+		borderTopStyle: 'solid',
+		borderTopWidth: '1px',
+		borderTopColor: 'gray.200',
+		borderBottomWidth: '3px',
+		borderBottomColor: 'gray.400',
+		borderBottomStyle: 'dashed',
+		color: 'text.dark',
+		bg: 'whiteAlpha.600',
 		px: 4,
 		py: 1,
-		_hover: {
-			bg: 'gray.100',
+		my: 1,
+	},
+	input: {
+		borderTopStyle: 'solid',
+		borderTopWidth: '1px',
+		borderTopColor: 'gray.200',
+		borderBottomWidth: '3px',
+		borderBottomColor: 'gray.400',
+		borderBottomStyle: 'solid',
+		bg: 'whiteAlpha.700',
+		px: 4,
+		py: 1,
+		my: 1,
+		_focus: {
+			boxShadow: 'none',
 		},
-		m: 1,
+	},
+	textarea: {
+		borderWidth: '3px',
+		borderColor: 'gray.400',
+		borderStyle: 'solid',
+		bg: 'whiteAlpha.700',
+		_focus: {
+			boxShadow: 'none',
+		},
 	},
 });
 
