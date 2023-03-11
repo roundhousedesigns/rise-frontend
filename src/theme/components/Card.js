@@ -18,15 +18,11 @@ const variants = {
 				bgColor: 'gray.700',
 			},
 		},
-		body: {},
 		header: {
 			mb: 0,
 			py: 0,
 			fontSize: '2xl',
 			fontWeight: 'bold',
-		},
-		body: {
-			pb: 0,
 		},
 	}),
 };

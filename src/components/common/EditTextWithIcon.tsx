@@ -1,4 +1,4 @@
-import { Flex, FormControl, Icon, VisuallyHidden } from '@chakra-ui/react';
+import { Flex, FormControl, Icon } from '@chakra-ui/react';
 import EditableTextInput from './inputs/EditableTextInput';
 
 interface Props {
