@@ -83,12 +83,12 @@ export class UserProfile extends User {
 	resume?: string;
 	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
+	media?: string[];
+	socials?: PersonalLinks;
 	unions?: WPItem[];
 	genderIdentities?: WPItem[];
 	racialIdentities?: WPItem[];
 	personalIdentities?: WPItem[];
-	media?: string[];
-	socials?: PersonalLinks;
 	credits?: Credit[];
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
@@ -140,19 +140,11 @@ export class UserProfile extends User {
 				education,
 			},
 			{
-				unions: unions && unions.length > 0 ? unions.map((item) => item.id) : [],
-				genderIdentities:
-					genderIdentities && genderIdentities.length > 0
-						? genderIdentities.map((item) => item.id)
-						: [],
-				racialIdentities:
-					racialIdentities && racialIdentities.length > 0
-						? racialIdentities.map((item) => item.id)
-						: [],
+				unions: unions && unions.length > 0 ? unions : [],
+				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
+				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 				personalIdentities:
-					personalIdentities && personalIdentities.length > 0
-						? personalIdentities.map((item) => item.id)
-						: [],
+					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
 				// media: media && media.length > 0 ? media : [],
 				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
 				// credits: credits && credits.length > 0 ? credits.map((credit) => new Credit(credit)) : [],

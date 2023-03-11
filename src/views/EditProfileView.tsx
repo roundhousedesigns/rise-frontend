@@ -14,7 +14,7 @@ import {
 	Button,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { Credit, UserProfile } from '../lib/classes';
+import { Credit, UserProfile, WPItem } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';
 import EditableTextInput from '../components/common/inputs/EditableTextInput';
@@ -167,7 +167,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<Button type='submit' position='fixed' top={4} right={4}>
+			<Button type='submit' position='fixed' top={24} right={4} colorScheme='green'>
 				Save
 			</Button>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
@@ -317,7 +317,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								<ProfileCheckboxGroup
 									name='unions'
 									items={unionTerms}
-									checked={unions}
+									checked={unions.map((item: WPItem) => item.id)}
 									handleChange={handleInputChange}
 								/>
 							</Box>
@@ -408,7 +408,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<ProfileCheckboxGroup
 										name='genderIdentities'
 										items={genderIdentityTerms}
-										checked={genderIdentities}
+										checked={genderIdentities.map((item: WPItem) => item.id)}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -419,7 +419,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<ProfileCheckboxGroup
 										name='racialIdentities'
 										items={racialIdentityTerms}
-										checked={racialIdentities}
+										checked={racialIdentities.map((item: WPItem) => item.id)}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -430,7 +430,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<ProfileCheckboxGroup
 										name='personalIdentities'
 										items={personalIdentityTerms}
-										checked={personalIdentities}
+										checked={personalIdentities.map((item: WPItem) => item.id)}
 										handleChange={handleInputChange}
 									/>
 								</Box>
