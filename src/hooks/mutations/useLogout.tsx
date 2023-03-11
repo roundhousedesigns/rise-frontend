@@ -14,7 +14,7 @@ const MUTATE_LOGOUT = gql`
 `;
 
 export const useLogout = () => {
-	const [mutation, mutationResults] = useMutation(MUTATE_LOGOUT);
+	const [mutation, results] = useMutation(MUTATE_LOGOUT);
 
 	const logoutMutation = () => {
 		return mutation({
@@ -26,5 +26,5 @@ export const useLogout = () => {
 		});
 	};
 
-	return { logoutMutation, results: mutationResults };
+	return { logoutMutation, results };
 };

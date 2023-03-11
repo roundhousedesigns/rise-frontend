@@ -21,8 +21,11 @@ export default function EditProfile() {
 
 	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
+	// TODO Implement cancel editing
+	const CancelButton = () => <Button onClick={() => alert('borkbork')}>Cancel Editing</Button>;
+
 	return (
-		<Page title={'Update Profile'}>
+		<Page title={'Update Profile'} actions={<CancelButton />}>
 			{profile && !loading && !error ? (
 				<EditProfileView profile={profile} loading={loading} />
 			) : loading ? (

@@ -60,6 +60,9 @@ export interface UserProfileParams {
 	education?: string;
 	media?: string;
 	unions?: WPItem[];
+	genderIdentities?: WPItem[];
+	racialIdentities?: WPItem[];
+	personalIdentities?: WPItem[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;

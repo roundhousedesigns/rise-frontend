@@ -35,9 +35,10 @@ const baseStyle = definePartsStyle({
 		},
 	},
 	textarea: {
-		borderBottomWidth: '3px',
-		borderBottomColor: 'teal.400',
-		// borderBottomRadius: 'lg',
+		borderWidth: '3px',
+		borderColor: 'gray.400',
+		borderStyle: 'solid',
+		bg: 'whiteAlpha.700',
 		_focus: {
 			boxShadow: 'none',
 		},

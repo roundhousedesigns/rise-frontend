@@ -39,7 +39,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
-		name,
 		image,
 		pronouns,
 		selfTitle,
@@ -189,7 +188,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media.map((item: string, index: React.Key) => (
+						{media.map((item: string, index: Key) => (
 							// TODO Improve video display w/ responsiveness and grid
 							<Box key={index}>
 								<ReactPlayer url={item} controls={true} />

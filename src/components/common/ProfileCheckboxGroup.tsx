@@ -4,16 +4,24 @@ import { WPItem } from '../../lib/classes';
 import CheckboxButton from './CheckboxButton';
 
 interface Props {
-	// TODO use 'filter' as an ID for submission, or remove it.
-	filter: string;
+	name: string;
 	items: WPItem[];
 	checked: string[];
+	handleChange: (name: string) => (value: string[]) => void;
 }
 
-export default function ProfileCheckboxGroup({ filter, items, checked, ...rest }: Props) {
-	const handleToggleItem = (items: string[]) => {};
+export default function ProfileCheckboxGroup({
+	name,
+	items,
+	checked,
+	handleChange,
+	...rest
+}: Props) {
+	const handleToggleItem = (items: string[]) => {
+		handleChange(name)(items);
+	};
 
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
+	const { setValue, getCheckboxProps } = useCheckboxGroup({
 		defaultValue: [],
 		onChange: handleToggleItem,
 	});
@@ -24,7 +32,7 @@ export default function ProfileCheckboxGroup({ filter, items, checked, ...rest }
 	}, []);
 
 	return items ? (
-		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2}>
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>
 			{items.map((item: WPItem) => {
 				const checkbox = getCheckboxProps({ value: item.id.toString() });
 

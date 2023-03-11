@@ -10,23 +10,38 @@ const QUERY_USER = gql`
 			id: databaseId
 			firstName
 			lastName
+			pronouns
 			email: contactEmail
 			selfTitle
 			image
-			pronouns
 			phone
 			description
-			website: websiteUrl
 			location
 			resume
 			willTravel
 			media
 			education
+			website: websiteUrl
 			twitter
 			instagram
 			linkedin
 			facebook
 			unions {
+				id: databaseId
+				name
+				slug
+			}
+			genderIdentities {
+				id: databaseId
+				name
+				slug
+			}
+			racialIdentities {
+				id: databaseId
+				name
+				slug
+			}
+			personalIdentities {
 				id: databaseId
 				name
 				slug

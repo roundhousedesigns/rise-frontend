@@ -1,38 +1,49 @@
 import { defineStyleConfig } from '@chakra-ui/react';
 
-export default defineStyleConfig({
-	baseStyle: {
+const baseStyle = {
+	fontWeight: 'medium',
+};
+
+const variants = {
+	default: {
 		borderRadius: 'lg',
-		fontWeight: 'medium',
 	},
-	variants: {
-		round: {
-			borderRadius: 'full',
+	round: {
+		borderRadius: 'full',
+	},
+	socialRound: {
+		borderRadius: 'full',
+		border: 'none',
+		bg: 'blackAlpha.700',
+		color: 'white',
+		_hover: {
+			bg: 'blackAlpha.600',
 		},
-		socialRound: {
-			borderRadius: 'full',
-			border: 'none',
-			bg: 'blackAlpha.700',
-			color: 'white',
-			_hover: {
-				bg: 'blackAlpha.600',
-			},
-		},
-		invisible: {
-			border: 'none',
+	},
+	invisible: {
+		border: 'none',
+		background: 'transparent',
+		_hover: {
 			background: 'transparent',
-			_hover: {
-				background: 'transparent',
-			},
-			_active: {
-				background: 'transparent',
-			},
 		},
-		oversized: {
-			fontSize: 'xl',
-			px: '6',
-			py: '4',
-			borderRadius: 'lg',
+		_active: {
+			background: 'transparent',
 		},
 	},
+	oversized: {
+		fontSize: 'xl',
+		px: '6',
+		py: '4',
+		borderRadius: 'lg',
+	},
+};
+
+const defaultProps = {
+	variants: 'default',
+};
+
+export default defineStyleConfig({
+	baseStyle,
+	variants,
+	defaultProps,
 });

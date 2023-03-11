@@ -1,4 +1,4 @@
-import { Box, useCheckbox } from '@chakra-ui/react';
+import { Box, Text, useCheckbox } from '@chakra-ui/react';
 
 interface Props {
 	[key: string]: any;
@@ -8,15 +8,12 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 	const { getInputProps, getCheckboxProps, htmlProps, getLabelProps } = useCheckbox(props);
 	const { children } = props;
 
-	const input = getInputProps();
-	const checkbox = getCheckboxProps();
-
 	return (
 		<Box as='label'>
-			<input {...input} hidden />
+			<input {...getInputProps()} hidden />
 			{/* TODO Check accessibility using a div as a checkbox? */}
 			<Box
-				{...checkbox}
+				{...getCheckboxProps()}
 				{...htmlProps}
 				// TODO Make these display props sharable between components
 				cursor='pointer'
@@ -47,7 +44,9 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 				px={3}
 				py={2}
 			>
-				<Box {...getLabelProps}>{children}</Box>
+				<Text p={0} m={0} {...getLabelProps}>
+					{children}
+				</Text>
 			</Box>
 		</Box>
 	);

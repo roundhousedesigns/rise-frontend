@@ -73,7 +73,6 @@ export class Candidate extends User {
  * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
-	name: string = '';
 	email: string = '';
 	selfTitle?: string;
 	image?: string;
@@ -84,32 +83,86 @@ export class UserProfile extends User {
 	resume?: string;
 	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
-	unions?: WPItem[];
+	unions?: number[];
+	genderIdentities?: number[];
+	racialIdentities?: number[];
+	personalIdentities?: number[];
 	media?: string[];
 	socials?: PersonalLinks;
 	credits?: Credit[];
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
+		const {
+			id,
+			firstName,
+			lastName,
+			selfTitle,
+			email,
+			image,
+			pronouns,
+			phone,
+			description,
+			location,
+			resume,
+			willTravel,
+			education,
+			twitter,
+			linkedin,
+			instagram,
+			facebook,
+			website,
+			unions,
+			genderIdentities,
+			racialIdentities,
+			personalIdentities,
+			// media,
+			// credits,
+		} = userParams;
+
 		super({
-			id: userParams.id,
-			firstName: userParams.firstName,
-			lastName: userParams.lastName,
+			id: id,
+			firstName: firstName,
+			lastName: lastName,
 		});
 
-		Object.assign(this, userParams, {
-			name: `${userParams.firstName} ${userParams.lastName}`,
-			description: userParams.description ? userParams.description : '',
-			education: userParams.education ? userParams.education : '',
-			media: userParams.media ? userParams.media.split('##') : [],
-			credits: credits && credits.length > 0 ? [...credits] : [],
-			socials: new PersonalLinks({
-				twitter: userParams.twitter || '',
-				linkedin: userParams.linkedin || '',
-				instagram: userParams.instagram || '',
-				facebook: userParams.facebook || '',
-				website: userParams.website || '',
-			}),
-		});
+		Object.assign(
+			this,
+			{
+				selfTitle,
+				email,
+				image,
+				pronouns,
+				phone,
+				description,
+				location,
+				resume,
+				willTravel,
+				education,
+			},
+			{
+				unions: unions && unions.length > 0 ? unions.map((item) => item.id) : [],
+				genderIdentities:
+					genderIdentities.length > 0 ? genderIdentities.map((item) => item.id) : [],
+				racialIdentities:
+					racialIdentities && racialIdentities.length > 0
+						? racialIdentities.map((item) => item.id)
+						: [],
+				personalIdentities:
+					personalIdentities && personalIdentities.length > 0
+						? personalIdentities.map((item) => item.id)
+						: [],
+				// media: media && media.length > 0 ? media : [],
+				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
+				// credits: credits && credits.length > 0 ? credits.map((credit) => new Credit(credit)) : [],
+				socials: new PersonalLinks({
+					twitter: twitter || '',
+					linkedin: linkedin || '',
+					instagram: instagram || '',
+					facebook: facebook || '',
+					website: website || '',
+				}),
+			}
+		);
 	}
 
 	fullName() {

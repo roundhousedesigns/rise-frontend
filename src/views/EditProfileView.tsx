@@ -5,10 +5,8 @@ import {
 	Image,
 	Flex,
 	Text,
-	Icon,
 	Stack,
 	Card,
-	Avatar,
 	Tag,
 	Spinner,
 	StackItem,
@@ -26,33 +24,44 @@ import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import {
 	FiFacebook,
-	FiFileText,
 	FiGlobe,
 	FiInstagram,
 	FiLinkedin,
 	FiMail,
-	FiMapPin,
 	FiPhone,
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
+import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 
 // TODO type the action param more specifically
 function EditProfileReducer(state: UserProfile, action: { type: string; payload: any }) {
 	switch (action.type) {
-		case 'INIT':
-			return action.payload;
-
-		case 'UPDATE':
+		case 'UPDATE_INPUT':
 			return {
 				...state,
-				...action.payload,
+				[action.payload.name]: action.payload.value,
 			};
 
+		case 'UPDATE_SOCIAL_TEXT_INPUT':
+			return {
+				...state,
+				socials: {
+					...state.socials,
+					[action.payload.name]: action.payload.value,
+				},
+			};
+
+		// case 'UPDATE_TAXONOMY_INPUT':
+		// 	return {
+		// 		...state,
+		// 		[action.payload.name]: action.payload.value,
+		// 	};
+
 		default:
-			return state;
+			return action.payload;
 	}
 }
 
@@ -70,7 +79,6 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 	const {
 		image,
-		name,
 		firstName,
 		lastName,
 		pronouns,
@@ -85,9 +93,23 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		email,
 		resume,
 		phone,
+		unions,
+		genderIdentities,
+		racialIdentities,
+		personalIdentities,
 	} = editProfile || {};
 
-	const [{ genderIdentities, personalIdentities, racialIdentities, unions }] = useUserTaxonomies();
+	// Get all the selectable terms for the user taxonomies.
+	const [
+		{
+			genderIdentities: genderIdentityTerms,
+			personalIdentities: personalIdentityTerms,
+			racialIdentities: racialIdentityTerms,
+			unions: unionTerms,
+		},
+	] = useUserTaxonomies();
+
+	const { updateProfileMutation } = useUpdateProfile();
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
@@ -97,14 +119,25 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		setResumeIsSet(!!resume);
 	}, [resume]);
 
-	const handleEditableInputChange = (name: string) => (newValue: string) => {
-		console.info(name, newValue);
-		// editProfileDispatch({
-		// 	type: 'UPDATE',
-		// 	payload: {
-		// 		[e.target.name]: e.target.value,
-		// 	},
-		// });
+	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
+		// if `name` matches a key in `socials`, update the socials object
+		if (name in socials) {
+			editProfileDispatch({
+				type: 'UPDATE_SOCIAL_TEXT_INPUT',
+				payload: {
+					name,
+					value: newValue,
+				},
+			});
+		} else {
+			editProfileDispatch({
+				type: 'UPDATE_INPUT',
+				payload: {
+					name,
+					value: newValue,
+				},
+			});
+		}
 	};
 
 	const handleResumeReset = () => {
@@ -113,6 +146,13 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		}
 
 		setResumeIsSet(false);
+	};
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		updateProfileMutation(editProfile).catch((err) => {
+			console.error(err);
+		});
 	};
 
 	/**
@@ -125,13 +165,11 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		console.info(editProfile);
-	};
-
 	return (
 		<form onSubmit={handleSubmit}>
+			<Button type='submit' position='fixed' top={4} right={4}>
+				Save
+			</Button>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
 					<Card>
@@ -145,7 +183,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<FileInput name='image' label='Photo' />
 								</Flex>
 							)}
-							<Stack flex='1' px={4} spacing={2}>
+							<Stack flex='1' px={4} spacing={4}>
 								<StackItem>
 									<Heading variant='contentTitle'>Name</Heading>
 									<Flex alignItems='baseline' gap={2}>
@@ -157,7 +195,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											fontWeight='medium'
 											placeholder='First'
 											label='First Name'
-											handleChange={handleEditableInputChange}
+											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
 											}}
@@ -170,7 +208,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											mr={2}
 											fontWeight='medium'
 											placeholder='Last'
-											handleChange={handleEditableInputChange}
+											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
 											}}
@@ -183,7 +221,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											placeholder='your pronouns'
 											styles={{ display: 'block' }}
 											mb={0}
-											handleChange={handleEditableInputChange}
+											handleChange={handleInputChange}
 											outerProps={{ flex: '0 0 130px' }}
 										/>
 									</Flex>
@@ -196,7 +234,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											name='title'
 											placeholder='Title'
 											label='Title/Trade/Profession'
-											handleChange={handleEditableInputChange}
+											handleChange={handleInputChange}
 											outerProps={{ flex: '1 1 60%' }}
 										/>
 										<EditableTextInput
@@ -204,7 +242,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											name='location'
 											placeholder='Location'
 											label='Location/Homebase'
-											handleChange={handleEditableInputChange}
+											handleChange={handleInputChange}
 											outerProps={{ flex: '1 1 40%' }}
 										/>
 										<Tag
@@ -218,66 +256,71 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									</Flex>
 								</StackItem>
 								<StackItem>
-									<Heading variant='contentTitle'>Unions/Guilds</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup filter='unions' items={unions} checked={[]} />
-									</Box>
+									<Flex alignItems='flex-start' gap={8}>
+										<Box flex='1 1 50%'>
+											<Heading variant='contentTitle'>Contact</Heading>
+											<EditTextWithIcon
+												value={email}
+												icon={FiMail}
+												label='Mail'
+												labelVisuallyHidden
+												name='email'
+												handleChange={handleInputChange}
+											/>
+											<EditTextWithIcon
+												value={phone}
+												icon={FiPhone}
+												label='Phone'
+												labelVisuallyHidden
+												name='phone'
+												handleChange={handleInputChange}
+											/>
+										</Box>
+										<Box flex='1 0 50%'>
+											<Flex w='full' justifyContent='center'>
+												<Flex gap={3} alignItems='center' flexWrap='wrap'>
+													<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+														Resume
+													</Heading>
+													{resumeIsSet && resume ? (
+														<Button>{resume.split('/').pop()}</Button>
+													) : (
+														<FileInput
+															name='resume'
+															label='Upload resume'
+															labelVisuallyHidden
+															ref={resumeFileInputRef}
+														/>
+													)}
+													{resumeIsSet && resume && (
+														<IconButton
+															icon={<FiXCircle />}
+															aria-label='Clear Resume'
+															title='Clear resume'
+															bg='brand.red'
+															color='white'
+															variant='oversized'
+															onClick={handleResumeReset}
+														/>
+													)}
+												</Flex>
+											</Flex>
+										</Box>
+									</Flex>
 								</StackItem>
 							</Stack>
 						</Flex>
 
 						<StackItem>
-							<Flex alignItems='flex-start' gap={8}>
-								<Box flex='1 1 50%'>
-									<Heading variant='contentTitle'>Contact</Heading>
-									<EditTextWithIcon
-										value={email}
-										icon={FiMail}
-										label='Mail'
-										labelVisuallyHidden
-										name='email'
-										handleChange={handleEditableInputChange}
-									/>
-									<EditTextWithIcon
-										value={phone}
-										icon={FiPhone}
-										label='Phone'
-										labelVisuallyHidden
-										name='phone'
-										handleChange={handleEditableInputChange}
-									/>
-								</Box>
-								<Box flex='1 0 50%'>
-									<Flex w='full' justifyContent='center'>
-										<Flex gap={3} alignItems='center' flexWrap='wrap'>
-											<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-												Resume
-											</Heading>
-											{resumeIsSet && resume ? (
-												<Button>{resume.split('/').pop()}</Button>
-											) : (
-												<FileInput
-													name='resume'
-													label='Upload resume'
-													labelVisuallyHidden
-													ref={resumeFileInputRef}
-												/>
-											)}
-											{resumeIsSet && resume && (
-												<IconButton
-													icon={<FiXCircle />}
-													aria-label='Clear Resume'
-													title='Clear resume'
-													bg='brand.red'
-													color='white'
-													variant='oversized'
-													onClick={handleResumeReset}
-												/>
-											)}
-										</Flex>
-									</Flex>
-								</Box>
-							</Flex>
+							<Heading variant='contentTitle'>Unions/Guilds</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='unions'
+									items={unionTerms}
+									checked={unions}
+									handleChange={handleInputChange}
+								/>
+							</Box>
 						</StackItem>
 
 						<StackItem>
@@ -290,7 +333,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										label='LinkedIn'
 										labelVisuallyHidden
 										name='linkedin'
-										handleChange={handleEditableInputChange}
+										handleChange={handleInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.facebook}
@@ -298,7 +341,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										label='Facebook'
 										labelVisuallyHidden
 										name='facebook'
-										handleChange={handleEditableInputChange}
+										handleChange={handleInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.instagram}
@@ -306,7 +349,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										label='Instagram'
 										labelVisuallyHidden
 										name='instagram'
-										handleChange={handleEditableInputChange}
+										handleChange={handleInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.twitter}
@@ -314,7 +357,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										label='Twitter'
 										labelVisuallyHidden
 										name='twitter'
-										handleChange={handleEditableInputChange}
+										handleChange={handleInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.website}
@@ -322,7 +365,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										label='Website'
 										labelVisuallyHidden
 										name='website'
-										handleChange={handleEditableInputChange}
+										handleChange={handleInputChange}
 									/>
 								</StackItem>
 							</Stack>
@@ -339,7 +382,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							name='description'
 							label='Bio'
 							labelVisuallyHidden
-							handleChange={handleEditableInputChange}
+							handleChange={handleInputChange}
 							placeholder="Write a little. Write a lot. It's up to you!"
 						/>
 					</Card>
@@ -349,22 +392,24 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							size='md'
 							fontWeight='medium'
 							pb={2}
+							mb={2}
 							color='blackAlpha.800'
 							borderBottomWidth='3px'
 							borderBottomStyle='dashed'
 							borderBottomColor='gray.400'
 						>
-							The following <em>optional</em> fields will be searchable, but will not appear on your
-							public profile.
+							The following optional fields will be <strong>searchable</strong>, but{' '}
+							<em>will not appear</em> on your public profile.
 						</Heading>
 						<Flex>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Gender Identity</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
-										filter='genderIdentity'
-										items={genderIdentities}
-										checked={[]}
+										name='genderIdentities'
+										items={genderIdentityTerms}
+										checked={genderIdentities}
+										handleChange={handleInputChange}
 									/>
 								</Box>
 							</Box>
@@ -372,9 +417,10 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								<Heading variant='contentTitle'>Racial Identity</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
-										filter='racialIdentity'
-										items={racialIdentities}
-										checked={[]}
+										name='racialIdentities'
+										items={racialIdentityTerms}
+										checked={racialIdentities}
+										handleChange={handleInputChange}
 									/>
 								</Box>
 							</Box>
@@ -382,9 +428,10 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								<Heading variant='contentTitle'>Personal Identity</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
-										filter='personalIdentity'
-										items={personalIdentities}
-										checked={[]}
+										name='personalIdentities'
+										items={personalIdentityTerms}
+										checked={personalIdentities}
+										handleChange={handleInputChange}
 									/>
 								</Box>
 							</Box>
@@ -400,7 +447,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 							label='Education'
 							labelVisuallyHidden
 							name='education'
-							handleChange={handleEditableInputChange}
+							handleChange={handleInputChange}
 						/>
 					</Card>
 				</StackItem>
@@ -408,11 +455,15 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media?.map((item: string, index: React.Key) => (
-							<Box key={index}>
-								<ReactPlayer url={item} controls={true} />
-							</Box>
-						))}
+						{media && media.length > 0 ? (
+							media.map((item: string, index: Key) => (
+								<Box key={index}>
+									<ReactPlayer url={item} controls={true} />
+								</Box>
+							))
+						) : (
+							<Box>Update Media Here</Box>
+						)}
 					</Stack>
 				</StackItem>
 
