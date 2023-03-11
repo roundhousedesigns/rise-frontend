@@ -30,6 +30,7 @@ import {
 	FiLinkedin,
 	FiMail,
 	FiPhone,
+	FiSave,
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
@@ -171,29 +172,37 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<ButtonGroup position='fixed' top={24} right={4}>
-				<Button type='submit' colorScheme='green' disabled={saveLoading}>
-					{saveLoading ? <Spinner size='sm' ml={2} /> : 'Save'}
-				</Button>
-				<Button colorScheme='red'>Cancel</Button>
+			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='sm' isAttached>
+				<IconButton
+					type='submit'
+					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
+					colorScheme='green'
+					disabled={saveLoading}
+				>
+					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
+				</IconButton>
+				<IconButton colorScheme='red' aria-label='Cancel editing'>
+					<FiXCircle />
+				</IconButton>
 			</ButtonGroup>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
 					<Card>
 						{profileLoading && <Spinner alignSelf='center' />}
-						<Flex alignItems='flex-start' flexWrap='wrap'>
-							{/* TODO Image uploader */}
-							{image ? (
-								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
-							) : (
-								<Flex alignItems='center' justifyContent='center'>
-									<FileInput name='image' label='Photo' />
-								</Flex>
-							)}
-							<Stack flex='1' px={4} spacing={4}>
+						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+							<Box mb={2}>
+								{/* TODO Image uploader */}
+								{image ? (
+									<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+								) : (
+									<Flex alignItems='center' justifyContent='center'>
+										<FileInput name='image' label='Photo' />
+									</Flex>
+								)}
+							</Box>
+							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
-									<Heading variant='contentTitle'>Name</Heading>
-									<Flex alignItems='baseline' gap={2}>
+									<Flex alignItems='baseline' gap={2} flexWrap='wrap' w='full'>
 										<EditableTextInput
 											defaultValue={firstName ? firstName : ''}
 											as={Heading}
@@ -233,39 +242,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										/>
 									</Flex>
 								</StackItem>
-								<StackItem>
-									<Heading variant='contentTitle'>Details</Heading>
-									<Flex gap={4}>
-										<EditableTextInput
-											defaultValue={selfTitle ? selfTitle : ''}
-											name='selfTitle'
-											placeholder='Title'
-											label='Title/Trade/Profession'
-											handleChange={handleInputChange}
-											outerProps={{ flex: '1 1 60%' }}
-										/>
-										<EditableTextInput
-											defaultValue={location ? location : ''}
-											name='location'
-											placeholder='Location'
-											label='Location/Homebase'
-											handleChange={handleInputChange}
-											outerProps={{ flex: '1 1 40%' }}
-										/>
-										<Tag
-											size='md'
-											colorScheme={willTravel ? 'green' : 'orange'}
-											mx={2}
-											flex='0 0 130px'
-										>
-											{willTravelText()}
-										</Tag>
-									</Flex>
+								<StackItem display='flex' flexWrap='wrap' gap={4}>
+									<EditableTextInput
+										defaultValue={selfTitle ? selfTitle : ''}
+										name='selfTitle'
+										placeholder='Title'
+										label='Title/Trade/Profession'
+										handleChange={handleInputChange}
+										outerProps={{ flex: '1 1 60%' }}
+									/>
+									<EditableTextInput
+										defaultValue={location ? location : ''}
+										name='location'
+										placeholder='Location'
+										label='Location/Homebase'
+										handleChange={handleInputChange}
+										outerProps={{ flex: '1 1 40%' }}
+									/>
+									<Tag
+										size='md'
+										colorScheme={willTravel ? 'green' : 'orange'}
+										mx={2}
+										flex='0 0 130px'
+									>
+										{willTravelText()}
+									</Tag>
 								</StackItem>
 								<StackItem>
-									<Flex alignItems='flex-start' gap={8}>
-										<Box flex='1 1 50%'>
-											<Heading variant='contentTitle'>Contact</Heading>
+									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
+										<Box flex='1'>
 											<EditTextWithIcon
 												value={email}
 												icon={FiMail}
@@ -283,34 +288,32 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												handleChange={handleInputChange}
 											/>
 										</Box>
-										<Box flex='1 0 50%'>
-											<Flex w='full' justifyContent='center'>
-												<Flex gap={3} alignItems='center' flexWrap='wrap'>
-													<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-														Resume
-													</Heading>
-													{resumeIsSet && resume ? (
-														<Button>{resume.split('/').pop()}</Button>
-													) : (
-														<FileInput
-															name='resume'
-															label='Upload resume'
-															labelVisuallyHidden
-															ref={resumeFileInputRef}
-														/>
-													)}
-													{resumeIsSet && resume && (
-														<IconButton
-															icon={<FiXCircle />}
-															aria-label='Clear Resume'
-															title='Clear resume'
-															bg='brand.red'
-															color='white'
-															variant='oversized'
-															onClick={handleResumeReset}
-														/>
-													)}
-												</Flex>
+										<Box flex='1'>
+											<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+												Resume
+											</Heading>
+											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
+												{resumeIsSet && resume ? (
+													<Button>{resume.split('/').pop()}</Button>
+												) : (
+													<FileInput
+														name='resume'
+														label='Upload resume'
+														labelVisuallyHidden
+														ref={resumeFileInputRef}
+													/>
+												)}
+												{resumeIsSet && resume && (
+													<IconButton
+														icon={<FiXCircle />}
+														aria-label='Clear Resume'
+														title='Clear resume'
+														bg='brand.red'
+														color='white'
+														variant='oversized'
+														onClick={handleResumeReset}
+													/>
+												)}
 											</Flex>
 										</Box>
 									</Flex>
