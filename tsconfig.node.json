@@ -2,6 +2,12 @@
   "compilerOptions": {
     "composite": true,
     "module": "ESNext",
+    "lib": [
+      "ES2017",
+      "DOM",
+      "DOM.Iterable",
+      "ESNext",
+    ],
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true
   },
