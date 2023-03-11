@@ -15,19 +15,18 @@ export default function EditProfile() {
 		loggedInUser: { id: userId },
 	} = useContext(AuthContext);
 
+	// TODO probably move this to the view
+
 	const { data, loading, error } = useUserProfile(userId);
 
 	const preparedCredits = data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
 
 	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
 
-	// TODO Implement cancel editing
-	const CancelButton = () => <Button onClick={() => alert('borkbork')}>Cancel Editing</Button>;
-
 	return (
-		<Page title={'Update Profile'} actions={<CancelButton />}>
+		<Page title={'Update Profile'}>
 			{profile && !loading && !error ? (
-				<EditProfileView profile={profile} loading={loading} />
+				<EditProfileView profile={profile} profileLoading={loading} />
 			) : loading ? (
 				<Spinner />
 			) : error ? (

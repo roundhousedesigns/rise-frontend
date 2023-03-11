@@ -12,6 +12,7 @@ import {
 	StackItem,
 	IconButton,
 	Button,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
@@ -67,14 +68,14 @@ function EditProfileReducer(state: UserProfile, action: { type: string; payload:
 
 interface Props {
 	profile: UserProfile | null;
-	loading: boolean;
+	profileLoading: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
-export default function EditProfileView({ profile, loading }: Props): JSX.Element {
+export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element {
 	const [editProfile, editProfileDispatch] = useReducer(EditProfileReducer, profile);
 
 	const {
@@ -109,7 +110,10 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		},
 	] = useUserTaxonomies();
 
-	const { updateProfileMutation } = useUpdateProfile();
+	const {
+		updateProfileMutation,
+		results: { loading: saveLoading, error },
+	} = useUpdateProfile();
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
@@ -167,13 +171,16 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<Button type='submit' position='fixed' top={24} right={4} colorScheme='green'>
-				Save
-			</Button>
+			<ButtonGroup position='fixed' top={24} right={4}>
+				<Button type='submit' colorScheme='green' disabled={saveLoading}>
+					{saveLoading ? <Spinner size='sm' ml={2} /> : 'Save'}
+				</Button>
+				<Button colorScheme='red'>Cancel</Button>
+			</ButtonGroup>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
 					<Card>
-						{loading && <Spinner alignSelf='center' />}
+						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap'>
 							{/* TODO Image uploader */}
 							{image ? (
@@ -231,7 +238,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<Flex gap={4}>
 										<EditableTextInput
 											defaultValue={selfTitle ? selfTitle : ''}
-											name='title'
+											name='selfTitle'
 											placeholder='Title'
 											label='Title/Trade/Profession'
 											handleChange={handleInputChange}
