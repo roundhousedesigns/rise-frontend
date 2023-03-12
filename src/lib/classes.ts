@@ -136,10 +136,10 @@ export class UserProfile extends User {
 				description,
 				location,
 				resume,
-				willTravel,
 				education,
 			},
 			{
+				willTravel: Boolean(willTravel),
 				unions: unions && unions.length > 0 ? unions : [],
 				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
 				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
@@ -210,11 +210,11 @@ export class Credit {
 export class WPItem {
 	id!: number;
 	name!: string;
-	slug!: string;
+	slug?: string;
 
 	constructor(params: WPItemParams) {
 		this.id = maybeParseInt(params.id);
 		this.name = unescape(params.name);
-		this.slug = params.slug;
+		this.slug = params.slug ? params.slug : '';
 	}
 }

@@ -4,7 +4,7 @@
 
 export const colors = {
 	text: {
-		light: '#ddd',
+		light: '#eee',
 		dark: '#222',
 	},
 	brand: {

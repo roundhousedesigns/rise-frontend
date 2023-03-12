@@ -63,3 +63,20 @@ export function decodeString(str: string): string {
 
 	return txt.value;
 }
+
+/**
+ * Convert a string to a boolean. Strictly accepts case-insensitive "true" or "false".
+ *
+ * @param str The string to encode.
+ * @returns boolean|null The boolean value or null if the string is not "true" or "false".
+ */
+export function sanitizeBoolean(value: string | boolean): boolean | null {
+
+	if (typeof value === 'boolean') {
+		return value;
+	}
+
+	const strLower = value.toLowerCase();
+
+	return strLower === 'true' ? true : strLower === 'false' ? false : null;
+}

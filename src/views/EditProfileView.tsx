@@ -7,7 +7,6 @@ import {
 	Text,
 	Stack,
 	Card,
-	Tag,
 	Spinner,
 	StackItem,
 	IconButton,
@@ -37,6 +36,8 @@ import {
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import { sanitizeBoolean } from '../lib/utils';
 
 // TODO type the action param more specifically
 function EditProfileReducer(state: UserProfile, action: { type: string; payload: any }) {
@@ -47,6 +48,12 @@ function EditProfileReducer(state: UserProfile, action: { type: string; payload:
 				[action.payload.name]: action.payload.value,
 			};
 
+		case 'UPDATE_BOOLEAN_INPUT':
+			return {
+				...state,
+				[action.payload.name]: sanitizeBoolean(action.payload.value),
+			};
+
 		case 'UPDATE_SOCIAL_TEXT_INPUT':
 			return {
 				...state,
@@ -55,12 +62,6 @@ function EditProfileReducer(state: UserProfile, action: { type: string; payload:
 					[action.payload.name]: action.payload.value,
 				},
 			};
-
-		// case 'UPDATE_TAXONOMY_INPUT':
-		// 	return {
-		// 		...state,
-		// 		[action.payload.name]: action.payload.value,
-		// 	};
 
 		default:
 			return action.payload;
@@ -134,6 +135,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					value: newValue,
 				},
 			});
+		} else if (name === 'willTravel') {
+			editProfileDispatch({
+				type: 'UPDATE_BOOLEAN_INPUT',
+				payload: {
+					name,
+					value: newValue,
+				},
+			});
 		} else {
 			editProfileDispatch({
 				type: 'UPDATE_INPUT',
@@ -158,16 +167,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		updateProfileMutation(editProfile).catch((err) => {
 			console.error(err);
 		});
-	};
-
-	/**
-	 * Generate the text to display for the 'will travel' field.
-	 *
-	 * @returns {string} The text to display.
-	 */
-	const willTravelText = (): string => {
-		const str = 'Willing to travel';
-		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
 
 	return (
@@ -259,14 +258,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleInputChange}
 										outerProps={{ flex: '1 1 40%' }}
 									/>
-									<Tag
-										size='md'
-										colorScheme={willTravel ? 'green' : 'orange'}
-										mx={2}
-										flex='0 0 130px'
-									>
-										{willTravelText()}
-									</Tag>
+									<ProfileRadioGroup
+										value={willTravel ? 'true' : 'false'}
+										name='willTravel'
+										items={[
+											{ label: 'Will travel', value: 'true' },
+											{ label: "Won't travel", value: 'false' },
+										]}
+										handleChange={handleInputChange}
+									/>
 								</StackItem>
 								<StackItem>
 									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
@@ -411,7 +411,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							The following optional fields will be <strong>searchable</strong>, but{' '}
 							<em>will not appear</em> on your public profile.
 						</Heading>
-						<Flex>
+						<Flex gap={4} flexWrap='wrap'>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Gender Identity</Heading>
 								<Box fontSize='sm'>
