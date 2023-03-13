@@ -52,9 +52,6 @@ export default function LoginView() {
 	return (
 		<Container>
 			<Heading size='lg'>Please sign in.</Heading>
-			<Code my={4} colorScheme='yellow'>
-				<strong>User:</strong>test &bull; <strong>Pass:</strong> test
-			</Code>
 			<Card p={4} my={4}>
 				<form onSubmit={handleLoginSubmit}>
 					<FormControl isInvalid={!!errorMessage}>
