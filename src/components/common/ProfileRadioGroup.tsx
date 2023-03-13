@@ -32,7 +32,6 @@ export default function ProfileRadioGroup({ name, items, value, handleChange, ..
 			justifyContent='flex-start'
 			alignItems='center'
 			w='full'
-			py={2}
 			{...getRootProps()}
 			{...rest}
 		>

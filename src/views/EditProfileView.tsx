@@ -12,6 +12,7 @@ import {
 	IconButton,
 	Button,
 	ButtonGroup,
+	useToast,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
@@ -117,8 +118,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const {
 		updateProfileMutation,
-		results: { loading: saveLoading, error },
+		results: { loading: saveLoading, error: saveError },
 	} = useUpdateProfile();
+
+	const toast = useToast();
+
+	// This is used to trigger a toast when a save is successful.
+	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
@@ -127,6 +133,33 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	useEffect(() => {
 		setResumeIsSet(!!resume);
 	}, [resume]);
+
+	// When a save is successful, open a toast.
+	useEffect(() => {
+		if (saveTriggered && !saveLoading && !saveError) {
+			toast({
+				title: 'Profile saved.',
+				description: 'Your profile has been updated.',
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+				position: 'top',
+			});
+
+			setSaveTriggered(false);
+		} else if (saveTriggered && !saveLoading && saveError) {
+			toast({
+				title: 'Profile not saved.',
+				description: 'There was an error saving your profile.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'top',
+			});
+
+			setSaveTriggered(false);
+		}
+	}, [saveTriggered, saveLoading, saveError]);
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
 		// if `name` matches a key in `socials`, update the socials object
@@ -167,6 +200,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setSaveTriggered(true);
+
 		updateProfileMutation(editProfile).catch((err) => {
 			console.error(err);
 		});

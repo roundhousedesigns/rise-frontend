@@ -86,7 +86,5 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 	const credits = result.data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
 
-	console.info('preparedProfile', preparedProfile?.unions);
-
 	return [preparedProfile, omit(result, ['data'])];
 };
