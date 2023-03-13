@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks } from './classes';
+import { PersonalLinks, WPItem } from './classes';
 
 /** Generate a link to a social media profile.
  *
@@ -71,7 +71,6 @@ export function decodeString(str: string): string {
  * @returns boolean|null The boolean value or null if the string is not "true" or "false".
  */
 export function sanitizeBoolean(value: string | boolean): boolean | null {
-
 	if (typeof value === 'boolean') {
 		return value;
 	}
@@ -80,3 +79,14 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
 
 	return strLower === 'true' ? true : strLower === 'false' ? false : null;
 }
+
+/**
+ * Get WPItem objects (terms) from selected IDs.
+ *
+ * @param {number[]} ids  The IDs of the items to get.
+ * @param {WPItem[]} items  The items to filter.
+ * @returns {WPItem[]} The filtered items.
+ */
+export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
+	return items.filter((item) => ids.includes(item.id));
+};

@@ -16,6 +16,8 @@ export default function Profile() {
 	} = useContext(AuthContext);
 	const params = useParams();
 
+	// TODO refetch profile when user edits it
+
 	// If no user ID is in the route, use the logged in user's ID.
 	const userId = params.userId ? maybeParseInt(params.userId) : loggedInId;
 	const isLoggedInUser = isEqualNumberlike(userId, loggedInId);

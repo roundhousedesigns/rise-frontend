@@ -1,11 +1,10 @@
-import { useContext, useEffect } from 'react';
-import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
+import { useContext, useEffect, useState } from 'react';
+import { Heading, Box, Alert, Spinner } from '@chakra-ui/react';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
-import CheckboxButton from './common/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
+import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 
 interface Props {
 	heading: string;
@@ -13,21 +12,17 @@ interface Props {
 
 export default function SearchFilterSkills({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const [data, { loading, error }] = useRelatedSkills(search.filters.position.jobs);
+	const [value, setValue] = useState<string[]>([]);
+	const [terms, { loading, error }] = useRelatedSkills(search.filters.position.jobs);
 
-	const handleToggleTerm = (terms: string[]) => {
+	const handleToggleTerm = (name: string) => (value: string[]) => {
 		searchDispatch({
-			type: 'SET_SKILLS',
+			type: `SET_${name.toUpperCase()}`,
 			payload: {
-				skills: terms,
+				skills: value,
 			},
 		});
 	};
-
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
@@ -41,22 +36,19 @@ export default function SearchFilterSkills({ heading }: Props) {
 		}
 	}, [search.filters.skills.length]);
 
-	return data?.length > 0 && !loading && !error ? (
+	return terms?.length > 0 && !loading && !error ? (
 		<Box>
 			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
-				{data.map((term: WPItem) => {
-					const checkbox = getCheckboxProps({ value: term.id.toString() });
 
-					return (
-						<CheckboxButton key={term.id} {...checkbox}>
-							{term.name}
-						</CheckboxButton>
-					);
-				})}
-			</Wrap>
+			<ProfileCheckboxGroup
+				name='skills'
+				items={terms}
+				checked={value}
+				handleChange={handleToggleTerm}
+				fontSize='sm'
+			/>
 			{/* TODO implement "More Skills" button, which will append remaining Skills (excluding those already present) to the list. */}
 		</Box>
 	) : loading ? (
@@ -64,7 +56,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 	) : error ? (
 		<ErrorAlert message={error.message} />
 	) : (
-		// TODO implement "All Skills" button, which will append remaining Skills (excluding those already present) to the list.
+		// TODO implement "All Skills" autocomplete field, which will append remaining Skills (excluding those already present) to the list.
 		// Same as "More Skills", but without "exclude" parameter.
 		<Alert status='info'>No job-specific skills found.</Alert>
 	);

@@ -59,10 +59,10 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	education?: string;
 	media?: string;
-	unions?: number[];
-	genderIdentities?: number[];
-	racialIdentities?: number[];
-	personalIdentities?: number[];
+	unions?: number[] | WPItem[];
+	genderIdentities?: number[] | WPItem[];
+	racialIdentities?: number[] | WPItem[];
+	personalIdentities?: number[] | WPItem[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;
@@ -74,15 +74,12 @@ export interface UserProfileParams {
  * The data shape for a Credit.
  */
 export interface CreditParams {
+	id: number;
 	title: string;
 	venue: string;
 	year: string;
-	positions: {
-		nodes: WPItem[];
-	};
-	skills: {
-		nodes: WPItem[];
-	};
+	positions: WPItem[];
+	skills: WPItem[];
 }
 
 /**

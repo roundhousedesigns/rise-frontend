@@ -15,6 +15,7 @@ import { FiCheck, FiX } from 'react-icons/fi';
 interface Props extends BoxProps {
 	defaultValue: string;
 	styles?: any;
+	[key: string]: any;
 }
 
 /**

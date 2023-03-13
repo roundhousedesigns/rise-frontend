@@ -39,8 +39,8 @@ import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import { sanitizeBoolean } from '../lib/utils';
+import { useNavigate } from 'react-router-dom';
 
-// TODO type the action param more specifically
 function EditProfileReducer(state: UserProfile, action: { type: string; payload: any }) {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
@@ -109,10 +109,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	// Get all the selectable terms for the user taxonomies.
 	const [
 		{
+			unions: unionTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
 			racialIdentities: racialIdentityTerms,
-			unions: unionTerms,
 		},
 	] = useUserTaxonomies();
 
@@ -122,6 +122,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = useUpdateProfile();
 
 	const toast = useToast();
+	const navigate = useNavigate();
 
 	// This is used to trigger a toast when a save is successful.
 	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
@@ -163,6 +164,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
 		// if `name` matches a key in `socials`, update the socials object
+		// TODO Break this conditional up into separate change handlers.
 		if (name in socials) {
 			editProfileDispatch({
 				type: 'UPDATE_SOCIAL_TEXT_INPUT',
@@ -208,10 +210,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const handleCancel = () => {
-		editProfileDispatch({
-			type: 'RESET',
-			payload: profile,
-		});
+		navigate('/profile');
 	};
 
 	return (
@@ -310,7 +309,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										outerProps={{ flex: '1 1 40%' }}
 									/>
 									<ProfileRadioGroup
-										value={willTravel ? 'true' : 'false'}
+										defaultValue={willTravel ? 'true' : 'false'}
 										name='willTravel'
 										items={[
 											{ label: 'Will travel', value: 'true' },
@@ -531,7 +530,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					{credits?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} />
+						<CreditItem key={index} credit={credit} editable={true} />
 					))}
 				</StackItem>
 			</Stack>

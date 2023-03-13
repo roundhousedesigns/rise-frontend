@@ -8,11 +8,18 @@ interface Props {
 		label: string;
 		value: string;
 	}[];
-	value: string;
+	defaultValue: string;
 	handleChange: (name: string) => (value: string) => void;
+	[key: string]: any;
 }
 
-export default function ProfileRadioGroup({ name, items, value, handleChange, ...rest }: Props) {
+export default function ProfileRadioGroup({
+	name,
+	items,
+	defaultValue,
+	handleChange,
+	...rest
+}: Props) {
 	const handleToggleItem = (value: string) => {
 		handleChange(name)(value);
 	};
@@ -24,17 +31,11 @@ export default function ProfileRadioGroup({ name, items, value, handleChange, ..
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
-		setValue(value);
+		setValue(defaultValue);
 	}, []);
 
 	return items ? (
-		<Wrap
-			justifyContent='flex-start'
-			alignItems='center'
-			w='full'
-			{...getRootProps()}
-			{...rest}
-		>
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' {...getRootProps()} {...rest}>
 			{items.map((item: { label: string; value: string }) => {
 				return (
 					<RadioButton key={item.value} {...getRadioProps({ value: item.value })}>

@@ -19,12 +19,14 @@ import {
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
-import { Credit, UserProfile } from '../lib/classes';
+import { Credit, UserProfile, WPItem } from '../lib/classes';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/common/PersonalIconLinks';
 import CreditItem from '../components/common/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
+import { getWPItemsFromIds } from '../lib/utils';
 
 interface Props {
 	profile: UserProfile | null;
@@ -63,6 +65,20 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		const str = 'Willing to travel';
 		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
+
+	const [
+		{
+			unions: unionTerms,
+			genderIdentities: genderItentityTerms,
+			racialIdentities: racialIdentityTerms,
+			personalIdentities: personalIdentityTerms,
+		},
+	] = useUserTaxonomies();
+
+	const selectedTerms = (ids: number[], terms: WPItem[]) =>
+		getWPItemsFromIds(ids, terms)
+			.map((term: WPItem) => term.name)
+			.join(', ');
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
@@ -110,7 +126,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions?.map((item) => item.name).join(', ')}
+									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>
@@ -170,9 +186,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				// MAYBE click-to-expand more Credit details?
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} />
-					))}
+					<UnorderedList listStyleType='none' m={0}>
+						{credits.map((credit: Credit) => (
+							<ListItem key={credit.id}>
+								<CreditItem credit={credit} />
+							</ListItem>
+						))}
+					</UnorderedList>
 				</StackItem>
 			)}
 
@@ -186,7 +206,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{education && (
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text>{education}</Text>
+					<Text whiteSpace='pre-wrap'>{education.trim()}</Text>
 				</Box>
 			)}
 

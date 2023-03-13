@@ -7,7 +7,7 @@ import { omit } from 'lodash';
 import { CreditParams } from '../../lib/types';
 import { Credit, UserProfile } from '../../lib/classes';
 
-const QUERY_USER = gql`
+export const QUERY_PROFILE = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {
 		user(id: $id, idType: DATABASE_ID) {
 			id: databaseId
@@ -53,6 +53,7 @@ const QUERY_USER = gql`
 						id: databaseId
 						name
 						slug
+						parentId: parentDatabaseId
 					}
 				}
 				skills {
@@ -75,7 +76,7 @@ const QUERY_USER = gql`
  * @returns A tuple of a prepared data object and a query result object.
  */
 export const useUserProfile = (id: number): [UserProfile | null, any] => {
-	const result = useQuery(QUERY_USER, {
+	const result = useQuery(QUERY_PROFILE, {
 		variables: {
 			id,
 			author: Number(id),

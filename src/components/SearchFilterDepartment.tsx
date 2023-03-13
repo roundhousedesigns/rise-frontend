@@ -1,8 +1,8 @@
-import { useContext, useEffect } from 'react';
-import { Box, Heading, Wrap, useRadioGroup, Spinner } from '@chakra-ui/react';
+import { useContext, useEffect, useState } from 'react';
+import { Box, Heading, Spinner } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
-import RadioButton from './common/RadioButton';
+import ProfileRadioGroup from './common/ProfileRadioGroup';
 
 import { SearchContext } from '../context/SearchContext';
 
@@ -11,23 +11,18 @@ interface Props {
 }
 
 export default function SearchFilterDepartment({ heading }: Props) {
-	const [data, { loading, error }] = usePositions();
+	const [terms, { loading, error }] = usePositions();
+	const [value, setValue] = useState<string>('');
 	const { search, searchDispatch } = useContext(SearchContext);
 
-	const handleToggleTerm = (term: string) => {
+	const handleToggleTerm = (name: string) => (value: string) => {
 		searchDispatch({
-			type: 'SET_DEPARTMENT',
+			type: `SET_${name.toUpperCase()}`,
 			payload: {
-				department: term,
+				department: value,
 			},
 		});
 	};
-
-	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
-		name: 'department',
-		defaultValue: '',
-		onChange: handleToggleTerm,
-	});
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
@@ -46,23 +41,15 @@ export default function SearchFilterDepartment({ heading }: Props) {
 			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<Wrap
-				justifyContent='flex-start'
-				alignItems='center'
-				w='full'
-				fontSize='xl'
-				{...getRootProps()}
-			>
-				{data.map((term: WPItem) => {
-					const radio = getRadioProps({ value: term.id.toString() });
-
-					return (
-						<RadioButton key={term.id} {...radio}>
-							{term.name}
-						</RadioButton>
-					);
-				})}
-			</Wrap>
+			<ProfileRadioGroup
+				name='department'
+				items={terms.map((term: WPItem) => ({
+					label: term.name,
+					value: term.id.toString(),
+				}))}
+				defaultValue={value.toString()}
+				handleChange={handleToggleTerm}
+			/>
 		</Box>
 	) : loading ? (
 		<Spinner />

@@ -85,11 +85,11 @@ export class UserProfile extends User {
 	education?: string;
 	media?: string[];
 	socials?: PersonalLinks;
-	unions?: number[] | WPItem[];
-	genderIdentities?: number[] | WPItem[];
-	racialIdentities?: number[] | WPItem[];
-	personalIdentities?: number[] | WPItem[];
-	credits?: Credit[]; // TODO just store a credit ID and fetch the rest on demand?
+	unions?: number[];
+	genderIdentities?: number[];
+	racialIdentities?: number[];
+	personalIdentities?: number[];
+	credits?: Credit[];
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -116,7 +116,6 @@ export class UserProfile extends User {
 			racialIdentities,
 			personalIdentities,
 			// media,
-			// credits,
 		} = userParams;
 
 		super({
@@ -137,6 +136,7 @@ export class UserProfile extends User {
 				location,
 				resume,
 				education,
+				credits,
 			},
 			{
 				willTravel: Boolean(willTravel),
@@ -217,18 +217,20 @@ export class PersonalLinks {
  * @implements {CreditParams}
  */
 export class Credit {
+	id!: number;
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: WPItem[]; // TODO Split this collection into departments and jobs.
+	positions: WPItem[];
 	skills: WPItem[] = [];
 
 	constructor(params: CreditParams) {
+		this.id = params.id;
 		this.title = params.title;
 		this.venue = params.venue;
 		this.year = params.year;
-		this.positions = params.positions.nodes;
-		this.skills = params.skills.nodes;
+		this.positions = params.positions;
+		this.skills = params.skills;
 	}
 }
 
@@ -239,7 +241,7 @@ export class Credit {
  */
 export class WPItem {
 	id!: number;
-	name?: string;
+	name!: string;
 	slug?: string;
 
 	constructor(params: WPItemParams) {
