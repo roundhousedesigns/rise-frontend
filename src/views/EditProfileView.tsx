@@ -14,7 +14,7 @@ import {
 	ButtonGroup,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { Credit, UserProfile, WPItem } from '../lib/classes';
+import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';
 import EditableTextInput from '../components/common/inputs/EditableTextInput';
@@ -62,6 +62,9 @@ function EditProfileReducer(state: UserProfile, action: { type: string; payload:
 					[action.payload.name]: action.payload.value,
 				},
 			};
+
+		case 'RESET':
+			return action.payload;
 
 		default:
 			return action.payload;
@@ -169,18 +172,31 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
+	const handleCancel = () => {
+		editProfileDispatch({
+			type: 'RESET',
+			payload: profile,
+		});
+	};
+
 	return (
 		<form onSubmit={handleSubmit}>
-			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='sm' isAttached>
+			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='lg'>
 				<IconButton
 					type='submit'
 					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 					colorScheme='green'
 					disabled={saveLoading}
+					borderRadius='full'
 				>
 					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
 				</IconButton>
-				<IconButton colorScheme='red' aria-label='Cancel editing'>
+				<IconButton
+					colorScheme='orange'
+					aria-label='Cancel editing'
+					borderRadius='full'
+					onClick={handleCancel}
+				>
 					<FiXCircle />
 				</IconButton>
 			</ButtonGroup>
@@ -327,7 +343,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<ProfileCheckboxGroup
 									name='unions'
 									items={unionTerms}
-									checked={unions.map((item: WPItem) => item.id)}
+									checked={unions}
 									handleChange={handleInputChange}
 								/>
 							</Box>
@@ -418,7 +434,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='genderIdentities'
 										items={genderIdentityTerms}
-										checked={genderIdentities.map((item: WPItem) => item.id)}
+										checked={genderIdentities}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -429,7 +445,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='racialIdentities'
 										items={racialIdentityTerms}
-										checked={racialIdentities.map((item: WPItem) => item.id)}
+										checked={racialIdentities}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -440,7 +456,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='personalIdentities'
 										items={personalIdentityTerms}
-										checked={personalIdentities.map((item: WPItem) => item.id)}
+										checked={personalIdentities}
 										handleChange={handleInputChange}
 									/>
 								</Box>

@@ -137,7 +137,7 @@ export default function Header() {
 											<MenuButton
 												aria-label='Menu'
 												as={IconButton}
-												variant='round'
+												borderRadius='full'
 												bg='whiteAlpha.700'
 												_hover={{ bg: 'whiteAlpha.800' }}
 												_active={{ bg: 'blue.300' }}

@@ -17,11 +17,7 @@ export default function EditProfile() {
 
 	// TODO probably move this to the view
 
-	const { data, loading, error } = useUserProfile(userId);
-
-	const preparedCredits = data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
-
-	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
+	const [profile, { loading, error }] = useUserProfile(userId);
 
 	return (
 		<Page title={'Update Profile'}>

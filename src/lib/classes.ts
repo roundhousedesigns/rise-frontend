@@ -85,11 +85,11 @@ export class UserProfile extends User {
 	education?: string;
 	media?: string[];
 	socials?: PersonalLinks;
-	unions?: WPItem[];
-	genderIdentities?: WPItem[];
-	racialIdentities?: WPItem[];
-	personalIdentities?: WPItem[];
-	credits?: Credit[];
+	unions?: number[] | WPItem[];
+	genderIdentities?: number[] | WPItem[];
+	racialIdentities?: number[] | WPItem[];
+	personalIdentities?: number[] | WPItem[];
+	credits?: Credit[]; // TODO just store a credit ID and fetch the rest on demand?
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -140,11 +140,19 @@ export class UserProfile extends User {
 			},
 			{
 				willTravel: Boolean(willTravel),
-				unions: unions && unions.length > 0 ? unions : [],
-				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
-				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
+				unions: unions && unions.length > 0 ? this.extractIdsFromNodes(unions) : [],
+				genderIdentities:
+					genderIdentities && genderIdentities.length > 0
+						? this.extractIdsFromNodes(genderIdentities)
+						: [],
+				racialIdentities:
+					racialIdentities && racialIdentities.length > 0
+						? this.extractIdsFromNodes(racialIdentities)
+						: [],
 				personalIdentities:
-					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
+					personalIdentities && personalIdentities.length > 0
+						? this.extractIdsFromNodes(personalIdentities)
+						: [],
 				// media: media && media.length > 0 ? media : [],
 				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
 				// credits: credits && credits.length > 0 ? credits.map((credit) => new Credit(credit)) : [],
@@ -161,6 +169,28 @@ export class UserProfile extends User {
 
 	fullName() {
 		return super.fullName();
+	}
+
+	/**
+	 * Extract IDs from a collection of nodes.
+	 *
+	 * @param {WPItem[]} nodes A collection of nodes.
+	 * @returns {number[]} A collection of IDs.
+	 */
+	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
+		if (nodes.length === 0) return [];
+
+		// TODO check performance on this
+		// Sanitize the nodes.
+		return nodes.map((node) => {
+			if (typeof node === 'number') {
+				return node;
+			} else if (typeof node === 'object') {
+				return Number(node.id);
+			} else {
+				return 0;
+			}
+		});
 	}
 }
 
@@ -209,12 +239,12 @@ export class Credit {
  */
 export class WPItem {
 	id!: number;
-	name!: string;
+	name?: string;
 	slug?: string;
 
 	constructor(params: WPItemParams) {
 		this.id = maybeParseInt(params.id);
-		this.name = unescape(params.name);
+		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : '';
 	}
 }

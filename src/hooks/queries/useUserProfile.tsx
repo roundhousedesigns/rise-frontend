@@ -3,6 +3,9 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
+import { omit } from 'lodash';
+import { CreditParams } from '../../lib/types';
+import { Credit, UserProfile } from '../../lib/classes';
 
 const QUERY_USER = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {
@@ -28,23 +31,15 @@ const QUERY_USER = gql`
 			facebook
 			unions {
 				id: databaseId
-				name
-				slug
 			}
 			genderIdentities {
 				id: databaseId
-				name
-				slug
 			}
 			racialIdentities {
 				id: databaseId
-				name
-				slug
 			}
 			personalIdentities {
 				id: databaseId
-				name
-				slug
 			}
 		}
 		credits(where: { author: $author }, last: $lastCredits) {
@@ -73,7 +68,13 @@ const QUERY_USER = gql`
 `;
 
 // FIXME $author not used?
-export const useUserProfile = (id: number) => {
+/**
+ * Query to retrieve one User by database ID.
+ *
+ * @param id User ID
+ * @returns A tuple of a prepared data object and a query result object.
+ */
+export const useUserProfile = (id: number): [UserProfile | null, any] => {
 	const result = useQuery(QUERY_USER, {
 		variables: {
 			id,
@@ -82,5 +83,10 @@ export const useUserProfile = (id: number) => {
 		},
 	});
 
-	return result;
+	const credits = result.data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
+	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
+
+	console.info('preparedProfile', preparedProfile?.unions);
+
+	return [preparedProfile, omit(result, ['data'])];
 };

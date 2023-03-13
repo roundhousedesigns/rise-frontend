@@ -5,7 +5,7 @@ import { WPItem } from './classes';
  */
 export interface WPItemParams {
 	id: number;
-	name: string;
+	name?: string;
 	slug?: string;
 	parentId?: number;
 }
@@ -59,10 +59,10 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	education?: string;
 	media?: string;
-	unions?: WPItem[];
-	genderIdentities?: WPItem[];
-	racialIdentities?: WPItem[];
-	personalIdentities?: WPItem[];
+	unions?: number[];
+	genderIdentities?: number[];
+	racialIdentities?: number[];
+	personalIdentities?: number[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;

@@ -4,12 +4,11 @@ const baseStyle = {
 	fontWeight: 'medium',
 };
 
+// need defineStyle on variants?
+
 const variants = {
 	default: {
 		borderRadius: 'lg',
-	},
-	round: {
-		borderRadius: 'full',
 	},
 	socialRound: {
 		borderRadius: 'full',
