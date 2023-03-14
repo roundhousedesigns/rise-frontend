@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Credit } from '../../lib/classes';
+import { Credit, WPItem } from '../../lib/classes';
 import {
 	Card,
 	Heading,
@@ -19,6 +19,7 @@ import {
 
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import EditCreditView from '../EditCreditView';
+import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 
 interface Props {
 	credit: Credit;
@@ -26,25 +27,29 @@ interface Props {
 }
 
 export default function CreditItem({ credit, editable }: Props) {
-	const { title, positions, venue, year, skills } = credit;
-	const [department] = useTaxonomyTerm(positions[0]?.id);
-	const [editCredit, setEditCredit] = useState<boolean>(false);
+	const {
+		title,
+		positions: { department: departmentId, jobs: jobIds, skills: skillIds },
+		venue,
+		year,
+	} = credit;
+	const [department] = useTaxonomyTerm(departmentId);
+	const [jobs] = useTaxonomyTerms(jobIds);
+	const [skills] = useTaxonomyTerms(skillIds);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleEditCredit = () => {
 		if (!editable) return;
 		onOpen();
-		setEditCredit(true);
 	};
 
 	const handleCloseEditCredit = () => {
 		onClose();
-		setEditCredit(false);
 	};
 
 	return (
 		<>
-			<Card onClick={handleEditCredit}>
+			<Card onClick={handleEditCredit} cursor={editable ? 'pointer' : 'default'}>
 				<Wrap>
 					<Heading fontWeight='bold' fontSize='xl' as='h3'>
 						{title}
@@ -54,32 +59,27 @@ export default function CreditItem({ credit, editable }: Props) {
 						{venue}
 					</Text>
 				</Wrap>
-				{positions && positions.length > 0 ? (
+				{department || jobs?.length || skills?.length ? (
 					<Wrap spacing={2}>
-						<Tag fontWeight='medium' colorScheme='orange' size='md'>
-							<TagLabel>{department?.name}</TagLabel>
-						</Tag>
-						{positions.map((position) => (
-							<Tag key={position.id} fontWeight='medium' colorScheme='cyan' size='md'>
-								<TagLabel>{position.name}</TagLabel>
+						{department ? (
+							<Tag fontWeight='medium' colorScheme='orange'>
+								<TagLabel>{department?.name}</TagLabel>
+							</Tag>
+						) : null}
+						{jobs?.map((job: WPItem) => (
+							<Tag key={job.id} fontWeight='medium' colorScheme='cyan'>
+								<TagLabel>{job.name}</TagLabel>
 							</Tag>
 						))}
-						{skills && skills.length > 0
-							? skills.map((skill) => (
-									<Tag key={skill.id} colorScheme='teal' size='sm'>
-										<TagLabel>{skill.name}</TagLabel>
-									</Tag>
-							  ))
-							: null}
+						{skills?.map((skill: WPItem) => (
+							<Tag key={skill.id} colorScheme='teal'>
+								<TagLabel>{skill.name}</TagLabel>
+							</Tag>
+						))}
 					</Wrap>
 				) : null}
 			</Card>
-			<Modal
-				isOpen={isOpen}
-				onClose={handleCloseEditCredit}
-				scrollBehavior='outside'
-				size='4xl'
-			>
+			<Modal isOpen={isOpen} onClose={handleCloseEditCredit} scrollBehavior='outside' size='4xl'>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>Edit Credit</ModalHeader>

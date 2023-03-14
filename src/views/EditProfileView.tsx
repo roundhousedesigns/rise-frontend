@@ -434,6 +434,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</StackItem>
 
 				<StackItem>
+					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
+					{credits?.map((credit: Credit, index: Key) => (
+						<CreditItem key={index} credit={credit} editable={true} />
+					))}
+				</StackItem>
+
+				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<Card>
 						<Heading variant='contentTitle'>Bio</Heading>
@@ -525,13 +532,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<Box>Update Media Here</Box>
 						)}
 					</Stack>
-				</StackItem>
-
-				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} editable={true} />
-					))}
 				</StackItem>
 			</Stack>
 		</form>

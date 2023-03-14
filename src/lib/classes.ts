@@ -211,6 +211,18 @@ export class PersonalLinks {
 	}
 }
 
+export class CreditPositions {
+	department!: number;
+	jobs: number[] = [];
+	skills: number[] = [];
+
+	constructor(positions: WPItemParams[], skills: WPItemParams[]) {
+		this.department = positions[0]?.parentId ? positions[0].parentId : 0;
+		this.jobs = positions.map((job) => job.id);
+		this.skills = skills.map((skill) => skill.id);
+	}
+}
+
 /**
  * A production credit.
  * @param {CreditParams} params
@@ -221,16 +233,20 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: WPItem[];
-	skills: WPItem[] = [];
+	positions: {
+		department: number;
+		jobs: number[];
+		skills: number[];
+	};
 
 	constructor(params: CreditParams) {
 		this.id = params.id;
 		this.title = params.title;
 		this.venue = params.venue;
 		this.year = params.year;
-		this.positions = params.positions;
-		this.skills = params.skills;
+		this.positions = params.positions
+			? new CreditPositions(params.positions.nodes, params.skills.nodes)
+			: { department: 0, jobs: [], skills: [] };
 	}
 }
 

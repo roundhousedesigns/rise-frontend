@@ -24,6 +24,8 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 		});
 	};
 
+	// TODO fix search results not showing currently selected items after reopen
+
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
 			<Stack direction='column' gap={8}>

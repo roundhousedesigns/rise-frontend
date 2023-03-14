@@ -1,14 +1,11 @@
 import { Key, useReducer } from 'react';
-import { Card } from '@chakra-ui/react';
+import { Box, Card, Divider, Heading, Stack, StackItem } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
 import EditableTextInput from './common/inputs/EditableTextInput';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
-
-interface Props {
-	credit: Credit;
-}
+import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -31,24 +28,28 @@ function selectedTermsReducer(
 		case 'UPDATE_DEPARTMENT':
 			return {
 				...state,
-				department: action.payload.value,
+				department: Number(action.payload.value),
 			};
 
 		case 'UPDATE_JOBS':
 			return {
 				...state,
-				jobs: action.payload,
+				jobs: action.payload.value.map((item: number) => Number(item)),
 			};
 
 		case 'UPDATE_SKILLS':
 			return {
 				...state,
-				skills: action.payload,
+				skills: action.payload.value.map((item: number) => Number(item)),
 			};
 
 		default:
 			return action.payload;
 	}
+}
+
+interface Props {
+	credit: Credit;
 }
 
 export default function EditCreditView({ credit }: Props) {
@@ -61,7 +62,12 @@ export default function EditCreditView({ credit }: Props) {
 		jobs: selectedJobs,
 		skills: selectedSkills,
 	} = selectedTerms;
+	const [relatedSkills] = useRelatedSkills(selectedJobs);
 
+	// TODO fix running usePositions on each click.
+	// make sure there's an argument to send first, now we're getting all terms all the time before limiting the results.
+
+	// The full positions lists.
 	const [departments] = usePositions();
 	const [jobs] = usePositions(Number(selectedDepartment));
 
@@ -88,7 +94,7 @@ export default function EditCreditView({ credit }: Props) {
 		selectedTermsDispatch({
 			type: `UPDATE_${name.toUpperCase()}`,
 			payload: {
-				[name]: terms,
+				value: terms,
 			},
 		});
 	};
@@ -115,25 +121,53 @@ export default function EditCreditView({ credit }: Props) {
 					handleChange={handleInputChange}
 				/>
 
-				<ProfileRadioGroup
-					name='department'
-					items={departments?.map((term: WPItem) => ({
-						label: term.name,
-						value: term.id.toString(),
-					}))}
-					defaultValue={selectedTerms.department}
-					handleChange={handleToggleRadioTerm}
-				/>
+				<Divider />
 
-				{/* TODO This is the big baddy */}
-				{selectedDepartment && selectedDepartment (
-					<ProfileCheckboxGroup
-						name='jobs'
-						items={jobs}
-						checked={selectedTerms?.jobs}
-						handleChange={handleToggleCheckboxTerm}
-					/>
-				)}
+				<Stack direction='column' spacing={6}>
+					<StackItem>
+						<Heading size='sm' mb={2}>
+							Department
+						</Heading>
+						<ProfileRadioGroup
+							name='department'
+							items={departments?.map((term: WPItem) => ({
+								label: term.name,
+								value: term.id.toString(),
+							}))}
+							defaultValue={selectedDepartment.toString()}
+							handleChange={handleToggleRadioTerm}
+						/>
+					</StackItem>
+					{selectedDepartment ? (
+						<StackItem>
+							<Heading size='sm' mb={2}>
+								Position
+							</Heading>
+							<ProfileCheckboxGroup
+								name='jobs'
+								items={jobs}
+								checked={selectedJobs ? selectedJobs.map((item: number) => item.toString()) : []}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</StackItem>
+					) : null}
+
+					{selectedDepartment && selectedJobs && selectedJobs.length ? (
+						<StackItem>
+							<Heading size='sm' mb={2}>
+								Skills
+							</Heading>
+							<ProfileCheckboxGroup
+								name='skills'
+								items={relatedSkills}
+								checked={
+									selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []
+								}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</StackItem>
+					) : null}
+				</Stack>
 			</form>
 		</Card>
 	);

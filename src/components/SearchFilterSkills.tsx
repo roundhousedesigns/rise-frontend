@@ -47,7 +47,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 				items={terms}
 				checked={value}
 				handleChange={handleToggleTerm}
-				fontSize='sm'
+				// fontSize='sm'
 			/>
 			{/* TODO implement "More Skills" button, which will append remaining Skills (excluding those already present) to the list. */}
 		</Box>

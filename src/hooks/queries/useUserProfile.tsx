@@ -6,6 +6,7 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { CreditParams } from '../../lib/types';
 import { Credit, UserProfile } from '../../lib/classes';
+import useTaxonomyTerm from './useTaxonomyTerm';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {

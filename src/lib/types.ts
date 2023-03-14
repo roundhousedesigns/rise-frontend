@@ -78,8 +78,12 @@ export interface CreditParams {
 	title: string;
 	venue: string;
 	year: string;
-	positions: WPItem[];
-	skills: WPItem[];
+	positions: {
+		nodes: WPItem[];
+	};
+	skills: {
+		nodes: WPItem[];
+	};
 }
 
 /**
@@ -97,6 +101,6 @@ export interface SearchParams {
 	position: {
 		department?: string;
 		jobs?: string[];
+		skills?: string[];
 	};
-	skills?: string[];
 }

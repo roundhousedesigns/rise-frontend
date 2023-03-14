@@ -1,7 +1,7 @@
 /**
- * useTaxonomyTerm hook.
+ * useTaxonomyTerms hook.
  *
- * // TODO Replace this when useTaxononyTerms (plural) is ready.
+ * // TODO DOCUMENT ME.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -10,11 +10,13 @@ import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
 
 const QUERY_TAXONOMY_TERM = gql`
-	query TaxonomyTerm($id: ID = "") {
-		termNode(idType: DATABASE_ID, id: $id) {
-			databaseId
-			name
-			slug
+	query TaxonomyTerms($include: [ID] = []) {
+		terms(where: { include: $include }) {
+			nodes {
+				id: databaseId
+				name
+				slug
+			}
 		}
 	}
 `;
@@ -26,18 +28,22 @@ const QUERY_TAXONOMY_TERM = gql`
  *
  * @returns {Array} A tuple of a prepared data object and a query result object.
  */
-const useTaxonomyTerm = (id: number | null): [WPItem | null, any] => {
-	if (!id) return [null, null];
+const useTaxonomyTerms = (include: number[] | null): [WPItem[] | null, any] => {
+	if (!include || include.length === 0) return [null, null];
 
 	const result = useQuery(QUERY_TAXONOMY_TERM, {
 		variables: {
-			id,
+			include,
 		},
 	});
 
-	const preparedResult = result.data ? new WPItem(result.data.termNode as WPItemParams) : null;
+	const preparedResult = result.data
+		? result.data.terms.nodes.map(
+				(term: { [key: string]: any }) => new WPItem(term as WPItemParams)
+		  )
+		: null;
 
 	return [preparedResult, omit(result, ['data'])];
 };
 
-export default useTaxonomyTerm;
+export default useTaxonomyTerms;

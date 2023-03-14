@@ -47,7 +47,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 					label: term.name,
 					value: term.id.toString(),
 				}))}
-				defaultValue={value.toString()}
+				defaultValue={value}
 				handleChange={handleToggleTerm}
 			/>
 		</Box>
