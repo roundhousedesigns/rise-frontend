@@ -9,12 +9,11 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 	const { children } = props;
 
 	return (
-		<chakra.label>
+		<chakra.label {...htmlProps}>
 			<input {...getInputProps()} hidden />
 			{/* TODO Check accessibility using a div as a checkbox? */}
 			<Box
 				{...getCheckboxProps()}
-				{...htmlProps}
 				cursor='pointer'
 				borderRadius='sm'
 				bg='blue.50'
