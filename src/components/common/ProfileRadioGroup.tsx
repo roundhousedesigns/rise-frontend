@@ -18,6 +18,7 @@ export default function ProfileRadioGroup({ name, items, defaultValue, handleCha
 	};
 
 	const { setValue, getRootProps, getRadioProps } = useRadioGroup({
+		defaultValue,
 		onChange: handleToggleItem,
 	});
 

@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { Box, Heading, Spinner } from '@chakra-ui/react';
+import { useContext, useEffect } from 'react';
+import { Box, Heading, Wrap, useRadioGroup, Spinner } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
-import ProfileRadioGroup from './common/ProfileRadioGroup';
+import RadioButton from './common/RadioButton';
 
 import { SearchContext } from '../context/SearchContext';
 
@@ -11,45 +11,54 @@ interface Props {
 }
 
 export default function SearchFilterDepartment({ heading }: Props) {
-	const [terms, { loading, error }] = usePositions();
-	const [value, setValue] = useState<string>('');
+	const [data, { loading, error }] = usePositions();
 	const { search, searchDispatch } = useContext(SearchContext);
 
-	const handleToggleTerm = (name: string) => (value: string) => {
+	const handleToggleTerm = (term: string) => {
 		searchDispatch({
-			type: `SET_${name.toUpperCase()}`,
+			type: 'SET_DEPARTMENT',
 			payload: {
-				department: value,
+				department: term,
 			},
 		});
 	};
 
+	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
+		name: 'department',
+		defaultValue: '',
+		onChange: handleToggleTerm,
+	});
+
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
-		setValue(search.filters.position.department);
+		setValue(search.filters.positions.department);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.filters.position.department === '') {
+		if (search.filters.positions.department === '') {
 			setValue('');
 		}
-	}, [search.filters.position.department]);
+	}, [search.filters.positions.department]);
+
+	const group = getRootProps();
 
 	return !loading && !error ? (
 		<Box>
 			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
-			<ProfileRadioGroup
-				name='department'
-				items={terms.map((term: WPItem) => ({
-					label: term.name,
-					value: term.id.toString(),
-				}))}
-				defaultValue={value}
-				handleChange={handleToggleTerm}
-			/>
+			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
+				{data.map((term: WPItem) => {
+					const radio = getRadioProps({ value: term.id.toString() });
+
+					return (
+						<RadioButton key={term.id} {...radio}>
+							{term.name}
+						</RadioButton>
+					);
+				})}
+			</Wrap>
 		</Box>
 	) : loading ? (
 		<Spinner />

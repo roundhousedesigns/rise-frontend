@@ -2,7 +2,7 @@ import { createContext, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
-		position: {
+		positions: {
 			department: string;
 			jobs: string[];
 		};
@@ -31,7 +31,7 @@ interface SearchAction {
 
 const initialSearchState: SearchState = {
 	filters: {
-		position: {
+		positions: {
 			department: '',
 			jobs: [],
 		},
@@ -58,8 +58,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					position: {
-						...state.filters.position,
+					positions: {
+						...state.filters.positions,
 						department: action.payload.department,
 						// Clear jobs
 						jobs: [],
@@ -75,8 +75,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					position: {
-						...state.filters.position,
+					positions: {
+						...state.filters.positions,
 						jobs: action.payload.jobs,
 					},
 					// Clear skills

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
 import {
 	Card,
@@ -63,7 +62,7 @@ export default function CreditItem({ credit, editable }: Props) {
 					<Wrap spacing={2}>
 						{department ? (
 							<Tag fontWeight='medium' colorScheme='orange'>
-								<TagLabel>{department?.name}</TagLabel>
+								<TagLabel>{department.name}</TagLabel>
 							</Tag>
 						) : null}
 						{jobs?.map((job: WPItem) => (

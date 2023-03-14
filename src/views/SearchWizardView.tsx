@@ -34,14 +34,14 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 				<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 				{/* Step 2 */}
-				{filters.position.department ? (
+				{filters.positions.department ? (
 					<SearchFilterJobs heading='What job(s) are you looking to fill?' />
 				) : null}
 
 				{/* Step 3 */}
-				{filters.position.department &&
-				filters.position.jobs &&
-				filters.position.jobs.length > 0 ? (
+				{filters.positions.department &&
+				filters.positions.jobs &&
+				filters.positions.jobs.length > 0 ? (
 					<SearchFilterSkills heading='What skills are you looking for?' />
 				) : null}
 

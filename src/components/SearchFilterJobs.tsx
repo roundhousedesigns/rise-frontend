@@ -1,7 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { Box, Heading, Spinner } from '@chakra-ui/react';
+import { useContext, useEffect } from 'react';
+import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
+import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
-import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
+import CheckboxButton from './common/CheckboxButton';
 
 import { SearchContext } from '../context/SearchContext';
 
@@ -11,29 +12,33 @@ interface Props {
 
 export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const [value, setValue] = useState<string[]>([]);
-	const [terms, { loading, error }] = usePositions(parseInt(search.filters.position.department));
+	const [data, { loading, error }] = usePositions(parseInt(search.filters.positions.department));
 
-	const handleToggleTerm = (name: string) => (terms: string[]) => {
+	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
-			type: `SET_${name.toUpperCase()}`,
+			type: 'SET_JOBS',
 			payload: {
 				jobs: terms,
 			},
 		});
 	};
 
+	const { getCheckboxProps, setValue } = useCheckboxGroup({
+		defaultValue: [],
+		onChange: handleToggleTerm,
+	});
+
 	// Set the CheckboxGroup value on initial render
 	useEffect(() => {
-		setValue(search.filters.position.jobs);
+		setValue(search.filters.positions.jobs);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.filters.position.jobs.length === 0) {
+		if (search.filters.positions.jobs.length === 0) {
 			setValue([]);
 		}
-	}, [search.filters.position.jobs.length]);
+	}, [search.filters.positions.jobs.length]);
 
 	return (
 		<Box>
@@ -42,12 +47,17 @@ export default function SearchFilterJobs({ heading }: Props) {
 					<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 						{heading}
 					</Heading>
-					<ProfileCheckboxGroup
-						name='jobs'
-						items={terms}
-						checked={value}
-						handleChange={handleToggleTerm}
-					/>
+					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
+						{data.map((term: WPItem) => {
+							const checkbox = getCheckboxProps({ value: term.id.toString() });
+
+							return (
+								<CheckboxButton key={term.id} {...checkbox}>
+									{term.name}
+								</CheckboxButton>
+							);
+						})}
+					</Wrap>
 				</>
 			) : loading ? (
 				<Spinner />

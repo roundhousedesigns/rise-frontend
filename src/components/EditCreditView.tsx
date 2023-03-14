@@ -1,5 +1,5 @@
-import { Key, useReducer } from 'react';
-import { Box, Card, Divider, Heading, Stack, StackItem } from '@chakra-ui/react';
+import { useReducer } from 'react';
+import { Card, Divider, Heading, Stack, StackItem } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
 import EditableTextInput from './common/inputs/EditableTextInput';
@@ -56,7 +56,7 @@ export default function EditCreditView({ credit }: Props) {
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 	const [selectedTerms, selectedTermsDispatch] = useReducer(selectedTermsReducer, credit.positions);
 
-	const { id, title, venue, year, positions, skills } = editCredit;
+	const { title, venue, year } = editCredit;
 	const {
 		department: selectedDepartment,
 		jobs: selectedJobs,

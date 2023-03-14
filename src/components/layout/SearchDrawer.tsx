@@ -39,7 +39,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const {
 		search: {
 			filters: {
-				position: { jobs },
+				positions: { jobs },
 				skills,
 			},
 			searchActive,
