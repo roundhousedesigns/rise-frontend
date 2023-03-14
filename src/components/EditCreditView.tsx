@@ -126,7 +126,7 @@ export default function EditCreditView({ credit }: Props) {
 				/>
 
 				{/* TODO This is the big baddy */}
-				{selectedDepartment && selectedDepartment (
+				{selectedDepartment && (
 					<ProfileCheckboxGroup
 						name='jobs'
 						items={jobs}

@@ -9,11 +9,10 @@ export default function RadioButton(props: Props): React.ReactElement {
 	const { children } = props;
 
 	return (
-		<chakra.label>
+		<chakra.label {...htmlProps}>
 			<input {...getInputProps()} hidden />
 			<Box
 				{...getCheckboxProps()}
-				{...htmlProps}
 				cursor='pointer'
 				borderRadius='sm'
 				bg='blue.50'
