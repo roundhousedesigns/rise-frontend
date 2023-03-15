@@ -95,9 +95,6 @@ export class UserProfile extends User {
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
-			id,
-			firstName,
-			lastName,
 			selfTitle,
 			email,
 			image,
@@ -120,10 +117,11 @@ export class UserProfile extends User {
 			// media,
 		} = userParams;
 
+		// HACK This allows the production build to not fail because of empty super values below
 		super({
-			id: id,
-			firstName: firstName,
-			lastName: lastName,
+			id: userParams.id ? userParams.id : 0,
+			firstName: userParams.firstName ? userParams.firstName : '',
+			lastName: userParams.lastName ? userParams.lastName : '',
 		});
 
 		Object.assign(
