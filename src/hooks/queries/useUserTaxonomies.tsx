@@ -11,35 +11,42 @@ import { WPItem } from '../../lib/classes';
 
 const QUERY_USER_TAXONOMIES = gql`
 	query UserTaxonomies {
-		locations {
+		locations(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		unions {
+		unions(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		genderIdentities {
+		experienceLevels(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		personalIdentities {
+		genderIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		racialIdentities {
+		personalIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
+			nodes {
+				id: databaseId
+				slug
+				name
+			}
+		}
+		racialIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
@@ -63,6 +70,9 @@ const useUserTaxonomies = (): [{ [key: string]: WPItem[] }, any] => {
 	const preparedResult = {
 		locations: result.data?.locations.nodes.map((term: WPItemParams) => new WPItem(term)),
 		unions: result.data?.unions.nodes.map((term: WPItemParams) => new WPItem(term)),
+		experienceLevels: result.data?.experienceLevels.nodes.map(
+			(term: WPItemParams) => new WPItem(term)
+		),
 		genderIdentities: result.data?.genderIdentities.nodes.map(
 			(term: WPItemParams) => new WPItem(term)
 		),

@@ -34,6 +34,9 @@ export const QUERY_PROFILE = gql`
 			unions {
 				id: databaseId
 			}
+			experienceLevels {
+				id: databaseId
+			}
 			genderIdentities {
 				id: databaseId
 			}

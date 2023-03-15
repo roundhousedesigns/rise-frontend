@@ -149,13 +149,13 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 			</ButtonGroup>
 			<EditableTextInput
 				name='title'
-				label='Title'
+				label='Production Title'
 				defaultValue={title}
 				handleChange={handleInputChange}
 			/>
 			<EditableTextInput
 				name='year'
-				label='Year'
+				label='Year (start of employment)'
 				defaultValue={year}
 				handleChange={handleInputChange}
 			/>
@@ -168,11 +168,11 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 
 			<Divider />
 
-			<Stack direction='column' spacing={6}>
+			<Stack direction='column' spacing={6} fontSize='md'>
 				<StackItem>
-					<Heading size='sm' mb={2}>
-						Department
-					</Heading>
+					<Heading variant='contentTitle'>Department</Heading>
+					<Heading variant='contentSubtitle'>Select your main department.</Heading>
+
 					<ProfileRadioGroup
 						name='department'
 						items={departments?.map((term: WPItem) => ({
@@ -185,9 +185,8 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 				</StackItem>
 				{selectedDepartment ? (
 					<StackItem>
-						<Heading size='sm' mb={2}>
-							Position
-						</Heading>
+						<Heading variant='contentTitle'>Position</Heading>
+						<Heading variant='contentSubtitle'>Select all that apply to this job.</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
 							items={jobs}
@@ -203,9 +202,8 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 				selectedJobs &&
 				selectedJobs.length ? (
 					<StackItem>
-						<Heading size='sm' mb={2}>
-							Skills
-						</Heading>
+						<Heading variant='contentTitle'>Skills</Heading>
+						<Heading variant='contentSubtitle'>Select any skills used on this job.</Heading>
 						<ProfileCheckboxGroup
 							name='skills'
 							items={allRelatedSkills}

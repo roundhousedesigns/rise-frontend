@@ -1,20 +1,20 @@
 import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
-	baseStyle: {
-		my: 2,
-		textUnderlineOffset: '0.2em',
-		color: 'blackAlpha.800',
-		_dark: {
-			color: 'whiteAlpha.800',
-		},
-	},
 	variants: {
+		default: {
+			my: 2,
+			textUnderlineOffset: '0.2em',
+			color: 'blackAlpha.800',
+			_dark: {
+				color: 'whiteAlpha.800',
+			},
+		},
 		nav: {
 			textDecoration: 'none',
 			_hover: {
-				textDecoration: 'none'
-			}
+				textDecoration: 'none',
+			},
 		},
 		dotted: {
 			textDecoration: 'underline',
@@ -25,5 +25,8 @@ export default defineStyleConfig({
 				textDecorationStyle: 'solid',
 			},
 		},
+	},
+	defaultProps: {
+		variant: 'default',
 	},
 });

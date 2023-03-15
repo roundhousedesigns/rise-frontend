@@ -36,7 +36,7 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, loading }: Props): JSX.Element | false {
+export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
@@ -215,7 +215,5 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Box>
 			)}
 		</Stack>
-	) : (
-		false
-	);
+	) : null;
 }

@@ -11,7 +11,7 @@ import { WPItem } from '../../lib/classes';
 
 const QUERY_TAXONOMY_TERM = gql`
 	query TaxonomyTerms($include: [ID] = []) {
-		terms(where: { include: $include }) {
+		terms(where: { include: $include, order: ASC }, first: 9999) {
 			nodes {
 				id: databaseId
 				name

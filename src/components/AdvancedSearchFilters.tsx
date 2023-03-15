@@ -30,6 +30,7 @@ export default function AdvancedSearchFilters() {
 		{
 			locations: locationTerms,
 			unions: unionTerms,
+			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
 			racialIdentities: racialIdentityTerms,
@@ -77,6 +78,17 @@ export default function AdvancedSearchFilters() {
 							<ProfileCheckboxGroup
 								name='unions'
 								items={unionTerms}
+								checked={[]}
+								handleChange={handleInputChange}
+							/>
+						</Box>
+						<Box>
+							<Heading size='sm' mb={2}>
+								Experience Levels
+							</Heading>
+							<ProfileCheckboxGroup
+								name='unions'
+								items={experienceLevelTerms}
 								checked={[]}
 								handleChange={handleInputChange}
 							/>

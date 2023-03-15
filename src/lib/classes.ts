@@ -87,6 +87,7 @@ export class UserProfile extends User {
 	socials: PersonalLinks = new PersonalLinks();
 	locations?: number[] = [];
 	unions: number[] = [];
+	experienceLevels: number[] = [];
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
 	personalIdentities: number[] = [];

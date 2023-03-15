@@ -13,6 +13,7 @@ import {
 	Button,
 	ButtonGroup,
 	useToast,
+	Wrap,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -70,6 +71,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		resume,
 		phone,
 		unions,
+		experienceLevels,
 		genderIdentities,
 		racialIdentities,
 		personalIdentities,
@@ -78,11 +80,16 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
 
+	const creditsSorted = credits
+		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
+		: [];
+
 	// Get all the selectable terms for the user taxonomies.
 	const [
 		{
 			locations: locationTerms,
 			unions: unionTerms,
+			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
 			racialIdentities: racialIdentityTerms,
@@ -254,7 +261,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='Last Name'
 											mr={2}
 											fontWeight='medium'
-											placeholder='Last'
+											placeholder=''
 											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
@@ -265,7 +272,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='pronouns'
 											as={Text}
 											label='Pronouns'
-											placeholder='your pronouns'
+											placeholder='pronouns'
 											styles={{ display: 'block' }}
 											mb={0}
 											handleChange={handleInputChange}
@@ -284,6 +291,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									/>
 									<Box fontSize='sm'>
 										<Heading variant='contentTitle'>Locations/Homebases</Heading>
+										<Heading variant='contentSubtitle'>Where do you live and work?</Heading>
 										<ProfileCheckboxGroup
 											name='locations'
 											items={locationTerms}
@@ -359,11 +367,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 						<StackItem>
 							<Heading variant='contentTitle'>Unions/Guilds</Heading>
+							<Heading variant='contentSubtitle'>
+								What unions or guilds are you a member of?
+							</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
 									name='unions'
 									items={unionTerms}
 									checked={unions ? unions.map((item) => item.toString()) : []}
+									handleChange={handleInputChange}
+								/>
+							</Box>
+						</StackItem>
+
+						<StackItem>
+							<Heading variant='contentTitle'>Experience Levels</Heading>
+							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='unions'
+									items={experienceLevelTerms}
+									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
 									handleChange={handleInputChange}
 								/>
 							</Box>
@@ -376,32 +400,28 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<EditTextWithIcon
 										value={socials?.linkedin}
 										icon={FiLinkedin}
-										label='LinkedIn'
-										labelVisuallyHidden
+										label='LinkedIn @handle'
 										name='socials.linkedin'
 										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.facebook}
 										icon={FiFacebook}
-										label='Facebook'
-										labelVisuallyHidden
+										label='Facebook URL (ex: https://facebook.com/yourname)'
 										name='socials.facebook'
 										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.instagram}
 										icon={FiInstagram}
-										label='Instagram'
-										labelVisuallyHidden
+										label='Instagram @handle'
 										name='socials.instagram'
 										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.twitter}
 										icon={FiTwitter}
-										label='Twitter'
-										labelVisuallyHidden
+										label='Twitter @handle'
 										name='socials.twitter'
 										handleChange={handleNestedInputChange}
 									/>
@@ -409,7 +429,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										value={socials?.website}
 										icon={FiGlobe}
 										label='Website'
-										labelVisuallyHidden
 										name='socials.website'
 										handleChange={handleNestedInputChange}
 									/>
@@ -421,42 +440,51 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits?.map((credit: Credit) => (
+					<Wrap>
+						<Text>Enter your 5 best credits. Reordering coming soon!</Text>
+					</Wrap>
+					{creditsSorted?.map((credit: Credit) => (
 						<CreditItem key={credit.id} credit={credit} editable={true} />
 					))}
+					{creditsSorted?.length < 5 && <Text>-- ADD NEW CREDIT HERE --</Text>}
 				</StackItem>
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<Card>
 						<Heading variant='contentTitle'>Bio</Heading>
+						<Heading variant='contentSubtitle'>
+							Write a little. Write a lot. It's up to you!
+						</Heading>
 						<EditableTextareaInput
 							defaultValue={description ? description : ''}
 							name='description'
 							label='Bio'
 							labelVisuallyHidden
 							handleChange={handleInputChange}
-							placeholder="Write a little. Write a lot. It's up to you!"
 						/>
 					</Card>
 					<Card>
 						<Heading
-							as='h3'
 							size='md'
-							fontWeight='medium'
+							fontWeight='bold'
 							pb={2}
 							mb={2}
 							color='blackAlpha.800'
 							borderBottomWidth='3px'
 							borderBottomStyle='dashed'
 							borderBottomColor='gray.400'
+							variant='contentTitle'
 						>
+							Identity
+						</Heading>
+						<Heading variant='contentSubtitle'>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
 							<em>will not appear</em> on your public profile.
 						</Heading>
 						<Flex gap={4} flexWrap='wrap'>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Gender Identity</Heading>
+								<Heading variant='contentTitle'>Gender</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='genderIdentities'
@@ -469,7 +497,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Racial Identity</Heading>
+								<Heading variant='contentTitle'>Race/Ethnicity</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='racialIdentities'
@@ -482,7 +510,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Personal Identity</Heading>
+								<Heading variant='contentTitle'>Additional</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='personalIdentities'
@@ -521,7 +549,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							))
 						) : (
-							<Box>Update Media Here</Box>
+							<Box>Media coming soon</Box>
 						)}
 					</Stack>
 				</StackItem>

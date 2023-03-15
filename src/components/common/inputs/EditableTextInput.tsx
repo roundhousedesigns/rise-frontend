@@ -31,7 +31,6 @@ export default function EditableTextInput({
 	outerProps,
 	...inputProps
 }: Props): JSX.Element {
-
 	return (
 		<FormControl {...outerProps}>
 			<Editable
