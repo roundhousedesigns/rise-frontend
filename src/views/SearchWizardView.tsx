@@ -21,6 +21,7 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 	const handleReset = () => {
 		searchDispatch({
 			type: 'RESET_SEARCH_FILTERS',
+			payload: {},
 		});
 	};
 

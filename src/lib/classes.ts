@@ -6,6 +6,7 @@ import {
 	CreditParams,
 	PersonalLinksParams,
 	WPItemParams,
+	CreditOutput,
 } from './types';
 import { maybeParseInt } from './utils';
 
@@ -79,17 +80,18 @@ export class UserProfile extends User {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	location?: string;
 	resume?: string;
 	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
 	media?: string[];
-	socials?: PersonalLinks;
-	unions?: number[];
-	genderIdentities?: number[];
-	racialIdentities?: number[];
-	personalIdentities?: number[];
-	credits?: Credit[];
+	socials: PersonalLinks = new PersonalLinks();
+	locations?: number[] = [];
+	unions: number[] = [];
+	genderIdentities: number[] = [];
+	racialIdentities: number[] = [];
+	personalIdentities: number[] = [];
+	credits: Credit[] = [];
+	[key: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -102,7 +104,6 @@ export class UserProfile extends User {
 			pronouns,
 			phone,
 			description,
-			location,
 			resume,
 			willTravel,
 			education,
@@ -111,6 +112,7 @@ export class UserProfile extends User {
 			instagram,
 			facebook,
 			website,
+			locations,
 			unions,
 			genderIdentities,
 			racialIdentities,
@@ -133,13 +135,13 @@ export class UserProfile extends User {
 				pronouns,
 				phone,
 				description,
-				location,
 				resume,
 				education,
 				credits,
 			},
 			{
 				willTravel: Boolean(willTravel),
+				locations: locations && locations.length > 0 ? this.extractIdsFromNodes(locations) : [],
 				unions: unions && unions.length > 0 ? this.extractIdsFromNodes(unions) : [],
 				genderIdentities:
 					genderIdentities && genderIdentities.length > 0
@@ -206,20 +208,23 @@ export class PersonalLinks {
 	facebook: string = '';
 	website: string = '';
 
-	constructor(params: PersonalLinksParams) {
+	constructor(params: PersonalLinksParams = {}) {
 		Object.assign(this, params);
 	}
 }
 
+/**
+ * A collection of credit positions.
+ *
+ * @param {WPItemParams[]} positions
+ */
 export class CreditPositions {
 	department!: number;
 	jobs: number[] = [];
-	skills: number[] = [];
 
-	constructor(positions: WPItemParams[], skills: WPItemParams[]) {
+	constructor(positions: WPItemParams[]) {
 		this.department = positions[0]?.parentId ? positions[0].parentId : 0;
 		this.jobs = positions.map((job) => job.id);
-		this.skills = skills.map((skill) => skill.id);
 	}
 }
 
@@ -233,20 +238,34 @@ export class Credit {
 	title!: string;
 	venue: string = '';
 	year: string = '';
-	positions: {
-		department: number;
-		jobs: number[];
-		skills: number[];
-	};
+	positions: CreditPositions;
+	skills: number[] = [];
 
 	constructor(params: CreditParams) {
 		this.id = params.id;
 		this.title = params.title;
 		this.venue = params.venue;
 		this.year = params.year;
+		this.skills = params.skills ? params.skills.nodes.map((skill) => skill.id) : [];
 		this.positions = params.positions
-			? new CreditPositions(params.positions.nodes, params.skills.nodes)
-			: { department: 0, jobs: [], skills: [] };
+			? new CreditPositions(params.positions.nodes)
+			: { department: 0, jobs: [] };
+	}
+
+	/**
+	 * Prepare a credit object for GraphQL.
+	 *
+	 * @returns {CreditOutput} A credit object formatted for GraphQL.
+	 */
+	prepareForGraphQL(): CreditOutput {
+		return {
+			id: this.id,
+			title: this.title,
+			venue: this.venue,
+			year: this.year,
+			skills: this.skills,
+			jobs: this.positions.jobs,
+		};
 	}
 }
 

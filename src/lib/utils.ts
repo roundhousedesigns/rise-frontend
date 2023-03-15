@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks, WPItem } from './classes';
+import { Credit, PersonalLinks, UserProfile, WPItem } from './classes';
 
 /** Generate a link to a social media profile.
  *
@@ -89,4 +89,24 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
  */
 export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
 	return items.filter((item) => ids.includes(item.id));
+};
+
+/**
+ * Prepare a user profile for GraphQL.
+ *
+ * @param {UserProfile} profile The user profile to preprae.
+ * @returns {Object} The prepared user profile.
+ */
+export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
+	const { credits } = profile;
+
+	return {
+		...profile,
+		credits: credits.map((credit: Credit) => {
+			return {
+				...credit,
+				positions: credit.positions.jobs,
+			};
+		}),
+	};
 };

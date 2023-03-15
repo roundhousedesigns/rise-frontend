@@ -15,19 +15,19 @@ import {
 	Button,
 	Spacer,
 	ButtonGroup,
+	AccordionButton,
+	AccordionIcon,
+	AccordionItem,
+	AccordionPanel,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
-import SearchList from '../common/SearchList';
-import WidgetAccordionItem from '../common/WidgetAccordionItem';
 import SearchWizardView from '../../views/SearchWizardView';
 import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
 import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
-
-// TODO: Remove this when we have real data
-import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
+import AdvancedSearchFilters from '../AdvancedSearchFilters';
 
 interface Props {
 	isOpen: boolean;
@@ -47,7 +47,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-	const [getSearchResults, { data /* loading, error, */ }] = useCandidateSearch();
+	const [getSearchResults, { data }] = useCandidateSearch();
 	const navigate = useNavigate();
 
 	// Update SearchContext with the new results whenever the query returns.
@@ -81,6 +81,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const handleSearchReset = () => {
 		searchDispatch({
 			type: 'RESET_SEARCH_FILTERS',
+			payload: {},
 		});
 	};
 
@@ -103,14 +104,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						{searchActive ? (
 							<ButtonGroup>
 								<Button
-									colorScheme='blue'
+									colorScheme='teal'
 									onClick={handleSubmit}
 									size='md'
 									form='search-candidates'
 								>
 									Search
 								</Button>
-								<Button colorScheme='whiteAlpha' onClick={handleSearchReset} size='md'>
+								<Button colorScheme='blue' onClick={handleSearchReset} size='md'>
 									Reset Filters
 								</Button>
 							</ButtonGroup>
@@ -129,14 +130,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
 				</DrawerBody>
 				<DrawerFooter mt={0}>
-					<Accordion allowMultiple={true} w='full'>
-						<WidgetAccordionItem heading='Saved Searches'>
-							<SearchList items={_devSavedSearches} />
-						</WidgetAccordionItem>
-						<WidgetAccordionItem heading='Recent Searches'>
-							<SearchList items={_devRecentSearches} />
-						</WidgetAccordionItem>
-					</Accordion>
+					<AdvancedSearchFilters />
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>

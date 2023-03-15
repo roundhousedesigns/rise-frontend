@@ -19,7 +19,6 @@ export const QUERY_PROFILE = gql`
 			image
 			phone
 			description
-			location
 			resume
 			willTravel
 			media
@@ -29,6 +28,9 @@ export const QUERY_PROFILE = gql`
 			instagram
 			linkedin
 			facebook
+			locations {
+				id: databaseId
+			}
 			unions {
 				id: databaseId
 			}

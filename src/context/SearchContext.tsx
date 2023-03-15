@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react';
+import { createContext, Key, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
@@ -17,15 +17,16 @@ interface SearchState {
 
 interface SearchAction {
 	type: string;
-	payload?: {
+	payload: {
 		department?: string;
 		jobs?: string[];
 		skills?: string[];
-		results?: number[];
-		personal?: {
-			filter: string;
-			items: string[];
+		locations?: string[];
+		filter?: {
+			name: string;
+			value: string | string[] | Key[];
 		};
+		results?: number[];
 	};
 }
 
@@ -97,17 +98,14 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'SET_PERSONAL_FILTER':
-			if (!action.payload?.personal) return state;
+		case 'SET_FILTER':
+			if (!action.payload?.filter) return state;
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					personal: {
-						...state.filters.personal,
-						[action.payload.personal.filter]: action.payload.personal.items,
-					},
+					[action.payload.filter.name]: action.payload.filter.value,
 				},
 			};
 

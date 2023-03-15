@@ -5,6 +5,7 @@ import EditProfileView from '../views/EditProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
 
 import { AuthContext } from '../context/AuthContext';
+import { EditProfileContextProvider } from '../context/EditProfileContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 export default function EditProfile() {
@@ -16,15 +17,17 @@ export default function EditProfile() {
 
 	return (
 		<Page title={'Update Profile'}>
-			{profile && !loading && !error ? (
-				<EditProfileView profile={profile} profileLoading={loading} />
-			) : loading ? (
-				<Spinner />
-			) : error ? (
-				<ErrorAlert message={error.message} />
-			) : (
-				''
-			)}
+			<EditProfileContextProvider initialState={profile}>
+				{profile && !loading && !error ? (
+					<EditProfileView profile={profile} profileLoading={loading} />
+				) : loading ? (
+					<Spinner />
+				) : error ? (
+					<ErrorAlert message={error.message} />
+				) : (
+					''
+				)}
+			</EditProfileContextProvider>
 		</Page>
 	);
 }

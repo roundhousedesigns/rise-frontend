@@ -1,4 +1,4 @@
-import { useState, Key, useRef, useEffect, useReducer } from 'react';
+import { useContext, useState, useEffect, useRef, Key } from 'react';
 import {
 	Box,
 	Heading,
@@ -14,6 +14,7 @@ import {
 	ButtonGroup,
 	useToast,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -38,39 +39,7 @@ import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import { sanitizeBoolean } from '../lib/utils';
-import { useNavigate } from 'react-router-dom';
-
-function EditProfileReducer(state: UserProfile, action: { type: string; payload: any }) {
-	switch (action.type) {
-		case 'UPDATE_INPUT':
-			return {
-				...state,
-				[action.payload.name]: action.payload.value,
-			};
-
-		case 'UPDATE_BOOLEAN_INPUT':
-			return {
-				...state,
-				[action.payload.name]: sanitizeBoolean(action.payload.value),
-			};
-
-		case 'UPDATE_SOCIAL_TEXT_INPUT':
-			return {
-				...state,
-				socials: {
-					...state.socials,
-					[action.payload.name]: action.payload.value,
-				},
-			};
-
-		case 'RESET':
-			return action.payload;
-
-		default:
-			return action.payload;
-	}
-}
+import { EditProfileContext } from '../context/EditProfileContext';
 
 interface Props {
 	profile: UserProfile | null;
@@ -81,8 +50,8 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
-export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element {
-	const [editProfile, editProfileDispatch] = useReducer(EditProfileReducer, profile);
+export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
+	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 
 	const {
 		image,
@@ -91,7 +60,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		pronouns,
 		selfTitle,
 		socials,
-		location,
+		locations,
 		education,
 		willTravel,
 		media,
@@ -106,9 +75,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		personalIdentities,
 	} = editProfile || {};
 
+	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
+	const resumeFileInputRef = useRef<FileInputRef>(null);
+
 	// Get all the selectable terms for the user taxonomies.
 	const [
 		{
+			locations: locationTerms,
 			unions: unionTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
@@ -127,8 +100,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	// This is used to trigger a toast when a save is successful.
 	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
 
-	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
-	const resumeFileInputRef = useRef<FileInputRef>(null);
+	// Set context on load
+	useEffect(() => {
+		if (profile) {
+			editProfileDispatch({ type: 'INIT', payload: profile });
+		}
+	}, []);
 
 	// Detect if a resume file has been set to upload, or already exists on the profile.
 	useEffect(() => {
@@ -163,33 +140,37 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	}, [saveTriggered, saveLoading, saveError]);
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
-		// if `name` matches a key in `socials`, update the socials object
-		// TODO Break this conditional up into separate change handlers.
-		if (name in socials) {
-			editProfileDispatch({
-				type: 'UPDATE_SOCIAL_TEXT_INPUT',
-				payload: {
-					name,
-					value: newValue,
-				},
-			});
-		} else if (name === 'willTravel') {
-			editProfileDispatch({
-				type: 'UPDATE_BOOLEAN_INPUT',
-				payload: {
-					name,
-					value: newValue,
-				},
-			});
-		} else {
-			editProfileDispatch({
-				type: 'UPDATE_INPUT',
-				payload: {
-					name,
-					value: newValue,
-				},
-			});
-		}
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value: newValue,
+			},
+		});
+	};
+
+	const handleNestedInputChange = (name: string) => (newValue: string) => {
+		const parent = name.split('.')[0];
+		const field = name.split('.')[1];
+
+		editProfileDispatch({
+			type: 'UPDATE_NESTED_INPUT',
+			payload: {
+				parent,
+				name: field,
+				value: newValue,
+			},
+		});
+	};
+
+	const handleBooleanInputChange = (name: string) => (newValue: string) => {
+		editProfileDispatch({
+			type: 'UPDATE_BOOLEAN_INPUT',
+			payload: {
+				name,
+				value: newValue,
+			},
+		});
 	};
 
 	const handleResumeReset = () => {
@@ -213,7 +194,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		navigate('/profile');
 	};
 
-	return (
+	return editProfile ? (
 		<form onSubmit={handleSubmit}>
 			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='lg'>
 				<IconButton
@@ -226,6 +207,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
 				</IconButton>
 				<IconButton
+					type='reset'
 					colorScheme='orange'
 					aria-label='Cancel editing'
 					borderRadius='full'
@@ -300,23 +282,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleInputChange}
 										outerProps={{ flex: '1 1 60%' }}
 									/>
-									<EditableTextInput
-										defaultValue={location ? location : ''}
-										name='location'
-										placeholder='Location'
-										label='Location/Homebase'
-										handleChange={handleInputChange}
-										outerProps={{ flex: '1 1 40%' }}
-									/>
-									<ProfileRadioGroup
-										defaultValue={willTravel ? 'true' : 'false'}
-										name='willTravel'
-										items={[
-											{ label: 'Will travel', value: 'true' },
-											{ label: "Won't travel", value: 'false' },
-										]}
-										handleChange={handleInputChange}
-									/>
+									<Box fontSize='sm'>
+										<Heading variant='contentTitle'>Locations/Homebases</Heading>
+										<ProfileCheckboxGroup
+											name='locations'
+											items={locationTerms}
+											checked={locations ? locations.map((item) => item.toString()) : []}
+											handleChange={handleInputChange}
+										/>
+									</Box>
+									<Box fontSize='sm'>
+										<Heading variant='contentTitle'>Willing to travel?</Heading>
+										<ProfileRadioGroup
+											defaultValue={willTravel ? 'true' : 'false'}
+											name='willTravel'
+											items={[
+												{ label: 'Yes', value: 'true' },
+												{ label: 'No', value: 'false' },
+											]}
+											handleChange={handleBooleanInputChange}
+										/>
+									</Box>
 								</StackItem>
 								<StackItem>
 									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
@@ -377,7 +363,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<ProfileCheckboxGroup
 									name='unions'
 									items={unionTerms}
-									checked={unions}
+									checked={unions ? unions.map((item) => item.toString()) : []}
 									handleChange={handleInputChange}
 								/>
 							</Box>
@@ -392,40 +378,40 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										icon={FiLinkedin}
 										label='LinkedIn'
 										labelVisuallyHidden
-										name='linkedin'
-										handleChange={handleInputChange}
+										name='socials.linkedin'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.facebook}
 										icon={FiFacebook}
 										label='Facebook'
 										labelVisuallyHidden
-										name='facebook'
-										handleChange={handleInputChange}
+										name='socials.facebook'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.instagram}
 										icon={FiInstagram}
 										label='Instagram'
 										labelVisuallyHidden
-										name='instagram'
-										handleChange={handleInputChange}
+										name='socials.instagram'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.twitter}
 										icon={FiTwitter}
 										label='Twitter'
 										labelVisuallyHidden
-										name='twitter'
-										handleChange={handleInputChange}
+										name='socials.twitter'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.website}
 										icon={FiGlobe}
 										label='Website'
 										labelVisuallyHidden
-										name='website'
-										handleChange={handleInputChange}
+										name='socials.website'
+										handleChange={handleNestedInputChange}
 									/>
 								</StackItem>
 							</Stack>
@@ -435,8 +421,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} editable={true} />
+					{credits?.map((credit: Credit) => (
+						<CreditItem key={credit.id} credit={credit} editable={true} />
 					))}
 				</StackItem>
 
@@ -475,7 +461,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='genderIdentities'
 										items={genderIdentityTerms}
-										checked={genderIdentities}
+										checked={
+											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -486,7 +474,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='racialIdentities'
 										items={racialIdentityTerms}
-										checked={racialIdentities}
+										checked={
+											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -497,7 +487,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<ProfileCheckboxGroup
 										name='personalIdentities'
 										items={personalIdentityTerms}
-										checked={personalIdentities}
+										checked={
+											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -535,5 +527,5 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</StackItem>
 			</Stack>
 		</form>
-	);
+	) : null;
 }

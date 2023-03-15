@@ -6,7 +6,6 @@ import {
 	Image,
 	Flex,
 	Text,
-	Button,
 	Stack,
 	Card,
 	useMediaQuery,
@@ -46,7 +45,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		selfTitle,
 		socials,
 		unions,
-		location,
+		locations,
 		willTravel,
 		email,
 		phone,
@@ -66,14 +65,11 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
 
-	const [
-		{
-			unions: unionTerms,
-			genderIdentities: genderItentityTerms,
-			racialIdentities: racialIdentityTerms,
-			personalIdentities: personalIdentityTerms,
-		},
-	] = useUserTaxonomies();
+	const creditsSorted = credits
+		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
+		: [];
+
+	const [{ locations: locationTerms, unions: unionTerms }] = useUserTaxonomies();
 
 	const selectedTerms = (ids: number[], terms: WPItem[]) =>
 		getWPItemsFromIds(ids, terms)
@@ -131,14 +127,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Location/Homebase</Heading>
-								<Flex alignItems='center'>
-									<TextWithIcon icon={FiMapPin}>{location}</TextWithIcon>
-									{willTravel !== undefined && (
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
-											{willTravelText()}
-										</Tag>
-									)}
-								</Flex>
+								<TextWithIcon icon={FiUsers}>
+									{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
+								</TextWithIcon>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Contact</Heading>
@@ -166,17 +157,17 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									) : null}
 								</UnorderedList>
 							</StackItem>
-							<StackItem>
+							{/* TODO Bookmark a user */}
+							{/* <StackItem>
 								<Button
 									colorScheme='green'
 									onClick={() => {
 										alert('Pin!');
 									}}
 								>
-									{/* TODO Bookmark a user */}
 									Save This Candidate
 								</Button>
-							</StackItem>
+							</StackItem> */}
 						</Stack>
 					</Flex>
 				</Card>
@@ -187,7 +178,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<UnorderedList listStyleType='none' m={0}>
-						{credits.map((credit: Credit) => (
+						{creditsSorted.map((credit: Credit) => (
 							<ListItem key={credit.id}>
 								<CreditItem credit={credit} />
 							</ListItem>

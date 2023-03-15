@@ -13,8 +13,11 @@ export default function Footer() {
 				background: 'brand.blue',
 			}}
 		>
-			<Heading variant='pageSubtitle'>Footer</Heading>
-			<Text>Stuff and things!</Text>
+			<Heading variant='pageSubtitle'>GET TO WORK</Heading>
+			<Heading variant='pageSubtitle'>DO NOT SHARE</Heading>
+			<Text>Thank you for being an alpha tester!</Text>
+			<Text>{`Please report all bugs to: <EMAIL>`}</Text>
+			<Text fontSize='sm'>GTW Version 0.2.0</Text>
 		</Stack>
 	);
 }

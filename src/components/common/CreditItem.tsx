@@ -16,6 +16,8 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 
+// FIXME edit credit bug, react hooks order error
+
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import EditCreditView from '../EditCreditView';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
@@ -28,7 +30,8 @@ interface Props {
 export default function CreditItem({ credit, editable }: Props) {
 	const {
 		title,
-		positions: { department: departmentId, jobs: jobIds, skills: skillIds },
+		positions: { department: departmentId, jobs: jobIds },
+		skills: skillIds,
 		venue,
 		year,
 	} = credit;
@@ -81,10 +84,12 @@ export default function CreditItem({ credit, editable }: Props) {
 			<Modal isOpen={isOpen} onClose={handleCloseEditCredit} scrollBehavior='outside' size='4xl'>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Edit Credit</ModalHeader>
+					<ModalHeader>
+						<Heading size='lg'>Edit Credit</Heading>
+					</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody>
-						<EditCreditView credit={credit} />
+						<EditCreditView credit={credit} onClose={onClose} />
 					</ModalBody>
 					<ModalFooter></ModalFooter>
 				</ModalContent>

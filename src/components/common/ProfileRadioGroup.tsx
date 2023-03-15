@@ -28,7 +28,7 @@ export default function ProfileRadioGroup({ name, items, defaultValue, handleCha
 	}, []);
 
 	return items ? (
-		<Wrap justifyContent='flex-start' alignItems='center' w='full' {...getRootProps()}>
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...getRootProps()}>
 			{items.map((item: { label: string; value: string }) => {
 				return (
 					<RadioButton key={item.value} {...getRadioProps({ value: item.value })}>
