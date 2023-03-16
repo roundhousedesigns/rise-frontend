@@ -14,7 +14,12 @@ interface Props {
 
 export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 	const {
-		search: { filters, searchActive },
+		search: {
+			filters: {
+				positions: { department, jobs },
+			},
+			searchActive,
+		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -35,14 +40,10 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 				<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 				{/* Step 2 */}
-				{filters.positions.department ? (
-					<SearchFilterJobs heading='What job(s) are you looking to fill?' />
-				) : null}
+				{department ? <SearchFilterJobs heading='What job(s) are you looking to fill?' /> : null}
 
 				{/* Step 3 */}
-				{filters.positions.department &&
-				filters.positions.jobs &&
-				filters.positions.jobs.length > 0 ? (
+				{department && jobs && jobs.length > 0 ? (
 					<SearchFilterSkills heading='What skills are you looking for?' />
 				) : null}
 

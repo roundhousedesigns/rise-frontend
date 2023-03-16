@@ -108,16 +108,24 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<AdvancedSearchFilters mt={10} />
 				</DrawerBody>
 				<DrawerFooter mt={0} borderTop='1px' borderTopColor='gray.300'>
-					{searchActive ? (
-						<ButtonGroup isAttached>
-							<Button colorScheme='teal' onClick={handleSubmit} size='md' form='search-candidates'>
-								Search
-							</Button>
+					<ButtonGroup>
+						<Button
+							colorScheme='teal'
+							onClick={handleSubmit}
+							size='md'
+							form='search-candidates'
+							isDisabled={!searchActive}
+						>
+							Search
+						</Button>
+						{searchActive ? (
 							<Button colorScheme='gray' onClick={handleSearchReset} size='md'>
 								Reset Filters
 							</Button>
-						</ButtonGroup>
-					) : null}
+						) : (
+							false
+						)}
+					</ButtonGroup>
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>
