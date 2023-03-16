@@ -12,6 +12,7 @@ export default function Dashboard() {
 			<Card my={4} fontSize='xl'>
 				<Text>Nick's List</Text>
 				<UnorderedList>
+					<ListItem>Search filters click bug</ListItem>
 					<ListItem>Credit save bug</ListItem>
 					<ListItem>Style placeholder text (global)</ListItem>
 					<ListItem>Search/Reset also on bottom of drawer</ListItem>
