@@ -12,11 +12,11 @@ export default function Dashboard() {
 			<Card my={4} fontSize='xl'>
 				<Text>Nick's List</Text>
 				<UnorderedList>
-					<ListItem>Add new credit</ListItem>
-					<ListItem>{`<Editable>`} height 0 when no `value`</ListItem>
-					<ListItem>File uploads</ListItem>
-					<ListItem>Credit save bug w/ positions</ListItem>
+					<ListItem>Credit save bug</ListItem>
 					<ListItem>Style placeholder text (global)</ListItem>
+					<ListItem>Search/Reset also on bottom of drawer</ListItem>
+					<ListItem>Advanced filters into own section</ListItem>
+					<ListItem>File uploads</ListItem>
 				</UnorderedList>
 			</Card>
 		</Page>

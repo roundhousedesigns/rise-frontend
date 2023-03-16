@@ -105,8 +105,20 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
 		credits: credits.map((credit: Credit) => {
 			return {
 				...credit,
+				id: credit.id || null,
 				positions: credit.positions.jobs,
 			};
 		}),
 	};
+};
+
+/**
+ * Compare two arrays and sort them before comparing.
+ *
+ * @param {number[]|string[]} a The first array to compare.
+ * @param {number[]|string[]} b The second array to compare.
+ * @returns {boolean} Whether the arrays are equal.
+ */
+export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
+	return isEqual(a.sort(), b.sort());
 };

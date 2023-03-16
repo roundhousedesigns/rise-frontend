@@ -7,11 +7,15 @@ interface SearchState {
 			jobs: string[];
 		};
 		skills: string[];
-		personal: {
-			unions: string[];
-		};
+		unions: string[];
+		locations: string[];
+		experienceLevels: string[];
+		genderIdentities: string[];
+		racialIdentities: string[];
+		personalIdentities: string[];
 	};
 	searchActive: boolean;
+	advancedFiltersOpen: boolean;
 	results: number[];
 }
 
@@ -37,11 +41,15 @@ const initialSearchState: SearchState = {
 			jobs: [],
 		},
 		skills: [],
-		personal: {
-			unions: [],
-		},
+		unions: [],
+		locations: [],
+		experienceLevels: [],
+		genderIdentities: [],
+		racialIdentities: [],
+		personalIdentities: [],
 	},
 	searchActive: false,
+	advancedFiltersOpen: false,
 	results: [],
 };
 
@@ -96,6 +104,12 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					skills: action.payload.skills,
 				},
 				searchActive: true,
+			};
+
+		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
+			return {
+				...state,
+				advancedFiltersOpen: !state.advancedFiltersOpen,
 			};
 
 		case 'SET_FILTER':

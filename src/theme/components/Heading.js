@@ -1,14 +1,6 @@
 import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
-	baseStyle: {
-		fontWeight: 'bold',
-		color: 'blackAlpha.900',
-		textAlign: 'left',
-		_dark: {
-			color: 'whiteAlpha.900',
-		},
-	},
 	variants: {
 		pageTitle: {
 			fontSize: '4xl',
@@ -28,6 +20,13 @@ export default defineStyleConfig({
 			mt: 0,
 			mb: 2,
 			pb: 0,
+		},
+		searchFilterTitle: {
+			size: 'md',
+			mb: 6,
+			w: 'full',
+			borderBottom: '2px',
+			borderColor: 'gray.600',
 		},
 	},
 });

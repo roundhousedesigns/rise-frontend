@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
 import {
 	Card,
@@ -21,6 +22,7 @@ import {
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import EditCreditView from '../EditCreditView';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
+import { sortAndCompareArrays } from '../../lib/utils';
 
 interface Props {
 	credit: Credit;
@@ -30,14 +32,61 @@ interface Props {
 export default function CreditItem({ credit, editable }: Props) {
 	const {
 		title,
-		positions: { department: departmentId, jobs: jobIds },
+		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
 		skills: skillIds,
 		venue,
 		year,
-	} = credit;
+	} = credit || {};
+
+	// Get jobs and skills terms from their IDs
+	const [termList, setTermList] = useState<number[]>([]);
+	const memoizedTermList = useMemo(() => termList, [termList]);
+
 	const [department] = useTaxonomyTerm(departmentId);
-	const [jobs] = useTaxonomyTerms(jobIds);
-	const [skills] = useTaxonomyTerms(skillIds);
+
+	// The term items for each set.
+	const [jobs, setJobs] = useState<WPItem[]>([]);
+	const [skills, setSkills] = useState<WPItem[]>([]);
+
+	const [getTerms, { data: termData }] = useTaxonomyTerms();
+
+	// Set the term ID list state
+	useEffect(() => {
+		if (!jobIds && !skillIds) return;
+
+		const termList = [...jobIds, ...skillIds];
+
+		setTermList(termList);
+	}, []);
+
+	// Get jobs terms from their IDs
+	useEffect(() => {
+		if (!sortAndCompareArrays(termList, memoizedTermList) || termList.length === 0) return;
+
+		getTerms({
+			variables: {
+				include: termList,
+			},
+		});
+
+		setTermList(termList);
+	}, [termList]);
+
+	// Set jobs and skills state
+	useEffect(() => {
+		if (!termData) return;
+
+		const {
+			terms: { nodes },
+		} = termData;
+
+		const jobTerms = nodes.filter((node: WPItem) => jobIds.includes(node.id));
+		const skillTerms = nodes.filter((node: WPItem) => skillIds.includes(node.id));
+
+		setJobs(jobTerms);
+		setSkills(skillTerms);
+	}, [termData]);
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleEditCredit = () => {

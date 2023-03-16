@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { CreditParams } from '../../lib/types';
-import { Credit, UserProfile } from '../../lib/classes';
+import { Credit, UserProfile, WPItem } from '../../lib/classes';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {
@@ -56,16 +56,12 @@ export const QUERY_PROFILE = gql`
 				positions {
 					nodes {
 						id: databaseId
-						name
-						slug
 						parentId: parentDatabaseId
 					}
 				}
 				skills {
 					nodes {
 						id: databaseId
-						name
-						slug
 					}
 				}
 			}
@@ -89,7 +85,17 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 		},
 	});
 
-	const credits = result.data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
+	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {
+		return new Credit({
+			id: credit.id,
+			title: credit.title,
+			venue: credit.venue,
+			year: credit.year,
+			department: credit.positions?.nodes[0]?.parentId,
+			jobs: [...credit.positions?.nodes.map((job: WPItem) => job.id)],
+			skills: [...credit.skills?.nodes.map((skill: WPItem) => skill.id)],
+		});
+	});
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
 
 	return [preparedProfile, omit(result, ['data'])];

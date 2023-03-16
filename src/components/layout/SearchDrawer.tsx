@@ -8,17 +8,11 @@ import {
 	DrawerHeader,
 	DrawerBody,
 	DrawerFooter,
-	Accordion,
 	Stack,
 	Heading,
 	IconButton,
 	Button,
-	Spacer,
 	ButtonGroup,
-	AccordionButton,
-	AccordionIcon,
-	AccordionItem,
-	AccordionPanel,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
@@ -92,7 +86,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				<DrawerHeader
 					fontSize='2xl'
 					py={6}
-					bg='blackAlpha.800'
+					bg='text.dark'
 					color='whiteAlpha.900'
 					borderBottom='2px solid pink'
 				>
@@ -100,23 +94,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						<Heading size='lg' color='text.light'>
 							Search
 						</Heading>
-						<Spacer flex='0 0 1em' />
-						{searchActive ? (
-							<ButtonGroup>
-								<Button
-									colorScheme='teal'
-									onClick={handleSubmit}
-									size='md'
-									form='search-candidates'
-								>
-									Search
-								</Button>
-								<Button colorScheme='blue' onClick={handleSearchReset} size='md'>
-									Reset Filters
-								</Button>
-							</ButtonGroup>
-						) : null}
-						<Spacer />
 						<IconButton
 							icon={<FiX />}
 							aria-label='Close'
@@ -128,9 +105,19 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				</DrawerHeader>
 				<DrawerBody py={8}>
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
+					<AdvancedSearchFilters mt={10} />
 				</DrawerBody>
-				<DrawerFooter mt={0}>
-					<AdvancedSearchFilters />
+				<DrawerFooter mt={0} borderTop='1px' borderTopColor='gray.300'>
+					{searchActive ? (
+						<ButtonGroup isAttached>
+							<Button colorScheme='teal' onClick={handleSubmit} size='md' form='search-candidates'>
+								Search
+							</Button>
+							<Button colorScheme='gray' onClick={handleSearchReset} size='md'>
+								Reset Filters
+							</Button>
+						</ButtonGroup>
+					) : null}
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>

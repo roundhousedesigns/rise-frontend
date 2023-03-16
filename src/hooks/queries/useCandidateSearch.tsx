@@ -17,7 +17,6 @@ export const QUERY_CANDIDATES = gql`
  *
  * Queries candidates (users) based on selected search parameters.
  *
- * @param {SearchParams} filters The search parameters.
  * @returns {Array} The useLazyQuery return tuple.
  */
 export const useCandidateSearch = (): [LazyQueryExecFunction<any, any>, QueryResult] => {

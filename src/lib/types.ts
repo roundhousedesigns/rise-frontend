@@ -79,13 +79,9 @@ export interface CreditParams {
 	title: string;
 	venue: string;
 	year: string;
-	positions?: {
-		nodes: WPItem[];
-	};
+	department: number;
 	jobs?: number[];
-	skills: {
-		nodes: WPItem[];
-	};
+	skills?: number[];
 }
 
 export interface CreditOutput {

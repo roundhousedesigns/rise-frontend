@@ -43,10 +43,23 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			if (action.payload.credit === undefined) return state;
 
 			const { credits: currentCredits } = state;
+			const {
+				payload: { credit: newCredit },
+			} = action;
 
 			const updatedCredits = currentCredits.map((credit) => {
-				if (credit.id === action.payload.credit?.id) {
-					return action.payload.credit;
+				if (credit.id === newCredit?.id) {
+					return new Credit({
+						id: newCredit.id ? newCredit.id : 0,
+						title: newCredit.title ? newCredit.title : '',
+						venue: newCredit.venue ? newCredit.venue : '',
+						year: newCredit.year ? newCredit.year : '',
+						department: newCredit.positions.department ? newCredit.positions.department : 0,
+						jobs: newCredit.positions.jobs
+							? newCredit.positions.jobs.map((job) => Number(job))
+							: [],
+						skills: newCredit.skills ? newCredit.skills.map((skill) => Number(skill)) : [],
+					});
 				}
 
 				return credit;
@@ -55,6 +68,12 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			return {
 				...state,
 				credits: updatedCredits,
+			};
+
+		case 'ADD_CREDIT':
+			return {
+				...state,
+				credits: [...state.credits, {} as Credit],
 			};
 
 		case 'INIT':

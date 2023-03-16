@@ -235,22 +235,26 @@ export class CreditPositions {
  * @implements {CreditParams}
  */
 export class Credit {
-	id!: number;
-	title!: string;
+	id: number;
+	title: string;
 	venue: string = '';
 	year: string = '';
-	positions: CreditPositions;
+	positions: {
+		department: number;
+		jobs: number[];
+	};
 	skills: number[] = [];
 
 	constructor(params: CreditParams) {
-		this.id = params.id;
-		this.title = params.title;
-		this.venue = params.venue;
-		this.year = params.year;
-		this.skills = params.skills ? params.skills.nodes.map((skill) => skill.id) : [];
-		this.positions = params.positions
-			? new CreditPositions(params.positions.nodes)
-			: { department: 0, jobs: [] };
+		this.id = params.id ? params.id : 0;
+		this.title = params.title ? params.title : '';
+		this.venue = params.venue ? params.venue : '';
+		this.year = params.year ? params.year : '';
+		this.skills = params.skills ? params.skills : [];
+		this.positions = {
+			department: params.department ? params.department : 0,
+			jobs: params.jobs ? params.jobs : [],
+		};
 	}
 
 	/**
@@ -279,6 +283,7 @@ export class WPItem {
 	id!: number;
 	name!: string;
 	slug?: string;
+	parentId?: number;
 
 	constructor(params: WPItemParams) {
 		this.id = maybeParseInt(params.id);

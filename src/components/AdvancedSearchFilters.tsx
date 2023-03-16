@@ -1,30 +1,34 @@
 import {
+	Heading,
 	Accordion,
 	AccordionItem,
 	AccordionButton,
-	Heading,
 	AccordionIcon,
 	AccordionPanel,
 	Box,
 	Flex,
+	chakra,
 } from '@chakra-ui/react';
 import { Key, useContext } from 'react';
 import { SearchContext } from '../context/SearchContext';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 
-/*
-Filters:
-- Location (tax)
-- Willing to travel (meta: bool)
-- Unions (tax)
-- Gender identity (tax)
-- Racial identity (tax)
-- Personal identity (tax)
-*/
-
-export default function AdvancedSearchFilters() {
-	const { search, searchDispatch } = useContext(SearchContext);
+export default function AdvancedSearchFilters(props: any) {
+	const {
+		search: {
+			filters: {
+				unions,
+				locations,
+				experienceLevels,
+				genderIdentities,
+				racialIdentities,
+				personalIdentities,
+			},
+			advancedFiltersOpen,
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
 
 	const [
 		{
@@ -49,86 +53,104 @@ export default function AdvancedSearchFilters() {
 		});
 	};
 
+	const handleAccordionChange = () => {
+		searchDispatch({
+			type: 'TOGGLE_ADVANCED_FILTERS_OPEN',
+			payload: {},
+		});
+	};
+
+	const FilterGroup = ({ children, flex }: { children: React.ReactNode; flex?: string }) => (
+		<chakra.div flex={flex ? flex : '1 0 32%'}>{children}</chakra.div>
+	);
+
 	return (
-		<Accordion allowMultiple={true} w='full'>
-			<AccordionItem>
-				<AccordionButton>
-					<Heading flex='1' textAlign='left' fontSize='xl'>
-						Additional Filters
-					</Heading>
-					<AccordionIcon />
-				</AccordionButton>
-				<AccordionPanel pb={2} mb={2} fontSize='sm'>
-					<Flex gap={6} flexWrap='wrap'>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Locations
-							</Heading>
-							<ProfileCheckboxGroup
-								name='locations'
-								items={locationTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Unions
-							</Heading>
-							<ProfileCheckboxGroup
-								name='unions'
-								items={unionTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Experience Levels
-							</Heading>
-							<ProfileCheckboxGroup
-								name='unions'
-								items={experienceLevelTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Gender Identity
-							</Heading>
-							<ProfileCheckboxGroup
-								name='genderIdentities'
-								items={genderIdentityTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Personal Identity
-							</Heading>
-							<ProfileCheckboxGroup
-								name='personalIdentities'
-								items={personalIdentityTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading size='sm' mb={2}>
-								Racial Identity
-							</Heading>
-							<ProfileCheckboxGroup
-								name='racialIdentities'
-								items={racialIdentityTerms}
-								checked={[]}
-								handleChange={handleInputChange}
-							/>
-						</Box>
-					</Flex>
-				</AccordionPanel>
-			</AccordionItem>
-		</Accordion>
+		<Box {...props}>
+			<Accordion
+				allowMultiple={true}
+				index={advancedFiltersOpen ? [0] : []}
+				onChange={handleAccordionChange}
+				w='full'
+			>
+				<AccordionItem>
+					<AccordionButton pl={0}>
+						<Heading flex='1' textAlign='left' fontSize='xl'>
+							Additional Filters
+						</Heading>
+						<AccordionIcon />
+					</AccordionButton>
+					<AccordionPanel pb={2} mb={2} fontSize='sm'>
+						<Flex gap={6} flexWrap='wrap'>
+							<FilterGroup>
+								<Heading size='sm' mb={2}>
+									Locations
+								</Heading>
+								<ProfileCheckboxGroup
+									name='locations'
+									items={locationTerms}
+									checked={locations}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+							<FilterGroup>
+								<Heading size='sm' mb={2}>
+									Unions
+								</Heading>
+								<ProfileCheckboxGroup
+									name='unions'
+									items={unionTerms}
+									checked={unions}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+							<FilterGroup>
+								<Heading size='sm' mb={2}>
+									Experience Levels
+								</Heading>
+								<ProfileCheckboxGroup
+									name='experienceLevels'
+									items={experienceLevelTerms}
+									checked={experienceLevels}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+							<FilterGroup>
+								<Heading size='sm' mb={2} flex='1 0 33%'>
+									Gender Identity
+								</Heading>
+								<ProfileCheckboxGroup
+									name='genderIdentities'
+									items={genderIdentityTerms}
+									checked={genderIdentities}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+							<FilterGroup>
+								<Heading size='sm' mb={2}>
+									Personal Identity
+								</Heading>
+								<ProfileCheckboxGroup
+									name='personalIdentities'
+									items={personalIdentityTerms}
+									checked={personalIdentities}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+							<FilterGroup>
+								<Heading size='sm' mb={2}>
+									Racial Identity
+								</Heading>
+								<ProfileCheckboxGroup
+									name='racialIdentities'
+									items={racialIdentityTerms}
+									checked={racialIdentities}
+									handleChange={handleInputChange}
+								/>
+							</FilterGroup>
+						</Flex>
+					</AccordionPanel>
+				</AccordionItem>
+			</Accordion>
+		</Box>
 	);
 }

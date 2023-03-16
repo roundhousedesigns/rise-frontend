@@ -32,6 +32,7 @@ import {
 	FiLinkedin,
 	FiMail,
 	FiPhone,
+	FiPlus,
 	FiSave,
 	FiTwitter,
 	FiXCircle,
@@ -177,6 +178,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				name,
 				value: newValue,
 			},
+		});
+	};
+
+	const handleNewCredit = () => {
+		editProfileDispatch({
+			type: 'ADD_CREDIT',
+			payload: {},
 		});
 	};
 
@@ -443,10 +451,16 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Wrap>
 						<Text>Enter your 5 best credits. Reordering coming soon!</Text>
 					</Wrap>
-					{creditsSorted?.map((credit: Credit) => (
-						<CreditItem key={credit.id} credit={credit} editable={true} />
+					{creditsSorted?.map((credit: Credit, index: Key) => (
+						<CreditItem key={index} credit={credit} editable={true} />
 					))}
-					{creditsSorted?.length < 5 && <Text>-- ADD NEW CREDIT HERE --</Text>}
+					{creditsSorted?.length < 5 && (
+						<IconButton
+							aria-label='Add a new credit'
+							icon={<FiPlus />}
+							onClick={handleNewCredit}
+						></IconButton>
+					)}
 				</StackItem>
 
 				<StackItem>

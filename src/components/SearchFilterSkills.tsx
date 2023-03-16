@@ -43,7 +43,7 @@ export default function SearchFilterSkills({ heading }: Props) {
 
 	return data?.length > 0 && !loading && !error ? (
 		<Box>
-			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
+			<Heading size='md' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
