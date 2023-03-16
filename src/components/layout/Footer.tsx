@@ -4,7 +4,7 @@ export default function Footer() {
 	return (
 		<Stack
 			w='full'
-			h='20vh'
+			minH='20vh'
 			py={8}
 			alignItems='center'
 			justifyContent='center'
