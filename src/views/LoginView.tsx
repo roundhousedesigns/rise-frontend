@@ -13,7 +13,6 @@ import {
 
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
-import { useNavigate } from 'react-router-dom';
 
 export default function LoginView() {
 	// TODO type useState
@@ -23,8 +22,6 @@ export default function LoginView() {
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
 	const { loginMutation } = useLogin();
-
-	const navigate = useNavigate();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -43,7 +40,6 @@ export default function LoginView() {
 				if (results.data.login.authToken) {
 					sessionStorage.setItem('jwt', results.data.login.authToken);
 					sessionStorage.setItem('loggedInId', results.data.login.user.id);
-					navigate('/profile/edit');
 				}
 			})
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));

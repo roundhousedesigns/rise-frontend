@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
@@ -34,6 +34,8 @@ export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
+	const navigate = useNavigate();
+
 	const {
 		search: { searchActive, results },
 	} = useContext(SearchContext);
@@ -43,6 +45,7 @@ export default function Header() {
 	const handleLogout = () => {
 		sessionStorage.setItem('jwt', '');
 		sessionStorage.setItem('loggedInId', '');
+		navigate('/');
 	};
 
 	const SearchButton = () => (

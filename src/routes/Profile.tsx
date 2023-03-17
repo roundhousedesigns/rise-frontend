@@ -8,7 +8,7 @@ import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
 
-export default function Profile(): JSX.Element | false {
+export default function Profile(): JSX.Element {
 	const storedLoggedInId = sessionStorage.getItem('loggedInId');
 	const loggedInId = storedLoggedInId ? Number(storedLoggedInId) : null;
 	const params = useParams();
