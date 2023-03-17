@@ -28,7 +28,6 @@ export default function Main() {
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/login' element={<Login />} />
 					<Route path='/results' element={<Results />} />
-					{/* TODO maybe rethink /profile endpoints all being the same */}
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />
 					<Route path='/profile/edit' element={<EditProfile />} />

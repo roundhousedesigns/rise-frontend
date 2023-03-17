@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
@@ -28,27 +28,24 @@ import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
 import LoggedIn from '../LoggedIn';
 
-import { useLogout } from '../../hooks/mutations/useLogout';
-import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
-// import Badge from '../common/Badge';
 
 export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
-	const { setLoggedInUser } = useContext(AuthContext);
+	const navigate = useNavigate();
+
 	const {
 		search: { searchActive, results },
 	} = useContext(SearchContext);
-	const { logoutMutation } = useLogout();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
-		logoutMutation().then(() => {
-			setLoggedInUser({ id: 0, firstName: '', lastName: '' });
-		});
+		sessionStorage.setItem('jwt', '');
+		sessionStorage.setItem('loggedInId', '');
+		navigate('/');
 	};
 
 	const SearchButton = () => (

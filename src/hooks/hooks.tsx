@@ -84,3 +84,13 @@ export const useLoginError = (errorCode?: string): string => {
 
 	return message;
 };
+
+/**
+ * Check if the user is logged in.
+ *
+ * @returns {boolean} True if the user is logged in.
+ */
+export const useLoggedIn = (): boolean => {
+	const token = window.sessionStorage.getItem('jwt');
+	return !!token;
+};

@@ -1,23 +1,24 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { useLoggedIn } from '../hooks/hooks';
 
 interface Props {
 	redirect?: boolean;
 	children: React.ReactNode;
 }
 
+const publicRoutes = ['login', 'register'];
+
 export default function LoggedIn({ redirect, children }: Props) {
-	const {
-		loggedInUser: { id: loggedInId },
-	} = useContext(AuthContext);
+	// TODO set up a hook to manage logged in state.
+	const isLoggedIn = useLoggedIn();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (redirect && loggedInId === 0) {
+		if (redirect && !isLoggedIn && !publicRoutes.includes(window.location.pathname)) {
 			navigate('/login');
 		}
-	}, [loggedInId]);
+	}, [isLoggedIn, redirect]);
 
 	return <>{children}</>;
 }

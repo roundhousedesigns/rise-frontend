@@ -1,4 +1,4 @@
-import { SetStateAction, useContext, useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import {
 	Card,
 	Button,
@@ -11,20 +11,16 @@ import {
 	Heading,
 } from '@chakra-ui/react';
 
-import { AuthContext } from '../context/AuthContext';
-
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	const { setLoggedInUser } = useContext(AuthContext);
 	// TODO type useState
 	const [credentials, setCredentials] = useState({
-		login: '',
+		username: '',
 		password: '',
 	});
-	// TODO type useState
-	const [errorCode, setErrorCode] = useState('');
+	const [errorCode, setErrorCode] = useState<string>('');
 	const { loginMutation } = useLogin();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,8 +37,9 @@ export default function LoginView() {
 
 		loginMutation(credentials)
 			.then((results) => {
-				if ('SUCCESS' === results.data.login.status) {
-					setLoggedInUser(results.data.login);
+				if (results.data.login.authToken) {
+					sessionStorage.setItem('jwt', results.data.login.authToken);
+					sessionStorage.setItem('loggedInId', results.data.login.user.id);
 				}
 			})
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
@@ -55,8 +52,8 @@ export default function LoginView() {
 				<form onSubmit={handleLoginSubmit}>
 					<FormControl isInvalid={!!errorMessage}>
 						<Input
-							name='login'
-							id='login'
+							name='username'
+							id='username'
 							type='text'
 							variant='filled'
 							bg='white'

@@ -1,19 +1,15 @@
-import { useContext } from 'react';
 import { Spinner } from '@chakra-ui/react';
 import Page from '../components/Page';
 import EditProfileView from '../views/EditProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
 
-import { AuthContext } from '../context/AuthContext';
 import { EditProfileContextProvider } from '../context/EditProfileContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 export default function EditProfile() {
-	const {
-		loggedInUser: { id: userId },
-	} = useContext(AuthContext);
+	const userId = sessionStorage.getItem('loggedInId');
 
-	const [profile, { loading, error }] = useUserProfile(userId);
+	const [profile, { loading, error }] = useUserProfile(Number(userId));
 
 	return (
 		<Page title={'Update Profile'}>

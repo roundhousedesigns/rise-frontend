@@ -7,19 +7,16 @@ import logo from './assets/images/gtw-logo-horizontal.svg';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
-import { AuthContext } from './context/AuthContext';
 import LoginView from './views/LoginView';
 
 export default function App() {
-	const {
-		loggedInUser: { id: loggedInId },
-	} = useContext(AuthContext);
+	const token = sessionStorage.getItem('jwt');
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<SearchContextProvider>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{loggedInId ? (
+				{token ? (
 					<>
 						<Header />
 						<Main />
