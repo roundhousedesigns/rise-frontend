@@ -120,15 +120,15 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</StackItem>
 							)}
 							<StackItem>
-								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-								<TextWithIcon icon={FiUsers}>
-									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
-								</TextWithIcon>
-							</StackItem>
-							<StackItem>
 								<Heading variant='contentTitle'>Location/Homebase</Heading>
 								<TextWithIcon icon={FiUsers}>
 									{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
+								</TextWithIcon>
+							</StackItem>
+							<StackItem>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<TextWithIcon icon={FiUsers}>
+									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>

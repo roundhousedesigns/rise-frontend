@@ -115,6 +115,7 @@ export class UserProfile extends User {
 			website,
 			locations,
 			unions,
+			experienceLevels,
 			genderIdentities,
 			racialIdentities,
 			personalIdentities,
@@ -144,6 +145,10 @@ export class UserProfile extends User {
 				willTravel: Boolean(willTravel),
 				locations: locations && locations.length > 0 ? this.extractIdsFromNodes(locations) : [],
 				unions: unions && unions.length > 0 ? this.extractIdsFromNodes(unions) : [],
+				experienceLevels:
+					experienceLevels && experienceLevels.length > 0
+						? this.extractIdsFromNodes(experienceLevels)
+						: [],
 				genderIdentities:
 					genderIdentities && genderIdentities.length > 0
 						? this.extractIdsFromNodes(genderIdentities)

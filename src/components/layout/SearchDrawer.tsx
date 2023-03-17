@@ -35,6 +35,12 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			filters: {
 				positions: { jobs },
 				skills,
+				unions,
+				locations,
+				experienceLevels,
+				genderIdentities,
+				racialIdentities,
+				personalIdentities,
 			},
 			searchActive,
 			results,
@@ -64,8 +70,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			variables: {
 				jobs: jobs && jobs.length > 0 ? jobs : [],
 				skills: skills && skills.length > 0 ? skills : [],
+				unions: unions && unions.length > 0 ? unions : [],
+				locations: locations && locations.length > 0 ? locations : [],
+				experienceLevels: experienceLevels && experienceLevels.length > 0 ? experienceLevels : [],
+				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
+				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
+				personalIdentities:
+					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
 				exclude: loggedInUser.id,
 			},
+			fetchPolicy: 'network-only',
 		});
 
 		navigate('/results');

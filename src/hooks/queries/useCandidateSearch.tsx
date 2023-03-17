@@ -7,8 +7,28 @@
 import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 
 export const QUERY_CANDIDATES = gql`
-	query FilteredCandidates($skills: [ID] = [], $jobs: [ID] = [], $exclude: [ID] = []) {
-		filteredCandidates(skills: $skills, jobs: $jobs, exclude: $exclude)
+	query FilteredCandidates(
+		$skills: [ID] = []
+		$jobs: [ID] = []
+		$unions: [ID] = []
+		$locations: [ID] = []
+		$experienceLevels: [ID] = []
+		$genderIdentities: [ID] = []
+		$racialIdentities: [ID] = []
+		$personalIdentities: [ID] = []
+		$exclude: [ID] = []
+	) {
+		filteredCandidates(
+			skills: $skills
+			jobs: $jobs
+			unions: $unions
+			locations: $locations
+			experienceLevels: $experienceLevels
+			genderIdentities: $genderIdentities
+			racialIdentities: $racialIdentities
+			personalIdentities: $personalIdentities
+			exclude: $exclude
+		)
 	}
 `;
 

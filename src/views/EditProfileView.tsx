@@ -239,7 +239,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<Box mb={2}>
 								{/* TODO Image uploader */}
 								{image ? (
-									<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
+									<>
+										<Heading size='sm' color='brand.red'>
+											Photo uploads are under development.
+										</Heading>
+										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
+									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center'>
 										<FileInput name='image' label='Photo' />
@@ -345,6 +350,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												Resume
 											</Heading>
 											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
+												<Heading size='sm' color='brand.red'>
+													Resume uploads are under development.
+												</Heading>
 												{resumeIsSet && resume ? (
 													<Button>{resume.split('/').pop()}</Button>
 												) : (
@@ -393,7 +401,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
-									name='unions'
+									name='experienceLevels'
 									items={experienceLevelTerms}
 									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
 									handleChange={handleInputChange}
@@ -449,7 +457,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Wrap>
-						<Text>Enter your 5 best credits. Reordering coming soon!</Text>
+						<Text>Enter your 5 best credits.</Text>
+						<Text color='brand.red' fontWeight='bold'>
+							We are aware of the issues working with Credits. Please stay tuned.
+						</Text>
 					</Wrap>
 					{creditsSorted?.map((credit: Credit, index: Key) => (
 						<CreditItem key={index} credit={credit} editable={true} />
@@ -485,6 +496,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							pb={2}
 							mb={2}
 							color='blackAlpha.800'
+							border='3px dashed gray.400'
 							borderBottomWidth='3px'
 							borderBottomStyle='dashed'
 							borderBottomColor='gray.400'
@@ -563,7 +575,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							))
 						) : (
-							<Box>Media coming soon</Box>
+							<Text color='brand.red' fontWeight='bold'>
+								Photo + video additions under development.
+							</Text>
 						)}
 					</Stack>
 				</StackItem>

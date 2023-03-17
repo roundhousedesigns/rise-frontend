@@ -121,6 +121,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					[action.payload.filter.name]: action.payload.filter.value,
 				},
+				searchActive: true,
 			};
 
 		case 'SET_RESULTS':

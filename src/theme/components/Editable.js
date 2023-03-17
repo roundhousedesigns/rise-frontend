@@ -18,6 +18,9 @@ const baseStyle = definePartsStyle({
 		px: 4,
 		py: 1,
 		my: 1,
+		_hover: {
+			borderBottomColor: 'black',
+		},
 	},
 	input: {
 		borderTopStyle: 'solid',
