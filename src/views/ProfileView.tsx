@@ -56,15 +56,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		education,
 	} = profile || {};
 
-	/**
-	 * Generate the text to display for the 'will travel' field.
-	 * @returns {string} The text to display.
-	 */
-	const willTravelText = (): string => {
-		const str = 'Willing to travel';
-		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
-	};
-
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
 		: [];
@@ -121,9 +112,16 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							)}
 							<StackItem>
 								<Heading variant='contentTitle'>Location/Homebase</Heading>
-								<TextWithIcon icon={FiUsers}>
-									{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
-								</TextWithIcon>
+								<Flex alignItems='center'>
+									<TextWithIcon icon={FiUsers}>
+										{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
+									</TextWithIcon>
+									{willTravel !== undefined && (
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
+											{willTravel ? 'Will Travel' : 'Local Only'}
+										</Tag>
+									)}
+								</Flex>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>

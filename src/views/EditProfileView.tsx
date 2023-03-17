@@ -237,12 +237,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							<Box mb={2}>
+								<Text fontSize='sm' fontWeight='bold' color='brand.red' flex='0 0 100%'>
+									Photo uploads are under development.
+								</Text>
 								{/* TODO Image uploader */}
 								{image ? (
 									<>
-										<Heading size='sm' color='brand.red'>
-											Photo uploads are under development.
-										</Heading>
 										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
 									</>
 								) : (
@@ -253,14 +253,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
-									<Flex alignItems='baseline' gap={2} flexWrap='wrap' w='full'>
+									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
 										<EditableTextInput
 											defaultValue={firstName ? firstName : ''}
-											as={Heading}
 											mr={2}
 											name='firstName'
 											fontWeight='medium'
-											placeholder='First'
 											label='First Name'
 											handleChange={handleInputChange}
 											outerProps={{
@@ -270,11 +268,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<EditableTextInput
 											defaultValue={lastName ? lastName : ''}
 											name='lastName'
-											as={Heading}
 											label='Last Name'
 											mr={2}
 											fontWeight='medium'
-											placeholder=''
 											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
@@ -285,7 +281,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='pronouns'
 											as={Text}
 											label='Pronouns'
-											placeholder='pronouns'
 											styles={{ display: 'block' }}
 											mb={0}
 											handleChange={handleInputChange}
@@ -350,9 +345,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												Resume
 											</Heading>
 											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
-												<Heading size='sm' color='brand.red'>
-													Resume uploads are under development.
-												</Heading>
+												<Text variant='devAlert'>Resume uploads are under development.</Text>
 												{resumeIsSet && resume ? (
 													<Button>{resume.split('/').pop()}</Button>
 												) : (
@@ -458,7 +451,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Wrap>
 						<Text>Enter your 5 best credits.</Text>
-						<Text color='brand.red' fontWeight='bold'>
+						<Text variant='devAlert'>
 							We are aware of the issues working with Credits. Please stay tuned.
 						</Text>
 					</Wrap>
@@ -575,7 +568,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							))
 						) : (
-							<Text color='brand.red' fontWeight='bold'>
+							<Text variant='devAlert' fontSize='md'>
 								Photo + video additions under development.
 							</Text>
 						)}
