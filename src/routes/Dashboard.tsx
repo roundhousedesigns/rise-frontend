@@ -3,12 +3,8 @@ import { Heading, Text, Card, Wrap, UnorderedList, ListItem, Link, Box } from '@
 import Page from '../components/Page';
 
 export default function Dashboard() {
-	const {
-		user: { firstName },
-	} = sessionStorage.get('loggedInUser');
-
 	return (
-		<Page title={`Hi, ${firstName}!`}>
+		<Page title='Hello!'>
 			<Card>
 				<Wrap>
 					<Text pb={6}>

@@ -28,9 +28,8 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const {
-		user: { id: loggedInId },
-	} = sessionStorage.get('loggedInUser');
+	const loggedInId = sessionStorage.getItem('jwt');
+
 	const {
 		search: {
 			filters: {

@@ -41,7 +41,8 @@ export default function Header() {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
-		sessionStorage.removeItem('loggedInUser');
+		sessionStorage.setItem('jwt', '');
+		sessionStorage.setItem('loggedInId', '');
 	};
 
 	const SearchButton = () => (

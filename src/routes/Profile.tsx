@@ -8,19 +8,19 @@ import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
 
-export default function Profile() {
-	const {
-		user: { id: loggedInId },
-	} = sessionStorage.get('loggedInUser');
+export default function Profile(): JSX.Element | false {
+	const storedLoggedInId = sessionStorage.getItem('loggedInId');
+	const loggedInId = storedLoggedInId ? Number(storedLoggedInId) : null;
 	const params = useParams();
 
 	// TODO refetch profile when user edits it
 
 	// If no user ID is in the route, use the logged in user's ID.
 	const userId = params.userId ? maybeParseInt(params.userId) : loggedInId;
-	const isLoggedInUser = isEqualNumberlike(userId, loggedInId);
+	const profileIsLoggedInUser =
+		userId && loggedInId ? isEqualNumberlike(userId, loggedInId) : false;
 
-	const [profile, { loading, error }] = useUserProfile(userId);
+	const [profile, { loading, error }] = useUserProfile(userId ? userId : 0);
 
 	const EditButton = () => (
 		<Button as={Link} to='/profile/edit'>
@@ -30,8 +30,8 @@ export default function Profile() {
 
 	return (
 		<Page
-			title={isLoggedInUser ? 'My Profile' : ''}
-			actions={isLoggedInUser ? <EditButton /> : null}
+			title={profileIsLoggedInUser ? 'My Profile' : ''}
+			actions={profileIsLoggedInUser ? <EditButton /> : null}
 		>
 			{profile && !loading && !error ? (
 				<ProfileView profile={profile} loading={loading} />

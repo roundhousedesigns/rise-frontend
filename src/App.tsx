@@ -10,15 +10,13 @@ import { SearchContextProvider } from './context/SearchContext';
 import LoginView from './views/LoginView';
 
 export default function App() {
-	const {
-		user: { id: loggedInId },
-	} = sessionStorage.get('loggedInUser');
+	const token = sessionStorage.getItem('jwt');
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<SearchContextProvider>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{loggedInId ? (
+				{token ? (
 					<>
 						<Header />
 						<Main />

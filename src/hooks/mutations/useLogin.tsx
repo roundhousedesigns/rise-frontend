@@ -12,9 +12,7 @@ const MUTATE_LOGIN = gql`
 			clientMutationId
 			authToken
 			user {
-				id
-				firstName
-				lastName
+				id: databaseId
 			}
 		}
 	}
@@ -23,12 +21,12 @@ const MUTATE_LOGIN = gql`
 export const useLogin = () => {
 	const [mutation, results] = useMutation(MUTATE_LOGIN);
 
-	const loginMutation = ({ login, password }: LoginInput) => {
+	const loginMutation = ({ username, password }: LoginInput) => {
 		return mutation({
 			variables: {
 				input: {
 					clientMutationId: 'loginMutation',
-					login: login,
+					username: username,
 					password: password,
 				},
 			},

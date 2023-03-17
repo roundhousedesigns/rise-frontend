@@ -7,11 +7,9 @@ import { EditProfileContextProvider } from '../context/EditProfileContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 export default function EditProfile() {
-	const {
-		user: { id: userId },
-	} = sessionStorage.get('loggedInUser');
+	const userId = sessionStorage.getItem('loggedInId');
 
-	const [profile, { loading, error }] = useUserProfile(userId);
+	const [profile, { loading, error }] = useUserProfile(Number(userId));
 
 	return (
 		<Page title={'Update Profile'}>
