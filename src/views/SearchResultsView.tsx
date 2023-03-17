@@ -23,6 +23,9 @@ export default function SearchResultsView() {
 			<Text fontSize='sm' pb={2}>
 				{resultsString}
 			</Text>
+			<Text color='brand.red' fontWeight='bold' fontSize='sm'>
+				Search results may not be accurate and are for test purposes only.
+			</Text>
 			{searchActive ? <CandidateList userIds={results} /> : null}
 		</Box>
 	);
