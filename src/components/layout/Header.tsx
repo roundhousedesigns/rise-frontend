@@ -45,7 +45,7 @@ export default function Header() {
 	const handleLogout = () => {
 		sessionStorage.setItem('jwt', '');
 		sessionStorage.setItem('loggedInId', '');
-		navigate('/');
+		window.location.href = '/';
 	};
 
 	const SearchButton = () => (

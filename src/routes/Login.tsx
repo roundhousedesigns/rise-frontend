@@ -3,7 +3,7 @@ import LoginView from '../views/LoginView';
 
 export default function Login() {
 	return (
-		<Page title='Welcome'>
+		<Page title='Please sign in'>
 			<LoginView />
 		</Page>
 	);

@@ -8,15 +8,16 @@ import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
 import LoginView from './views/LoginView';
+import { useLoggedIn } from './hooks/hooks';
 
 export default function App() {
-	const token = sessionStorage.getItem('jwt');
+	const isLoggedIn = useLoggedIn();
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<SearchContextProvider>
 			<Stack direction='column' alignItems='center' minH='100vh'>
-				{token ? (
+				{isLoggedIn ? (
 					<>
 						<Header />
 						<Main />

@@ -40,6 +40,7 @@ export default function LoginView() {
 				if (results.data.login.authToken) {
 					sessionStorage.setItem('jwt', results.data.login.authToken);
 					sessionStorage.setItem('loggedInId', results.data.login.user.id);
+					window.location.href = '/';
 				}
 			})
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));

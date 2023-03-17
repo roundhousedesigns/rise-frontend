@@ -1,5 +1,7 @@
 /**
  * useLogout hook. Mutation to log the user out.
+ *
+ * @deprecated JWTs are now used for authentication.
  */
 
 import { gql, useMutation } from '@apollo/client';

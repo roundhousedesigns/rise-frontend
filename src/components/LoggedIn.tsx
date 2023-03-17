@@ -10,12 +10,11 @@ interface Props {
 const publicRoutes = ['login', 'register'];
 
 export default function LoggedIn({ redirect, children }: Props) {
-	// TODO set up a hook to manage logged in state.
 	const isLoggedIn = useLoggedIn();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (redirect && !isLoggedIn && !publicRoutes.includes(window.location.pathname)) {
+		if (redirect && !isLoggedIn) {
 			navigate('/login');
 		}
 	}, [isLoggedIn, redirect]);
