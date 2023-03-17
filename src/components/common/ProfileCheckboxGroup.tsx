@@ -10,13 +10,7 @@ interface Props {
 	handleChange: (name: string) => (value: string[]) => void;
 }
 
-export default function ProfileCheckboxGroup({
-	name,
-	items,
-	checked,
-	handleChange,
-	...rest
-}: Props) {
+export default function ProfileCheckboxGroup({ name, items, checked, handleChange }: Props) {
 	const handleToggleItem = (items: string[]) => {
 		handleChange(name)(items);
 	};
@@ -32,12 +26,10 @@ export default function ProfileCheckboxGroup({
 	}, []);
 
 	return items ? (
-		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2}>
 			{items.map((item: WPItem) => {
-				const checkbox = getCheckboxProps({ value: item.id.toString() });
-
 				return (
-					<CheckboxButton key={item.id} {...checkbox}>
+					<CheckboxButton key={item.id} {...getCheckboxProps({ value: item.id.toString() })}>
 						{item.name}
 					</CheckboxButton>
 				);

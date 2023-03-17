@@ -14,15 +14,23 @@ interface Props {
 
 export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 	const {
-		search: { filters, searchActive },
+		search: {
+			filters: {
+				positions: { department, jobs },
+			},
+			searchActive,
+		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
 	const handleReset = () => {
 		searchDispatch({
 			type: 'RESET_SEARCH_FILTERS',
+			payload: {},
 		});
 	};
+
+	// TODO fix search results not showing currently selected items after reopen
 
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
@@ -32,14 +40,10 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 				<SearchFilterDepartment heading='Which department are you hiring for?' />
 
 				{/* Step 2 */}
-				{filters.position.department ? (
-					<SearchFilterJobs heading='What job(s) are you looking to fill?' />
-				) : null}
+				{department ? <SearchFilterJobs heading='What job(s) are you looking to fill?' /> : null}
 
 				{/* Step 3 */}
-				{filters.position.department &&
-				filters.position.jobs &&
-				filters.position.jobs.length > 0 ? (
+				{department && jobs && jobs.length > 0 ? (
 					<SearchFilterSkills heading='What skills are you looking for?' />
 				) : null}
 

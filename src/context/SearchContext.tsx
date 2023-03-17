@@ -1,46 +1,55 @@
-import { createContext, useReducer } from 'react';
+import { createContext, Key, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
-		position: {
+		positions: {
 			department: string;
 			jobs: string[];
 		};
 		skills: string[];
-		personal: {
-			unions: string[];
-		};
+		unions: string[];
+		locations: string[];
+		experienceLevels: string[];
+		genderIdentities: string[];
+		racialIdentities: string[];
+		personalIdentities: string[];
 	};
 	searchActive: boolean;
+	advancedFiltersOpen: boolean;
 	results: number[];
 }
 
 interface SearchAction {
 	type: string;
-	payload?: {
+	payload: {
 		department?: string;
 		jobs?: string[];
 		skills?: string[];
-		results?: number[];
-		personal?: {
-			filter: string;
-			items: string[];
+		locations?: string[];
+		filter?: {
+			name: string;
+			value: string | string[] | Key[];
 		};
+		results?: number[];
 	};
 }
 
 const initialSearchState: SearchState = {
 	filters: {
-		position: {
+		positions: {
 			department: '',
 			jobs: [],
 		},
 		skills: [],
-		personal: {
-			unions: [],
-		},
+		unions: [],
+		locations: [],
+		experienceLevels: [],
+		genderIdentities: [],
+		racialIdentities: [],
+		personalIdentities: [],
 	},
 	searchActive: false,
+	advancedFiltersOpen: false,
 	results: [],
 };
 
@@ -58,8 +67,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					position: {
-						...state.filters.position,
+					positions: {
+						...state.filters.positions,
 						department: action.payload.department,
 						// Clear jobs
 						jobs: [],
@@ -75,8 +84,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					position: {
-						...state.filters.position,
+					positions: {
+						...state.filters.positions,
 						jobs: action.payload.jobs,
 					},
 					// Clear skills
@@ -97,18 +106,22 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'SET_PERSONAL_FILTER':
-			if (!action.payload?.personal) return state;
+		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
+			return {
+				...state,
+				advancedFiltersOpen: !state.advancedFiltersOpen,
+			};
+
+		case 'SET_FILTER':
+			if (!action.payload?.filter) return state;
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					personal: {
-						...state.filters.personal,
-						[action.payload.personal.filter]: action.payload.personal.items,
-					},
+					[action.payload.filter.name]: action.payload.filter.value,
 				},
+				searchActive: true,
 			};
 
 		case 'SET_RESULTS':

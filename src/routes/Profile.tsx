@@ -9,8 +9,6 @@ import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
-import { CreditParams } from '../lib/types';
-import { Credit, UserProfile } from '../lib/classes';
 
 export default function Profile() {
 	const {
@@ -18,15 +16,13 @@ export default function Profile() {
 	} = useContext(AuthContext);
 	const params = useParams();
 
+	// TODO refetch profile when user edits it
+
 	// If no user ID is in the route, use the logged in user's ID.
 	const userId = params.userId ? maybeParseInt(params.userId) : loggedInId;
 	const isLoggedInUser = isEqualNumberlike(userId, loggedInId);
 
-	const { data, loading, error } = useUserProfile(userId);
-
-	const preparedCredits = data?.credits.nodes.map((credit: CreditParams) => new Credit(credit));
-
-	const profile = data ? new UserProfile(data.user, preparedCredits) : null;
+	const [profile, { loading, error }] = useUserProfile(userId);
 
 	const EditButton = () => (
 		<Button as={Link} to='/profile/edit'>

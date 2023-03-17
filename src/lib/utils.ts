@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks } from './classes';
+import { Credit, PersonalLinks, UserProfile, WPItem } from './classes';
 
 /** Generate a link to a social media profile.
  *
@@ -63,3 +63,62 @@ export function decodeString(str: string): string {
 
 	return txt.value;
 }
+
+/**
+ * Convert a string to a boolean. Strictly accepts case-insensitive "true" or "false".
+ *
+ * @param str The string to encode.
+ * @returns boolean|null The boolean value or null if the string is not "true" or "false".
+ */
+export function sanitizeBoolean(value: string | boolean): boolean | null {
+	if (typeof value === 'boolean') {
+		return value;
+	}
+
+	const strLower = value.toLowerCase();
+
+	return strLower === 'true' ? true : strLower === 'false' ? false : null;
+}
+
+/**
+ * Get WPItem objects (terms) from selected IDs.
+ *
+ * @param {number[]} ids  The IDs of the items to get.
+ * @param {WPItem[]} items  The items to filter.
+ * @returns {WPItem[]} The filtered items.
+ */
+export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
+	return items.filter((item) => ids.includes(item.id));
+};
+
+/**
+ * Prepare a user profile for GraphQL.
+ *
+ * @param {UserProfile} profile The user profile to preprae.
+ * @returns {Object} The prepared user profile.
+ */
+export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
+	const { credits } = profile;
+
+	return {
+		...profile,
+		credits: credits.map((credit: Credit) => {
+			return {
+				...credit,
+				id: credit.id || null,
+				positions: credit.positions.jobs,
+			};
+		}),
+	};
+};
+
+/**
+ * Compare two arrays and sort them before comparing.
+ *
+ * @param {number[]|string[]} a The first array to compare.
+ * @param {number[]|string[]} b The second array to compare.
+ * @returns {boolean} Whether the arrays are equal.
+ */
+export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
+	return isEqual(a.sort(), b.sort());
+};

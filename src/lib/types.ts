@@ -1,17 +1,17 @@
 import { WPItem } from './classes';
 
 /**
- * The data shape for a generic WordPress item.
+ * The data shape for generic WordPress item input.
  */
 export interface WPItemParams {
 	id: number;
-	slug: string;
-	name: string;
+	name?: string;
+	slug?: string;
 	parentId?: number;
 }
 
 /**
- * The data shape for a User.
+ * The data shape for User input.
  */
 export interface UserParams {
 	id: number;
@@ -20,7 +20,7 @@ export interface UserParams {
 }
 
 /**
- * The data shape for a Candidate.
+ * The data shape for Candidate input.
  */
 export interface CandidateData {
 	id: number;
@@ -31,7 +31,7 @@ export interface CandidateData {
 }
 
 /**
- * The data shape for a social media account.
+ * The data shape for a PersonalLinks input.
  */
 export interface PersonalLinksParams {
 	twitter?: string;
@@ -42,7 +42,7 @@ export interface PersonalLinksParams {
 }
 
 /**
- * The data shape for a User Profile.
+ * The data shape for UserProfile input.
  */
 export interface UserProfileParams {
 	id: number;
@@ -54,15 +54,16 @@ export interface UserProfileParams {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	location?: string;
 	resume?: string;
-	willTravel?: boolean;
+	willTravel?: boolean | string | number | null;
 	education?: string;
 	media?: string;
-	unions?: WPItem[];
-	genderIdentities?: WPItem[];
-	racialIdentities?: WPItem[];
-	personalIdentities?: WPItem[];
+	locations?: number[] | WPItem[];
+	unions?: number[] | WPItem[];
+	experienceLevels?: number[] | WPItem[];
+	genderIdentities?: number[] | WPItem[];
+	racialIdentities?: number[] | WPItem[];
+	personalIdentities?: number[] | WPItem[];
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;
@@ -71,18 +72,25 @@ export interface UserProfileParams {
 }
 
 /**
- * The data shape for a Credit.
+ * The data shape for Credit input.
  */
 export interface CreditParams {
+	id: number;
 	title: string;
 	venue: string;
 	year: string;
-	positions: {
-		nodes: WPItem[];
-	};
-	skills: {
-		nodes: WPItem[];
-	};
+	department: number;
+	jobs?: number[];
+	skills?: number[];
+}
+
+export interface CreditOutput {
+	id: number;
+	title: string;
+	venue: string;
+	year: string;
+	jobs: number[];
+	skills: number[];
 }
 
 /**
@@ -97,9 +105,9 @@ export interface LoginInput {
  * The data shape for a search query.
  */
 export interface SearchParams {
-	position: {
+	positions: {
 		department?: string;
 		jobs?: string[];
+		skills?: string[];
 	};
-	skills?: string[];
 }

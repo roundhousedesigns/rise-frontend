@@ -8,26 +8,20 @@ import {
 	DrawerHeader,
 	DrawerBody,
 	DrawerFooter,
-	Accordion,
 	Stack,
 	Heading,
 	IconButton,
 	Button,
-	Spacer,
 	ButtonGroup,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
-import SearchList from '../common/SearchList';
-import WidgetAccordionItem from '../common/WidgetAccordionItem';
 import SearchWizardView from '../../views/SearchWizardView';
 import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
 import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
-
-// TODO: Remove this when we have real data
-import { _devSavedSearches, _devRecentSearches } from '../../lib/_devData';
+import AdvancedSearchFilters from '../AdvancedSearchFilters';
 
 interface Props {
 	isOpen: boolean;
@@ -39,15 +33,21 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const {
 		search: {
 			filters: {
-				position: { jobs },
+				positions: { jobs },
 				skills,
+				unions,
+				locations,
+				experienceLevels,
+				genderIdentities,
+				racialIdentities,
+				personalIdentities,
 			},
 			searchActive,
 			results,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-	const [getSearchResults, { data /* loading, error, */ }] = useCandidateSearch();
+	const [getSearchResults, { data }] = useCandidateSearch();
 	const navigate = useNavigate();
 
 	// Update SearchContext with the new results whenever the query returns.
@@ -70,8 +70,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			variables: {
 				jobs: jobs && jobs.length > 0 ? jobs : [],
 				skills: skills && skills.length > 0 ? skills : [],
+				unions: unions && unions.length > 0 ? unions : [],
+				locations: locations && locations.length > 0 ? locations : [],
+				experienceLevels: experienceLevels && experienceLevels.length > 0 ? experienceLevels : [],
+				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
+				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
+				personalIdentities:
+					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
 				exclude: loggedInUser.id,
 			},
+			fetchPolicy: 'network-only',
 		});
 
 		navigate('/results');
@@ -81,6 +89,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const handleSearchReset = () => {
 		searchDispatch({
 			type: 'RESET_SEARCH_FILTERS',
+			payload: {},
 		});
 	};
 
@@ -91,7 +100,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				<DrawerHeader
 					fontSize='2xl'
 					py={6}
-					bg='blackAlpha.800'
+					bg='text.dark'
 					color='whiteAlpha.900'
 					borderBottom='2px solid pink'
 				>
@@ -99,23 +108,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						<Heading size='lg' color='text.light'>
 							Search
 						</Heading>
-						<Spacer flex='0 0 1em' />
-						{searchActive ? (
-							<ButtonGroup>
-								<Button
-									colorScheme='blue'
-									onClick={handleSubmit}
-									size='md'
-									form='search-candidates'
-								>
-									Search
-								</Button>
-								<Button colorScheme='whiteAlpha' onClick={handleSearchReset} size='md'>
-									Reset Filters
-								</Button>
-							</ButtonGroup>
-						) : null}
-						<Spacer />
 						<IconButton
 							icon={<FiX />}
 							aria-label='Close'
@@ -127,16 +119,27 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				</DrawerHeader>
 				<DrawerBody py={8}>
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
+					<AdvancedSearchFilters mt={10} />
 				</DrawerBody>
-				<DrawerFooter mt={0}>
-					<Accordion allowMultiple={true} w='full'>
-						<WidgetAccordionItem heading='Saved Searches'>
-							<SearchList items={_devSavedSearches} />
-						</WidgetAccordionItem>
-						<WidgetAccordionItem heading='Recent Searches'>
-							<SearchList items={_devRecentSearches} />
-						</WidgetAccordionItem>
-					</Accordion>
+				<DrawerFooter mt={0} borderTop='1px' borderTopColor='gray.300'>
+					<ButtonGroup>
+						<Button
+							colorScheme='teal'
+							onClick={handleSubmit}
+							size='md'
+							form='search-candidates'
+							isDisabled={!searchActive}
+						>
+							Search
+						</Button>
+						{searchActive ? (
+							<Button colorScheme='gray' onClick={handleSearchReset} size='md'>
+								Reset Filters
+							</Button>
+						) : (
+							false
+						)}
+					</ButtonGroup>
 				</DrawerFooter>
 			</DrawerContent>
 		</Drawer>

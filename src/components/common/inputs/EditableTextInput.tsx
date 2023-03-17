@@ -31,7 +31,6 @@ export default function EditableTextInput({
 	outerProps,
 	...inputProps
 }: Props): JSX.Element {
-
 	return (
 		<FormControl {...outerProps}>
 			<Editable
@@ -40,7 +39,7 @@ export default function EditableTextInput({
 				{...styles}
 				{...inputProps}
 			>
-				<EditablePreview display='block' />
+				<EditablePreview display='block' minHeight='39px' />
 				<EditableInput display='block' />
 			</Editable>
 			<FormLabel ml={2}>

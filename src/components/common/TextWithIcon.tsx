@@ -3,6 +3,7 @@ import { Icon, Text } from '@chakra-ui/react';
 interface Props {
 	icon: any;
 	children: React.ReactNode;
+	[key: string]: any;
 }
 
 export default function TextWithIcon({ icon, children, ...rest }: Props): JSX.Element {

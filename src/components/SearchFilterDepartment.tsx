@@ -31,21 +31,21 @@ export default function SearchFilterDepartment({ heading }: Props) {
 
 	// Set the RadioGroup value on initial render
 	useEffect(() => {
-		setValue(search.filters.position.department);
+		setValue(search.filters.positions.department);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.filters.position.department === '') {
+		if (search.filters.positions.department === '') {
 			setValue('');
 		}
-	}, [search.filters.position.department]);
+	}, [search.filters.positions.department]);
 
 	const group = getRootProps();
 
 	return !loading && !error ? (
 		<Box>
-			<Heading size='lg' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
+			<Heading size='md' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
 				{heading}
 			</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>

@@ -4,8 +4,9 @@ import EditableTextInput from './inputs/EditableTextInput';
 interface Props {
 	value: string | undefined | null;
 	name: string;
-	label: string;
 	icon: any;
+	label: string;
+	placeholder?: string;
 	labelVisuallyHidden?: boolean;
 	handleChange: (name: string) => (value: string) => void;
 	outerProps?: {
@@ -18,6 +19,7 @@ export default function EditTextWithIcon({
 	name,
 	icon,
 	label,
+	placeholder,
 	labelVisuallyHidden = false,
 	handleChange,
 	outerProps,
@@ -32,6 +34,7 @@ export default function EditTextWithIcon({
 					label={label}
 					labelVisuallyHidden={labelVisuallyHidden}
 					name={name}
+					placeholder={placeholder ? placeholder : ''}
 					handleChange={handleChange}
 					{...inputProps}
 				/>

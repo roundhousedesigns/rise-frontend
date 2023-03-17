@@ -4,7 +4,7 @@
 
 export const styles = {
 	global: {
-		body: { fontSize: '18px', _light: { bg: 'text.dar' }, _dark: { bg: 'text.light' } },
+		body: { fontSize: '18px' },
 		textarea: { underline: 'none !important' },
 	},
 };

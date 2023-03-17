@@ -1,4 +1,4 @@
-import { useState, Key, useRef, useEffect, useReducer } from 'react';
+import { useContext, useState, useEffect, useRef, Key } from 'react';
 import {
 	Box,
 	Heading,
@@ -7,12 +7,15 @@ import {
 	Text,
 	Stack,
 	Card,
-	Tag,
 	Spinner,
 	StackItem,
 	IconButton,
 	Button,
+	ButtonGroup,
+	useToast,
+	Wrap,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -29,53 +32,28 @@ import {
 	FiLinkedin,
 	FiMail,
 	FiPhone,
+	FiPlus,
+	FiSave,
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
-
-// TODO type the action param more specifically
-function EditProfileReducer(state: UserProfile, action: { type: string; payload: any }) {
-	switch (action.type) {
-		case 'UPDATE_INPUT':
-			return {
-				...state,
-				[action.payload.name]: action.payload.value,
-			};
-
-		case 'UPDATE_SOCIAL_TEXT_INPUT':
-			return {
-				...state,
-				socials: {
-					...state.socials,
-					[action.payload.name]: action.payload.value,
-				},
-			};
-
-		// case 'UPDATE_TAXONOMY_INPUT':
-		// 	return {
-		// 		...state,
-		// 		[action.payload.name]: action.payload.value,
-		// 	};
-
-		default:
-			return action.payload;
-	}
-}
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import { EditProfileContext } from '../context/EditProfileContext';
 
 interface Props {
 	profile: UserProfile | null;
-	loading: boolean;
+	profileLoading: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
-export default function EditProfileView({ profile, loading }: Props): JSX.Element {
-	const [editProfile, editProfileDispatch] = useReducer(EditProfileReducer, profile);
+export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
+	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 
 	const {
 		image,
@@ -84,7 +62,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		pronouns,
 		selfTitle,
 		socials,
-		location,
+		locations,
 		education,
 		willTravel,
 		media,
@@ -94,50 +72,120 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 		resume,
 		phone,
 		unions,
+		experienceLevels,
 		genderIdentities,
 		racialIdentities,
 		personalIdentities,
 	} = editProfile || {};
 
+	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
+	const resumeFileInputRef = useRef<FileInputRef>(null);
+
+	const creditsSorted = credits
+		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
+		: [];
+
 	// Get all the selectable terms for the user taxonomies.
 	const [
 		{
+			locations: locationTerms,
+			unions: unionTerms,
+			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
 			racialIdentities: racialIdentityTerms,
-			unions: unionTerms,
 		},
 	] = useUserTaxonomies();
 
-	const { updateProfileMutation } = useUpdateProfile();
+	const {
+		updateProfileMutation,
+		results: { loading: saveLoading, error: saveError },
+	} = useUpdateProfile();
 
-	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
-	const resumeFileInputRef = useRef<FileInputRef>(null);
+	const toast = useToast();
+	const navigate = useNavigate();
+
+	// This is used to trigger a toast when a save is successful.
+	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
+
+	// Set context on load
+	useEffect(() => {
+		if (profile) {
+			editProfileDispatch({ type: 'INIT', payload: profile });
+		}
+	}, []);
 
 	// Detect if a resume file has been set to upload, or already exists on the profile.
 	useEffect(() => {
 		setResumeIsSet(!!resume);
 	}, [resume]);
 
-	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
-		// if `name` matches a key in `socials`, update the socials object
-		if (name in socials) {
-			editProfileDispatch({
-				type: 'UPDATE_SOCIAL_TEXT_INPUT',
-				payload: {
-					name,
-					value: newValue,
-				},
+	// When a save is successful, open a toast.
+	useEffect(() => {
+		if (saveTriggered && !saveLoading && !saveError) {
+			toast({
+				title: 'Profile saved.',
+				description: 'Your profile has been updated.',
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+				position: 'top',
 			});
-		} else {
-			editProfileDispatch({
-				type: 'UPDATE_INPUT',
-				payload: {
-					name,
-					value: newValue,
-				},
+
+			setSaveTriggered(false);
+		} else if (saveTriggered && !saveLoading && saveError) {
+			toast({
+				title: 'Profile not saved.',
+				description: 'There was an error saving your profile.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'top',
 			});
+
+			setSaveTriggered(false);
 		}
+	}, [saveTriggered, saveLoading, saveError]);
+
+	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value: newValue,
+			},
+		});
+	};
+
+	const handleNestedInputChange = (name: string) => (newValue: string) => {
+		const parent = name.split('.')[0];
+		const field = name.split('.')[1];
+
+		editProfileDispatch({
+			type: 'UPDATE_NESTED_INPUT',
+			payload: {
+				parent,
+				name: field,
+				value: newValue,
+			},
+		});
+	};
+
+	const handleBooleanInputChange = (name: string) => (newValue: string) => {
+		editProfileDispatch({
+			type: 'UPDATE_BOOLEAN_INPUT',
+			payload: {
+				name,
+				value: newValue,
+			},
+		});
+	};
+
+	const handleNewCredit = () => {
+		editProfileDispatch({
+			type: 'ADD_CREDIT',
+			payload: {},
+		});
 	};
 
 	const handleResumeReset = () => {
@@ -150,43 +198,62 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setSaveTriggered(true);
+
 		updateProfileMutation(editProfile).catch((err) => {
 			console.error(err);
 		});
 	};
 
-	/**
-	 * Generate the text to display for the 'will travel' field.
-	 *
-	 * @returns {string} The text to display.
-	 */
-	const willTravelText = (): string => {
-		const str = 'Willing to travel';
-		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
+	const handleCancel = () => {
+		navigate('/profile');
 	};
 
-	return (
+	return editProfile ? (
 		<form onSubmit={handleSubmit}>
-			<Button type='submit' position='fixed' top={4} right={4}>
-				Save
-			</Button>
+			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='lg'>
+				<IconButton
+					type='submit'
+					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
+					colorScheme='green'
+					disabled={saveLoading}
+					borderRadius='full'
+				>
+					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
+				</IconButton>
+				<IconButton
+					type='reset'
+					colorScheme='orange'
+					aria-label='Cancel editing'
+					borderRadius='full'
+					onClick={handleCancel}
+				>
+					<FiXCircle />
+				</IconButton>
+			</ButtonGroup>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
 					<Card>
-						{loading && <Spinner alignSelf='center' />}
-						<Flex alignItems='flex-start' flexWrap='wrap'>
-							{/* TODO Image uploader */}
-							{image ? (
-								<Image src={image} alt={`${name}'s picture`} loading='eager' fit='cover' w='xs' />
-							) : (
-								<Flex alignItems='center' justifyContent='center'>
-									<FileInput name='image' label='Photo' />
-								</Flex>
-							)}
-							<Stack flex='1' px={4} spacing={4}>
+						{profileLoading && <Spinner alignSelf='center' />}
+						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+							<Box mb={2}>
+								{/* TODO Image uploader */}
+								{image ? (
+									<>
+										<Heading size='sm' color='brand.red'>
+											Photo uploads are under development.
+										</Heading>
+										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
+									</>
+								) : (
+									<Flex alignItems='center' justifyContent='center'>
+										<FileInput name='image' label='Photo' />
+									</Flex>
+								)}
+							</Box>
+							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
-									<Heading variant='contentTitle'>Name</Heading>
-									<Flex alignItems='baseline' gap={2}>
+									<Flex alignItems='baseline' gap={2} flexWrap='wrap' w='full'>
 										<EditableTextInput
 											defaultValue={firstName ? firstName : ''}
 											as={Heading}
@@ -207,7 +274,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											label='Last Name'
 											mr={2}
 											fontWeight='medium'
-											placeholder='Last'
+											placeholder=''
 											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
@@ -218,7 +285,7 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 											name='pronouns'
 											as={Text}
 											label='Pronouns'
-											placeholder='your pronouns'
+											placeholder='pronouns'
 											styles={{ display: 'block' }}
 											mb={0}
 											handleChange={handleInputChange}
@@ -226,39 +293,41 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 										/>
 									</Flex>
 								</StackItem>
-								<StackItem>
-									<Heading variant='contentTitle'>Details</Heading>
-									<Flex gap={4}>
-										<EditableTextInput
-											defaultValue={selfTitle ? selfTitle : ''}
-											name='title'
-											placeholder='Title'
-											label='Title/Trade/Profession'
+								<StackItem display='flex' flexWrap='wrap' gap={4}>
+									<EditableTextInput
+										defaultValue={selfTitle ? selfTitle : ''}
+										name='selfTitle'
+										placeholder='Title'
+										label='Title/Trade/Profession'
+										handleChange={handleInputChange}
+										outerProps={{ flex: '1 1 60%' }}
+									/>
+									<Box fontSize='sm'>
+										<Heading variant='contentTitle'>Locations/Homebases</Heading>
+										<Heading variant='contentSubtitle'>Where do you live and work?</Heading>
+										<ProfileCheckboxGroup
+											name='locations'
+											items={locationTerms}
+											checked={locations ? locations.map((item) => item.toString()) : []}
 											handleChange={handleInputChange}
-											outerProps={{ flex: '1 1 60%' }}
 										/>
-										<EditableTextInput
-											defaultValue={location ? location : ''}
-											name='location'
-											placeholder='Location'
-											label='Location/Homebase'
-											handleChange={handleInputChange}
-											outerProps={{ flex: '1 1 40%' }}
+									</Box>
+									<Box fontSize='sm'>
+										<Heading variant='contentTitle'>Willing to travel?</Heading>
+										<ProfileRadioGroup
+											defaultValue={willTravel ? 'true' : 'false'}
+											name='willTravel'
+											items={[
+												{ label: 'Yes', value: 'true' },
+												{ label: 'No', value: 'false' },
+											]}
+											handleChange={handleBooleanInputChange}
 										/>
-										<Tag
-											size='md'
-											colorScheme={willTravel ? 'green' : 'orange'}
-											mx={2}
-											flex='0 0 130px'
-										>
-											{willTravelText()}
-										</Tag>
-									</Flex>
+									</Box>
 								</StackItem>
 								<StackItem>
-									<Flex alignItems='flex-start' gap={8}>
-										<Box flex='1 1 50%'>
-											<Heading variant='contentTitle'>Contact</Heading>
+									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
+										<Box flex='1'>
 											<EditTextWithIcon
 												value={email}
 												icon={FiMail}
@@ -276,34 +345,35 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 												handleChange={handleInputChange}
 											/>
 										</Box>
-										<Box flex='1 0 50%'>
-											<Flex w='full' justifyContent='center'>
-												<Flex gap={3} alignItems='center' flexWrap='wrap'>
-													<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-														Resume
-													</Heading>
-													{resumeIsSet && resume ? (
-														<Button>{resume.split('/').pop()}</Button>
-													) : (
-														<FileInput
-															name='resume'
-															label='Upload resume'
-															labelVisuallyHidden
-															ref={resumeFileInputRef}
-														/>
-													)}
-													{resumeIsSet && resume && (
-														<IconButton
-															icon={<FiXCircle />}
-															aria-label='Clear Resume'
-															title='Clear resume'
-															bg='brand.red'
-															color='white'
-															variant='oversized'
-															onClick={handleResumeReset}
-														/>
-													)}
-												</Flex>
+										<Box flex='1'>
+											<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+												Resume
+											</Heading>
+											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
+												<Heading size='sm' color='brand.red'>
+													Resume uploads are under development.
+												</Heading>
+												{resumeIsSet && resume ? (
+													<Button>{resume.split('/').pop()}</Button>
+												) : (
+													<FileInput
+														name='resume'
+														label='Upload resume'
+														labelVisuallyHidden
+														ref={resumeFileInputRef}
+													/>
+												)}
+												{resumeIsSet && resume && (
+													<IconButton
+														icon={<FiXCircle />}
+														aria-label='Clear Resume'
+														title='Clear resume'
+														bg='brand.red'
+														color='white'
+														variant='oversized'
+														onClick={handleResumeReset}
+													/>
+												)}
 											</Flex>
 										</Box>
 									</Flex>
@@ -313,11 +383,27 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 
 						<StackItem>
 							<Heading variant='contentTitle'>Unions/Guilds</Heading>
+							<Heading variant='contentSubtitle'>
+								What unions or guilds are you a member of?
+							</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
 									name='unions'
 									items={unionTerms}
-									checked={unions}
+									checked={unions ? unions.map((item) => item.toString()) : []}
+									handleChange={handleInputChange}
+								/>
+							</Box>
+						</StackItem>
+
+						<StackItem>
+							<Heading variant='contentTitle'>Experience Levels</Heading>
+							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='experienceLevels'
+									items={experienceLevelTerms}
+									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
 									handleChange={handleInputChange}
 								/>
 							</Box>
@@ -330,42 +416,37 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 									<EditTextWithIcon
 										value={socials?.linkedin}
 										icon={FiLinkedin}
-										label='LinkedIn'
-										labelVisuallyHidden
-										name='linkedin'
-										handleChange={handleInputChange}
+										label='LinkedIn @handle'
+										name='socials.linkedin'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.facebook}
 										icon={FiFacebook}
-										label='Facebook'
-										labelVisuallyHidden
-										name='facebook'
-										handleChange={handleInputChange}
+										label='Facebook URL (ex: https://facebook.com/yourname)'
+										name='socials.facebook'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.instagram}
 										icon={FiInstagram}
-										label='Instagram'
-										labelVisuallyHidden
-										name='instagram'
-										handleChange={handleInputChange}
+										label='Instagram @handle'
+										name='socials.instagram'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.twitter}
 										icon={FiTwitter}
-										label='Twitter'
-										labelVisuallyHidden
-										name='twitter'
-										handleChange={handleInputChange}
+										label='Twitter @handle'
+										name='socials.twitter'
+										handleChange={handleNestedInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.website}
 										icon={FiGlobe}
 										label='Website'
-										labelVisuallyHidden
-										name='website'
-										handleChange={handleInputChange}
+										name='socials.website'
+										handleChange={handleNestedInputChange}
 									/>
 								</StackItem>
 							</Stack>
@@ -374,63 +455,95 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 				</StackItem>
 
 				<StackItem>
+					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
+					<Wrap>
+						<Text>Enter your 5 best credits.</Text>
+						<Text color='brand.red' fontWeight='bold'>
+							We are aware of the issues working with Credits. Please stay tuned.
+						</Text>
+					</Wrap>
+					{creditsSorted?.map((credit: Credit, index: Key) => (
+						<CreditItem key={index} credit={credit} editable={true} />
+					))}
+					{creditsSorted?.length < 5 && (
+						<IconButton
+							aria-label='Add a new credit'
+							icon={<FiPlus />}
+							onClick={handleNewCredit}
+						></IconButton>
+					)}
+				</StackItem>
+
+				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<Card>
 						<Heading variant='contentTitle'>Bio</Heading>
+						<Heading variant='contentSubtitle'>
+							Write a little. Write a lot. It's up to you!
+						</Heading>
 						<EditableTextareaInput
 							defaultValue={description ? description : ''}
 							name='description'
 							label='Bio'
 							labelVisuallyHidden
 							handleChange={handleInputChange}
-							placeholder="Write a little. Write a lot. It's up to you!"
 						/>
 					</Card>
 					<Card>
 						<Heading
-							as='h3'
 							size='md'
-							fontWeight='medium'
+							fontWeight='bold'
 							pb={2}
 							mb={2}
 							color='blackAlpha.800'
+							border='3px dashed gray.400'
 							borderBottomWidth='3px'
 							borderBottomStyle='dashed'
 							borderBottomColor='gray.400'
+							variant='contentTitle'
 						>
+							Identity
+						</Heading>
+						<Heading variant='contentSubtitle'>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
 							<em>will not appear</em> on your public profile.
 						</Heading>
-						<Flex>
+						<Flex gap={4} flexWrap='wrap'>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Gender Identity</Heading>
+								<Heading variant='contentTitle'>Gender</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='genderIdentities'
 										items={genderIdentityTerms}
-										checked={genderIdentities}
+										checked={
+											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Racial Identity</Heading>
+								<Heading variant='contentTitle'>Race/Ethnicity</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='racialIdentities'
 										items={racialIdentityTerms}
-										checked={racialIdentities}
+										checked={
+											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
 							</Box>
 							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Personal Identity</Heading>
+								<Heading variant='contentTitle'>Additional</Heading>
 								<Box fontSize='sm'>
 									<ProfileCheckboxGroup
 										name='personalIdentities'
 										items={personalIdentityTerms}
-										checked={personalIdentities}
+										checked={
+											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
+										}
 										handleChange={handleInputChange}
 									/>
 								</Box>
@@ -462,18 +575,13 @@ export default function EditProfileView({ profile, loading }: Props): JSX.Elemen
 								</Box>
 							))
 						) : (
-							<Box>Update Media Here</Box>
+							<Text color='brand.red' fontWeight='bold'>
+								Photo + video additions under development.
+							</Text>
 						)}
 					</Stack>
 				</StackItem>
-
-				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} />
-					))}
-				</StackItem>
 			</Stack>
 		</form>
-	);
+	) : null;
 }

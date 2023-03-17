@@ -6,6 +6,7 @@ import {
 	CreditParams,
 	PersonalLinksParams,
 	WPItemParams,
+	CreditOutput,
 } from './types';
 import { maybeParseInt } from './utils';
 
@@ -79,17 +80,19 @@ export class UserProfile extends User {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	location?: string;
 	resume?: string;
 	willTravel?: boolean | null; // TODO is this null necessary?
 	education?: string;
-	unions?: WPItem[];
-	genderIdentities?: WPItem[];
-	racialIdentities?: WPItem[];
-	personalIdentities?: WPItem[];
 	media?: string[];
-	socials?: PersonalLinks;
-	credits?: Credit[];
+	socials: PersonalLinks = new PersonalLinks();
+	locations?: number[] = [];
+	unions: number[] = [];
+	experienceLevels: number[] = [];
+	genderIdentities: number[] = [];
+	racialIdentities: number[] = [];
+	personalIdentities: number[] = [];
+	credits: Credit[] = [];
+	[key: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -102,7 +105,6 @@ export class UserProfile extends User {
 			pronouns,
 			phone,
 			description,
-			location,
 			resume,
 			willTravel,
 			education,
@@ -111,12 +113,13 @@ export class UserProfile extends User {
 			instagram,
 			facebook,
 			website,
+			locations,
 			unions,
+			experienceLevels,
 			genderIdentities,
 			racialIdentities,
 			personalIdentities,
 			// media,
-			// credits,
 		} = userParams;
 
 		super({
@@ -134,24 +137,29 @@ export class UserProfile extends User {
 				pronouns,
 				phone,
 				description,
-				location,
 				resume,
-				willTravel,
 				education,
+				credits,
 			},
 			{
-				unions: unions && unions.length > 0 ? unions.map((item) => item.id) : [],
+				willTravel: Boolean(willTravel),
+				locations: locations && locations.length > 0 ? this.extractIdsFromNodes(locations) : [],
+				unions: unions && unions.length > 0 ? this.extractIdsFromNodes(unions) : [],
+				experienceLevels:
+					experienceLevels && experienceLevels.length > 0
+						? this.extractIdsFromNodes(experienceLevels)
+						: [],
 				genderIdentities:
 					genderIdentities && genderIdentities.length > 0
-						? genderIdentities.map((item) => item.id)
+						? this.extractIdsFromNodes(genderIdentities)
 						: [],
 				racialIdentities:
 					racialIdentities && racialIdentities.length > 0
-						? racialIdentities.map((item) => item.id)
+						? this.extractIdsFromNodes(racialIdentities)
 						: [],
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0
-						? personalIdentities.map((item) => item.id)
+						? this.extractIdsFromNodes(personalIdentities)
 						: [],
 				// media: media && media.length > 0 ? media : [],
 				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
@@ -170,6 +178,28 @@ export class UserProfile extends User {
 	fullName() {
 		return super.fullName();
 	}
+
+	/**
+	 * Extract IDs from a collection of nodes.
+	 *
+	 * @param {WPItem[]} nodes A collection of nodes.
+	 * @returns {number[]} A collection of IDs.
+	 */
+	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
+		if (nodes.length === 0) return [];
+
+		// TODO check performance on this
+		// Sanitize the nodes.
+		return nodes.map((node) => {
+			if (typeof node === 'number') {
+				return node;
+			} else if (typeof node === 'object') {
+				return Number(node.id);
+			} else {
+				return 0;
+			}
+		});
+	}
 }
 
 /**
@@ -184,8 +214,23 @@ export class PersonalLinks {
 	facebook: string = '';
 	website: string = '';
 
-	constructor(params: PersonalLinksParams) {
+	constructor(params: PersonalLinksParams = {}) {
 		Object.assign(this, params);
+	}
+}
+
+/**
+ * A collection of credit positions.
+ *
+ * @param {WPItemParams[]} positions
+ */
+export class CreditPositions {
+	department!: number;
+	jobs: number[] = [];
+
+	constructor(positions: WPItemParams[]) {
+		this.department = positions[0]?.parentId ? positions[0].parentId : 0;
+		this.jobs = positions.map((job) => job.id);
 	}
 }
 
@@ -195,18 +240,42 @@ export class PersonalLinks {
  * @implements {CreditParams}
  */
 export class Credit {
-	title!: string;
+	id: number;
+	title: string;
 	venue: string = '';
 	year: string = '';
-	positions: WPItem[]; // TODO Split this collection into departments and jobs.
-	skills: WPItem[] = [];
+	positions: {
+		department: number;
+		jobs: number[];
+	};
+	skills: number[] = [];
 
 	constructor(params: CreditParams) {
-		this.title = params.title;
-		this.venue = params.venue;
-		this.year = params.year;
-		this.positions = params.positions.nodes;
-		this.skills = params.skills.nodes;
+		this.id = params.id ? params.id : 0;
+		this.title = params.title ? params.title : '';
+		this.venue = params.venue ? params.venue : '';
+		this.year = params.year ? params.year : '';
+		this.skills = params.skills ? params.skills : [];
+		this.positions = {
+			department: params.department ? params.department : 0,
+			jobs: params.jobs ? params.jobs : [],
+		};
+	}
+
+	/**
+	 * Prepare a credit object for GraphQL.
+	 *
+	 * @returns {CreditOutput} A credit object formatted for GraphQL.
+	 */
+	prepareForGraphQL(): CreditOutput {
+		return {
+			id: this.id,
+			title: this.title,
+			venue: this.venue,
+			year: this.year,
+			skills: this.skills,
+			jobs: this.positions.jobs,
+		};
 	}
 }
 
@@ -218,11 +287,12 @@ export class Credit {
 export class WPItem {
 	id!: number;
 	name!: string;
-	slug!: string;
+	slug?: string;
+	parentId?: number;
 
 	constructor(params: WPItemParams) {
 		this.id = maybeParseInt(params.id);
-		this.name = unescape(params.name);
-		this.slug = params.slug;
+		this.name = params.name ? unescape(params.name) : '';
+		this.slug = params.slug ? params.slug : '';
 	}
 }

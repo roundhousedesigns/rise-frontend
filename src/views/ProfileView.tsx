@@ -6,7 +6,6 @@ import {
 	Image,
 	Flex,
 	Text,
-	Button,
 	Stack,
 	Card,
 	useMediaQuery,
@@ -19,12 +18,14 @@ import {
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
 import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
-import { Credit, UserProfile } from '../lib/classes';
+import { Credit, UserProfile, WPItem } from '../lib/classes';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/common/PersonalIconLinks';
 import CreditItem from '../components/common/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
+import { getWPItemsFromIds } from '../lib/utils';
 
 interface Props {
 	profile: UserProfile | null;
@@ -44,7 +45,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		selfTitle,
 		socials,
 		unions,
-		location,
+		locations,
 		willTravel,
 		email,
 		phone,
@@ -63,6 +64,17 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		const str = 'Willing to travel';
 		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
 	};
+
+	const creditsSorted = credits
+		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
+		: [];
+
+	const [{ locations: locationTerms, unions: unionTerms }] = useUserTaxonomies();
+
+	const selectedTerms = (ids: number[], terms: WPItem[]) =>
+		getWPItemsFromIds(ids, terms)
+			.map((term: WPItem) => term.name)
+			.join(', ');
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
@@ -108,21 +120,16 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</StackItem>
 							)}
 							<StackItem>
-								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<Heading variant='contentTitle'>Location/Homebase</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions?.map((item) => item.name).join(', ')}
+									{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>
-								<Heading variant='contentTitle'>Location/Homebase</Heading>
-								<Flex alignItems='center'>
-									<TextWithIcon icon={FiMapPin}>{location}</TextWithIcon>
-									{willTravel !== undefined && (
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
-											{willTravelText()}
-										</Tag>
-									)}
-								</Flex>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<TextWithIcon icon={FiUsers}>
+									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
+								</TextWithIcon>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Contact</Heading>
@@ -150,17 +157,17 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									) : null}
 								</UnorderedList>
 							</StackItem>
-							<StackItem>
+							{/* TODO Bookmark a user */}
+							{/* <StackItem>
 								<Button
 									colorScheme='green'
 									onClick={() => {
 										alert('Pin!');
 									}}
 								>
-									{/* TODO Bookmark a user */}
 									Save This Candidate
 								</Button>
-							</StackItem>
+							</StackItem> */}
 						</Stack>
 					</Flex>
 				</Card>
@@ -170,9 +177,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				// MAYBE click-to-expand more Credit details?
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{credits.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} />
-					))}
+					<UnorderedList listStyleType='none' m={0}>
+						{creditsSorted.map((credit: Credit) => (
+							<ListItem key={credit.id}>
+								<CreditItem credit={credit} />
+							</ListItem>
+						))}
+					</UnorderedList>
 				</StackItem>
 			)}
 
@@ -186,7 +197,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{education && (
 				<Box>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text>{education}</Text>
+					<Text whiteSpace='pre-wrap'>{education.trim()}</Text>
 				</Box>
 			)}
 
