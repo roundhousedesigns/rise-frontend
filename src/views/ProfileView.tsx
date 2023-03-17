@@ -174,7 +174,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			</StackItem>
 
 			{credits && credits.length > 0 && (
-				// MAYBE click-to-expand more Credit details?
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<UnorderedList listStyleType='none' m={0}>

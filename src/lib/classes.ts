@@ -74,6 +74,8 @@ export class Candidate extends User {
  * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
+	firstName: string = '';
+	lastName: string = '';
 	email: string = '';
 	selfTitle?: string;
 	image?: string;
@@ -95,6 +97,7 @@ export class UserProfile extends User {
 	[key: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
+		// FIXME If a profile is empty, route to the edit profile page.
 		const {
 			id,
 			firstName,
@@ -120,7 +123,7 @@ export class UserProfile extends User {
 			racialIdentities,
 			personalIdentities,
 			// media,
-		} = userParams;
+		} = userParams || {};
 
 		super({
 			id: id,
