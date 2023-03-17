@@ -1,19 +1,17 @@
-import { useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Spinner } from '@chakra-ui/react';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
 
-import { AuthContext } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
 
 export default function Profile() {
 	const {
-		loggedInUser: { id: loggedInId },
-	} = useContext(AuthContext);
+		user: { id: loggedInId },
+	} = sessionStorage.get('loggedInUser');
 	const params = useParams();
 
 	// TODO refetch profile when user edits it

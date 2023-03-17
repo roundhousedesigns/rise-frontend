@@ -10,6 +10,7 @@ import theme from './theme/index';
 import App from './App';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 
 import reportWebVitals from './reportWebVitals';
@@ -18,18 +19,27 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
 
-import { AuthContextProvider } from './context/AuthContext';
-
 /**
  * Apollo client.
  */
 const httpLink = createUploadLink({
 	uri: backend,
-	credentials: 'include',
+});
+
+const authLink = setContext((_, { headers }) => {
+	// get the authentication token from local storage if it exists
+	const token = localStorage.getItem('token');
+	// return the headers to the context so httpLink can read them
+	return {
+		headers: {
+			...headers,
+			authorization: token ? `Bearer ${token}` : '',
+		},
+	};
 });
 
 const client = new ApolloClient({
-	link: httpLink,
+	link: authLink.concat(httpLink),
 	cache: new InMemoryCache(),
 });
 
@@ -39,9 +49,7 @@ root.render(
 			<ApolloProvider client={client}>
 				<ChakraProvider resetCSS={true} theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-					<AuthContextProvider>
-						<App />
-					</AuthContextProvider>
+					<App />
 				</ChakraProvider>
 			</ApolloProvider>
 		</BrowserRouter>

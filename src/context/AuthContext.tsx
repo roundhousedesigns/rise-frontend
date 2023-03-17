@@ -5,10 +5,11 @@ import { UserParams } from '../lib/types';
 
 export const AuthContext = createContext({
 	loggedInUser: {
-		...new User(),
+		user: new User(),
+		token: '',
 	},
 	setLoggedInUser: (user: UserParams) => {
-		return new User({ ...user });
+		return new User(user);
 	},
 });
 

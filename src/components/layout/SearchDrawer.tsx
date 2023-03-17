@@ -19,7 +19,6 @@ import { FiX } from 'react-icons/fi';
 import SearchWizardView from '../../views/SearchWizardView';
 import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
-import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
 import AdvancedSearchFilters from '../AdvancedSearchFilters';
 
@@ -29,7 +28,9 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const { loggedInUser } = useContext(AuthContext);
+	const {
+		user: { id: loggedInId },
+	} = sessionStorage.get('loggedInUser');
 	const {
 		search: {
 			filters: {
@@ -77,7 +78,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
-				exclude: loggedInUser.id,
+				exclude: loggedInId,
 			},
 			fetchPolicy: 'network-only',
 		});

@@ -1,6 +1,5 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 
 interface Props {
 	redirect?: boolean;
@@ -8,16 +7,14 @@ interface Props {
 }
 
 export default function LoggedIn({ redirect, children }: Props) {
-	const {
-		loggedInUser: { id: loggedInId },
-	} = useContext(AuthContext);
+	const { authToken } = sessionStorage.get('loggedInUser');
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (redirect && loggedInId === 0) {
+		if (redirect && !authToken) {
 			navigate('/login');
 		}
-	}, [loggedInId]);
+	}, [authToken]);
 
 	return <>{children}</>;
 }

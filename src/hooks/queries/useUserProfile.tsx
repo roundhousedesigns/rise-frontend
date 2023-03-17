@@ -4,7 +4,6 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { CreditParams } from '../../lib/types';
 import { Credit, UserProfile, WPItem } from '../../lib/classes';
 
 export const QUERY_PROFILE = gql`

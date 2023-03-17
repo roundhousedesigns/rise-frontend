@@ -7,13 +7,15 @@ import { LoginInput } from '../../lib/types';
 
 // MAYBE get more user data from this mutation
 const MUTATE_LOGIN = gql`
-	mutation Login($input: LoginInput = { login: "", password: "" }) {
+	mutation Login($input: LoginInput = { username: "", password: "" }) {
 		login(input: $input) {
 			clientMutationId
-			status
-			id
-			firstName
-			lastName
+			authToken
+			user {
+				id
+				firstName
+				lastName
+			}
 		}
 	}
 `;

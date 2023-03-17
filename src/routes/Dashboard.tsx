@@ -1,13 +1,14 @@
 import { useContext } from 'react';
 import { Heading, Text, Card, Wrap, UnorderedList, ListItem, Link, Box } from '@chakra-ui/react';
 import Page from '../components/Page';
-import { AuthContext } from '../context/AuthContext';
 
 export default function Dashboard() {
-	const { loggedInUser } = useContext(AuthContext);
+	const {
+		user: { firstName },
+	} = sessionStorage.get('loggedInUser');
 
 	return (
-		<Page title={`Hi, ${loggedInUser.firstName}!`}>
+		<Page title={`Hi, ${firstName}!`}>
 			<Card>
 				<Wrap>
 					<Text pb={6}>
