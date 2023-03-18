@@ -20,7 +20,7 @@ interface Token {
 export default function App() {
 	const isLoggedIn = useLoggedIn();
 	const { colorMode, toggleColorMode } = useColorMode();
-	const { refreshTokenMutation, results: refreshTokenMutationResults } = useRefreshToken();
+	const { refreshTokenMutation } = useRefreshToken();
 
 	const authToken = sessionStorage.getItem('authToken');
 	const refreshToken = sessionStorage.getItem('refreshToken');

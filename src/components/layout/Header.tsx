@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
@@ -18,7 +18,7 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	Avatar,
+	// Avatar,
 	Badge,
 	Button,
 } from '@chakra-ui/react';

@@ -17,7 +17,7 @@ import {
 	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
+import { FiDownload, FiMail, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -130,7 +130,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions && unions.length > 0 && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
+									{unions && unions.length > 0 && unionTerms
+										? selectedTerms(unions, unionTerms)
+										: 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>

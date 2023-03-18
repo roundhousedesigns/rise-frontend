@@ -7,8 +7,6 @@ interface Props {
 	children: React.ReactNode;
 }
 
-const publicRoutes = ['login', 'register'];
-
 export default function LoggedIn({ redirect, children }: Props) {
 	const isLoggedIn = useLoggedIn();
 	const navigate = useNavigate();

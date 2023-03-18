@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Heading, Text, Card, Wrap, UnorderedList, ListItem, Link, Box } from '@chakra-ui/react';
 import Page from '../components/Page';
 
