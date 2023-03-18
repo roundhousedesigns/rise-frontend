@@ -99,7 +99,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const {
 		updateProfileMutation,
-		results: { loading: saveLoading, error: saveError },
+		results: { loading: saveLoading },
 	} = useUpdateProfile();
 
 	const toast = useToast();

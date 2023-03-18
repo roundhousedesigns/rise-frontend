@@ -92,8 +92,12 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			venue: credit.venue,
 			year: credit.year,
 			department: credit.positions?.nodes[0]?.parentId,
-			jobs: [...credit.positions?.nodes?.map((job: WPItem) => job.id)],
-			skills: [...credit.skills?.nodes?.map((skill: WPItem) => skill.id)],
+			jobs: credit.positions.nodes
+				? [...credit.positions?.nodes?.map((job: WPItem) => job.id)]
+				: [],
+			skills: credit.skills.nodes
+				? [...credit.skills?.nodes?.map((skill: WPItem) => skill.id)]
+				: [],
 		});
 	});
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;

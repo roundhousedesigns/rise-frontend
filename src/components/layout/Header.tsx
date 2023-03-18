@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
@@ -39,8 +39,6 @@ export default function Header() {
 	} = useContext(SearchContext);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
-
-	const navigate = useNavigate();
 
 	const handleLogout = () => {
 		sessionStorage.setItem('authToken', '');
