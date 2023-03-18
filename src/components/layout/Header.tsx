@@ -18,7 +18,6 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	// Avatar,
 	Badge,
 	Button,
 } from '@chakra-ui/react';
@@ -54,6 +53,7 @@ export default function Header() {
 		<Box position='relative'>
 			<Button
 				ref={drawerButtonRef}
+				onClick={drawerOnOpen}
 				leftIcon={<FiSearch />}
 				aria-label='Search for candidates'
 				variant='invisible'
@@ -61,11 +61,21 @@ export default function Header() {
 				borderRadius='full'
 				size='lg'
 				fontSize='xl'
+				pr={{ base: 0, md: 6 }}
+				pl={{ base: 0, md: 5 }}
 				_hover={{ bg: 'whiteAlpha.600' }}
 				_active={{ bg: 'whiteAlpha.600' }}
-				onClick={drawerOnOpen}
+				_before={{
+					base: {
+						pl: 2,
+						content: '""',
+					},
+					md: {
+						pl: 0,
+					},
+				}}
 			>
-				Search
+				{isLargerThanMd ? 'Search' : ''}
 			</Button>
 			{searchActive && results.length ? (
 				<Badge
@@ -102,35 +112,33 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<Link as={RouterLink} to='/'>
-								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
+								<Image
+									src={logo}
+									w={{ base: '200px', sm: 'auto' }}
+									alt='Get To Work logo'
+									loading='eager'
+									h='40px'
+								/>
 							</Link>
 							<LoggedIn redirect={false}>
 								<Spacer />
-								{isLargerThanMd ? (
-									<Stack
-										color='white'
-										direction='row'
-										spacing={4}
-										mr={6}
-										align='center'
-										fontSize='lg'
-										textTransform='uppercase'
-									>
-										<SearchButton />
-										{/* TODO add Avatar by pulling in user profile data */}
-										{/*
-										<Link variant='nav' as={RouterLink} to='/profile'>
-											<Avatar
-												size='md'
-												bg='whiteAlpha.600'
-												_hover={{ bg: 'whiteAlpha.700' }}
-												transitionDuration='normal'
-											/>
-										</Link>
-										*/}
+								<Stack
+									color='white'
+									direction='row'
+									spacing={4}
+									mr={6}
+									align='center'
+									fontSize='lg'
+									textTransform='uppercase'
+								>
+									<SearchButton />
+									{/* TODO change profile icon for <Avatar> */}
+									{isLargerThanMd ? (
 										<Button
 											leftIcon={<FiUser />}
-											aria-label='Search for candidates'
+											aria-label='My Profile'
+											as={RouterLink}
+											to='/profile'
 											variant='invisible'
 											bg='whiteAlpha.400'
 											borderRadius='full'
@@ -138,12 +146,12 @@ export default function Header() {
 											fontSize='xl'
 											_hover={{ bg: 'whiteAlpha.600' }}
 											_active={{ bg: 'whiteAlpha.600' }}
-											onClick={() => navigate('/profile')}
+											textTransform='none'
 										>
 											My Profile
 										</Button>
-									</Stack>
-								) : null}
+									) : null}
+								</Stack>
 
 								<Box pl={2}>
 									<LightMode>
@@ -163,16 +171,26 @@ export default function Header() {
 												size='lg'
 											/>
 											<MenuList color='text.dark' zIndex='100'>
-												{isLargerThanMd ? (
-													<>
-														<MenuOptionGroup>
-															<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-																Dashboard
-															</MenuItem>
-														</MenuOptionGroup>
+												{isLargerThanMd ? null : (
+													<MenuOptionGroup>
+														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+															My Profile
+														</MenuItem>
+														<MenuItem
+															ref={drawerButtonRef}
+															onClick={drawerOnOpen}
+															icon={<FiSearch />}
+														>
+															Search
+														</MenuItem>
 														<MenuDivider />
-													</>
-												) : null}
+													</MenuOptionGroup>
+												)}
+												<MenuOptionGroup>
+													<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+														Dashboard
+													</MenuItem>
+												</MenuOptionGroup>
 												<MenuOptionGroup>
 													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
 														Settings
