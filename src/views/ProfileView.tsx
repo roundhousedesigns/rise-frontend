@@ -98,9 +98,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<Heading size='xl' mr={2} lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
-								<Tag colorScheme='cyan' size='md'>
-									{pronouns}
-								</Tag>
+								{pronouns ? (
+									<Tag colorScheme='cyan' size='md'>
+										{pronouns}
+									</Tag>
+								) : (
+									false
+								)}
 								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
 									{selfTitle && selfTitle}
 								</Text>
@@ -126,7 +130,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
+									{unions && unions.length > 0 ? selectedTerms(unions, unionTerms) : 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>

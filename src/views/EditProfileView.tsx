@@ -200,9 +200,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		e.preventDefault();
 		setSaveTriggered(true);
 
-		updateProfileMutation(editProfile).catch((err) => {
-			console.error(err);
-		});
+		updateProfileMutation(editProfile)
+			.then(() => {
+				navigate('/profile');
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	const handleCancel = () => {
@@ -237,9 +241,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							<Box mb={2}>
-								<Text fontSize='sm' fontWeight='bold' color='brand.red' flex='0 0 100%'>
-									Photo uploads are under development.
-								</Text>
 								{/* TODO Image uploader */}
 								{image ? (
 									<>
@@ -250,6 +251,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<FileInput name='image' label='Photo' />
 									</Flex>
 								)}
+								<Text
+									textAlign='center'
+									fontSize='sm'
+									fontWeight='bold'
+									color='brand.red'
+									flex='0 0 100%'
+								>
+									Photo uploads are under development.
+								</Text>
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
@@ -259,6 +269,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											mr={2}
 											name='firstName'
 											fontWeight='medium'
+											fontSize='3xl'
 											label='First Name'
 											handleChange={handleInputChange}
 											outerProps={{
@@ -269,8 +280,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											defaultValue={lastName ? lastName : ''}
 											name='lastName'
 											label='Last Name'
-											mr={2}
 											fontWeight='medium'
+											fontSize='3xl'
+											mr={2}
 											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
@@ -281,6 +293,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='pronouns'
 											as={Text}
 											label='Pronouns'
+											fontWeight='medium'
 											styles={{ display: 'block' }}
 											mb={0}
 											handleChange={handleInputChange}

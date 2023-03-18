@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
@@ -20,6 +20,7 @@ import {
 	LightMode,
 	Avatar,
 	Badge,
+	Button,
 } from '@chakra-ui/react';
 
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
@@ -34,13 +35,13 @@ export default function Header() {
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
-	const navigate = useNavigate();
-
 	const {
 		search: { searchActive, results },
 	} = useContext(SearchContext);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
+	const navigate = useNavigate();
 
 	const handleLogout = () => {
 		sessionStorage.setItem('authToken', '');
@@ -51,33 +52,35 @@ export default function Header() {
 
 	const SearchButton = () => (
 		<Box position='relative'>
-			<IconButton
+			<Button
 				ref={drawerButtonRef}
-				icon={<FiSearch />}
+				leftIcon={<FiSearch />}
 				aria-label='Search for candidates'
 				variant='invisible'
 				bg='whiteAlpha.400'
 				borderRadius='full'
 				size='lg'
-				fontSize='3xl'
+				fontSize='xl'
 				_hover={{ bg: 'whiteAlpha.600' }}
 				_active={{ bg: 'whiteAlpha.600' }}
 				onClick={drawerOnOpen}
-			/>
+			>
+				Search
+			</Button>
 			{searchActive && results.length ? (
 				<Badge
-					fontSize='xs'
+					fontSize='md'
 					px={2}
-					py='0.1em'
+					py='0em'
 					display='flex'
 					alignItems='center'
 					justifyContent='center'
 					borderRadius='full'
-					color='brand.cyan'
+					color='brand.teal'
 					bg='white'
 					position='absolute'
-					bottom='-11px'
-					left='30px'
+					bottom='-6px'
+					left='130px'
 					textAlign='left'
 				>
 					{results.length}
@@ -114,6 +117,8 @@ export default function Header() {
 										textTransform='uppercase'
 									>
 										<SearchButton />
+										{/* TODO add Avatar by pulling in user profile data */}
+										{/*
 										<Link variant='nav' as={RouterLink} to='/profile'>
 											<Avatar
 												size='md'
@@ -122,6 +127,21 @@ export default function Header() {
 												transitionDuration='normal'
 											/>
 										</Link>
+										*/}
+										<Button
+											leftIcon={<FiUser />}
+											aria-label='Search for candidates'
+											variant='invisible'
+											bg='whiteAlpha.400'
+											borderRadius='full'
+											size='lg'
+											fontSize='xl'
+											_hover={{ bg: 'whiteAlpha.600' }}
+											_active={{ bg: 'whiteAlpha.600' }}
+											onClick={() => navigate('/profile')}
+										>
+											My Profile
+										</Button>
 									</Stack>
 								) : null}
 
@@ -136,7 +156,7 @@ export default function Header() {
 												aria-label='Menu'
 												as={IconButton}
 												borderRadius='full'
-												bg='whiteAlpha.700'
+												bg='whiteAlpha.600'
 												_hover={{ bg: 'whiteAlpha.800' }}
 												_active={{ bg: 'blue.300' }}
 												icon={<FiMenu />}
