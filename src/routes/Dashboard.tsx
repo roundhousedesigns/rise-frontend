@@ -30,11 +30,14 @@ export default function Dashboard() {
 						<Heading size='lg' my={4}>
 							Some other things to keep in mind...
 						</Heading>
-						<UnorderedList listStylePos='inside'>
+						<UnorderedList listStylePos='inside' spacing={2}>
 							<ListItem fontWeight='bold'>This directory is under ACTIVE DEVELOPMENT.</ListItem>
 							<ListItem>
-								You WILL encounter bugs! This is normal, and we'd like you to let us know when you
-								find one.
+								The site and interface may break layout and/or alignment, especially on smaller
+								devices.
+							</ListItem>
+							<ListItem>
+								You will likely encounter bugs, and we'd like you to let us know when you find one!
 							</ListItem>
 							<ListItem>
 								The Search funtionality is limited, as there are currently only a handful of users.

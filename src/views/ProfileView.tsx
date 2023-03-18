@@ -130,7 +130,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions && unions.length > 0 ? selectedTerms(unions, unionTerms) : 'None'}
+									{unions && unions.length > 0 && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>

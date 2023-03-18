@@ -162,7 +162,7 @@ export default function Header() {
 												icon={<FiMenu />}
 												size='lg'
 											/>
-											<MenuList color='text.dark'>
+											<MenuList color='text.dark' zIndex='100'>
 												{isLargerThanMd ? (
 													<>
 														<MenuOptionGroup>
