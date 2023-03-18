@@ -11,6 +11,7 @@ const MUTATE_LOGIN = gql`
 		login(input: $input) {
 			clientMutationId
 			authToken
+			refreshToken
 			user {
 				id: databaseId
 			}

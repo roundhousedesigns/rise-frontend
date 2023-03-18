@@ -28,7 +28,7 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
 	// get the authentication token from local storage if it exists
-	const token = sessionStorage.getItem('jwt');
+	const token = sessionStorage.getItem('authToken');
 	// return the headers to the context so httpLink can read them
 	return {
 		headers: {

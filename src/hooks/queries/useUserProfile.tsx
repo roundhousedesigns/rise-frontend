@@ -13,7 +13,7 @@ export const QUERY_PROFILE = gql`
 			firstName
 			lastName
 			pronouns
-			email: contactEmail
+			email
 			selfTitle
 			image
 			phone
@@ -82,6 +82,7 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			author: Number(id),
 			last: 5,
 		},
+		fetchPolicy: 'network-only',
 	});
 
 	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {

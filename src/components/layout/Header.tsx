@@ -43,7 +43,8 @@ export default function Header() {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
-		sessionStorage.setItem('jwt', '');
+		sessionStorage.setItem('authToken', '');
+		sessionStorage.setItem('refreshToken', '');
 		sessionStorage.setItem('loggedInId', '');
 		window.location.href = '/';
 	};
@@ -147,9 +148,6 @@ export default function Header() {
 														<MenuOptionGroup>
 															<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
 																Dashboard
-															</MenuItem>
-															<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
-																My Profile
 															</MenuItem>
 														</MenuOptionGroup>
 														<MenuDivider />

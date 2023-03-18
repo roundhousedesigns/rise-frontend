@@ -91,7 +91,7 @@ export const useLoginError = (errorCode?: string): string => {
  * @returns {boolean} True if the user is logged in.
  */
 export const useLoggedIn = (): boolean => {
-	const token = sessionStorage.getItem('jwt');
+	const token = sessionStorage.getItem('authToken');
 
 	return !!token;
 };

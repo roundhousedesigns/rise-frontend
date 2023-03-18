@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const loggedInId = sessionStorage.getItem('jwt');
+	const loggedInId = sessionStorage.getItem('authToken');
 
 	const {
 		search: {

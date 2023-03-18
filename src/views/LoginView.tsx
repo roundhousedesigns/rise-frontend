@@ -38,12 +38,15 @@ export default function LoginView() {
 		loginMutation(credentials)
 			.then((results) => {
 				if (results.data.login.authToken) {
-					sessionStorage.setItem('jwt', results.data.login.authToken);
+					sessionStorage.setItem('authToken', results.data.login.authToken);
+					sessionStorage.setItem('refreshToken', results.data.login.refreshToken);
 					sessionStorage.setItem('loggedInId', results.data.login.user.id);
 					window.location.href = '/';
 				}
 			})
-			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+			.catch((errorMessage) => {
+				throw new Error(errorMessage);
+			});
 	};
 
 	return (

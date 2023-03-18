@@ -133,10 +133,12 @@ export class UserProfile extends User {
 		Object.assign(
 			this,
 			{
+				firstName,
+				lastName,
+				pronouns,
 				selfTitle,
 				email,
 				image,
-				pronouns,
 				phone,
 				description,
 				resume,
