@@ -105,9 +105,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	// This is used to trigger a toast when a save is successful.
-	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
-
 	// Set context on load
 	useEffect(() => {
 		if (profile) {
@@ -119,33 +116,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	useEffect(() => {
 		setResumeIsSet(!!resume);
 	}, [resume]);
-
-	// When a save is successful, open a toast.
-	useEffect(() => {
-		if (saveTriggered && !saveLoading && !saveError) {
-			toast({
-				title: 'Profile saved.',
-				description: 'Your profile has been updated.',
-				status: 'success',
-				duration: 5000,
-				isClosable: true,
-				position: 'top',
-			});
-
-			setSaveTriggered(false);
-		} else if (saveTriggered && !saveLoading && saveError) {
-			toast({
-				title: 'Profile not saved.',
-				description: 'There was an error saving your profile.',
-				status: 'error',
-				duration: 5000,
-				isClosable: true,
-				position: 'top',
-			});
-
-			setSaveTriggered(false);
-		}
-	}, [saveTriggered, saveLoading, saveError]);
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
 		editProfileDispatch({
@@ -198,10 +168,29 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setSaveTriggered(true);
 
 		updateProfileMutation(editProfile)
+			.then(() => {
+				// toast({
+				// 	title: 'Profile saved.',
+				// 	description: 'Your profile has been updated.',
+				// 	status: 'success',
+				// 	duration: 5000,
+				// 	isClosable: true,
+				// 	position: 'top',
+				// });
+				navigate('/profile');
+			})
 			.catch((err) => {
+				toast({
+					title: 'Profile not saved.',
+					description: 'There was an error saving your profile.',
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+
 				console.error(err);
 			});
 	};
