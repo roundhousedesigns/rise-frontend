@@ -201,9 +201,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		setSaveTriggered(true);
 
 		updateProfileMutation(editProfile)
-			.then(() => {
-				navigate('/profile');
-			})
 			.catch((err) => {
 				console.error(err);
 			});
