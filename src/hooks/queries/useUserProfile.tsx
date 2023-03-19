@@ -86,18 +86,17 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 	});
 
 	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {
+		// If credit at least has an id and a title, return a new Credit object
+		if (!credit.id || !credit.title) return null;
+
 		return new Credit({
 			id: credit.id,
 			title: credit.title,
 			venue: credit.venue,
 			year: credit.year,
 			department: credit.positions?.nodes[0]?.parentId,
-			jobs: credit.positions.nodes
-				? [...credit.positions?.nodes?.map((job: WPItem) => job.id)]
-				: [],
-			skills: credit.skills.nodes
-				? [...credit.skills?.nodes?.map((skill: WPItem) => skill.id)]
-				: [],
+			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
+			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
 	});
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
