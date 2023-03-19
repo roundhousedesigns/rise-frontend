@@ -7,10 +7,10 @@ import ErrorAlert from '../components/common/ErrorAlert';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
+import { useViewer } from '../hooks/queries/useViewer';
 
 export default function Profile(): JSX.Element {
-	const storedLoggedInId = sessionStorage.getItem('loggedInId');
-	const loggedInId = storedLoggedInId ? Number(storedLoggedInId) : null;
+	const { loggedInId } = useViewer();
 	const params = useParams();
 
 	// If no user ID is in the route, use the logged in user's ID.
@@ -18,10 +18,10 @@ export default function Profile(): JSX.Element {
 	const profileIsLoggedInUser =
 		userId && loggedInId ? isEqualNumberlike(userId, loggedInId) : false;
 
-	const [profile, { loading, error }] = useUserProfile(userId ? userId : 0);
+	const [profile, { loading, error }] = useUserProfile(userId);
 
 	const EditButton = () => (
-		<Button as={Link} to='/profile/edit'>
+		<Button as={Link} to='/profile/edit' colorScheme='teal'>
 			Edit Profile
 		</Button>
 	);

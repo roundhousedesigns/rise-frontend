@@ -21,6 +21,7 @@ import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
 import { SearchContext } from '../../context/SearchContext';
 import AdvancedSearchFilters from '../AdvancedSearchFilters';
+import { useViewer } from '../../hooks/queries/useViewer';
 
 interface Props {
 	isOpen: boolean;
@@ -28,7 +29,7 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const loggedInId = sessionStorage.getItem('authToken');
+	const { loggedInId } = useViewer();
 
 	const {
 		search: {

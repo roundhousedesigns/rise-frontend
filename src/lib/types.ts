@@ -97,7 +97,7 @@ export interface CreditOutput {
  * The data shape for login input.
  */
 export interface LoginInput {
-	username: string;
+	login: string;
 	password: string;
 }
 

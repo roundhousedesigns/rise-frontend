@@ -10,7 +10,6 @@ import theme from './theme/index';
 import App from './App';
 
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
 import { createUploadLink } from 'apollo-upload-client';
 
 import reportWebVitals from './reportWebVitals';
@@ -24,22 +23,11 @@ const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_
  */
 const httpLink = createUploadLink({
 	uri: backend,
-});
-
-const authLink = setContext((_, { headers }) => {
-	// get the authentication token from local storage if it exists
-	const token = sessionStorage.getItem('authToken');
-	// return the headers to the context so httpLink can read them
-	return {
-		headers: {
-			...headers,
-			authorization: token ? `Bearer ${token}` : '',
-		},
-	};
+	credentials: 'include',
 });
 
 const client = new ApolloClient({
-	link: authLink.concat(httpLink),
+	link: httpLink,
 	cache: new InMemoryCache(),
 });
 

@@ -5,9 +5,10 @@ import ErrorAlert from '../components/common/ErrorAlert';
 
 import { EditProfileContextProvider } from '../context/EditProfileContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
+import { useViewer } from '../hooks/queries/useViewer';
 
 export default function EditProfile() {
-	const userId = sessionStorage.getItem('loggedInId');
+	const { loggedInId: userId } = useViewer();
 
 	const [profile, { loading, error }] = useUserProfile(Number(userId));
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import {
 	Card,
 	Button,
@@ -13,11 +13,14 @@ import {
 
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginView() {
+	const navigate = useNavigate();
+
 	// TODO type useState
 	const [credentials, setCredentials] = useState({
-		username: '',
+		login: '',
 		password: '',
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
@@ -36,17 +39,10 @@ export default function LoginView() {
 		e.preventDefault();
 
 		loginMutation(credentials)
-			.then((results) => {
-				if (results.data.login.authToken) {
-					sessionStorage.setItem('authToken', results.data.login.authToken);
-					sessionStorage.setItem('refreshToken', results.data.login.refreshToken);
-					sessionStorage.setItem('loggedInId', results.data.login.user.id);
-					window.location.href = '/';
-				}
+			.then(() => {
+				window.location.reload();
 			})
-			.catch((errorMessage) => {
-				throw new Error(errorMessage);
-			});
+			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 	};
 
 	return (
@@ -56,8 +52,8 @@ export default function LoginView() {
 				<form onSubmit={handleLoginSubmit}>
 					<FormControl isInvalid={!!errorMessage}>
 						<Input
-							name='username'
-							id='username'
+							name='login'
+							id='login'
 							type='text'
 							variant='filled'
 							bg='white'

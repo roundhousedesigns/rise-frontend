@@ -26,11 +26,13 @@ import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-ic
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
-import LoggedIn from '../LoggedIn';
 
 import { SearchContext } from '../../context/SearchContext';
+import { useLogout } from '../../hooks/mutations/useLogout';
 
 export default function Header() {
+	const { logoutMutation } = useLogout();
+
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
@@ -41,10 +43,9 @@ export default function Header() {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
-		sessionStorage.setItem('authToken', '');
-		sessionStorage.setItem('refreshToken', '');
-		sessionStorage.setItem('loggedInId', '');
-		window.location.href = '/';
+		logoutMutation().then(() => {
+			window.location.reload();
+		});
 	};
 
 	const SearchButton = () => (
@@ -118,91 +119,89 @@ export default function Header() {
 									h='40px'
 								/>
 							</Link>
-							<LoggedIn redirect={false}>
-								<Spacer />
-								<Stack
-									color='white'
-									direction='row'
-									spacing={4}
-									mr={6}
-									align='center'
-									fontSize='lg'
-									textTransform='uppercase'
-								>
-									<SearchButton />
-									{/* TODO change profile icon for <Avatar> */}
-									{isLargerThanMd ? (
-										<Button
-											leftIcon={<FiUser />}
-											aria-label='My Profile'
-											as={RouterLink}
-											to='/profile'
-											variant='invisible'
-											bg='whiteAlpha.400'
-											borderRadius='full'
-											size='lg'
-											fontSize='xl'
-											_hover={{ bg: 'whiteAlpha.600' }}
-											_active={{ bg: 'whiteAlpha.600' }}
-											textTransform='none'
-										>
-											My Profile
-										</Button>
-									) : null}
-								</Stack>
+							<Spacer />
+							<Stack
+								color='white'
+								direction='row'
+								spacing={4}
+								mr={6}
+								align='center'
+								fontSize='lg'
+								textTransform='uppercase'
+							>
+								<SearchButton />
+								{/* TODO change profile icon for <Avatar> */}
+								{isLargerThanMd ? (
+									<Button
+										leftIcon={<FiUser />}
+										aria-label='My Profile'
+										as={RouterLink}
+										to='/profile'
+										variant='invisible'
+										bg='whiteAlpha.400'
+										borderRadius='full'
+										size='lg'
+										fontSize='xl'
+										_hover={{ bg: 'whiteAlpha.600' }}
+										_active={{ bg: 'whiteAlpha.600' }}
+										textTransform='none'
+									>
+										My Profile
+									</Button>
+								) : null}
+							</Stack>
 
-								<Box pl={2}>
-									<LightMode>
-										{
-											// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-											// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-										}
-										<Menu>
-											<MenuButton
-												aria-label='Menu'
-												as={IconButton}
-												borderRadius='full'
-												bg='whiteAlpha.600'
-												_hover={{ bg: 'whiteAlpha.800' }}
-												_active={{ bg: 'blue.300' }}
-												icon={<FiMenu />}
-												size='lg'
-											/>
-											<MenuList color='text.dark' zIndex='100'>
-												{isLargerThanMd ? null : (
-													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
-															My Profile
-														</MenuItem>
-														<MenuItem
-															ref={drawerButtonRef}
-															onClick={drawerOnOpen}
-															icon={<FiSearch />}
-														>
-															Search
-														</MenuItem>
-														<MenuDivider />
-													</MenuOptionGroup>
-												)}
+							<Box pl={2}>
+								<LightMode>
+									{
+										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+									}
+									<Menu>
+										<MenuButton
+											aria-label='Menu'
+											as={IconButton}
+											borderRadius='full'
+											bg='whiteAlpha.600'
+											_hover={{ bg: 'whiteAlpha.800' }}
+											_active={{ bg: 'blue.300' }}
+											icon={<FiMenu />}
+											size='lg'
+										/>
+										<MenuList color='text.dark' zIndex='100'>
+											{isLargerThanMd ? null : (
 												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-														Dashboard
+													<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+														My Profile
 													</MenuItem>
-												</MenuOptionGroup>
-												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-														Settings
+													<MenuItem
+														ref={drawerButtonRef}
+														onClick={drawerOnOpen}
+														icon={<FiSearch />}
+													>
+														Search
 													</MenuItem>
+													<MenuDivider />
 												</MenuOptionGroup>
-												<MenuDivider />
-												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-													Logout
+											)}
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+													Dashboard
 												</MenuItem>
-											</MenuList>
-										</Menu>
-									</LightMode>
-								</Box>
-							</LoggedIn>
+											</MenuOptionGroup>
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+													Settings
+												</MenuItem>
+											</MenuOptionGroup>
+											<MenuDivider />
+											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
+								</LightMode>
+							</Box>
 						</Stack>
 					</Container>
 				</Box>

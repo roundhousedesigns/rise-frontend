@@ -7,14 +7,10 @@ import { LoginInput } from '../../lib/types';
 
 // MAYBE get more user data from this mutation
 const MUTATE_LOGIN = gql`
-	mutation Login($input: LoginInput = { username: "", password: "" }) {
-		login(input: $input) {
+	mutation Login($login: String!, $password: String!) {
+		loginWithCookies(input: { login: $login, password: $password }) {
 			clientMutationId
-			authToken
-			refreshToken
-			user {
-				id: databaseId
-			}
+			status
 		}
 	}
 `;
@@ -22,14 +18,12 @@ const MUTATE_LOGIN = gql`
 export const useLogin = () => {
 	const [mutation, results] = useMutation(MUTATE_LOGIN);
 
-	const loginMutation = ({ username, password }: LoginInput) => {
+	const loginMutation = ({ login, password }: LoginInput) => {
 		return mutation({
 			variables: {
-				input: {
-					clientMutationId: 'loginMutation',
-					username: username,
-					password: password,
-				},
+				clientMutationId: 'loginMutation',
+				login: login,
+				password: password,
 			},
 		});
 	};

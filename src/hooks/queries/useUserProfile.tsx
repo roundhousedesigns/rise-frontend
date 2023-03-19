@@ -89,6 +89,7 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 		// If credit at least has an id and a title, return a new Credit object
 		if (!credit.id || !credit.title) return null;
 
+
 		return new Credit({
 			id: credit.id,
 			title: credit.title,
