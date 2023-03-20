@@ -75,11 +75,11 @@ export interface UserProfileParams {
  * The data shape for Credit input.
  */
 export interface CreditParams {
-	id: number;
-	title: string;
-	venue: string;
-	year: string;
-	department: number;
+	id?: number;
+	title?: string;
+	venue?: string;
+	year?: string;
+	department?: number;
 	jobs?: number[];
 	skills?: number[];
 }

@@ -155,7 +155,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleNewCredit = () => {
+	const handleAddNewCredit = () => {
 		editProfileDispatch({
 			type: 'ADD_CREDIT',
 			payload: {},
@@ -450,9 +450,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					<Wrap>
-						<Text>Enter your 5 best credits.</Text>
-					</Wrap>
+					<Text>Enter your 5 best credits.</Text>
+					<Text variant='devAlert'>Deleting and reordering credits is under development.</Text>
 					{editProfile.credits?.map((credit: Credit, index: Key) => {
 						return <CreditItem key={index} credit={credit} editable={true} />;
 					})}
@@ -460,7 +459,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<IconButton
 							aria-label='Add a new credit'
 							icon={<FiPlus />}
-							onClick={handleNewCredit}
+							onClick={handleAddNewCredit}
 						></IconButton>
 					)}
 				</StackItem>

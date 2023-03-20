@@ -73,7 +73,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 		case 'ADD_CREDIT':
 			return {
 				...state,
-				credits: [...state.credits, new Credit()],
+				credits: [...state.credits, new Credit({ title: 'Click to Edit' })],
 			};
 
 		case 'INIT':
