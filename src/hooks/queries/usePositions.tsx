@@ -9,12 +9,12 @@ import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
 import { omit } from 'lodash';
 
-// Using `first: 40` to as a guess at a safe, but not excessive,
+// Using `first: 100` to as a guess at a safe, but not excessive,
 // number of terms to return.
 
-const QUERY_CREDITS = gql`
+export const QUERY_CREDITS = gql`
 	query PositionsQuery($parent: Int = 0) {
-		positions(where: { hideEmpty: false, parent: $parent }, first: 40) {
+		positions(where: { hideEmpty: false, parent: $parent }, first: 100) {
 			nodes {
 				id: databaseId
 				parentId: parentDatabaseId
@@ -28,7 +28,7 @@ const QUERY_CREDITS = gql`
 /**
  * usePositions hook.
  *
- * Queries `position` terms. Specify 0
+ * Queries `position` terms. Specify 0 for `parent` to get all terms.
  *
  * @param {number} parent - The parent term ID.
  * @returns {Array} A tuple of a prepared data object and a query result object.

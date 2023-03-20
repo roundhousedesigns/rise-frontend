@@ -1,4 +1,4 @@
-import { useContext, useReducer } from 'react';
+import { useContext, useEffect, useReducer, useState } from 'react';
 import {
 	ButtonGroup,
 	Card,
@@ -16,6 +16,7 @@ import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 import { FiCheck, FiX } from 'react-icons/fi';
+import { usePositionsLazy } from '../hooks/queries/usePositionsLazy';
 
 // TODO type payload better
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -65,24 +66,49 @@ interface Props {
 
 export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
+	const [department, setDepartment] = useState<number>();
+	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const { editProfileDispatch } = useContext(EditProfileContext);
-
 	const {
 		title,
 		venue,
 		year,
-		positions: { department: selectedDepartment, jobs: selectedJobs },
+		positions: { department: selectedDepartmentId, jobs: selectedJobIds },
 		skills: selectedSkills,
 	} = editCredit;
 
-	const [allRelatedSkills] = useRelatedSkills(selectedJobs);
+	const [allDepartments] = usePositions();
+	const [getJobs, { data: jobsData }] = usePositionsLazy();
+
+	// const [allJobs] = usePositions([allDepartments?.map((department) => department.id)])
+	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
+
+	// Update jobs list when department changes
+	useEffect(() => {
+		if (!selectedDepartmentId) return;
+
+		getJobs({ variables: { parent: selectedDepartmentId } });
+
+		if (jobsData) {
+			setJobs(jobsData.positions?.nodes.map((item: WPItem) => new WPItem(item)));
+		}
+	}, [selectedDepartmentId]);
 
 	// TODO fix running usePositions on each click.
 	// make sure there's an argument to send first, now we're getting all terms all the time before limiting the results.
-
 	// The full positions lists.
-	const [departments] = usePositions();
-	const [jobs] = usePositions(Number(selectedDepartment));
+	// const [departments] = usePositions();
+	// const [jobs] = usePositions(Number(selectedDepartmentId));
+
+	// const departments = useMemo(
+	// 	() => allPositions?.filter((item) => item.parentId === 0),
+	// 	[allPositions]
+	// );
+
+	// const jobs = useMemo(
+	// 	() => allPositions?.filter((item) => item.parentId === selectedDepartmentId),
+	// 	[allPositions, selectedDepartmentId]
+	// );
 
 	const handleInputChange = (name: string) => (newValue: string) => {
 		editCreditDispatch({
@@ -174,22 +200,22 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 
 					<ProfileRadioGroup
 						name='department'
-						items={departments?.map((term: WPItem) => ({
+						items={allDepartments?.map((term: WPItem) => ({
 							label: term.name,
 							value: term.id.toString(),
 						}))}
-						defaultValue={selectedDepartment.toString()}
+						defaultValue={selectedDepartmentId.toString()}
 						handleChange={handleToggleRadioTerm}
 					/>
 				</StackItem>
-				{selectedDepartment ? (
+				{selectedDepartmentId ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Position</Heading>
 						<Heading variant='contentSubtitle'>Select all that apply to this job.</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
 							items={jobs}
-							checked={selectedJobs ? selectedJobs.map((item: number) => item.toString()) : []}
+							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
 							handleChange={handleToggleCheckboxTerm}
 						/>
 					</StackItem>
@@ -197,9 +223,9 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 
 				{allRelatedSkills &&
 				allRelatedSkills.length > 0 &&
-				selectedDepartment &&
-				selectedJobs &&
-				selectedJobs.length ? (
+				selectedDepartmentId &&
+				selectedJobIds &&
+				selectedJobIds.length ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Skills</Heading>
 						<Heading variant='contentSubtitle'>Select any skills used on this job.</Heading>
