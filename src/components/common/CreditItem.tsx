@@ -54,9 +54,6 @@ export default function CreditItem({ credit, editable }: Props) {
 	useEffect(() => {
 		if (!jobIds && !skillIds) return;
 
-		// const termList = [...jobIds, ...skillIds];
-
-		// combine the two arrays and remove duplicates, handling for empty arrays
 		const termList = jobIds.concat(skillIds);
 
 		setTermList(termList);

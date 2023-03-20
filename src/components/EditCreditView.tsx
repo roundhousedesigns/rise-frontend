@@ -94,7 +94,7 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
 
 		jobs.current = jobsData ? jobsData.positions.nodes.map((item: WPItem) => new WPItem(item)) : [];
-	});
+	}, [jobsData]);
 
 	const handleInputChange = (name: string) => (newValue: string) => {
 		editCreditDispatch({

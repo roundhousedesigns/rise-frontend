@@ -79,15 +79,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = editProfile || {};
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
+	const creditsSorted = useRef(credits);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
 
+	// Resort the credits on rerender.
 	useEffect(() => {
-		// TODO when credits updates, save the resorted credits.
-	}, []);
-
-	const creditsSorted = credits
-		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
-		: [];
+		if (credits && credits.length > 0) {
+			creditsSorted.current = credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1));
+		}
+	}, [credits]);
 
 	// Get all the selectable terms for the user taxonomies.
 	const [
@@ -456,10 +456,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							We are aware of the issues working with Credits. Please stay tuned.
 						</Text>
 					</Wrap>
-					{creditsSorted?.map((credit: Credit, index: Key) => {
+					{creditsSorted?.current?.map((credit: Credit, index: Key) => {
 						return <CreditItem key={index} credit={credit} editable={true} />;
 					})}
-					{creditsSorted?.length < 5 && (
+					{creditsSorted?.current?.length < 5 && (
 						<IconButton
 							aria-label='Add a new credit'
 							icon={<FiPlus />}
