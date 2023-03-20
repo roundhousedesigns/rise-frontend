@@ -113,7 +113,6 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	};
 
 	const handleSave = (e: React.FormEvent) => {
-		e.preventDefault();
 		closeModal();
 		editProfileDispatch({
 			type: 'UPDATE_CREDIT',
