@@ -42,7 +42,7 @@ export default function CreditItem({ credit, editable }: Props) {
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	const [department] = useTaxonomyTerm(departmentId);
+	const [department] = useTaxonomyTerm(departmentId ? departmentId : 0);
 
 	// The term items for each set.
 	const [jobs, setJobs] = useState<WPItem[]>([]);
@@ -54,7 +54,10 @@ export default function CreditItem({ credit, editable }: Props) {
 	useEffect(() => {
 		if (!jobIds && !skillIds) return;
 
-		const termList = [...jobIds, ...skillIds];
+		// const termList = [...jobIds, ...skillIds];
+
+		// combine the two arrays and remove duplicates, handling for empty arrays
+		const termList = jobIds.concat(skillIds);
 
 		setTermList(termList);
 	}, []);
@@ -80,8 +83,8 @@ export default function CreditItem({ credit, editable }: Props) {
 			terms: { nodes },
 		} = termData;
 
-		const jobTerms = nodes.filter((node: WPItem) => jobIds.includes(node.id));
-		const skillTerms = nodes.filter((node: WPItem) => skillIds.includes(node.id));
+		const jobTerms = jobIds ? nodes.filter((node: WPItem) => jobIds.includes(node.id)) : [];
+		const skillTerms = skillIds ? nodes.filter((node: WPItem) => skillIds.includes(node.id)) : [];
 
 		setJobs(jobTerms);
 		setSkills(skillTerms);

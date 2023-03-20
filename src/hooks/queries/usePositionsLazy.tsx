@@ -4,10 +4,7 @@
  * DOCUMENT ME.
  */
 
-import { LazyQueryExecFunction, QueryResult, useLazyQuery, useQuery } from '@apollo/client';
-import { WPItemParams } from '../../lib/types';
-import { WPItem } from '../../lib/classes';
-import { omit } from 'lodash';
+import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 import { QUERY_CREDITS } from './usePositions';
 
 /**

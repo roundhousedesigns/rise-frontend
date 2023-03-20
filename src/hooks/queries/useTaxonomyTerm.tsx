@@ -27,15 +27,13 @@ const QUERY_TAXONOMY_TERM = gql`
  * @returns {Array} A tuple of a prepared data object and a query result object.
  */
 const useTaxonomyTerm = (id: number | null): [WPItem | null, any] => {
-	if (!id) return [null, null];
-
 	const result = useQuery(QUERY_TAXONOMY_TERM, {
 		variables: {
 			id,
 		},
 	});
 
-	const preparedResult = result.data ? new WPItem(result.data.termNode as WPItemParams) : null;
+	const preparedResult = result.data?.termNode ? new WPItem(result.data.termNode as WPItemParams) : null;
 
 	return [preparedResult, omit(result, ['data'])];
 };

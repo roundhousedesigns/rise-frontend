@@ -1,10 +1,11 @@
-import { useContext, useEffect, useReducer, useState } from 'react';
+import { useContext, useEffect, useReducer, useRef } from 'react';
 import {
 	ButtonGroup,
 	Card,
 	Divider,
 	Heading,
 	IconButton,
+	Spinner,
 	Stack,
 	StackItem,
 } from '@chakra-ui/react';
@@ -66,49 +67,34 @@ interface Props {
 
 export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
-	const [department, setDepartment] = useState<number>();
-	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const { editProfileDispatch } = useContext(EditProfileContext);
 	const {
 		title,
 		venue,
 		year,
-		positions: { department: selectedDepartmentId, jobs: selectedJobIds },
+		positions: { department: selectedDepartmentId = 0, jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
 		skills: selectedSkills,
 	} = editCredit;
 
 	const [allDepartments] = usePositions();
-	const [getJobs, { data: jobsData }] = usePositionsLazy();
+	const jobs = useRef([]);
+	const [getJobs, { data: jobsData, loading: jobsLoading }] = usePositionsLazy();
 
-	// const [allJobs] = usePositions([allDepartments?.map((department) => department.id)])
 	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 
-	// Update jobs list when department changes
+	// Refetch jobs list when department changes
 	useEffect(() => {
 		if (!selectedDepartmentId) return;
 
-		getJobs({ variables: { parent: selectedDepartmentId } });
-
-		if (jobsData) {
-			setJobs(jobsData.positions?.nodes.map((item: WPItem) => new WPItem(item)));
-		}
+		getJobs({ variables: { parent: selectedDepartmentId }, fetchPolicy: 'network-only' });
 	}, [selectedDepartmentId]);
 
-	// TODO fix running usePositions on each click.
-	// make sure there's an argument to send first, now we're getting all terms all the time before limiting the results.
-	// The full positions lists.
-	// const [departments] = usePositions();
-	// const [jobs] = usePositions(Number(selectedDepartmentId));
+	// Set jobs when jobsData changes.
+	useEffect(() => {
+		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
 
-	// const departments = useMemo(
-	// 	() => allPositions?.filter((item) => item.parentId === 0),
-	// 	[allPositions]
-	// );
-
-	// const jobs = useMemo(
-	// 	() => allPositions?.filter((item) => item.parentId === selectedDepartmentId),
-	// 	[allPositions, selectedDepartmentId]
-	// );
+		jobs.current = jobsData ? jobsData.positions.nodes.map((item: WPItem) => new WPItem(item)) : [];
+	});
 
 	const handleInputChange = (name: string) => (newValue: string) => {
 		editCreditDispatch({
@@ -204,21 +190,23 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 							label: term.name,
 							value: term.id.toString(),
 						}))}
-						defaultValue={selectedDepartmentId.toString()}
+						defaultValue={selectedDepartmentId ? selectedDepartmentId.toString() : ''}
 						handleChange={handleToggleRadioTerm}
 					/>
 				</StackItem>
-				{selectedDepartmentId ? (
+				{selectedDepartmentId && !jobsLoading ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Position</Heading>
 						<Heading variant='contentSubtitle'>Select all that apply to this job.</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
-							items={jobs}
+							items={jobs.current}
 							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
 							handleChange={handleToggleCheckboxTerm}
 						/>
 					</StackItem>
+				) : jobsLoading ? (
+					<Spinner />
 				) : null}
 
 				{allRelatedSkills &&

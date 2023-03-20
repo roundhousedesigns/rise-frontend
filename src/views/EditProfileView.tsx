@@ -81,6 +81,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
 
+	useEffect(() => {
+		// TODO when credits updates, save the resorted credits.
+	}, []);
+
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
 		: [];
@@ -190,8 +194,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					isClosable: true,
 					position: 'top',
 				});
-
-				console.error(err);
 			});
 	};
 
@@ -454,9 +456,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							We are aware of the issues working with Credits. Please stay tuned.
 						</Text>
 					</Wrap>
-					{creditsSorted?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} editable={true} />
-					))}
+					{creditsSorted?.map((credit: Credit, index: Key) => {
+						return <CreditItem key={index} credit={credit} editable={true} />;
+					})}
 					{creditsSorted?.length < 5 && (
 						<IconButton
 							aria-label='Add a new credit'
