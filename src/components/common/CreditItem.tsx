@@ -103,7 +103,7 @@ export default function CreditItem({ credit, editable }: Props) {
 			<Card
 				onClick={handleEditCredit}
 				cursor={editable ? 'pointer' : 'default'}
-				borderWidth='3px'
+				borderWidth={editable ? '3px' : '0'}
 				borderStyle='dashed'
 				borderColor='gray.400'
 				_hover={editable ? { borderColor: 'black' } : {}}

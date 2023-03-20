@@ -17,7 +17,7 @@ import {
 	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
+import { FiDownload, FiMail, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -55,15 +55,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		media,
 		education,
 	} = profile || {};
-
-	/**
-	 * Generate the text to display for the 'will travel' field.
-	 * @returns {string} The text to display.
-	 */
-	const willTravelText = (): string => {
-		const str = 'Willing to travel';
-		return profile?.willTravel ? str : `Not ${str.toLowerCase()}`;
-	};
 
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
@@ -107,9 +98,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<Heading size='xl' mr={2} lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
-								<Tag colorScheme='cyan' size='md'>
-									{pronouns}
-								</Tag>
+								{pronouns ? (
+									<Tag colorScheme='cyan' size='md'>
+										{pronouns}
+									</Tag>
+								) : (
+									false
+								)}
 								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
 									{selfTitle && selfTitle}
 								</Text>
@@ -121,14 +116,23 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							)}
 							<StackItem>
 								<Heading variant='contentTitle'>Location/Homebase</Heading>
-								<TextWithIcon icon={FiUsers}>
-									{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
-								</TextWithIcon>
+								<Flex alignItems='center'>
+									<TextWithIcon icon={FiUsers}>
+										{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
+									</TextWithIcon>
+									{willTravel !== undefined && (
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
+											{willTravel ? 'Will Travel' : 'Local Only'}
+										</Tag>
+									)}
+								</Flex>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<TextWithIcon icon={FiUsers}>
-									{unions && unionTerms ? selectedTerms(unions, unionTerms) : 'None'}
+									{unions && unions.length > 0 && unionTerms
+										? selectedTerms(unions, unionTerms)
+										: 'None'}
 								</TextWithIcon>
 							</StackItem>
 							<StackItem>

@@ -99,14 +99,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const {
 		updateProfileMutation,
-		results: { loading: saveLoading, error: saveError },
+		results: { loading: saveLoading },
 	} = useUpdateProfile();
 
 	const toast = useToast();
 	const navigate = useNavigate();
-
-	// This is used to trigger a toast when a save is successful.
-	const [saveTriggered, setSaveTriggered] = useState<boolean>(false);
 
 	// Set context on load
 	useEffect(() => {
@@ -119,33 +116,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	useEffect(() => {
 		setResumeIsSet(!!resume);
 	}, [resume]);
-
-	// When a save is successful, open a toast.
-	useEffect(() => {
-		if (saveTriggered && !saveLoading && !saveError) {
-			toast({
-				title: 'Profile saved.',
-				description: 'Your profile has been updated.',
-				status: 'success',
-				duration: 5000,
-				isClosable: true,
-				position: 'top',
-			});
-
-			setSaveTriggered(false);
-		} else if (saveTriggered && !saveLoading && saveError) {
-			toast({
-				title: 'Profile not saved.',
-				description: 'There was an error saving your profile.',
-				status: 'error',
-				duration: 5000,
-				isClosable: true,
-				position: 'top',
-			});
-
-			setSaveTriggered(false);
-		}
-	}, [saveTriggered, saveLoading, saveError]);
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
 		editProfileDispatch({
@@ -198,11 +168,31 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setSaveTriggered(true);
 
-		updateProfileMutation(editProfile).catch((err) => {
-			console.error(err);
-		});
+		updateProfileMutation(editProfile)
+			.then(() => {
+				// toast({
+				// 	title: 'Profile saved.',
+				// 	description: 'Your profile has been updated.',
+				// 	status: 'success',
+				// 	duration: 5000,
+				// 	isClosable: true,
+				// 	position: 'top',
+				// });
+				navigate('/profile');
+			})
+			.catch((err) => {
+				toast({
+					title: 'Profile not saved.',
+					description: 'There was an error saving your profile.',
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+
+				console.error(err);
+			});
 	};
 
 	const handleCancel = () => {
@@ -240,9 +230,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								{/* TODO Image uploader */}
 								{image ? (
 									<>
-										<Heading size='sm' color='brand.red'>
-											Photo uploads are under development.
-										</Heading>
 										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
 									</>
 								) : (
@@ -250,17 +237,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<FileInput name='image' label='Photo' />
 									</Flex>
 								)}
+								<Text
+									textAlign='center'
+									fontSize='sm'
+									fontWeight='bold'
+									color='brand.red'
+									flex='0 0 100%'
+								>
+									Photo uploads are under development.
+								</Text>
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
-									<Flex alignItems='baseline' gap={2} flexWrap='wrap' w='full'>
+									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
 										<EditableTextInput
 											defaultValue={firstName ? firstName : ''}
-											as={Heading}
 											mr={2}
 											name='firstName'
 											fontWeight='medium'
-											placeholder='First'
+											fontSize='3xl'
 											label='First Name'
 											handleChange={handleInputChange}
 											outerProps={{
@@ -270,11 +265,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<EditableTextInput
 											defaultValue={lastName ? lastName : ''}
 											name='lastName'
-											as={Heading}
 											label='Last Name'
-											mr={2}
 											fontWeight='medium'
-											placeholder=''
+											fontSize='3xl'
+											mr={2}
 											handleChange={handleInputChange}
 											outerProps={{
 												flex: '1',
@@ -285,7 +279,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='pronouns'
 											as={Text}
 											label='Pronouns'
-											placeholder='pronouns'
+											fontWeight='medium'
 											styles={{ display: 'block' }}
 											mb={0}
 											handleChange={handleInputChange}
@@ -350,9 +344,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												Resume
 											</Heading>
 											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
-												<Heading size='sm' color='brand.red'>
-													Resume uploads are under development.
-												</Heading>
+												<Text variant='devAlert'>Resume uploads are under development.</Text>
 												{resumeIsSet && resume ? (
 													<Button>{resume.split('/').pop()}</Button>
 												) : (
@@ -458,7 +450,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Wrap>
 						<Text>Enter your 5 best credits.</Text>
-						<Text color='brand.red' fontWeight='bold'>
+						<Text variant='devAlert'>
 							We are aware of the issues working with Credits. Please stay tuned.
 						</Text>
 					</Wrap>
@@ -575,7 +567,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							))
 						) : (
-							<Text color='brand.red' fontWeight='bold'>
+							<Text variant='devAlert' fontSize='md'>
 								Photo + video additions under development.
 							</Text>
 						)}

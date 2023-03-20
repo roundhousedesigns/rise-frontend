@@ -13,8 +13,9 @@ export default function Footer() {
 				background: 'brand.blue',
 			}}
 		>
-			<Heading variant='pageSubtitle'>GET TO WORK</Heading>
-			<Heading variant='pageSubtitle'>DO NOT SHARE</Heading>
+			<Heading variant='pageSubtitle' fontSize='4xl' mb={4}>
+				DO NOT SHARE
+			</Heading>
 			<Text>Thank you for being an alpha tester!</Text>
 			<Text>
 				{`Please report all bugs to: `}

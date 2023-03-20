@@ -18,68 +18,78 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	Avatar,
 	Badge,
+	Button,
 } from '@chakra-ui/react';
 
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/gtw-logo-horizontal.svg';
-import LoggedIn from '../LoggedIn';
 
-import { useLogout } from '../../hooks/mutations/useLogout';
-import { AuthContext } from '../../context/AuthContext';
 import { SearchContext } from '../../context/SearchContext';
-// import Badge from '../common/Badge';
+import { useLogout } from '../../hooks/mutations/useLogout';
 
 export default function Header() {
+	const { logoutMutation } = useLogout();
+
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
-	const { setLoggedInUser } = useContext(AuthContext);
 	const {
 		search: { searchActive, results },
 	} = useContext(SearchContext);
-	const { logoutMutation } = useLogout();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
-			setLoggedInUser({ id: 0, firstName: '', lastName: '' });
+			window.location.reload();
 		});
 	};
 
 	const SearchButton = () => (
 		<Box position='relative'>
-			<IconButton
+			<Button
 				ref={drawerButtonRef}
-				icon={<FiSearch />}
+				onClick={drawerOnOpen}
+				leftIcon={<FiSearch />}
 				aria-label='Search for candidates'
 				variant='invisible'
 				bg='whiteAlpha.400'
 				borderRadius='full'
 				size='lg'
-				fontSize='3xl'
+				fontSize='xl'
+				pr={{ base: 0, md: 6 }}
+				pl={{ base: 0, md: 5 }}
 				_hover={{ bg: 'whiteAlpha.600' }}
 				_active={{ bg: 'whiteAlpha.600' }}
-				onClick={drawerOnOpen}
-			/>
+				_before={{
+					base: {
+						pl: 2,
+						content: '""',
+					},
+					md: {
+						pl: 0,
+					},
+				}}
+			>
+				{isLargerThanMd ? 'Search' : ''}
+			</Button>
 			{searchActive && results.length ? (
 				<Badge
-					fontSize='xs'
+					fontSize='md'
 					px={2}
-					py='0.1em'
+					py='0em'
 					display='flex'
 					alignItems='center'
 					justifyContent='center'
 					borderRadius='full'
-					color='brand.cyan'
+					color='brand.teal'
 					bg='white'
 					position='absolute'
-					bottom='-11px'
-					left='30px'
+					bottom='-6px'
+					left='130px'
 					textAlign='left'
 				>
 					{results.length}
@@ -101,77 +111,97 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<Link as={RouterLink} to='/'>
-								<Image src={logo} alt='Get To Work logo' loading='eager' w='auto' h='40px' />
+								<Image
+									src={logo}
+									w={{ base: '200px', sm: 'auto' }}
+									alt='Get To Work logo'
+									loading='eager'
+									h='40px'
+								/>
 							</Link>
-							<LoggedIn redirect={false}>
-								<Spacer />
+							<Spacer />
+							<Stack
+								color='white'
+								direction='row'
+								spacing={4}
+								mr={6}
+								align='center'
+								fontSize='lg'
+								textTransform='uppercase'
+							>
+								<SearchButton />
+								{/* TODO change profile icon for <Avatar> */}
 								{isLargerThanMd ? (
-									<Stack
-										color='white'
-										direction='row'
-										spacing={4}
-										mr={6}
-										align='center'
-										fontSize='lg'
-										textTransform='uppercase'
+									<Button
+										leftIcon={<FiUser />}
+										aria-label='My Profile'
+										as={RouterLink}
+										to='/profile'
+										variant='invisible'
+										bg='whiteAlpha.400'
+										borderRadius='full'
+										size='lg'
+										fontSize='xl'
+										_hover={{ bg: 'whiteAlpha.600' }}
+										_active={{ bg: 'whiteAlpha.600' }}
+										textTransform='none'
 									>
-										<SearchButton />
-										<Link variant='nav' as={RouterLink} to='/profile'>
-											<Avatar
-												size='md'
-												bg='whiteAlpha.600'
-												_hover={{ bg: 'whiteAlpha.700' }}
-												transitionDuration='normal'
-											/>
-										</Link>
-									</Stack>
+										My Profile
+									</Button>
 								) : null}
+							</Stack>
 
-								<Box pl={2}>
-									<LightMode>
-										{
-											// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-											// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-										}
-										<Menu>
-											<MenuButton
-												aria-label='Menu'
-												as={IconButton}
-												borderRadius='full'
-												bg='whiteAlpha.700'
-												_hover={{ bg: 'whiteAlpha.800' }}
-												_active={{ bg: 'blue.300' }}
-												icon={<FiMenu />}
-												size='lg'
-											/>
-											<MenuList color='text.dark'>
-												{isLargerThanMd ? (
-													<>
-														<MenuOptionGroup>
-															<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-																Dashboard
-															</MenuItem>
-															<MenuItem as={RouterLink} to='/profile' icon={<FiUser />}>
-																My Profile
-															</MenuItem>
-														</MenuOptionGroup>
-														<MenuDivider />
-													</>
-												) : null}
+							<Box pl={2}>
+								<LightMode>
+									{
+										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+									}
+									<Menu>
+										<MenuButton
+											aria-label='Menu'
+											as={IconButton}
+											borderRadius='full'
+											bg='whiteAlpha.600'
+											_hover={{ bg: 'whiteAlpha.800' }}
+											_active={{ bg: 'blue.300' }}
+											icon={<FiMenu />}
+											size='lg'
+										/>
+										<MenuList color='text.dark' zIndex='100'>
+											{isLargerThanMd ? null : (
 												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-														Settings
+													<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+														My Profile
 													</MenuItem>
+													<MenuItem
+														ref={drawerButtonRef}
+														onClick={drawerOnOpen}
+														icon={<FiSearch />}
+													>
+														Search
+													</MenuItem>
+													<MenuDivider />
 												</MenuOptionGroup>
-												<MenuDivider />
-												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-													Logout
+											)}
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+													Dashboard
 												</MenuItem>
-											</MenuList>
-										</Menu>
-									</LightMode>
-								</Box>
-							</LoggedIn>
+											</MenuOptionGroup>
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+													Settings
+												</MenuItem>
+											</MenuOptionGroup>
+											<MenuDivider />
+											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
+								</LightMode>
+							</Box>
 						</Stack>
 					</Container>
 				</Box>

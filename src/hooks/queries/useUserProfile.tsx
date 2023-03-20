@@ -4,7 +4,6 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { CreditParams } from '../../lib/types';
 import { Credit, UserProfile, WPItem } from '../../lib/classes';
 
 export const QUERY_PROFILE = gql`
@@ -14,7 +13,7 @@ export const QUERY_PROFILE = gql`
 			firstName
 			lastName
 			pronouns
-			email: contactEmail
+			email
 			selfTitle
 			image
 			phone
@@ -83,17 +82,22 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			author: Number(id),
 			last: 5,
 		},
+		fetchPolicy: 'network-only',
 	});
 
 	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {
+		// If credit at least has an id and a title, return a new Credit object
+		if (!credit.id || !credit.title) return null;
+
+
 		return new Credit({
 			id: credit.id,
 			title: credit.title,
 			venue: credit.venue,
 			year: credit.year,
 			department: credit.positions?.nodes[0]?.parentId,
-			jobs: [...credit.positions?.nodes.map((job: WPItem) => job.id)],
-			skills: [...credit.skills?.nodes.map((skill: WPItem) => skill.id)],
+			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
+			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
 	});
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;

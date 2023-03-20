@@ -4,7 +4,7 @@
  * // TODO DOCUMENT ME.
  */
 
-import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 
 const QUERY_TAXONOMY_TERM = gql`
 	query TaxonomyTerms($include: [ID] = []) {

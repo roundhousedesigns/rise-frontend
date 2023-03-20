@@ -18,8 +18,6 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
 
-import { AuthContextProvider } from './context/AuthContext';
-
 /**
  * Apollo client.
  */
@@ -39,9 +37,7 @@ root.render(
 			<ApolloProvider client={client}>
 				<ChakraProvider resetCSS={true} theme={theme}>
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-					<AuthContextProvider>
-						<App />
-					</AuthContextProvider>
+					<App />
 				</ChakraProvider>
 			</ApolloProvider>
 		</BrowserRouter>

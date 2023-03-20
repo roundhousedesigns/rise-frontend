@@ -11,4 +11,11 @@ export default defineStyleConfig({
 			color: 'whiteAlpha.900',
 		},
 	},
+	variants: {
+		devAlert: {
+			fontWeight: 'bold',
+			fontSize: 'sm',
+			color: 'brand.red',
+		},
+	},
 });

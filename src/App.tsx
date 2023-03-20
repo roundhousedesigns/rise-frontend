@@ -7,14 +7,13 @@ import logo from './assets/images/gtw-logo-horizontal.svg';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
-import { AuthContext } from './context/AuthContext';
 import LoginView from './views/LoginView';
 import { HelloWorld } from './views/helloWorld';
 
+import { useViewer } from './hooks/queries/useViewer';
+
 export default function App() {
-	const {
-		loggedInUser: { id: loggedInId },
-	} = useContext(AuthContext);
+	const { loggedInId } = useViewer();
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
