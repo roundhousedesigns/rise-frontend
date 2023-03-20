@@ -452,14 +452,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Wrap>
 						<Text>Enter your 5 best credits.</Text>
-						<Text variant='devAlert'>
-							We are aware of the issues working with Credits. Please stay tuned.
-						</Text>
 					</Wrap>
-					{creditsSorted?.current?.map((credit: Credit, index: Key) => {
+					{editProfile.credits?.map((credit: Credit, index: Key) => {
 						return <CreditItem key={index} credit={credit} editable={true} />;
 					})}
-					{creditsSorted?.current?.length < 5 && (
+					{editProfile.credits?.length < 5 && (
 						<IconButton
 							aria-label='Add a new credit'
 							icon={<FiPlus />}

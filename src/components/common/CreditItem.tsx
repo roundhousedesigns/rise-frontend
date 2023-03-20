@@ -57,7 +57,7 @@ export default function CreditItem({ credit, editable }: Props) {
 		const termList = jobIds.concat(skillIds);
 
 		setTermList(termList);
-	}, []);
+	}, [jobIds, skillIds]);
 
 	// Get jobs terms from their IDs
 	useEffect(() => {
@@ -68,9 +68,7 @@ export default function CreditItem({ credit, editable }: Props) {
 				include: termList,
 			},
 		});
-
-		setTermList(termList);
-	}, [termList]);
+	}, [termList, memoizedTermList]);
 
 	// Set jobs and skills state
 	useEffect(() => {
@@ -85,7 +83,7 @@ export default function CreditItem({ credit, editable }: Props) {
 
 		setJobs(jobTerms);
 		setSkills(skillTerms);
-	}, [termData]);
+	}, [termData, jobIds, skillIds]);
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
