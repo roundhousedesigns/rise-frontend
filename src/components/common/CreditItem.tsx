@@ -17,8 +17,6 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 
-// FIXME edit credit bug, react hooks order error
-
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import EditCreditView from '../EditCreditView';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
