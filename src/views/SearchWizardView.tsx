@@ -34,6 +34,10 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
+			<Text variant='devAlert'>
+				Search is under development and the interface is for testing purposes only. Results are not
+				guaranteed to be accurate.
+			</Text>
 			<Stack direction='column' gap={8}>
 				{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
 				{/* Step 1 */}
