@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Key, useEffect } from 'react';
 import { Wrap, useRadioGroup } from '@chakra-ui/react';
 import RadioButton from './RadioButton';
 
@@ -29,9 +29,9 @@ export default function ProfileRadioGroup({ name, items, defaultValue, handleCha
 
 	return items ? (
 		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...getRootProps()}>
-			{items.map((item: { label: string; value: string }) => {
+			{items.map((item: { label: string; value: string }, index: Key) => {
 				return (
-					<RadioButton key={item.value} {...getRadioProps({ value: item.value })}>
+					<RadioButton key={index} {...getRadioProps({ value: item.value })}>
 						{item.label}
 					</RadioButton>
 				);

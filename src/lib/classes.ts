@@ -246,23 +246,23 @@ export class CreditPositions {
 export class Credit {
 	id: number;
 	title: string;
-	venue: string = '';
-	year: string = '';
+	venue: string;
+	year: string;
 	positions: {
 		department: number;
 		jobs: number[];
 	};
-	skills: number[] = [];
+	skills: number[];
 
-	constructor(params: CreditParams) {
-		this.id = params.id ? params.id : 0;
-		this.title = params.title ? params.title : '';
-		this.venue = params.venue ? params.venue : '';
-		this.year = params.year ? params.year : '';
-		this.skills = params.skills ? params.skills : [];
+	constructor(params?: CreditParams) {
+		this.id = params && params.id ? params.id : 0;
+		this.title = params && params.title ? params.title : '';
+		this.venue = params && params.venue ? params.venue : '';
+		this.year = params && params.year ? params.year : '';
+		this.skills = params && params.skills ? params.skills : [];
 		this.positions = {
-			department: params.department ? params.department : 0,
-			jobs: params.jobs ? params.jobs : [],
+			department: params && params.department ? params.department : 0,
+			jobs: params && params.jobs ? params.jobs : [],
 		};
 	}
 
@@ -295,7 +295,7 @@ export class WPItem {
 	parentId?: number;
 
 	constructor(params: WPItemParams) {
-		this.id = maybeParseInt(params.id);
+		this.id = params.id ? maybeParseInt(params.id) : 0;
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : '';
 	}

@@ -13,7 +13,6 @@ import {
 	Button,
 	ButtonGroup,
 	useToast,
-	Wrap,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -79,11 +78,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = editProfile || {};
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
+	const creditsSorted = useRef(credits);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
 
-	const creditsSorted = credits
-		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
-		: [];
+	// Resort the credits on rerender.
+	useEffect(() => {
+		if (credits && credits.length > 0) {
+			creditsSorted.current = credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1));
+		}
+	}, [credits]);
 
 	// Get all the selectable terms for the user taxonomies.
 	const [
@@ -151,7 +154,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleNewCredit = () => {
+	const handleAddNewCredit = () => {
 		editProfileDispatch({
 			type: 'ADD_CREDIT',
 			payload: {},
@@ -190,8 +193,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					isClosable: true,
 					position: 'top',
 				});
-
-				console.error(err);
 			});
 	};
 
@@ -448,20 +449,16 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					<Wrap>
-						<Text>Enter your 5 best credits.</Text>
-						<Text variant='devAlert'>
-							We are aware of the issues working with Credits. Please stay tuned.
-						</Text>
-					</Wrap>
-					{creditsSorted?.map((credit: Credit, index: Key) => (
-						<CreditItem key={index} credit={credit} editable={true} />
-					))}
-					{creditsSorted?.length < 5 && (
+					<Text>Enter your 5 best credits.</Text>
+					<Text variant='devAlert'>Deleting and reordering credits is under development.</Text>
+					{editProfile.credits?.map((credit: Credit, index: Key) => {
+						return <CreditItem key={index} credit={credit} editable={true} />;
+					})}
+					{editProfile.credits?.length < 5 && (
 						<IconButton
 							aria-label='Add a new credit'
 							icon={<FiPlus />}
-							onClick={handleNewCredit}
+							onClick={handleAddNewCredit}
 						></IconButton>
 					)}
 				</StackItem>

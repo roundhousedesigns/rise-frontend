@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Flex, Button, Stack } from '@chakra-ui/react';
+import { Flex, Button, Stack, Text } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
 import SearchFilterJobs from '../components/SearchFilterJobs';
@@ -30,10 +30,12 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 		});
 	};
 
-	// TODO fix search results not showing currently selected items after reopen
-
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
+			<Text variant='devAlert'>
+				Search is under development and the interface is for testing purposes only. Results are not
+				guaranteed to be accurate.
+			</Text>
 			<Stack direction='column' gap={8}>
 				{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
 				{/* Step 1 */}

@@ -1,10 +1,11 @@
-import { useContext, useReducer } from 'react';
+import { useContext, useEffect, useReducer, useRef } from 'react';
 import {
 	ButtonGroup,
 	Card,
 	Divider,
 	Heading,
 	IconButton,
+	Spinner,
 	Stack,
 	StackItem,
 } from '@chakra-ui/react';
@@ -16,6 +17,7 @@ import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 import { FiCheck, FiX } from 'react-icons/fi';
+import { usePositionsLazy } from '../hooks/queries/usePositionsLazy';
 
 // TODO type payload better
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -66,23 +68,33 @@ interface Props {
 export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 	const { editProfileDispatch } = useContext(EditProfileContext);
-
 	const {
 		title,
 		venue,
 		year,
-		positions: { department: selectedDepartment, jobs: selectedJobs },
+		positions: { department: selectedDepartmentId = 0, jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
 		skills: selectedSkills,
 	} = editCredit;
 
-	const [allRelatedSkills] = useRelatedSkills(selectedJobs);
+	const [allDepartments] = usePositions();
+	const jobs = useRef([]);
+	const [getJobs, { data: jobsData, loading: jobsLoading }] = usePositionsLazy();
 
-	// TODO fix running usePositions on each click.
-	// make sure there's an argument to send first, now we're getting all terms all the time before limiting the results.
+	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 
-	// The full positions lists.
-	const [departments] = usePositions();
-	const [jobs] = usePositions(Number(selectedDepartment));
+	// Refetch jobs list when department changes
+	useEffect(() => {
+		if (!selectedDepartmentId) return;
+
+		getJobs({ variables: { parent: selectedDepartmentId }, fetchPolicy: 'network-only' });
+	}, [selectedDepartmentId]);
+
+	// Set jobs when jobsData changes.
+	useEffect(() => {
+		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
+
+		jobs.current = jobsData ? jobsData.positions.nodes.map((item: WPItem) => new WPItem(item)) : [];
+	}, [jobsData]);
 
 	const handleInputChange = (name: string) => (newValue: string) => {
 		editCreditDispatch({
@@ -113,7 +125,6 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	};
 
 	const handleSave = (e: React.FormEvent) => {
-		e.preventDefault();
 		closeModal();
 		editProfileDispatch({
 			type: 'UPDATE_CREDIT',
@@ -175,32 +186,34 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 
 					<ProfileRadioGroup
 						name='department'
-						items={departments?.map((term: WPItem) => ({
+						items={allDepartments?.map((term: WPItem) => ({
 							label: term.name,
 							value: term.id.toString(),
 						}))}
-						defaultValue={selectedDepartment.toString()}
+						defaultValue={selectedDepartmentId ? selectedDepartmentId.toString() : ''}
 						handleChange={handleToggleRadioTerm}
 					/>
 				</StackItem>
-				{selectedDepartment ? (
+				{selectedDepartmentId && !jobsLoading ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Position</Heading>
 						<Heading variant='contentSubtitle'>Select all that apply to this job.</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
-							items={jobs}
-							checked={selectedJobs ? selectedJobs.map((item: number) => item.toString()) : []}
+							items={jobs.current}
+							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
 							handleChange={handleToggleCheckboxTerm}
 						/>
 					</StackItem>
+				) : jobsLoading ? (
+					<Spinner />
 				) : null}
 
 				{allRelatedSkills &&
 				allRelatedSkills.length > 0 &&
-				selectedDepartment &&
-				selectedJobs &&
-				selectedJobs.length ? (
+				selectedDepartmentId &&
+				selectedJobIds &&
+				selectedJobIds.length ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Skills</Heading>
 						<Heading variant='contentSubtitle'>Select any skills used on this job.</Heading>

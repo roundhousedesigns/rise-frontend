@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Key, useEffect } from 'react';
 import { Wrap, useCheckboxGroup } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
 import CheckboxButton from './CheckboxButton';
@@ -27,9 +27,9 @@ export default function ProfileCheckboxGroup({ name, items, checked, handleChang
 
 	return items ? (
 		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2}>
-			{items.map((item: WPItem) => {
+			{items.map((item: WPItem, index: Key) => {
 				return (
-					<CheckboxButton key={item.id} {...getCheckboxProps({ value: item.id.toString() })}>
+					<CheckboxButton key={index} {...getCheckboxProps({ value: item.id.toString() })}>
 						{item.name}
 					</CheckboxButton>
 				);

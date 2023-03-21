@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { Box, Stack, Image, Center, IconButton, useColorMode } from '@chakra-ui/react';
 import Header from './components/layout/Header';
 import Main from './components/layout/Main';

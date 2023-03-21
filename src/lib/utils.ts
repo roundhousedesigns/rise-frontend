@@ -105,7 +105,6 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
 		credits: credits.map((credit: Credit) => {
 			return {
 				...credit,
-				id: credit.id || null,
 				positions: credit.positions.jobs,
 			};
 		}),
@@ -121,4 +120,21 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
  */
 export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
 	return isEqual(a.sort(), b.sort());
+};
+
+/**
+ * Generate a random alphanumeric string.
+ *
+ * @param length The generated string length.
+ * @returns The generated string.
+ */
+export const generateRandomString = (length: number = 8): string => {
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let result = '';
+
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+
+	return result;
 };
