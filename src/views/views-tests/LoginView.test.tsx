@@ -11,7 +11,6 @@ describe('LoginView test', () => {
 			</MockedProvider>
 		);
 		const signInElement = screen.getByText(/Please sign in./i);
-
 		expect(signInElement).toBeInTheDocument();
 	});
 	it('should say "Username or Email."', () => {
@@ -32,6 +31,18 @@ describe('LoginView test', () => {
 		);
 		const passwordInput = screen.getByText(/Password/i);
 		expect(passwordInput).toBeInTheDocument();
+	});
+	// this should test the functionality of the button - how??
+	it('should have a Submit button"', () => {
+		render(
+			<MockedProvider>
+				<LoginView />
+			</MockedProvider>
+		);
+		const button = screen.getByText('Submit', {
+			selector: 'button',
+		});
+		expect(button).toBeInTheDocument();
 	});
 });
 

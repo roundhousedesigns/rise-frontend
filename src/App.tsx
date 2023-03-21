@@ -8,7 +8,6 @@ import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
 import LoginView from './views/LoginView';
-import { HelloWorld } from './views/helloWorld';
 
 import { useViewer } from './hooks/queries/useViewer';
 
@@ -39,7 +38,6 @@ export default function App() {
 							/>
 						</Center>
 						<Box pos='relative' bottom={4} w='auto' minW='md'>
-							<HelloWorld />
 							<LoginView />
 						</Box>
 					</Stack>
