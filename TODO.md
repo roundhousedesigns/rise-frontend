@@ -2,12 +2,11 @@
 
 ## PRIORITIES
 
-- [ ] Edit Profile
-  - [ ] Add/Update Credits on Profile screen
-  - [ ] Split Media into photo and video sections
-- [ ] Advanced Search Filters
-- [ ] "Custom" identity tags
-  - Definitely racial identity, make reusable for others
+- [x] Edit Profile
+  - [x] Add/Update Credits on Profile screen
+- [ ] Split Media into photo and video sections
+- [x] Advanced Search Filters
+- [x] Identity tags
 
 ## TODO
 
@@ -17,15 +16,8 @@
 
 ## FIX
 
-- [ ] Fix usage of `<FormControl>`, which should be used on individual inputs, not groups of them. See <https://chakra-ui.com/docs/components/form-control>
+- [x] Fix usage of `<FormControl>`, which should be used on individual inputs, not groups of them. See <https://chakra-ui.com/docs/components/form-control>
 
-## Dashboard
-
-- Home (cases):
-  - Candidates saved
-    - Saved Candidates widget + button to New Search
-    - No Candidates saved, but saved/recent present
-      - Search view
 
 ## Trivial
 
