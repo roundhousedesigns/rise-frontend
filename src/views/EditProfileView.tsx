@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef, Key } from 'react';
+import React, { useContext, useState, useEffect, useRef, Key } from 'react';
 import {
 	Box,
 	Heading,
@@ -33,6 +33,7 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
+	FiTrash,
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
@@ -41,6 +42,8 @@ import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import { EditProfileContext } from '../context/EditProfileContext';
+import { useFileUpload } from '../hooks/mutations/useFileUpload';
+import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 
 interface Props {
 	profile: UserProfile | null;
@@ -51,6 +54,7 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
+// TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 
@@ -77,14 +81,22 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		personalIdentities,
 	} = editProfile || {};
 
+	// PICKUP HERE: Need to add the resume file upload to the form.
+	const { uploadFileMutation, results } = useFileUpload();
+
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
-	const creditsSorted = useRef(credits);
+	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
+	const {
+		deleteCreditMutation,
+		results: { loading: deleteCreditLoading },
+	} = useDeleteCredit();
+	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
 
 	// Resort the credits on rerender.
 	useEffect(() => {
 		if (credits && credits.length > 0) {
-			creditsSorted.current = credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1));
+			setCreditsSorted(credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1)));
 		}
 	}, [credits]);
 
@@ -111,7 +123,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	// Set context on load
 	useEffect(() => {
 		if (profile) {
-			editProfileDispatch({ type: 'INIT', payload: profile });
+			editProfileDispatch({ type: 'INIT', payload: { profile } });
 		}
 	}, []);
 
@@ -120,7 +132,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		setResumeIsSet(!!resume);
 	}, [resume]);
 
-	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
+	const handleInputChange = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
@@ -130,7 +142,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleNestedInputChange = (name: string) => (newValue: string) => {
+	const handleNestedInputChange = (name: string) => (newValue: any) => {
 		const parent = name.split('.')[0];
 		const field = name.split('.')[1];
 
@@ -154,7 +166,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleAddNewCredit = () => {
+	const handleNewCredit = () => {
 		editProfileDispatch({
 			type: 'ADD_CREDIT',
 			payload: {},
@@ -167,6 +179,23 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 
 		setResumeIsSet(false);
+	};
+
+	const handleDeleteCredit = (e: { currentTarget: Element }) => {
+		const currentTarget = e.currentTarget;
+
+		deleteCreditMutation(currentTarget.id)
+			.then(() => {
+				editProfileDispatch({
+					type: 'DELETE_CREDIT',
+					payload: {
+						creditId: currentTarget.id,
+					},
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -182,6 +211,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				// 	isClosable: true,
 				// 	position: 'top',
 				// });
+				setWillDeleteCredits(false);
 				navigate('/profile');
 			})
 			.catch((err) => {
@@ -193,6 +223,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					isClosable: true,
 					position: 'top',
 				});
+
+				// DEBUG
+				console.error(err);
 			});
 	};
 
@@ -235,7 +268,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center'>
-										<FileInput name='image' label='Photo' />
+										{/* <FileInput name='image' label='Photo' /> */}
 									</Flex>
 								)}
 								<Text
@@ -449,17 +482,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					<Text>Enter your 5 best credits.</Text>
-					<Text variant='devAlert'>Deleting and reordering credits is under development.</Text>
-					{editProfile.credits?.map((credit: Credit, index: Key) => {
-						return <CreditItem key={index} credit={credit} editable={true} />;
-					})}
+					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
+					{willDeleteCredits ? (
+						<Text variant='devAlert'>
+							Please save your profile to confirm deleting credits, or cancel to undo.
+						</Text>
+					) : (
+						false
+					)}
+					{deleteCreditLoading ? (
+						<Spinner />
+					) : (
+						creditsSorted.map((credit: Credit) => (
+							<Stack key={credit.id} direction='row' alignItems='center'>
+								<CreditItem credit={credit} editable={true} />
+								<IconButton
+									size='lg'
+									colorScheme='red'
+									icon={<FiTrash />}
+									aria-label='Delete Credit'
+									id={credit.id}
+									onClick={handleDeleteCredit}
+								/>
+							</Stack>
+						))
+					)}
 					{editProfile.credits?.length < 5 && (
-						<IconButton
-							aria-label='Add a new credit'
-							icon={<FiPlus />}
-							onClick={handleAddNewCredit}
-						></IconButton>
+						<Button aria-label='Add a new credit' leftIcon={<FiPlus />} onClick={handleNewCredit}>
+							New Credit
+						</Button>
 					)}
 				</StackItem>
 

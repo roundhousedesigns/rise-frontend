@@ -5,8 +5,13 @@ import { sanitizeBoolean } from '../lib/utils';
 interface EditProfileAction {
 	type: string;
 	payload: {
-		[key: string]: any;
+		parent?: string;
+		name?: string;
+		value?: any;
+		creditId?: string;
 		credit?: Credit;
+		profile?: UserProfile;
+		newCreditTempId?: string;
 	};
 }
 
@@ -19,18 +24,22 @@ export const EditProfileContext = createContext({
 function editProfileContextReducer(state: UserProfile, action: EditProfileAction): any {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
+			if (!action.payload.name) return state;
 			return {
 				...state,
 				[action.payload.name]: action.payload.value,
 			};
 
 		case 'UPDATE_BOOLEAN_INPUT':
+			if (!action.payload.name || !action.payload.value) return state;
 			return {
 				...state,
 				[action.payload.name]: sanitizeBoolean(action.payload.value),
 			};
 
 		case 'UPDATE_NESTED_INPUT':
+			if (!action.payload.parent || !action.payload.name) return state;
+
 			return {
 				...state,
 				[action.payload.parent]: {
@@ -44,27 +53,12 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 
 			const { credits: currentCredits } = state;
 			const {
-				payload: { credit: updatedCredit },
+				payload: { credit: updatedCredit, newCreditTempId },
 			} = action;
 
 			const updatedCredits = currentCredits.map((credit) => {
-				if (credit.id === updatedCredit?.id) {
-					return {
-						id: updatedCredit.id,
-						title: updatedCredit.title ? updatedCredit.title : '',
-						venue: updatedCredit.venue ? updatedCredit.venue : '',
-						year: updatedCredit.year ? updatedCredit.year : '',
-						positions: {
-							department: updatedCredit.positions.department
-								? updatedCredit.positions.department
-								: 0,
-							jobs: updatedCredit.positions.jobs
-								? updatedCredit.positions.jobs.map((job) => Number(job))
-								: [],
-						},
-						skills: updatedCredit.skills ? updatedCredit.skills.map((skill) => Number(skill)) : [],
-						isNew: updatedCredit.isNew ? true : false,
-					};
+				if (credit.id.toString() === updatedCredit.id || newCreditTempId === credit.id) {
+					return new Credit(updatedCredit);
 				}
 
 				return credit;
@@ -81,9 +75,21 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				credits: [...state.credits, new Credit({ isNew: true, title: 'Click to Edit' })],
 			};
 
+		case 'DELETE_CREDIT':
+			if (!action.payload.creditId) return state;
+
+			const trimmedCredits = state.credits.filter(
+				(credit) => credit.id.toString() !== action.payload.creditId?.toString()
+			);
+
+			return {
+				...state,
+				credits: trimmedCredits,
+			};
+
 		case 'INIT':
 		case 'RESET':
-			return action.payload;
+			return action.payload.profile;
 
 		default:
 			return state;

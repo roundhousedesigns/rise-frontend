@@ -32,6 +32,7 @@ export function socialLink(network: string, value: string): string {
  * @param value
  * @returns
  */
+// TODO decide if we can just cast things as Numbers without this.
 export function maybeParseInt(value: string | number): number {
 	if (typeof value === 'string') {
 		return parseInt(value, 10);

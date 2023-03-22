@@ -26,8 +26,6 @@ const socialIcon = (label: string, name: string, value: string, icon: React.Reac
 export default function PersonalIconLinks({ socials }: Props): JSX.Element {
 	const { facebook, twitter, instagram, linkedin, website } = socials;
 
-	// TODO Change socials to only provide a link and let backend handle handle/url formatting.
-
 	return (
 		<Wrap direction='row' spacing={4}>
 			{linkedin && socialIcon('LinkedIn', 'linkedin', linkedin, <FiLinkedin />)}
