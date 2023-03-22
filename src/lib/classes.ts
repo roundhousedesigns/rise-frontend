@@ -37,8 +37,7 @@ export class User {
 		const { firstName, lastName } = this;
 
 		if (firstName && lastName) return `${firstName} ${lastName}`;
-		else if (firstName && !lastName) return firstName;
-		else return lastName;
+		return firstName || lastName;
 	}
 }
 
@@ -53,17 +52,8 @@ export class Candidate extends User {
 	image?: string;
 
 	constructor(params: CandidateData) {
-		super({
-			id: params.id,
-			firstName: params.firstName,
-			lastName: params.lastName,
-		});
-
+		super(params);
 		Object.assign(this, params);
-	}
-
-	fullName() {
-		return super.fullName();
 	}
 }
 
@@ -78,6 +68,7 @@ export class UserProfile extends User {
 	lastName: string = '';
 	email: string = '';
 	selfTitle?: string;
+	homebase?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;
@@ -103,6 +94,7 @@ export class UserProfile extends User {
 			lastName,
 			selfTitle,
 			email,
+			homebase,
 			image,
 			pronouns,
 			phone,
@@ -124,11 +116,7 @@ export class UserProfile extends User {
 			// media,
 		} = userParams;
 
-		super({
-			id: id,
-			firstName: firstName,
-			lastName: lastName,
-		});
+		super({ id, firstName, lastName });
 
 		Object.assign(
 			this,
@@ -136,8 +124,9 @@ export class UserProfile extends User {
 				firstName,
 				lastName,
 				pronouns,
-				selfTitle,
 				email,
+				homebase,
+				selfTitle,
 				image,
 				phone,
 				description,

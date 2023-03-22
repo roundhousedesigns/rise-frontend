@@ -13,6 +13,7 @@ import {
 	Button,
 	ButtonGroup,
 	useToast,
+	useDisclosure,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -37,13 +38,16 @@ import {
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
+import { EditProfileContext } from '../context/EditProfileContext';
+
+import EditCreditModal from '../components/EditCreditModal';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
-import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import { EditProfileContext } from '../context/EditProfileContext';
-import { useFileUpload } from '../hooks/mutations/useFileUpload';
+
+import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
+// import { useFileUpload } from '../hooks/mutations/useFileUpload';
 
 interface Props {
 	profile: UserProfile | null;
@@ -64,6 +68,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		lastName,
 		pronouns,
 		selfTitle,
+		homebase,
 		socials,
 		locations,
 		education,
@@ -81,8 +86,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		personalIdentities,
 	} = editProfile || {};
 
+	const [editCredit, setEditCredit] = useState<string>('');
+
 	// PICKUP HERE: Need to add the resume file upload to the form.
-	const { uploadFileMutation, results } = useFileUpload();
+	// const { uploadFileMutation, results } = useFileUpload();
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
@@ -229,6 +236,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			});
 	};
 
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const handleEditCredit = (creditId: string) => {
+		setEditCredit(creditId);
+		onOpen();
+	};
+
+	const handleCloseEditCredit = () => {
+		onClose();
+	};
+
 	const handleCancel = () => {
 		navigate('/profile');
 	};
@@ -320,6 +338,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											outerProps={{ flex: '0 0 130px' }}
 										/>
 									</Flex>
+									<EditableTextInput
+										defaultValue={homebase ? homebase : ''}
+										name='homebase'
+										as={Text}
+										label='Where do you currently live?'
+										fontWeight='medium'
+										styles={{ display: 'block' }}
+										mb={0}
+										handleChange={handleInputChange}
+										outerProps={{ flex: '0 0 130px' }}
+									/>
 								</StackItem>
 								<StackItem display='flex' flexWrap='wrap' gap={4}>
 									<EditableTextInput
@@ -331,8 +360,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										outerProps={{ flex: '1 1 60%' }}
 									/>
 									<Box fontSize='sm'>
-										<Heading variant='contentTitle'>Locations/Homebases</Heading>
-										<Heading variant='contentSubtitle'>Where do you live and work?</Heading>
+										<Heading variant='contentTitle'>Work Locations</Heading>
+										<Heading variant='contentSubtitle'>
+											Where are you looking for work? Select all that apply.
+										</Heading>
 										<ProfileCheckboxGroup
 											name='locations'
 											items={locationTerms}
@@ -342,6 +373,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Box>
 									<Box fontSize='sm'>
 										<Heading variant='contentTitle'>Willing to travel?</Heading>
+										<Heading variant='contentSubtitle'>Are you willing to leave home, or your work locations, for a job?</Heading>
 										<ProfileRadioGroup
 											defaultValue={willTravel ? 'true' : 'false'}
 											name='willTravel'
@@ -356,6 +388,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<StackItem>
 									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
 										<Box flex='1'>
+											<Heading variant='contentTitle'>Contact</Heading>
 											<EditTextWithIcon
 												value={email}
 												icon={FiMail}
@@ -495,7 +528,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					) : (
 						creditsSorted.map((credit: Credit) => (
 							<Stack key={credit.id} direction='row' alignItems='center'>
-								<CreditItem credit={credit} editable={true} />
+								<CreditItem
+									credit={credit}
+									onClick={() => handleEditCredit(credit.id)}
+									editable={true}
+								/>
 								<IconButton
 									size='lg'
 									colorScheme='red'
@@ -512,6 +549,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							New Credit
 						</Button>
 					)}
+					<EditCreditModal isOpen={isOpen} onClose={handleCloseEditCredit} creditId={editCredit} />
 				</StackItem>
 
 				<StackItem>

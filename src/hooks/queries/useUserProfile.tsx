@@ -15,6 +15,7 @@ export const QUERY_PROFILE = gql`
 			pronouns
 			email
 			selfTitle
+			homebase
 			image
 			phone
 			description
@@ -85,10 +86,10 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 		fetchPolicy: 'network-only',
 	});
 
+	// Prepare the credits data object.
 	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {
 		// If credit at least has an id and a title, return a new Credit object
 		if (!credit.id || !credit.title) return null;
-
 
 		return new Credit({
 			id: credit.id,

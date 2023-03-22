@@ -1,24 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
-import {
-	Card,
-	Heading,
-	Text,
-	Tag,
-	Wrap,
-	TagLabel,
-	Modal,
-	ModalOverlay,
-	ModalHeader,
-	ModalContent,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	useDisclosure,
-} from '@chakra-ui/react';
+import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react';
 
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
-import EditCreditView from '../EditCreditView';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import { sortAndCompareArrays } from '../../lib/utils';
 
@@ -26,9 +10,10 @@ interface Props {
 	id?: string;
 	credit: Credit;
 	editable?: boolean;
+	onClick: () => void;
 }
 
-export default function CreditItem({ id, credit, editable }: Props) {
+export default function CreditItem({ id, credit, editable, onClick }: Props) {
 	const {
 		title,
 		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
@@ -84,21 +69,17 @@ export default function CreditItem({ id, credit, editable }: Props) {
 		setSkills(skillTerms);
 	}, [termData, jobIds, skillIds]);
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	// const { onOpen, onClose } = useDisclosure();
 
-	const handleEditCredit = () => {
-		if (!editable) return;
-		onOpen();
-	};
-
-	const handleCloseEditCredit = () => {
-		onClose();
-	};
+	// const handleEditCredit = () => {
+	// 	if (!editable) return;
+	// 	onOpen();
+	// };
 
 	return (
-		<>
+		<Box onClick={onClick}>
 			<Card
-				onClick={handleEditCredit}
+				// onClick={handleEditCredit}
 				id={id ? id : undefined}
 				cursor={editable ? 'pointer' : 'default'}
 				borderWidth={editable ? '3px' : '0'}
@@ -135,7 +116,7 @@ export default function CreditItem({ id, credit, editable }: Props) {
 					</Wrap>
 				) : null}
 			</Card>
-			<Modal isOpen={isOpen} onClose={handleCloseEditCredit} scrollBehavior='outside' size='4xl'>
+			{/* <Modal isOpen={isOpen} onClose={handleCloseEditCredit} scrollBehavior='outside' size='4xl'>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>
@@ -147,7 +128,7 @@ export default function CreditItem({ id, credit, editable }: Props) {
 					</ModalBody>
 					<ModalFooter></ModalFooter>
 				</ModalContent>
-			</Modal>
-		</>
+			</Modal> */}
+		</Box>
 	);
 }

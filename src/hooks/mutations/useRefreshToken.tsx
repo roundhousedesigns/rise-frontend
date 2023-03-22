@@ -1,8 +1,8 @@
 /**
  * useRefreshToken hook. Mutation to refresh the JWT authToken.
+ *
+ * @depreacted At least temporarily not in use, unless we go back to JWT auth.
  */
-
-// TODO reimplement when we go back to JWTs in cookies
 
 import { gql, useMutation } from '@apollo/client';
 

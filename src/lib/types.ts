@@ -48,8 +48,9 @@ export interface UserProfileParams {
 	id: number;
 	firstName: string;
 	lastName: string;
-	selfTitle?: string;
 	email: string;
+	selfTitle?: string;
+	homebase?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;

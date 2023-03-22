@@ -2,6 +2,8 @@
  * useUpdateProfile hook. Mutation to update a User.
  */
 
+// TODO implement file uploads
+
 import { gql, useMutation } from '@apollo/client';
 
 const MUTATE_FILE_UPLOAD = gql`

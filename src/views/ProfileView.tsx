@@ -17,7 +17,7 @@ import {
 	StackItem,
 } from '@chakra-ui/react';
 import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiPhone, FiUsers } from 'react-icons/fi';
+import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -43,9 +43,10 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		image,
 		pronouns,
 		selfTitle,
+		homebase,
+		locations,
 		socials,
 		unions,
-		locations,
 		willTravel,
 		email,
 		phone,
@@ -66,6 +67,11 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		getWPItemsFromIds(ids, terms)
 			.map((term: WPItem) => term.name)
 			.join(', ');
+
+	// TODO add a cute lil <FiHome /> icon to the homebase label if it's alone. Or maybe all the time. Who knows.
+	const profileSubtitle = () => {
+		return selfTitle && homebase ? `${selfTitle} from ${homebase}` : selfTitle || homebase;
+	};
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
@@ -106,7 +112,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									false
 								)}
 								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
-									{selfTitle && selfTitle}
+									{profileSubtitle()}
 								</Text>
 							</StackItem>
 							{socials && !isEmpty(socials) && (
@@ -115,9 +121,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</StackItem>
 							)}
 							<StackItem>
-								<Heading variant='contentTitle'>Location/Homebase</Heading>
+								<Heading variant='contentTitle'>Works In</Heading>
 								<Flex alignItems='center'>
-									<TextWithIcon icon={FiUsers}>
+									<TextWithIcon icon={FiMapPin}>
 										{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
 									</TextWithIcon>
 									{willTravel !== undefined && (
