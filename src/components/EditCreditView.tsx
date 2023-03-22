@@ -8,16 +8,18 @@ import {
 	Spinner,
 	Stack,
 	StackItem,
+	Wrap,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
+import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '../context/EditProfileContext';
 import { usePositions } from '../hooks/queries/usePositions';
-import EditableTextInput from './common/inputs/EditableTextInput';
+import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
+import { usePositionsLazy } from '../hooks/queries/usePositionsLazy';
+import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
-import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
-import { FiCheck, FiX } from 'react-icons/fi';
-import { usePositionsLazy } from '../hooks/queries/usePositionsLazy';
+import EditableTextInput from './common/inputs/EditableTextInput';
 
 // TODO type payload better
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -52,6 +54,7 @@ function editCreditReducer(state: Credit, action: { type: string; payload: any }
 				skills: action.payload.value.map((item: number) => item),
 			};
 
+		case 'INIT':
 		case 'RESET':
 			return action.payload;
 
@@ -68,6 +71,11 @@ interface Props {
 export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 	const { editProfileDispatch } = useContext(EditProfileContext);
+
+	const {
+		updateCreditMutation,
+		results: { loading: updateCreditLoading },
+	} = useUpdateCredit();
 	const {
 		title,
 		venue,
@@ -124,14 +132,23 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 		});
 	};
 
-	const handleSave = (e: React.FormEvent) => {
-		closeModal();
-		editProfileDispatch({
-			type: 'UPDATE_CREDIT',
-			payload: {
-				credit: editCredit,
-			},
-		});
+	const handleSave = () => {
+		const credit = new Credit(editCredit).prepareForGraphQL();
+
+		updateCreditMutation(credit, editCredit.id)
+			.then((results) => {
+				editProfileDispatch({
+					type: 'UPDATE_CREDIT',
+					payload: {
+						credit: results.data.updateOrCreateCredit.updatedCredit,
+						newCreditTempId: editCredit.isNew ? editCredit.id : null,
+					},
+				});
+			})
+			.then(() => closeModal())
+			.catch((err: any) => {
+				console.error(err);
+			});
 	};
 
 	const handleCancel = () => {
@@ -144,20 +161,23 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 
 	return (
 		<Card>
-			<ButtonGroup>
-				<IconButton
-					aria-label='Accept changes'
-					colorScheme='green'
-					icon={<FiCheck />}
-					onClick={handleSave}
-				/>
-				<IconButton
-					aria-label='Cancel changes'
-					colorScheme='red'
-					icon={<FiX />}
-					onClick={handleCancel}
-				/>
-			</ButtonGroup>
+			<Wrap>
+				<ButtonGroup>
+					<IconButton
+						aria-label='Accept changes'
+						colorScheme='green'
+						icon={<FiCheck />}
+						onClick={handleSave}
+					/>
+					<IconButton
+						aria-label='Cancel changes'
+						colorScheme='red'
+						icon={<FiX />}
+						onClick={handleCancel}
+					/>
+				</ButtonGroup>
+				{updateCreditLoading ? <Spinner /> : false}
+			</Wrap>
 			<EditableTextInput
 				name='title'
 				label='Production Title'

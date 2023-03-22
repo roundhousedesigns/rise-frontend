@@ -17,19 +17,18 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 
-// FIXME edit credit bug, react hooks order error
-
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import EditCreditView from '../EditCreditView';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import { sortAndCompareArrays } from '../../lib/utils';
 
 interface Props {
+	id?: string;
 	credit: Credit;
 	editable?: boolean;
 }
 
-export default function CreditItem({ credit, editable }: Props) {
+export default function CreditItem({ id, credit, editable }: Props) {
 	const {
 		title,
 		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
@@ -100,6 +99,7 @@ export default function CreditItem({ credit, editable }: Props) {
 		<>
 			<Card
 				onClick={handleEditCredit}
+				id={id ? id : undefined}
 				cursor={editable ? 'pointer' : 'default'}
 				borderWidth={editable ? '3px' : '0'}
 				borderStyle='dashed'

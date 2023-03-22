@@ -11,7 +11,7 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 	return (
 		<chakra.label {...htmlProps}>
 			<input {...getInputProps()} hidden />
-			{/* TODO Check accessibility using a div as a checkbox? */}
+			{/* TODO Make sure this is accessible */}
 			<Box
 				{...getCheckboxProps()}
 				cursor='pointer'

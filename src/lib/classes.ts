@@ -8,7 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 } from './types';
-import { maybeParseInt } from './utils';
+import { generateRandomString, maybeParseInt } from './utils';
 
 /**
  * A basic user.
@@ -224,27 +224,12 @@ export class PersonalLinks {
 }
 
 /**
- * A collection of credit positions.
- *
- * @param {WPItemParams[]} positions
- */
-export class CreditPositions {
-	department!: number;
-	jobs: number[] = [];
-
-	constructor(positions: WPItemParams[]) {
-		this.department = positions[0]?.parentId ? positions[0].parentId : 0;
-		this.jobs = positions.map((job) => job.id);
-	}
-}
-
-/**
  * A production credit.
  * @param {CreditParams} params
  * @implements {CreditParams}
  */
 export class Credit {
-	id: number;
+	id: string;
 	title: string;
 	venue: string;
 	year: string;
@@ -253,32 +238,44 @@ export class Credit {
 		jobs: number[];
 	};
 	skills: number[];
+	isNew: boolean = false;
 
-	constructor(params?: CreditParams) {
-		this.id = params && params.id ? params.id : 0;
-		this.title = params && params.title ? params.title : '';
-		this.venue = params && params.venue ? params.venue : '';
-		this.year = params && params.year ? params.year : '';
-		this.skills = params && params.skills ? params.skills : [];
-		this.positions = {
-			department: params && params.department ? params.department : 0,
-			jobs: params && params.jobs ? params.jobs : [],
-		};
+	constructor(params: CreditParams) {
+		this.id = params.id ? params.id.toString() : generateRandomString();
+		this.title = params.title ? params.title : '';
+		this.venue = params.venue ? params.venue : '';
+		this.year = params.year ? params.year : '';
+		this.skills = params.skills ? params.skills : [];
+		this.isNew = params.isNew ? true : false;
+
+		// Use the `positions` param if it's found, and if not, look for `jobs` and `department` params.
+		if (params.jobs && params.jobs.length > 0 && params.department) {
+			this.positions = {
+				department: params.department,
+				jobs: params.jobs.map((job) => Number(job)),
+			};
+		} else if (
+			params.positions &&
+			params.positions.hasOwnProperty('department') &&
+			params.positions.department &&
+			params.positions.hasOwnProperty('jobs')
+		) {
+			this.positions = params.positions;
+		} else {
+			this.positions = { department: 0, jobs: [] };
+		}
 	}
 
 	/**
-	 * Prepare a credit object for GraphQL.
-	 *
-	 * @returns {CreditOutput} A credit object formatted for GraphQL.
+	 * Sanitize properties for GraphQL mutation.
+	 * @param data Credit data
+	 * @returns {CreditOutput} A sanitized credit object.
 	 */
 	prepareForGraphQL(): CreditOutput {
 		return {
-			id: this.id,
-			title: this.title,
-			venue: this.venue,
-			year: this.year,
-			skills: this.skills,
-			jobs: this.positions.jobs,
+			...this,
+			id: Number(this.id), // This returns NaN if the ID is a string (temporary ID). Fine for our purposes, for now.
+			positions: this.positions.jobs,
 		};
 	}
 }

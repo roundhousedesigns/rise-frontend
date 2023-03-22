@@ -2,6 +2,8 @@
  * useRefreshToken hook. Mutation to refresh the JWT authToken.
  */
 
+// TODO reimplement when we go back to JWTs in cookies
+
 import { gql, useMutation } from '@apollo/client';
 
 const REFRESH_AUTH_TOKEN = gql`

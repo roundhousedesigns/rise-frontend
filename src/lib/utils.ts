@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, UserProfile, WPItem } from './classes';
+import { PersonalLinks, UserProfile, WPItem } from './classes';
 
 /** Generate a link to a social media profile.
  *
@@ -32,6 +32,7 @@ export function socialLink(network: string, value: string): string {
  * @param value
  * @returns
  */
+// TODO decide if we can just cast things as Numbers without this.
 export function maybeParseInt(value: string | number): number {
 	if (typeof value === 'string') {
 		return parseInt(value, 10);
@@ -98,18 +99,9 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @returns {Object} The prepared user profile.
  */
 export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
-	const { credits } = profile;
+	const { credits, ...sanitized } = profile;
 
-	return {
-		...profile,
-		credits: credits.map((credit: Credit) => {
-			return {
-				...credit,
-				id: credit.id || null,
-				positions: credit.positions.jobs,
-			};
-		}),
-	};
+	return sanitized;
 };
 
 /**
@@ -121,4 +113,21 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
  */
 export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
 	return isEqual(a.sort(), b.sort());
+};
+
+/**
+ * Generate a random alphanumeric string.
+ *
+ * @param length The generated string length.
+ * @returns The generated string.
+ */
+export const generateRandomString = (length: number = 8): string => {
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let result = '';
+
+	for (let i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+
+	return result;
 };

@@ -1,15 +1,23 @@
 /**
- * useUpdateCredit hook. Mutation to update a Credit.
+ * useUpdateCredit hook. Mutation to create or update a Credit.
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { Credit } from '../../lib/classes';
+import { CreditOutput } from '../../lib/types';
+import { QUERY_PROFILE } from '../queries/useUserProfile';
 
 const MUTATE_UPDATE_CREDIT = gql`
-	mutation UpdateProfile($input: UpdateProfileCreditInput = {}) {
-		updateProfile(input: $input) {
-			clientMutationId
-			result
+	mutation MyMutation($input: UpdateOrCreateCreditInput = {}) {
+		updateOrCreateCredit(input: $input) {
+			updatedCredit {
+				id: databaseId
+				title
+				venue
+				year
+				department
+				jobs
+				skills
+			}
 		}
 	}
 `;
@@ -17,14 +25,21 @@ const MUTATE_UPDATE_CREDIT = gql`
 export const useUpdateCredit = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_CREDIT);
 
-	const updateCreditMutation = (credit: Credit) => {
+
+	const updateCreditMutation = (credit: CreditOutput, userId: number) => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'updateCreditMutation',
 					credit,
 				},
 			},
+			refetchQueries: [
+				{
+					query: QUERY_PROFILE,
+					variables: { id: userId, author: userId, last: 5 },
+					fetchPolicy: 'network-only',
+				},
+			],
 		});
 	};
 

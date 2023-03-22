@@ -75,22 +75,31 @@ export interface UserProfileParams {
  * The data shape for Credit input.
  */
 export interface CreditParams {
-	id?: number;
+	id?: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
 	title?: string;
 	venue?: string;
 	year?: string;
 	department?: number;
 	jobs?: number[];
+	positions?: {
+		department: number;
+		jobs: number[];
+	};
 	skills?: number[];
+	isNew?: boolean;
 }
 
+/**
+ * The data shape for Credit output to GraphQL.
+ */
 export interface CreditOutput {
 	id: number;
 	title: string;
 	venue: string;
 	year: string;
-	jobs: number[];
+	positions: number[];
 	skills: number[];
+	isNew: boolean;
 }
 
 /**

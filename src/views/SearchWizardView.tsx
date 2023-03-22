@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Flex, Button, Stack } from '@chakra-ui/react';
+import { Flex, Button, Stack, Text } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
 import SearchFilterJobs from '../components/SearchFilterJobs';
@@ -29,8 +29,6 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 			payload: {},
 		});
 	};
-
-	// TODO fix search results not showing currently selected items after reopen
 
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
