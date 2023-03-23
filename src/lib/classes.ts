@@ -12,42 +12,33 @@ import { generateRandomString, maybeParseInt } from './utils';
 
 /**
  * A basic user.
- *
- * @class User
- * @param {Object} params
- * @implements {UserParams}
  */
-export class User {
-	id!: number;
-	firstName: string = '';
-	lastName: string = '';
+export class User implements UserParams {
+	id: number = 0;
+	firstName?: string;
+	lastName?: string;
 
 	constructor(params?: UserParams) {
-		Object.assign(this, params, {
-			id: params ? maybeParseInt(params.id) : 0,
-		});
+		if (params) {
+			Object.assign(this, params, {
+				id: maybeParseInt(params.id),
+			});
+		}
 	}
 
 	/**
 	 * Generate a full name from a first and last name.
-	 *
-	 * @returns {string} The full name.
 	 */
 	fullName(): string {
 		const { firstName, lastName } = this;
-
-		if (firstName && lastName) return `${firstName} ${lastName}`;
-		return firstName || lastName;
+		return [firstName, lastName].filter(Boolean).join(' ');
 	}
 }
 
 /**
  * A candidate.
- * @class Candidate
- * @param {CandidateData} params
- * @implements {CandidateData}
  */
-export class Candidate extends User {
+export class Candidate extends User implements CandidateData, UserProfileParams, CreditParams {
 	selfTitle?: string;
 	image?: string;
 
@@ -59,14 +50,11 @@ export class Candidate extends User {
 
 /**
  * A user profile
- * @param {Object} params
- * @implements {UserProfileParams}
- * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
-	firstName = '';
-	lastName = '';
-	email = '';
+	firstName?: string;
+	lastName?: string;
+	email?: string;
 	selfTitle?: string;
 	homebase?: string;
 	image?: string;
@@ -187,9 +175,6 @@ export class UserProfile extends User {
 
 	/**
 	 * Extract IDs from a collection of nodes.
-	 *
-	 * @param {WPItem[]} nodes A collection of nodes.
-	 * @returns {number[]} A collection of IDs.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
 		return nodes.map((node) => (typeof node === 'number' ? node : node.id || 0));
@@ -198,10 +183,8 @@ export class UserProfile extends User {
 
 /**
  * A collection of personal links and social media handles.
- * @param {PersonalLinksParams} params
- * @implements {PersonalLinksParams}
  */
-export class PersonalLinks {
+export class PersonalLinks implements PersonalLinksParams {
 	twitter: string = '';
 	linkedin: string = '';
 	instagram: string = '';
@@ -215,79 +198,73 @@ export class PersonalLinks {
 
 /**
  * A production credit.
- * @param {CreditParams} params
- * @implements {CreditParams}
  */
-export class Credit {
+export class Credit implements CreditParams {
 	id: string;
-	title: string;
-	jobTitle: string;
-	jobLocation: string;
-	venue: string;
-	year: string;
+	title: string = '';
+	jobTitle: string = '';
+	jobLocation: string = '';
+	venue: string = '';
+	year: string = '';
 	positions: {
 		department: number;
 		jobs: number[];
-	};
-	skills: number[];
+	} = { department: 0, jobs: [] };
+	skills: number[] = [];
 	isNew: boolean = false;
 
 	constructor(params: CreditParams) {
 		this.id = params.id ? params.id.toString() : generateRandomString(); // Generate a random ID if none is provided.
-		this.title = params.title ? params.title : '';
-		this.jobTitle = params.jobTitle ? params.jobTitle : '';
-		this.jobLocation = params.jobLocation ? params.jobLocation : '';
-		this.venue = params.venue ? params.venue : '';
-		this.year = params.year ? params.year : '';
-		this.skills = params.skills ? params.skills : [];
-		this.isNew = params.isNew ? true : false;
-
-		// Use the `positions` param if it's found, and if not, look for `jobs` and `department` params.
-		if (params.jobs && params.jobs.length > 0 && params.department) {
-			this.positions = {
-				department: params.department,
-				jobs: params.jobs.map((job) => Number(job)),
-			};
-		} else if (
-			params.positions &&
-			params.positions.hasOwnProperty('department') &&
-			params.positions.department &&
-			params.positions.hasOwnProperty('jobs')
-		) {
-			this.positions = params.positions;
-		} else {
-			this.positions = { department: 0, jobs: [] };
-		}
+		Object.assign(this, params, {
+			positions: this.getPositions(params),
+			isNew: Boolean(params.isNew),
+		});
 	}
 
 	/**
 	 * Sanitize properties for GraphQL mutation.
-	 * @param data Credit data
 	 * @returns {CreditOutput} A sanitized credit object.
 	 */
 	prepareForGraphQL(): CreditOutput {
 		return {
 			...this,
-			id: Number(this.id), // This returns NaN if the ID is a string (temporary ID). Fine for our purposes, for now.
+			id: Number(this.id),
 			positions: this.positions.jobs,
 		};
+	}
+
+	/**
+	 * Get the positions of the credit.
+	 * @param {CreditParams} params - Credit parameters
+	 * @returns {Object} An object containing department and jobs
+	 */
+	private getPositions(params: CreditParams): { department: number; jobs: number[] } {
+		if (params.positions) {
+			return params.positions;
+		}
+		if (params.department && params.jobs && params.jobs.length > 0) {
+			return {
+				department: params.department,
+				jobs: params.jobs.map((job) => Number(job)),
+			};
+		}
+		return this.positions;
 	}
 }
 
 /**
  * A generic WordPress item. Used for taxonomy terms, post objects, etc.
- * @param {WPItemParams} params
- * @implements {WPItemParams}
  */
-export class WPItem {
-	id!: number;
-	name!: string;
+export class WPItem implements WPItemParams {
+	id: number;
+	name: string;
 	slug?: string;
 	parentId?: number;
 
 	constructor(params: WPItemParams) {
 		this.id = params.id ? maybeParseInt(params.id) : 0;
 		this.name = params.name ? unescape(params.name) : '';
-		this.slug = params.slug ? params.slug : '';
+		this.slug = params.slug ? params.slug : undefined;
+		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
 	}
 }

@@ -15,8 +15,8 @@ export interface WPItemParams {
  */
 export interface UserParams {
 	id: number;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
 }
 
 /**
@@ -24,9 +24,9 @@ export interface UserParams {
  */
 export interface CandidateData {
 	id: number;
-	firstName: string;
-	lastName: string;
-	selfTitle: string;
+	firstName?: string;
+	lastName?: string;
+	selfTitle?: string;
 	image?: string;
 }
 
@@ -46,9 +46,9 @@ export interface PersonalLinksParams {
  */
 export interface UserProfileParams {
 	id: number;
-	firstName: string;
-	lastName: string;
-	email: string;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
 	selfTitle?: string;
 	homebase?: string;
 	image?: string;
