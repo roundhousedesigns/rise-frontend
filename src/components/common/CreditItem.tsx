@@ -4,18 +4,20 @@ import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react'
 
 import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
-import { sortAndCompareArrays } from '../../lib/utils';
+import { decodeString, sortAndCompareArrays } from '../../lib/utils';
 
 interface Props {
 	id?: string;
 	credit: Credit;
 	editable?: boolean;
-	onClick: () => void;
+	onClick?: () => void;
 }
 
 export default function CreditItem({ id, credit, editable, onClick }: Props) {
 	const {
 		title,
+		jobTitle,
+		jobLocation,
 		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
 		skills: skillIds,
 		venue,
@@ -92,43 +94,38 @@ export default function CreditItem({ id, credit, editable, onClick }: Props) {
 						{title}
 						{year ? ` (${year})` : ''}
 					</Heading>
-					<Text fontSize='lg' ml={1} fontWeight='medium' fontStyle='italic'>
+					<Text fontSize='lg' ml={1} fontWeight='medium'>
 						{venue}
+						{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
 					</Text>
 				</Wrap>
+				{jobTitle ? (
+					<Text fontSize='md' my={0} pb={2} lineHeight={0.2}>
+						{decodeString(jobTitle)}
+					</Text>
+				) : (
+					false
+				)}
 				{department || jobs?.length || skills?.length ? (
 					<Wrap spacing={2}>
 						{department ? (
-							<Tag fontWeight='medium' colorScheme='orange'>
-								<TagLabel>{department.name}</TagLabel>
+							<Tag colorScheme='orange'>
+								<TagLabel>{decodeString(department.name)}</TagLabel>
 							</Tag>
 						) : null}
 						{jobs?.map((job: WPItem) => (
-							<Tag key={job.id} fontWeight='medium' colorScheme='cyan'>
-								<TagLabel>{job.name}</TagLabel>
+							<Tag key={job.id} colorScheme='cyan'>
+								<TagLabel>{decodeString(job.name)}</TagLabel>
 							</Tag>
 						))}
 						{skills?.map((skill: WPItem) => (
 							<Tag key={skill.id} colorScheme='teal'>
-								<TagLabel>{skill.name}</TagLabel>
+								<TagLabel>{decodeString(skill.name)}</TagLabel>
 							</Tag>
 						))}
 					</Wrap>
 				) : null}
 			</Card>
-			{/* <Modal isOpen={isOpen} onClose={handleCloseEditCredit} scrollBehavior='outside' size='4xl'>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>
-						<Heading size='lg'>Edit Credit</Heading>
-					</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<EditCreditView credit={credit} onClose={onClose} />
-					</ModalBody>
-					<ModalFooter></ModalFooter>
-				</ModalContent>
-			</Modal> */}
 		</Box>
 	);
 }

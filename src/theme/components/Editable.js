@@ -15,7 +15,7 @@ const baseStyle = definePartsStyle({
 		borderBottomStyle: 'dashed',
 		color: 'text.dark',
 		bg: 'whiteAlpha.600',
-		// px: 4,
+		px: 2,
 		// py: 1,
 		// my: 1,
 		_hover: {
@@ -30,11 +30,14 @@ const baseStyle = definePartsStyle({
 		borderBottomColor: 'gray.400',
 		borderBottomStyle: 'solid',
 		bg: 'whiteAlpha.700',
-		// px: 4,
+		px: 2,
 		// py: 1,
 		// my: 1,
 		_focus: {
 			boxShadow: 'none',
+		},
+		_placeholder: {
+			color: 'pink',
 		},
 	},
 	textarea: {

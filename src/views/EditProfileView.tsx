@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef, Key } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import {
 	Box,
 	Heading,
@@ -16,7 +16,6 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';
@@ -73,7 +72,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		locations,
 		education,
 		willTravel,
-		media,
+		// media,
 		description,
 		credits,
 		email,
@@ -373,7 +372,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Box>
 									<Box fontSize='sm'>
 										<Heading variant='contentTitle'>Willing to travel?</Heading>
-										<Heading variant='contentSubtitle'>Are you willing to leave home, or your work locations, for a job?</Heading>
+										<Heading variant='contentSubtitle'>
+											Are you willing to leave home, or your work locations, for a job?
+										</Heading>
 										<ProfileRadioGroup
 											defaultValue={willTravel ? 'true' : 'false'}
 											name='willTravel'
@@ -646,17 +647,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media && media.length > 0 ? (
-							media.map((item: string, index: Key) => (
-								<Box key={index}>
-									<ReactPlayer url={item} controls={true} />
-								</Box>
-							))
-						) : (
-							<Text variant='devAlert' fontSize='md'>
-								Photo + video additions under development.
-							</Text>
-						)}
+						<Text variant='devAlert' fontSize='md'>
+							Photo + video additions under development.
+						</Text>
 					</Stack>
 				</StackItem>
 			</Stack>

@@ -64,9 +64,9 @@ export class Candidate extends User {
  * @implements {PersonalLinks}
  */
 export class UserProfile extends User {
-	firstName: string = '';
-	lastName: string = '';
-	email: string = '';
+	firstName = '';
+	lastName = '';
+	email = '';
 	selfTitle?: string;
 	homebase?: string;
 	image?: string;
@@ -74,18 +74,16 @@ export class UserProfile extends User {
 	phone?: string;
 	description?: string;
 	resume?: string;
-	willTravel?: boolean | null; // TODO is this null necessary?
+	willTravel = false;
 	education?: string;
-	media?: string[];
-	socials: PersonalLinks = new PersonalLinks();
-	locations?: number[] = [];
+	socials = new PersonalLinks();
+	locations: number[] = [];
 	unions: number[] = [];
 	experienceLevels: number[] = [];
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
 	personalIdentities: number[] = [];
 	credits: Credit[] = [];
-	[key: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -118,54 +116,69 @@ export class UserProfile extends User {
 
 		super({ id, firstName, lastName });
 
-		Object.assign(
-			this,
-			{
-				firstName,
-				lastName,
-				pronouns,
-				email,
-				homebase,
-				selfTitle,
-				image,
-				phone,
-				description,
-				resume,
-				education,
-				credits,
-			},
-			{
-				willTravel: Boolean(willTravel),
-				locations: locations && locations.length > 0 ? this.extractIdsFromNodes(locations) : [],
-				unions: unions && unions.length > 0 ? this.extractIdsFromNodes(unions) : [],
-				experienceLevels:
-					experienceLevels && experienceLevels.length > 0
-						? this.extractIdsFromNodes(experienceLevels)
-						: [],
-				genderIdentities:
-					genderIdentities && genderIdentities.length > 0
-						? this.extractIdsFromNodes(genderIdentities)
-						: [],
-				racialIdentities:
-					racialIdentities && racialIdentities.length > 0
-						? this.extractIdsFromNodes(racialIdentities)
-						: [],
-				personalIdentities:
-					personalIdentities && personalIdentities.length > 0
-						? this.extractIdsFromNodes(personalIdentities)
-						: [],
-				// media: media && media.length > 0 ? media : [],
-				// FIXME Likely a data issue related to Credit object, something up with positions and skills.
-				// credits: credits && credits.length > 0 ? credits.map((credit) => new Credit(credit)) : [],
-				socials: new PersonalLinks({
-					twitter: twitter || '',
-					linkedin: linkedin || '',
-					instagram: instagram || '',
-					facebook: facebook || '',
-					website: website || '',
-				}),
-			}
-		);
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.pronouns = pronouns;
+		this.email = email;
+		this.homebase = homebase;
+		this.selfTitle = selfTitle;
+		this.image = image;
+		this.phone = phone;
+		this.description = description;
+		this.resume = resume;
+		this.education = education;
+
+		if (willTravel) {
+			this.willTravel = true;
+		}
+
+		if (locations && locations.length > 0) {
+			this.locations = this.extractIdsFromNodes(locations);
+		}
+
+		if (unions && unions.length > 0) {
+			this.unions = this.extractIdsFromNodes(unions);
+		}
+
+		if (experienceLevels && experienceLevels.length > 0) {
+			this.experienceLevels = this.extractIdsFromNodes(experienceLevels);
+		}
+
+		if (genderIdentities && genderIdentities.length > 0) {
+			this.genderIdentities = this.extractIdsFromNodes(genderIdentities);
+		}
+
+		if (racialIdentities && racialIdentities.length > 0) {
+			this.racialIdentities = this.extractIdsFromNodes(racialIdentities);
+		}
+
+		if (personalIdentities && personalIdentities.length > 0) {
+			this.personalIdentities = this.extractIdsFromNodes(personalIdentities);
+		}
+
+		if (twitter) {
+			this.socials.twitter = twitter;
+		}
+
+		if (linkedin) {
+			this.socials.linkedin = linkedin;
+		}
+
+		if (instagram) {
+			this.socials.instagram = instagram;
+		}
+
+		if (facebook) {
+			this.socials.facebook = facebook;
+		}
+
+		if (website) {
+			this.socials.website = website;
+		}
+
+		if (credits && credits.length > 0) {
+			this.credits = credits.map((credit) => new Credit(credit));
+		}
 	}
 
 	fullName() {
@@ -179,19 +192,7 @@ export class UserProfile extends User {
 	 * @returns {number[]} A collection of IDs.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
-		if (nodes.length === 0) return [];
-
-		// TODO check performance on this
-		// Sanitize the nodes.
-		return nodes.map((node) => {
-			if (typeof node === 'number') {
-				return node;
-			} else if (typeof node === 'object') {
-				return Number(node.id);
-			} else {
-				return 0;
-			}
-		});
+		return nodes.map((node) => (typeof node === 'number' ? node : node.id || 0));
 	}
 }
 
@@ -220,6 +221,8 @@ export class PersonalLinks {
 export class Credit {
 	id: string;
 	title: string;
+	jobTitle: string;
+	jobLocation: string;
 	venue: string;
 	year: string;
 	positions: {
@@ -230,8 +233,10 @@ export class Credit {
 	isNew: boolean = false;
 
 	constructor(params: CreditParams) {
-		this.id = params.id ? params.id.toString() : generateRandomString();
+		this.id = params.id ? params.id.toString() : generateRandomString(); // Generate a random ID if none is provided.
 		this.title = params.title ? params.title : '';
+		this.jobTitle = params.jobTitle ? params.jobTitle : '';
+		this.jobLocation = params.jobLocation ? params.jobLocation : '';
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
 		this.skills = params.skills ? params.skills : [];

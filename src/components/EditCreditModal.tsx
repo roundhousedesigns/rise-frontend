@@ -22,7 +22,7 @@ interface Props {
 export default function EditCreditModal({ isOpen, onClose, creditId }: Props): JSX.Element {
 	const { editProfile } = useContext(EditProfileContext);
 
-	const credit = editProfile.credits.find((credit) => credit.id === creditId);
+	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside' size='4xl'>
