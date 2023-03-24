@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef, Key } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import {
 	Box,
 	Heading,
@@ -15,16 +15,6 @@ import {
 	useToast,
 	useDisclosure,
 } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
-import { Credit, UserProfile } from '../lib/classes';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import CreditItem from '../components/common/CreditItem';
-import EditableTextInput from '../components/common/inputs/EditableTextInput';
-import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import {
 	FiFacebook,
 	FiGlobe,
@@ -38,13 +28,20 @@ import {
 	FiTwitter,
 	FiXCircle,
 } from 'react-icons/fi';
-import { EditProfileContext } from '../context/EditProfileContext';
-
-import EditCreditModal from '../components/EditCreditModal';
+import { useNavigate } from 'react-router-dom';
+import { Credit, UserProfile } from '../lib/classes';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import CreditItem from '../components/common/CreditItem';
+import EditableTextInput from '../components/common/inputs/EditableTextInput';
+import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import EditCreditModal from '../components/EditCreditModal';
 
+import { EditProfileContext } from '../context/EditProfileContext';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 // import { useFileUpload } from '../hooks/mutations/useFileUpload';
@@ -73,7 +70,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		locations,
 		education,
 		willTravel,
-		media,
+		// media,
 		description,
 		credits,
 		email,
@@ -87,6 +84,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = editProfile || {};
 
 	const [editCredit, setEditCredit] = useState<string>('');
+	const editCreditId = useRef<string>('');
 
 	// PICKUP HERE: Need to add the resume file upload to the form.
 	// const { uploadFileMutation, results } = useFileUpload();
@@ -100,10 +98,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = useDeleteCredit();
 	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
 
+	// If we've got a new credit to edit, open the modal.
+	useEffect(() => {
+		if (!credits || !credits.length) return;
+
+		// look for a credit in credits that has a the isNew property set to true
+		const newCredit = credits.find((credit) => credit.isNew);
+		if (newCredit && newCredit.id !== editCreditId.current) {
+			setEditCredit(newCredit.id);
+			onOpen();
+		}
+	}, [credits]);
+
 	// Resort the credits on rerender.
 	useEffect(() => {
 		if (credits && credits.length > 0) {
-			setCreditsSorted(credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1)));
+			// Remove credits with the isNew property set to true.
+			const existingCredits = credits.filter((credit) => !credit.isNew);
+
+			setCreditsSorted(existingCredits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1)));
 		}
 	}, [credits]);
 
@@ -149,14 +162,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleNestedInputChange = (name: string) => (newValue: any) => {
-		const parent = name.split('.')[0];
+	const handleSocialInputChange = (name: string) => (newValue: any) => {
 		const field = name.split('.')[1];
 
 		editProfileDispatch({
-			type: 'UPDATE_NESTED_INPUT',
+			type: 'UPDATE_PERSONAL_LINKS_INPUT',
 			payload: {
-				parent,
 				name: field,
 				value: newValue,
 			},
@@ -244,6 +255,21 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const handleCloseEditCredit = () => {
+		editCreditId.current = '';
+
+		// If we're editing a new credit, but nothing has been filled out, delete it.
+		if (editCredit && credits) {
+			const credit = credits.find((credit) => credit.id === editCredit);
+			if (credit && credit.isNew) {
+				editProfileDispatch({
+					type: 'DELETE_CREDIT',
+					payload: {
+						creditId: editCredit,
+					},
+				});
+			}
+		}
+
 		onClose();
 	};
 
@@ -373,7 +399,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Box>
 									<Box fontSize='sm'>
 										<Heading variant='contentTitle'>Willing to travel?</Heading>
-										<Heading variant='contentSubtitle'>Are you willing to leave home, or your work locations, for a job?</Heading>
+										<Heading variant='contentSubtitle'>
+											Are you willing to leave home, or your work locations, for a job?
+										</Heading>
 										<ProfileRadioGroup
 											defaultValue={willTravel ? 'true' : 'false'}
 											name='willTravel'
@@ -477,35 +505,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										icon={FiLinkedin}
 										label='LinkedIn @handle'
 										name='socials.linkedin'
-										handleChange={handleNestedInputChange}
+										handleChange={handleSocialInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.facebook}
 										icon={FiFacebook}
 										label='Facebook URL (ex: https://facebook.com/yourname)'
 										name='socials.facebook'
-										handleChange={handleNestedInputChange}
+										handleChange={handleSocialInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.instagram}
 										icon={FiInstagram}
 										label='Instagram @handle'
 										name='socials.instagram'
-										handleChange={handleNestedInputChange}
+										handleChange={handleSocialInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.twitter}
 										icon={FiTwitter}
 										label='Twitter @handle'
 										name='socials.twitter'
-										handleChange={handleNestedInputChange}
+										handleChange={handleSocialInputChange}
 									/>
 									<EditTextWithIcon
 										value={socials?.website}
 										icon={FiGlobe}
 										label='Website'
 										name='socials.website'
-										handleChange={handleNestedInputChange}
+										handleChange={handleSocialInputChange}
 									/>
 								</StackItem>
 							</Stack>
@@ -531,7 +559,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<CreditItem
 									credit={credit}
 									onClick={() => handleEditCredit(credit.id)}
-									editable={true}
+									isEditable={true}
 								/>
 								<IconButton
 									size='lg'
@@ -646,17 +674,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media && media.length > 0 ? (
-							media.map((item: string, index: Key) => (
-								<Box key={index}>
-									<ReactPlayer url={item} controls={true} />
-								</Box>
-							))
-						) : (
-							<Text variant='devAlert' fontSize='md'>
-								Photo + video additions under development.
-							</Text>
-						)}
+						<Text variant='devAlert' fontSize='md'>
+							Photo + video additions under development.
+						</Text>
 					</Stack>
 				</StackItem>
 			</Stack>

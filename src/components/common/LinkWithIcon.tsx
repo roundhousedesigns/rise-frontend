@@ -15,16 +15,8 @@ export default function LinkWithIcon({
 	...rest
 }: Props): JSX.Element {
 	return (
-		<Link
-			href={href}
-			variant='dotted'
-			fontWeight='medium'
-			display='flex'
-			alignItems='center'
-			isExternal={!!isExternal}
-			{...rest}
-		>
-			<Icon as={icon} mr={2} />
+		<Link href={href} variant='dotted' fontWeight='medium' isExternal={!!isExternal} {...rest}>
+			<Icon as={icon} mr={2} pos='relative' top='3px' />
 			{children}
 		</Link>
 	);

@@ -1,4 +1,3 @@
-import { Key } from 'react';
 import { isEmpty } from 'lodash';
 import {
 	Box,
@@ -16,7 +15,7 @@ import {
 	ListItem,
 	StackItem,
 } from '@chakra-ui/react';
-import ReactPlayer from 'react-player';
+// import ReactPlayer from 'react-player';
 import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
@@ -53,7 +52,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		resume,
 		credits,
 		description,
-		media,
+		// media,
 		education,
 	} = profile || {};
 
@@ -210,7 +209,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Box>
 			)}
 
-			{media && media.length > 0 && (
+			{/* {media && media.length > 0 && (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
@@ -222,7 +221,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						))}
 					</Stack>
 				</Box>
-			)}
+			)} */}
 		</Stack>
 	) : null;
 }

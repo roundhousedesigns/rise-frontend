@@ -51,6 +51,8 @@ export const QUERY_PROFILE = gql`
 			nodes {
 				id: databaseId
 				title(format: RENDERED)
+				jobTitle(format: RENDERED)
+				jobLocation(format: RENDERED)
 				venue(format: RENDERED)
 				year(format: RENDERED)
 				positions {
@@ -94,6 +96,8 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 		return new Credit({
 			id: credit.id,
 			title: credit.title,
+			jobTitle: credit.jobTitle,
+			jobLocation: credit.jobLocation,
 			venue: credit.venue,
 			year: credit.year,
 			department: credit.positions?.nodes[0]?.parentId,
