@@ -9,11 +9,11 @@ import { decodeString, sortAndCompareArrays } from '../../lib/utils';
 interface Props {
 	id?: string;
 	credit: Credit;
-	editable?: boolean;
+	isEditable?: boolean;
 	onClick?: () => void;
 }
 
-export default function CreditItem({ id, credit, editable, onClick }: Props) {
+export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
 	const {
 		title,
 		jobTitle,
@@ -74,7 +74,7 @@ export default function CreditItem({ id, credit, editable, onClick }: Props) {
 	// const { onOpen, onClose } = useDisclosure();
 
 	// const handleEditCredit = () => {
-	// 	if (!editable) return;
+	// 	if (!isEditable) return;
 	// 	onOpen();
 	// };
 
@@ -83,11 +83,11 @@ export default function CreditItem({ id, credit, editable, onClick }: Props) {
 			<Card
 				// onClick={handleEditCredit}
 				id={id ? id : undefined}
-				cursor={editable ? 'pointer' : 'default'}
-				borderWidth={editable ? '3px' : '0'}
+				cursor={isEditable ? 'pointer' : 'default'}
+				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
 				borderColor='gray.400'
-				_hover={editable ? { borderColor: 'black' } : {}}
+				_hover={isEditable ? { borderColor: 'black' } : {}}
 			>
 				<Wrap>
 					<Heading fontWeight='bold' fontSize='xl' as='h3'>

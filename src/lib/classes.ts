@@ -8,7 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 } from './types';
-import { generateRandomString, maybeParseInt } from './utils';
+import { maybeParseInt } from './utils';
 
 /**
  * A basic user.
@@ -201,24 +201,28 @@ export class PersonalLinks implements PersonalLinksParams {
  */
 export class Credit implements CreditParams {
 	id: string;
-	title: string = '';
-	jobTitle: string = '';
-	jobLocation: string = '';
-	venue: string = '';
-	year: string = '';
+	title: string;
+	jobTitle: string;
+	jobLocation: string;
+	venue: string;
+	year: string;
 	positions: {
 		department: number;
 		jobs: number[];
 	} = { department: 0, jobs: [] };
-	skills: number[] = [];
+	skills: number[];
 	isNew: boolean = false;
 
 	constructor(params: CreditParams) {
-		this.id = params.id ? params.id.toString() : generateRandomString(); // Generate a random ID if none is provided.
-		Object.assign(this, params, {
-			positions: this.getPositions(params),
-			isNew: Boolean(params.isNew),
-		});
+		this.id = params.id.toString();
+		this.title = params.title ? params.title : '';
+		this.jobTitle = params.jobTitle ? params.jobTitle : '';
+		this.jobLocation = params.jobLocation ? params.jobLocation : '';
+		this.venue = params.venue ? params.venue : '';
+		this.year = params.year ? params.year : '';
+		this.skills = params.skills ? params.skills : [];
+		this.positions = this.getPositions(params) || { department: 0, jobs: [] };
+		this.isNew = Boolean(params.isNew) || false;
 	}
 
 	/**

@@ -76,7 +76,7 @@ export interface UserProfileParams {
  * The data shape for Credit input.
  */
 export interface CreditParams {
-	id?: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
+	id: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
 	title?: string;
 	jobTitle?: string;
 	jobLocation?: string;

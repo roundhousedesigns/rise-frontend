@@ -65,13 +65,14 @@ function editCreditReducer(state: Credit, action: { type: string; payload: any }
 }
 
 interface Props {
-	credit: Credit;
+	creditId: string;
 	onClose: () => void;
 }
 
-export default function EditCreditView({ credit, onClose: closeModal }: Props) {
+export default function EditCreditView({ creditId, onClose: closeModal }: Props) {
+	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
+	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
-	const { editProfileDispatch } = useContext(EditProfileContext);
 
 	const {
 		updateCreditMutation,
