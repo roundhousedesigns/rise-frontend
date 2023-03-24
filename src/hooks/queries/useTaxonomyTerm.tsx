@@ -1,6 +1,7 @@
 /**
- * useTaxonomyTerm hook.
+ * useTaxonomyTerm hook. Queries a single taxonomy term by ID.
  *
+ * @returns {Array} A tuple of a prepared data object and a query result object.
  * // TODO Replace this when useTaxononyTerms (plural) is ready.
  */
 
@@ -20,7 +21,7 @@ const QUERY_TAXONOMY_TERM = gql`
 `;
 
 /**
- * usePositions hook. Queries a single taxonomy term by ID.
+ * useTaxonomyTerm hook. Queries a single taxonomy term by ID.
  *
  * Queries a term by ID.
  *
@@ -33,7 +34,9 @@ const useTaxonomyTerm = (id: number | null): [WPItem | null, any] => {
 		},
 	});
 
-	const preparedResult = result.data?.termNode ? new WPItem(result.data.termNode as WPItemParams) : null;
+	const preparedResult = result.data?.termNode
+		? new WPItem(result.data.termNode as WPItemParams)
+		: null;
 
 	return [preparedResult, omit(result, ['data'])];
 };
