@@ -15,8 +15,8 @@ export interface WPItemParams {
  */
 export interface UserParams {
 	id: number;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
 }
 
 /**
@@ -24,9 +24,9 @@ export interface UserParams {
  */
 export interface CandidateData {
 	id: number;
-	firstName: string;
-	lastName: string;
-	selfTitle: string;
+	firstName?: string;
+	lastName?: string;
+	selfTitle?: string;
 	image?: string;
 }
 
@@ -46,10 +46,11 @@ export interface PersonalLinksParams {
  */
 export interface UserProfileParams {
 	id: number;
-	firstName: string;
-	lastName: string;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
 	selfTitle?: string;
-	email: string;
+	homebase?: string;
 	image?: string;
 	pronouns?: string;
 	phone?: string;
@@ -75,8 +76,10 @@ export interface UserProfileParams {
  * The data shape for Credit input.
  */
 export interface CreditParams {
-	id?: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
+	id: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
 	title?: string;
+	jobTitle?: string;
+	jobLocation?: string;
 	venue?: string;
 	year?: string;
 	department?: number;
@@ -95,6 +98,8 @@ export interface CreditParams {
 export interface CreditOutput {
 	id: number;
 	title: string;
+	jobTitle: string;
+	jobLocation: string;
 	venue: string;
 	year: string;
 	positions: number[];

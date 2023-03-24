@@ -3,6 +3,7 @@ import {
 	ButtonGroup,
 	Card,
 	Divider,
+	Flex,
 	Heading,
 	IconButton,
 	Spinner,
@@ -64,13 +65,14 @@ function editCreditReducer(state: Credit, action: { type: string; payload: any }
 }
 
 interface Props {
-	credit: Credit;
+	creditId: string;
 	onClose: () => void;
 }
 
-export default function EditCreditView({ credit, onClose: closeModal }: Props) {
+export default function EditCreditView({ creditId, onClose: closeModal }: Props) {
+	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
+	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
-	const { editProfileDispatch } = useContext(EditProfileContext);
 
 	const {
 		updateCreditMutation,
@@ -78,6 +80,8 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 	} = useUpdateCredit();
 	const {
 		title,
+		jobTitle,
+		jobLocation,
 		venue,
 		year,
 		positions: { department: selectedDepartmentId = 0, jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
@@ -178,25 +182,45 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 				</ButtonGroup>
 				{updateCreditLoading ? <Spinner /> : false}
 			</Wrap>
+
 			<EditableTextInput
 				name='title'
-				label='Production Title'
+				label='Production/Show/Company Title'
 				defaultValue={title}
 				handleChange={handleInputChange}
-			/>
-			<EditableTextInput
-				name='year'
-				label='Year (start of employment)'
-				defaultValue={year}
-				handleChange={handleInputChange}
-			/>
-			<EditableTextInput
-				name='venue'
-				label='Venue'
-				defaultValue={venue}
-				handleChange={handleInputChange}
+				outerProps={{ flex: 1 }}
 			/>
 
+			<Flex gap={6}>
+				<EditableTextInput
+					name='jobTitle'
+					label='Job/Position Title'
+					defaultValue={jobTitle}
+					handleChange={handleInputChange}
+				/>
+
+				<EditableTextInput
+					name='year'
+					label='Year (start of employment)'
+					defaultValue={year}
+					handleChange={handleInputChange}
+					outerProps={{ flex: '0 0 100px' }}
+				/>
+			</Flex>
+			<Flex gap={6}>
+				<EditableTextInput
+					name='venue'
+					label='Venue'
+					defaultValue={venue}
+					handleChange={handleInputChange}
+				/>
+				<EditableTextInput
+					name='jobLocation'
+					label='Job Location'
+					defaultValue={jobLocation}
+					handleChange={handleInputChange}
+				/>
+			</Flex>
 			<Divider />
 
 			<Stack direction='column' spacing={6} fontSize='md'>

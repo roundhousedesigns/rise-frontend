@@ -12,6 +12,8 @@ const MUTATE_UPDATE_CREDIT = gql`
 			updatedCredit {
 				id: databaseId
 				title
+				jobTitle
+				jobLocation
 				venue
 				year
 				department

@@ -1,11 +1,10 @@
 import { createContext, useReducer } from 'react';
 import { Credit, UserProfile } from '../lib/classes';
-import { sanitizeBoolean } from '../lib/utils';
+import { generateRandomString, sanitizeBoolean } from '../lib/utils';
 
 interface EditProfileAction {
 	type: string;
 	payload: {
-		parent?: string;
 		name?: string;
 		value?: any;
 		creditId?: string;
@@ -37,13 +36,13 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				[action.payload.name]: sanitizeBoolean(action.payload.value),
 			};
 
-		case 'UPDATE_NESTED_INPUT':
-			if (!action.payload.parent || !action.payload.name) return state;
+		case 'UPDATE_PERSONAL_LINKS_INPUT':
+			if (!action.payload.name) return state;
 
 			return {
 				...state,
-				[action.payload.parent]: {
-					...state[action.payload.parent],
+				socials: {
+					...state.socials,
 					[action.payload.name]: action.payload.value,
 				},
 			};
@@ -72,7 +71,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 		case 'ADD_CREDIT':
 			return {
 				...state,
-				credits: [...state.credits, new Credit({ isNew: true, title: 'Click to Edit' })],
+				credits: [...state.credits, new Credit({ id: generateRandomString(8), isNew: true })],
 			};
 
 		case 'DELETE_CREDIT':

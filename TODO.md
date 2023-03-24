@@ -1,6 +1,7 @@
 # Frontend TODO
 
 ## PRIORITIES
+
 - [ ] File uploads
 - [ ] Split Media into photo and video sections
 
