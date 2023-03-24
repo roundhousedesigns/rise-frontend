@@ -198,7 +198,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{description}</Text>
+					<Text whiteSpace='pre-wrap'>{description.trim()}</Text>
 				</Box>
 			)}
 
