@@ -1,7 +1,11 @@
 /**
  * useRelatedSkills hook.
  *
- * // TODO Document me.
+ * Queries `skill` terms related to a job (`position` taxonomy)
+ *
+ * @param {Array} jobs - An array of job IDs.
+ * @returns {Array} A tuple of a prepared data object and a query result object.
+ *
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -20,7 +24,7 @@ const QUERY_RELATED_SKILLS = gql`
 `;
 
 /**
- * usePositions hook.
+ * useRelatedSkills hook.
  *
  * Queries `skill` terms related to a job (`position` taxonomy)
  *

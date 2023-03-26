@@ -1,7 +1,8 @@
 /**
  * useUserTaxonomies hook.
+ * Queries terms from `User` taxonomies.
  *
- * // TODO DOCUMENT ME.
+ * @returns {Array} A tuple of a prepared data object and a query result object.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -57,7 +58,7 @@ const QUERY_USER_TAXONOMIES = gql`
 `;
 
 /**
- * usePositions hook.
+ * useUserTaxonomies hook.
  *
  * Queries terms from `User` taxonomies.
  *
