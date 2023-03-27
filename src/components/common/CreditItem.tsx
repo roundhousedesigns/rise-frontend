@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
 import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react';
 
-// import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
 import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../../lib/utils';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
