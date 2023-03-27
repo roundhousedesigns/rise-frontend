@@ -27,6 +27,8 @@ import {
 	FiTrash,
 	FiTwitter,
 	FiXCircle,
+	FiArrowUpCircle,
+	FiArrowDownCircle,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -44,6 +46,7 @@ import { EditProfileContext } from '../context/EditProfileContext';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
+import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 // import { useFileUpload } from '../hooks/mutations/useFileUpload';
 
 interface Props {
@@ -86,17 +89,46 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
 
+	const {
+		updateCreditOrderMutation,
+		results: { loading: loadingUpdateCreditOrder },
+	} = useUpdateCreditOrder();
+
 	// PICKUP HERE: Need to add the resume file upload to the form.
 	// const { uploadFileMutation, results } = useFileUpload();
 
 	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
+	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
 	const resumeFileInputRef = useRef<FileInputRef>(null);
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
+
+	// If the credits order has changed, fire the mutation to save it after a delay.
+	useEffect(() => {
+		if (!hasEditedCreditOrder) return;
+
+		const timeout = setTimeout(() => {
+			updateCreditOrderMutation(creditsSorted.map((credit) => credit.id))
+				.then((result) => {
+					// Reorder the creditsSorted array to match the ids in the array found in result.data.updateCreditOrder.creditIds
+					const newOrder = result.data.updateCreditOrder.creditIds.map((id: string) =>
+						creditsSorted.find((credit) => credit.id === id)
+					);
+					setCreditsSorted(newOrder);
+					setHasEditedCreditOrder(false);
+				})
+				.catch((err) => console.error(err));
+		}, 2000);
+
+		return () => {
+			clearTimeout(timeout);
+			setHasEditedCreditOrder(false);
+		};
+	}, [hasEditedCreditOrder]);
 
 	// If we've got a new credit to edit, open the modal.
 	useEffect(() => {
@@ -116,9 +148,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			// Remove credits with the isNew property set to true.
 			const existingCredits = credits.filter((credit) => !credit.isNew);
 
-			setCreditsSorted(existingCredits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1)));
+			setCreditsSorted(
+				existingCredits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
+			);
 		}
 	}, [credits]);
+
+	// Moves a credit index up by one
+	const handleCreditMoveUp = (index: number) => {
+		if (index === 0) return;
+
+		const newOrder = [...creditsSorted];
+		const temp = newOrder[index - 1];
+		newOrder[index - 1] = newOrder[index];
+		newOrder[index] = temp;
+		setCreditsSorted(newOrder);
+		setHasEditedCreditOrder(true);
+	};
+
+	// Moves a credit index down by one
+	const handleCreditMoveDown = (index: number) => {
+		if (index === creditsSorted.length - 1) return;
+
+		const newOrder = [...creditsSorted];
+		const temp = newOrder[index + 1];
+		newOrder[index + 1] = newOrder[index];
+		newOrder[index] = temp;
+		setCreditsSorted(newOrder);
+		setHasEditedCreditOrder(true);
+	};
 
 	// Get all the selectable terms for the user taxonomies.
 	const [
@@ -544,6 +602,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
+					{loadingUpdateCreditOrder ? <Spinner /> : false}
 					{willDeleteCredits ? (
 						<Text variant='devAlert'>
 							Please save your profile to confirm deleting credits, or cancel to undo.
@@ -552,15 +611,46 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						false
 					)}
 					{deleteCreditLoading ? (
-						<Spinner />
+						<Spinner size='sm' colorScheme='green' />
 					) : (
-						creditsSorted.map((credit: Credit) => (
+						creditsSorted.map((credit: Credit, index: number) => (
 							<Stack key={credit.id} direction='row' alignItems='center'>
 								<CreditItem
 									credit={credit}
 									onClick={() => handleEditCredit(credit.id)}
 									isEditable={true}
+									key={index}
 								/>
+								<Stack>
+									{index > 0 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowUpCircle />}
+											aria-label='Move up Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveUp(index);
+											}}
+										/>
+									) : (
+										false
+									)}
+									{index < creditsSorted.length - 1 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowDownCircle />}
+											aria-label='Move down Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveDown(index);
+											}}
+										/>
+									) : (
+										false
+									)}
+								</Stack>
 								<IconButton
 									size='lg'
 									colorScheme='red'

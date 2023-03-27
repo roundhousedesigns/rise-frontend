@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
 import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react';
 
-import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
-import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
+import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../../lib/utils';
+import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 
 interface Props {
 	id?: string;
@@ -12,13 +12,12 @@ interface Props {
 	isEditable?: boolean;
 	onClick?: () => void;
 }
-
-export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
+export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	const {
 		title,
 		jobTitle,
 		jobLocation,
-		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
+		positions: { department: departmentIds, jobs: jobIds } = { department: [0], jobs: [] },
 		skills: skillIds,
 		venue,
 		year,
@@ -28,13 +27,14 @@ export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	const [department] = useTaxonomyTerm(departmentId ? departmentId : 0);
+	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : [0]);
+	// console.info('dept', department);
 
 	// The term items for each set.
 	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
-	const [getTerms, { data: termData }] = useTaxonomyTerms();
+	const [getTerms, { data: termData }] = useLazyTaxonomyTerms();
 
 	// Set the term ID list state
 	useEffect(() => {
@@ -71,18 +71,10 @@ export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
 		setSkills(skillTerms);
 	}, [termData, jobIds, skillIds]);
 
-	// const { onOpen, onClose } = useDisclosure();
-
-	// const handleEditCredit = () => {
-	// 	if (!isEditable) return;
-	// 	onOpen();
-	// };
-
 	return (
 		<Box onClick={onClick}>
 			<Card
 				// onClick={handleEditCredit}
-				id={id ? id : undefined}
 				cursor={isEditable ? 'pointer' : 'default'}
 				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
@@ -108,11 +100,11 @@ export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
 				)}
 				{department || jobs?.length || skills?.length ? (
 					<Wrap spacing={2}>
-						{department ? (
-							<Tag colorScheme='orange'>
+						{department?.map((department: WPItem) => (
+							<Tag key={department.id} colorScheme='orange'>
 								<TagLabel>{decodeString(department.name)}</TagLabel>
 							</Tag>
-						) : null}
+						))}
 						{jobs?.map((job: WPItem) => (
 							<Tag key={job.id} colorScheme='cyan'>
 								<TagLabel>{decodeString(job.name)}</TagLabel>

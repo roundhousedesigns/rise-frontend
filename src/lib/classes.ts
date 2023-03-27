@@ -38,7 +38,7 @@ export class User implements UserParams {
 /**
  * A candidate.
  */
-export class Candidate extends User implements CandidateData, UserProfileParams, CreditParams {
+export class Candidate extends User implements CandidateData, UserProfileParams {
 	selfTitle?: string;
 	image?: string;
 
@@ -201,40 +201,30 @@ export class PersonalLinks implements PersonalLinksParams {
  */
 export class Credit implements CreditParams {
 	id: string;
+	index: number = 0;
 	title: string;
 	jobTitle: string;
 	jobLocation: string;
 	venue: string;
 	year: string;
 	positions: {
-		department: number;
+		department: number[];
 		jobs: number[];
-	} = { department: 0, jobs: [] };
+	} = { department: [0], jobs: [] };
 	skills: number[];
 	isNew: boolean = false;
 
 	constructor(params: CreditParams) {
 		this.id = params.id.toString();
+		this.index = params.index;
 		this.title = params.title ? params.title : '';
 		this.jobTitle = params.jobTitle ? params.jobTitle : '';
 		this.jobLocation = params.jobLocation ? params.jobLocation : '';
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
 		this.skills = params.skills ? params.skills : [];
-		this.positions = this.getPositions(params) || { department: 0, jobs: [] };
+		this.positions = this.getPositions(params) || { department: [0], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;
-	}
-
-	/**
-	 * Sanitize properties for GraphQL mutation.
-	 * @returns {CreditOutput} A sanitized credit object.
-	 */
-	prepareForGraphQL(): CreditOutput {
-		return {
-			...this,
-			id: Number(this.id),
-			positions: this.positions.jobs,
-		};
 	}
 
 	/**
@@ -242,17 +232,36 @@ export class Credit implements CreditParams {
 	 * @param {CreditParams} params - Credit parameters
 	 * @returns {Object} An object containing department and jobs
 	 */
-	private getPositions(params: CreditParams): { department: number; jobs: number[] } {
+	private getPositions(params: CreditParams): { department: number[]; jobs: number[] } {
 		if (params.positions) {
 			return params.positions;
 		}
-		if (params.department && params.jobs && params.jobs.length > 0) {
+
+		if (
+			params.department &&
+			params.department.length > 0 &&
+			params.jobs &&
+			params.jobs.length > 0
+		) {
 			return {
-				department: params.department,
+				department: params.department.map((department) => Number(department)),
 				jobs: params.jobs.map((job) => Number(job)),
 			};
 		}
+
 		return this.positions;
+	}
+
+	/**
+	 * Sanitize properties for GraphQL mutation.
+	 * @returns {CreditOutput} A sanitized credit object.
+	 */
+	prepareCreditForGraphQL(): CreditOutput {
+		return {
+			...this,
+			id: Number(this.id),
+			positions: this.positions.jobs,
+		};
 	}
 }
 

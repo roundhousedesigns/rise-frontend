@@ -12,9 +12,9 @@ interface Props {
 
 export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
-	const [positionItems, { loading, error }] = usePositions(
-		parseInt(search.filters.positions.department)
-	);
+	const [positionItems, { loading, error }] = usePositions([
+		parseInt(search.filters.positions.department),
+	]);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({

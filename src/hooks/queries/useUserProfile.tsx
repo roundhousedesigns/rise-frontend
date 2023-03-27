@@ -50,6 +50,7 @@ export const QUERY_PROFILE = gql`
 		credits(where: { author: $author }, last: $lastCredits) {
 			nodes {
 				id: databaseId
+				index
 				title(format: RENDERED)
 				jobTitle(format: RENDERED)
 				jobLocation(format: RENDERED)
@@ -95,16 +96,21 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 
 		return new Credit({
 			id: credit.id,
+			index: credit.index,
 			title: credit.title,
 			jobTitle: credit.jobTitle,
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
 			year: credit.year,
-			department: credit.positions?.nodes[0]?.parentId,
+			department: credit.positions?.nodes.map((job: WPItem) => job.parentId),
 			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
 	});
+
+	// Reorder the credits
+	if (credits) credits.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
+
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
 
 	return [preparedProfile, omit(result, ['data'])];
