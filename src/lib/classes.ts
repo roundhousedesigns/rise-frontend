@@ -38,7 +38,7 @@ export class User implements UserParams {
 /**
  * A candidate.
  */
-export class Candidate extends User implements CandidateData, UserProfileParams, CreditParams {
+export class Candidate extends User implements CandidateData, UserProfileParams {
 	selfTitle?: string;
 	image?: string;
 
@@ -201,7 +201,7 @@ export class PersonalLinks implements PersonalLinksParams {
  */
 export class Credit implements CreditParams {
 	id: string;
-	index?: number;
+	index: number = 0;
 	title: string;
 	jobTitle: string;
 	jobLocation: string;
@@ -231,7 +231,7 @@ export class Credit implements CreditParams {
 	 * Sanitize properties for GraphQL mutation.
 	 * @returns {CreditOutput} A sanitized credit object.
 	 */
-	prepareForGraphQL(): CreditOutput {
+	prepareCreditForGraphQL(): CreditOutput {
 		return {
 			...this,
 			id: Number(this.id),

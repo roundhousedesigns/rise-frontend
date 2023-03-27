@@ -57,7 +57,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 	} = profile || {};
 
 	const creditsSorted = credits
-		? credits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1))
+		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
 		: [];
 
 	const [{ locations: locationTerms, unions: unionTerms }] = useUserTaxonomies();

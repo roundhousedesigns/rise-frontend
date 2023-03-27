@@ -137,9 +137,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	const handleSave = () => {
-		const credit = new Credit(editCredit).prepareForGraphQL();
+		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
 
-		updateCreditMutation(credit, editCredit.id)
+		updateCreditMutation(creditToUpdate, editCredit.id)
 			.then((results) => {
 				editProfileDispatch({
 					type: 'UPDATE_CREDIT',

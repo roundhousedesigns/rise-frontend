@@ -71,7 +71,10 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 		case 'ADD_CREDIT':
 			return {
 				...state,
-				credits: [...state.credits, new Credit({ id: generateRandomString(8), isNew: true })],
+				credits: [
+					...state.credits,
+					new Credit({ id: generateRandomString(8), isNew: true, index: state.credits.length }),
+				],
 			};
 
 		case 'DELETE_CREDIT':
