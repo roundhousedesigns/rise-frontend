@@ -622,26 +622,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									key={index}
 								/>
 								<Stack>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowUpCircle />}
-										aria-label='Move up Credit'
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveUp(index);
-										}}
-									/>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowDownCircle />}
-										aria-label='Move down Credit'
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveDown(index);
-										}}
-									/>
+									{index > 0 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowUpCircle />}
+											aria-label='Move up Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveUp(index);
+											}}
+										/>
+									) : (
+										false
+									)}
+									{index < creditsSorted.length - 1 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowDownCircle />}
+											aria-label='Move down Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveDown(index);
+											}}
+										/>
+									) : (
+										false
+									)}
 								</Stack>
 								<IconButton
 									size='lg'
