@@ -77,6 +77,7 @@ export interface UserProfileParams {
  */
 export interface CreditParams {
 	id: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
+	index: number;
 	title?: string;
 	jobTitle?: string;
 	jobLocation?: string;
@@ -97,6 +98,7 @@ export interface CreditParams {
  */
 export interface CreditOutput {
 	id: number;
+	index: number;
 	title: string;
 	jobTitle: string;
 	jobLocation: string;

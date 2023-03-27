@@ -11,9 +11,11 @@ interface Props {
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
+	// moveItemUp?: (index: number) => void;
+	// moveItemDown?: (index: number) => void;
 }
-
-export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
+// TODO is id used at all properly??
+export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	const {
 		title,
 		jobTitle,
@@ -71,18 +73,10 @@ export default function CreditItem({ id, credit, isEditable, onClick }: Props) {
 		setSkills(skillTerms);
 	}, [termData, jobIds, skillIds]);
 
-	// const { onOpen, onClose } = useDisclosure();
-
-	// const handleEditCredit = () => {
-	// 	if (!isEditable) return;
-	// 	onOpen();
-	// };
-
 	return (
 		<Box onClick={onClick}>
 			<Card
 				// onClick={handleEditCredit}
-				id={id ? id : undefined}
 				cursor={isEditable ? 'pointer' : 'default'}
 				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
