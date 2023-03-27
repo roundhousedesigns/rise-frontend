@@ -11,9 +11,6 @@ interface Props {
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
-	moveItemUp: (index: number) => void;
-	moveItemDown: (index: number) => void;
-	key: number;
 }
 
 export default function CreditItem({ id, credit, isEditable, onClick }: Props) {

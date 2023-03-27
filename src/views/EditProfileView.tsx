@@ -27,8 +27,6 @@ import {
 	FiTrash,
 	FiTwitter,
 	FiXCircle,
-	FiArrowUpCircle,
-	FiArrowDownCircle,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -121,33 +119,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			setCreditsSorted(existingCredits.sort((a: Credit, b: Credit) => (a.year > b.year ? -1 : 1)));
 		}
 	}, [credits]);
-
-	// Moves a credit index up by one
-	const moveItemUp = (index: number) => {
-		if (index === 0) return;
-		const newOrder = [...creditsSorted];
-		const temp = newOrder[index - 1];
-		newOrder[index - 1] = newOrder[index];
-		newOrder[index] = temp;
-		setCreditsSorted(newOrder);
-	};
-	// Moves a credit index down by one
-	const moveItemDown = (index: number) => {
-		if (index === creditsSorted.length - 1) return;
-		const newOrder = [...creditsSorted];
-		const temp = newOrder[index + 1];
-		newOrder[index + 1] = newOrder[index];
-		newOrder[index] = temp;
-		setCreditsSorted(newOrder);
-	};
-
-	const handleMoveUp = (index: number) => {
-		moveItemUp(index);
-	};
-
-	const handleMoveDown = (index: number) => {
-		moveItemDown(index);
-	};
 
 	// Get all the selectable terms for the user taxonomies.
 	const [
@@ -583,42 +554,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					{deleteCreditLoading ? (
 						<Spinner />
 					) : (
-						creditsSorted.map((credit: Credit, index: number) => (
+						creditsSorted.map((credit: Credit) => (
 							<Stack key={credit.id} direction='row' alignItems='center'>
 								<CreditItem
 									credit={credit}
 									onClick={() => handleEditCredit(credit.id)}
 									isEditable={true}
-									moveItemUp={() => {
-										moveItemUp(index);
-									}}
-									moveItemDown={() => {
-										moveItemDown(index);
-									}}
-									key={index}
 								/>
-								<Stack>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowUpCircle />}
-										aria-label='Move up Credit'
-										id={credit.id}
-										onClick={() => {
-											handleMoveUp(index);
-										}}
-									/>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowDownCircle />}
-										aria-label='Move down Credit'
-										id={credit.id}
-										onClick={() => {
-											handleMoveDown(index);
-										}}
-									/>
-								</Stack>
 								<IconButton
 									size='lg'
 									colorScheme='red'
