@@ -1,7 +1,7 @@
 /**
  * useTaxonomyTerm hook.
  *
- * // TODO Replace this when useTaxononyTerms (plural) is ready.
+ * @deprecated Use useLazyTaxonomyTerms or useLazyTaxonomyTerms instead.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -33,7 +33,9 @@ const useTaxonomyTerm = (id: number | null): [WPItem | null, any] => {
 		},
 	});
 
-	const preparedResult = result.data?.termNode ? new WPItem(result.data.termNode as WPItemParams) : null;
+	const preparedResult = result.data?.termNode
+		? new WPItem(result.data.termNode as WPItemParams)
+		: null;
 
 	return [preparedResult, omit(result, ['data'])];
 };

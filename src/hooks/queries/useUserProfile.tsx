@@ -102,7 +102,7 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
 			year: credit.year,
-			department: credit.positions?.nodes[0]?.parentId,
+			department: credit.positions?.nodes.map((job: WPItem) => job.parentId),
 			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});

@@ -83,10 +83,10 @@ export interface CreditParams {
 	jobLocation?: string;
 	venue?: string;
 	year?: string;
-	department?: number;
+	department?: number[];
 	jobs?: number[];
 	positions?: {
-		department: number;
+		department: number[];
 		jobs: number[];
 	};
 	skills?: number[];
@@ -122,7 +122,7 @@ export interface LoginInput {
  */
 export interface SearchParams {
 	positions: {
-		department?: string;
+		department?: string[];
 		jobs?: string[];
 		skills?: string[];
 	};
