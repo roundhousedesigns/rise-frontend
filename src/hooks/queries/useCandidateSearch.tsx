@@ -1,7 +1,10 @@
 /**
- * useCandidateSearch hook. Query candidates (users) based on selected search parameters.
+ * useCandidateSearch hook.
  *
- * // TODO Document me.
+ * Queries candidates (users) based on selected search parameters.
+ *
+ * @returns {Array} The useLazyQuery return tuple.
+ *
  */
 
 import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';

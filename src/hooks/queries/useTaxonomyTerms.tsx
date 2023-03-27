@@ -1,7 +1,9 @@
 /**
  * useTaxonomyTerms hook.
  *
- * // TODO DOCUMENT ME.
+ * Queries a single taxonomy term by ID.
+ *
+ * @returns {Array} The useLazyQuery return tuple.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -22,7 +24,7 @@ export const QUERY_TAXONOMY_TERMS = gql`
 `;
 
 /**
- * usePositions hook. Queries a single taxonomy term by ID.
+ * useTaxonomyTerms hook. Queries a single taxonomy term by ID.
  *
  * Queries a term by ID.
  *
