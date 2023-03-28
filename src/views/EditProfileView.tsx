@@ -38,7 +38,6 @@ import EditableTextInput from '../components/common/inputs/EditableTextInput';
 import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
-import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
 
@@ -47,7 +46,6 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
-// import { useFileUpload } from '../hooks/mutations/useFileUpload';
 
 interface Props {
 	profile: UserProfile | null;
@@ -77,7 +75,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		description,
 		credits,
 		email,
-		resume,
+		// resume,
 		phone,
 		unions,
 		experienceLevels,
@@ -94,13 +92,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		results: { loading: updateCreditOrderLoading },
 	} = useUpdateCreditOrder();
 
-	// PICKUP HERE: Need to add the resume file upload to the form.
-	// const { uploadFileMutation, results } = useFileUpload();
-
-	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
-	const resumeFileInputRef = useRef<FileInputRef>(null);
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
@@ -205,11 +198,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	}, []);
 
-	// Detect if a resume file has been set to upload, or already exists on the profile.
-	useEffect(() => {
-		setResumeIsSet(!!resume);
-	}, [resume]);
-
 	const handleInputChange = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
@@ -247,14 +235,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			type: 'ADD_CREDIT',
 			payload: {},
 		});
-	};
-
-	const handleResumeReset = () => {
-		if (resumeFileInputRef.current) {
-			resumeFileInputRef.current.reset();
-		}
-
-		setResumeIsSet(false);
 	};
 
 	const handleDeleteCredit = (e: { currentTarget: Element }) => {
@@ -370,7 +350,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center'>
-										{/* <FileInput name='image' label='Photo' /> */}
+										-- upload --
 									</Flex>
 								)}
 								<Text
@@ -498,27 +478,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											</Heading>
 											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
 												<Text variant='devAlert'>Resume uploads are under development.</Text>
-												{resumeIsSet && resume ? (
-													<Button>{resume.split('/').pop()}</Button>
-												) : (
-													<FileInput
-														name='resume'
-														label='Upload resume'
-														labelVisuallyHidden
-														ref={resumeFileInputRef}
-													/>
-												)}
-												{resumeIsSet && resume && (
-													<IconButton
-														icon={<FiXCircle />}
-														aria-label='Clear Resume'
-														title='Clear resume'
-														bg='brand.red'
-														color='white'
-														variant='oversized'
-														onClick={handleResumeReset}
-													/>
-												)}
+												<Text>-- upload --</Text>
 											</Flex>
 										</Box>
 									</Flex>
