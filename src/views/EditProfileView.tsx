@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, ChangeEvent } from 'react';
 import {
 	Box,
 	Heading,
@@ -14,6 +14,7 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
+	Input,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -46,6 +47,8 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+import useFileUpload from '../hooks/mutations/useFileUpload';
+import { useViewer } from '../hooks/queries/useViewer';
 
 interface Props {
 	profile: UserProfile | null;
@@ -59,6 +62,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
+	const { loggedInId } = useViewer();
 
 	const {
 		image,
@@ -86,6 +90,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
+
+	const { uploadFileMutation } = useFileUpload();
 
 	const {
 		updateCreditOrderMutation,
@@ -230,6 +236,21 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
+	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (!event || !event.target || !event.target.files) return;
+
+		const file = event.target.files[0];
+		if (!file) return;
+
+		uploadFileMutation(file, loggedInId)
+			.then((result) => {
+				console.info(result);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
 	const handleNewCredit = () => {
 		editProfileDispatch({
 			type: 'ADD_CREDIT',
@@ -353,15 +374,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										-- upload --
 									</Flex>
 								)}
-								<Text
-									textAlign='center'
-									fontSize='sm'
-									fontWeight='bold'
-									color='brand.red'
-									flex='0 0 100%'
-								>
-									Photo uploads are under development.
-								</Text>
+								<Input type='file' name='image' onChange={handleFileInputChange} />
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>

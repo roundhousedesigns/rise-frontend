@@ -1,33 +1,28 @@
 /**
- * useUpdateProfile hook. Mutation to update a User.
+ * useFileUpload hook. Mutation to upload a file for saving on the backend.
  */
-
-// TODO implement file uploads
 
 import { gql, useMutation } from '@apollo/client';
 
-const MUTATE_FILE_UPLOAD = gql`
-	mutation UploadFile($file: Upload = "") {
-		uploadFile(input: { file: $file }) {
-			text
-			clientMutationId
+const UPLOAD_FILE_MUTATION = gql`
+	mutation UploadFileMutation($file: Upload!, $userId: ID!) {
+		uploadFile(input: { file: $file, userId: $userId }) {
+			imageUrl
 		}
 	}
 `;
 
-export const useFileUpload = () => {
-	const [mutation, results] = useMutation(MUTATE_FILE_UPLOAD);
+export default function useFileUpload() {
+	const [mutation, results] = useMutation(UPLOAD_FILE_MUTATION);
 
-	const uploadFileMutation = (file: File) => {
+	const uploadFileMutation = (file: File, userId: number) => {
 		return mutation({
 			variables: {
-				input: {
-					clientMutationId: 'uploadFileMutation',
-					file,
-				},
+				file,
+				userId,
 			},
 		});
 	};
 
 	return { uploadFileMutation, results };
-};
+}

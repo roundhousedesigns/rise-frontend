@@ -12,7 +12,7 @@ const QUERY_VIEWER = gql`
 	}
 `;
 
-export const useViewer = () => {
+export const useViewer = (): { result: any; loggedInId: number } => {
 	const result = useQuery(QUERY_VIEWER, {
 		fetchPolicy: 'network-only',
 	});
