@@ -1,26 +1,24 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
-import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react';
+import { Card, Heading, Text, Tag, Wrap, TagLabel, Box, Stack, Flex } from '@chakra-ui/react';
 
-import useTaxonomyTerm from '../../hooks/queries/useTaxonomyTerm';
-import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
+import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../../lib/utils';
+import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 
 interface Props {
 	id?: string;
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
-	// moveItemUp?: (index: number) => void;
-	// moveItemDown?: (index: number) => void;
+	[props: string]: any;
 }
-// TODO is id used at all properly??
-export default function CreditItem({ credit, isEditable, onClick }: Props) {
+export default function CreditItem({ credit, isEditable, onClick, ...rest }: Props) {
 	const {
 		title,
 		jobTitle,
 		jobLocation,
-		positions: { department: departmentId, jobs: jobIds } = { department: 0, jobs: [] },
+		positions: { department: departmentIds, jobs: jobIds } = { department: [], jobs: [] },
 		skills: skillIds,
 		venue,
 		year,
@@ -30,13 +28,14 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	const [department] = useTaxonomyTerm(departmentId ? departmentId : 0);
+	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
+	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
 	// The term items for each set.
 	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
-	const [getTerms, { data: termData }] = useTaxonomyTerms();
+	const [getTerms, { data: termData }] = useLazyTaxonomyTerms();
 
 	// Set the term ID list state
 	useEffect(() => {
@@ -74,7 +73,7 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	}, [termData, jobIds, skillIds]);
 
 	return (
-		<Box onClick={onClick}>
+		<Box onClick={onClick} {...rest}>
 			<Card
 				// onClick={handleEditCredit}
 				cursor={isEditable ? 'pointer' : 'default'}
@@ -83,42 +82,58 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 				borderColor='gray.400'
 				_hover={isEditable ? { borderColor: 'black' } : {}}
 			>
-				<Wrap>
-					<Heading fontWeight='bold' fontSize='xl' as='h3'>
-						{title}
-						{year ? ` (${year})` : ''}
-					</Heading>
-					<Text fontSize='lg' ml={1} fontWeight='medium'>
-						{venue}
-						{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
-					</Text>
-				</Wrap>
-				{jobTitle ? (
-					<Text fontSize='md' my={0} pb={2} lineHeight={0.2}>
-						{decodeString(jobTitle)}
-					</Text>
-				) : (
-					false
-				)}
-				{department || jobs?.length || skills?.length ? (
-					<Wrap spacing={2}>
-						{department ? (
-							<Tag colorScheme='orange'>
-								<TagLabel>{decodeString(department.name)}</TagLabel>
-							</Tag>
+				<Flex
+					alignItems='flex-start'
+					justifyContent='space-between'
+					flexWrap={{ base: 'wrap', md: 'nowrap' }}
+				>
+					<Stack direction='column' flex='1 1 50%' minW='420px'>
+						<Wrap>
+							<Heading fontWeight='bold' fontSize='xl' as='h3'>
+								{title}
+								{year ? ` (${year})` : ''}
+							</Heading>
+							<Text fontSize='lg' ml={1} fontWeight='medium'>
+								{venue}
+								{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
+							</Text>
+						</Wrap>
+						{jobTitle ? (
+							<Text fontSize='md' pb={2} pt={1} lineHeight={0.2}>
+								{decodeString(jobTitle)}
+							</Text>
+						) : (
+							false
+						)}
+					</Stack>
+					<Box flex='1 1 50%' minW='420px'>
+						{departmentIds?.length || jobs?.length || skills?.length ? (
+							<Stack direction='column' mt={{ base: 4, md: 0 }}>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{department?.map((department: WPItem) => (
+										<Tag key={department.id} colorScheme='orange'>
+											<TagLabel>{decodeString(department.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{jobs?.map((job: WPItem) => (
+										<Tag key={job.id} colorScheme='cyan'>
+											<TagLabel>{decodeString(job.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{skills?.map((skill: WPItem) => (
+										<Tag key={skill.id} colorScheme='teal'>
+											<TagLabel>{decodeString(skill.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+							</Stack>
 						) : null}
-						{jobs?.map((job: WPItem) => (
-							<Tag key={job.id} colorScheme='cyan'>
-								<TagLabel>{decodeString(job.name)}</TagLabel>
-							</Tag>
-						))}
-						{skills?.map((skill: WPItem) => (
-							<Tag key={skill.id} colorScheme='teal'>
-								<TagLabel>{decodeString(skill.name)}</TagLabel>
-							</Tag>
-						))}
-					</Wrap>
-				) : null}
+					</Box>
+				</Flex>
 			</Card>
 		</Box>
 	);

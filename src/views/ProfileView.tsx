@@ -16,7 +16,7 @@ import {
 	StackItem,
 } from '@chakra-ui/react';
 // import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
+import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers, FiHome } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -67,9 +67,8 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.map((term: WPItem) => term.name)
 			.join(', ');
 
-	// TODO add a cute lil <FiHome /> icon to the homebase label if it's alone. Or maybe all the time. Who knows.
 	const profileSubtitle = () => {
-		return selfTitle && homebase ? `${selfTitle} from ${homebase}` : selfTitle || homebase;
+		return selfTitle && homebase ? `${selfTitle} based in ${homebase}` : selfTitle || homebase;
 	};
 
 	return profile ? (
@@ -110,9 +109,20 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								) : (
 									false
 								)}
-								<Text flex='0 0 100%' fontSize='xl' lineHeight='short' mt={2} mb={0}>
-									{profileSubtitle()}
-								</Text>
+
+								{profileSubtitle() ? (
+									<TextWithIcon
+										icon={FiHome}
+										flex='0 0 100%'
+										fontSize='xl'
+										lineHeight='short'
+										mt={2}
+										mb={0}
+									>
+										{' '}
+										{profileSubtitle()}{' '}
+									</TextWithIcon>
+								) : null}
 							</StackItem>
 							{socials && !isEmpty(socials) && (
 								<StackItem>

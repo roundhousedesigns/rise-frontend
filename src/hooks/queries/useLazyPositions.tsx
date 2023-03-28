@@ -1,11 +1,11 @@
 /**
- * usePositionsLazy hook.
+ * useLazyPositions hook.
  *
  * DOCUMENT ME.
  */
 
 import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
-import { QUERY_CREDITS } from './usePositions';
+import { QUERY_POSITION_TERMS } from './usePositions';
 
 /**
  * usePositions hook.
@@ -14,6 +14,6 @@ import { QUERY_CREDITS } from './usePositions';
  *
  * @returns {Array} The useLazyQuery return tuple.
  */
-export const usePositionsLazy = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
-	return useLazyQuery(QUERY_CREDITS);
+export const useLazyPositions = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
+	return useLazyQuery(QUERY_POSITION_TERMS);
 };

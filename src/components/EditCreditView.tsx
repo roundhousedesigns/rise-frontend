@@ -10,16 +10,17 @@ import {
 	Stack,
 	StackItem,
 	Wrap,
+	Text,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '../context/EditProfileContext';
 import { usePositions } from '../hooks/queries/usePositions';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
-import { usePositionsLazy } from '../hooks/queries/usePositionsLazy';
+import { useLazyPositions } from '../hooks/queries/useLazyPositions';
 import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-import ProfileRadioGroup from './common/ProfileRadioGroup';
+// import ProfileRadioGroup from './common/ProfileRadioGroup';
 import EditableTextInput from './common/inputs/EditableTextInput';
 
 // TODO type payload better
@@ -36,7 +37,7 @@ function editCreditReducer(state: Credit, action: { type: string; payload: any }
 				...state,
 				positions: {
 					...state.positions,
-					department: Number(action.payload.value),
+					department: action.payload.value.map((item: number) => item),
 				},
 			};
 
@@ -84,28 +85,29 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		jobLocation,
 		venue,
 		year,
-		positions: { department: selectedDepartmentId = 0, jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
+		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
 		skills: selectedSkills,
 	} = editCredit;
 
-	const [allDepartments] = usePositions();
-	const jobs = useRef([]);
-	const [getJobs, { data: jobsData, loading: jobsLoading }] = usePositionsLazy();
-
+	const [allDepartments] = usePositions([0]);
+	const [getJobs, { data: jobsData, loading: jobsLoading }] = useLazyPositions();
 	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
+	const jobs = useRef([]);
 
 	// Refetch jobs list when department changes
 	useEffect(() => {
-		if (!selectedDepartmentId) return;
+		if (!selectedDepartmentIds) return;
 
-		getJobs({ variables: { parent: selectedDepartmentId }, fetchPolicy: 'network-only' });
-	}, [selectedDepartmentId]);
+		getJobs({ variables: { departments: selectedDepartmentIds }, fetchPolicy: 'network-only' });
+	}, [selectedDepartmentIds]);
 
 	// Set jobs when jobsData changes.
 	useEffect(() => {
 		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
 
-		jobs.current = jobsData ? jobsData.positions.nodes.map((item: WPItem) => new WPItem(item)) : [];
+		jobs.current = jobsData
+			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
+			: [];
 	}, [jobsData]);
 
 	const handleInputChange = (name: string) => (newValue: string) => {
@@ -118,14 +120,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleToggleRadioTerm = (name: string) => (term: string) => {
-		editCreditDispatch({
-			type: `UPDATE_${name.toUpperCase()}`,
-			payload: {
-				value: term,
-			},
-		});
-	};
+	// const handleToggleRadioTerm = (name: string) => (term: string) => {
+	// 	editCreditDispatch({
+	// 		type: `UPDATE_${name.toUpperCase()}`,
+	// 		payload: {
+	// 			value: term,
+	// 		},
+	// 	});
+	// };
 
 	const handleToggleCheckboxTerm = (name: string) => (terms: string[]) => {
 		editCreditDispatch({
@@ -226,22 +228,34 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Stack direction='column' spacing={6} fontSize='md'>
 				<StackItem>
 					<Heading variant='contentTitle'>Department</Heading>
-					<Heading variant='contentSubtitle'>Select your main department.</Heading>
-
-					<ProfileRadioGroup
+					<Heading variant='contentSubtitle'>
+						Select{' '}
+						<Text as='span' fontWeight='bold'>
+							any
+						</Text>{' '}
+						department(s) you worked under.
+					</Heading>
+					<ProfileCheckboxGroup
 						name='department'
-						items={allDepartments?.map((term: WPItem) => ({
-							label: term.name,
-							value: term.id.toString(),
-						}))}
-						defaultValue={selectedDepartmentId ? selectedDepartmentId.toString() : ''}
-						handleChange={handleToggleRadioTerm}
+						items={allDepartments}
+						checked={
+							selectedDepartmentIds
+								? selectedDepartmentIds.map((item: number) => item.toString())
+								: []
+						}
+						handleChange={handleToggleCheckboxTerm}
 					/>
 				</StackItem>
-				{selectedDepartmentId && !jobsLoading ? (
+				{selectedDepartmentIds && !jobsLoading ? (
 					<StackItem>
 						<Heading variant='contentTitle'>Position</Heading>
-						<Heading variant='contentSubtitle'>Select all that apply to this job.</Heading>
+						<Heading variant='contentSubtitle'>
+							Select{' '}
+							<Text as='span' fontWeight='bold'>
+								any
+							</Text>{' '}
+							jobs that apply to this credit.
+						</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
 							items={jobs.current}
@@ -255,7 +269,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 				{allRelatedSkills &&
 				allRelatedSkills.length > 0 &&
-				selectedDepartmentId &&
+				selectedDepartmentIds &&
 				selectedJobIds &&
 				selectedJobIds.length ? (
 					<StackItem>

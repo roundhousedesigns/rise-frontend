@@ -91,7 +91,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const {
 		updateCreditOrderMutation,
-		results: { loading: loadingUpdateCreditOrder },
+		results: { loading: updateCreditOrderLoading },
 	} = useUpdateCreditOrder();
 
 	// PICKUP HERE: Need to add the resume file upload to the form.
@@ -122,7 +122,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					setHasEditedCreditOrder(false);
 				})
 				.catch((err) => console.error(err));
-		}, 2000);
+		}, 500);
 
 		return () => {
 			clearTimeout(timeout);
@@ -599,10 +599,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Card>
 				</StackItem>
 
-				<StackItem>
+				<StackItem pos='relative'>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
-					{loadingUpdateCreditOrder ? <Spinner /> : false}
+					{updateCreditOrderLoading ? (
+						<Box
+							pos='absolute'
+							h='full'
+							w='full'
+							left='0'
+							top='0'
+							bgColor='whiteAlpha.600'
+							zIndex='1'
+							display='flex'
+							alignItems='center'
+							justifyContent='center'
+						>
+							<Spinner color='blue' size='xl' />
+						</Box>
+					) : (
+						false
+					)}
 					{willDeleteCredits ? (
 						<Text variant='devAlert'>
 							Please save your profile to confirm deleting credits, or cancel to undo.
@@ -620,28 +637,37 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									onClick={() => handleEditCredit(credit.id)}
 									isEditable={true}
 									key={index}
+									width='full'
 								/>
 								<Stack>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowUpCircle />}
-										aria-label='Move up Credit'
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveUp(index);
-										}}
-									/>
-									<IconButton
-										size='lg'
-										colorScheme='gray'
-										icon={<FiArrowDownCircle />}
-										aria-label='Move down Credit'
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveDown(index);
-										}}
-									/>
+									{index > 0 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowUpCircle />}
+											aria-label='Move up Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveUp(index);
+											}}
+										/>
+									) : (
+										false
+									)}
+									{index < creditsSorted.length - 1 ? (
+										<IconButton
+											size='lg'
+											colorScheme='gray'
+											icon={<FiArrowDownCircle />}
+											aria-label='Move down Credit'
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveDown(index);
+											}}
+										/>
+									) : (
+										false
+									)}
 								</Stack>
 								<IconButton
 									size='lg'

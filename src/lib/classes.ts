@@ -208,9 +208,9 @@ export class Credit implements CreditParams {
 	venue: string;
 	year: string;
 	positions: {
-		department: number;
+		department: number[];
 		jobs: number[];
-	} = { department: 0, jobs: [] };
+	} = { department: [], jobs: [] };
 	skills: number[];
 	isNew: boolean = false;
 
@@ -223,8 +223,33 @@ export class Credit implements CreditParams {
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
 		this.skills = params.skills ? params.skills : [];
-		this.positions = this.getPositions(params) || { department: 0, jobs: [] };
+		this.positions = this.getPositions(params) || { department: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;
+	}
+
+	/**
+	 * Get the positions of the credit.
+	 * @param {CreditParams} params - Credit parameters
+	 * @returns {Object} An object containing department and jobs
+	 */
+	private getPositions(params: CreditParams): { department: number[]; jobs: number[] } {
+		if (params.positions) {
+			return params.positions;
+		}
+
+		if (
+			params.department &&
+			params.department.length > 0 &&
+			params.jobs &&
+			params.jobs.length > 0
+		) {
+			return {
+				department: params.department.map((department) => Number(department)),
+				jobs: params.jobs.map((job) => Number(job)),
+			};
+		}
+
+		return this.positions;
 	}
 
 	/**
@@ -237,24 +262,6 @@ export class Credit implements CreditParams {
 			id: Number(this.id),
 			positions: this.positions.jobs,
 		};
-	}
-
-	/**
-	 * Get the positions of the credit.
-	 * @param {CreditParams} params - Credit parameters
-	 * @returns {Object} An object containing department and jobs
-	 */
-	private getPositions(params: CreditParams): { department: number; jobs: number[] } {
-		if (params.positions) {
-			return params.positions;
-		}
-		if (params.department && params.jobs && params.jobs.length > 0) {
-			return {
-				department: params.department,
-				jobs: params.jobs.map((job) => Number(job)),
-			};
-		}
-		return this.positions;
 	}
 }
 
