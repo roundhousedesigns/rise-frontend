@@ -68,7 +68,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.join(', ');
 
 	const profileSubtitle = () => {
-		return selfTitle && homebase ? `${selfTitle} from ${homebase}` : selfTitle || homebase;
+		return selfTitle && homebase ? `${selfTitle} based in ${homebase}` : selfTitle || homebase;
 	};
 
 	return profile ? (
@@ -208,7 +208,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{description && (
 				<Box>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text>{description}</Text>
+					<Text whiteSpace='pre-wrap'>{description.trim()}</Text>
 				</Box>
 			)}
 

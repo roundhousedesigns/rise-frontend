@@ -210,7 +210,7 @@ export class Credit implements CreditParams {
 	positions: {
 		department: number[];
 		jobs: number[];
-	} = { department: [0], jobs: [] };
+	} = { department: [], jobs: [] };
 	skills: number[];
 	isNew: boolean = false;
 
@@ -223,7 +223,7 @@ export class Credit implements CreditParams {
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
 		this.skills = params.skills ? params.skills : [];
-		this.positions = this.getPositions(params) || { department: [0], jobs: [] };
+		this.positions = this.getPositions(params) || { department: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;
 	}
 

@@ -85,7 +85,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		jobLocation,
 		venue,
 		year,
-		positions: { department: selectedDepartmentIds = [0], jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
+		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
 		skills: selectedSkills,
 	} = editCredit;
 

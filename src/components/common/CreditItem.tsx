@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
-import { Card, Heading, Text, Tag, Wrap, TagLabel, Box } from '@chakra-ui/react';
+import { Card, Heading, Text, Tag, Wrap, TagLabel, Box, Stack, Flex } from '@chakra-ui/react';
 
 import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../../lib/utils';
@@ -11,13 +11,14 @@ interface Props {
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
+	[props: string]: any;
 }
-export default function CreditItem({ credit, isEditable, onClick }: Props) {
+export default function CreditItem({ credit, isEditable, onClick, ...rest }: Props) {
 	const {
 		title,
 		jobTitle,
 		jobLocation,
-		positions: { department: departmentIds, jobs: jobIds } = { department: [0], jobs: [] },
+		positions: { department: departmentIds, jobs: jobIds } = { department: [], jobs: [] },
 		skills: skillIds,
 		venue,
 		year,
@@ -27,8 +28,8 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : [0]);
-	// console.info('dept', department);
+	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
+	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
 	// The term items for each set.
 	const [jobs, setJobs] = useState<WPItem[]>([]);
@@ -72,7 +73,7 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 	}, [termData, jobIds, skillIds]);
 
 	return (
-		<Box onClick={onClick}>
+		<Box onClick={onClick} {...rest}>
 			<Card
 				// onClick={handleEditCredit}
 				cursor={isEditable ? 'pointer' : 'default'}
@@ -81,42 +82,58 @@ export default function CreditItem({ credit, isEditable, onClick }: Props) {
 				borderColor='gray.400'
 				_hover={isEditable ? { borderColor: 'black' } : {}}
 			>
-				<Wrap>
-					<Heading fontWeight='bold' fontSize='xl' as='h3'>
-						{title}
-						{year ? ` (${year})` : ''}
-					</Heading>
-					<Text fontSize='lg' ml={1} fontWeight='medium'>
-						{venue}
-						{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
-					</Text>
-				</Wrap>
-				{jobTitle ? (
-					<Text fontSize='md' my={0} pb={2} lineHeight={0.2}>
-						{decodeString(jobTitle)}
-					</Text>
-				) : (
-					false
-				)}
-				{department || jobs?.length || skills?.length ? (
-					<Wrap spacing={2}>
-						{department?.map((department: WPItem) => (
-							<Tag key={department.id} colorScheme='orange'>
-								<TagLabel>{decodeString(department.name)}</TagLabel>
-							</Tag>
-						))}
-						{jobs?.map((job: WPItem) => (
-							<Tag key={job.id} colorScheme='cyan'>
-								<TagLabel>{decodeString(job.name)}</TagLabel>
-							</Tag>
-						))}
-						{skills?.map((skill: WPItem) => (
-							<Tag key={skill.id} colorScheme='teal'>
-								<TagLabel>{decodeString(skill.name)}</TagLabel>
-							</Tag>
-						))}
-					</Wrap>
-				) : null}
+				<Flex
+					alignItems='flex-start'
+					justifyContent='space-between'
+					flexWrap={{ base: 'wrap', md: 'nowrap' }}
+				>
+					<Stack direction='column' flex='1 1 50%' minW='420px'>
+						<Wrap>
+							<Heading fontWeight='bold' fontSize='xl' as='h3'>
+								{title}
+								{year ? ` (${year})` : ''}
+							</Heading>
+							<Text fontSize='lg' ml={1} fontWeight='medium'>
+								{venue}
+								{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
+							</Text>
+						</Wrap>
+						{jobTitle ? (
+							<Text fontSize='md' pb={2} pt={1} lineHeight={0.2}>
+								{decodeString(jobTitle)}
+							</Text>
+						) : (
+							false
+						)}
+					</Stack>
+					<Box flex='1 1 50%' minW='420px'>
+						{departmentIds?.length || jobs?.length || skills?.length ? (
+							<Stack direction='column' mt={{ base: 4, md: 0 }}>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{department?.map((department: WPItem) => (
+										<Tag key={department.id} colorScheme='orange'>
+											<TagLabel>{decodeString(department.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{jobs?.map((job: WPItem) => (
+										<Tag key={job.id} colorScheme='cyan'>
+											<TagLabel>{decodeString(job.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+									{skills?.map((skill: WPItem) => (
+										<Tag key={skill.id} colorScheme='teal'>
+											<TagLabel>{decodeString(skill.name)}</TagLabel>
+										</Tag>
+									))}
+								</Wrap>
+							</Stack>
+						) : null}
+					</Box>
+				</Flex>
 			</Card>
 		</Box>
 	);
