@@ -56,42 +56,22 @@ import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 // import { useFileUpload } from '../hooks/mutations/useFileUpload';
 
 // Chakra Delete Credit Alert Dialog
-function DeleteAlertDialog(id: {}) {
+function DeleteAlertDialog(id: any, { handleDeleteCredit }: any) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = useRef<HTMLButtonElement>(null);
-	const [willDelete, setWillDelete] = useState<string>('');
-	// console.log('handleDeleteCredit', handleDeleteCredit);
-	// capture id of credit to delete
-	const handleDeleteId = (id: string) => {
-		onOpen();
-		console.log('handeDeleteId clicked');
-		// const targetDeleteId = e.currentTarget.id;
-		console.log('targetDeleteId: ', id);
-		setWillDelete(id);
-		console.log('willDelete state: ', willDelete);
-	};
-
-	const handleCancelDelete = () => {
-		setWillDelete('');
-		onClose();
-		console.log('willDelete after cancel button: ', willDelete);
-		// onClose();
-	};
 
 	return (
 		<>
-			{/* <Button colorScheme='red' onClick={onOpen}>
-				Delete Credit
-			</Button> */}
 			<IconButton
 				size='lg'
 				colorScheme='red'
 				icon={<FiTrash />}
 				aria-label='Delete Credit'
 				// id={credit.id}
-				onClick={() => {
-					handleDeleteId(id);
-				}}
+				// onClick={() => {
+				// 	handleDeleteId(id);
+				// }}
+				onClick={onOpen}
 			/>
 
 			<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
@@ -104,10 +84,18 @@ function DeleteAlertDialog(id: {}) {
 						<AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
 						<AlertDialogFooter>
-							<Button ref={cancelRef} onClick={handleCancelDelete}>
+							{/* this is where I want to trigger handleCancelDelete function to clear willDelete state - currently not working */}
+							<Button ref={cancelRef} onClick={onClose}>
 								Cancel
 							</Button>
-							<Button colorScheme='red' onClick={onClose} ml={3}>
+							{/* this is where I want to trigger handleDeleteCredit function - currently not working */}
+							<Button
+								colorScheme='red'
+								onClick={() => {
+									handleDeleteCredit(id);
+								}}
+								ml={3}
+							>
 								Delete
 							</Button>
 						</AlertDialogFooter>
@@ -342,31 +330,52 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		setResumeIsSet(false);
 	};
+
+	const [willDelete, setWillDelete] = useState<string>('');
+
+	// console.log('handleDeleteCredit', handleDeleteCredit);
+	//e: {currentTarget: Element;}
+	// capture id of credit to delete
+	const handleDeleteId = (e: { currentTarget: Element }) => {
+		console.log('handeDeleteId clicked');
+		const targetDeleteId = e.currentTarget.id;
+		console.log('targetDeleteId: ', targetDeleteId);
+		setWillDelete(targetDeleteId);
+		console.log('willDelete state: ', willDelete);
+		alert('are you sure?');
+		handleDeleteCredit(willDelete);
+	};
+
+	const handleCancelDelete = () => {
+		setWillDelete('');
+		console.log('willDelete after cancel button: ', willDelete);
+	};
 	// e: { currentTarget: Element }
 	const handleDeleteCredit = (willDelete: string) => {
 		console.log('willDelete inside handeDeleteCredit:', willDelete);
 		// const currentTarget = e.currentTarget;
-
-		deleteCreditMutation(willDelete)
-			.then(() => {
-				toast({
-					title: 'Credit deleted.',
-					description: 'Your credit has been updated.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					position: 'top',
+		if (willDelete !== '') {
+			deleteCreditMutation(willDelete)
+				.then(() => {
+					toast({
+						title: 'Credit deleted.',
+						description: 'Your credit has been updated.',
+						status: 'success',
+						duration: 5000,
+						isClosable: true,
+						position: 'top',
+					});
+					editProfileDispatch({
+						type: 'DELETE_CREDIT',
+						payload: {
+							creditId: willDelete,
+						},
+					});
+				})
+				.catch((err) => {
+					console.error(err);
 				});
-				editProfileDispatch({
-					type: 'DELETE_CREDIT',
-					payload: {
-						creditId: willDelete,
-					},
-				});
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		}
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -777,7 +786,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 								{/* {console.log(credit.id)} */}
 
-								<DeleteAlertDialog id={credit.id} />
+								<DeleteAlertDialog
+									// onClick={handleDeleteId} => onClick function isn't working here
+									// onClick={handleDeleteCredit} => onClick function isn't working here
+									// Trying to pass the handleCancelDelete function along with willDelete(id)
+									handleCancelDelete={handleCancelDelete}
+									id={willDelete}
+								/>
 							</Stack>
 						))
 					)}
