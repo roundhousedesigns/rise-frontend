@@ -24,7 +24,6 @@ export default function LoginView() {
 	const { loginMutation } = useLogin();
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		console.log(e.target.name, e.target.value, credentials);
 		setCredentials({
 			...credentials,
 			[e.target.name]: e.target.value,
@@ -35,7 +34,6 @@ export default function LoginView() {
 
 	const handleLoginSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log('credentials after submit: ', credentials);
 		loginMutation(credentials)
 			.then(() => {
 				window.location.reload();

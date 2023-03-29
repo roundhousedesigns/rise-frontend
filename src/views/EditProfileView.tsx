@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, ChangeEvent } from 'react';
 import {
 	Box,
 	Heading,
@@ -20,6 +20,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogContent,
 	AlertDialogOverlay,
+	Input,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -44,7 +45,6 @@ import EditableTextInput from '../components/common/inputs/EditableTextInput';
 import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import EditTextWithIcon from '../components/common/EditTextWithIcon';
-import FileInput, { FileInputRef } from '../components/common/inputs/FileInput';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
 
@@ -53,7 +53,8 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
-// import { useFileUpload } from '../hooks/mutations/useFileUpload';
+import useFileUpload from '../hooks/mutations/useFileUpload';
+import { useViewer } from '../hooks/queries/useViewer';
 
 type AlertProps = {
 	id: string;
@@ -116,13 +117,14 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
+	const { loggedInId } = useViewer();
 
 	const {
-		image,
 		firstName,
 		lastName,
 		pronouns,
 		selfTitle,
+		image,
 		homebase,
 		socials,
 		locations,
@@ -132,7 +134,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		description,
 		credits,
 		email,
-		resume,
+		// resume,
 		phone,
 		unions,
 		experienceLevels,
@@ -145,18 +147,18 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const editCreditId = useRef<string>('');
 
 	const {
+		uploadFileMutation,
+		results: { loading: uploadFileMutationLoading },
+	} = useFileUpload();
+
+	const {
 		updateCreditOrderMutation,
 		results: { loading: updateCreditOrderLoading },
 	} = useUpdateCreditOrder();
 
-	// PICKUP HERE: Need to add the resume file upload to the form.
-	// const { uploadFileMutation, results } = useFileUpload();
-
-	const [resumeIsSet, setResumeIsSet] = useState<boolean>(!!resume);
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
 
-	const resumeFileInputRef = useRef<FileInputRef>(null);
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
@@ -261,11 +263,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	}, []);
 
-	// Detect if a resume file has been set to upload, or already exists on the profile.
-	useEffect(() => {
-		setResumeIsSet(!!resume);
-	}, [resume]);
-
 	const handleInputChange = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
@@ -298,12 +295,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
+	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		if (!event || !event.target || !event.target.files) return;
+
+		const file = event.target.files[0];
+		if (!file) return;
+
+		uploadFileMutation(file, loggedInId)
+			.then((result) => {
+				editProfileDispatch({
+					type: 'UPDATE_INPUT',
+					payload: {
+						name: 'image',
+						value: result.data.uploadFile.imageUrl,
+					},
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
 	const handleNewCredit = () => {
 		editProfileDispatch({
 			type: 'ADD_CREDIT',
 			payload: {},
 		});
 	};
+
 
 	const handleResumeReset = () => {
 		if (resumeFileInputRef.current) {
@@ -427,24 +446,18 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							<Box mb={2}>
 								{/* TODO Image uploader */}
-								{image ? (
+								{uploadFileMutationLoading ? (
+									<Text>Uploading...</Text>
+								) : image ? (
 									<>
 										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
 									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center'>
-										{/* <FileInput name='image' label='Photo' /> */}
+										-- upload --
 									</Flex>
 								)}
-								<Text
-									textAlign='center'
-									fontSize='sm'
-									fontWeight='bold'
-									color='brand.red'
-									flex='0 0 100%'
-								>
-									Photo uploads are under development.
-								</Text>
+								<Input type='file' name='image' onChange={handleFileInputChange} />
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
@@ -561,27 +574,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											</Heading>
 											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
 												<Text variant='devAlert'>Resume uploads are under development.</Text>
-												{resumeIsSet && resume ? (
-													<Button>{resume.split('/').pop()}</Button>
-												) : (
-													<FileInput
-														name='resume'
-														label='Upload resume'
-														labelVisuallyHidden
-														ref={resumeFileInputRef}
-													/>
-												)}
-												{resumeIsSet && resume && (
-													<IconButton
-														icon={<FiXCircle />}
-														aria-label='Clear Resume'
-														title='Clear resume'
-														bg='brand.red'
-														color='white'
-														variant='oversized'
-														onClick={handleResumeReset}
-													/>
-												)}
+												<Text>-- upload --</Text>
 											</Flex>
 										</Box>
 									</Flex>
