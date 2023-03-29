@@ -14,6 +14,12 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
+	AlertDialog,
+	AlertDialogBody,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogContent,
+	AlertDialogOverlay,
 	Input,
 } from '@chakra-ui/react';
 import {
@@ -49,6 +55,55 @@ import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 import useFileUpload from '../hooks/mutations/useFileUpload';
 import { useViewer } from '../hooks/queries/useViewer';
+
+type AlertProps = {
+	id: string;
+	handleDeleteCredit: (id: string) => void;
+};
+// Chakra Delete Credit Alert Dialog
+function DeleteAlertDialog(props: AlertProps) {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const cancelRef = useRef<HTMLButtonElement>(null);
+
+	const handleDelete = () => {
+		props.handleDeleteCredit(props.id);
+		onClose();
+	};
+
+	return (
+		<>
+			<IconButton
+				size='lg'
+				colorScheme='red'
+				icon={<FiTrash />}
+				aria-label='Delete Credit'
+				onClick={onOpen}
+			/>
+			<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+				<AlertDialogOverlay>
+					<AlertDialogContent>
+						<AlertDialogHeader fontSize='lg' fontWeight='bold'>
+							Delete Credit
+						</AlertDialogHeader>
+
+						<AlertDialogBody>
+							Are you sure you want to permanently delete this credit?
+						</AlertDialogBody>
+
+						<AlertDialogFooter>
+							<Button ref={cancelRef} onClick={onClose}>
+								Cancel
+							</Button>
+							<Button colorScheme='red' onClick={handleDelete} ml={3}>
+								Delete
+							</Button>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialogOverlay>
+			</AlertDialog>
+		</>
+	);
+}
 
 interface Props {
 	profile: UserProfile | null;
@@ -103,6 +158,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
@@ -267,21 +323,37 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleDeleteCredit = (e: { currentTarget: Element }) => {
-		const currentTarget = e.currentTarget;
 
-		deleteCreditMutation(currentTarget.id)
-			.then(() => {
-				editProfileDispatch({
-					type: 'DELETE_CREDIT',
-					payload: {
-						creditId: currentTarget.id,
-					},
+	const handleResumeReset = () => {
+		if (resumeFileInputRef.current) {
+			resumeFileInputRef.current.reset();
+		}
+
+		setResumeIsSet(false);
+	};
+
+	const handleDeleteCredit = (creditId: string) => {
+		if (creditId !== '') {
+			deleteCreditMutation(creditId)
+				.then(() => {
+					toast({
+						description: 'Your credit has been deleted.',
+						status: 'success',
+						duration: 5000,
+						isClosable: true,
+						position: 'bottom',
+					});
+					editProfileDispatch({
+						type: 'DELETE_CREDIT',
+						payload: {
+							creditId: creditId,
+						},
+					});
+				})
+				.catch((err) => {
+					console.error(err);
 				});
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		}
 	};
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -653,14 +725,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										false
 									)}
 								</Stack>
-								<IconButton
-									size='lg'
-									colorScheme='red'
-									icon={<FiTrash />}
-									aria-label='Delete Credit'
-									id={credit.id}
-									onClick={handleDeleteCredit}
-								/>
+								<DeleteAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 							</Stack>
 						))
 					)}
