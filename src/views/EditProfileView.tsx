@@ -58,23 +58,14 @@ import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 type AlertProps = {
 	id: string;
 	handleDeleteCredit: (id: string) => void;
-	handleCancelDelete: () => void;
-	handleDeleteId: (id: string) => void;
 };
 // Chakra Delete Credit Alert Dialog
 function DeleteAlertDialog(props: AlertProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = useRef<HTMLButtonElement>(null);
 
-	props.handleDeleteId(props.id);
-
 	const handleDelete = () => {
 		props.handleDeleteCredit(props.id);
-		onClose();
-	};
-
-	const handleCancel = () => {
-		props.handleCancelDelete();
 		onClose();
 	};
 
@@ -98,7 +89,7 @@ function DeleteAlertDialog(props: AlertProps) {
 						<AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
 
 						<AlertDialogFooter>
-							<Button ref={cancelRef} onClick={handleCancel}>
+							<Button ref={cancelRef} onClick={onClose}>
 								Cancel
 							</Button>
 							<Button colorScheme='red' onClick={handleDelete} ml={3}>
@@ -321,25 +312,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		setResumeIsSet(false);
 	};
 
-	const [willDelete, setWillDelete] = useState<string>('');
-
-	// capture id of credit to delete
-	const handleDeleteId = (id: string) => {
-		// console.log('handeDeleteId clicked');
-		// console.log('targetDeleteId: ', id);
-		setWillDelete(id);
-		// console.log('willDelete state: ', willDelete);
-	};
-
-	const handleCancelDelete = () => {
-		setWillDelete('');
-		// console.log('willDelete after cancel button: ', willDelete);
-	};
-	// e: { currentTarget: Element }
-	const handleDeleteCredit = (willDelete: string) => {
+	const handleDeleteCredit = (creditId: string) => {
 		// console.log('willDelete inside handeDeleteCredit:', willDelete);
-		if (willDelete !== '') {
-			deleteCreditMutation(willDelete)
+		if (creditId !== '') {
+			deleteCreditMutation(creditId)
 				.then(() => {
 					toast({
 						title: 'Credit deleted.',
@@ -352,7 +328,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					editProfileDispatch({
 						type: 'DELETE_CREDIT',
 						payload: {
-							creditId: willDelete,
+							creditId: creditId,
 						},
 					});
 				})
@@ -757,12 +733,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										false
 									)}
 								</Stack>
-								<DeleteAlertDialog
-									handleDeleteId={handleDeleteId}
-									handleCancelDelete={handleCancelDelete}
-									handleDeleteCredit={handleDeleteCredit}
-									id={credit.id}
-								/>
+								<DeleteAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 							</Stack>
 						))
 					)}
