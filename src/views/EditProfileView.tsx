@@ -65,11 +65,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const { loggedInId } = useViewer();
 
 	const {
-		image,
 		firstName,
 		lastName,
 		pronouns,
 		selfTitle,
+		image,
 		homebase,
 		socials,
 		locations,
@@ -91,7 +91,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
 
-	const { uploadFileMutation } = useFileUpload();
+	const {
+		uploadFileMutation,
+		results: { loading: uploadFileMutationLoading },
+	} = useFileUpload();
 
 	const {
 		updateCreditOrderMutation,
@@ -244,7 +247,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		uploadFileMutation(file, loggedInId)
 			.then((result) => {
-				console.info(result);
+				editProfileDispatch({
+					type: 'UPDATE_INPUT',
+					payload: {
+						name: 'image',
+						value: result.data.uploadFile.imageUrl,
+					},
+				});
 			})
 			.catch((err) => {
 				console.error(err);
@@ -365,7 +374,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							<Box mb={2}>
 								{/* TODO Image uploader */}
-								{image ? (
+								{uploadFileMutationLoading ? (
+									<Text>Uploading...</Text>
+								) : image ? (
 									<>
 										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
 									</>
