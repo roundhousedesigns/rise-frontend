@@ -323,15 +323,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-
-	const handleResumeReset = () => {
-		if (resumeFileInputRef.current) {
-			resumeFileInputRef.current.reset();
-		}
-
-		setResumeIsSet(false);
-	};
-
 	const handleDeleteCredit = (creditId: string) => {
 		if (creditId !== '') {
 			deleteCreditMutation(creditId)
