@@ -99,7 +99,7 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @returns {Object} The prepared user profile.
  */
 export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
-	const { credits, ...sanitized } = profile;
+	const { credits, image, ...sanitized } = profile;
 
 	return sanitized;
 };
