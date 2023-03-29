@@ -68,6 +68,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.join(', ');
 
 	const ProfileSubtitle = ({ ...props }: any) => {
+		const SelfTitle = () => {
+			return (
+				<Text as='span' textDecoration='underline'>
+					{selfTitle}
+				</Text>
+			);
+		};
 		const HomeBase = () => {
 			return (
 				<Text as='span' textDecoration='underline'>
@@ -80,11 +87,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			<Heading size='md' mt={2} fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
-						{selfTitle}{' '}
-						<Text as='span' fontWeight='bold'>
-							based in
-						</Text>{' '}
-						<HomeBase />
+						<SelfTitle /> based in <HomeBase />
 					</>
 				) : (
 					selfTitle || <HomeBase />
