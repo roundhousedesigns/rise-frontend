@@ -78,7 +78,6 @@ function DeleteAlertDialog(props: AlertProps) {
 				aria-label='Delete Credit'
 				onClick={onOpen}
 			/>
-
 			<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
 				<AlertDialogOverlay>
 					<AlertDialogContent>
@@ -86,7 +85,9 @@ function DeleteAlertDialog(props: AlertProps) {
 							Delete Credit
 						</AlertDialogHeader>
 
-						<AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+						<AlertDialogBody>
+							Are you sure you want to permanently delete this credit?
+						</AlertDialogBody>
 
 						<AlertDialogFooter>
 							<Button ref={cancelRef} onClick={onClose}>
@@ -313,17 +314,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const handleDeleteCredit = (creditId: string) => {
-		// console.log('willDelete inside handeDeleteCredit:', willDelete);
 		if (creditId !== '') {
 			deleteCreditMutation(creditId)
 				.then(() => {
 					toast({
-						title: 'Credit deleted.',
-						description: 'Your credit has been updated.',
+						description: 'Your credit has been deleted.',
 						status: 'success',
 						duration: 5000,
 						isClosable: true,
-						position: 'top',
+						position: 'bottom',
 					});
 					editProfileDispatch({
 						type: 'DELETE_CREDIT',
