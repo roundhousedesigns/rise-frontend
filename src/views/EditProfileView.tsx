@@ -21,6 +21,7 @@ import {
 	AlertDialogContent,
 	AlertDialogOverlay,
 	Input,
+	Icon,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -36,6 +37,7 @@ import {
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
+	FiImage,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -444,8 +446,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
 									</>
 								) : (
-									<Flex alignItems='center' justifyContent='center'>
-										-- upload --
+									<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
+										<Icon as={FiImage} boxSize='60px' />
 									</Flex>
 								)}
 								<Input type='file' name='image' onChange={handleFileInputChange} />

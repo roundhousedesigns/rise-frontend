@@ -208,6 +208,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{credits && credits.length > 0 && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
+					{/* TODO Position/skill tag legend */}
 					<UnorderedList listStyleType='none' m={0}>
 						{creditsSorted.map((credit: Credit) => (
 							<ListItem key={credit.id}>

@@ -2,8 +2,16 @@
 
 ## PRIORITIES
 
-- [ ] File uploads
-- [ ] Split Media into photo and video sections
+### Profile
+
+- Media: photos
+- Media: videos
+- Resume
+- ADD: "Willing to Tour" checkbox
+- Socials
+  - Website below phone number as text link
+  - Remaining social icons after Website
+  - Resume button embiggened, below socials
 
 ## TODO
 
