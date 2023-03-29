@@ -67,7 +67,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.map((term: WPItem) => term.name)
 			.join(', ');
 
-	const ProfileSubtitle = () => {
+	const ProfileSubtitle = ({ ...props }: any) => {
 		const HomeBase = () => {
 			return (
 				<Text as='span' textDecoration='underline'>
@@ -77,7 +77,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		};
 
 		return (
-			<Heading size='md' mt={2} fontWeight='medium'>
+			<Heading size='md' mt={2} fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
 						{selfTitle}{' '}
@@ -132,7 +132,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									false
 								)}
 
-								<ProfileSubtitle />
+								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
 							{socials && !isEmpty(socials) && (
 								<StackItem>
