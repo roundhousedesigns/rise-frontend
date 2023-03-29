@@ -16,7 +16,7 @@ import {
 	StackItem,
 } from '@chakra-ui/react';
 // import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers, FiHome } from 'react-icons/fi';
+import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -67,8 +67,30 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.map((term: WPItem) => term.name)
 			.join(', ');
 
-	const profileSubtitle = () => {
-		return selfTitle && homebase ? `${selfTitle} based in ${homebase}` : selfTitle || homebase;
+	const ProfileSubtitle = () => {
+		const HomeBase = () => {
+			return (
+				<Text as='span' textDecoration='underline'>
+					{homebase}
+				</Text>
+			);
+		};
+
+		return (
+			<Heading size='md' mt={2} fontWeight='medium'>
+				{selfTitle && homebase ? (
+					<>
+						{selfTitle}{' '}
+						<Text as='span' fontWeight='bold'>
+							based in
+						</Text>{' '}
+						<HomeBase />
+					</>
+				) : (
+					selfTitle || <HomeBase />
+				)}
+			</Heading>
+		);
 	};
 
 	return profile ? (
@@ -110,19 +132,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									false
 								)}
 
-								{profileSubtitle() ? (
-									<TextWithIcon
-										icon={FiHome}
-										flex='0 0 100%'
-										fontSize='xl'
-										lineHeight='short'
-										mt={2}
-										mb={0}
-									>
-										{' '}
-										{profileSubtitle()}{' '}
-									</TextWithIcon>
-								) : null}
+								<ProfileSubtitle />
 							</StackItem>
 							{socials && !isEmpty(socials) && (
 								<StackItem>
