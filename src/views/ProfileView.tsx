@@ -216,16 +216,20 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 							{resume ? (
 								<StackItem>
-									<Link
+									<Button
 										href={resume}
-										as={Button}
+										as={Link}
 										bgColor='teal'
 										color='white'
 										leftIcon={<FiDownload />}
 										download
+										isExternal
+										_hover={{
+											textDecoration: 'none',
+										}}
 									>
 										Resume
-									</Link>
+									</Button>
 								</StackItem>
 							) : (
 								false
