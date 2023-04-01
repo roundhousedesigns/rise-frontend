@@ -17,7 +17,7 @@ export default function ProfileCheckboxGroup({
 	checked,
 	handleChange,
 	...rest
-}: Props): JSX.Element | false {
+}: Props) {
 	const handleToggleItem = (items: string[]) => {
 		handleChange(name)(items);
 	};
@@ -42,7 +42,5 @@ export default function ProfileCheckboxGroup({
 				);
 			})}
 		</Wrap>
-	) : (
-		false
-	);
+	) : null;
 }

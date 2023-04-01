@@ -16,7 +16,6 @@ export function socialLink(network: string, value: string): string {
 		linkedin: 'https://www.linkedin.com/in/',
 		instagram: 'https://www.instagram.com/',
 		facebook: '',
-		website: '',
 	};
 
 	if (!(network in socialLinkBases)) {
