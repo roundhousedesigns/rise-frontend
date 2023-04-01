@@ -563,7 +563,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											icon={FiGlobe}
 											label='Website'
 											name='website'
-											handleChange={handleSocialInputChange}
+											handleChange={handleInputChange}
 										/>
 									</Box>
 									<Box flex='0 0 33%' textAlign='center'>

@@ -19,7 +19,7 @@ import {
 	Wrap,
 } from '@chakra-ui/react';
 // import ReactPlayer from 'react-player';
-import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
+import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
@@ -146,14 +146,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Works In</Heading>
 								<Flex alignItems='center'>
-									{locations && locations.length > 0 && locationTerms ? (
-										<TextWithIcon icon={FiMapPin}>
-											{selectedTerms(locations, locationTerms)}
-										</TextWithIcon>
-									) : (
-										false
-									)}
-									<Wrap ml={2}>
+									<TextWithIcon icon={FiMapPin}>
+										{locations && locations.length > 0 && locationTerms
+											? selectedTerms(locations, locationTerms)
+											: false}
+									</TextWithIcon>
+									<Wrap>
 										{willTravel !== undefined && (
 											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
 												{willTravel ? 'Will Travel' : 'Local Only'}
@@ -167,14 +165,14 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									</Wrap>
 								</Flex>
 							</StackItem>
-							<StackItem>
-								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-								<Text>
-									{unions && unions.length > 0 && unionTerms
-										? selectedTerms(unions, unionTerms)
-										: 'None'}
-								</Text>
-							</StackItem>
+							{unions && unions.length > 0 && unionTerms ? (
+								<StackItem>
+									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
+								</StackItem>
+							) : (
+								false
+							)}
 							<StackItem>
 								<Heading variant='contentTitle'>Contact</Heading>
 								<UnorderedList listStyleType='none' m={0}>
