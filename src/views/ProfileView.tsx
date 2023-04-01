@@ -146,7 +146,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem>
 								<Heading variant='contentTitle'>Works In</Heading>
 								<Flex alignItems='center'>
-									<TextWithIcon icon={FiMapPin}>
+									<TextWithIcon icon={FiMapPin} mr={2}>
 										{locations && locations.length > 0 && locationTerms
 											? selectedTerms(locations, locationTerms)
 											: false}

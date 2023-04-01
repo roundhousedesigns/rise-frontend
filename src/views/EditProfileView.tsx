@@ -471,83 +471,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											outerProps={{ flex: '0 0 130px' }}
 										/>
 									</Flex>
-									<EditableTextInput
-										defaultValue={homebase ? homebase : ''}
-										name='homebase'
-										as={Text}
-										label='Where do you currently live?'
-										fontWeight='medium'
-										styles={{ display: 'block' }}
-										mb={0}
-										handleChange={handleInputChange}
-										outerProps={{ flex: '0 0 130px' }}
-									/>
+									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+										<EditableTextInput
+											defaultValue={homebase ? homebase : ''}
+											name='homebase'
+											label='Where do you currently live?'
+											styles={{ display: 'block' }}
+											handleChange={handleInputChange}
+											outerProps={{ flex: '1' }}
+										/>
+										<EditableTextInput
+											defaultValue={selfTitle ? selfTitle : ''}
+											name='selfTitle'
+											placeholder='Title'
+											label='Title/Trade/Profession'
+											handleChange={handleInputChange}
+											outerProps={{ flex: '1' }}
+										/>
+									</Flex>
 								</StackItem>
 								<StackItem display='flex' flexWrap='wrap' gap={4}>
-									<EditableTextInput
-										defaultValue={selfTitle ? selfTitle : ''}
-										name='selfTitle'
-										placeholder='Title'
-										label='Title/Trade/Profession'
-										handleChange={handleInputChange}
-										outerProps={{ flex: '1 1 60%' }}
-									/>
-								</StackItem>
-							</Stack>
-						</Flex>
-						<Stack>
-							<StackItem>
-								<Box fontSize='sm'>
-									<Heading variant='contentTitle'>Work Locations</Heading>
-									<Heading variant='contentSubtitle'>
-										Select any areas in which you're a local hire.
-									</Heading>
-									<ProfileCheckboxGroup
-										name='locations'
-										items={locationTerms}
-										checked={locations ? locations.map((item) => item.toString()) : []}
-										handleChange={handleInputChange}
-									/>
-								</Box>
-							</StackItem>
-							<StackItem py={4}>
-								<Flex gap={10}>
-									<Box>
-										<Heading variant='contentTitle'>Travel</Heading>
-										<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
-										<ProfileRadioGroup
-											defaultValue={willTravel ? 'true' : 'false'}
-											name='willTravel'
-											items={[
-												{ label: 'Yes', value: 'true' },
-												{ label: 'No', value: 'false' },
-											]}
-											handleChange={handleBooleanInputChange}
-										/>
-									</Box>
-									<Box>
-										<Heading variant='contentTitle'>Tour</Heading>
-										<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
-										<ProfileRadioGroup
-											defaultValue={willTour ? 'true' : 'false'}
-											name='willTour'
-											items={[
-												{ label: 'Yes', value: 'true' },
-												{ label: 'No', value: 'false' },
-											]}
-											handleChange={handleBooleanInputChange}
-										/>
-									</Box>
-								</Flex>
-							</StackItem>
-							<StackItem>
-								<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
 									<Box flex='1'>
-										<Heading variant='contentTitle'>Contact</Heading>
+										<Heading variant='contentTitle' mb={2}>
+											Contact
+										</Heading>
 										<EditTextWithIcon
 											value={email}
 											icon={FiMail}
-											label='Email'
+											label='Contact email'
 											name='email'
 											handleChange={handleInputChange}
 										/>
@@ -566,28 +517,70 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											handleChange={handleInputChange}
 										/>
 									</Box>
-									<Box flex='0 0 33%' textAlign='center'>
-										<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-											Resume
-										</Heading>
-										<Flex gap={3} justifyContent='center' flexWrap='wrap'>
-											{resume ? (
-												<Icon as={FiCheckCircle} boxSize={10} />
-											) : (
-												<Text>Upload your resume (PDF, DOC, or image)</Text>
-											)}
-											{/* TODO center input button */}
-											{/* TODO add "clear" button */}
-											<Input
-												type='file'
-												name='resume'
-												onChange={handleFileInputChange}
-												border='none'
-												color='transparent'
-											/>
-										</Flex>
-									</Box>
-								</Flex>
+								</StackItem>
+							</Stack>
+						</Flex>
+						<Stack>
+							<StackItem fontSize='sm'>
+								<Heading variant='contentTitle'>Work Locations</Heading>
+								<Heading variant='contentSubtitle'>
+									Select any areas in which you're a local hire.
+								</Heading>
+								<ProfileCheckboxGroup
+									name='locations'
+									items={locationTerms}
+									checked={locations ? locations.map((item) => item.toString()) : []}
+									handleChange={handleInputChange}
+								/>
+							</StackItem>
+							<StackItem py={4} display='flex' gap={10}>
+								<Box>
+									<Heading variant='contentTitle'>Travel</Heading>
+									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTravel ? 'true' : 'false'}
+										name='willTravel'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleBooleanInputChange}
+									/>
+								</Box>
+								<Box>
+									<Heading variant='contentTitle'>Tour</Heading>
+									<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTour ? 'true' : 'false'}
+										name='willTour'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleBooleanInputChange}
+									/>
+								</Box>
+								<Box flex='0 0 33%' textAlign='center'>
+									<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+										Resume
+									</Heading>
+									<Flex gap={3} justifyContent='center' flexWrap='wrap'>
+										{resume ? (
+											<Icon as={FiCheckCircle} boxSize={10} />
+										) : (
+											<Text>Upload your resume (PDF, DOC, or image)</Text>
+										)}
+										{/* TODO center input button */}
+										{/* TODO add "clear" button */}
+										<Input
+											type='file'
+											name='resume'
+											onChange={handleFileInputChange}
+											border='none'
+											color='transparent'
+										/>
+									</Flex>
+								</Box>
 							</StackItem>
 						</Stack>
 

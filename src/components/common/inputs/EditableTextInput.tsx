@@ -28,6 +28,7 @@ export default function EditableTextInput({
 	labelVisuallyHidden,
 	styles,
 	handleChange,
+	// TODO simplify outerprops, inputprops. invert implementations of outer and inner {...rest}
 	outerProps,
 	...inputProps
 }: Props): JSX.Element {

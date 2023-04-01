@@ -13,7 +13,7 @@ export const QUERY_PROFILE = gql`
 			firstName
 			lastName
 			pronouns
-			email
+			email: contactEmail
 			selfTitle
 			homebase
 			image

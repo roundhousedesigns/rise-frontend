@@ -12,6 +12,7 @@ interface Props {
 	outerProps?: {
 		[key: string]: any;
 	};
+	[inputProp: string]: any;
 }
 
 export default function EditTextWithIcon({
