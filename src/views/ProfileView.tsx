@@ -153,7 +153,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									) : (
 										false
 									)}
-									<Wrap>
+									<Wrap ml={2}>
 										{willTravel !== undefined && (
 											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
 												{willTravel ? 'Will Travel' : 'Local Only'}
@@ -222,6 +222,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 										bgColor='teal'
 										color='white'
 										leftIcon={<FiDownload />}
+										download
 									>
 										Resume
 									</Link>
@@ -292,7 +293,5 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Box>
 			)} */}
 		</Stack>
-	) : (
-		null
-	);
+	) : null;
 }

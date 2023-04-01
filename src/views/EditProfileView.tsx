@@ -286,6 +286,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			deleteCreditMutation(creditId)
 				.then(() => {
 					toast({
+						// title: 'Credit deleted.',
 						description: 'Your credit has been deleted.',
 						status: 'success',
 						duration: 5000,
@@ -310,25 +311,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		updateProfileMutation(editProfile)
 			.then(() => {
-				// toast({
-				// 	title: 'Profile saved.',
-				// 	description: 'Your profile has been updated.',
-				// 	status: 'success',
-				// 	duration: 5000,
-				// 	isClosable: true,
-				// 	position: 'top',
-				// });
 				setWillDeleteCredits(false);
 				navigate('/profile');
 			})
+			.then(() => {
+				toast({
+					// title: 'Profile saved.',
+					description: 'Your profile has been updated.',
+					status: 'success',
+					duration: 2000,
+					isClosable: true,
+					position: 'bottom',
+				});
+			})
 			.catch((err) => {
 				toast({
-					title: 'Profile not saved.',
+					// title: 'Profile not saved.',
 					description: 'There was an error saving your profile.',
 					status: 'error',
-					duration: 5000,
+					duration: 2000,
 					isClosable: true,
-					position: 'top',
+					position: 'bottom',
 				});
 
 				// DEBUG
@@ -508,13 +511,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							</StackItem>
 							<StackItem py={4}>
-								<Flex>
-									<Box flex='1' textAlign='center'>
+								<Flex gap={10}>
+									<Box>
 										<Heading variant='contentTitle'>Travel</Heading>
 										<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
 										<ProfileRadioGroup
-											justifyContent='center'
-											gap={2}
 											defaultValue={willTravel ? 'true' : 'false'}
 											name='willTravel'
 											items={[
@@ -524,13 +525,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											handleChange={handleBooleanInputChange}
 										/>
 									</Box>
-									<Box flex='1' textAlign='center'>
+									<Box>
 										<Heading variant='contentTitle'>Tour</Heading>
 										<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
 										<ProfileRadioGroup
 											defaultValue={willTour ? 'true' : 'false'}
-											justifyContent='center'
-											gap={2}
 											name='willTour'
 											items={[
 												{ label: 'Yes', value: 'true' },
@@ -626,7 +625,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</StackItem>
 
 						<StackItem>
-							<Stack direction='column' gap={4}>
+							<Stack direction='column' gap={4} maxW='600px'>
 								<StackItem>
 									<Heading variant='contentTitle'>Social</Heading>
 									<EditTextWithIcon

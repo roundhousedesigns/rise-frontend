@@ -40,6 +40,8 @@ export default function ProfileRadioGroup({
 			alignItems='center'
 			w='full'
 			py={2}
+			gap={2}
+			fontSize='sm'
 			{...getRootProps()}
 			{...props}
 		>
