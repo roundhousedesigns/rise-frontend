@@ -371,13 +371,23 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form onSubmit={handleSubmit}>
-			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='lg'>
+			<ButtonGroup
+				display='flex'
+				flexDirection='column'
+				position='fixed'
+				top={24}
+				right={4}
+				zIndex='1'
+				rowGap={2}
+				size='lg'
+			>
 				<IconButton
 					type='submit'
 					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 					colorScheme='green'
 					disabled={saveLoading}
 					borderRadius='full'
+					mx={0}
 				>
 					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
 				</IconButton>
@@ -387,6 +397,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					aria-label='Cancel editing'
 					borderRadius='full'
 					onClick={handleCancel}
+					marginInlineStart='0 !important'
 				>
 					<FiXCircle />
 				</IconButton>
@@ -585,7 +596,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</Stack>
 
 						<StackItem>
-							<Flex>
+							<Flex flexWrap='wrap' gap={4}>
 								<Box flex='1'>
 									<Heading variant='contentTitle'>Unions/Guilds</Heading>
 									<Heading variant='contentSubtitle'>
