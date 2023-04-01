@@ -8,9 +8,16 @@ interface Props {
 	items: WPItem[];
 	checked: string[];
 	handleChange: (name: string) => (value: string[]) => void;
+	[prop: string]: any;
 }
 
-export default function ProfileCheckboxGroup({ name, items, checked, handleChange }: Props) {
+export default function ProfileCheckboxGroup({
+	name,
+	items,
+	checked,
+	handleChange,
+	...rest
+}: Props): JSX.Element | false {
 	const handleToggleItem = (items: string[]) => {
 		handleChange(name)(items);
 	};
@@ -26,7 +33,7 @@ export default function ProfileCheckboxGroup({ name, items, checked, handleChang
 	}, []);
 
 	return items ? (
-		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2}>
+		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>
 			{items.map((item: WPItem, index: Key) => {
 				return (
 					<CheckboxButton key={index} {...getCheckboxProps({ value: item.id.toString() })}>
@@ -35,5 +42,7 @@ export default function ProfileCheckboxGroup({ name, items, checked, handleChang
 				);
 			})}
 		</Wrap>
-	) : null;
+	) : (
+		false
+	);
 }

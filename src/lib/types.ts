@@ -38,7 +38,6 @@ export interface PersonalLinksParams {
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
-	website?: string;
 }
 
 /**
@@ -57,6 +56,7 @@ export interface UserProfileParams {
 	description?: string;
 	resume?: string;
 	willTravel?: boolean | string | number | null;
+	willTour?: boolean | string | number | null;
 	education?: string;
 	media?: string;
 	locations?: number[] | WPItem[];

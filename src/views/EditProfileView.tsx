@@ -14,14 +14,9 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
-	AlertDialog,
-	AlertDialogBody,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogContent,
-	AlertDialogOverlay,
 	Input,
 	Icon,
+	Progress,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -32,12 +27,12 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
-	FiTrash,
 	FiTwitter,
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
+	FiCheckCircle,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -57,55 +52,12 @@ import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 import useFileUpload from '../hooks/mutations/useFileUpload';
 import { useViewer } from '../hooks/queries/useViewer';
+import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
 
-type AlertProps = {
+export type AlertProps = {
 	id: string;
 	handleDeleteCredit: (id: string) => void;
 };
-// Chakra Delete Credit Alert Dialog
-function DeleteAlertDialog(props: AlertProps) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const cancelRef = useRef<HTMLButtonElement>(null);
-
-	const handleDelete = () => {
-		props.handleDeleteCredit(props.id);
-		onClose();
-	};
-
-	return (
-		<>
-			<IconButton
-				size='lg'
-				colorScheme='red'
-				icon={<FiTrash />}
-				aria-label='Delete Credit'
-				onClick={onOpen}
-			/>
-			<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-				<AlertDialogOverlay>
-					<AlertDialogContent>
-						<AlertDialogHeader fontSize='lg' fontWeight='bold'>
-							Delete Credit
-						</AlertDialogHeader>
-
-						<AlertDialogBody>
-							Are you sure you want to permanently delete this credit?
-						</AlertDialogBody>
-
-						<AlertDialogFooter>
-							<Button ref={cancelRef} onClick={onClose}>
-								Cancel
-							</Button>
-							<Button colorScheme='red' onClick={handleDelete} ml={3}>
-								Delete
-							</Button>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialogOverlay>
-			</AlertDialog>
-		</>
-	);
-}
 
 interface Props {
 	profile: UserProfile | null;
@@ -128,15 +80,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		selfTitle,
 		image,
 		homebase,
+		website,
 		socials,
 		locations,
 		education,
 		willTravel,
+		willTour,
 		// media,
 		description,
 		credits,
 		email,
-		// resume,
+		resume,
 		phone,
 		unions,
 		experienceLevels,
@@ -301,15 +255,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		if (!event || !event.target || !event.target.files) return;
 
 		const file = event.target.files[0];
-		if (!file) return;
+		const { name } = event.target;
 
-		uploadFileMutation(file, loggedInId)
+		if (!file || !name) return;
+
+		uploadFileMutation(file, name, loggedInId)
 			.then((result) => {
 				editProfileDispatch({
 					type: 'UPDATE_INPUT',
 					payload: {
-						name: 'image',
-						value: result.data.uploadFile.imageUrl,
+						name,
+						value: result.data.uploadFile.fileUrl,
 					},
 				});
 			})
@@ -437,20 +393,41 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Card>
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-							<Box mb={2}>
+							<Box mb={2} width='30%'>
 								{/* TODO Image uploader */}
 								{uploadFileMutationLoading ? (
-									<Text>Uploading...</Text>
+									<Flex alignItems='center' justifyContent='center' h='200px'>
+										<Text textAlign='center' fontSize='sm'>
+											Uploading...
+										</Text>
+										<Progress size='md' isIndeterminate />
+									</Flex>
 								) : image ? (
 									<>
-										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
+										<Image
+											src={image}
+											alt={`Profile picture`}
+											loading='eager'
+											fit='cover'
+											w='xs'
+											mb={2}
+										/>
+										{/* TODO clear/remove image button */}
+										{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
 									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
 										<Icon as={FiImage} boxSize='60px' />
 									</Flex>
 								)}
-								<Input type='file' name='image' onChange={handleFileInputChange} />
+								{/* TODO size limit validation */}
+								<Input
+									type='file'
+									name='image'
+									onChange={handleFileInputChange}
+									border='none'
+									color='transparent'
+								/>
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
@@ -512,24 +489,32 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleInputChange}
 										outerProps={{ flex: '1 1 60%' }}
 									/>
-									<Box fontSize='sm'>
-										<Heading variant='contentTitle'>Work Locations</Heading>
-										<Heading variant='contentSubtitle'>
-											Where are you looking for work? Select all that apply.
-										</Heading>
-										<ProfileCheckboxGroup
-											name='locations'
-											items={locationTerms}
-											checked={locations ? locations.map((item) => item.toString()) : []}
-											handleChange={handleInputChange}
-										/>
-									</Box>
-									<Box fontSize='sm'>
-										<Heading variant='contentTitle'>Willing to travel?</Heading>
-										<Heading variant='contentSubtitle'>
-											Are you willing to leave home, or your work locations, for a job?
-										</Heading>
+								</StackItem>
+							</Stack>
+						</Flex>
+						<Stack>
+							<StackItem>
+								<Box fontSize='sm'>
+									<Heading variant='contentTitle'>Work Locations</Heading>
+									<Heading variant='contentSubtitle'>
+										Select any areas in which you're a local hire.
+									</Heading>
+									<ProfileCheckboxGroup
+										name='locations'
+										items={locationTerms}
+										checked={locations ? locations.map((item) => item.toString()) : []}
+										handleChange={handleInputChange}
+									/>
+								</Box>
+							</StackItem>
+							<StackItem py={4}>
+								<Flex>
+									<Box flex='1' textAlign='center'>
+										<Heading variant='contentTitle'>Travel</Heading>
+										<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
 										<ProfileRadioGroup
+											justifyContent='center'
+											gap={2}
 											defaultValue={willTravel ? 'true' : 'false'}
 											name='willTravel'
 											items={[
@@ -539,74 +524,111 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											handleChange={handleBooleanInputChange}
 										/>
 									</Box>
-								</StackItem>
-								<StackItem>
-									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
-										<Box flex='1'>
-											<Heading variant='contentTitle'>Contact</Heading>
-											<EditTextWithIcon
-												value={email}
-												icon={FiMail}
-												label='Mail'
-												labelVisuallyHidden
-												name='email'
-												handleChange={handleInputChange}
+									<Box flex='1' textAlign='center'>
+										<Heading variant='contentTitle'>Tour</Heading>
+										<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+										<ProfileRadioGroup
+											defaultValue={willTour ? 'true' : 'false'}
+											justifyContent='center'
+											gap={2}
+											name='willTour'
+											items={[
+												{ label: 'Yes', value: 'true' },
+												{ label: 'No', value: 'false' },
+											]}
+											handleChange={handleBooleanInputChange}
+										/>
+									</Box>
+								</Flex>
+							</StackItem>
+							<StackItem>
+								<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
+									<Box flex='1'>
+										<Heading variant='contentTitle'>Contact</Heading>
+										<EditTextWithIcon
+											value={email}
+											icon={FiMail}
+											label='Email'
+											name='email'
+											handleChange={handleInputChange}
+										/>
+										<EditTextWithIcon
+											value={phone}
+											icon={FiPhone}
+											label='Phone'
+											name='phone'
+											handleChange={handleInputChange}
+										/>
+										<EditTextWithIcon
+											value={website}
+											icon={FiGlobe}
+											label='Website'
+											name='website'
+											handleChange={handleSocialInputChange}
+										/>
+									</Box>
+									<Box flex='0 0 33%' textAlign='center'>
+										<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+											Resume
+										</Heading>
+										<Flex gap={3} justifyContent='center' flexWrap='wrap'>
+											{resume ? (
+												<Icon as={FiCheckCircle} boxSize={10} />
+											) : (
+												<Text>Upload your resume (PDF, DOC, or image)</Text>
+											)}
+											{/* TODO center input button */}
+											{/* TODO add "clear" button */}
+											<Input
+												type='file'
+												name='resume'
+												onChange={handleFileInputChange}
+												border='none'
+												color='transparent'
 											/>
-											<EditTextWithIcon
-												value={phone}
-												icon={FiPhone}
-												label='Phone'
-												labelVisuallyHidden
-												name='phone'
-												handleChange={handleInputChange}
-											/>
-										</Box>
-										<Box flex='1'>
-											<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-												Resume
-											</Heading>
-											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
-												<Text variant='devAlert'>Resume uploads are under development.</Text>
-												<Text>-- upload --</Text>
-											</Flex>
-										</Box>
-									</Flex>
-								</StackItem>
-							</Stack>
-						</Flex>
+										</Flex>
+									</Box>
+								</Flex>
+							</StackItem>
+						</Stack>
 
 						<StackItem>
-							<Heading variant='contentTitle'>Unions/Guilds</Heading>
-							<Heading variant='contentSubtitle'>
-								What unions or guilds are you a member of?
-							</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='unions'
-									items={unionTerms}
-									checked={unions ? unions.map((item) => item.toString()) : []}
-									handleChange={handleInputChange}
-								/>
-							</Box>
-						</StackItem>
-
-						<StackItem>
-							<Heading variant='contentTitle'>Experience Levels</Heading>
-							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='experienceLevels'
-									items={experienceLevelTerms}
-									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
-									handleChange={handleInputChange}
-								/>
-							</Box>
+							<Flex>
+								<Box flex='1'>
+									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<Heading variant='contentSubtitle'>
+										What unions or guilds are you a member of?
+									</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='unions'
+											items={unionTerms}
+											checked={unions ? unions.map((item) => item.toString()) : []}
+											handleChange={handleInputChange}
+										/>
+									</Box>
+								</Box>
+								<Box flex='0 0 30%'>
+									<Heading variant='contentTitle'>Experience Levels</Heading>
+									<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='experienceLevels'
+											items={experienceLevelTerms}
+											checked={
+												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
+											}
+											handleChange={handleInputChange}
+										/>
+									</Box>
+								</Box>
+							</Flex>
 						</StackItem>
 
 						<StackItem>
 							<Stack direction='column' gap={4}>
 								<StackItem>
-									<Heading variant='contentTitle'>Social + Links</Heading>
+									<Heading variant='contentTitle'>Social</Heading>
 									<EditTextWithIcon
 										value={socials?.linkedin}
 										icon={FiLinkedin}
@@ -633,13 +655,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										icon={FiTwitter}
 										label='Twitter @handle'
 										name='socials.twitter'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.website}
-										icon={FiGlobe}
-										label='Website'
-										name='socials.website'
 										handleChange={handleSocialInputChange}
 									/>
 								</StackItem>

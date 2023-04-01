@@ -14,17 +14,21 @@ import {
 	UnorderedList,
 	ListItem,
 	StackItem,
+	Link,
+	Button,
+	Wrap,
 } from '@chakra-ui/react';
 // import ReactPlayer from 'react-player';
-import { FiDownload, FiMail, FiMapPin, FiPhone, FiUsers } from 'react-icons/fi';
+import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone } from 'react-icons/fi';
+import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/common/PersonalIconLinks';
 import CreditItem from '../components/common/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
-import { getWPItemsFromIds } from '../lib/utils';
 
 interface Props {
 	profile: UserProfile | null;
@@ -35,7 +39,7 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
+export default function ProfileView({ profile, loading }: Props): JSX.Element | false {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
@@ -44,9 +48,11 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		selfTitle,
 		homebase,
 		locations,
+		website,
 		socials,
 		unions,
 		willTravel,
+		willTour,
 		email,
 		phone,
 		resume,
@@ -137,31 +143,37 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
-							{socials && !isEmpty(socials) && (
-								<StackItem>
-									<PersonalIconLinks socials={socials} />
-								</StackItem>
-							)}
 							<StackItem>
 								<Heading variant='contentTitle'>Works In</Heading>
 								<Flex alignItems='center'>
-									<TextWithIcon icon={FiMapPin}>
-										{locations && locationTerms ? selectedTerms(locations, locationTerms) : 'None'}
-									</TextWithIcon>
-									{willTravel !== undefined && (
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
-											{willTravel ? 'Will Travel' : 'Local Only'}
-										</Tag>
+									{locations && locations.length > 0 && locationTerms ? (
+										<TextWithIcon icon={FiMapPin}>
+											{selectedTerms(locations, locationTerms)}
+										</TextWithIcon>
+									) : (
+										false
 									)}
+									<Wrap>
+										{willTravel !== undefined && (
+											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
+												{willTravel ? 'Will Travel' : 'Local Only'}
+											</Tag>
+										)}
+										{willTour !== undefined && (
+											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} ml={2}>
+												{willTour ? 'Will Tour' : 'No Tours'}
+											</Tag>
+										)}
+									</Wrap>
 								</Flex>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-								<TextWithIcon icon={FiUsers}>
+								<Text>
 									{unions && unions.length > 0 && unionTerms
 										? selectedTerms(unions, unionTerms)
 										: 'None'}
-								</TextWithIcon>
+								</Text>
 							</StackItem>
 							<StackItem>
 								<Heading variant='contentTitle'>Contact</Heading>
@@ -172,23 +184,52 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 												{email}
 											</LinkWithIcon>
 										</ListItem>
-									) : null}
+									) : (
+										false
+									)}
 									{phone ? (
 										<ListItem>
 											<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
 												{phone}
 											</LinkWithIcon>
 										</ListItem>
-									) : null}
-									{resume ? (
+									) : (
+										false
+									)}
+									{website ? (
 										<ListItem>
-											<LinkWithIcon href={resume} icon={FiDownload} isExternal>
-												Resume
+											<LinkWithIcon href={website} icon={FiGlobe}>
+												{website}
 											</LinkWithIcon>
 										</ListItem>
-									) : null}
+									) : (
+										false
+									)}
 								</UnorderedList>
 							</StackItem>
+
+							{socials && !isEmpty(socials) && (
+								<StackItem>
+									<PersonalIconLinks socials={socials} />
+								</StackItem>
+							)}
+
+							{resume ? (
+								<StackItem>
+									<Link
+										href={resume}
+										as={Button}
+										bgColor='teal'
+										color='white'
+										leftIcon={<FiDownload />}
+									>
+										Resume
+									</Link>
+								</StackItem>
+							) : (
+								false
+							)}
+
 							{/* TODO Bookmark a user */}
 							{/* <StackItem>
 								<Button
@@ -207,8 +248,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 			{credits && credits.length > 0 && (
 				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
-					{/* TODO Position/skill tag legend */}
+					<HeadingCenterline lineColor='brand.cyan' mb={1}>
+						Credits
+					</HeadingCenterline>
+					<Flex justifyContent='flex-end'>
+						<CreditsTagLegend />
+					</Flex>
 					<UnorderedList listStyleType='none' m={0}>
 						{creditsSorted.map((credit: Credit) => (
 							<ListItem key={credit.id}>
@@ -247,5 +292,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Box>
 			)} */}
 		</Stack>
-	) : null;
+	) : (
+		false
+	);
 }

@@ -1,5 +1,5 @@
 import { Key, useEffect } from 'react';
-import { Wrap, useRadioGroup } from '@chakra-ui/react';
+import { Flex, useRadioGroup } from '@chakra-ui/react';
 import RadioButton from './RadioButton';
 
 interface Props {
@@ -10,9 +10,16 @@ interface Props {
 	}[];
 	defaultValue: string;
 	handleChange: (name: string) => (value: string) => void;
+	[prop: string]: any;
 }
 
-export default function ProfileRadioGroup({ name, items, defaultValue, handleChange }: Props) {
+export default function ProfileRadioGroup({
+	name,
+	items,
+	defaultValue,
+	handleChange,
+	...props
+}: Props) {
 	const handleToggleItem = (value: string) => {
 		handleChange(name)(value);
 	};
@@ -28,7 +35,14 @@ export default function ProfileRadioGroup({ name, items, defaultValue, handleCha
 	}, []);
 
 	return items ? (
-		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...getRootProps()}>
+		<Flex
+			justifyContent='flex-start'
+			alignItems='center'
+			w='full'
+			py={2}
+			{...getRootProps()}
+			{...props}
+		>
 			{items.map((item: { label: string; value: string }, index: Key) => {
 				return (
 					<RadioButton key={index} {...getRadioProps({ value: item.value })}>
@@ -36,6 +50,6 @@ export default function ProfileRadioGroup({ name, items, defaultValue, handleCha
 					</RadioButton>
 				);
 			})}
-		</Wrap>
+		</Flex>
 	) : null;
 }

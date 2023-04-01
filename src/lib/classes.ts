@@ -63,7 +63,9 @@ export class UserProfile extends User {
 	description?: string;
 	resume?: string;
 	willTravel = false;
+	willTour = false;
 	education?: string;
+	website?: string;
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
@@ -87,6 +89,7 @@ export class UserProfile extends User {
 			description,
 			resume,
 			willTravel,
+			willTour,
 			education,
 			twitter,
 			linkedin,
@@ -112,12 +115,17 @@ export class UserProfile extends User {
 		this.selfTitle = selfTitle;
 		this.image = image;
 		this.phone = phone;
+		this.website = website;
 		this.description = description;
 		this.resume = resume;
 		this.education = education;
 
 		if (willTravel) {
 			this.willTravel = true;
+		}
+
+		if (willTour) {
+			this.willTour = true;
 		}
 
 		if (locations && locations.length > 0) {
@@ -160,10 +168,6 @@ export class UserProfile extends User {
 			this.socials.facebook = facebook;
 		}
 
-		if (website) {
-			this.socials.website = website;
-		}
-
 		if (credits && credits.length > 0) {
 			this.credits = credits.map((credit) => new Credit(credit));
 		}
@@ -189,7 +193,6 @@ export class PersonalLinks implements PersonalLinksParams {
 	linkedin: string = '';
 	instagram: string = '';
 	facebook: string = '';
-	website: string = '';
 
 	constructor(params: PersonalLinksParams = {}) {
 		Object.assign(this, params);

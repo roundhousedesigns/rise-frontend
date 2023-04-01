@@ -21,6 +21,7 @@ export const QUERY_PROFILE = gql`
 			description
 			resume
 			willTravel
+			willTour
 			media
 			education
 			website: websiteUrl

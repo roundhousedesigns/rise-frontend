@@ -1,6 +1,6 @@
 import React from 'react';
 import { Wrap, IconButton, Link } from '@chakra-ui/react';
-import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin, FiGlobe } from 'react-icons/fi';
+import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin } from 'react-icons/fi';
 import { PersonalLinks } from '../../lib/classes';
 import { socialLink } from '../../lib/utils';
 
@@ -19,12 +19,13 @@ interface Props {
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (
 	<Link href={socialLink(name, value)} isExternal display='block'>
+		{/* TODO Probably brighten these, or make them a color(s) */}
 		<IconButton variant='socialRound' aria-label={label} icon={icon} />
 	</Link>
 );
 
 export default function PersonalIconLinks({ socials }: Props): JSX.Element {
-	const { facebook, twitter, instagram, linkedin, website } = socials;
+	const { facebook, twitter, instagram, linkedin } = socials;
 
 	return (
 		<Wrap direction='row' spacing={4}>
@@ -32,7 +33,6 @@ export default function PersonalIconLinks({ socials }: Props): JSX.Element {
 			{facebook && socialIcon('Facebook', 'facebook', facebook, <FiFacebook />)}
 			{twitter && socialIcon('Twitter', 'twitter', twitter, <FiTwitter />)}
 			{instagram && socialIcon('Instagram', 'instagram', instagram, <FiInstagram />)}
-			{website && socialIcon('Website', 'website', website, <FiGlobe />)}
 		</Wrap>
 	);
 }
