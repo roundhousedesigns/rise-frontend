@@ -371,37 +371,41 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form onSubmit={handleSubmit}>
-			<ButtonGroup
-				display='flex'
-				flexDirection='column'
+			<Flex
+				alignItems='center'
+				borderTopWidth='1px'
+				borderTopColor='gray.100'
 				position='fixed'
-				top={24}
-				right={4}
-				zIndex='1'
-				rowGap={2}
-				size='lg'
+				bottom='0'
+				left='0'
+				width='100vw'
+				height='56px'
+				bgColor='whiteAlpha.900'
+				zIndex='100'
 			>
-				<IconButton
-					type='submit'
-					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
-					colorScheme='green'
-					disabled={saveLoading}
-					borderRadius='full'
-					mx={0}
-				>
-					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
-				</IconButton>
-				<IconButton
-					type='reset'
-					colorScheme='orange'
-					aria-label='Cancel editing'
-					borderRadius='full'
-					onClick={handleCancel}
-					marginInlineStart='0 !important'
-				>
-					<FiXCircle />
-				</IconButton>
-			</ButtonGroup>
+				<ButtonGroup rowGap={2} gap={2} size='md' ml='3vw'>
+					<Button
+						type='submit'
+						leftIcon={saveLoading ? undefined : <FiSave />}
+						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
+						colorScheme='green'
+						disabled={saveLoading}
+						mx={0}
+					>
+						{saveLoading ? <Spinner size='sm' /> : 'Save'}
+					</Button>
+					<Button
+						type='reset'
+						leftIcon={<FiXCircle />}
+						colorScheme='orange'
+						aria-label='Cancel editing'
+						onClick={handleCancel}
+						marginInlineStart='0 !important'
+					>
+						Cancel
+					</Button>
+				</ButtonGroup>
+			</Flex>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
 					<Card>
