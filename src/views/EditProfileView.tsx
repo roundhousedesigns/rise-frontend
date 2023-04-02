@@ -17,6 +17,7 @@ import {
 	Input,
 	Icon,
 	Progress,
+	Link,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -32,7 +33,6 @@ import {
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
-	FiCheckCircle,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -572,15 +572,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									/>
 								</Box>
 								<Box flex='0 0 33%' textAlign='center'>
-									<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
+									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
 										Resume
 									</Heading>
-									<Flex gap={3} justifyContent='center' flexWrap='wrap'>
-										{resume ? (
-											<Icon as={FiCheckCircle} boxSize={10} />
-										) : (
-											<Text>Upload your resume (PDF, DOC, or image)</Text>
-										)}
+									<Flex gap={3} flexWrap='wrap'>
+										<Heading variant='contentSubtitle'>
+											{resume ? (
+												<Link
+													m={0}
+													fontSize='md'
+													fontWeight='medium'
+													href={resume}
+													download
+													textDecoration='underline'
+													textDecorationStyle='dotted'
+												>
+													View your resume
+												</Link>
+											) : (
+												'PDF or image'
+											)}
+										</Heading>
 										{/* TODO center input button */}
 										{/* TODO add "clear" button */}
 										<Input
@@ -588,7 +600,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='resume'
 											onChange={handleFileInputChange}
 											border='none'
-											color='transparent'
+											pl='0'
 										/>
 									</Flex>
 								</Box>
