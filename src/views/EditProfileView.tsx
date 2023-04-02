@@ -373,17 +373,18 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		<form onSubmit={handleSubmit}>
 			<Flex
 				alignItems='center'
+				justifyContent='flex-end'
 				borderTopWidth='1px'
 				borderTopColor='gray.100'
 				position='fixed'
 				bottom='0'
 				left='0'
-				width='100vw'
+				width='full'
 				height='56px'
 				bgColor='whiteAlpha.900'
 				zIndex='100'
 			>
-				<ButtonGroup rowGap={2} gap={2} size='md' ml='3vw'>
+				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
 					<Button
 						type='submit'
 						leftIcon={saveLoading ? undefined : <FiSave />}
