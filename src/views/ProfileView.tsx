@@ -1,3 +1,4 @@
+import { Key } from 'react';
 import { isEmpty } from 'lodash';
 import {
 	Box,
@@ -17,9 +18,10 @@ import {
 	Link,
 	Button,
 	Wrap,
+	SimpleGrid,
 } from '@chakra-ui/react';
-// import ReactPlayer from 'react-player';
 import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
@@ -58,9 +60,19 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		resume,
 		credits,
 		description,
-		// media,
+		mediaVideo1,
+		mediaVideo2,
+		// mediaImage1,
+		// mediaImage2,
+		// mediaImage3,
+		// mediaImage4,
+		// mediaImage5,
+		// mediaImage6,
 		education,
 	} = profile || {};
+
+	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
+	// const mediaImags;
 
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
@@ -281,19 +293,28 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Box>
 			)}
 
-			{/* {media && media.length > 0 && (
+			{mediaVideos.length > 0 /*|| mediaImages.length > 0 */ ? (
 				<Box>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						{media.map((item: string, index: Key) => (
-							// TODO Improve video display w/ responsiveness and grid
-							<Box key={index}>
-								<ReactPlayer url={item} controls={true} />
-							</Box>
-						))}
-					</Stack>
+					<Heading variant='contentTitle' size='md'>
+						Video
+					</Heading>
+					<SimpleGrid columns={[1, 2]} mt={4} spacing={4} maxW='full' overflow='hidden'>
+						{mediaVideos.map((video: string | undefined, index: Key) => {
+							if (!video) return false;
+							return (
+								<Box key={index} position='relative' paddingBottom='56.25%'>
+									<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+										<ReactPlayer key={index} url={video} controls width='100%' height='100%' />
+									</Box>
+								</Box>
+							);
+						})}
+					</SimpleGrid>
 				</Box>
-			)} */}
+			) : (
+				false
+			)}
 		</Stack>
 	) : null;
 }

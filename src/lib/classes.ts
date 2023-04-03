@@ -73,7 +73,16 @@ export class UserProfile extends User {
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
 	personalIdentities: number[] = [];
+	mediaVideo1?: string;
+	mediaVideo2?: string;
+	mediaImage1?: string;
+	mediaImage2?: string;
+	mediaImage3?: string;
+	mediaImage4?: string;
+	mediaImage5?: string;
+	mediaImage6?: string;
 	credits: Credit[] = [];
+	[other: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -102,7 +111,14 @@ export class UserProfile extends User {
 			genderIdentities,
 			racialIdentities,
 			personalIdentities,
-			// media,
+			mediaVideo1,
+			mediaVideo2,
+			// mediaImage1,
+			// mediaImage2,
+			// mediaImage3,
+			// mediaImage4,
+			// mediaImage5,
+			// mediaImage6,
 		} = userParams;
 
 		super({ id, firstName, lastName });
@@ -119,6 +135,14 @@ export class UserProfile extends User {
 		this.description = description;
 		this.resume = resume;
 		this.education = education;
+		this.mediaVideo1 = mediaVideo1;
+		this.mediaVideo2 = mediaVideo2;
+		// this.mediaImage1 = mediaImage1;
+		// this.mediaImage2 = mediaImage2;
+		// this.mediaImage3 = mediaImage3;
+		// this.mediaImage4 = mediaImage4;
+		// this.mediaImage5 = mediaImage5;
+		// this.mediaImage6 = mediaImage6;
 
 		if (willTravel) {
 			this.willTravel = true;

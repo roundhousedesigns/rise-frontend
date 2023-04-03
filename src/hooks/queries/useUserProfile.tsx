@@ -22,7 +22,6 @@ export const QUERY_PROFILE = gql`
 			resume
 			willTravel
 			willTour
-			media
 			education
 			website: websiteUrl
 			twitter
@@ -47,6 +46,8 @@ export const QUERY_PROFILE = gql`
 			personalIdentities {
 				id: databaseId
 			}
+			mediaVideo1(format: RAW)
+			mediaVideo2(format: RAW)
 		}
 		credits(where: { author: $author }, last: $lastCredits) {
 			nodes {
@@ -112,6 +113,7 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 	// Reorder the credits
 	if (credits) credits.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
 
+	// Prepare the profile data object.
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
 
 	return [preparedProfile, omit(result, ['data'])];

@@ -9,12 +9,12 @@ interface Props {
 }
 
 /**
- * Generates a social media link based on the platform name and handle or url.
+ * Generates a social links based on the platform name and handle or url.
  *
- * @param {string} name The social media platform pretty name.
- * @param {string} label The social media platform label.
- * @param {string} value The social media platform handle or link.
- * @param {React.ReactElement} icon The social media platform icon element
+ * @param {string} name The social platform pretty name.
+ * @param {string} label The social platform label.
+ * @param {string} value The social platform handle or link.
+ * @param {React.ReactElement} icon The social platform icon element
  * @returns
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (

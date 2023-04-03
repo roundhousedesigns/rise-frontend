@@ -58,7 +58,14 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	willTour?: boolean | string | number | null;
 	education?: string;
-	media?: string;
+	mediaVideo1?: string;
+	mediaVideo2?: string;
+	mediaImage1?: string;
+	mediaImage2?: string;
+	mediaImage3?: string;
+	mediaImage4?: string;
+	mediaImage5?: string;
+	mediaImage6?: string;
 	locations?: number[] | WPItem[];
 	unions?: number[] | WPItem[];
 	experienceLevels?: number[] | WPItem[];

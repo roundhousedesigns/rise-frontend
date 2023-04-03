@@ -97,7 +97,7 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @param {UserProfile} profile The user profile to preprae.
  * @returns {Object} The prepared user profile.
  */
-export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
+export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 	const { credits, image, ...sanitized } = profile;
 
 	return sanitized;

@@ -33,6 +33,7 @@ import {
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
+	FiVideo,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -86,7 +87,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		education,
 		willTravel,
 		willTour,
-		// media,
 		description,
 		credits,
 		email,
@@ -97,6 +97,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		genderIdentities,
 		racialIdentities,
 		personalIdentities,
+		mediaVideo1,
+		mediaVideo2,
 	} = editProfile || {};
 
 	const [editCredit, setEditCredit] = useState<string>('');
@@ -859,9 +861,22 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						<Text variant='devAlert' fontSize='md'>
-							Photo + video additions under development.
-						</Text>
+						<Heading variant='contentTitle'>Videos</Heading>
+
+						<EditTextWithIcon
+							value={mediaVideo1}
+							icon={FiVideo}
+							label='Video embed 1'
+							name='mediaVideo1'
+							handleChange={handleInputChange}
+						/>
+						<EditTextWithIcon
+							value={mediaVideo2}
+							icon={FiVideo}
+							label='Video embed 2'
+							name='mediaVideo2'
+							handleChange={handleInputChange}
+						/>
 					</Stack>
 				</StackItem>
 			</Stack>
