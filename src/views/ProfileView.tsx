@@ -62,16 +62,24 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		description,
 		mediaVideo1,
 		mediaVideo2,
-		// mediaImage1,
-		// mediaImage2,
-		// mediaImage3,
-		// mediaImage4,
-		// mediaImage5,
-		// mediaImage6,
+		mediaImage1,
+		mediaImage2,
+		mediaImage3,
+		mediaImage4,
+		mediaImage5,
+		mediaImage6,
 		education,
 	} = profile || {};
 
 	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
+	const mediaImages = [
+		mediaImage1,
+		mediaImage2,
+		mediaImage3,
+		mediaImage4,
+		mediaImage5,
+		mediaImage6,
+	].filter((image) => !!image);
 	// const mediaImags;
 
 	const creditsSorted = credits
@@ -280,38 +288,67 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			)}
 
 			{description && (
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<Text whiteSpace='pre-wrap'>{description.trim()}</Text>
-				</Box>
+				</StackItem>
 			)}
 
 			{education && (
-				<Box>
+				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
 					<Text whiteSpace='pre-wrap'>{education.trim()}</Text>
-				</Box>
+				</StackItem>
 			)}
 
-			{mediaVideos.length > 0 /*|| mediaImages.length > 0 */ ? (
-				<Box>
+			{mediaVideos.length > 0 || mediaImages.length > 0 ? (
+				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Heading variant='contentTitle' size='md'>
-						Video
-					</Heading>
-					<SimpleGrid columns={[1, 2]} mt={4} spacing={4} maxW='full' overflow='hidden'>
-						{mediaVideos.map((video: string | undefined, index: Key) => {
-							if (!video) return false;
-							return (
-								<Box key={index} position='relative' paddingBottom='56.25%'>
-									<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-										<ReactPlayer key={index} url={video} controls width='100%' height='100%' />
-									</Box>
-								</Box>
-							);
-						})}
-					</SimpleGrid>
-				</Box>
+					{mediaVideos.length > 0 ? (
+						<>
+							<Heading variant='contentTitle' size='md'>
+								Video
+							</Heading>
+							<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
+								{mediaVideos.map((video: string | undefined, index: Key) => {
+									if (!video) return false;
+									return (
+										<Box key={index} position='relative' paddingBottom='56.25%'>
+											<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+												<ReactPlayer url={video} controls width='100%' height='100%' />
+											</Box>
+										</Box>
+									);
+								})}
+							</SimpleGrid>
+						</>
+					) : (
+						false
+					)}
+					{mediaImages.length > 0 ? (
+						<>
+							<Heading variant='contentTitle' size='md'>
+								Images
+							</Heading>
+
+							<Box padding={4} w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+								{mediaImages.map((image: string | undefined, index: Key) => (
+									// TODO add image captions
+									<Image
+										key={index}
+										src={image}
+										borderRadius='md'
+										fit='cover'
+										mb={2}
+										// alt={`${profile.fullName()}'s picture`}
+									/>
+								))}
+							</Box>
+						</>
+					) : (
+						false
+					)}
+				</StackItem>
 			) : (
 				false
 			)}

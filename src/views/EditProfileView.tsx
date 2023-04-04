@@ -18,6 +18,9 @@ import {
 	Icon,
 	Progress,
 	Link,
+	SimpleGrid,
+	FormLabel,
+	FormControl,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -46,14 +49,16 @@ import EditTextWithIcon from '../components/common/EditTextWithIcon';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
 
-import { EditProfileContext } from '../context/EditProfileContext';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import useFileUpload from '../hooks/mutations/useFileUpload';
+import { EditProfileContext } from '../context/EditProfileContext';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
-import useFileUpload from '../hooks/mutations/useFileUpload';
 import { useViewer } from '../hooks/queries/useViewer';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+
+// TODO Refactor into smaller components.
 
 export type AlertProps = {
 	id: string;
@@ -99,6 +104,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		personalIdentities,
 		mediaVideo1,
 		mediaVideo2,
+		mediaImage1,
+		mediaImage2,
+		mediaImage3,
+		mediaImage4,
+		mediaImage5,
+		mediaImage6,
 	} = editProfile || {};
 
 	const [editCredit, setEditCredit] = useState<string>('');
@@ -648,39 +659,38 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</StackItem>
 
 						<StackItem>
-							<Stack direction='column' gap={4} maxW='600px'>
-								<StackItem>
-									<Heading variant='contentTitle'>Social</Heading>
-									<EditTextWithIcon
-										value={socials?.linkedin}
-										icon={FiLinkedin}
-										label='LinkedIn @handle'
-										name='socials.linkedin'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.facebook}
-										icon={FiFacebook}
-										label='Facebook URL (ex: https://facebook.com/yourname)'
-										name='socials.facebook'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.instagram}
-										icon={FiInstagram}
-										label='Instagram @handle'
-										name='socials.instagram'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.twitter}
-										icon={FiTwitter}
-										label='Twitter @handle'
-										name='socials.twitter'
-										handleChange={handleSocialInputChange}
-									/>
-								</StackItem>
-							</Stack>
+							<Heading variant='contentTitle'>Social</Heading>
+
+							<SimpleGrid columns={[1, 2]} spacing={4}>
+								<EditTextWithIcon
+									value={socials?.linkedin}
+									icon={FiLinkedin}
+									label='LinkedIn @handle'
+									name='socials.linkedin'
+									handleChange={handleSocialInputChange}
+								/>
+								<EditTextWithIcon
+									value={socials?.facebook}
+									icon={FiFacebook}
+									label='Facebook URL (ex: https://facebook.com/yourname)'
+									name='socials.facebook'
+									handleChange={handleSocialInputChange}
+								/>
+								<EditTextWithIcon
+									value={socials?.instagram}
+									icon={FiInstagram}
+									label='Instagram @handle'
+									name='socials.instagram'
+									handleChange={handleSocialInputChange}
+								/>
+								<EditTextWithIcon
+									value={socials?.twitter}
+									icon={FiTwitter}
+									label='Twitter @handle'
+									name='socials.twitter'
+									handleChange={handleSocialInputChange}
+								/>
+							</SimpleGrid>
 						</StackItem>
 					</Card>
 				</StackItem>
@@ -860,24 +870,173 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						<Heading variant='contentTitle'>Videos</Heading>
-
-						<EditTextWithIcon
-							value={mediaVideo1}
-							icon={FiVideo}
-							label='Video embed 1'
-							name='mediaVideo1'
-							handleChange={handleInputChange}
-						/>
-						<EditTextWithIcon
-							value={mediaVideo2}
-							icon={FiVideo}
-							label='Video embed 2'
-							name='mediaVideo2'
-							handleChange={handleInputChange}
-						/>
-					</Stack>
+					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
+					<SimpleGrid columns={[1, 2]} spacing={8}>
+						<Box>
+							<Heading variant='contentTitle'>Images</Heading>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 1</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage1'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage1 ? (
+									<Image
+										src={mediaImage1}
+										alt={`Media image 1`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 2</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage2'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage2 ? (
+									<Image
+										src={mediaImage2}
+										alt={`Media image 2`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 3</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage3'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage3 ? (
+									<Image
+										src={mediaImage3}
+										alt={`Media image 3`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 4</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage4'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage1 ? (
+									<Image
+										src={mediaImage4}
+										alt={`Media image 4`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 5</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage5'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage5 ? (
+									<Image
+										src={mediaImage5}
+										alt={`Media image 5`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 6</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage6'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage6 ? (
+									<Image
+										src={mediaImage6}
+										alt={`Media image 6`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+						</Box>
+						<Box>
+							<Heading variant='contentTitle'>Videos</Heading>
+							<EditTextWithIcon
+								value={mediaVideo1}
+								icon={FiVideo}
+								label='Video embed 1'
+								name='mediaVideo1'
+								handleChange={handleInputChange}
+							/>
+							<EditTextWithIcon
+								value={mediaVideo2}
+								icon={FiVideo}
+								label='Video embed 2'
+								name='mediaVideo2'
+								handleChange={handleInputChange}
+							/>
+						</Box>
+					</SimpleGrid>
 				</StackItem>
 			</Stack>
 		</form>

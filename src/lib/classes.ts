@@ -113,12 +113,12 @@ export class UserProfile extends User {
 			personalIdentities,
 			mediaVideo1,
 			mediaVideo2,
-			// mediaImage1,
-			// mediaImage2,
-			// mediaImage3,
-			// mediaImage4,
-			// mediaImage5,
-			// mediaImage6,
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
 		} = userParams;
 
 		super({ id, firstName, lastName });
@@ -137,12 +137,12 @@ export class UserProfile extends User {
 		this.education = education;
 		this.mediaVideo1 = mediaVideo1;
 		this.mediaVideo2 = mediaVideo2;
-		// this.mediaImage1 = mediaImage1;
-		// this.mediaImage2 = mediaImage2;
-		// this.mediaImage3 = mediaImage3;
-		// this.mediaImage4 = mediaImage4;
-		// this.mediaImage5 = mediaImage5;
-		// this.mediaImage6 = mediaImage6;
+		this.mediaImage1 = mediaImage1;
+		this.mediaImage2 = mediaImage2;
+		this.mediaImage3 = mediaImage3;
+		this.mediaImage4 = mediaImage4;
+		this.mediaImage5 = mediaImage5;
+		this.mediaImage6 = mediaImage6;
 
 		if (willTravel) {
 			this.willTravel = true;

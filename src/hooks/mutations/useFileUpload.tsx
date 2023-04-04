@@ -17,7 +17,6 @@ export default function useFileUpload() {
 	const [mutation, results] = useMutation(UPLOAD_FILE_MUTATION);
 
 	const uploadFileMutation = (file: File, name: string, userId: number) => {
-		console.info(file, name, userId);
 		return mutation({
 			variables: {
 				file,

@@ -48,6 +48,12 @@ export const QUERY_PROFILE = gql`
 			}
 			mediaVideo1(format: RAW)
 			mediaVideo2(format: RAW)
+			mediaImage1(format: RAW)
+			mediaImage2(format: RAW)
+			mediaImage3(format: RAW)
+			mediaImage4(format: RAW)
+			mediaImage5(format: RAW)
+			mediaImage6(format: RAW)
 		}
 		credits(where: { author: $author }, last: $lastCredits) {
 			nodes {

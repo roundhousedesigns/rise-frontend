@@ -11,7 +11,7 @@ export default defineStyleConfig({
 		contentTitle: {
 			fontSize: '2xl',
 			fontWeight: 'bold',
-			mb: 0,
+			my: 4,
 			pb: 0,
 		},
 		contentSubtitle: {
