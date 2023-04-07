@@ -57,6 +57,7 @@ import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 import { useViewer } from '../hooks/queries/useViewer';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
 import ReactPlayer from 'react-player';
+import PreviewBox from '../components/common/PreviewBox';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -875,7 +876,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Box>
 						<Heading variant='contentTitle'>Videos</Heading>
 						<SimpleGrid columns={[1, 2]} spacing={8}>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							<PreviewBox>
 								<EditableTextInput
 									defaultValue={mediaVideo1 ? mediaVideo1 : ''}
 									name='mediaVideo1'
@@ -891,8 +892,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<EditableTextInput
 									defaultValue={mediaVideo2 ? mediaVideo2 : ''}
 									name='mediaVideo2'
@@ -908,13 +909,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
+							</PreviewBox>
 						</SimpleGrid>
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 1</FormLabel>
 									<Input
@@ -937,8 +938,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 2</FormLabel>
 									<Input
@@ -961,8 +962,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 3</FormLabel>
 									<Input
@@ -985,8 +986,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 4</FormLabel>
 									<Input
@@ -1009,8 +1010,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 5</FormLabel>
 									<Input
@@ -1033,8 +1034,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
-							<Box bg='gray.300' p={4} borderRadius='md'>
+							</PreviewBox>
+							<PreviewBox>
 								<FormControl>
 									<FormLabel>Image 6</FormLabel>
 									<Input
@@ -1057,7 +1058,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</Box>
+							</PreviewBox>
 						</SimpleGrid>
 					</Box>
 				</StackItem>
