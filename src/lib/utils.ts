@@ -102,6 +102,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 	const {
 		credits,
 		image,
+		resume,
 		mediaImage1,
 		mediaImage2,
 		mediaImage3,

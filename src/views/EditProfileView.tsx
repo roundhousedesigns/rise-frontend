@@ -36,7 +36,6 @@ import {
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
-	FiVideo,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { Credit, UserProfile } from '../lib/classes';
@@ -57,8 +56,10 @@ import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 import { useViewer } from '../hooks/queries/useViewer';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import ReactPlayer from 'react-player';
 
 // TODO Refactor into smaller components.
+// TODO Add cancel/navigation-away confirmation when exiting with edits
 
 export type AlertProps = {
 	id: string;
@@ -871,10 +872,49 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
 					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
-					<SimpleGrid columns={[1, 2]} spacing={8}>
-						<Box>
-							<Heading variant='contentTitle'>Images</Heading>
-							<Box>
+					<Box>
+						<Heading variant='contentTitle'>Videos</Heading>
+						<SimpleGrid columns={[1, 2]} spacing={8}>
+							<Box bg='gray.300' p={4} borderRadius='md'>
+								<EditableTextInput
+									defaultValue={mediaVideo1 ? mediaVideo1 : ''}
+									name='mediaVideo1'
+									label='Video embed 1'
+									handleChange={handleInputChange}
+								/>
+								{mediaVideo1 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+										</Box>
+									</Box>
+								) : (
+									false
+								)}
+							</Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
+								<EditableTextInput
+									defaultValue={mediaVideo2 ? mediaVideo2 : ''}
+									name='mediaVideo2'
+									label='Video embed 2'
+									handleChange={handleInputChange}
+								/>
+								{mediaVideo2 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+										</Box>
+									</Box>
+								) : (
+									false
+								)}
+							</Box>
+						</SimpleGrid>
+					</Box>
+					<Box mt={6}>
+						<Heading variant='contentTitle'>Images</Heading>
+						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 1</FormLabel>
 									<Input
@@ -898,7 +938,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-							<Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 2</FormLabel>
 									<Input
@@ -922,7 +962,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-							<Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 3</FormLabel>
 									<Input
@@ -946,7 +986,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-							<Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 4</FormLabel>
 									<Input
@@ -970,7 +1010,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-							<Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 5</FormLabel>
 									<Input
@@ -994,7 +1034,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-							<Box>
+							<Box bg='gray.300' p={4} borderRadius='md'>
 								<FormControl>
 									<FormLabel>Image 6</FormLabel>
 									<Input
@@ -1018,25 +1058,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									false
 								)}
 							</Box>
-						</Box>
-						<Box>
-							<Heading variant='contentTitle'>Videos</Heading>
-							<EditTextWithIcon
-								value={mediaVideo1}
-								icon={FiVideo}
-								label='Video embed 1'
-								name='mediaVideo1'
-								handleChange={handleInputChange}
-							/>
-							<EditTextWithIcon
-								value={mediaVideo2}
-								icon={FiVideo}
-								label='Video embed 2'
-								name='mediaVideo2'
-								handleChange={handleInputChange}
-							/>
-						</Box>
-					</SimpleGrid>
+						</SimpleGrid>
+					</Box>
 				</StackItem>
 			</Stack>
 		</form>

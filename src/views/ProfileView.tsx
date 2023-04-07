@@ -326,12 +326,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						false
 					)}
 					{mediaImages.length > 0 ? (
-						<>
+						<Box mt={6}>
 							<Heading variant='contentTitle' size='md'>
 								Images
 							</Heading>
 
-							<Box padding={4} w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+							<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 								{mediaImages.map((image: string | undefined, index: Key) => (
 									// TODO add image captions
 									<Image
@@ -344,7 +344,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									/>
 								))}
 							</Box>
-						</>
+						</Box>
 					) : (
 						false
 					)}
