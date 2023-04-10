@@ -13,8 +13,25 @@ const xl = defineStyle({
 	borderRadius: 'md',
 });
 
+const variants = {
+	filled: {
+		field: {
+			bg: 'gray.100',
+			_hover: {
+				bg: 'gray.200',
+			},
+			_focus: {
+				bg: 'gray.200',
+			},
+			_active: {
+				bg: 'gray.200',
+			},
+		},
+	},
+};
+
 const sizes = {
 	xl: definePartsStyle({ field: xl, addon: xl }),
 };
 
-export default defineMultiStyleConfig({ sizes });
+export default defineMultiStyleConfig({ sizes, variants });

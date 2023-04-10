@@ -44,6 +44,7 @@ export default function TextInput({
 				)}
 				<Input
 					variant='filled'
+					focusBorderColor='blue.200'
 					placeholder={placeholder}
 					value={value}
 					name={name}

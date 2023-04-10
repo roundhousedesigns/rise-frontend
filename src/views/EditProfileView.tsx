@@ -457,6 +457,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											alt={`Profile picture`}
 											loading='eager'
 											fit='cover'
+											borderRadius='md'
 											w='xs'
 											mb={2}
 										/>
