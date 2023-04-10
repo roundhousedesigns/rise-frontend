@@ -36,9 +36,12 @@ export default function AdvancedSearchFilters(props: any) {
 			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
-			racialIdentities: racialIdentityTerms,
+			racialIdentities: racialIdentityTermsUnfiltered,
 		},
 	] = useUserTaxonomies();
+
+	// Exclude "white" from racial identities
+	const racialIdentityTerms = racialIdentityTermsUnfiltered.filter((item) => item.slug !== 'white');
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
 		searchDispatch({
