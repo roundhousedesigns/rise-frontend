@@ -30,8 +30,9 @@ export default function TextareaInput({
 	return (
 		<FormControl {...props}>
 			<Textarea
-				variant='outline'
+				variant='filled'
 				placeholder={placeholder}
+				focusBorderColor='blue.200'
 				value={value}
 				name={name}
 				resize='vertical'

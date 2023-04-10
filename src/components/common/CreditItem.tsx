@@ -79,8 +79,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 				cursor={isEditable ? 'pointer' : 'default'}
 				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
-				borderColor='gray.400'
-				_hover={isEditable ? { borderColor: 'black' } : {}}
+				borderColor='gray.300'
+				_hover={isEditable ? { borderColor: 'gray.500' } : {}}
 			>
 				<Flex
 					alignItems='flex-start'

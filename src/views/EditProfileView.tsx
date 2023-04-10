@@ -806,7 +806,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
 					<Box>
 						<Heading variant='contentTitle'>Bio</Heading>
-						<Heading variant='contentSubtitle'>
+						<Heading variant='contentSubtitle' my={2}>
 							Write a little. Write a lot. It's up to you!
 						</Heading>
 						<TextareaInput
@@ -814,6 +814,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							name='description'
 							label='Bio'
 							labelHidden
+							mt={2}
+							mb={4}
 							onChange={handleInputChange}
 							inputProps={{
 								rows: 20,
