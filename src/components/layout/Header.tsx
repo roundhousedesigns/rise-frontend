@@ -57,9 +57,9 @@ export default function Header() {
 				aria-label='Search for candidates'
 				variant='invisible'
 				bg='whiteAlpha.400'
-				borderRadius='full'
+				borderRadius='2xl'
 				size='lg'
-				fontSize='xl'
+				fontSize='lg'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 5 }}
 				_hover={{ bg: 'whiteAlpha.600' }}
@@ -123,7 +123,7 @@ export default function Header() {
 							<Stack
 								color='white'
 								direction='row'
-								spacing={4}
+								spacing={2}
 								mr={6}
 								align='center'
 								fontSize='lg'
@@ -139,9 +139,9 @@ export default function Header() {
 										to='/profile'
 										variant='invisible'
 										bg='whiteAlpha.400'
-										borderRadius='full'
+										borderRadius='2xl'
 										size='lg'
-										fontSize='xl'
+										fontSize='lg'
 										_hover={{ bg: 'whiteAlpha.600' }}
 										_active={{ bg: 'whiteAlpha.600' }}
 										textTransform='none'
@@ -151,7 +151,7 @@ export default function Header() {
 								) : null}
 							</Stack>
 
-							<Box pl={2}>
+							<Box>
 								<LightMode>
 									{
 										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
@@ -163,10 +163,10 @@ export default function Header() {
 											as={IconButton}
 											borderRadius='full'
 											bg='whiteAlpha.600'
-											_hover={{ bg: 'whiteAlpha.800' }}
-											_active={{ bg: 'blue.300' }}
 											icon={<FiMenu />}
 											size='lg'
+											_hover={{ bg: 'whiteAlpha.800' }}
+											_active={{ bg: 'blue.300' }}
 										/>
 										<MenuList color='text.dark' zIndex='100'>
 											{isLargerThanMd ? null : (
