@@ -8,7 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 } from './types';
-import { maybeParseInt } from './utils';
+import { decodeString, maybeParseInt } from './utils';
 
 /**
  * A basic user.
@@ -123,18 +123,18 @@ export class UserProfile extends User {
 
 		super({ id, firstName, lastName });
 
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.pronouns = pronouns;
+		this.firstName = firstName ? decodeString(firstName) : firstName;
+		this.lastName = lastName ? decodeString(lastName) : lastName;
+		this.pronouns = pronouns ? decodeString(pronouns) : pronouns;
 		this.email = email;
-		this.homebase = homebase;
-		this.selfTitle = selfTitle;
+		this.homebase = homebase ? decodeString(homebase) : homebase;
+		this.selfTitle = selfTitle ? decodeString(selfTitle) : selfTitle;
 		this.image = image;
 		this.phone = phone;
 		this.website = website;
-		this.description = description;
+		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
-		this.education = education;
+		this.education = education ? decodeString(education) : education;
 		this.mediaVideo1 = mediaVideo1;
 		this.mediaVideo2 = mediaVideo2;
 		this.mediaImage1 = mediaImage1;

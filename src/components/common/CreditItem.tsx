@@ -99,8 +99,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 							</Text>
 						</Wrap>
 						{jobTitle ? (
-							<Text fontSize='md' pb={2} pt={1} lineHeight='short'>
-								{decodeString(jobTitle)}
+							<Text fontSize='md' lineHeight='short'>
+								{jobTitle}
 							</Text>
 						) : (
 							false

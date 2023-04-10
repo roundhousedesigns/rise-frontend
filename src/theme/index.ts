@@ -18,6 +18,7 @@ import accordionTheme from './components/Accordion';
 import editableTheme from './components/Editable';
 import spinnerTheme from './components/Spinner';
 import dividerTheme from './components/Divider';
+import inputTheme from './components/Input';
 
 // Config
 const config = {
@@ -42,6 +43,7 @@ const overrides = {
 		Editable: editableTheme,
 		Spinner: spinnerTheme,
 		Divider: dividerTheme,
+		Input: inputTheme,
 	},
 };
 

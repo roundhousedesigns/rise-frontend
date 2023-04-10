@@ -1,8 +1,12 @@
 import { Tag, TagLabel, Wrap } from '@chakra-ui/react';
 
-export default function CreditsTagLegend() {
+interface Props {
+	[prop: string]: any;
+}
+
+export default function CreditsTagLegend({ ...props }: Props) {
 	return (
-		<Wrap>
+		<Wrap {...props}>
 			<Tag colorScheme='orange' size='sm'>
 				<TagLabel>Departments</TagLabel>
 			</Tag>

@@ -36,28 +36,28 @@ import {
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
+	FiHome,
+	FiStar,
+	FiVideo,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import CreditItem from '../components/common/CreditItem';
-import EditableTextInput from '../components/common/inputs/EditableTextInput';
-import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import EditTextWithIcon from '../components/common/EditTextWithIcon';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import EditCreditModal from '../components/EditCreditModal';
-
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import useFileUpload from '../hooks/mutations/useFileUpload';
-import { EditProfileContext } from '../context/EditProfileContext';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import CreditItem from '../components/common/CreditItem';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import EditCreditModal from '../components/EditCreditModal';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import useFileUpload from '../hooks/mutations/useFileUpload';
+import { EditProfileContext } from '../context/EditProfileContext';
 import { useViewer } from '../hooks/queries/useViewer';
 import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
-import ReactPlayer from 'react-player';
-import PreviewBox from '../components/common/PreviewBox';
+import TextInput from '../components/common/inputs/TextInput';
+import TextareaInput from '../components/common/inputs/TextareaInput';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -244,14 +244,41 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleSocialInputChange = (name: string) => (newValue: any) => {
+	const handleNewInputChange = (
+		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+	) => {
+		const { name, value } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value,
+			},
+		});
+	};
+
+	// const handleSocialInputChange = (name: string) => (newValue: any) => {
+	// 	const field = name.split('.')[1];
+
+	// 	editProfileDispatch({
+	// 		type: 'UPDATE_PERSONAL_LINKS_INPUT',
+	// 		payload: {
+	// 			name: field,
+	// 			value: newValue,
+	// 		},
+	// 	});
+	// };
+
+	const handleNewSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
 		editProfileDispatch({
 			type: 'UPDATE_PERSONAL_LINKS_INPUT',
 			payload: {
 				name: field,
-				value: newValue,
+				value,
 			},
 		});
 	};
@@ -424,7 +451,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			</Flex>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
-					<Card>
+					<Box py={2} mt={2}>
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							<Box mb={2} width='30%'>
@@ -466,58 +493,58 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
 									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-										<EditableTextInput
-											defaultValue={firstName ? firstName : ''}
-											mr={2}
+										<TextInput
+											placeholder='First'
+											value={firstName}
 											name='firstName'
-											fontWeight='medium'
-											fontSize='3xl'
-											label='First Name'
-											handleChange={handleInputChange}
-											outerProps={{
-												flex: '1',
+											onChange={handleNewInputChange}
+											flex='1'
+											label='First name'
+											inputProps={{
+												size: 'xl',
 											}}
 										/>
-										<EditableTextInput
-											defaultValue={lastName ? lastName : ''}
+										<TextInput
+											placeholder='Last'
+											value={lastName}
 											name='lastName'
-											label='Last Name'
-											fontWeight='medium'
-											fontSize='3xl'
-											mr={2}
-											handleChange={handleInputChange}
-											outerProps={{
-												flex: '1',
+											label='Last name'
+											onChange={handleNewInputChange}
+											flex='1'
+											inputProps={{
+												size: 'xl',
 											}}
 										/>
-										<EditableTextInput
-											defaultValue={pronouns ? pronouns : ''}
+										<TextInput
+											placeholder='pronouns'
+											value={pronouns}
 											name='pronouns'
-											as={Text}
 											label='Pronouns'
-											fontWeight='medium'
-											styles={{ display: 'block' }}
-											mb={0}
-											handleChange={handleInputChange}
-											outerProps={{ flex: '0 0 130px' }}
+											onChange={handleNewInputChange}
+											flex='1'
+											inputProps={{
+												size: 'md',
+											}}
 										/>
 									</Flex>
-									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-										<EditableTextInput
-											defaultValue={homebase ? homebase : ''}
+									<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+										<TextInput
+											placeholder='homebase'
+											value={homebase}
 											name='homebase'
 											label='Where do you currently live?'
-											styles={{ display: 'block' }}
-											handleChange={handleInputChange}
-											outerProps={{ flex: '1' }}
+											leftElement={<Icon as={FiHome} />}
+											onChange={handleNewInputChange}
+											flex='1'
 										/>
-										<EditableTextInput
-											defaultValue={selfTitle ? selfTitle : ''}
+										<TextInput
+											value={selfTitle}
 											name='selfTitle'
 											placeholder='Title'
 											label='Title/Trade/Profession'
-											handleChange={handleInputChange}
-											outerProps={{ flex: '1' }}
+											leftElement={<Icon as={FiStar} />}
+											onChange={handleNewInputChange}
+											flex='1'
 										/>
 									</Flex>
 								</StackItem>
@@ -526,27 +553,31 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										<Heading variant='contentTitle' mb={2}>
 											Contact
 										</Heading>
-										<EditTextWithIcon
-											value={email}
-											icon={FiMail}
-											label='Contact email'
-											name='email'
-											handleChange={handleInputChange}
-										/>
-										<EditTextWithIcon
-											value={phone}
-											icon={FiPhone}
-											label='Phone'
-											name='phone'
-											handleChange={handleInputChange}
-										/>
-										<EditTextWithIcon
-											value={website}
-											icon={FiGlobe}
-											label='Website'
-											name='website'
-											handleChange={handleInputChange}
-										/>
+										<Stack direction='column' spacing={0}>
+											<TextInput
+												value={email}
+												leftElement={<Icon as={FiMail} />}
+												placeholder='me@somewhere.com	'
+												label='Email (may be different from login)'
+												name='email'
+												onChange={handleNewInputChange}
+											/>
+											<TextInput
+												value={phone}
+												leftElement={<Icon as={FiPhone} />}
+												placeholder='(888) 888-8888'
+												label='Phone'
+												name='phone'
+												onChange={handleNewInputChange}
+											/>
+											<TextInput
+												value={website}
+												leftElement={<Icon as={FiGlobe} />}
+												label='Website'
+												name='website'
+												onChange={handleNewInputChange}
+											/>
+										</Stack>
 									</Box>
 								</StackItem>
 							</Stack>
@@ -607,7 +638,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 													textDecoration='underline'
 													textDecorationStyle='dotted'
 												>
-													View your resume
+													Preview your resume
 												</Link>
 											) : (
 												'PDF or image'
@@ -664,37 +695,41 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<Heading variant='contentTitle'>Social</Heading>
 
 							<SimpleGrid columns={[1, 2]} spacing={4}>
-								<EditTextWithIcon
+								<TextInput
 									value={socials?.linkedin}
-									icon={FiLinkedin}
+									leftElement={<Icon as={FiLinkedin} />}
 									label='LinkedIn @handle'
+									placeholder='@yourname'
 									name='socials.linkedin'
-									handleChange={handleSocialInputChange}
+									onChange={handleNewSocialInputChange}
 								/>
-								<EditTextWithIcon
+								<TextInput
 									value={socials?.facebook}
-									icon={FiFacebook}
-									label='Facebook URL (ex: https://facebook.com/yourname)'
+									leftElement={<Icon as={FiFacebook} />}
+									label='Facebook URL'
+									placeholder='https://facebook.com/yourname'
 									name='socials.facebook'
-									handleChange={handleSocialInputChange}
+									onChange={handleNewSocialInputChange}
 								/>
-								<EditTextWithIcon
+								<TextInput
 									value={socials?.instagram}
-									icon={FiInstagram}
+									leftElement={<Icon as={FiInstagram} />}
 									label='Instagram @handle'
+									placeholder='@handle'
 									name='socials.instagram'
-									handleChange={handleSocialInputChange}
+									onChange={handleNewSocialInputChange}
 								/>
-								<EditTextWithIcon
+								<TextInput
 									value={socials?.twitter}
-									icon={FiTwitter}
+									leftElement={<Icon as={FiTwitter} />}
 									label='Twitter @handle'
+									placeholder='@handle'
 									name='socials.twitter'
-									handleChange={handleSocialInputChange}
+									onChange={handleNewSocialInputChange}
 								/>
 							</SimpleGrid>
 						</StackItem>
-					</Card>
+					</Box>
 				</StackItem>
 
 				<StackItem pos='relative'>
@@ -781,20 +816,23 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Card>
+					<Box>
 						<Heading variant='contentTitle'>Bio</Heading>
 						<Heading variant='contentSubtitle'>
 							Write a little. Write a lot. It's up to you!
 						</Heading>
-						<EditableTextareaInput
-							defaultValue={description ? description : ''}
+						<TextareaInput
+							value={description}
 							name='description'
 							label='Bio'
-							labelVisuallyHidden
-							handleChange={handleInputChange}
+							labelHidden
+							onChange={handleNewInputChange}
+							inputProps={{
+								rows: 20,
+							}}
 						/>
-					</Card>
-					<Card>
+					</Box>
+					<Box>
 						<Heading
 							size='md'
 							fontWeight='bold'
@@ -854,20 +892,22 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								</Box>
 							</Box>
 						</Flex>
-					</Card>
+					</Box>
 				</StackItem>
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Card>
-						<EditableTextareaInput
-							defaultValue={education ? education : ''}
-							label='Education'
-							labelVisuallyHidden
-							name='education'
-							handleChange={handleInputChange}
-						/>
-					</Card>
+					<TextareaInput
+						value={education}
+						name='education'
+						variant='outline'
+						label='Education and training'
+						labelHidden
+						onChange={handleNewInputChange}
+						inputProps={{
+							rows: 4,
+						}}
+					/>
 				</StackItem>
 
 				<StackItem>
@@ -876,12 +916,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Box>
 						<Heading variant='contentTitle'>Videos</Heading>
 						<SimpleGrid columns={[1, 2]} spacing={8}>
-							<PreviewBox>
-								<EditableTextInput
-									defaultValue={mediaVideo1 ? mediaVideo1 : ''}
+							<Box>
+								<TextInput
+									value={mediaVideo1}
 									name='mediaVideo1'
 									label='Video embed 1'
-									handleChange={handleInputChange}
+									leftElement={<FiVideo />}
+									onChange={handleNewInputChange}
 								/>
 								{mediaVideo1 ? (
 									<Box position='relative' paddingBottom='56.25%' w='full'>
@@ -892,13 +933,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
-								<EditableTextInput
-									defaultValue={mediaVideo2 ? mediaVideo2 : ''}
+							</Box>
+							<Box>
+								<TextInput
+									value={mediaVideo2}
 									name='mediaVideo2'
 									label='Video embed 2'
-									handleChange={handleInputChange}
+									leftElement={<FiVideo />}
+									onChange={handleNewInputChange}
 								/>
 								{mediaVideo2 ? (
 									<Box position='relative' paddingBottom='56.25%' w='full'>
@@ -909,13 +951,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
+							</Box>
 						</SimpleGrid>
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-							<PreviewBox>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 1</FormLabel>
 									<Input
@@ -938,8 +980,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
+							</Box>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 2</FormLabel>
 									<Input
@@ -962,8 +1004,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
+							</Box>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 3</FormLabel>
 									<Input
@@ -986,8 +1028,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
+							</Box>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 4</FormLabel>
 									<Input
@@ -1010,8 +1052,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
+							</Box>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 5</FormLabel>
 									<Input
@@ -1034,8 +1076,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
-							<PreviewBox>
+							</Box>
+							<Box>
 								<FormControl>
 									<FormLabel>Image 6</FormLabel>
 									<Input
@@ -1058,7 +1100,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								) : (
 									false
 								)}
-							</PreviewBox>
+							</Box>
 						</SimpleGrid>
 					</Box>
 				</StackItem>

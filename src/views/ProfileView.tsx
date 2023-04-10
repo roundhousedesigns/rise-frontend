@@ -275,7 +275,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						Credits
 					</HeadingCenterline>
 					<Flex justifyContent='flex-end'>
-						<CreditsTagLegend />
+						<CreditsTagLegend mr={4} />
 					</Flex>
 					<UnorderedList listStyleType='none' m={0}>
 						{creditsSorted.map((credit: Credit) => (
