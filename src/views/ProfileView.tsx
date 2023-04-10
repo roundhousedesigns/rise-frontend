@@ -290,14 +290,18 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{description && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Text whiteSpace='pre-wrap'>{description.trim()}</Text>
+					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+						{description.trim()}
+					</Text>
 				</StackItem>
 			)}
 
 			{education && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text whiteSpace='pre-wrap'>{education.trim()}</Text>
+					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+						{education.trim()}
+					</Text>
 				</StackItem>
 			)}
 

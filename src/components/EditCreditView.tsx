@@ -1,16 +1,14 @@
-import { useContext, useEffect, useReducer, useRef } from 'react';
+import { ChangeEvent, useContext, useEffect, useReducer, useRef } from 'react';
 import {
 	ButtonGroup,
-	Card,
 	Divider,
 	Flex,
 	Heading,
-	IconButton,
 	Spinner,
 	Stack,
 	StackItem,
-	Wrap,
 	Text,
+	Button,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
@@ -20,8 +18,7 @@ import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 import { useLazyPositions } from '../hooks/queries/useLazyPositions';
 import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-// import ProfileRadioGroup from './common/ProfileRadioGroup';
-import EditableTextInput from './common/inputs/EditableTextInput';
+import TextInput from './common/inputs/TextInput';
 
 // TODO type payload better
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -103,31 +100,34 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	// Set jobs when jobsData changes.
 	useEffect(() => {
-		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
-
 		jobs.current = jobsData
 			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
 			: [];
 	}, [jobsData]);
 
-	const handleInputChange = (name: string) => (newValue: string) => {
-		editCreditDispatch({
-			type: 'UPDATE_INPUT',
-			payload: {
-				name,
-				value: newValue,
-			},
-		});
-	};
-
-	// const handleToggleRadioTerm = (name: string) => (term: string) => {
+	// const handleInputChange = (name: string) => (newValue: string) => {
 	// 	editCreditDispatch({
-	// 		type: `UPDATE_${name.toUpperCase()}`,
+	// 		type: 'UPDATE_INPUT',
 	// 		payload: {
-	// 			value: term,
+	// 			name,
+	// 			value: newValue,
 	// 		},
 	// 	});
 	// };
+
+	const handleNewInputChange = (
+		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+	) => {
+		const { name, value } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value,
+			},
+		});
+	};
 
 	const handleToggleCheckboxTerm = (name: string) => (terms: string[]) => {
 		editCreditDispatch({
@@ -166,61 +166,64 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	return (
-		<Card>
-			<Wrap>
+		<>
+			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
+				<Heading size='lg' lineHeight='base'>
+					Edit Credit
+				</Heading>
 				<ButtonGroup>
-					<IconButton
-						aria-label='Accept changes'
+					<Button
+						type='submit'
+						leftIcon={<FiCheck />}
+						aria-label='Save credit'
 						colorScheme='green'
-						icon={<FiCheck />}
 						onClick={handleSave}
-					/>
-					<IconButton
+					>
+						Save
+					</Button>
+					<Button
+						leftIcon={<FiX />}
 						aria-label='Cancel changes'
 						colorScheme='red'
-						icon={<FiX />}
 						onClick={handleCancel}
-					/>
+					>
+						Cancel
+					</Button>
 				</ButtonGroup>
 				{updateCreditLoading ? <Spinner /> : false}
-			</Wrap>
+			</Flex>
 
-			<EditableTextInput
+			<TextInput
 				name='title'
 				label='Production/Show/Company Title'
-				defaultValue={title}
-				handleChange={handleInputChange}
-				outerProps={{ flex: 1 }}
+				value={title}
+				onChange={handleNewInputChange}
+				flex='1'
 			/>
 
 			<Flex gap={6}>
-				<EditableTextInput
+				<TextInput
 					name='jobTitle'
 					label='Job/Position Title'
-					defaultValue={jobTitle}
-					handleChange={handleInputChange}
+					value={jobTitle}
+					onChange={handleNewInputChange}
 				/>
 
-				<EditableTextInput
+				<TextInput
 					name='year'
 					label='Year (start of employment)'
-					defaultValue={year}
-					handleChange={handleInputChange}
-					outerProps={{ flex: '0 0 100px' }}
+					value={year}
+					onChange={handleNewInputChange}
+					flex='0 0 100px'
 				/>
 			</Flex>
 			<Flex gap={6}>
-				<EditableTextInput
-					name='venue'
-					label='Venue'
-					defaultValue={venue}
-					handleChange={handleInputChange}
-				/>
-				<EditableTextInput
+				<TextInput name='venue' label='Venue' value={venue} onChange={handleNewInputChange} />
+				<TextInput
 					name='jobLocation'
 					label='Job Location'
-					defaultValue={jobLocation}
-					handleChange={handleInputChange}
+					value={jobLocation}
+					onChange={handleNewInputChange}
 				/>
 			</Flex>
 			<Divider />
@@ -284,6 +287,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</StackItem>
 				) : null}
 			</Stack>
-		</Card>
+		</>
 	);
 }

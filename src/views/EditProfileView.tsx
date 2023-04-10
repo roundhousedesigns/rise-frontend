@@ -6,7 +6,6 @@ import {
 	Flex,
 	Text,
 	Stack,
-	Card,
 	Spinner,
 	StackItem,
 	IconButton,
@@ -234,7 +233,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	}, []);
 
-	const handleInputChange = (name: string) => (newValue: any) => {
+	const handleCheckboxInput = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
@@ -244,7 +243,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleNewInputChange = (
+	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => {
 		const { name, value } = event.target;
@@ -258,19 +257,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	// const handleSocialInputChange = (name: string) => (newValue: any) => {
-	// 	const field = name.split('.')[1];
-
-	// 	editProfileDispatch({
-	// 		type: 'UPDATE_PERSONAL_LINKS_INPUT',
-	// 		payload: {
-	// 			name: field,
-	// 			value: newValue,
-	// 		},
-	// 	});
-	// };
-
-	const handleNewSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
@@ -333,7 +320,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						status: 'success',
 						duration: 5000,
 						isClosable: true,
-						position: 'bottom',
+						position: 'top',
 					});
 					editProfileDispatch({
 						type: 'DELETE_CREDIT',
@@ -363,7 +350,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					status: 'success',
 					duration: 2000,
 					isClosable: true,
-					position: 'bottom',
+					position: 'top',
 				});
 			})
 			.catch((err) => {
@@ -373,7 +360,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					status: 'error',
 					duration: 2000,
 					isClosable: true,
-					position: 'bottom',
+					position: 'top',
 				});
 
 				// DEBUG
@@ -497,7 +484,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											placeholder='First'
 											value={firstName}
 											name='firstName'
-											onChange={handleNewInputChange}
+											onChange={handleInputChange}
 											flex='1'
 											label='First name'
 											inputProps={{
@@ -509,7 +496,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											value={lastName}
 											name='lastName'
 											label='Last name'
-											onChange={handleNewInputChange}
+											onChange={handleInputChange}
 											flex='1'
 											inputProps={{
 												size: 'xl',
@@ -520,7 +507,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											value={pronouns}
 											name='pronouns'
 											label='Pronouns'
-											onChange={handleNewInputChange}
+											onChange={handleInputChange}
 											flex='1'
 											inputProps={{
 												size: 'md',
@@ -534,7 +521,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='homebase'
 											label='Where do you currently live?'
 											leftElement={<Icon as={FiHome} />}
-											onChange={handleNewInputChange}
+											onChange={handleInputChange}
 											flex='1'
 										/>
 										<TextInput
@@ -543,7 +530,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											placeholder='Title'
 											label='Title/Trade/Profession'
 											leftElement={<Icon as={FiStar} />}
-											onChange={handleNewInputChange}
+											onChange={handleInputChange}
 											flex='1'
 										/>
 									</Flex>
@@ -560,7 +547,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												placeholder='me@somewhere.com	'
 												label='Email (may be different from login)'
 												name='email'
-												onChange={handleNewInputChange}
+												onChange={handleInputChange}
 											/>
 											<TextInput
 												value={phone}
@@ -568,14 +555,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												placeholder='(888) 888-8888'
 												label='Phone'
 												name='phone'
-												onChange={handleNewInputChange}
+												onChange={handleInputChange}
 											/>
 											<TextInput
 												value={website}
 												leftElement={<Icon as={FiGlobe} />}
 												label='Website'
 												name='website'
-												onChange={handleNewInputChange}
+												onChange={handleInputChange}
 											/>
 										</Stack>
 									</Box>
@@ -592,7 +579,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									name='locations'
 									items={locationTerms}
 									checked={locations ? locations.map((item) => item.toString()) : []}
-									handleChange={handleInputChange}
+									handleChange={handleCheckboxInput}
 								/>
 							</StackItem>
 							<StackItem py={4} display='flex' gap={10}>
@@ -670,7 +657,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='unions'
 											items={unionTerms}
 											checked={unions ? unions.map((item) => item.toString()) : []}
-											handleChange={handleInputChange}
+											handleChange={handleCheckboxInput}
 										/>
 									</Box>
 								</Box>
@@ -684,7 +671,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											checked={
 												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
 											}
-											handleChange={handleInputChange}
+											handleChange={handleCheckboxInput}
 										/>
 									</Box>
 								</Box>
@@ -701,7 +688,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									label='LinkedIn @handle'
 									placeholder='@yourname'
 									name='socials.linkedin'
-									onChange={handleNewSocialInputChange}
+									onChange={handleSocialInputChange}
 								/>
 								<TextInput
 									value={socials?.facebook}
@@ -709,7 +696,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									label='Facebook URL'
 									placeholder='https://facebook.com/yourname'
 									name='socials.facebook'
-									onChange={handleNewSocialInputChange}
+									onChange={handleSocialInputChange}
 								/>
 								<TextInput
 									value={socials?.instagram}
@@ -717,7 +704,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									label='Instagram @handle'
 									placeholder='@handle'
 									name='socials.instagram'
-									onChange={handleNewSocialInputChange}
+									onChange={handleSocialInputChange}
 								/>
 								<TextInput
 									value={socials?.twitter}
@@ -725,7 +712,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									label='Twitter @handle'
 									placeholder='@handle'
 									name='socials.twitter'
-									onChange={handleNewSocialInputChange}
+									onChange={handleSocialInputChange}
 								/>
 							</SimpleGrid>
 						</StackItem>
@@ -826,7 +813,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							name='description'
 							label='Bio'
 							labelHidden
-							onChange={handleNewInputChange}
+							onChange={handleInputChange}
 							inputProps={{
 								rows: 20,
 							}}
@@ -861,7 +848,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
@@ -874,7 +861,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
@@ -887,7 +874,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
@@ -903,7 +890,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						variant='outline'
 						label='Education and training'
 						labelHidden
-						onChange={handleNewInputChange}
+						onChange={handleInputChange}
 						inputProps={{
 							rows: 4,
 						}}
@@ -922,7 +909,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									name='mediaVideo1'
 									label='Video embed 1'
 									leftElement={<FiVideo />}
-									onChange={handleNewInputChange}
+									onChange={handleInputChange}
 								/>
 								{mediaVideo1 ? (
 									<Box position='relative' paddingBottom='56.25%' w='full'>
@@ -940,7 +927,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									name='mediaVideo2'
 									label='Video embed 2'
 									leftElement={<FiVideo />}
-									onChange={handleNewInputChange}
+									onChange={handleInputChange}
 								/>
 								{mediaVideo2 ? (
 									<Box position='relative' paddingBottom='56.25%' w='full'>

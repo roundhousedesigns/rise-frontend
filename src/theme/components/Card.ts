@@ -5,30 +5,24 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 	cardAnatomy.keys
 );
 
-const variants = {
-	default: definePartsStyle({
-		container: {
-			gap: 4,
-			my: 4,
-			p: 4,
-			_light: {
-				bgColor: 'gray.100',
-			},
-			_dark: {
-				bgColor: 'gray.700',
-			},
+const baseStyle = definePartsStyle({
+	container: {
+		gap: 4,
+		my: 4,
+		p: 4,
+		_light: {
+			bgColor: 'gray.100',
 		},
-		header: {
-			mb: 0,
-			py: 0,
-			fontSize: '2xl',
-			fontWeight: 'bold',
+		_dark: {
+			bgColor: 'gray.700',
 		},
-	}),
-};
+	},
+	header: {
+		mb: 0,
+		py: 0,
+		fontSize: '2xl',
+		fontWeight: 'bold',
+	},
+});
 
-const defaultProps = {
-	variant: 'default',
-};
-
-export default defineMultiStyleConfig({ variants, defaultProps });
+export default defineMultiStyleConfig({ baseStyle });
