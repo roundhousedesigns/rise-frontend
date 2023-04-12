@@ -20,7 +20,6 @@ import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import TextInput from './common/inputs/TextInput';
 
-// TODO type payload better
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
@@ -76,13 +75,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		updateCreditMutation,
 		results: { loading: updateCreditLoading },
 	} = useUpdateCredit();
+
 	const {
 		title,
 		jobTitle,
 		jobLocation,
 		venue,
 		year,
-		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
+		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
 
@@ -105,22 +105,12 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			: [];
 	}, [jobsData]);
 
-	// const handleInputChange = (name: string) => (newValue: string) => {
-	// 	editCreditDispatch({
-	// 		type: 'UPDATE_INPUT',
-	// 		payload: {
-	// 			name,
-	// 			value: newValue,
-	// 		},
-	// 	});
-	// };
-
-	const handleNewInputChange = (
+	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => {
 		const { name, value } = event.target;
 
-		editProfileDispatch({
+		editCreditDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
 				name,
@@ -197,7 +187,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				name='title'
 				label='Production/Show/Company Title'
 				value={title}
-				onChange={handleNewInputChange}
+				onChange={handleInputChange}
 				flex='1'
 			/>
 
@@ -206,24 +196,24 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					name='jobTitle'
 					label='Job/Position Title'
 					value={jobTitle}
-					onChange={handleNewInputChange}
+					onChange={handleInputChange}
 				/>
 
 				<TextInput
 					name='year'
 					label='Year (start of employment)'
 					value={year}
-					onChange={handleNewInputChange}
+					onChange={handleInputChange}
 					flex='0 0 100px'
 				/>
 			</Flex>
 			<Flex gap={6}>
-				<TextInput name='venue' label='Venue' value={venue} onChange={handleNewInputChange} />
+				<TextInput name='venue' label='Venue' value={venue} onChange={handleInputChange} />
 				<TextInput
 					name='jobLocation'
 					label='Job Location'
 					value={jobLocation}
-					onChange={handleNewInputChange}
+					onChange={handleInputChange}
 				/>
 			</Flex>
 			<Divider />
