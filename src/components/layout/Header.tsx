@@ -18,8 +18,9 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	Badge,
+	// Badge,
 	Button,
+	Badge,
 } from '@chakra-ui/react';
 
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
@@ -61,7 +62,7 @@ export default function Header() {
 				size='lg'
 				fontSize='lg'
 				pr={{ base: 0, md: 6 }}
-				pl={{ base: 0, md: 5 }}
+				pl={{ base: 0, md: 2 }}
 				_hover={{ bg: 'whiteAlpha.600' }}
 				_active={{ bg: 'whiteAlpha.600' }}
 				_before={{
@@ -76,25 +77,42 @@ export default function Header() {
 			>
 				{isLargerThanMd ? 'Search' : ''}
 			</Button>
-			{searchActive && results.length ? (
-				<Badge
-					fontSize='md'
-					px={2}
-					py='0em'
-					display='flex'
-					alignItems='center'
-					justifyContent='center'
-					borderRadius='full'
-					color='brand.teal'
-					bg='white'
-					position='absolute'
-					bottom='-6px'
-					left='130px'
-					textAlign='left'
-				>
-					{results.length}
-				</Badge>
-			) : null}
+		</Box>
+	);
+
+	const SearchResultsButton = () => (
+		<Box position='relative'>
+			<Button
+				as={RouterLink}
+				to='/results'
+				leftIcon={
+					<Badge py={1} px={2} ml={0} borderRadius='full'>
+						{results.length}
+					</Badge>
+				}
+				aria-label='Search for candidates'
+				variant='invisible'
+				bg='whiteAlpha.400'
+				borderRadius='2xl'
+				size='lg'
+				fontSize='lg'
+				textTransform='none'
+				pr={{ base: 0, md: 6 }}
+				pl={{ base: 0, md: 2 }}
+				_hover={{ bg: 'whiteAlpha.600' }}
+				_active={{ bg: 'whiteAlpha.600' }}
+				_before={{
+					base: {
+						pl: 2,
+						content: '""',
+					},
+					md: {
+						pl: 0,
+					},
+				}}
+			>
+				{results.length > 1 ? 'Results' : 'Result'}
+			</Button>
 		</Box>
 	);
 
@@ -129,10 +147,12 @@ export default function Header() {
 								fontSize='lg'
 								textTransform='uppercase'
 							>
+								{searchActive && results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? (
 									<Button
 										leftIcon={<FiUser />}
+										pl={3}
 										aria-label='My Profile'
 										as={RouterLink}
 										to='/profile'

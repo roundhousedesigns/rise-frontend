@@ -48,7 +48,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-	const [getSearchResults, { data, error }] = useCandidateSearch();
+	const [getSearchResults, { data }] = useCandidateSearch();
 	const navigate = useNavigate();
 
 	// Update SearchContext with the new results whenever the query returns.
