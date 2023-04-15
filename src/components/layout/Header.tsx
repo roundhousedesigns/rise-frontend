@@ -130,7 +130,6 @@ export default function Header() {
 								textTransform='uppercase'
 							>
 								<SearchButton />
-								{/* TODO change profile icon for <Avatar> */}
 								{isLargerThanMd ? (
 									<Button
 										leftIcon={<FiUser />}
@@ -151,12 +150,12 @@ export default function Header() {
 								) : null}
 							</Stack>
 
+							{
+								// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+								// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+							}
 							<Box>
 								<LightMode>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
 									<Menu>
 										<MenuButton
 											aria-label='Menu'

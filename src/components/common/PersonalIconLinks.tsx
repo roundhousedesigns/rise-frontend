@@ -19,7 +19,6 @@ interface Props {
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (
 	<Link href={socialLink(name, value)} isExternal display='block'>
-		{/* TODO Probably brighten these, or make them a color(s) */}
 		<IconButton variant='socialRound' aria-label={label} icon={icon} />
 	</Link>
 );

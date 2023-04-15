@@ -19,7 +19,6 @@ export const EditProfileContext = createContext({
 	editProfileDispatch: ({}: EditProfileAction) => {},
 });
 
-// TODO type this reducer's return
 function editProfileContextReducer(state: UserProfile, action: EditProfileAction): any {
 	switch (action.type) {
 		case 'UPDATE_INPUT':

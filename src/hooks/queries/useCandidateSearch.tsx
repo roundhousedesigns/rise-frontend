@@ -11,8 +11,8 @@ import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/c
 
 export const QUERY_CANDIDATES = gql`
 	query FilteredCandidates(
+		$positions: [ID] = []
 		$skills: [ID] = []
-		$jobs: [ID] = []
 		$unions: [ID] = []
 		$locations: [ID] = []
 		$experienceLevels: [ID] = []
@@ -22,8 +22,8 @@ export const QUERY_CANDIDATES = gql`
 		$exclude: [ID] = []
 	) {
 		filteredCandidates(
+			positions: $positions
 			skills: $skills
-			jobs: $jobs
 			unions: $unions
 			locations: $locations
 			experienceLevels: $experienceLevels
