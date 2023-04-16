@@ -15,8 +15,7 @@ import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	// TODO type useState
-	const [credentials, setCredentials] = useState({
+	const [credentials, setCredentials] = useState<{ login: string; password: string }>({
 		login: '',
 		password: '',
 	});
