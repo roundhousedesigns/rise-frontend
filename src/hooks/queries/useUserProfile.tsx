@@ -64,6 +64,9 @@ export const QUERY_PROFILE = gql`
 				jobLocation(format: RENDERED)
 				venue(format: RENDERED)
 				year(format: RENDERED)
+				workStart(format: RENDERED)
+				workEnd(format: RENDERED)
+				workCurrent
 				positions {
 					nodes {
 						id: databaseId
@@ -110,6 +113,9 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
 			year: credit.year,
+			workStart: credit.workStart,
+			workEnd: credit.workEnd,
+			workCurrent: credit.workCurrent,
 			department: credit.positions?.nodes.map((job: WPItem) => job.parentId),
 			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),

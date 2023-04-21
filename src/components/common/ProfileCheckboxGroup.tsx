@@ -7,6 +7,7 @@ interface Props {
 	name: string;
 	items: WPItem[];
 	checked: string[];
+	isRequired?: boolean;
 	handleChange: (name: string) => (value: string[]) => void;
 	[prop: string]: any;
 }
@@ -15,6 +16,7 @@ export default function ProfileCheckboxGroup({
 	name,
 	items,
 	checked,
+	isRequired,
 	handleChange,
 	...rest
 }: Props) {

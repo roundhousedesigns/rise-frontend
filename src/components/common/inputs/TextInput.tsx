@@ -13,6 +13,8 @@ interface Props {
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
+	isDisabled?: boolean;
+	isRequired?: boolean;
 	leftElement?: React.ReactNode;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
@@ -28,6 +30,8 @@ export default function TextInput({
 	placeholder,
 	value,
 	name,
+	isDisabled,
+	isRequired,
 	onChange,
 	leftElement,
 	leftAddon,
@@ -35,7 +39,8 @@ export default function TextInput({
 	...props
 }: Props) {
 	return (
-		<FormControl {...props}>
+		// TODO implement character count ("xx/yy remaining")
+		<FormControl isRequired={isRequired} {...props}>
 			<InputGroup>
 				{leftElement ? (
 					<InputLeftElement pointerEvents='none'>{leftElement}</InputLeftElement>
@@ -46,6 +51,7 @@ export default function TextInput({
 					variant='filled'
 					focusBorderColor='blue.200'
 					placeholder={placeholder}
+					isDisabled={isDisabled}
 					value={value}
 					name={name}
 					onChange={onChange}

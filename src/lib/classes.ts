@@ -233,7 +233,10 @@ export class Credit implements CreditParams {
 	jobTitle: string;
 	jobLocation: string;
 	venue: string;
-	year: string;
+	year: string; // TODO deprecate year
+	workStart: string;
+	workEnd: string;
+	workCurrent: boolean;
 	positions: {
 		department: number[];
 		jobs: number[];
@@ -249,6 +252,9 @@ export class Credit implements CreditParams {
 		this.jobLocation = params.jobLocation ? params.jobLocation : '';
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
+		this.workStart = params.workStart ? params.workStart : '';
+		this.workEnd = params.workEnd ? params.workEnd : '';
+		this.workCurrent = params.workCurrent || false;
 		this.skills = params.skills ? params.skills : [];
 		this.positions = this.getPositions(params) || { department: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;

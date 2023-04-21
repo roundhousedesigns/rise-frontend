@@ -89,7 +89,10 @@ export interface CreditParams {
 	jobTitle?: string;
 	jobLocation?: string;
 	venue?: string;
-	year?: string;
+	year?: string; // TODO deprecate year
+	workStart?: string;
+	workEnd?: string;
+	workCurrent?: boolean;
 	department?: number[];
 	jobs?: number[];
 	positions?: {
@@ -111,6 +114,9 @@ export interface CreditOutput {
 	jobLocation: string;
 	venue: string;
 	year: string;
+	workStart: string;
+	workEnd: string;
+	workCurrent: boolean;
 	positions: number[];
 	skills: number[];
 	isNew: boolean;

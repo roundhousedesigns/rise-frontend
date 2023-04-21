@@ -21,7 +21,10 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 		positions: { department: departmentIds, jobs: jobIds } = { department: [], jobs: [] },
 		skills: skillIds,
 		venue,
-		year,
+		// year, // TODO deprecate year
+		workStart,
+		workEnd,
+		workCurrent,
 	} = credit || {};
 
 	// Get jobs and skills terms from their IDs
@@ -72,6 +75,21 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 		setSkills(skillTerms);
 	}, [termData, jobIds, skillIds]);
 
+	// TODO don't show credit until all is loaded (including depts, credits, and skills)
+
+	// TODO put this in its own file
+	const yearString = () => {
+		if (workStart && workEnd) {
+			return `${workStart} - ${workEnd}`;
+		} else if (workStart && workCurrent) {
+			return `${workStart} - Current`;
+		} else if (workStart && !workEnd && !workCurrent) {
+			return `${workStart}`;
+		} else {
+			return '';
+		}
+	};
+
 	return (
 		<Box onClick={onClick} {...rest}>
 			<Card
@@ -91,7 +109,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 						<Wrap>
 							<Heading fontWeight='bold' fontSize='xl' as='h3'>
 								{title}
-								{year ? ` (${year})` : ''}
+								{yearString()}
 							</Heading>
 							<Text fontSize='lg' ml={1} fontWeight='medium'>
 								{venue}

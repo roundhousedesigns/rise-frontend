@@ -19,7 +19,9 @@ import { useLazyPositions } from '../hooks/queries/useLazyPositions';
 import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import TextInput from './common/inputs/TextInput';
+import ProfileRadioGroup from './common/ProfileRadioGroup';
 
+// TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
@@ -81,7 +83,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		jobTitle,
 		jobLocation,
 		venue,
-		year,
+		workStart,
+		workEnd,
+		workCurrent,
 		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
@@ -124,6 +128,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			type: `UPDATE_${name.toUpperCase()}`,
 			payload: {
 				value: terms,
+			},
+		});
+	};
+
+	const handleRadioInputChange = (name: string) => (value: string) => {
+		editCreditDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value: value === 'true' ? true : false,
 			},
 		});
 	};
@@ -191,20 +205,41 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				flex='1'
 			/>
 
+			<TextInput
+				name='jobTitle'
+				label='Job/Position Title'
+				value={jobTitle}
+				onChange={handleInputChange}
+			/>
+
 			<Flex gap={6}>
 				<TextInput
-					name='jobTitle'
-					label='Job/Position Title'
-					value={jobTitle}
+					name='workStart'
+					label='Start year'
+					value={workStart}
 					onChange={handleInputChange}
+					flex='0 0 100px'
 				/>
 
 				<TextInput
-					name='year'
-					label='Year (start of employment)'
-					value={year}
+					name='workEnd'
+					label='End year'
+					value={!workCurrent ? workEnd : ''}
+					isDisabled={workCurrent}
 					onChange={handleInputChange}
 					flex='0 0 100px'
+				/>
+
+				<ProfileRadioGroup
+					defaultValue={workCurrent ? 'true' : 'false'}
+					name='workCurrent'
+					label='Currently working here'
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
+					pt='0'
 				/>
 			</Flex>
 			<Flex gap={6}>

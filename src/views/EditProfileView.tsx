@@ -270,7 +270,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleBooleanInputChange = (name: string) => (newValue: string) => {
+	const handleRadioInputChange = (name: string) => (newValue: string) => {
 		editProfileDispatch({
 			type: 'UPDATE_BOOLEAN_INPUT',
 			payload: {
@@ -485,6 +485,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											placeholder='First'
 											value={firstName}
 											name='firstName'
+											isRequired
 											onChange={handleInputChange}
 											flex='1'
 											label='First name'
@@ -496,6 +497,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											placeholder='Last'
 											value={lastName}
 											name='lastName'
+											isRequired
 											label='Last name'
 											onChange={handleInputChange}
 											flex='1'
@@ -523,6 +525,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='Where do you currently live?'
 											leftElement={<Icon as={FiHome} />}
 											onChange={handleInputChange}
+											inputProps={{
+												maxLength: 25,
+											}}
 											flex='1'
 										/>
 										<TextInput
@@ -532,6 +537,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='Title/Trade/Profession'
 											leftElement={<Icon as={FiStar} />}
 											onChange={handleInputChange}
+											inputProps={{
+												maxLength: 50,
+											}}
 											flex='1'
 										/>
 									</Flex>
@@ -545,8 +553,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											<TextInput
 												value={email}
 												leftElement={<Icon as={FiMail} />}
-												placeholder='me@somewhere.com	'
-												label='Email (may be different from login)'
+												isRequired
+												placeholder='me@somewhere.com'
+												label='Contact Email'
 												name='email'
 												onChange={handleInputChange}
 											/>
@@ -572,12 +581,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</Flex>
 						<Stack>
 							<StackItem fontSize='sm'>
+								{/* TODO make this required */}
 								<Heading variant='contentTitle'>Work Locations</Heading>
 								<Heading variant='contentSubtitle'>
 									Select any areas in which you're a local hire.
 								</Heading>
 								<ProfileCheckboxGroup
 									name='locations'
+									isRequired
 									items={locationTerms}
 									checked={locations ? locations.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxInput}
@@ -594,7 +605,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											{ label: 'Yes', value: 'true' },
 											{ label: 'No', value: 'false' },
 										]}
-										handleChange={handleBooleanInputChange}
+										handleChange={handleRadioInputChange}
 									/>
 								</Box>
 								<Box>
@@ -607,7 +618,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											{ label: 'Yes', value: 'true' },
 											{ label: 'No', value: 'false' },
 										]}
-										handleChange={handleBooleanInputChange}
+										handleChange={handleRadioInputChange}
 									/>
 								</Box>
 								<Box flex='0 0 33%' textAlign='center'>
@@ -756,7 +767,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<CreditItem
 									credit={credit}
 									onClick={() => handleEditCredit(credit.id)}
-									isEditable={true}
+									isEditable
 									key={index}
 									width='full'
 								/>

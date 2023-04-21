@@ -6,6 +6,7 @@ import { gql, useMutation } from '@apollo/client';
 import { CreditOutput } from '../../lib/types';
 import { QUERY_PROFILE } from '../queries/useUserProfile';
 
+// TODO deprecate year
 const MUTATE_UPDATE_CREDIT = gql`
 	mutation UpdateCreditMutation($input: UpdateOrCreateCreditInput = {}) {
 		updateOrCreateCredit(input: $input) {
@@ -17,6 +18,9 @@ const MUTATE_UPDATE_CREDIT = gql`
 				jobLocation
 				venue
 				year
+				workStart
+				workEnd
+				workCurrent
 				department
 				jobs
 				skills
