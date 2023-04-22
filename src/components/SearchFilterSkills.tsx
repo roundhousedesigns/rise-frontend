@@ -57,7 +57,6 @@ export default function SearchFilterSkills({ heading }: Props) {
 					);
 				})}
 			</Wrap>
-			{/* TODO implement "More Skills" button, which will append remaining Skills (excluding those already present) to the list. */}
 		</Box>
 	) : loading ? (
 		<Spinner />

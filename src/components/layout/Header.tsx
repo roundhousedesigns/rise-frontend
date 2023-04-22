@@ -18,8 +18,9 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	Badge,
+	// Badge,
 	Button,
+	Badge,
 } from '@chakra-ui/react';
 
 import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
@@ -57,11 +58,11 @@ export default function Header() {
 				aria-label='Search for candidates'
 				variant='invisible'
 				bg='whiteAlpha.400'
-				borderRadius='full'
+				borderRadius='2xl'
 				size='lg'
-				fontSize='xl'
+				fontSize='lg'
 				pr={{ base: 0, md: 6 }}
-				pl={{ base: 0, md: 5 }}
+				pl={{ base: 0, md: 2 }}
 				_hover={{ bg: 'whiteAlpha.600' }}
 				_active={{ bg: 'whiteAlpha.600' }}
 				_before={{
@@ -76,25 +77,42 @@ export default function Header() {
 			>
 				{isLargerThanMd ? 'Search' : ''}
 			</Button>
-			{searchActive && results.length ? (
-				<Badge
-					fontSize='md'
-					px={2}
-					py='0em'
-					display='flex'
-					alignItems='center'
-					justifyContent='center'
-					borderRadius='full'
-					color='brand.teal'
-					bg='white'
-					position='absolute'
-					bottom='-6px'
-					left='130px'
-					textAlign='left'
-				>
-					{results.length}
-				</Badge>
-			) : null}
+		</Box>
+	);
+
+	const SearchResultsButton = () => (
+		<Box position='relative'>
+			<Button
+				as={RouterLink}
+				to='/results'
+				leftIcon={
+					<Badge py={1} px={2} ml={0} borderRadius='full'>
+						{results.length}
+					</Badge>
+				}
+				aria-label='Search for candidates'
+				variant='invisible'
+				bg='whiteAlpha.400'
+				borderRadius='2xl'
+				size='lg'
+				fontSize='lg'
+				textTransform='none'
+				pr={{ base: 0, md: 6 }}
+				pl={{ base: 0, md: 2 }}
+				_hover={{ bg: 'whiteAlpha.600' }}
+				_active={{ bg: 'whiteAlpha.600' }}
+				_before={{
+					base: {
+						pl: 2,
+						content: '""',
+					},
+					md: {
+						pl: 0,
+					},
+				}}
+			>
+				{results.length > 1 ? 'Results' : 'Result'}
+			</Button>
 		</Box>
 	);
 
@@ -123,25 +141,26 @@ export default function Header() {
 							<Stack
 								color='white'
 								direction='row'
-								spacing={4}
+								spacing={2}
 								mr={6}
 								align='center'
 								fontSize='lg'
 								textTransform='uppercase'
 							>
+								{searchActive && results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
-								{/* TODO change profile icon for <Avatar> */}
 								{isLargerThanMd ? (
 									<Button
 										leftIcon={<FiUser />}
+										pl={3}
 										aria-label='My Profile'
 										as={RouterLink}
 										to='/profile'
 										variant='invisible'
 										bg='whiteAlpha.400'
-										borderRadius='full'
+										borderRadius='2xl'
 										size='lg'
-										fontSize='xl'
+										fontSize='lg'
 										_hover={{ bg: 'whiteAlpha.600' }}
 										_active={{ bg: 'whiteAlpha.600' }}
 										textTransform='none'
@@ -151,22 +170,22 @@ export default function Header() {
 								) : null}
 							</Stack>
 
-							<Box pl={2}>
+							{
+								// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+								// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+							}
+							<Box>
 								<LightMode>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
 									<Menu>
 										<MenuButton
 											aria-label='Menu'
 											as={IconButton}
 											borderRadius='full'
 											bg='whiteAlpha.600'
-											_hover={{ bg: 'whiteAlpha.800' }}
-											_active={{ bg: 'blue.300' }}
 											icon={<FiMenu />}
 											size='lg'
+											_hover={{ bg: 'whiteAlpha.800' }}
+											_active={{ bg: 'blue.300' }}
 										/>
 										<MenuList color='text.dark' zIndex='100'>
 											{isLargerThanMd ? null : (

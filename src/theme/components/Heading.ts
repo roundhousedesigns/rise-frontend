@@ -11,14 +11,12 @@ export default defineStyleConfig({
 		contentTitle: {
 			fontSize: '2xl',
 			fontWeight: 'bold',
-			mb: 0,
 			pb: 0,
 		},
 		contentSubtitle: {
 			fontSize: 'md',
 			fontWeight: 'medium',
 			mt: 0,
-			mb: 2,
 			pb: 0,
 		},
 		searchFilterTitle: {

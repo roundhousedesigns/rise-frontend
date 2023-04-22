@@ -6,7 +6,6 @@ import {
 	Flex,
 	Text,
 	Stack,
-	Card,
 	Spinner,
 	StackItem,
 	IconButton,
@@ -14,14 +13,13 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
-	AlertDialog,
-	AlertDialogBody,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogContent,
-	AlertDialogOverlay,
 	Input,
 	Icon,
+	Progress,
+	Link,
+	SimpleGrid,
+	FormLabel,
+	FormControl,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -32,80 +30,41 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
-	FiTrash,
 	FiTwitter,
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiImage,
+	FiHome,
+	FiStar,
+	FiVideo,
 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import CreditItem from '../components/common/CreditItem';
-import EditableTextInput from '../components/common/inputs/EditableTextInput';
-import EditableTextareaInput from '../components/common/inputs/EditableTextareaInput';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import EditTextWithIcon from '../components/common/EditTextWithIcon';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import EditCreditModal from '../components/EditCreditModal';
-
-import { EditProfileContext } from '../context/EditProfileContext';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
 import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import CreditItem from '../components/common/CreditItem';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import EditCreditModal from '../components/EditCreditModal';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import useFileUpload from '../hooks/mutations/useFileUpload';
+import { EditProfileContext } from '../context/EditProfileContext';
 import { useViewer } from '../hooks/queries/useViewer';
+import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import TextInput from '../components/common/inputs/TextInput';
+import TextareaInput from '../components/common/inputs/TextareaInput';
 
-type AlertProps = {
+// TODO Refactor into smaller components.
+// TODO Add cancel/navigation-away confirmation when exiting with edits
+
+export type AlertProps = {
 	id: string;
 	handleDeleteCredit: (id: string) => void;
 };
-// Chakra Delete Credit Alert Dialog
-function DeleteAlertDialog(props: AlertProps) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const cancelRef = useRef<HTMLButtonElement>(null);
-
-	const handleDelete = () => {
-		props.handleDeleteCredit(props.id);
-		onClose();
-	};
-
-	return (
-		<>
-			<IconButton
-				size='lg'
-				colorScheme='red'
-				icon={<FiTrash />}
-				aria-label='Delete Credit'
-				onClick={onOpen}
-			/>
-			<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-				<AlertDialogOverlay>
-					<AlertDialogContent>
-						<AlertDialogHeader fontSize='lg' fontWeight='bold'>
-							Delete Credit
-						</AlertDialogHeader>
-
-						<AlertDialogBody>
-							Are you sure you want to permanently delete this credit?
-						</AlertDialogBody>
-
-						<AlertDialogFooter>
-							<Button ref={cancelRef} onClick={onClose}>
-								Cancel
-							</Button>
-							<Button colorScheme='red' onClick={handleDelete} ml={3}>
-								Delete
-							</Button>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialogOverlay>
-			</AlertDialog>
-		</>
-	);
-}
 
 interface Props {
 	profile: UserProfile | null;
@@ -128,21 +87,30 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		selfTitle,
 		image,
 		homebase,
+		website,
 		socials,
 		locations,
 		education,
 		willTravel,
-		// media,
+		willTour,
 		description,
 		credits,
 		email,
-		// resume,
+		resume,
 		phone,
 		unions,
 		experienceLevels,
 		genderIdentities,
 		racialIdentities,
 		personalIdentities,
+		mediaVideo1,
+		mediaVideo2,
+		mediaImage1,
+		mediaImage2,
+		mediaImage3,
+		mediaImage4,
+		mediaImage5,
+		mediaImage6,
 	} = editProfile || {};
 
 	const [editCredit, setEditCredit] = useState<string>('');
@@ -265,7 +233,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	}, []);
 
-	const handleInputChange = (name: string) => (newValue: any) => {
+	const handleCheckboxInput = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
@@ -275,19 +243,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 	};
 
-	const handleSocialInputChange = (name: string) => (newValue: any) => {
+	const handleInputChange = (
+		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+	) => {
+		const { name, value } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value,
+			},
+		});
+	};
+
+	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
 		editProfileDispatch({
 			type: 'UPDATE_PERSONAL_LINKS_INPUT',
 			payload: {
 				name: field,
-				value: newValue,
+				value,
 			},
 		});
 	};
 
-	const handleBooleanInputChange = (name: string) => (newValue: string) => {
+	const handleRadioInputChange = (name: string) => (newValue: string) => {
 		editProfileDispatch({
 			type: 'UPDATE_BOOLEAN_INPUT',
 			payload: {
@@ -301,15 +284,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		if (!event || !event.target || !event.target.files) return;
 
 		const file = event.target.files[0];
-		if (!file) return;
+		const { name } = event.target;
 
-		uploadFileMutation(file, loggedInId)
+		if (!file || !name) return;
+
+		uploadFileMutation(file, name, loggedInId)
 			.then((result) => {
 				editProfileDispatch({
 					type: 'UPDATE_INPUT',
 					payload: {
-						name: 'image',
-						value: result.data.uploadFile.imageUrl,
+						name,
+						value: result.data.uploadFile.fileUrl,
 					},
 				});
 			})
@@ -330,11 +315,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			deleteCreditMutation(creditId)
 				.then(() => {
 					toast({
+						// title: 'Credit deleted.',
 						description: 'Your credit has been deleted.',
 						status: 'success',
 						duration: 5000,
 						isClosable: true,
-						position: 'bottom',
+						position: 'top',
 					});
 					editProfileDispatch({
 						type: 'DELETE_CREDIT',
@@ -354,23 +340,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		updateProfileMutation(editProfile)
 			.then(() => {
-				// toast({
-				// 	title: 'Profile saved.',
-				// 	description: 'Your profile has been updated.',
-				// 	status: 'success',
-				// 	duration: 5000,
-				// 	isClosable: true,
-				// 	position: 'top',
-				// });
 				setWillDeleteCredits(false);
 				navigate('/profile');
 			})
+			.then(() => {
+				toast({
+					// title: 'Profile saved.',
+					description: 'Your profile has been updated.',
+					status: 'success',
+					duration: 2000,
+					isClosable: true,
+					position: 'top',
+				});
+			})
 			.catch((err) => {
 				toast({
-					title: 'Profile not saved.',
+					// title: 'Profile not saved.',
 					description: 'There was an error saving your profile.',
 					status: 'error',
-					duration: 5000,
+					duration: 2000,
 					isClosable: true,
 					position: 'top',
 				});
@@ -412,240 +400,335 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form onSubmit={handleSubmit}>
-			<ButtonGroup position='fixed' top={24} right={4} zIndex='1' rowGap={1} size='lg'>
-				<IconButton
-					type='submit'
-					aria-label={saveLoading ? 'Saving...' : 'Save profile'}
-					colorScheme='green'
-					disabled={saveLoading}
-					borderRadius='full'
-				>
-					{saveLoading ? <Spinner size='sm' /> : <FiSave />}
-				</IconButton>
-				<IconButton
-					type='reset'
-					colorScheme='orange'
-					aria-label='Cancel editing'
-					borderRadius='full'
-					onClick={handleCancel}
-				>
-					<FiXCircle />
-				</IconButton>
-			</ButtonGroup>
+			<Flex
+				alignItems='center'
+				justifyContent='flex-end'
+				borderTopWidth='1px'
+				borderTopColor='gray.100'
+				position='fixed'
+				bottom='0'
+				left='0'
+				width='full'
+				height='56px'
+				bgColor='whiteAlpha.900'
+				zIndex='100'
+			>
+				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
+					<Button
+						type='submit'
+						leftIcon={saveLoading ? undefined : <FiSave />}
+						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
+						colorScheme='green'
+						disabled={saveLoading}
+						mx={0}
+					>
+						{saveLoading ? <Spinner size='sm' /> : 'Save'}
+					</Button>
+					<Button
+						type='reset'
+						leftIcon={<FiXCircle />}
+						colorScheme='orange'
+						aria-label='Cancel editing'
+						onClick={handleCancel}
+						marginInlineStart='0 !important'
+					>
+						Cancel
+					</Button>
+				</ButtonGroup>
+			</Flex>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
 				<StackItem>
-					<Card>
+					<Box py={2} mt={2}>
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-							<Box mb={2}>
+							<Box mb={2} width='30%'>
 								{/* TODO Image uploader */}
 								{uploadFileMutationLoading ? (
-									<Text>Uploading...</Text>
+									<Flex alignItems='center' justifyContent='center' h='200px'>
+										<Text textAlign='center' fontSize='sm'>
+											Uploading...
+										</Text>
+										<Progress size='md' isIndeterminate />
+									</Flex>
 								) : image ? (
 									<>
-										<Image src={image} alt={`Profile picture`} loading='eager' fit='cover' w='xs' />
+										<Image
+											src={image}
+											alt={`Profile picture`}
+											loading='eager'
+											fit='cover'
+											borderRadius='md'
+											w='xs'
+											mb={2}
+										/>
+										{/* TODO clear/remove image button */}
+										{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
 									</>
 								) : (
 									<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
 										<Icon as={FiImage} boxSize='60px' />
 									</Flex>
 								)}
-								<Input type='file' name='image' onChange={handleFileInputChange} />
+								{/* TODO size limit validation */}
+								<Input
+									type='file'
+									name='image'
+									onChange={handleFileInputChange}
+									border='none'
+									color='transparent'
+								/>
 							</Box>
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
 									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-										<EditableTextInput
-											defaultValue={firstName ? firstName : ''}
-											mr={2}
+										<TextInput
+											placeholder='First'
+											value={firstName}
 											name='firstName'
-											fontWeight='medium'
-											fontSize='3xl'
-											label='First Name'
-											handleChange={handleInputChange}
-											outerProps={{
-												flex: '1',
+											isRequired
+											onChange={handleInputChange}
+											flex='1'
+											label='First name'
+											inputProps={{
+												size: 'xl',
 											}}
 										/>
-										<EditableTextInput
-											defaultValue={lastName ? lastName : ''}
+										<TextInput
+											placeholder='Last'
+											value={lastName}
 											name='lastName'
-											label='Last Name'
-											fontWeight='medium'
-											fontSize='3xl'
-											mr={2}
-											handleChange={handleInputChange}
-											outerProps={{
-												flex: '1',
+											isRequired
+											label='Last name'
+											onChange={handleInputChange}
+											flex='1'
+											inputProps={{
+												size: 'xl',
 											}}
 										/>
-										<EditableTextInput
-											defaultValue={pronouns ? pronouns : ''}
+										<TextInput
+											placeholder='pronouns'
+											value={pronouns}
 											name='pronouns'
-											as={Text}
 											label='Pronouns'
-											fontWeight='medium'
-											styles={{ display: 'block' }}
-											mb={0}
-											handleChange={handleInputChange}
-											outerProps={{ flex: '0 0 130px' }}
+											onChange={handleInputChange}
+											flex='1'
+											inputProps={{
+												size: 'md',
+											}}
 										/>
 									</Flex>
-									<EditableTextInput
-										defaultValue={homebase ? homebase : ''}
-										name='homebase'
-										as={Text}
-										label='Where do you currently live?'
-										fontWeight='medium'
-										styles={{ display: 'block' }}
-										mb={0}
-										handleChange={handleInputChange}
-										outerProps={{ flex: '0 0 130px' }}
-									/>
+									<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+										<TextInput
+											placeholder='homebase'
+											value={homebase}
+											name='homebase'
+											label='Where do you currently live?'
+											leftElement={<Icon as={FiHome} />}
+											onChange={handleInputChange}
+											inputProps={{
+												maxLength: 25,
+											}}
+											flex='1'
+										/>
+										<TextInput
+											value={selfTitle}
+											name='selfTitle'
+											placeholder='Title'
+											label='Title/Trade/Profession'
+											leftElement={<Icon as={FiStar} />}
+											onChange={handleInputChange}
+											inputProps={{
+												maxLength: 50,
+											}}
+											flex='1'
+										/>
+									</Flex>
 								</StackItem>
 								<StackItem display='flex' flexWrap='wrap' gap={4}>
-									<EditableTextInput
-										defaultValue={selfTitle ? selfTitle : ''}
-										name='selfTitle'
-										placeholder='Title'
-										label='Title/Trade/Profession'
-										handleChange={handleInputChange}
-										outerProps={{ flex: '1 1 60%' }}
-									/>
-									<Box fontSize='sm'>
-										<Heading variant='contentTitle'>Work Locations</Heading>
-										<Heading variant='contentSubtitle'>
-											Where are you looking for work? Select all that apply.
+									<Box flex='1'>
+										<Heading variant='contentTitle' mb={2}>
+											Contact
 										</Heading>
-										<ProfileCheckboxGroup
-											name='locations'
-											items={locationTerms}
-											checked={locations ? locations.map((item) => item.toString()) : []}
-											handleChange={handleInputChange}
-										/>
-									</Box>
-									<Box fontSize='sm'>
-										<Heading variant='contentTitle'>Willing to travel?</Heading>
-										<Heading variant='contentSubtitle'>
-											Are you willing to leave home, or your work locations, for a job?
-										</Heading>
-										<ProfileRadioGroup
-											defaultValue={willTravel ? 'true' : 'false'}
-											name='willTravel'
-											items={[
-												{ label: 'Yes', value: 'true' },
-												{ label: 'No', value: 'false' },
-											]}
-											handleChange={handleBooleanInputChange}
-										/>
-									</Box>
-								</StackItem>
-								<StackItem>
-									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
-										<Box flex='1'>
-											<Heading variant='contentTitle'>Contact</Heading>
-											<EditTextWithIcon
+										<Stack direction='column' spacing={0}>
+											<TextInput
 												value={email}
-												icon={FiMail}
-												label='Mail'
-												labelVisuallyHidden
+												leftElement={<Icon as={FiMail} />}
+												isRequired
+												placeholder='me@somewhere.com'
+												label='Contact Email'
 												name='email'
-												handleChange={handleInputChange}
+												onChange={handleInputChange}
 											/>
-											<EditTextWithIcon
+											<TextInput
 												value={phone}
-												icon={FiPhone}
+												leftElement={<Icon as={FiPhone} />}
+												placeholder='(888) 888-8888'
 												label='Phone'
-												labelVisuallyHidden
 												name='phone'
-												handleChange={handleInputChange}
+												onChange={handleInputChange}
 											/>
-										</Box>
-										<Box flex='1'>
-											<Heading variant='contentTitle' flex='0 0 100%' textAlign='center'>
-												Resume
-											</Heading>
-											<Flex gap={3} alignItems='center' justifyContent='center' flexWrap='wrap'>
-												<Text variant='devAlert'>Resume uploads are under development.</Text>
-												<Text>-- upload --</Text>
-											</Flex>
-										</Box>
-									</Flex>
+											<TextInput
+												value={website}
+												leftElement={<Icon as={FiGlobe} />}
+												label='Website'
+												name='website'
+												onChange={handleInputChange}
+											/>
+										</Stack>
+									</Box>
 								</StackItem>
 							</Stack>
 						</Flex>
-
-						<StackItem>
-							<Heading variant='contentTitle'>Unions/Guilds</Heading>
-							<Heading variant='contentSubtitle'>
-								What unions or guilds are you a member of?
-							</Heading>
-							<Box fontSize='sm'>
+						<Stack>
+							<StackItem fontSize='sm'>
+								{/* TODO make this required */}
+								<Heading variant='contentTitle'>Work Locations</Heading>
+								<Heading variant='contentSubtitle'>
+									Select any areas in which you're a local hire.
+								</Heading>
 								<ProfileCheckboxGroup
-									name='unions'
-									items={unionTerms}
-									checked={unions ? unions.map((item) => item.toString()) : []}
-									handleChange={handleInputChange}
+									name='locations'
+									isRequired
+									items={locationTerms}
+									checked={locations ? locations.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
 								/>
-							</Box>
+							</StackItem>
+							<StackItem py={4} display='flex' gap={10}>
+								<Box>
+									<Heading variant='contentTitle'>Travel</Heading>
+									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTravel ? 'true' : 'false'}
+										name='willTravel'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleRadioInputChange}
+									/>
+								</Box>
+								<Box>
+									<Heading variant='contentTitle'>Tour</Heading>
+									<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTour ? 'true' : 'false'}
+										name='willTour'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleRadioInputChange}
+									/>
+								</Box>
+								<Box flex='0 0 33%' textAlign='center'>
+									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
+										Resume
+									</Heading>
+									<Flex gap={3} flexWrap='wrap'>
+										<Heading variant='contentSubtitle'>
+											{resume ? (
+												<Link
+													m={0}
+													fontSize='md'
+													fontWeight='medium'
+													href={resume}
+													download
+													textDecoration='underline'
+													textDecorationStyle='dotted'
+												>
+													Preview your resume
+												</Link>
+											) : (
+												'PDF or image'
+											)}
+										</Heading>
+										{/* TODO center input button */}
+										{/* TODO add "clear" button */}
+										<Input
+											type='file'
+											name='resume'
+											onChange={handleFileInputChange}
+											border='none'
+											pl='0'
+										/>
+									</Flex>
+								</Box>
+							</StackItem>
+						</Stack>
+
+						<StackItem>
+							<Flex flexWrap='wrap' gap={4}>
+								<Box flex='1'>
+									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<Heading variant='contentSubtitle'>
+										What unions or guilds are you a member of?
+									</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='unions'
+											items={unionTerms}
+											checked={unions ? unions.map((item) => item.toString()) : []}
+											handleChange={handleCheckboxInput}
+										/>
+									</Box>
+								</Box>
+								<Box flex='0 0 30%'>
+									<Heading variant='contentTitle'>Experience Levels</Heading>
+									<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='experienceLevels'
+											items={experienceLevelTerms}
+											checked={
+												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
+											}
+											handleChange={handleCheckboxInput}
+										/>
+									</Box>
+								</Box>
+							</Flex>
 						</StackItem>
 
 						<StackItem>
-							<Heading variant='contentTitle'>Experience Levels</Heading>
-							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='experienceLevels'
-									items={experienceLevelTerms}
-									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
-									handleChange={handleInputChange}
-								/>
-							</Box>
-						</StackItem>
+							<Heading variant='contentTitle'>Social</Heading>
 
-						<StackItem>
-							<Stack direction='column' gap={4}>
-								<StackItem>
-									<Heading variant='contentTitle'>Social + Links</Heading>
-									<EditTextWithIcon
-										value={socials?.linkedin}
-										icon={FiLinkedin}
-										label='LinkedIn @handle'
-										name='socials.linkedin'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.facebook}
-										icon={FiFacebook}
-										label='Facebook URL (ex: https://facebook.com/yourname)'
-										name='socials.facebook'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.instagram}
-										icon={FiInstagram}
-										label='Instagram @handle'
-										name='socials.instagram'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.twitter}
-										icon={FiTwitter}
-										label='Twitter @handle'
-										name='socials.twitter'
-										handleChange={handleSocialInputChange}
-									/>
-									<EditTextWithIcon
-										value={socials?.website}
-										icon={FiGlobe}
-										label='Website'
-										name='socials.website'
-										handleChange={handleSocialInputChange}
-									/>
-								</StackItem>
-							</Stack>
+							<SimpleGrid columns={[1, 2]} spacing={4}>
+								<TextInput
+									value={socials?.linkedin}
+									leftElement={<Icon as={FiLinkedin} />}
+									label='LinkedIn @handle'
+									placeholder='@yourname'
+									name='socials.linkedin'
+									onChange={handleSocialInputChange}
+								/>
+								<TextInput
+									value={socials?.facebook}
+									leftElement={<Icon as={FiFacebook} />}
+									label='Facebook URL'
+									placeholder='https://facebook.com/yourname'
+									name='socials.facebook'
+									onChange={handleSocialInputChange}
+								/>
+								<TextInput
+									value={socials?.instagram}
+									leftElement={<Icon as={FiInstagram} />}
+									label='Instagram @handle'
+									placeholder='@handle'
+									name='socials.instagram'
+									onChange={handleSocialInputChange}
+								/>
+								<TextInput
+									value={socials?.twitter}
+									leftElement={<Icon as={FiTwitter} />}
+									label='Twitter @handle'
+									placeholder='@handle'
+									name='socials.twitter'
+									onChange={handleSocialInputChange}
+								/>
+							</SimpleGrid>
 						</StackItem>
-					</Card>
+					</Box>
 				</StackItem>
 
 				<StackItem pos='relative'>
@@ -684,7 +767,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								<CreditItem
 									credit={credit}
 									onClick={() => handleEditCredit(credit.id)}
-									isEditable={true}
+									isEditable
 									key={index}
 									width='full'
 								/>
@@ -732,20 +815,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
-					<Card>
+					<Box>
 						<Heading variant='contentTitle'>Bio</Heading>
-						<Heading variant='contentSubtitle'>
+						<Heading variant='contentSubtitle' my={2}>
 							Write a little. Write a lot. It's up to you!
 						</Heading>
-						<EditableTextareaInput
-							defaultValue={description ? description : ''}
+						<TextareaInput
+							value={description}
 							name='description'
 							label='Bio'
-							labelVisuallyHidden
-							handleChange={handleInputChange}
+							labelHidden
+							mt={2}
+							mb={4}
+							onChange={handleInputChange}
+							inputProps={{
+								rows: 20,
+							}}
 						/>
-					</Card>
-					<Card>
+					</Box>
+					<Box>
 						<Heading
 							size='md'
 							fontWeight='bold'
@@ -774,7 +862,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
@@ -787,7 +875,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
@@ -800,34 +888,222 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										checked={
 											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
 										}
-										handleChange={handleInputChange}
+										handleChange={handleCheckboxInput}
 									/>
 								</Box>
 							</Box>
 						</Flex>
-					</Card>
+					</Box>
 				</StackItem>
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Card>
-						<EditableTextareaInput
-							defaultValue={education ? education : ''}
-							label='Education'
-							labelVisuallyHidden
-							name='education'
-							handleChange={handleInputChange}
-						/>
-					</Card>
+					<TextareaInput
+						value={education}
+						name='education'
+						variant='outline'
+						label='Education and training'
+						labelHidden
+						onChange={handleInputChange}
+						inputProps={{
+							rows: 4,
+						}}
+					/>
 				</StackItem>
 
 				<StackItem>
 					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
-					<Stack direction='column' mt={4} w='full' flexWrap='wrap' gap={2}>
-						<Text variant='devAlert' fontSize='md'>
-							Photo + video additions under development.
-						</Text>
-					</Stack>
+					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
+					<Box>
+						<Heading variant='contentTitle'>Videos</Heading>
+						<SimpleGrid columns={[1, 2]} spacing={8}>
+							<Box>
+								<TextInput
+									value={mediaVideo1}
+									name='mediaVideo1'
+									label='Video embed 1'
+									leftElement={<FiVideo />}
+									onChange={handleInputChange}
+								/>
+								{mediaVideo1 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+										</Box>
+									</Box>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<TextInput
+									value={mediaVideo2}
+									name='mediaVideo2'
+									label='Video embed 2'
+									leftElement={<FiVideo />}
+									onChange={handleInputChange}
+								/>
+								{mediaVideo2 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+										</Box>
+									</Box>
+								) : (
+									false
+								)}
+							</Box>
+						</SimpleGrid>
+					</Box>
+					<Box mt={6}>
+						<Heading variant='contentTitle'>Images</Heading>
+						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 1</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage1'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage1 ? (
+									<Image
+										src={mediaImage1}
+										alt={`Media image 1`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 2</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage2'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage2 ? (
+									<Image
+										src={mediaImage2}
+										alt={`Media image 2`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 3</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage3'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage3 ? (
+									<Image
+										src={mediaImage3}
+										alt={`Media image 3`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 4</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage4'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage1 ? (
+									<Image
+										src={mediaImage4}
+										alt={`Media image 4`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 5</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage5'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage5 ? (
+									<Image
+										src={mediaImage5}
+										alt={`Media image 5`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<FormControl>
+									<FormLabel>Image 6</FormLabel>
+									<Input
+										type='file'
+										name='mediaImage6'
+										onChange={handleFileInputChange}
+										border='none'
+										pl='0'
+									/>
+								</FormControl>
+								{mediaImage6 ? (
+									<Image
+										src={mediaImage6}
+										alt={`Media image 6`}
+										loading='eager'
+										fit='cover'
+										w='xs'
+										mb={2}
+									/>
+								) : (
+									false
+								)}
+							</Box>
+						</SimpleGrid>
+					</Box>
 				</StackItem>
 			</Stack>
 		</form>

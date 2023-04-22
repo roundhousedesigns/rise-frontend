@@ -1,16 +1,14 @@
-import { useContext, useEffect, useReducer, useRef } from 'react';
+import { ChangeEvent, useContext, useEffect, useReducer, useRef } from 'react';
 import {
 	ButtonGroup,
-	Card,
 	Divider,
 	Flex,
 	Heading,
-	IconButton,
 	Spinner,
 	Stack,
 	StackItem,
-	Wrap,
 	Text,
+	Button,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
@@ -20,10 +18,10 @@ import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 import { useLazyPositions } from '../hooks/queries/useLazyPositions';
 import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-// import ProfileRadioGroup from './common/ProfileRadioGroup';
-import EditableTextInput from './common/inputs/EditableTextInput';
+import TextInput from './common/inputs/TextInput';
+import ProfileRadioGroup from './common/ProfileRadioGroup';
 
-// TODO type payload better
+// TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
@@ -79,13 +77,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		updateCreditMutation,
 		results: { loading: updateCreditLoading },
 	} = useUpdateCredit();
+
 	const {
 		title,
 		jobTitle,
 		jobLocation,
 		venue,
-		year,
-		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] }, // TODO are defaults here necessary?
+		workStart,
+		workEnd,
+		workCurrent,
+		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
 
@@ -103,37 +104,40 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	// Set jobs when jobsData changes.
 	useEffect(() => {
-		// TODO if needed: jobs.current is the same as jobsData, exit. Otherwise, set jobs.current to jobsData.
-
 		jobs.current = jobsData
 			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
 			: [];
 	}, [jobsData]);
 
-	const handleInputChange = (name: string) => (newValue: string) => {
+	const handleInputChange = (
+		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+	) => {
+		const { name, value } = event.target;
+
 		editCreditDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
 				name,
-				value: newValue,
+				value,
 			},
 		});
 	};
-
-	// const handleToggleRadioTerm = (name: string) => (term: string) => {
-	// 	editCreditDispatch({
-	// 		type: `UPDATE_${name.toUpperCase()}`,
-	// 		payload: {
-	// 			value: term,
-	// 		},
-	// 	});
-	// };
 
 	const handleToggleCheckboxTerm = (name: string) => (terms: string[]) => {
 		editCreditDispatch({
 			type: `UPDATE_${name.toUpperCase()}`,
 			payload: {
 				value: terms,
+			},
+		});
+	};
+
+	const handleRadioInputChange = (name: string) => (value: string) => {
+		editCreditDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value: value === 'true' ? true : false,
 			},
 		});
 	};
@@ -166,66 +170,101 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	return (
-		<Card>
-			<Wrap>
+		<>
+			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
+				<Heading size='lg' lineHeight='base'>
+					Edit Credit
+				</Heading>
 				<ButtonGroup>
-					<IconButton
-						aria-label='Accept changes'
+					<Button
+						type='submit'
+						leftIcon={<FiCheck />}
+						aria-label='Save credit'
 						colorScheme='green'
-						icon={<FiCheck />}
 						onClick={handleSave}
-					/>
-					<IconButton
+					>
+						Save
+					</Button>
+					<Button
+						leftIcon={<FiX />}
 						aria-label='Cancel changes'
 						colorScheme='red'
-						icon={<FiX />}
 						onClick={handleCancel}
-					/>
+					>
+						Cancel
+					</Button>
 				</ButtonGroup>
 				{updateCreditLoading ? <Spinner /> : false}
-			</Wrap>
+			</Flex>
 
-			<EditableTextInput
+			<TextInput
 				name='title'
 				label='Production/Show/Company Title'
-				defaultValue={title}
-				handleChange={handleInputChange}
-				outerProps={{ flex: 1 }}
+				value={title}
+				isRequired
+				onChange={handleInputChange}
+				flex='1'
+			/>
+
+			<TextInput
+				name='jobTitle'
+				label='Job/Position Title'
+				isRequired
+				value={jobTitle}
+				onChange={handleInputChange}
 			/>
 
 			<Flex gap={6}>
-				<EditableTextInput
-					name='jobTitle'
-					label='Job/Position Title'
-					defaultValue={jobTitle}
-					handleChange={handleInputChange}
+				<TextInput
+					name='workStart'
+					label='Start year'
+					isRequired
+					value={workStart}
+					onChange={handleInputChange}
+					flex='0 0 110px'
 				/>
 
-				<EditableTextInput
-					name='year'
-					label='Year (start of employment)'
-					defaultValue={year}
-					handleChange={handleInputChange}
-					outerProps={{ flex: '0 0 100px' }}
+				<TextInput
+					name='workEnd'
+					label='End year'
+					value={!workCurrent ? workEnd : ''}
+					isDisabled={workCurrent}
+					onChange={handleInputChange}
+					flex='0 0 110px'
+				/>
+
+				<ProfileRadioGroup
+					defaultValue={workCurrent ? 'true' : 'false'}
+					name='workCurrent'
+					label='Currently working here'
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
+					py='0'
 				/>
 			</Flex>
 			<Flex gap={6}>
-				<EditableTextInput
+				<TextInput
 					name='venue'
 					label='Venue'
-					defaultValue={venue}
-					handleChange={handleInputChange}
+					value={venue}
+					onChange={handleInputChange}
+					isRequired
 				/>
-				<EditableTextInput
+				<TextInput
 					name='jobLocation'
 					label='Job Location'
-					defaultValue={jobLocation}
-					handleChange={handleInputChange}
+					value={jobLocation}
+					isRequired
+					onChange={handleInputChange}
 				/>
 			</Flex>
 			<Divider />
 
 			<Stack direction='column' spacing={6} fontSize='md'>
+				{/* TODO Make this required */}
 				<StackItem>
 					<Heading variant='contentTitle'>Department</Heading>
 					<Heading variant='contentSubtitle'>
@@ -284,6 +323,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</StackItem>
 				) : null}
 			</Stack>
-		</Card>
+		</>
 	);
 }

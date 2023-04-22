@@ -34,7 +34,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const {
 		search: {
 			filters: {
-				positions: { jobs },
+				positions: { jobs, department },
 				skills,
 				unions,
 				locations,
@@ -67,9 +67,12 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
+		// set the positions array to the jobs array if it's not empty, otherwise use the department array
+		const positions = jobs.length > 0 ? jobs : department;
+
 		getSearchResults({
 			variables: {
-				jobs: jobs && jobs.length > 0 ? jobs : [],
+				positions,
 				skills: skills && skills.length > 0 ? skills : [],
 				unions: unions && unions.length > 0 ? unions : [],
 				locations: locations && locations.length > 0 ? locations : [],

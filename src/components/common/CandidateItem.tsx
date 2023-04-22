@@ -5,11 +5,12 @@ import { Candidate } from '../../lib/classes';
 
 interface Props {
 	candidate: Candidate;
+	[prop: string]: any;
 }
 
-export default function CandidateItem({ candidate }: Props) {
+export default function CandidateItem({ candidate, ...props }: Props) {
 	return (
-		<Card py={2}>
+		<Card py={2} my={0} {...props}>
 			<Flex
 				direction='row'
 				justifyContent='flex-start'

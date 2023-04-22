@@ -8,19 +8,7 @@ interface Props {
 
 export default function Badge({ bg, color, children }: Props) {
 	return (
-		<Box
-			borderRadius='full'
-			bg={bg}
-			color={color}
-			px={2}
-			py={1}
-			fontSize='xs'
-			fontWeight='bold'
-			position='absolute'
-			top='6px'
-			left='8px'
-			pointerEvents='none'
-		>
+		<Box borderRadius='full' bg={bg} color={color} px={4} py={2} fontSize='xs' fontWeight='bold'>
 			{children}
 		</Box>
 	);

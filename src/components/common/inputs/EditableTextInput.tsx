@@ -28,6 +28,7 @@ export default function EditableTextInput({
 	labelVisuallyHidden,
 	styles,
 	handleChange,
+	// TODO simplify outerprops, inputprops. invert implementations of outer and inner {...rest}
 	outerProps,
 	...inputProps
 }: Props): JSX.Element {
@@ -42,7 +43,7 @@ export default function EditableTextInput({
 				<EditablePreview display='block' minHeight='39px' />
 				<EditableInput display='block' />
 			</Editable>
-			<FormLabel ml={2}>
+			<FormLabel ml={2} fontSize='xs'>
 				{labelVisuallyHidden ? <VisuallyHidden>{label}</VisuallyHidden> : label}
 			</FormLabel>
 		</FormControl>

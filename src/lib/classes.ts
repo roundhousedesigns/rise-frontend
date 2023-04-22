@@ -8,7 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 } from './types';
-import { maybeParseInt } from './utils';
+import { decodeString, maybeParseInt } from './utils';
 
 /**
  * A basic user.
@@ -63,7 +63,9 @@ export class UserProfile extends User {
 	description?: string;
 	resume?: string;
 	willTravel = false;
+	willTour = false;
 	education?: string;
+	website?: string;
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
@@ -71,7 +73,16 @@ export class UserProfile extends User {
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
 	personalIdentities: number[] = [];
+	mediaVideo1?: string;
+	mediaVideo2?: string;
+	mediaImage1?: string;
+	mediaImage2?: string;
+	mediaImage3?: string;
+	mediaImage4?: string;
+	mediaImage5?: string;
+	mediaImage6?: string;
 	credits: Credit[] = [];
+	[other: string]: any;
 
 	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
 		const {
@@ -87,6 +98,7 @@ export class UserProfile extends User {
 			description,
 			resume,
 			willTravel,
+			willTour,
 			education,
 			twitter,
 			linkedin,
@@ -99,25 +111,45 @@ export class UserProfile extends User {
 			genderIdentities,
 			racialIdentities,
 			personalIdentities,
-			// media,
+			mediaVideo1,
+			mediaVideo2,
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
 		} = userParams;
 
 		super({ id, firstName, lastName });
 
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.pronouns = pronouns;
+		this.firstName = firstName ? decodeString(firstName) : firstName;
+		this.lastName = lastName ? decodeString(lastName) : lastName;
+		this.pronouns = pronouns ? decodeString(pronouns) : pronouns;
 		this.email = email;
-		this.homebase = homebase;
-		this.selfTitle = selfTitle;
+		this.homebase = homebase ? decodeString(homebase) : homebase;
+		this.selfTitle = selfTitle ? decodeString(selfTitle) : selfTitle;
 		this.image = image;
 		this.phone = phone;
-		this.description = description;
+		this.website = website;
+		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
-		this.education = education;
+		this.education = education ? decodeString(education) : education;
+		this.mediaVideo1 = mediaVideo1;
+		this.mediaVideo2 = mediaVideo2;
+		this.mediaImage1 = mediaImage1;
+		this.mediaImage2 = mediaImage2;
+		this.mediaImage3 = mediaImage3;
+		this.mediaImage4 = mediaImage4;
+		this.mediaImage5 = mediaImage5;
+		this.mediaImage6 = mediaImage6;
 
 		if (willTravel) {
 			this.willTravel = true;
+		}
+
+		if (willTour) {
+			this.willTour = true;
 		}
 
 		if (locations && locations.length > 0) {
@@ -160,10 +192,6 @@ export class UserProfile extends User {
 			this.socials.facebook = facebook;
 		}
 
-		if (website) {
-			this.socials.website = website;
-		}
-
 		if (credits && credits.length > 0) {
 			this.credits = credits.map((credit) => new Credit(credit));
 		}
@@ -189,7 +217,6 @@ export class PersonalLinks implements PersonalLinksParams {
 	linkedin: string = '';
 	instagram: string = '';
 	facebook: string = '';
-	website: string = '';
 
 	constructor(params: PersonalLinksParams = {}) {
 		Object.assign(this, params);
@@ -206,7 +233,10 @@ export class Credit implements CreditParams {
 	jobTitle: string;
 	jobLocation: string;
 	venue: string;
-	year: string;
+	year: string; // TODO deprecate year
+	workStart: string;
+	workEnd: string;
+	workCurrent: boolean;
 	positions: {
 		department: number[];
 		jobs: number[];
@@ -222,6 +252,9 @@ export class Credit implements CreditParams {
 		this.jobLocation = params.jobLocation ? params.jobLocation : '';
 		this.venue = params.venue ? params.venue : '';
 		this.year = params.year ? params.year : '';
+		this.workStart = params.workStart ? params.workStart : '';
+		this.workEnd = params.workEnd ? params.workEnd : '';
+		this.workCurrent = params.workCurrent || false;
 		this.skills = params.skills ? params.skills : [];
 		this.positions = this.getPositions(params) || { department: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;

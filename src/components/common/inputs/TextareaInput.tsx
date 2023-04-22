@@ -1,69 +1,58 @@
-import { useEffect, useRef } from 'react';
-import {
-	BoxProps,
-	Editable,
-	EditableTextarea,
-	EditablePreview,
-	useEditableControls,
-	IconButton,
-	ButtonGroup,
-	// Tooltip,
-} from '@chakra-ui/react';
-import autosize from 'autosize';
-import { FiCheck, FiX } from 'react-icons/fi';
+import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
 
-interface Props extends BoxProps {
-	defaultValue: string;
-	styles?: any;
-	[key: string]: any;
+interface Props {
+	name: string;
+	label?: string;
+	helperText?: string;
+	placeholder?: string;
+	value?: string;
+	leftElement?: React.ReactNode;
+	onChange: (
+		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
+	) => void;
+	inputProps?: {
+		[prop: string]: any;
+	};
+	[prop: string]: any;
 }
 
-/**
- * The editable field component.
- *
- * @returns {JSX.Element} The editable field.
- */
-function EditableControls(): JSX.Element | null {
-	const { isEditing, getSubmitButtonProps, getCancelButtonProps } =
-		useEditableControls();
-
-	return isEditing ? (
-		<>
-			<ButtonGroup size='sm' mt={2}>
-				<IconButton
-					aria-label='Save'
-					colorScheme='cyan'
-					icon={<FiCheck />}
-					{...getSubmitButtonProps()}
-				/>
-				<IconButton
-					aria-label='Cancel'
-					colorScheme='orange'
-					icon={<FiX />}
-					{...getCancelButtonProps()}
-				/>
-			</ButtonGroup>
-		</>
-	) : null;
-}
-
-export default function EditableTextareaInput({ defaultValue, styles, ...rest }: Props): JSX.Element {
-	const ref = useRef<HTMLTextAreaElement>(null);
-
-	useEffect(() => {
-		if (!ref.current) return;
-
-		autosize(ref.current);
-		return () => {
-			ref.current && autosize.destroy(ref.current);
-		};
-	}, []);
-
+export default function TextareaInput({
+	label,
+	labelHidden,
+	helperText,
+	placeholder,
+	value,
+	name,
+	onChange,
+	inputProps,
+	...props
+}: Props) {
 	return (
-		<Editable defaultValue={defaultValue} {...styles} {...rest}>
-			<EditablePreview />
-			<EditableTextarea rows={6} ref={ref} />
-			<EditableControls />
-		</Editable>
+		<FormControl {...props}>
+			<Textarea
+				variant='filled'
+				placeholder={placeholder}
+				focusBorderColor='blue.200'
+				value={value}
+				name={name}
+				resize='vertical'
+				onChange={onChange}
+				{...inputProps}
+			/>
+			{label ? (
+				<FormLabel
+					ml={2}
+					sx={{
+						visibility: labelHidden ? 'hidden' : 'visible',
+						position: labelHidden ? 'absolute' : 'initial',
+					}}
+				>
+					{label}
+				</FormLabel>
+			) : (
+				false
+			)}
+			{helperText ? <FormHelperText>{helperText}</FormHelperText> : false}
+		</FormControl>
 	);
 }

@@ -16,7 +16,6 @@ export function socialLink(network: string, value: string): string {
 		linkedin: 'https://www.linkedin.com/in/',
 		instagram: 'https://www.instagram.com/',
 		facebook: '',
-		website: '',
 	};
 
 	if (!(network in socialLinkBases)) {
@@ -98,8 +97,20 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @param {UserProfile} profile The user profile to preprae.
  * @returns {Object} The prepared user profile.
  */
-export const prepareUserProfileForGraphQL = (profile: UserProfile) => {
-	const { credits, image, ...sanitized } = profile;
+export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
+	// Strip credits and media uploads from the payload
+	const {
+		credits,
+		image,
+		resume,
+		mediaImage1,
+		mediaImage2,
+		mediaImage3,
+		mediaImage4,
+		mediaImage5,
+		mediaImage6,
+		...sanitized
+	} = profile;
 
 	return sanitized;
 };

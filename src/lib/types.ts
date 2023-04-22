@@ -38,7 +38,6 @@ export interface PersonalLinksParams {
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
-	website?: string;
 }
 
 /**
@@ -57,8 +56,16 @@ export interface UserProfileParams {
 	description?: string;
 	resume?: string;
 	willTravel?: boolean | string | number | null;
+	willTour?: boolean | string | number | null;
 	education?: string;
-	media?: string;
+	mediaVideo1?: string;
+	mediaVideo2?: string;
+	mediaImage1?: string;
+	mediaImage2?: string;
+	mediaImage3?: string;
+	mediaImage4?: string;
+	mediaImage5?: string;
+	mediaImage6?: string;
 	locations?: number[] | WPItem[];
 	unions?: number[] | WPItem[];
 	experienceLevels?: number[] | WPItem[];
@@ -82,7 +89,10 @@ export interface CreditParams {
 	jobTitle?: string;
 	jobLocation?: string;
 	venue?: string;
-	year?: string;
+	year?: string; // TODO deprecate year
+	workStart?: string;
+	workEnd?: string;
+	workCurrent?: boolean;
 	department?: number[];
 	jobs?: number[];
 	positions?: {
@@ -104,6 +114,9 @@ export interface CreditOutput {
 	jobLocation: string;
 	venue: string;
 	year: string;
+	workStart: string;
+	workEnd: string;
+	workCurrent: boolean;
 	positions: number[];
 	skills: number[];
 	isNew: boolean;

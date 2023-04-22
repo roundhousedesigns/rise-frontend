@@ -1,13 +1,4 @@
-import {
-	Heading,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-} from '@chakra-ui/react';
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalOverlay } from '@chakra-ui/react';
 import EditCreditView from './EditCreditView';
 
 interface Props {
@@ -21,10 +12,6 @@ export default function EditCreditModal({ isOpen, onClose, creditId }: Props): J
 		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside' size='4xl'>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>
-					<Heading size='lg'>Edit Credit</Heading>
-				</ModalHeader>
-				<ModalCloseButton />
 				<ModalBody>
 					{creditId ? <EditCreditView creditId={creditId} onClose={onClose} /> : 'No credit found.'}
 				</ModalBody>

@@ -1,7 +1,5 @@
 /**
- * useLazyTaxonomyTerms hook.
- *
- * // TODO DOCUMENT ME.
+ * useLazyTaxonomyTerms hook. Queries a single taxonomy term by ID.
  */
 
 import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';

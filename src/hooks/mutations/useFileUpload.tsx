@@ -6,9 +6,9 @@ import { gql, useMutation } from '@apollo/client';
 import { QUERY_PROFILE } from '../queries/useUserProfile';
 
 const UPLOAD_FILE_MUTATION = gql`
-	mutation UploadFileMutation($file: Upload!, $userId: ID!) {
-		uploadFile(input: { file: $file, userId: $userId }) {
-			imageUrl
+	mutation UploadFileMutation($file: Upload!, $name: String!, $userId: ID!) {
+		uploadFile(input: { file: $file, name: $name, userId: $userId }) {
+			fileUrl
 		}
 	}
 `;
@@ -16,10 +16,11 @@ const UPLOAD_FILE_MUTATION = gql`
 export default function useFileUpload() {
 	const [mutation, results] = useMutation(UPLOAD_FILE_MUTATION);
 
-	const uploadFileMutation = (file: File, userId: number) => {
+	const uploadFileMutation = (file: File, name: string, userId: number) => {
 		return mutation({
 			variables: {
 				file,
+				name,
 				userId,
 			},
 			refetchQueries: [

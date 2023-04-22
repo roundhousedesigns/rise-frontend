@@ -26,6 +26,7 @@ export const useLocalStorage = (
 		deserialize?: (val: string) => any;
 	} = {}
 ) => {
+
 	// TODO type useState
 	// Type suggestion: useState<() => string>
 	// still unclear if the return type is always string or not.

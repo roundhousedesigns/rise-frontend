@@ -2,14 +2,10 @@ import { defineStyleConfig } from '@chakra-ui/react';
 
 const baseStyle = {
 	fontWeight: 'medium',
+	borderRadius: 'lg',
 };
 
-// need defineStyle on variants?
-
 const variants = {
-	default: {
-		borderRadius: 'lg',
-	},
 	socialRound: {
 		borderRadius: 'full',
 		border: 'none',
@@ -37,12 +33,7 @@ const variants = {
 	},
 };
 
-const defaultProps = {
-	variants: 'default',
-};
-
 export default defineStyleConfig({
 	baseStyle,
 	variants,
-	defaultProps,
 });

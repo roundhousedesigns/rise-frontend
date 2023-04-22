@@ -23,7 +23,7 @@ export default function Main() {
 			alignItems='center'
 			flex='1 1 auto'
 		>
-			<Container w='full' maxW='7xl' px={6}>
+			<Container w='full' maxW='7xl' px={{ base: 4, md: 10 }}>
 				<Routes>
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/login' element={<Login />} />

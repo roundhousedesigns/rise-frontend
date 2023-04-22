@@ -13,7 +13,7 @@ export const QUERY_PROFILE = gql`
 			firstName
 			lastName
 			pronouns
-			email
+			email: contactEmail
 			selfTitle
 			homebase
 			image
@@ -21,7 +21,7 @@ export const QUERY_PROFILE = gql`
 			description
 			resume
 			willTravel
-			media
+			willTour
 			education
 			website: websiteUrl
 			twitter
@@ -46,6 +46,14 @@ export const QUERY_PROFILE = gql`
 			personalIdentities {
 				id: databaseId
 			}
+			mediaVideo1(format: RAW)
+			mediaVideo2(format: RAW)
+			mediaImage1(format: RAW)
+			mediaImage2(format: RAW)
+			mediaImage3(format: RAW)
+			mediaImage4(format: RAW)
+			mediaImage5(format: RAW)
+			mediaImage6(format: RAW)
 		}
 		credits(where: { author: $author }, last: $lastCredits) {
 			nodes {
@@ -56,6 +64,9 @@ export const QUERY_PROFILE = gql`
 				jobLocation(format: RENDERED)
 				venue(format: RENDERED)
 				year(format: RENDERED)
+				workStart(format: RENDERED)
+				workEnd(format: RENDERED)
+				workCurrent
 				positions {
 					nodes {
 						id: databaseId
@@ -102,6 +113,9 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
 			year: credit.year,
+			workStart: credit.workStart,
+			workEnd: credit.workEnd,
+			workCurrent: credit.workCurrent,
 			department: credit.positions?.nodes.map((job: WPItem) => job.parentId),
 			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
@@ -111,6 +125,7 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 	// Reorder the credits
 	if (credits) credits.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
 
+	// Prepare the profile data object.
 	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
 
 	return [preparedProfile, omit(result, ['data'])];
