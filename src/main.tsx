@@ -1,16 +1,16 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { createUploadLink } from 'apollo-upload-client';
+
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import '@fontsource/poppins/700.css';
 import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/400.css';
+
 import theme from './theme/index';
-
 import App from './App';
-
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { createUploadLink } from 'apollo-upload-client';
 
 import reportWebVitals from './reportWebVitals';
 
