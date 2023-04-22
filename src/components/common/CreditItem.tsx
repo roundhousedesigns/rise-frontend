@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Credit, WPItem } from '../../lib/classes';
-import { Card, Heading, Text, Tag, Wrap, TagLabel, Box, Stack, Flex } from '@chakra-ui/react';
+import {
+	Card,
+	Heading,
+	Text,
+	Tag,
+	Wrap,
+	TagLabel,
+	Box,
+	Stack,
+	Flex,
+	Skeleton,
+} from '@chakra-ui/react';
 
 import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../../lib/utils';
@@ -30,6 +41,9 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	// Get jobs and skills terms from their IDs
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
+
+	// Loading state
+	const [loading, setLoading] = useState<boolean>(true);
 
 	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
 	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
@@ -64,6 +78,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	useEffect(() => {
 		if (!termData) return;
 
+		setLoading(true);
+
 		const {
 			terms: { nodes },
 		} = termData;
@@ -73,6 +89,10 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 
 		setJobs(jobTerms);
 		setSkills(skillTerms);
+
+		setLoading(false);
+
+		return () => setLoading(false);
 	}, [termData, jobIds, skillIds]);
 
 	// TODO don't show credit until all is loaded (including depts, credits, and skills)
@@ -92,65 +112,66 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	return (
 		<Box onClick={onClick} {...rest}>
 			<Card
-				// onClick={handleEditCredit}
 				cursor={isEditable ? 'pointer' : 'default'}
 				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
 				borderColor='gray.300'
 				_hover={isEditable ? { borderColor: 'gray.500' } : {}}
 			>
-				<Flex
-					alignItems='flex-start'
-					justifyContent='space-between'
-					flexWrap={{ base: 'wrap', md: 'nowrap' }}
-				>
-					<Stack direction='column' flex='1 1 50%' minW='420px'>
-						<Wrap>
-							<Heading fontWeight='bold' fontSize='xl' as='h3'>
-								{title}
-							</Heading>
-							<Text fontSize='lg' fontWeight='bold'>{` ${yearString()}`}</Text>
-							<Text fontSize='lg' ml={1} fontWeight='medium'>
-								{venue}
-								{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
-							</Text>
-						</Wrap>
-						{jobTitle ? (
-							<Text fontSize='md' lineHeight='short'>
-								{jobTitle}
-							</Text>
-						) : (
-							false
-						)}
-					</Stack>
-					<Box flex='1 1 50%' minW='420px'>
-						{departmentIds?.length || jobs?.length || skills?.length ? (
-							<Stack direction='column' mt={{ base: 4, md: 0 }}>
-								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-									{department?.map((department: WPItem) => (
-										<Tag key={department.id} colorScheme='orange'>
-											<TagLabel>{decodeString(department.name)}</TagLabel>
-										</Tag>
-									))}
-								</Wrap>
-								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-									{jobs?.map((job: WPItem) => (
-										<Tag key={job.id} colorScheme='cyan'>
-											<TagLabel>{decodeString(job.name)}</TagLabel>
-										</Tag>
-									))}
-								</Wrap>
-								<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-									{skills?.map((skill: WPItem) => (
-										<Tag key={skill.id} colorScheme='teal'>
-											<TagLabel>{decodeString(skill.name)}</TagLabel>
-										</Tag>
-									))}
-								</Wrap>
-							</Stack>
-						) : null}
-					</Box>
-				</Flex>
+				<Skeleton isLoaded={!loading}>
+					<Flex
+						alignItems='flex-start'
+						justifyContent='space-between'
+						flexWrap={{ base: 'wrap', md: 'nowrap' }}
+					>
+						<Stack direction='column' flex='1 1 50%' minW='420px'>
+							<Wrap>
+								<Heading fontWeight='bold' fontSize='xl' as='h3'>
+									{title}
+								</Heading>
+								<Text fontSize='lg' fontWeight='bold'>{` ${yearString()}`}</Text>
+								<Text fontSize='lg' ml={1} fontWeight='medium'>
+									{decodeString(venue)}
+									{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
+								</Text>
+							</Wrap>
+							{jobTitle ? (
+								<Text fontSize='md' lineHeight='short'>
+									{jobTitle}
+								</Text>
+							) : (
+								false
+							)}
+						</Stack>
+						<Box flex='1 1 50%'>
+							{departmentIds?.length || jobs?.length || skills?.length ? (
+								<Stack direction='column' mt={{ base: 4, md: 0 }}>
+									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+										{department?.map((department: WPItem) => (
+											<Tag key={department.id} colorScheme='orange'>
+												<TagLabel>{decodeString(department.name)}</TagLabel>
+											</Tag>
+										))}
+									</Wrap>
+									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+										{jobs?.map((job: WPItem) => (
+											<Tag key={job.id} colorScheme='cyan'>
+												<TagLabel>{decodeString(job.name)}</TagLabel>
+											</Tag>
+										))}
+									</Wrap>
+									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+										{skills?.map((skill: WPItem) => (
+											<Tag key={skill.id} colorScheme='teal'>
+												<TagLabel>{decodeString(skill.name)}</TagLabel>
+											</Tag>
+										))}
+									</Wrap>
+								</Stack>
+							) : null}
+						</Box>
+					</Flex>
+				</Skeleton>
 			</Card>
 		</Box>
 	);
