@@ -77,12 +77,11 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 
 	// TODO don't show credit until all is loaded (including depts, credits, and skills)
 
-	// TODO put this in its own file
 	const yearString = () => {
-		if (workStart && workEnd) {
+		if (workStart && workEnd && !workCurrent) {
 			return `${workStart} - ${workEnd}`;
 		} else if (workStart && workCurrent) {
-			return `${workStart} - Current`;
+			return `${workStart} - Present`;
 		} else if (workStart && !workEnd && !workCurrent) {
 			return `${workStart}`;
 		} else {
@@ -109,8 +108,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 						<Wrap>
 							<Heading fontWeight='bold' fontSize='xl' as='h3'>
 								{title}
-								{yearString()}
 							</Heading>
+							<Text fontSize='lg' fontWeight='bold'>{` ${yearString()}`}</Text>
 							<Text fontSize='lg' ml={1} fontWeight='medium'>
 								{venue}
 								{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}

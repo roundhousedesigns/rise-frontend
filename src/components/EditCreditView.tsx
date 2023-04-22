@@ -201,6 +201,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				name='title'
 				label='Production/Show/Company Title'
 				value={title}
+				isRequired
 				onChange={handleInputChange}
 				flex='1'
 			/>
@@ -208,6 +209,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<TextInput
 				name='jobTitle'
 				label='Job/Position Title'
+				isRequired
 				value={jobTitle}
 				onChange={handleInputChange}
 			/>
@@ -216,9 +218,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				<TextInput
 					name='workStart'
 					label='Start year'
+					isRequired
 					value={workStart}
 					onChange={handleInputChange}
-					flex='0 0 100px'
+					flex='0 0 110px'
 				/>
 
 				<TextInput
@@ -227,7 +230,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					value={!workCurrent ? workEnd : ''}
 					isDisabled={workCurrent}
 					onChange={handleInputChange}
-					flex='0 0 100px'
+					flex='0 0 110px'
 				/>
 
 				<ProfileRadioGroup
@@ -239,21 +242,29 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						{ label: 'No', value: 'false' },
 					]}
 					handleChange={handleRadioInputChange}
-					pt='0'
+					py='0'
 				/>
 			</Flex>
 			<Flex gap={6}>
-				<TextInput name='venue' label='Venue' value={venue} onChange={handleInputChange} />
+				<TextInput
+					name='venue'
+					label='Venue'
+					value={venue}
+					onChange={handleInputChange}
+					isRequired
+				/>
 				<TextInput
 					name='jobLocation'
 					label='Job Location'
 					value={jobLocation}
+					isRequired
 					onChange={handleInputChange}
 				/>
 			</Flex>
 			<Divider />
 
 			<Stack direction='column' spacing={6} fontSize='md'>
+				{/* TODO Make this required */}
 				<StackItem>
 					<Heading variant='contentTitle'>Department</Heading>
 					<Heading variant='contentSubtitle'>
