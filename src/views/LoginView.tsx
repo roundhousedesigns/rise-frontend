@@ -51,6 +51,7 @@ export default function LoginView() {
 							id='login'
 							type='text'
 							variant='filled'
+							autoComplete='username'
 							bg='white'
 							isRequired
 							onChange={handleInputChange}
@@ -61,6 +62,7 @@ export default function LoginView() {
 							id='password'
 							type='password'
 							variant='filled'
+							autoComplete='current-password'
 							bg='white'
 							isRequired
 							onChange={handleInputChange}
