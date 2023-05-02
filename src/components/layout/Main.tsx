@@ -3,6 +3,7 @@ import { Box, Container } from '@chakra-ui/react';
 
 import Dashboard from '../../routes/Dashboard';
 import Login from '../../routes/Login';
+import Register from '../../routes/Register';
 import Results from '../../routes/Results';
 import Profile from '../../routes/Profile';
 import EditProfile from '../../routes/EditProfile';
@@ -27,6 +28,7 @@ export default function Main() {
 				<Routes>
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/login' element={<Login />} />
+					<Route path='/Register' element={<Register />} />
 					<Route path='/results' element={<Results />} />
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />

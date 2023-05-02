@@ -9,10 +9,15 @@ import { SearchContextProvider } from './context/SearchContext';
 import LoginView from './views/LoginView';
 
 import { useViewer } from './hooks/queries/useViewer';
+import { useLocation } from 'react-router-dom';
+import RegisterView from './views/RegisterView';
 
 export default function App() {
 	const { loggedInId } = useViewer();
 	const { colorMode, toggleColorMode } = useColorMode();
+
+	// get the current route
+	const { pathname } = useLocation();
 
 	return (
 		<SearchContextProvider>
@@ -36,8 +41,8 @@ export default function App() {
 								top={4}
 							/>
 						</Center>
-						<Box pos='relative' bottom={4} w='auto' minW='md'>
-							<LoginView />
+						<Box pos='relative' bottom={4} w='full' minW='md' maxW='4xl' px={4}>
+							{pathname === '/register' ? <RegisterView /> : <LoginView />}
 						</Box>
 					</Stack>
 				)}

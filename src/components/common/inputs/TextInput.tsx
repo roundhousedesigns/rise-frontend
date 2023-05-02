@@ -1,5 +1,7 @@
 import {
+	Flex,
 	FormControl,
+	FormErrorMessage,
 	FormHelperText,
 	FormLabel,
 	Input,
@@ -15,6 +17,7 @@ interface Props {
 	value?: string;
 	isDisabled?: boolean;
 	isRequired?: boolean;
+	error?: string;
 	leftElement?: React.ReactNode;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
@@ -32,6 +35,7 @@ export default function TextInput({
 	name,
 	isDisabled,
 	isRequired,
+	error,
 	onChange,
 	leftElement,
 	leftAddon,
@@ -40,7 +44,7 @@ export default function TextInput({
 }: Props) {
 	return (
 		// TODO implement character count ("xx/yy remaining")
-		<FormControl isRequired={isRequired} {...props}>
+		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 			<InputGroup>
 				{leftElement ? (
 					<InputLeftElement pointerEvents='none'>{leftElement}</InputLeftElement>
@@ -58,21 +62,40 @@ export default function TextInput({
 					{...inputProps}
 				/>
 			</InputGroup>
-			{label ? (
-				<FormLabel
-					ml={2}
-					fontSize='sm'
-					sx={{
-						visibility: labelHidden ? 'hidden' : 'visible',
-						position: labelHidden ? 'absolute' : 'initial',
-					}}
-				>
-					{label}
-				</FormLabel>
-			) : (
-				false
-			)}
-			{helperText ? <FormHelperText>{helperText}</FormHelperText> : false}
+			<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
+				{label ? (
+					<FormLabel
+						ml={2}
+						mr={0}
+						my={0}
+						lineHeight='normal'
+						fontSize='sm'
+						flexGrow='0'
+						sx={{
+							visibility: labelHidden ? 'hidden' : 'visible',
+							position: labelHidden ? 'absolute' : 'initial',
+						}}
+					>
+						{label}
+					</FormLabel>
+				) : (
+					false
+				)}
+				{helperText ? (
+					<FormHelperText my={0} flex='1'>
+						{helperText}
+					</FormHelperText>
+				) : (
+					false
+				)}
+				{error ? (
+					<FormErrorMessage fontWeight='bold' my={0}>
+						{error}
+					</FormErrorMessage>
+				) : (
+					false
+				)}
+			</Flex>
 		</FormControl>
 	);
 }
