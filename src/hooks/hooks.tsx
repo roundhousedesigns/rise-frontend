@@ -124,3 +124,41 @@ export const useRegistrationError = (errorCode?: string): string => {
 
 	return message;
 };
+
+/**
+ * Format a user password reset error message.
+ *
+ * @param {string} errorCode The login error message returned by the server.
+ * @returns {string} The message to print.
+ */
+export const useResetPasswordError = (errorCode?: string): string => {
+	if (!errorCode) return '';
+
+	var message = '';
+
+	// TODO implement these errors, they are still copies of the login errors
+
+	switch (errorCode) {
+		case 'invalid_username':
+		case 'invalid_email':
+			message = 'Invalid username or email address.';
+			break;
+
+		case 'incorrect_password':
+			message = 'Incorrect password.';
+			break;
+
+		case 'empty_login':
+			message = 'Please enter a username or email address.';
+			break;
+
+		case 'empty_password':
+			message = 'Please enter your password.';
+			break;
+
+		default:
+			message = 'Unspecified error.';
+	}
+
+	return message;
+};

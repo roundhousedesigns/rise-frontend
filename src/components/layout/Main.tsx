@@ -2,7 +2,10 @@ import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
 
 import Dashboard from '../../routes/Dashboard';
+
 import Login from '../../routes/Login';
+import LostPassword from '../../routes/LostPassword';
+import ResetPassword from '../../routes/ResetPassword';
 import Register from '../../routes/Register';
 import Results from '../../routes/Results';
 import Profile from '../../routes/Profile';
@@ -24,10 +27,12 @@ export default function Main() {
 			alignItems='center'
 			flex='1 1 auto'
 		>
-			<Container w='full' maxW='7xl' px={{ base: 4, md: 10 }}>
+			<Container w='full' maxW='6xl' px={{ base: 4, md: 10 }}>
 				<Routes>
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/login' element={<Login />} />
+					<Route path='/lost-password' element={<LostPassword />} />
+					<Route path='/reset-password' element={<ResetPassword />} />
 					<Route path='/Register' element={<Register />} />
 					<Route path='/results' element={<Results />} />
 					<Route path='/profile' element={<Profile />} />

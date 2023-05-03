@@ -142,6 +142,15 @@ export interface RegisterUserInput {
 }
 
 /**
+ * The data shape for updating a user's password.
+ */
+export interface ChangePasswordInput {
+	currentPassword?: string;
+	newPassword: string;
+	confirmPassword: string;
+}
+
+/**
  * The data shape for a search query.
  */
 export interface SearchParams {

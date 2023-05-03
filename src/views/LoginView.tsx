@@ -1,4 +1,5 @@
 import { SetStateAction, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Flex, Container, Heading, Box, Spinner } from '@chakra-ui/react';
 
 import TextInput from '../components/common/inputs/TextInput';
@@ -23,6 +24,7 @@ export default function LoginView() {
 		});
 	};
 
+	const navigate = useNavigate();
 	const errorMessage = useLoginError(errorCode);
 
 	const handleLoginSubmit = (e: React.FormEvent) => {
@@ -69,15 +71,19 @@ export default function LoginView() {
 							autoComplete: 'current-password',
 						}}
 					/>
-					<Flex gap={6} alignItems='center' mt={6}>
+					<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>
 						<Button type='submit' colorScheme='blue' px={6}>
 							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
+						</Button>
+						<Button variant='link' as={Link} to='/lost-password'>
+							Lost your password?
 						</Button>
 						<Button
 							colorScheme='orange'
 							variant='solid'
 							width='full'
-							onClick={() => window.location.replace('/register')}
+							onClick={() => navigate('/register')}
+							flex='0 0 100%'
 						>
 							Join the Directory
 						</Button>

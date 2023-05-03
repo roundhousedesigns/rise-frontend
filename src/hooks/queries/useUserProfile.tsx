@@ -100,6 +100,11 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 		fetchPolicy: 'network-only',
 	});
 
+	// DEBUG
+	if (result.data) {
+		console.info(result.data);
+	}
+
 	// Prepare the credits data object.
 	const credits = result.data?.credits.nodes.map((credit: { [key: string]: any }) => {
 		// If credit at least has an id and a title, return a new Credit object

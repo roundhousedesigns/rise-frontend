@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from 'react';
-import { Button, FormErrorMessage, Heading, Box, Stack, Spinner } from '@chakra-ui/react';
+import { Button, FormErrorMessage, Box, Stack, Spinner } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import TextInput from '../components/common/inputs/TextInput';
 import { useRegisterUser } from '../hooks/mutations/useRegisterUser';
@@ -70,89 +70,86 @@ export default function RegisterView() {
 	};
 
 	return (
-		<Box>
-			<Heading size='lg'>Create an account.</Heading>
-			<Box p={4} bg='whiteAlpha.500' borderRadius='lg' w='full'>
-				<form onSubmit={handleSubmit}>
-					<Stack direction='row' spacing={6}>
-						<TextInput
-							value={firstName}
-							name='firstName'
-							isRequired
-							onChange={handleInputChange}
-							flex='1'
-							label='First name'
-							inputProps={{
-								size: 'xl',
-								autoComplete: 'given-name',
-							}}
-						/>
-						<TextInput
-							value={lastName}
-							name='lastName'
-							isRequired
-							onChange={handleInputChange}
-							flex='1'
-							label='Last name'
-							inputProps={{
-								size: 'xl',
-								autoComplete: 'family-name',
-							}}
-						/>
-					</Stack>
+		<Box py={4} bg='whiteAlpha.500' borderRadius='lg' w='full'>
+			<form onSubmit={handleSubmit}>
+				<Stack direction='row' spacing={6}>
 					<TextInput
-						value={email}
-						name='email'
-						id='email'
-						type='email'
+						value={firstName}
+						name='firstName'
+						isRequired
+						onChange={handleInputChange}
+						flex='1'
+						label='First name'
+						inputProps={{
+							size: 'xl',
+							autoComplete: 'given-name',
+						}}
+					/>
+					<TextInput
+						value={lastName}
+						name='lastName'
+						isRequired
+						onChange={handleInputChange}
+						flex='1'
+						label='Last name'
+						inputProps={{
+							size: 'xl',
+							autoComplete: 'family-name',
+						}}
+					/>
+				</Stack>
+				<TextInput
+					value={email}
+					name='email'
+					id='email'
+					type='email'
+					variant='filled'
+					label='Email address'
+					isRequired
+					onChange={handleInputChange}
+					inputProps={{
+						size: 'xl',
+						autoComplete: 'email',
+					}}
+				/>
+				<Stack direction='row' spacing={6}>
+					<TextInput
+						value={password}
+						name='password'
+						id='password'
+						type='password'
 						variant='filled'
-						label='Email address'
+						label='Password'
 						isRequired
 						onChange={handleInputChange}
 						inputProps={{
-							size: 'xl',
-							autoComplete: 'email',
+							type: 'password',
+							autoComplete: 'new-password',
 						}}
 					/>
-					<Stack direction='row' spacing={6}>
-						<TextInput
-							value={password}
-							name='password'
-							id='password'
-							type='password'
-							variant='filled'
-							label='Password'
-							isRequired
-							onChange={handleInputChange}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-						<TextInput
-							value={confirmPassword}
-							name='confirmPassword'
-							id='confirmPassword'
-							type='password'
-							variant='filled'
-							label='Confirm your password'
-							isRequired
-							error={passwordsMatchError()}
-							onChange={handleInputChange}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-					</Stack>
-					<Box mt={4}>
-						<Button type='submit' colorScheme='blue' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Create account'}
-						</Button>
-						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
-					</Box>
-				</form>
-			</Box>
+					<TextInput
+						value={confirmPassword}
+						name='confirmPassword'
+						id='confirmPassword'
+						type='password'
+						variant='filled'
+						label='Confirm your password'
+						isRequired
+						error={passwordsMatchError()}
+						onChange={handleInputChange}
+						inputProps={{
+							type: 'password',
+							autoComplete: 'new-password',
+						}}
+					/>
+				</Stack>
+				<Box mt={4}>
+					<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
+						{submitLoading ? <Spinner size='sm' /> : 'Create account'}
+					</Button>
+					<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
+				</Box>
+			</form>
 		</Box>
 	);
 }
