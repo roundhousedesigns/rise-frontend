@@ -33,7 +33,7 @@ export default function TextareaInput({
 				variant='filled'
 				placeholder={placeholder}
 				focusBorderColor='blue.200'
-				value={value}
+				value={value ? value : ''}
 				name={name}
 				resize='vertical'
 				onChange={onChange}

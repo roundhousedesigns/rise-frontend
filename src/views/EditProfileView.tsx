@@ -559,6 +559,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												name='email'
 												onChange={handleInputChange}
 											/>
+											{/* TODO Add checkbox for "use account email address" */}
 											<TextInput
 												value={phone}
 												leftElement={<Icon as={FiPhone} />}

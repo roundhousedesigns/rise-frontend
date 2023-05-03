@@ -131,6 +131,26 @@ export interface LoginInput {
 }
 
 /**
+ * The data shape for user registration input.
+ */
+export interface RegisterUserInput {
+	email: string;
+	firstName: string;
+	lastName: string;
+	password: string;
+	confirmPassword: string;
+}
+
+/**
+ * The data shape for updating a user's password.
+ */
+export interface ChangePasswordInput {
+	currentPassword?: string;
+	newPassword: string;
+	confirmPassword: string;
+}
+
+/**
  * The data shape for a search query.
  */
 export interface SearchParams {
