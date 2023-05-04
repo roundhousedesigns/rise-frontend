@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Flex, Button, Stack, Text } from '@chakra-ui/react';
+import { Flex, Button, Stack } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
 import SearchFilterJobs from '../components/SearchFilterJobs';
@@ -32,9 +32,6 @@ export default function SearchWizardView({ showButtons, onSubmit }: Props) {
 
 	return (
 		<form id='search-candidates' onSubmit={onSubmit}>
-			<Text variant='devAlert'>
-				While search is under development, results accuracy is not guaranteed.
-			</Text>
 			<Stack direction='column' gap={8}>
 				{/* TODO convert Department, Jobs, and Skills to unified <CheckboxButtonFilterGroup> interface */}
 				{/* Step 1 */}

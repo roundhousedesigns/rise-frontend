@@ -21,7 +21,7 @@ export default function Profile(): JSX.Element {
 	const [profile, { loading, error }] = useUserProfile(userId);
 
 	const EditButton = () => (
-		<Button as={Link} to='/profile/edit' colorScheme='teal'>
+		<Button as={Link} to='/profile/edit' colorScheme='green'>
 			Edit Profile
 		</Button>
 	);

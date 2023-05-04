@@ -348,7 +348,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					// title: 'Profile saved.',
 					description: 'Your profile has been updated.',
 					status: 'success',
-					duration: 2000,
+					duration: 5000,
 					isClosable: true,
 					position: 'top',
 				});
@@ -358,7 +358,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					// title: 'Profile not saved.',
 					description: 'There was an error saving your profile.',
 					status: 'error',
-					duration: 2000,
+					duration: 5000,
 					isClosable: true,
 					position: 'top',
 				});
@@ -410,7 +410,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				left='0'
 				width='full'
 				height='56px'
-				bgColor='whiteAlpha.900'
+				bgColor='whigreenpha.900'
 				zIndex='100'
 			>
 				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
@@ -742,7 +742,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							w='full'
 							left='0'
 							top='0'
-							bgColor='whiteAlpha.600'
+							bgColor='whigreenpha.600'
 							zIndex='1'
 							display='flex'
 							alignItems='center'
@@ -815,7 +815,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</StackItem>
 
 				<StackItem>
-					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
+					<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
 					<Box>
 						<Heading variant='contentTitle'>Bio</Heading>
 						<Heading variant='contentSubtitle' my={2}>

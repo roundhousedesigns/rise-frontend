@@ -56,15 +56,12 @@ export default function Header() {
 				onClick={drawerOnOpen}
 				leftIcon={<FiSearch />}
 				aria-label='Search for candidates'
-				variant='invisible'
-				bg='whiteAlpha.400'
+				colorScheme='gray'
 				borderRadius='2xl'
 				size='lg'
 				fontSize='lg'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
-				_hover={{ bg: 'whiteAlpha.600' }}
-				_active={{ bg: 'whiteAlpha.600' }}
 				_before={{
 					base: {
 						pl: 2,
@@ -86,21 +83,18 @@ export default function Header() {
 				as={RouterLink}
 				to='/results'
 				leftIcon={
-					<Badge py={1} px={2} ml={0} borderRadius='full'>
+					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
 						{results.length}
 					</Badge>
 				}
 				aria-label='Search for candidates'
-				variant='invisible'
-				bg='whiteAlpha.400'
+				colorScheme='gray'
 				borderRadius='2xl'
 				size='lg'
 				fontSize='lg'
 				textTransform='none'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
-				_hover={{ bg: 'whiteAlpha.600' }}
-				_active={{ bg: 'whiteAlpha.600' }}
 				_before={{
 					base: {
 						pl: 2,
@@ -111,7 +105,7 @@ export default function Header() {
 					},
 				}}
 			>
-				{results.length > 1 ? 'Results' : 'Result'}
+				Results
 			</Button>
 		</Box>
 	);
@@ -156,13 +150,10 @@ export default function Header() {
 										aria-label='My Profile'
 										as={RouterLink}
 										to='/profile'
-										variant='invisible'
-										bg='whiteAlpha.400'
+										colorScheme='gray'
 										borderRadius='2xl'
 										size='lg'
 										fontSize='lg'
-										_hover={{ bg: 'whiteAlpha.600' }}
-										_active={{ bg: 'whiteAlpha.600' }}
 										textTransform='none'
 									>
 										My Profile
@@ -177,16 +168,16 @@ export default function Header() {
 							<Box>
 								<LightMode>
 									<Menu>
-										<MenuButton
-											aria-label='Menu'
-											as={IconButton}
-											borderRadius='full'
-											bg='whiteAlpha.600'
-											icon={<FiMenu />}
-											size='lg'
-											_hover={{ bg: 'whiteAlpha.800' }}
-											_active={{ bg: 'blue.300' }}
-										/>
+										<DarkMode>
+											<MenuButton
+												aria-label='Menu'
+												as={IconButton}
+												borderRadius='full'
+												colorScheme='gray'
+												icon={<FiMenu />}
+												size='lg'
+											/>
+										</DarkMode>
 										<MenuList color='text.dark' zIndex='100'>
 											{isLargerThanMd ? null : (
 												<MenuOptionGroup>

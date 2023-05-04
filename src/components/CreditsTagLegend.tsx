@@ -10,10 +10,10 @@ export default function CreditsTagLegend({ ...props }: Props) {
 			<Tag colorScheme='orange' size='sm'>
 				<TagLabel>Departments</TagLabel>
 			</Tag>
-			<Tag colorScheme='cyan' size='sm'>
+			<Tag colorScheme='blue' size='sm'>
 				<TagLabel>Jobs</TagLabel>
 			</Tag>
-			<Tag colorScheme='teal' size='sm'>
+			<Tag colorScheme='green' size='sm'>
 				<TagLabel>Skills</TagLabel>
 			</Tag>
 		</Wrap>

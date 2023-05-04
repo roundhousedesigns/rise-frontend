@@ -23,7 +23,7 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 				bg='white'
 				_dark={{
 					bg: 'gray.800',
-					color: 'whiteAlpha.900',
+					color: 'whigreenpha.900',
 				}}
 				display='inline'
 				lineHeight='none'
