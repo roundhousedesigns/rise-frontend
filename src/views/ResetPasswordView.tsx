@@ -8,6 +8,7 @@ import {
 	Spinner,
 	Container,
 	Heading,
+	useToast,
 } from '@chakra-ui/react';
 import TextInput from '../components/common/inputs/TextInput';
 import { useResetPasswordError } from '../hooks/hooks';
@@ -53,6 +54,7 @@ export default function ResetPasswordView({ token, login }: ResetPasswordProps) 
 		});
 	};
 
+	const toast = useToast();
 	const navigate = useNavigate();
 
 	const errorMessage = useResetPasswordError(errorCode);
@@ -62,6 +64,16 @@ export default function ResetPasswordView({ token, login }: ResetPasswordProps) 
 		if (!token || !login || !newPassword || !passwordsMatch) return;
 
 		resetUserPasswordMutation({ key: token, login, password: newPassword })
+			.then(() => {
+				toast({
+					title: 'Success!',
+					description: 'Please login with your new password.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			})
 			.then(() => {
 				navigate('/login');
 			})
@@ -75,7 +87,7 @@ export default function ResetPasswordView({ token, login }: ResetPasswordProps) 
 	};
 
 	return (
-		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
+		<Container bg='whigreenpha.500' borderRadius='lg' w='full'>
 			<Heading size='lg'>Choose your new password.</Heading>
 
 			<Box mt={2}>

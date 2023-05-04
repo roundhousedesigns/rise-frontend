@@ -8,7 +8,7 @@ export default function Footer() {
 			py={8}
 			alignItems='center'
 			justifyContent='center'
-			background='brand.cyan'
+			background='brand.blue'
 			_dark={{
 				background: 'brand.blue',
 			}}

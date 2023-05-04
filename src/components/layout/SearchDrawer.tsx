@@ -105,8 +105,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					fontSize='2xl'
 					py={6}
 					bg='text.dark'
-					color='whiteAlpha.900'
-					borderBottom='2px solid pink'
+					color='whigreenpha.900'
+					borderBottom='2px solid green'
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading size='lg' color='text.light'>
@@ -128,7 +128,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				<DrawerFooter mt={0} borderTop='1px' borderTopColor='gray.300'>
 					<ButtonGroup>
 						<Button
-							colorScheme='teal'
+							colorScheme='green'
 							onClick={handleSubmit}
 							size='md'
 							form='search-candidates'

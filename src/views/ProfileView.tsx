@@ -154,7 +154,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									{profile.fullName()}
 								</Heading>
 								{pronouns ? (
-									<Tag colorScheme='cyan' size='md'>
+									<Tag colorScheme='blue' size='md'>
 										{pronouns}
 									</Tag>
 								) : (
@@ -237,7 +237,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									<Button
 										href={resume}
 										as={Link}
-										bgColor='teal'
+										bgColor='green'
 										color='white'
 										leftIcon={<FiDownload />}
 										download
@@ -271,7 +271,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 			{credits && credits.length > 0 && (
 				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan' mb={1}>
+					<HeadingCenterline lineColor='brand.blue' mb={1}>
 						Credits
 					</HeadingCenterline>
 					<Flex justifyContent='flex-end'>
@@ -289,7 +289,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 			{description && (
 				<StackItem>
-					<HeadingCenterline lineColor='brand.pink'>About</HeadingCenterline>
+					<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
 					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
 						{description.trim()}
 					</Text>
@@ -307,7 +307,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 			{mediaVideos.length > 0 || mediaImages.length > 0 ? (
 				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
+					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
 					{mediaVideos.length > 0 ? (
 						<>
 							<Heading variant='contentTitle' size='md'>

@@ -155,14 +155,14 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 									</Wrap>
 									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
 										{jobs?.map((job: WPItem) => (
-											<Tag key={job.id} colorScheme='cyan'>
+											<Tag key={job.id} colorScheme='blue'>
 												<TagLabel>{decodeString(job.name)}</TagLabel>
 											</Tag>
 										))}
 									</Wrap>
 									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
 										{skills?.map((skill: WPItem) => (
-											<Tag key={skill.id} colorScheme='teal'>
+											<Tag key={skill.id} colorScheme='green'>
 												<TagLabel>{decodeString(skill.name)}</TagLabel>
 											</Tag>
 										))}

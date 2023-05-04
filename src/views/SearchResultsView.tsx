@@ -23,9 +23,6 @@ export default function SearchResultsView() {
 			<Text fontSize='sm' pb={2}>
 				{resultsString}
 			</Text>
-			<Text color='brand.red' fontWeight='bold' fontSize='sm'>
-				While search is under development, results accuracy is not guaranteed.
-			</Text>
 			{searchActive ? <CandidateList userIds={results} /> : null}
 		</Box>
 	);
