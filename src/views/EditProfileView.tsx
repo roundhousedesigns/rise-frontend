@@ -410,7 +410,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				left='0'
 				width='full'
 				height='56px'
-				bgColor='whigreenpha.900'
+				bgColor='whiteAlpha.900'
 				zIndex='100'
 			>
 				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
@@ -733,7 +733,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</StackItem>
 
 				<StackItem pos='relative'>
-					<HeadingCenterline lineColor='brand.cyan'>Credits</HeadingCenterline>
+					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
 					{updateCreditOrderLoading ? (
 						<Box
@@ -742,7 +742,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							w='full'
 							left='0'
 							top='0'
-							bgColor='whigreenpha.600'
+							bgColor='whiteAlpha.600'
 							zIndex='1'
 							display='flex'
 							alignItems='center'
@@ -913,7 +913,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</StackItem>
 
 				<StackItem>
-					<HeadingCenterline lineColor='brand.cyan'>Media</HeadingCenterline>
+					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
 					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
 					<Box>
 						<Heading variant='contentTitle'>Videos</Heading>

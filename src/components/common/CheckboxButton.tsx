@@ -12,19 +12,20 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 		<chakra.label {...htmlProps}>
 			<input {...getInputProps()} hidden />
 			{/* TODO Make sure this is accessible */}
+			{/* TODO Fix color scheme for light and dark modes */}
 			<Box
 				{...getCheckboxProps()}
 				cursor='pointer'
 				borderRadius='sm'
-				bg='blue.50'
+				bg='gray.100'
 				borderWidth={1}
 				borderColor='gray.300'
 				transitionDuration='normal'
 				_hover={{
-					bg: 'blue.100',
+					bg: 'blue.50',
 				}}
 				_checked={{
-					bg: 'blue.300',
+					bg: 'blue.700',
 					color: 'white',
 				}}
 				_focus={{

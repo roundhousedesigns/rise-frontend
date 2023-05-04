@@ -10,6 +10,8 @@ export default function RadioButton(props: Props): React.ReactElement {
 
 	return (
 		<chakra.label {...htmlProps}>
+			{/* TODO Make sure this is accessible */}
+			{/* TODO Fix color scheme for light and dark modes */}
 			<input {...getInputProps()} hidden />
 			<Box
 				{...getCheckboxProps()}

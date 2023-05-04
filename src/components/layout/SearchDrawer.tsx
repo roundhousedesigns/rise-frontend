@@ -105,7 +105,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					fontSize='2xl'
 					py={6}
 					bg='text.dark'
-					color='whigreenpha.900'
+					color='whiteAlpha.900'
 					borderBottom='2px solid green'
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
