@@ -1,4 +1,4 @@
-import { Box, chakra, useCheckbox } from '@chakra-ui/react';
+import { Box, chakra, Text, useCheckbox } from '@chakra-ui/react';
 
 interface Props {
 	[key: string]: any;
@@ -25,7 +25,7 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 					bg: 'blue.50',
 				}}
 				_checked={{
-					bg: 'blue.700',
+					bg: 'blue.600',
 					color: 'white',
 				}}
 				_focus={{
@@ -43,10 +43,10 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 				px={3}
 				py={2}
 				m={0}
-				color='inherit'
-				{...getLabelProps}
 			>
-				{children}
+				<Text {...getLabelProps} color='inherit'>
+					{children}
+				</Text>
 			</Box>
 		</chakra.label>
 	);
