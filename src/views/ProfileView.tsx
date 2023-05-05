@@ -237,8 +237,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									<Button
 										href={resume}
 										as={Link}
-										bgColor='green'
-										color='white'
+										colorScheme='green'
 										leftIcon={<FiDownload />}
 										download
 										isExternal

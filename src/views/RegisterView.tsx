@@ -70,7 +70,7 @@ export default function RegisterView() {
 	};
 
 	return (
-		<Box py={4} bg='whigreenpha.500' borderRadius='lg' w='full'>
+		<Box py={4} bg='whiteAlpha.500' borderRadius='lg' w='full'>
 			<form onSubmit={handleSubmit}>
 				<Stack direction='row' spacing={6}>
 					<TextInput

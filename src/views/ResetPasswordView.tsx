@@ -87,7 +87,7 @@ export default function ResetPasswordView({ token, login }: ResetPasswordProps) 
 	};
 
 	return (
-		<Container bg='whigreenpha.500' borderRadius='lg' w='full'>
+		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
 			<Heading size='lg'>Choose your new password.</Heading>
 
 			<Box mt={2}>
