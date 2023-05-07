@@ -53,7 +53,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 					const radio = getRadioProps({ value: term.id.toString() });
 
 					return (
-						<RadioButton key={term.id} {...radio}>
+						<RadioButton fontSize='md' key={term.id} {...radio}>
 							{term.name}
 						</RadioButton>
 					);

@@ -19,9 +19,8 @@ export default function Main() {
 			id='main'
 			w='full'
 			h='auto'
-			pt={5}
-			pb={10}
-			mb={10}
+			pt={0}
+			pb={4}
 			background='none'
 			justifyContent='center'
 			alignItems='center'
@@ -33,7 +32,7 @@ export default function Main() {
 					<Route path='/login' element={<Login />} />
 					<Route path='/lost-password' element={<LostPassword />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/Register' element={<Register />} />
+					<Route path='/register' element={<Register />} />
 					<Route path='/results' element={<Results />} />
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />

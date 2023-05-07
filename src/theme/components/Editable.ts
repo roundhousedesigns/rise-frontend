@@ -19,7 +19,7 @@ const baseStyle = definePartsStyle({
 		// py: 1,
 		// my: 1,
 		_hover: {
-			borderBottomColor: 'black',
+			borderBottomColor: 'text.dark',
 		},
 	},
 	input: {

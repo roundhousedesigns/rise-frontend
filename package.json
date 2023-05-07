@@ -1,8 +1,8 @@
 {
-  "name": "get-to-work",
+  "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "engines": {
     "node": ">=16.19.0"
@@ -15,9 +15,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.12",
     "@chakra-ui/react": "^2.5.0",
-    "@emotion/react": "^11.10.5",
+    "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.10.5",
-    "@fontsource/poppins": "^4.5.10",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "framer-motion": "^8.5.0",

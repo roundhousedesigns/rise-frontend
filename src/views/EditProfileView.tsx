@@ -410,7 +410,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				left='0'
 				width='full'
 				height='56px'
-				bgColor='whiteAlpha.900'
+				bgColor='text.light'
 				zIndex='100'
 			>
 				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
@@ -634,9 +634,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 													fontSize='md'
 													fontWeight='medium'
 													href={resume}
+													variant='dotted'
 													download
-													textDecoration='underline'
-													textDecorationStyle='dotted'
 												>
 													Preview your resume
 												</Link>

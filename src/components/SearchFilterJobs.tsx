@@ -54,7 +54,7 @@ export default function SearchFilterJobs({ heading }: Props) {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 							return (
-								<CheckboxButton key={term.id} {...checkbox}>
+								<CheckboxButton fontSize='md' key={term.id}  {...checkbox}>
 									{term.name}
 								</CheckboxButton>
 							);

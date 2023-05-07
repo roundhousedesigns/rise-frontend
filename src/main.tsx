@@ -5,11 +5,10 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
 
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
-import '@fontsource/poppins/700.css';
-import '@fontsource/poppins/500.css';
-import '@fontsource/poppins/400.css';
+
 
 import theme from './theme/index';
+import Fonts from './theme/Fonts';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
@@ -36,6 +35,7 @@ root.render(
 		<BrowserRouter>
 			<ApolloProvider client={client}>
 				<ChakraProvider resetCSS={true} theme={theme}>
+					<Fonts />
 					<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 					<App />
 				</ChakraProvider>

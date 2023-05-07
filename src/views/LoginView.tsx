@@ -31,7 +31,7 @@ export default function LoginView() {
 		e.preventDefault();
 		loginMutation(credentials)
 			.then(() => {
-				window.location.href = '/';
+				window.location.reload();
 			})
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 	};

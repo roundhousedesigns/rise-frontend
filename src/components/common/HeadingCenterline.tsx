@@ -17,19 +17,18 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 			mb={4}
 			{...rest}
 		>
-			<Box h='5px' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
+			<Box h='6px' top='48%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
 			<Heading
-				size='lg'
-				bg='white'
+				size='xl'
+				bg='text.light'
 				_dark={{
 					bg: 'gray.800',
-					color: 'whiteAlpha.900',
+					color: 'text.light',
 				}}
 				display='inline'
 				lineHeight='none'
 				zIndex='2'
 				pr={2}
-				textTransform='uppercase'
 			>
 				{children}
 			</Heading>

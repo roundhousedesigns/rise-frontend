@@ -17,16 +17,10 @@ const MUTATE_RESET_USER_PASSWORD = gql`
 	}
 `;
 
-interface PasswordResetInput {
-	key: string;
-	login: string;
-	password: string;
-}
-
 export const useResetUserPassword = () => {
 	const [mutation, results] = useMutation(MUTATE_RESET_USER_PASSWORD);
 
-	const resetUserPasswordMutation = ({ key, login, password }: PasswordResetInput) => {
+	const resetUserPasswordMutation = (key: string, login: string, password: string) => {
 		return mutation({
 			variables: {
 				clientMutationId: 'resetUserPasswordMutation',
