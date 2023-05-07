@@ -10,6 +10,7 @@ import { SearchContextProvider } from './context/SearchContext';
 import { useViewer } from './hooks/queries/useViewer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import LoginView from './views/LoginView';
 
 export default function App() {
 	const { loggedInId } = useViewer();
@@ -18,16 +19,16 @@ export default function App() {
 	const navigate = useNavigate();
 
 	// get the current route
-	const { pathname } = useLocation();
+	// const { pathname } = useLocation();
 
-	const publicEndpoints = ['/register', '/login', '/lost-password', '/reset-password'];
+	// const publicEndpoints = ['/register', '/login', '/lost-password', '/reset-password'];
 
 	// if the user is not logged in, redirect to the login page
-	useEffect(() => {
-		if (!loggedInId && !publicEndpoints.includes(pathname)) {
-			navigate('/login');
-		}
-	}, [loggedInId, pathname]);
+	// useEffect(() => {
+	// 	if (!loggedInId && !publicEndpoints.includes(pathname)) {
+	// 		navigate('/login');
+	// 	}
+	// }, [loggedInId, pathname]);
 
 	return (
 		<SearchContextProvider>
@@ -45,7 +46,7 @@ export default function App() {
 				}}
 			>
 				<Header />
-				<Main />
+				{loggedInId ? <Main /> : <LoginView />}
 				<Footer />
 			</Stack>
 			<IconButton
