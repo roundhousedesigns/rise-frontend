@@ -19,9 +19,7 @@ export default function Main() {
 			id='main'
 			w='full'
 			h='auto'
-			pt={5}
-			pb={10}
-			mb={10}
+			py={4}
 			background='none'
 			justifyContent='center'
 			alignItems='center'

@@ -6,16 +6,16 @@ export default defineStyleConfig({
 		lineHeight: 'base',
 		textUnderlineOffset: '0.2em',
 		fontWeight: 'medium',
-		color: 'blackAlpha.900',
+		color: 'black',
 		_dark: {
-			color: 'whiteAlpha.900',
+			color: 'white',
 		},
 	},
 	variants: {
-		devAlert: {
-			fontWeight: 'bold',
-			fontSize: 'sm',
-			color: 'brand.red',
-		},
+		// devAlert: {
+		// 	fontWeight: 'bold',
+		// 	fontSize: 'sm',
+		// 	color: 'brand.red',
+		// },
 	},
 });

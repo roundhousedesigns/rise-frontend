@@ -132,7 +132,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 								<Text fontSize='lg' fontWeight='bold'>{` ${yearString()}`}</Text>
 								<Text fontSize='lg' ml={1} fontWeight='medium'>
 									{decodeString(venue)}
-									{jobLocation ? decodeString(` &bull; ${jobLocation}`) : ''}
+									{jobLocation ? decodeString(` ✺ ${jobLocation}`) : ''}
 								</Text>
 							</Wrap>
 							{jobTitle ? (

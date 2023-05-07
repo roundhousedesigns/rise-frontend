@@ -634,9 +634,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 													fontSize='md'
 													fontWeight='medium'
 													href={resume}
+													variant='dotted'
 													download
-													textDecoration='underline'
-													textDecorationStyle='dotted'
 												>
 													Preview your resume
 												</Link>

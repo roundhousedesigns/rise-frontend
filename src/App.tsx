@@ -1,8 +1,8 @@
-import { Stack, Image, IconButton, useColorMode } from '@chakra-ui/react';
+import { Stack, IconButton, useColorMode } from '@chakra-ui/react';
+
 import Header from './components/layout/Header';
 import Main from './components/layout/Main';
 import Footer from './components/layout/Footer';
-import logo from './assets/images/gtw-logo-horizontal.svg';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
@@ -31,12 +31,20 @@ export default function App() {
 
 	return (
 		<SearchContextProvider>
-			<Stack direction='column' alignItems='center' minH='100vh'>
-				{loggedInId ? (
-					<Header />
-				) : (
-					<Image src={logo} alt='Get To Work logo' loading='eager' w='3xl' h='auto' mt={4} />
-				)}
+			<Stack
+				direction='column'
+				alignItems='center'
+				minH='100vh'
+				_dark={{
+					bg: 'black',
+					color: 'white',
+				}}
+				_light={{
+					bg: 'white',
+					color: 'black',
+				}}
+			>
+				<Header />
 				<Main />
 				<Footer />
 			</Stack>

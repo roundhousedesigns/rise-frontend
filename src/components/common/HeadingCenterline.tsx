@@ -17,9 +17,9 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 			mb={4}
 			{...rest}
 		>
-			<Box h='5px' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
+			<Box h='6px' top='48%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
 			<Heading
-				size='lg'
+				size='xl'
 				bg='white'
 				_dark={{
 					bg: 'gray.800',
@@ -29,7 +29,6 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 				lineHeight='none'
 				zIndex='2'
 				pr={2}
-				textTransform='uppercase'
 			>
 				{children}
 			</Heading>
