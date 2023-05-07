@@ -20,10 +20,10 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 			<Box h='6px' top='48%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
 			<Heading
 				size='xl'
-				bg='white'
+				bg='text.light'
 				_dark={{
 					bg: 'gray.800',
-					color: 'whiteAlpha.900',
+					color: 'text.light',
 				}}
 				display='inline'
 				lineHeight='none'

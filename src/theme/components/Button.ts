@@ -10,7 +10,7 @@ const variants = {
 		borderRadius: 'full',
 		border: 'none',
 		bg: 'blackAlpha.700',
-		color: 'white',
+		color: 'text.light',
 		_hover: {
 			bg: 'blackAlpha.600',
 		},

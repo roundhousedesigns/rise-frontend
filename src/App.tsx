@@ -36,12 +36,12 @@ export default function App() {
 				alignItems='center'
 				minH='100vh'
 				_dark={{
-					bg: 'black',
-					color: 'white',
+					bg: 'text.dark',
+					color: 'text.light',
 				}}
 				_light={{
-					bg: 'white',
-					color: 'black',
+					bg: 'text.light',
+					color: 'text.dark',
 				}}
 			>
 				<Header />

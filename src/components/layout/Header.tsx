@@ -128,7 +128,7 @@ export default function Header() {
 								<Image
 									src={logo}
 									w={{ base: '200px', sm: 'auto' }}
-									alt='Get To Work logo'
+									alt='RISE logo'
 									loading='eager'
 									h='100px'
 								/>
@@ -139,7 +139,7 @@ export default function Header() {
 							{loggedInId ? (
 								<>
 									<Stack
-										color='white'
+										color='text.light'
 										direction='row'
 										spacing={2}
 										mr={6}

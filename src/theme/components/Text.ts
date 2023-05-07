@@ -6,9 +6,9 @@ export default defineStyleConfig({
 		lineHeight: 'base',
 		textUnderlineOffset: '0.2em',
 		fontWeight: 'medium',
-		color: 'black',
+		color: 'text.dark',
 		_dark: {
-			color: 'white',
+			color: 'text.light',
 		},
 	},
 	variants: {

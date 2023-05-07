@@ -20,7 +20,7 @@ export default function InputButtonInner({ checkboxOrRadioProps, children }: Pro
 			}}
 			_checked={{
 				bg: 'blue.600',
-				color: 'white',
+				color: 'text.light',
 			}}
 			_focus={{
 				outline: '1px',

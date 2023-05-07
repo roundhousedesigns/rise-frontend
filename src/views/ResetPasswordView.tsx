@@ -15,12 +15,12 @@ import { useResetPasswordError } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
 import { useResetUserPassword } from '../hooks/mutations/useResetUserPassword';
 
-interface ResetPasswordProps {
+interface Props {
 	token: string;
 	login: string;
 }
 
-export default function ResetPasswordView({ token, login }: ResetPasswordProps) {
+export default function ResetPasswordView({ token, login }: Props) {
 	const [userFields, serUserFields] = useState<ChangePasswordInput>({
 		newPassword: '',
 		confirmPassword: '',
@@ -63,7 +63,7 @@ export default function ResetPasswordView({ token, login }: ResetPasswordProps) 
 		e.preventDefault();
 		if (!token || !login || !newPassword || !passwordsMatch) return;
 
-		resetUserPasswordMutation({ key: token, login, password: newPassword })
+		resetUserPasswordMutation(token, login, newPassword)
 			.then(() => {
 				toast({
 					title: 'Success!',
