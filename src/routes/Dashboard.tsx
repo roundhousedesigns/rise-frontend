@@ -14,7 +14,7 @@ export default function Dashboard() {
 						This website and directory is very much still a work in progress, so please be aware of
 						that as you are using it and creating a profile. If any bugs or issues arise while
 						completing the profile please please email them to us at{' '}
-						<Link color='brand.orange' href='mailto:info@gettowork.org'>info@gettowork.org</Link>.
+						<Link color='brand.orange' href='mailto:info@risetheatre.org'>info@risetheatre.org</Link>.
 					</Text>
 					<Text>
 						After completion of your user profile please complete{' '}

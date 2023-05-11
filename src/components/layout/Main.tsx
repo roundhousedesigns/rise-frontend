@@ -19,14 +19,13 @@ export default function Main() {
 			id='main'
 			w='full'
 			h='auto'
-			pt={0}
-			pb={4}
+			py={2}
 			background='none'
 			justifyContent='center'
 			alignItems='center'
 			flex='1 1 auto'
 		>
-			<Container w='full' maxW='6xl' px={{ base: 4, md: 10 }}>
+			<Container w='full' maxW='6xl' px='40px'>
 				<Routes>
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/login' element={<Login />} />

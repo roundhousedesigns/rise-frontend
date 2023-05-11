@@ -5,10 +5,7 @@ export default defineStyleConfig({
 		default: {
 			my: 2,
 			textUnderlineOffset: '0.2em',
-			color: 'blackAlpha.800',
-			_dark: {
-				color: 'whiteAlpha.800',
-			},
+			color: 'brand.blue',
 		},
 		nav: {
 			textDecoration: 'none',
@@ -24,6 +21,10 @@ export default defineStyleConfig({
 			_hover: {
 				textDecorationStyle: 'solid',
 			},
+		},
+		footer: {
+			color: 'inherit',
+			textDecoration: 'underline',
 		},
 	},
 	defaultProps: {

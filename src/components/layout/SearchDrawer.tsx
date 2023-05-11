@@ -98,14 +98,20 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size='md'>
-			<DrawerOverlay bg='blackAlpha.600' />
+		<Drawer isOpen={isOpen} onClose={onClose} placement='top'>
+			<DrawerOverlay _dark={{ bg: 'whiteAlpha.800' }} _light={{ bg: 'blackAlpha.800' }} />
 			<DrawerContent>
 				<DrawerHeader
 					fontSize='2xl'
 					bg='text.dark'
 					color='text.light'
-					borderBottom='2px solid green'
+					borderBottomWidth='2px'
+					_light={{
+						borderBottomColor: 'text.dark',
+					}}
+					_dark={{
+						borderBottomColor: 'text.light',
+					}}
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading size='lg' color='text.light'>

@@ -80,7 +80,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		mediaImage5,
 		mediaImage6,
 	].filter((image) => !!image);
-	// const mediaImags;
 
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
@@ -93,6 +92,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.map((term: WPItem) => term.name)
 			.join(', ');
 
+	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
 		const SelfTitle = () => {
 			return (

@@ -106,12 +106,6 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
-			return {
-				...state,
-				advancedFiltersOpen: !state.advancedFiltersOpen,
-			};
-
 		case 'SET_FILTER':
 			if (!action.payload?.filter) return state;
 
@@ -122,6 +116,12 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					[action.payload.filter.name]: action.payload.filter.value,
 				},
 				searchActive: true,
+			};
+
+		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
+			return {
+				...state,
+				advancedFiltersOpen: !state.advancedFiltersOpen,
 			};
 
 		case 'SET_RESULTS':

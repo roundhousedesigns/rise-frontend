@@ -10,12 +10,6 @@ const baseStyle = definePartsStyle({
 		gap: 4,
 		my: 4,
 		p: 4,
-		_light: {
-			bgColor: 'gray.100',
-		},
-		_dark: {
-			bgColor: 'gray.700',
-		},
 	},
 	header: {
 		mb: 0,

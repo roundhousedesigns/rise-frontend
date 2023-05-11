@@ -1,6 +1,6 @@
 import { SetStateAction, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button, Flex, Container, Heading, Box, Spinner } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Button, Flex, Container, Heading, Box, Spinner, Link } from '@chakra-ui/react';
 
 import TextInput from '../components/common/inputs/TextInput';
 import { useLogin } from '../hooks/mutations/useLogin';
@@ -24,7 +24,6 @@ export default function LoginView() {
 		});
 	};
 
-	const navigate = useNavigate();
 	const errorMessage = useLoginError(errorCode);
 
 	const handleLoginSubmit = (e: React.FormEvent) => {
@@ -37,7 +36,7 @@ export default function LoginView() {
 	};
 
 	return (
-		<Container>
+		<Container maxW='lg' py={4}>
 			<Heading size='lg'>Please sign in.</Heading>
 			<Box my={4}>
 				<form onSubmit={handleLoginSubmit}>
@@ -75,19 +74,13 @@ export default function LoginView() {
 						<Button type='submit' colorScheme='blue' px={6}>
 							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
 						</Button>
-						<Button variant='link' as={Link} to='/lost-password'>
+						<Link as={RouterLink} to='/lost-password' fontSize='md'>
 							Lost your password?
-						</Button>
-						<Button
-							colorScheme='orange'
-							variant='solid'
-							width='full'
-							onClick={() => navigate('/register')}
-							flex='0 0 100%'
-						>
-							Join the Directory
-						</Button>
+						</Link>
 					</Flex>
+					<Link as={RouterLink} textAlign='left' my={4} fontSize='sm' to='/register'>
+						Don't have an account? Register for one here.
+					</Link>
 				</form>
 			</Box>
 		</Container>
