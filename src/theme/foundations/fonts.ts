@@ -4,7 +4,7 @@
 
 export const fonts = {
 	body: `'Victor Serif', serif`,
-	heading: `'Stabil Grotesk', sans-serif`,
+	heading: `'Victor Serif', serif`,
 };
 
 // export const fontWeights = {

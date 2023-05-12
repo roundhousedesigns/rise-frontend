@@ -5,7 +5,7 @@ import { styles } from './global';
 
 // Foundational style overrides
 import { colors } from './foundations/colors';
-import { fonts, /*fontWeights*/ } from './foundations/fonts';
+import { fonts /*fontWeights*/ } from './foundations/fonts';
 
 // Component style overrides
 import headingTheme from './components/Heading';
@@ -18,6 +18,7 @@ import accordionTheme from './components/Accordion';
 import editableTheme from './components/Editable';
 import spinnerTheme from './components/Spinner';
 import inputTheme from './components/Input';
+import dividerTheme from './components/Divider';
 
 // Config
 const config = {
@@ -42,6 +43,7 @@ const overrides = {
 		Editable: editableTheme,
 		Spinner: spinnerTheme,
 		Input: inputTheme,
+		Divider: dividerTheme,
 	},
 };
 

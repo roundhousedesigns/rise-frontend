@@ -25,6 +25,7 @@ import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-ic
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png';
+import circleLogo from '../../assets/images/rise-blue-circle.png';
 
 import { SearchContext } from '../../context/SearchContext';
 import { useViewer } from '../../hooks/queries/useViewer';
@@ -217,7 +218,13 @@ export default function Header() {
 										</Menu>
 									</LightMode>
 								</>
-							) : null}
+							) : (
+								<>
+									<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal>
+										<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
+									</Link>
+								</>
+							)}
 						</Stack>
 					</Container>
 				</Box>
