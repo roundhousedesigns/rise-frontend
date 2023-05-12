@@ -1,12 +1,12 @@
 import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
+	baseStyle: {
+		my: 2,
+		textUnderlineOffset: '0.2em',
+		color: 'brand.blue',
+	},
 	variants: {
-		default: {
-			my: 2,
-			textUnderlineOffset: '0.2em',
-			color: 'brand.blue',
-		},
 		nav: {
 			textDecoration: 'none',
 			_hover: {
@@ -26,8 +26,5 @@ export default defineStyleConfig({
 			color: 'inherit',
 			textDecoration: 'underline',
 		},
-	},
-	defaultProps: {
-		variant: 'default',
 	},
 });

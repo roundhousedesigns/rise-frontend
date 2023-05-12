@@ -1,12 +1,17 @@
 import { defineStyleConfig } from '@chakra-ui/react';
 
 export default defineStyleConfig({
+	baseStyle: {
+		mb: 2,
+	},
 	variants: {
 		pageTitle: {
 			fontSize: '4xl',
+			textTransform: 'uppercase',
 		},
 		pageSubtitle: {
 			fontSize: '3xl',
+			textTransform: 'uppercase',
 		},
 		contentTitle: {
 			fontSize: '2xl',
