@@ -26,10 +26,7 @@ export const useLocalStorage = (
 		deserialize?: (val: string) => any;
 	} = {}
 ) => {
-	// TODO type useState
-	// Type suggestion: useState<() => string>
-	// still unclear if the return type is always string or not.
-	const [state, setState] = useState(() => {
+	const [state, setState] = useState<any>(() => {
 		const valueInLocalStorage = window.localStorage.getItem(key);
 		if (valueInLocalStorage) {
 			return deserialize(valueInLocalStorage);

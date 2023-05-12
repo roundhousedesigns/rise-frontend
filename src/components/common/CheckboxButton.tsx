@@ -15,6 +15,7 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 			{/* TODO Fix color scheme for light and dark modes */}
 			<Box
 				{...getCheckboxProps()}
+				{...getLabelProps}
 				cursor='pointer'
 				borderRadius='sm'
 				bg='gray.100'
@@ -44,7 +45,6 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 				py={2}
 				m={0}
 				color='inherit'
-				{...getLabelProps}
 			>
 				{children}
 			</Box>

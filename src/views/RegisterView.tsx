@@ -9,6 +9,7 @@ import {
 	Link,
 	FormControl,
 	Divider,
+	Heading,
 } from '@chakra-ui/react';
 import parse from 'html-react-parser';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -100,6 +101,7 @@ export default function RegisterView() {
 
 			<Divider my={6} />
 
+			<Heading variant='contentTitle'>Create an account</Heading>
 			<form onSubmit={handleSubmit}>
 				<Stack direction='row' spacing={6}>
 					<TextInput

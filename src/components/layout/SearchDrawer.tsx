@@ -99,7 +99,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top'>
-			<DrawerOverlay _dark={{ bg: 'whiteAlpha.800' }} _light={{ bg: 'blackAlpha.800' }} />
+			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
 			<DrawerContent>
 				<DrawerHeader
 					fontSize='2xl'
@@ -114,13 +114,13 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					}}
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
-						<Heading size='lg' color='text.light'>
+						<Heading variant='pageTitle' mb={0} color='text.light'>
 							Search
 						</Heading>
 						<IconButton
 							icon={<FiX />}
 							aria-label='Close'
-							fontSize='5xl'
+							fontSize='4xl'
 							onClick={onClose}
 							variant='invisible'
 						/>

@@ -15,8 +15,9 @@ export default function RadioButton(props: Props): React.ReactElement {
 			<input {...getInputProps()} hidden />
 			<Box
 				{...getRadioProps()}
+				{...getLabelProps}
 				cursor='pointer'
-				borderRadius='md'
+				borderRadius='sm'
 				bg='gray.100'
 				borderWidth={1}
 				borderColor='gray.300'
@@ -25,8 +26,8 @@ export default function RadioButton(props: Props): React.ReactElement {
 					bg: 'blue.50',
 				}}
 				_checked={{
-					bg: 'blue.600',
-					color: 'text.light',
+					bg: 'blue.700',
+					color: 'white',
 				}}
 				_focus={{
 					outline: '1px',
@@ -40,9 +41,10 @@ export default function RadioButton(props: Props): React.ReactElement {
 						bg: 'blue.500',
 					},
 				}}
+				px={3}
 				py={2}
-				px={4}
-				{...getLabelProps}
+				m={0}
+				color='inherit'
 			>
 				{children}
 			</Box>

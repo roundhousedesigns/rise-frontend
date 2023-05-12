@@ -9,12 +9,10 @@ export default defineStyleConfig({
 	variants: {
 		pageTitle: {
 			fontSize: '4xl',
-			textTransform: 'uppercase',
 			fontFamily: `'Stabil Grotesk', sans-serif`,
 		},
 		pageSubtitle: {
 			fontSize: '3xl',
-			textTransform: 'uppercase',
 			fontFamily: `'Stabil Grotesk', sans-serif`,
 		},
 		contentTitle: {

@@ -21,7 +21,7 @@ import {
 	Button,
 	Badge,
 } from '@chakra-ui/react';
-import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
+import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser, FiHeart } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png';
@@ -210,6 +210,8 @@ export default function Header() {
 														Settings
 													</MenuItem>
 												</MenuOptionGroup>
+												<MenuDivider />
+												<MenuItem as={RouterLink} to='https://risetheatre.org' icon={<FiHeart />}>RISE Home</MenuItem>
 												<MenuDivider />
 												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
 													Logout
