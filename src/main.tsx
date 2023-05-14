@@ -14,16 +14,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
+
+// Env vars
+const { VITE_BACKEND_URL, VITE_GA4_ID } = import.meta.env;
 
 // Initialize Google Analytics
-ReactGA.initialize('G-RBR5GCNF2R');
+if (VITE_GA4_ID) ReactGA.initialize(VITE_GA4_ID);
 
 /**
  * Apollo client.
  */
 const httpLink = createUploadLink({
-	uri: backend,
+	uri: VITE_BACKEND_URL,
 	credentials: 'include',
 });
 
