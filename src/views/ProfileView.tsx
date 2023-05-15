@@ -250,6 +250,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									<Button
 										href={resume}
 										as={Link}
+										textDecoration='none'
 										colorScheme='green'
 										leftIcon={<FiDownload />}
 										download

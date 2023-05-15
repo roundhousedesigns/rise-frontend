@@ -1,5 +1,6 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import {
+	chakra,
 	Button,
 	FormErrorMessage,
 	Box,
@@ -29,6 +30,7 @@ export default function RegisterView() {
 	});
 	const { email, firstName, lastName, password, confirmPassword } = userFields;
 	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
+	const [ofAge, setOfAge] = useState<boolean>(false);
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
@@ -49,9 +51,10 @@ export default function RegisterView() {
 				password.length > 0 &&
 				confirmPassword.length > 0 &&
 				passwordsMatch &&
+				ofAge &&
 				termsAccepted
 		);
-	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, termsAccepted]);
+	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
 
 	// useEffect to check if passwords match, debounce to prevent spamming
 	useEffect(() => {
@@ -154,6 +157,7 @@ export default function RegisterView() {
 						isRequired
 						onChange={handleInputChange}
 						inputProps={{
+							size: 'xl',
 							type: 'password',
 							autoComplete: 'new-password',
 						}}
@@ -169,6 +173,7 @@ export default function RegisterView() {
 						error={passwordsMatchError()}
 						onChange={handleInputChange}
 						inputProps={{
+							size: 'xl',
 							type: 'password',
 							autoComplete: 'new-password',
 						}}
@@ -176,17 +181,32 @@ export default function RegisterView() {
 				</Stack>
 				<Box mt={4}>
 					<FormControl>
+						<Checkbox size='sm' w='full' isRequired onChange={() => setOfAge(!ofAge)}>
+							I am over 18 years of age.
+							<chakra.span color='red.300' ml={1}>
+								*
+							</chakra.span>
+						</Checkbox>
+					</FormControl>
+					<FormControl>
 						<Checkbox
 							size='sm'
 							w='full'
 							isRequired
 							onChange={() => setTermsAccepted(!termsAccepted)}
 						>
-							I accept the RISE Theatre Directory{' '}
+							I have read and accept the RISE Theatre Directory{' '}
 							<Link as={RouterLink} to='http://risetheartre.org/terms-conditions' isExternal>
-								terms and conditions
+								Terms and Conditions
+							</Link>{' '}
+							and{' '}
+							<Link as={RouterLink} to='http://risetheartre.org/privacy-policy' isExternal>
+								Privacy Policy
 							</Link>
 							.
+							<chakra.span color='red.300' ml={1}>
+								*
+							</chakra.span>
 						</Checkbox>
 					</FormControl>
 					<Button

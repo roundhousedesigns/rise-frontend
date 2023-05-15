@@ -22,8 +22,8 @@ import dividerTheme from './components/Divider';
 
 // Config
 const config = {
-	initialColorMode: 'light',
-	useSystemColorMode: true,
+	initialColorMode: 'dark',
+	useSystemColorMode: false,
 };
 
 const overrides = {

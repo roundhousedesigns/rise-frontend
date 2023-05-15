@@ -1,9 +1,8 @@
-import { Stack, IconButton, useColorMode } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 
 import Header from './components/layout/Header';
 import Main from './components/layout/Main';
 import Footer from './components/layout/Footer';
-import { FiMoon, FiSun } from 'react-icons/fi';
 
 import { SearchContextProvider } from './context/SearchContext';
 
@@ -17,7 +16,6 @@ export default function App() {
 		loggedInId,
 		result: { loading },
 	} = useViewer();
-	const { colorMode, toggleColorMode } = useColorMode();
 
 	const navigate = useNavigate();
 
@@ -55,18 +53,6 @@ export default function App() {
 				{!loggedInId && !publicEndpoints.includes(pathname) && !loading ? <LoginView /> : <Main />}
 				<Footer />
 			</Stack>
-			<IconButton
-				aria-label='Toggle dark mode'
-				variant='ghost'
-				icon={colorMode === 'light' ? <FiMoon /> : <FiSun />}
-				size='md'
-				pos='absolute'
-				colorScheme='gray'
-				right={0}
-				bottom={0}
-				m={2}
-				onClick={toggleColorMode}
-			/>
 		</SearchContextProvider>
 	);
 }

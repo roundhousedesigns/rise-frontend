@@ -28,8 +28,8 @@ import {
 	FiSettings,
 	FiHome,
 	FiUser,
-	FiHeart,
 	FiHelpCircle,
+	FiCompass,
 } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
@@ -61,30 +61,17 @@ export default function Header() {
 	};
 
 	const SearchButton = () => (
-		<Box position='relative'>
-			<Button
-				ref={drawerButtonRef}
-				onClick={drawerOnOpen}
-				leftIcon={<FiSearch />}
-				aria-label='Search for candidates'
-				colorScheme='gray'
-				borderRadius='lg'
-				size='md'
-				pr={{ base: 0, md: 6 }}
-				pl={{ base: 0, md: 2 }}
-				_before={{
-					base: {
-						pl: 2,
-						content: '""',
-					},
-					md: {
-						pl: 0,
-					},
-				}}
-			>
-				{isLargerThanMd ? 'Search' : ''}
-			</Button>
-		</Box>
+		<Button
+			ref={drawerButtonRef}
+			onClick={drawerOnOpen}
+			leftIcon={<FiSearch />}
+			aria-label='Search for candidates'
+			colorScheme='gray'
+			borderRadius='lg'
+			size='md'
+		>
+			{isLargerThanMd ? 'Search' : ''}
+		</Button>
 	);
 
 	const SearchResultsButton = () => (
@@ -204,7 +191,7 @@ export default function Header() {
 													</MenuOptionGroup>
 												)}
 												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
+													<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
 														Dashboard
 													</MenuItem>
 												</MenuOptionGroup>
@@ -217,7 +204,12 @@ export default function Header() {
 													</MenuItem>
 												</MenuOptionGroup>
 												<MenuDivider />
-												<MenuItem as={RouterLink} to='https://risetheatre.org' icon={<FiHeart />}>
+												<MenuItem
+													as={Link}
+													href='https://risetheatre.org'
+													icon={<FiHome />}
+													isExternal
+												>
 													RISE Home
 												</MenuItem>
 												<MenuDivider />

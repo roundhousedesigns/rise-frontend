@@ -47,18 +47,23 @@ export default function TextInput({
 		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 			<InputGroup>
 				{leftElement ? (
-					<InputLeftElement pointerEvents='none'>{leftElement}</InputLeftElement>
+					<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+						{leftElement}
+					</InputLeftElement>
 				) : (
 					false
 				)}
 				<Input
 					variant='filled'
-					focusBorderColor='blue.200'
+					focusBorderColor='brand.blue'
 					placeholder={placeholder}
 					isDisabled={isDisabled}
 					value={value}
 					name={name}
 					onChange={onChange}
+					_dark={{
+						color: 'text.dark',
+					}}
 					{...inputProps}
 				/>
 			</InputGroup>

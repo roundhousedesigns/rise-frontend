@@ -17,9 +17,7 @@ export default defineStyleConfig({
 		},
 		contentTitle: {
 			fontSize: '2xl',
-			fontWeight: 'bold',
 			pb: 0,
-			fontFamily: `'Stabil Grotesk', sans-serif`,
 		},
 		contentSubtitle: {
 			fontSize: 'md',

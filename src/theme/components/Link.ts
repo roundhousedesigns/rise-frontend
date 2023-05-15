@@ -4,7 +4,7 @@ export default defineStyleConfig({
 	baseStyle: {
 		my: 2,
 		textUnderlineOffset: '0.2em',
-		colorScheme: 'brand.green',
+		textDecoration: 'underline',
 	},
 	variants: {
 		nav: {
@@ -21,10 +21,6 @@ export default defineStyleConfig({
 			_hover: {
 				textDecorationStyle: 'solid',
 			},
-		},
-		footer: {
-			color: 'inherit',
-			textDecoration: 'underline',
 		},
 	},
 });
