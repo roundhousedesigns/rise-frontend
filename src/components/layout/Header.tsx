@@ -64,13 +64,14 @@ export default function Header() {
 		<Button
 			ref={drawerButtonRef}
 			onClick={drawerOnOpen}
-			leftIcon={<FiSearch />}
+			leftIcon={isLargerThanMd ? <FiSearch /> : undefined}
 			aria-label='Search for candidates'
 			colorScheme='gray'
-			borderRadius='lg'
+			borderRadius={{ base: 'full', md: 'lg' }}
 			size='md'
+			px={{ base: 0, md: 4 }}
 		>
-			{isLargerThanMd ? 'Search' : ''}
+			{isLargerThanMd ? 'Search' : <FiSearch />}
 		</Button>
 	);
 
