@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Heading, Button, Wrap, Card } from '@chakra-ui/react';
+import { Box, Heading, Button, Card, Stack } from '@chakra-ui/react';
 import Page from '../components/Page';
 
 import { useViewer } from '../hooks/queries/useViewer';
@@ -11,16 +11,20 @@ export default function Dashboard() {
 		<Page>
 			<Heading variant='pageTitle'>Hello, {firstName}!</Heading>
 			<Card mt={4}>
-				<Heading variant='contentTitle'>To start a Search, use the button in the header!</Heading>
-				<Heading variant='contentTitle'>You can also:</Heading>
-				<Wrap direction={['column', 'row']} spacing={4} mt={4}>
-					<Button as={Link} to='/profile' colorScheme='green'>
+				<Heading variant='contentTitle' mb={0}>
+					To start a Search, use the button in the header!
+				</Heading>
+				<Stack direction={['column', 'row']} spacing={4} alignItems={['left', 'center']}>
+					<Heading variant='contentTitle' my={0} lineHeight='normal'>
+						You can also:
+					</Heading>
+					<Button as={Link} to='/profile' colorScheme='green' my={0}>
 						View your profile
 					</Button>
-					<Button as={Link} to='/profile/edit' colorScheme='green'>
+					<Button as={Link} to='/profile/edit' colorScheme='green' my={0}>
 						Edit your profile
 					</Button>
-				</Wrap>
+				</Stack>
 				<Box mt={4}>
 					<Heading variant='contentTitle'>Need a little guidance?</Heading>
 					<Button as={Link} to='/help' colorScheme='orange'>
