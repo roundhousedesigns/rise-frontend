@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Page from '../components/Page';
 import LoginView from '../views/LoginView';
 import { useViewer } from '../hooks/queries/useViewer';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -17,6 +17,7 @@ export default function Login() {
 	const { loggedInId } = useViewer();
 
 	return (
+
 		<Page>
 			<LoginView />
 		</Page>

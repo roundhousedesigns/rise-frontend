@@ -3,15 +3,15 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
+import { LostPasswordInput } from '../../lib/types';
 
 const MUTATE_SEND_PASSWORD_RESET = gql`
-	mutation SendPasswordResetEmail($username: String!) {
-		sendPasswordResetEmail(input: { username: $username }) {
+	mutation SendPasswordResetEmailMutation(
+		$input: SendPasswordResetEmailWithReCaptchaInput = { reCaptchaToken: "", username: "" }
+	) {
+		sendPasswordResetEmailWithReCaptcha(input: $input) {
 			clientMutationId
-			user {
-				databaseId
-				email
-			}
+			success
 		}
 	}
 `;
@@ -19,11 +19,14 @@ const MUTATE_SEND_PASSWORD_RESET = gql`
 export const useSendPasswordResetEmail = () => {
 	const [mutation, results] = useMutation(MUTATE_SEND_PASSWORD_RESET);
 
-	const sendPasswordResetEmailMutation = (username: string) => {
+	const sendPasswordResetEmailMutation = ({ username, reCaptchaToken }: LostPasswordInput) => {
 		return mutation({
 			variables: {
-				clientMutationId: 'sendPasswordResetEmailMutation',
-				username,
+				input: {
+					clientMutationId: 'sendPasswordResetEmailMutation',
+					username,
+					reCaptchaToken,
+				},
 			},
 		});
 	};

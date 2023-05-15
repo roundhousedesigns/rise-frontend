@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 import {
 	chakra,
 	Button,
@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import parse from 'html-react-parser';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import TextInput from '../components/common/inputs/TextInput';
 import { useRegisterUser } from '../hooks/mutations/useRegisterUser';
 import { useRegistrationError } from '../hooks/hooks';
@@ -21,14 +22,15 @@ import { RegisterUserInput } from '../lib/types';
 import { usePostContent } from '../hooks/queries/usePostContent';
 
 export default function RegisterView() {
-	const [userFields, serUserFields] = useState<RegisterUserInput>({
+	const [userFields, setUserFields] = useState<RegisterUserInput>({
 		email: '',
 		firstName: '',
 		lastName: '',
 		password: '',
 		confirmPassword: '',
+		reCaptchaToken: '',
 	});
-	const { email, firstName, lastName, password, confirmPassword } = userFields;
+	const { email, firstName, lastName, password, confirmPassword, reCaptchaToken } = userFields;
 	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 	const [ofAge, setOfAge] = useState<boolean>(false);
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
@@ -37,12 +39,31 @@ export default function RegisterView() {
 
 	const [content, { contentLoading, contentError }] = usePostContent('576');
 
+	const { executeRecaptcha } = useGoogleReCaptcha();
+
 	const {
 		registerUserMutation,
 		results: { loading: submitLoading },
 	} = useRegisterUser();
 
-	// useEffect to check if form is valid
+	const handleReCaptchaVerify = useCallback(async () => {
+		if (!executeRecaptcha) {
+			return;
+		}
+
+		const token = await executeRecaptcha('registerUser');
+		setUserFields({
+			...userFields,
+			reCaptchaToken: token,
+		});
+	}, [executeRecaptcha]);
+
+	// Trigger the verification as soon as the component is loaded
+	useEffect(() => {
+		handleReCaptchaVerify();
+	}, [handleReCaptchaVerify]);
+
+	// Check if form is valid
 	useEffect(() => {
 		setFormIsValid(
 			email.length > 0 &&
@@ -52,9 +73,20 @@ export default function RegisterView() {
 				confirmPassword.length > 0 &&
 				passwordsMatch &&
 				ofAge &&
-				termsAccepted
+				termsAccepted &&
+				reCaptchaToken.length > 0
 		);
-	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
+	}, [
+		email,
+		firstName,
+		lastName,
+		passwordsMatch,
+		password,
+		confirmPassword,
+		ofAge,
+		termsAccepted,
+		reCaptchaToken,
+	]);
 
 	// useEffect to check if passwords match, debounce to prevent spamming
 	useEffect(() => {
@@ -65,7 +97,7 @@ export default function RegisterView() {
 	}, [password, confirmPassword]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		serUserFields({
+		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
 		});
@@ -117,6 +149,7 @@ export default function RegisterView() {
 						inputProps={{
 							size: 'xl',
 							autoComplete: 'given-name',
+							tabIndex: 1,
 						}}
 					/>
 					<TextInput
@@ -129,6 +162,7 @@ export default function RegisterView() {
 						inputProps={{
 							size: 'xl',
 							autoComplete: 'family-name',
+							tabIndex: 2,
 						}}
 					/>
 				</Stack>
@@ -144,6 +178,7 @@ export default function RegisterView() {
 					inputProps={{
 						size: 'xl',
 						autoComplete: 'email',
+						tabIndex: 3,
 					}}
 				/>
 				<Stack direction='row' spacing={6}>
@@ -160,6 +195,7 @@ export default function RegisterView() {
 							size: 'xl',
 							type: 'password',
 							autoComplete: 'new-password',
+							tabIndex: 4,
 						}}
 					/>
 					<TextInput
@@ -176,12 +212,13 @@ export default function RegisterView() {
 							size: 'xl',
 							type: 'password',
 							autoComplete: 'new-password',
+							tabIndex: 5,
 						}}
 					/>
 				</Stack>
 				<Box mt={4}>
 					<FormControl>
-						<Checkbox size='sm' w='full' isRequired onChange={() => setOfAge(!ofAge)}>
+						<Checkbox size='sm' w='full' isRequired onChange={() => setOfAge(!ofAge)} tabIndex={6}>
 							I am over 18 years of age.
 							<chakra.span color='red.300' ml={1}>
 								*
@@ -194,6 +231,7 @@ export default function RegisterView() {
 							w='full'
 							isRequired
 							onChange={() => setTermsAccepted(!termsAccepted)}
+							tabIndex={7}
 						>
 							I have read and accept the RISE Theatre Directory{' '}
 							<Link as={RouterLink} to='http://risetheartre.org/terms-conditions' isExternal>
@@ -214,6 +252,7 @@ export default function RegisterView() {
 						type='submit'
 						colorScheme='orange'
 						isDisabled={!formIsValid || submitLoading}
+						tabIndex={8}
 					>
 						{submitLoading ? <Spinner size='sm' /> : 'Create account'}
 					</Button>

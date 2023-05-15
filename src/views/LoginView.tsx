@@ -1,21 +1,43 @@
-import { SetStateAction, useState } from 'react';
+import { SetStateAction, useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Flex, Container, Heading, Box, Spinner, Link } from '@chakra-ui/react';
 
+import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
-	const [credentials, setCredentials] = useState<{ login: string; password: string }>({
+	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
+		reCaptchaToken: '',
 	});
+	const { reCaptchaToken } = credentials;
 	const [errorCode, setErrorCode] = useState<string>('');
 	const {
 		loginMutation,
 		results: { loading: submitLoading },
 	} = useLogin();
+	const { executeRecaptcha } = useGoogleReCaptcha();
+
+	const handleReCaptchaVerify = useCallback(async () => {
+		if (!executeRecaptcha) {
+			return;
+		}
+
+		const token = await executeRecaptcha('loginUser');
+		setCredentials({
+			...credentials,
+			reCaptchaToken: token,
+		});
+	}, [executeRecaptcha]);
+
+	// Trigger the verification as soon as the component is loaded
+	useEffect(() => {
+		handleReCaptchaVerify();
+	}, [handleReCaptchaVerify]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -28,6 +50,12 @@ export default function LoginView() {
 
 	const handleLoginSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+
+		if (!reCaptchaToken) {
+			setErrorCode('recaptcha_error');
+			return;
+		}
+
 		loginMutation(credentials)
 			.then(() => {
 				window.location.reload();
@@ -74,6 +102,7 @@ export default function LoginView() {
 						<Button type='submit' colorScheme='blue' px={6}>
 							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
 						</Button>
+						<Box id='recaptcha-badge' />
 						<Link as={RouterLink} to='/lost-password' fontSize='md'>
 							Lost your password?
 						</Link>

@@ -223,6 +223,20 @@ export default function Header() {
 								</>
 							) : (
 								<>
+									<Button
+										as={RouterLink}
+										to='/register'
+										borderRadius={{ base: 'full', md: 'lg' }}
+										bgColor='brand.orange'
+										_hover={{
+											bgColor: 'orange.300',
+										}}
+										color='text.dark'
+										py={6}
+										size='lg'
+									>
+										Join RISE
+									</Button>
 									<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal>
 										<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
 									</Link>

@@ -1,16 +1,34 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, Spinner, useToast } from '@chakra-ui/react';
 
 import TextInput from '../components/common/inputs/TextInput';
 import { useSendPasswordResetEmail } from '../hooks/mutations/useSendPasswordResetEmail';
-import { useNavigate } from 'react-router-dom';
 
 export default function LoginView() {
 	const [username, setUsername] = useState<string>('');
+	const [reCaptchaToken, setReCaptchaToken] = useState<string>('');
+	const { executeRecaptcha } = useGoogleReCaptcha();
+
 	const {
 		sendPasswordResetEmailMutation,
 		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
+
+	const handleReCaptchaVerify = useCallback(async () => {
+		if (!executeRecaptcha) {
+			return;
+		}
+
+		const token = await executeRecaptcha('registerUser');
+		setReCaptchaToken(token);
+	}, [executeRecaptcha]);
+
+	// Trigger the verification as soon as the component is loaded
+	useEffect(() => {
+		handleReCaptchaVerify();
+	}, [handleReCaptchaVerify]);
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUsername(e.target.value);
@@ -25,7 +43,7 @@ export default function LoginView() {
 		e.preventDefault();
 
 		// TODO handle password reset errors
-		sendPasswordResetEmailMutation(username)
+		sendPasswordResetEmailMutation({ username, reCaptchaToken })
 			.then(() => {
 				toast({
 					title: 'Email sent',

@@ -28,10 +28,7 @@ export default function Main() {
 			<Container w='full' maxW='6xl' px='40px' pb={4}>
 				<Routes>
 					<Route path='/' element={<Dashboard />} />
-					<Route path='/login' element={<Login />} />
-					<Route path='/lost-password' element={<LostPassword />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/register' element={<Register />} />
 					<Route path='/results' element={<Results />} />
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />
@@ -39,6 +36,11 @@ export default function Main() {
 					{/* <Route path='/account' element={<Account />} /> */}
 					<Route path='/settings' element={<Settings />} />
 					<Route path='/help' element={<Help />} />
+
+					{/* Pages with Google ReCaptcha */}
+					<Route path='/login' element={<Login />} />
+					<Route path='/lost-password' element={<LostPassword />} />
+					<Route path='/register' element={<Register />} />
 				</Routes>
 			</Container>
 		</Box>

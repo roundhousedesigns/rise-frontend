@@ -9,7 +9,7 @@ import { SearchContextProvider } from './context/SearchContext';
 import { useViewer } from './hooks/queries/useViewer';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import LoginView from './views/LoginView';
+import Login from './routes/Login';
 
 export default function App() {
 	const {
@@ -50,7 +50,7 @@ export default function App() {
 				}}
 			>
 				<Header />
-				{!loggedInId && !publicEndpoints.includes(pathname) && !loading ? <LoginView /> : <Main />}
+				{!loggedInId && !publicEndpoints.includes(pathname) && !loading ? <Login /> : <Main />}
 				<Footer />
 			</Stack>
 		</SearchContextProvider>
