@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Box, Heading, Button, Wrap } from '@chakra-ui/react';
+import { Box, Heading, Button, Wrap, Card } from '@chakra-ui/react';
 import Page from '../components/Page';
 
 import { useViewer } from '../hooks/queries/useViewer';
@@ -10,7 +10,7 @@ export default function Dashboard() {
 	return (
 		<Page>
 			<Heading variant='pageTitle'>Hello, {firstName}!</Heading>
-			<Box mt={4}>
+			<Card mt={4}>
 				<Heading variant='contentTitle'>To start a Search, use the button in the header!</Heading>
 				<Heading variant='contentTitle'>You can also:</Heading>
 				<Wrap direction={['column', 'row']} spacing={4} mt={4}>
@@ -27,7 +27,7 @@ export default function Dashboard() {
 						Get Help
 					</Button>
 				</Box>
-			</Box>
+			</Card>
 		</Page>
 	);
 }
