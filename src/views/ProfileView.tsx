@@ -20,7 +20,7 @@ import {
 	Wrap,
 	SimpleGrid,
 } from '@chakra-ui/react';
-import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
@@ -53,6 +53,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		website,
 		socials,
 		unions,
+		partnerDirectories,
 		willTravel,
 		willTour,
 		email,
@@ -85,7 +86,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
 		: [];
 
-	const [{ locations: locationTerms, unions: unionTerms }] = useUserTaxonomies();
+	const [
+		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
+	] = useUserTaxonomies();
 
 	const selectedTerms = (ids: number[], terms: WPItem[]) =>
 		getWPItemsFromIds(ids, terms)
@@ -189,6 +192,16 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<StackItem>
 									<Heading variant='contentTitle'>Unions/Guilds</Heading>
 									<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
+								</StackItem>
+							) : (
+								false
+							)}
+							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
+								<StackItem>
+									<Heading variant='contentTitle'>RISE Network Partner Directories</Heading>
+									<TextWithIcon icon={FiStar}>
+										{selectedTerms(partnerDirectories, partnerDirectoryTerms)}
+									</TextWithIcon>
 								</StackItem>
 							) : (
 								false

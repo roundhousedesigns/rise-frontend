@@ -68,6 +68,7 @@ export interface UserProfileParams {
 	mediaImage6?: string;
 	locations?: number[] | WPItem[];
 	unions?: number[] | WPItem[];
+	partnerDirectories?: number[] | WPItem[];
 	experienceLevels?: number[] | WPItem[];
 	genderIdentities?: number[] | WPItem[];
 	racialIdentities?: number[] | WPItem[];

@@ -69,6 +69,7 @@ export class UserProfile extends User {
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
+	partnerDirectories: number[] = [];
 	experienceLevels: number[] = [];
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
@@ -107,6 +108,7 @@ export class UserProfile extends User {
 			website,
 			locations,
 			unions,
+			partnerDirectories,
 			experienceLevels,
 			genderIdentities,
 			racialIdentities,
@@ -158,6 +160,10 @@ export class UserProfile extends User {
 
 		if (unions && unions.length > 0) {
 			this.unions = this.extractIdsFromNodes(unions);
+		}
+
+		if (partnerDirectories && partnerDirectories.length > 0) {
+			this.partnerDirectories = this.extractIdsFromNodes(partnerDirectories);
 		}
 
 		if (experienceLevels && experienceLevels.length > 0) {

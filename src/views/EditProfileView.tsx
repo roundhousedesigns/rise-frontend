@@ -99,6 +99,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		resume,
 		phone,
 		unions,
+		partnerDirectories,
 		experienceLevels,
 		genderIdentities,
 		racialIdentities,
@@ -211,6 +212,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		{
 			locations: locationTerms,
 			unions: unionTerms,
+			partnerDirectories: partnerDirectoryTerms,
 			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
@@ -663,6 +665,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									<Heading variant='contentTitle'>Unions/Guilds</Heading>
 									<Heading variant='contentSubtitle'>
 										What unions or guilds are you a member of?
+										<br />
+										<br />
 									</Heading>
 									<Box fontSize='sm'>
 										<ProfileCheckboxGroup
@@ -674,8 +678,28 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Box>
 								</Box>
 								<Box flex='0 0 30%'>
+									<Heading variant='contentTitle'>Partner Directories</Heading>
+									<Heading variant='contentSubtitle'>
+										Are you a member of one of our partner organizations?
+									</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='partnerDirectories'
+											items={partnerDirectoryTerms}
+											checked={
+												partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
+											}
+											handleChange={handleCheckboxInput}
+										/>
+									</Box>
+								</Box>
+								<Box flex='0 0 30%'>
 									<Heading variant='contentTitle'>Experience Levels</Heading>
-									<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+									<Heading variant='contentSubtitle'>
+										At what levels have you worked?
+										<br />
+										<br />
+									</Heading>
 									<Box fontSize='sm'>
 										<ProfileCheckboxGroup
 											name='experienceLevels'

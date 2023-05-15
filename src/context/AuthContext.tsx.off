@@ -17,6 +17,7 @@ interface Props {
 }
 
 export const AuthContextProvider = ({ children }: Props) => {
+	console.info('farts');
 	const [loggedInUser, setLoggedInUser] = useLocalStorage('loggedInUser', new User());
 
 	const contextValue = {

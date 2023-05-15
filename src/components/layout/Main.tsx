@@ -11,7 +11,7 @@ import Results from '../../routes/Results';
 import Profile from '../../routes/Profile';
 import EditProfile from '../../routes/EditProfile';
 import Settings from '../../routes/Settings';
-import Account from '../../routes/Account';
+import Help from '../../routes/Help';
 
 export default function Main() {
 	return (
@@ -36,8 +36,9 @@ export default function Main() {
 					<Route path='/profile' element={<Profile />} />
 					<Route path='/profile/:userId' element={<Profile />} />
 					<Route path='/profile/edit' element={<EditProfile />} />
-					<Route path='/account' element={<Account />} />
+					{/* <Route path='/account' element={<Account />} /> */}
 					<Route path='/settings' element={<Settings />} />
+					<Route path='/help' element={<Help />} />
 				</Routes>
 			</Container>
 		</Box>

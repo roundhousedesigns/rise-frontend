@@ -21,7 +21,16 @@ import {
 	Button,
 	Badge,
 } from '@chakra-ui/react';
-import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser, FiHeart } from 'react-icons/fi';
+import {
+	FiSearch,
+	FiMenu,
+	FiLogOut,
+	FiSettings,
+	FiHome,
+	FiUser,
+	FiHeart,
+	FiHelpCircle,
+} from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png';
@@ -59,9 +68,8 @@ export default function Header() {
 				leftIcon={<FiSearch />}
 				aria-label='Search for candidates'
 				colorScheme='gray'
-				borderRadius='2xl'
-				size='lg'
-				fontSize='lg'
+				borderRadius='lg'
+				size='md'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
 				_before={{
@@ -91,9 +99,8 @@ export default function Header() {
 				}
 				aria-label='Search for candidates'
 				colorScheme='gray'
-				borderRadius='2xl'
-				size='lg'
-				fontSize='lg'
+				borderRadius='lg'
+				size='md'
 				textTransform='none'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
@@ -125,13 +132,7 @@ export default function Header() {
 							flexWrap='wrap'
 						>
 							<Link as={RouterLink} to='/' my={0}>
-								<Image
-									src={logo}
-									w={{ base: '200px', sm: 'auto' }}
-									alt='RISE logo'
-									loading='eager'
-									h='100px'
-								/>
+								<Image src={logo} alt='RISE logo' loading='eager' h='100px' />
 							</Link>
 
 							<Spacer />
@@ -159,9 +160,8 @@ export default function Header() {
 												as={RouterLink}
 												to='/profile'
 												colorScheme='gray'
-												borderRadius='2xl'
-												size='lg'
-												fontSize='lg'
+												borderRadius='lg'
+												size='md'
 												textTransform='none'
 											>
 												My Profile
@@ -178,10 +178,13 @@ export default function Header() {
 												<MenuButton
 													aria-label='Menu'
 													as={IconButton}
-													borderRadius='2xl'
+													borderRadius='full'
 													colorScheme='gray'
 													icon={<FiMenu />}
-													size='lg'
+													size='md'
+													_active={{
+														transform: 'rotate(90deg)',
+													}}
 												/>
 											</DarkMode>
 											<MenuList color='text.dark' zIndex='100'>
@@ -209,9 +212,14 @@ export default function Header() {
 													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
 														Settings
 													</MenuItem>
+													<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+														Help
+													</MenuItem>
 												</MenuOptionGroup>
 												<MenuDivider />
-												<MenuItem as={RouterLink} to='https://risetheatre.org' icon={<FiHeart />}>RISE Home</MenuItem>
+												<MenuItem as={RouterLink} to='https://risetheatre.org' icon={<FiHeart />}>
+													RISE Home
+												</MenuItem>
 												<MenuDivider />
 												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
 													Logout

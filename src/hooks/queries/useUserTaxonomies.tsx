@@ -33,6 +33,13 @@ const QUERY_USER_TAXONOMIES = gql`
 				name
 			}
 		}
+		partnerDirectories(first: 1000000, where: { orderby: TERM_ORDER }) {
+			nodes {
+				id: databaseId
+				slug
+				name
+			}
+		}
 		genderIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
@@ -71,6 +78,9 @@ const useUserTaxonomies = (): [{ [key: string]: WPItem[] }, any] => {
 	const preparedResult = {
 		locations: result.data?.locations.nodes.map((term: WPItemParams) => new WPItem(term)),
 		unions: result.data?.unions.nodes.map((term: WPItemParams) => new WPItem(term)),
+		partnerDirectories: result.data?.partnerDirectories.nodes.map(
+			(term: WPItemParams) => new WPItem(term)
+		),
 		experienceLevels: result.data?.experienceLevels.nodes.map(
 			(term: WPItemParams) => new WPItem(term)
 		),

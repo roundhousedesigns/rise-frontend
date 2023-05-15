@@ -4,7 +4,7 @@ export default defineStyleConfig({
 	baseStyle: {
 		my: 2,
 		textUnderlineOffset: '0.2em',
-		color: 'brand.blue',
+		colorScheme: 'brand.green',
 	},
 	variants: {
 		nav: {

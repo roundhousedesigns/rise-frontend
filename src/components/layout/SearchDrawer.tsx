@@ -37,6 +37,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				positions: { jobs, department },
 				skills,
 				unions,
+				partnerDirectories,
 				locations,
 				experienceLevels,
 				genderIdentities,
