@@ -128,7 +128,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem>
-				<Card py={6} bg='blackAlpha.100'>
+				<Card p={4}>
 					<Flex
 						gap={5}
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -140,6 +140,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<Image
 									src={image}
 									alt={`${profile.fullName()}'s picture`}
+									borderRadius='md'
 									loading='eager'
 									fit='cover'
 									w='xs'
@@ -303,7 +304,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{description && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
-					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+					<Text whiteSpace='pre-wrap' borderRadius='md'>
 						{description.trim()}
 					</Text>
 				</StackItem>
@@ -312,7 +313,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{education && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+					<Text whiteSpace='pre-wrap' borderRadius='md'>
 						{education.trim()}
 					</Text>
 				</StackItem>
