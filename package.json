@@ -44,6 +44,6 @@
     "vite": "^4.0.0"
   },
   "main": "index.js",
-  "repository": "https://github.com/roundhousedesigns/gtw-frontend",
+  "repository": "https://github.com/roundhousedesigns/rise-frontend",
   "license": "MIT"
 }
