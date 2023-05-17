@@ -64,54 +64,74 @@ export default function LoginView() {
 	};
 
 	return (
-		<Container maxW='lg' py={4}>
-			<Heading size='lg'>Please sign in.</Heading>
-			<Box my={4}>
-				<form onSubmit={handleLoginSubmit}>
-					<TextInput
-						value={credentials.login}
-						name='login'
-						label='Email'
-						autoComplete='username'
-						isRequired
-						onChange={handleInputChange}
-						error={
-							errorCode === 'invalid_username' ||
-							errorCode === 'invalid_email' ||
-							errorCode === 'empty_login'
-								? errorMessage
-								: ''
-						}
-						inputProps={{
-							autoComplete: 'username',
+		<Container maxW='xl' py={4}>
+			<Heading variant='pageTitle'>Welcome</Heading>
+			<Flex my={4} gap={14} alignItems='tp'>
+				<Box>
+					<Heading variant='pageSubtitle' fontSize='2xl'>
+						Please sign in.
+					</Heading>
+					<form onSubmit={handleLoginSubmit}>
+						<TextInput
+							value={credentials.login}
+							name='login'
+							label='Email'
+							autoComplete='username'
+							isRequired
+							onChange={handleInputChange}
+							error={
+								errorCode === 'invalid_username' ||
+								errorCode === 'invalid_email' ||
+								errorCode === 'empty_login'
+									? errorMessage
+									: ''
+							}
+							inputProps={{
+								autoComplete: 'username',
+							}}
+						/>
+						<TextInput
+							value={credentials.password}
+							name='password'
+							label='Password'
+							isRequired
+							onChange={handleInputChange}
+							error={errorCode === 'incorrect_password' ? errorMessage : ''}
+							inputProps={{
+								type: 'password',
+								autoComplete: 'current-password',
+							}}
+						/>
+						<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>
+							<Button type='submit' colorScheme='blue' px={6}>
+								{submitLoading ? <Spinner size='sm' /> : 'Submit'}
+							</Button>
+							<Box id='recaptcha-badge' />
+							<Link as={RouterLink} to='/lost-password' fontSize='md'>
+								Lost your password?
+							</Link>
+						</Flex>
+					</form>
+				</Box>
+				<Box textAlign='center'>
+					<Heading variant='pageSubtitle' fontSize='2xl'>
+						Don't have an account?
+					</Heading>
+					<Button
+						as={RouterLink}
+						to='/register'
+						borderRadius={{ base: 'full', md: 'lg' }}
+						bgColor='brand.orange'
+						_hover={{
+							bgColor: 'orange.300',
 						}}
-					/>
-					<TextInput
-						value={credentials.password}
-						name='password'
-						label='Password'
-						isRequired
-						onChange={handleInputChange}
-						error={errorCode === 'incorrect_password' ? errorMessage : ''}
-						inputProps={{
-							type: 'password',
-							autoComplete: 'current-password',
-						}}
-					/>
-					<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>
-						<Button type='submit' colorScheme='blue' px={6}>
-							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
-						</Button>
-						<Box id='recaptcha-badge' />
-						<Link as={RouterLink} to='/lost-password' fontSize='md'>
-							Lost your password?
-						</Link>
-					</Flex>
-					<Link as={RouterLink} textAlign='left' my={4} fontSize='sm' to='/register'>
-						Don't have an account? Register for one here.
-					</Link>
-				</form>
-			</Box>
+						color='text.dark'
+						size='lg'
+					>
+						Sign Up Here
+					</Button>
+				</Box>
+			</Flex>
 		</Container>
 	);
 }

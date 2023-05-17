@@ -232,7 +232,6 @@ export default function Header() {
 											bgColor: 'orange.300',
 										}}
 										color='text.dark'
-										py={6}
 										size='lg'
 									>
 										Join RISE

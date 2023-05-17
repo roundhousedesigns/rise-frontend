@@ -9,7 +9,6 @@ export default defineStyleConfig({
 	variants: {
 		pageTitle: {
 			fontSize: '4xl',
-			fontFamily: `'Stabil Grotesk', sans-serif`,
 		},
 		pageSubtitle: {
 			fontSize: '3xl',
