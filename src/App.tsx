@@ -1,15 +1,13 @@
-import { Stack } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Spinner, Stack } from '@chakra-ui/react';
 
 import Header from './components/layout/Header';
 import Main from './components/layout/Main';
 import Footer from './components/layout/Footer';
 
 import { SearchContextProvider } from './context/SearchContext';
-
 import { useViewer } from './hooks/queries/useViewer';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import Login from './routes/Login';
 
 export default function App() {
 	const {
@@ -32,7 +30,7 @@ export default function App() {
 		if (!loggedInId && !publicEndpoints.includes(pathname)) {
 			navigate('/login');
 		}
-	}, [loggedInId, pathname]);
+	}, [loading, loggedInId, pathname]);
 
 	return (
 		<SearchContextProvider>
@@ -50,7 +48,7 @@ export default function App() {
 				}}
 			>
 				<Header />
-				{!loggedInId && !publicEndpoints.includes(pathname) && !loading ? <Login /> : <Main />}
+				{loading ? <Spinner /> : <Main />}
 				<Footer />
 			</Stack>
 		</SearchContextProvider>
