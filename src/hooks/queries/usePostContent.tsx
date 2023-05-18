@@ -1,9 +1,12 @@
 /**
  * usePostContent hook. Query a post's (or page, CPT, etc) content by ID.
  */
-
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
+import parse from 'html-react-parser';
+
+// WordPress block styles
+import '../../assets/css/wordpress.css';
 
 export const QUERY_CONTENT = gql`
 	query PostContentQuery($id: ID = "") {
@@ -26,7 +29,8 @@ export const usePostContent = (id: number | string): [string | null, any] => {
 		},
 	});
 
-	const content = result.data?.page.content;
+	let content = result.data?.page.content;
+	content = content ? parse(content) : '';
 
 	return [content, omit(result, ['data'])];
 };

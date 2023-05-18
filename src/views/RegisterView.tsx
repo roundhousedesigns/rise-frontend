@@ -12,7 +12,6 @@ import {
 	Divider,
 	Heading,
 } from '@chakra-ui/react';
-import parse from 'html-react-parser';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import TextInput from '../components/common/inputs/TextInput';
@@ -129,7 +128,7 @@ export default function RegisterView() {
 			) : contentError ? (
 				'Error loading content'
 			) : content ? (
-				<Box my={4}>{parse(content)}</Box>
+				<Box my={4}>{content}</Box>
 			) : (
 				false
 			)}
