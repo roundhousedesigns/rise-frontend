@@ -62,7 +62,7 @@ export const useLoginError = (errorCode?: string): string => {
 	switch (errorCode) {
 		case 'invalid_username':
 		case 'invalid_email':
-			message = 'Login not found.';
+			message = 'No account exists for that email address.';
 			break;
 
 		case 'incorrect_password':
