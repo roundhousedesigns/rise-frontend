@@ -233,11 +233,11 @@ export default function RegisterView() {
 							tabIndex={7}
 						>
 							I have read and accept the RISE Theatre Directory{' '}
-							<Link as={RouterLink} to='http://risetheartre.org/terms-conditions' isExternal>
+							<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
 								Terms and Conditions
 							</Link>{' '}
 							and{' '}
-							<Link as={RouterLink} to='http://risetheartre.org/privacy-policy' isExternal>
+							<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
 								Privacy Policy
 							</Link>
 							.
