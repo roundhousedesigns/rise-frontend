@@ -20,6 +20,7 @@ import {
 	LightMode,
 	Button,
 	Badge,
+	Text,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -43,6 +44,8 @@ import { useLogout } from '../../hooks/mutations/useLogout';
 export default function Header() {
 	const { logoutMutation } = useLogout();
 
+	const { VITE_DEV_MODE } = import.meta.env;
+
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
@@ -54,6 +57,12 @@ export default function Header() {
 	const { loggedInId } = useViewer();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
+	const DevModeMessage = () => (
+		<Text color='brand.orange' fontSize='sm' fontWeight='bold' textTransform='uppercase'>
+			Staging/Development
+		</Text>
+	);
 
 	const handleDrawerOpen = () => {
 		drawerOnOpen();
@@ -134,6 +143,8 @@ export default function Header() {
 							<Link as={RouterLink} to='/' my={0}>
 								<Image src={logo} alt='RISE logo' loading='eager' h='100px' />
 							</Link>
+
+							<LightMode>{VITE_DEV_MODE ? <DevModeMessage /> : false}</LightMode>
 
 							<Spacer />
 
