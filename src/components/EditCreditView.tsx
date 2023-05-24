@@ -99,7 +99,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	useEffect(() => {
 		if (!selectedDepartmentIds) return;
 
-		getJobs({ variables: { departments: selectedDepartmentIds }, fetchPolicy: 'network-only' });
+		getJobs({ variables: { departments: selectedDepartmentIds } /*fetchPolicy: 'network-only'*/ });
 	}, [selectedDepartmentIds]);
 
 	// Set jobs when jobsData changes.

@@ -20,6 +20,7 @@ import {
 	LightMode,
 	Button,
 	Badge,
+	Text,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -43,16 +44,32 @@ import { useLogout } from '../../hooks/mutations/useLogout';
 export default function Header() {
 	const { logoutMutation } = useLogout();
 
+	const { VITE_DEV_MODE } = import.meta.env;
+
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
 
 	const {
 		search: { searchActive, results },
+		searchDispatch,
 	} = useContext(SearchContext);
 
 	const { loggedInId } = useViewer();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
+	const DevModeMessage = () => <Text variant='devMessage'>Staging/Development</Text>;
+
+	const handleDrawerOpen = () => {
+		drawerOnOpen();
+
+		searchDispatch({
+			type: 'OPEN_SEARCH',
+			payload: {
+				searchDrawerClose: drawerOnClose,
+			},
+		});
+	};
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
@@ -63,7 +80,7 @@ export default function Header() {
 	const SearchButton = () => (
 		<Button
 			ref={drawerButtonRef}
-			onClick={drawerOnOpen}
+			onClick={handleDrawerOpen}
 			leftIcon={isLargerThanMd ? <FiSearch /> : undefined}
 			aria-label='Search for candidates'
 			colorScheme='gray'
@@ -122,6 +139,8 @@ export default function Header() {
 							<Link as={RouterLink} to='/' my={0}>
 								<Image src={logo} alt='RISE logo' loading='eager' h='100px' />
 							</Link>
+
+							{VITE_DEV_MODE ? <DevModeMessage /> : false}
 
 							<Spacer />
 
@@ -222,24 +241,9 @@ export default function Header() {
 									</LightMode>
 								</>
 							) : (
-								<>
-									<Button
-										as={RouterLink}
-										to='/register'
-										borderRadius={{ base: 'full', md: 'lg' }}
-										bgColor='brand.orange'
-										_hover={{
-											bgColor: 'orange.300',
-										}}
-										color='text.dark'
-										size='lg'
-									>
-										Join RISE
-									</Button>
-									<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal>
-										<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
-									</Link>
-								</>
+								<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal>
+									<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
+								</Link>
 							)}
 						</Stack>
 					</Container>

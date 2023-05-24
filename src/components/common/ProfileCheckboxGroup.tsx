@@ -38,7 +38,7 @@ export default function ProfileCheckboxGroup({
 		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>
 			{items.map((item: WPItem, index: Key) => {
 				return (
-					<CheckboxButton key={index} {...getCheckboxProps({ value: item.id.toString() })}>
+					<CheckboxButton key={index} {...getCheckboxProps({ value: item.id.toString() })} tabIndex='9'>
 						{item.name}
 					</CheckboxButton>
 				);

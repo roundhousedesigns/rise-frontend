@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## [1.0.2beta] - 2023-05-24
+
+- Added: Search by Name
+- Added: ContentView component for displaying WP content
+- Fixed: Search results now return a much longer list of results (pre-pagination support)
+- Changed: Support email added to footer
+
 ## [1.0.1beta] - 2023-05-16
 
 - Added: Google reCAPTCHA v3 integration

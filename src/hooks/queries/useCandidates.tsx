@@ -7,9 +7,9 @@ import { omit } from 'lodash';
 import { Candidate } from '../../lib/classes';
 import { CandidateData } from '../../lib/types';
 
-const QUERY_CANDIDATES = gql`
+const QUERY_USERS = gql`
 	query QueryCandidates($include: [Int!]!) {
-		users(where: { include: $include }) {
+		users(where: { include: $include }, first: 1000) {
 			nodes {
 				id: databaseId
 				firstName
@@ -23,7 +23,7 @@ const QUERY_CANDIDATES = gql`
 
 export const useCandidates = (include_ids: number[]) => {
 	let include = include_ids && include_ids.length > 0 ? include_ids : [0];
-	const result = useQuery(QUERY_CANDIDATES, {
+	const result = useQuery(QUERY_USERS, {
 		variables: {
 			include: include,
 		},

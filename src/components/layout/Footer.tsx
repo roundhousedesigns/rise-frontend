@@ -1,5 +1,5 @@
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
-const { VITE_APP_VERSION } = import.meta.env;
+const { VITE_APP_VERSION, VITE_DEV_MODE } = import.meta.env;
 
 export default function Footer() {
 	return (
@@ -31,10 +31,11 @@ export default function Footer() {
 							Roundhouse Designs
 						</Link>
 					</Text>
-					<Text fontSize='xs' mt={8}>
+					<Text fontSize='sm' mt={8}>
 						{`Please report all bugs to: `}
-						<Link href='mailto:info@risetheatre.org'>info@risetheatre.org</Link> | Version{' '}
+						<Link href='mailto:support@risetheatre.org'>support@risetheatre.org</Link> | Version{' '}
 						{VITE_APP_VERSION}
+						{VITE_DEV_MODE ? ' (dev)' : ''}
 					</Text>
 				</Container>
 			</Box>

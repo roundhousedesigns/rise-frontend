@@ -23,7 +23,7 @@ interface ViewerProps {
 
 export const useViewer = (): ViewerProps => {
 	const result = useQuery(QUERY_VIEWER, {
-		fetchPolicy: 'network-only',
+		// fetchPolicy: 'network-only',
 	});
 
 	const loggedInId = result?.data?.viewer?.id;

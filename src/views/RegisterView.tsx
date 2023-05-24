@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 import {
 	chakra,
 	Button,
@@ -11,6 +11,7 @@ import {
 	FormControl,
 	Divider,
 	Heading,
+	useToast,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -29,7 +30,7 @@ export default function RegisterView() {
 		confirmPassword: '',
 		reCaptchaToken: '',
 	});
-	const { email, firstName, lastName, password, confirmPassword, reCaptchaToken } = userFields;
+	const { email, firstName, lastName, password, confirmPassword } = userFields;
 	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 	const [ofAge, setOfAge] = useState<boolean>(false);
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
@@ -45,22 +46,15 @@ export default function RegisterView() {
 		results: { loading: submitLoading },
 	} = useRegisterUser();
 
-	const handleReCaptchaVerify = useCallback(async () => {
+	const handleReCaptchaVerify = async () => {
 		if (!executeRecaptcha) {
 			return;
 		}
 
 		const token = await executeRecaptcha('registerUser');
-		setUserFields({
-			...userFields,
-			reCaptchaToken: token,
-		});
-	}, [executeRecaptcha]);
 
-	// Trigger the verification as soon as the component is loaded
-	useEffect(() => {
-		handleReCaptchaVerify();
-	}, [handleReCaptchaVerify]);
+		return token;
+	};
 
 	// Check if form is valid
 	useEffect(() => {
@@ -72,20 +66,9 @@ export default function RegisterView() {
 				confirmPassword.length > 0 &&
 				passwordsMatch &&
 				ofAge &&
-				termsAccepted &&
-				reCaptchaToken.length > 0
+				termsAccepted
 		);
-	}, [
-		email,
-		firstName,
-		lastName,
-		passwordsMatch,
-		password,
-		confirmPassword,
-		ofAge,
-		termsAccepted,
-		reCaptchaToken,
-	]);
+	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
 
 	// useEffect to check if passwords match, debounce to prevent spamming
 	useEffect(() => {
@@ -103,16 +86,34 @@ export default function RegisterView() {
 	};
 
 	const navigate = useNavigate();
-
+	const toast = useToast();
 	const errorMessage = useRegistrationError(errorCode);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		registerUserMutation(userFields)
-			.then(() => {
-				navigate('/login');
-			})
-			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+
+		handleReCaptchaVerify().then((token) => {
+			if (!token) {
+				setErrorCode('recaptcha_error');
+				return;
+			}
+
+			registerUserMutation({ ...userFields, reCaptchaToken: token })
+				.then(() => {
+					toast({
+						title: 'Account created!',
+						description: 'Please check your inbox for confirmation.',
+						status: 'success',
+						duration: 5000,
+						isClosable: true,
+						position: 'top',
+					});
+				})
+				.then(() => {
+					navigate('/login');
+				})
+				.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+		});
 	};
 
 	const passwordsMatchError = () => {

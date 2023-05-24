@@ -6,11 +6,7 @@ import CheckboxButton from './common/CheckboxButton';
 
 import { SearchContext } from '../context/SearchContext';
 
-interface Props {
-	heading: string;
-}
-
-export default function SearchFilterJobs({ heading }: Props) {
+export default function SearchFilterJobs() {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const [positionItems, { loading, error }] = usePositions([
 		parseInt(search.filters.positions.department),
@@ -43,18 +39,16 @@ export default function SearchFilterJobs({ heading }: Props) {
 	}, [search.filters.positions.jobs.length]);
 
 	return (
-		<Box>
+		<Box mt={8}>
 			{!loading && !error ? (
 				<>
-					<Heading size='md' mb={6} pb={2} w='full' borderBottom='2px' borderColor='gray.600'>
-						{heading}
-					</Heading>
+					<Heading variant='searchFilterTitle'>What job(s) are you looking to fill?</Heading>
 					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
 						{positionItems.map((term: WPItem) => {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });
 
 							return (
-								<CheckboxButton fontSize='md' key={term.id}  {...checkbox}>
+								<CheckboxButton fontSize='md' key={term.id} {...checkbox}>
 									{term.name}
 								</CheckboxButton>
 							);
