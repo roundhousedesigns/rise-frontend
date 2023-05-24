@@ -146,10 +146,10 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									w='xs'
 								/>
 							) : (
-								<Avatar size='2xl' name={`${profile.fullName()}'s picture`} mx={2} />
+								<Avatar size='2xl' name={profile.fullName()} mx={2} />
 							)
 						) : (
-							<Avatar size='2xl' src={image} name={`${profile.fullName()}'s picture`} />
+							<Avatar size='2xl' src={image} name={profile.fullName()} />
 						)}
 
 						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>

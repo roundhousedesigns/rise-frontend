@@ -39,7 +39,7 @@ export default defineStyleConfig({
 			pr: 2,
 		},
 		searchFilterTitle: {
-			size: 'md',
+			fontSize: '3xl',
 			mb: 6,
 			w: 'full',
 			borderBottom: '2px',

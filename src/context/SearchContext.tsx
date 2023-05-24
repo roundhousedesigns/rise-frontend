@@ -2,6 +2,7 @@ import { createContext, Key, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
+		name: string;
 		positions: {
 			department: string;
 			jobs: string[];
@@ -16,12 +17,14 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	advancedFiltersOpen: boolean;
+	searchDrawerClose: () => void;
 	results: number[];
 }
 
 interface SearchAction {
 	type: string;
 	payload: {
+		name?: string;
 		department?: string;
 		jobs?: string[];
 		skills?: string[];
@@ -31,11 +34,13 @@ interface SearchAction {
 			value: string | string[] | Key[];
 		};
 		results?: number[];
+		searchDrawerClose?: () => void;
 	};
 }
 
 const initialSearchState: SearchState = {
 	filters: {
+		name: '',
 		positions: {
 			department: '',
 			jobs: [],
@@ -50,6 +55,7 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	advancedFiltersOpen: false,
+	searchDrawerClose: () => {},
 	results: [],
 };
 
@@ -60,6 +66,25 @@ export const SearchContext = createContext({
 
 function searchContextReducer(state: SearchState, action: SearchAction): SearchState {
 	switch (action.type) {
+		case 'OPEN_SEARCH': {
+			if (!action.payload?.searchDrawerClose) return state;
+
+			return {
+				...state,
+				searchDrawerClose: action.payload.searchDrawerClose,
+			};
+		}
+
+		case 'SET_NAME':
+			return {
+				...state,
+				filters: {
+					...initialSearchState.filters,
+					name: action.payload.name ? action.payload.name : '',
+				},
+				searchActive: true,
+			};
+
 		case 'SET_DEPARTMENT':
 			if (!action.payload?.department) return state;
 
@@ -118,18 +143,14 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
-			return {
-				...state,
-				advancedFiltersOpen: !state.advancedFiltersOpen,
-			};
-
 		case 'SET_RESULTS':
 			if (!action.payload?.results) return state;
 
 			return {
 				...state,
-				results: action.payload.results,
+				results: {
+					...action.payload.results
+				},
 			};
 
 		case 'RESET_SEARCH_FILTERS':

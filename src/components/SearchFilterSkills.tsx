@@ -7,11 +7,7 @@ import ErrorAlert from './common/ErrorAlert';
 import CheckboxButton from './common/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
 
-interface Props {
-	heading: string;
-}
-
-export default function SearchFilterSkills({ heading }: Props) {
+export default function SearchFilterSkills() {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const [data, { loading, error }] = useRelatedSkills(search.filters.positions.jobs);
 
@@ -42,10 +38,8 @@ export default function SearchFilterSkills({ heading }: Props) {
 	}, [search.filters.skills.length]);
 
 	return data?.length > 0 && !loading && !error ? (
-		<Box>
-			<Heading size='md' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
-				{heading}
-			</Heading>
+		<Box mt={8}>
+			<Heading variant='searchFilterTitle'>What skills are you looking for?</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
 				{data.map((term: WPItem) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });

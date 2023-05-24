@@ -34,7 +34,7 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 					mb={{ base: 1, lg: 0 }}
 				>
 					<Link as={RouterLink} to={`/profile/${candidate.id}`}>
-						{candidate.fullName()}
+						{candidate.fullName() ? candidate.fullName() : 'No name'}
 					</Link>
 				</Text>
 				<Text

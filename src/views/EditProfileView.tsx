@@ -493,6 +493,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='First name'
 											inputProps={{
 												size: 'xl',
+												tabIndex: 1,
 											}}
 										/>
 										<TextInput
@@ -505,6 +506,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											flex='1'
 											inputProps={{
 												size: 'xl',
+												tabIndex: 2,
 											}}
 										/>
 										<TextInput
@@ -516,6 +518,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											flex='1'
 											inputProps={{
 												size: 'md',
+												tabIndex: 3,
 											}}
 										/>
 									</Flex>
@@ -529,6 +532,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											onChange={handleInputChange}
 											inputProps={{
 												maxLength: 25,
+												tabIndex: 4,
 											}}
 											flex='1'
 										/>
@@ -541,6 +545,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											onChange={handleInputChange}
 											inputProps={{
 												maxLength: 50,
+												tabIndex: 5,
 											}}
 											flex='1'
 										/>
@@ -555,11 +560,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											<TextInput
 												value={email}
 												leftElement={<Icon as={FiMail} />}
-												isRequired
 												placeholder='me@somewhere.com'
 												label='Contact Email'
 												name='email'
 												onChange={handleInputChange}
+												inputProps={{
+													tabIndex: 6,
+												}}
 											/>
 											{/* TODO Add checkbox for "use account email address" */}
 											<TextInput
@@ -569,6 +576,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												label='Phone'
 												name='phone'
 												onChange={handleInputChange}
+												inputProps={{
+													tabIndex: 7,
+												}}
 											/>
 											<TextInput
 												value={website}
@@ -576,6 +586,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												label='Website'
 												name='website'
 												onChange={handleInputChange}
+												inputProps={{
+													tabIndex: 8,
+												}}
 											/>
 										</Stack>
 									</Box>
@@ -595,6 +608,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									items={locationTerms}
 									checked={locations ? locations.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxInput}
+
 								/>
 							</StackItem>
 							<StackItem py={4} display='flex' gap={10}>

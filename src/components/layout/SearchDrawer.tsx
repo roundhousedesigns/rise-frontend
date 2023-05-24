@@ -1,5 +1,4 @@
 import { useContext, useEffect } from 'react';
-import { isEqual } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import {
 	Drawer,
@@ -13,6 +12,7 @@ import {
 	IconButton,
 	Button,
 	ButtonGroup,
+	Collapse,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
@@ -20,7 +20,6 @@ import SearchWizardView from '../../views/SearchWizardView';
 import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
 import { SearchContext } from '../../context/SearchContext';
-import AdvancedSearchFilters from '../AdvancedSearchFilters';
 import { useViewer } from '../../hooks/queries/useViewer';
 
 interface Props {
@@ -34,6 +33,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const {
 		search: {
 			filters: {
+				name,
 				positions: { jobs, department },
 				skills,
 				unions,
@@ -44,16 +44,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				personalIdentities,
 			},
 			searchActive,
-			results,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-	const [getSearchResults, { data }] = useCandidateSearch();
 	const navigate = useNavigate();
+
+	const [getSearchResults, { data }] = useCandidateSearch();
 
 	// Update SearchContext with the new results whenever the query returns.
 	useEffect(() => {
-		if (isEqual(data?.filteredCandidates, results)) return;
+		// if (isEqual(data?.filteredCandidates, results)) return;
 
 		searchDispatch({
 			type: 'SET_RESULTS',
@@ -82,6 +82,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
 				exclude: loggedInId,
+				// first: 10,
+				// after: null,
 			},
 			fetchPolicy: 'network-only',
 		});
@@ -98,11 +100,10 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='top'>
+		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size={name ? 'auto' : 'full'}>
 			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
 			<DrawerContent>
 				<DrawerHeader
-					fontSize='2xl'
 					bg='text.dark'
 					color='text.light'
 					borderBottomWidth='2px'
@@ -114,13 +115,13 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					}}
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
-						<Heading variant='pageTitle' mb={0} color='text.light'>
+						<Heading variant='contentTitle' mb={0} color='text.light'>
 							Search
 						</Heading>
 						<IconButton
 							icon={<FiX />}
 							aria-label='Close'
-							fontSize='4xl'
+							fontSize='3xl'
 							onClick={onClose}
 							variant='invisible'
 						/>
@@ -128,28 +129,28 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				</DrawerHeader>
 				<DrawerBody py={8}>
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
-					<AdvancedSearchFilters mt={10} />
 				</DrawerBody>
-				<DrawerFooter mt={0} borderTop='1px' borderTopColor='gray.300'>
-					<ButtonGroup>
-						<Button
-							colorScheme='green'
-							onClick={handleSubmit}
-							size='md'
-							form='search-candidates'
-							isDisabled={!searchActive}
-						>
-							Search
-						</Button>
-						{searchActive ? (
-							<Button colorScheme='gray' onClick={handleSearchReset} size='md'>
-								Reset Filters
+				<Collapse in={searchActive && !name} unmountOnExit={false}>
+					<DrawerFooter mt={0} py={2} borderTop='1px' borderTopColor='gray.300'>
+						<ButtonGroup>
+							<Button
+								colorScheme='green'
+								onClick={handleSubmit}
+								form='search-candidates'
+								isDisabled={!searchActive}
+							>
+								Search
 							</Button>
-						) : (
-							false
-						)}
-					</ButtonGroup>
-				</DrawerFooter>
+							{searchActive ? (
+								<Button colorScheme='gray' onClick={handleSearchReset}>
+									Reset Filters
+								</Button>
+							) : (
+								false
+							)}
+						</ButtonGroup>
+					</DrawerFooter>
+				</Collapse>
 			</DrawerContent>
 		</Drawer>
 	);

@@ -6,11 +6,7 @@ import RadioButton from './common/RadioButton';
 
 import { SearchContext } from '../context/SearchContext';
 
-interface Props {
-	heading: string;
-}
-
-export default function SearchFilterDepartment({ heading }: Props) {
+export default function SearchFilterDepartment() {
 	const [data, { loading, error }] = usePositions();
 	const { search, searchDispatch } = useContext(SearchContext);
 
@@ -45,9 +41,7 @@ export default function SearchFilterDepartment({ heading }: Props) {
 
 	return !loading && !error ? (
 		<Box>
-			<Heading size='md' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
-				{heading}
-			</Heading>
+			<Heading variant='searchFilterTitle'>Which department are you hiring for?</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
 				{data.map((term: WPItem) => {
 					const radio = getRadioProps({ value: term.id.toString() });
