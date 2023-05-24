@@ -9,5 +9,5 @@ This is the first stage of development for the RISE frontend.
 
 Current tooling:
 
-	- Vite
-	- React
+- Vite
+- React
