@@ -60,7 +60,6 @@ export default function LoginView() {
 			})
 			.catch((error) => {
 				setErrorCode('recaptcha_error');
-				console.error('reCaptcha error:', error);
 			});
 	};
 
