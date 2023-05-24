@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { Accordion, Button, IconButton, Wrap } from '@chakra-ui/react';
+import { Accordion, Button, IconButton, Spinner, Wrap } from '@chakra-ui/react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 
 import TextInput from './common/inputs/TextInput';
@@ -19,7 +19,7 @@ export default function SearchFilterName() {
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const [getSearchResults, { data: { usersByName } = [] }] = useSearchByName();
+	const [getSearchResults, { data: { usersByName } = [], loading }] = useSearchByName();
 	const navigate = useNavigate();
 	const [open, setOpen] = useState<boolean>(false);
 
@@ -115,14 +115,14 @@ export default function SearchFilterName() {
 							isDisabled={!name}
 						/>
 						<Button
-							leftIcon={<FiSearch />}
 							aria-label='Search by name'
 							colorScheme='green'
 							type='submit'
 							form='search-by-name'
 							isDisabled={!name}
+							leftIcon={loading ? <Spinner /> : <FiSearch />}
 						>
-							Search by name
+							{loading ? 'Searching...' : 'Search'}
 						</Button>
 					</Wrap>
 				</form>

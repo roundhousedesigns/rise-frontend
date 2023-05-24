@@ -58,11 +58,7 @@ export default function Header() {
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
-	const DevModeMessage = () => (
-		<Text color='brand.orange' fontSize='sm' fontWeight='bold' textTransform='uppercase'>
-			Staging/Development
-		</Text>
-	);
+	const DevModeMessage = () => <Text variant='devMessage'>Staging/Development</Text>;
 
 	const handleDrawerOpen = () => {
 		drawerOnOpen();
@@ -144,7 +140,7 @@ export default function Header() {
 								<Image src={logo} alt='RISE logo' loading='eager' h='100px' />
 							</Link>
 
-							<LightMode>{VITE_DEV_MODE ? <DevModeMessage /> : false}</LightMode>
+							{VITE_DEV_MODE ? <DevModeMessage /> : false}
 
 							<Spacer />
 

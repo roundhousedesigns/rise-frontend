@@ -13,6 +13,7 @@ import {
 	Button,
 	ButtonGroup,
 	Collapse,
+	Spinner,
 } from '@chakra-ui/react';
 import { FiX } from 'react-icons/fi';
 
@@ -145,7 +146,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								onClick={handleSubmit}
 								form='search-candidates'
 								isDisabled={!searchActive || searchResultsLoading}
-								// leftIcon={searchResultsLoading ? Spinner : ''}
+								leftIcon={searchResultsLoading ? <Spinner /> : undefined}
 							>
 								{searchResultsLoading ? 'Searching...' : 'Search'}
 							</Button>

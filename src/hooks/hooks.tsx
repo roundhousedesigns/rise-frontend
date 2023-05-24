@@ -123,6 +123,29 @@ export const useRegistrationError = (errorCode?: string): string => {
 };
 
 /**
+ * Format a lost password error message.
+ *
+ * @param {string} errorCode The error message returned by the server.
+ * @returns {string} The message to print.
+ */
+export const useLostPasswordError = (errorCode?: string): string => {
+	if (!errorCode) return '';
+
+	var message = '';
+
+	switch (errorCode) {
+		case 'recaptcha_error':
+			message = 'Invalid reCAPTCHA.';
+			break;
+
+		default:
+			message = 'Unspecified error.';
+	}
+
+	return message;
+};
+
+/**
  * Format a user password reset error message.
  *
  * @param {string} errorCode The login error message returned by the server.

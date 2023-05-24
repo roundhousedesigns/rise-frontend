@@ -1,7 +1,7 @@
-import { SetStateAction, useCallback, useEffect, useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { Button, Flex, Container, Heading, Box, Spinner, Link } from '@chakra-ui/react';
+import { Button, Flex, Container, Heading, Box, Spinner, Link, Text } from '@chakra-ui/react';
 
 import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
@@ -9,12 +9,13 @@ import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 export default function LoginView() {
+	const { VITE_DEV_MODE } = import.meta.env;
+
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
 		reCaptchaToken: '',
 	});
-	const { reCaptchaToken } = credentials;
 	const [errorCode, setErrorCode] = useState<string>('');
 	const {
 		loginMutation,
@@ -22,22 +23,17 @@ export default function LoginView() {
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const handleReCaptchaVerify = useCallback(async () => {
+	const errorMessage = useLoginError(errorCode);
+
+	const handleReCaptchaVerify = async () => {
 		if (!executeRecaptcha) {
 			return;
 		}
 
 		const token = await executeRecaptcha('loginUser');
-		setCredentials({
-			...credentials,
-			reCaptchaToken: token,
-		});
-	}, [executeRecaptcha]);
 
-	// Trigger the verification as soon as the component is loaded
-	useEffect(() => {
-		handleReCaptchaVerify();
-	}, [handleReCaptchaVerify]);
+		return token;
+	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -46,21 +42,26 @@ export default function LoginView() {
 		});
 	};
 
-	const errorMessage = useLoginError(errorCode);
-
 	const handleLoginSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (!reCaptchaToken) {
-			setErrorCode('recaptcha_error');
-			return;
-		}
+		handleReCaptchaVerify()
+			.then((token) => {
+				if (!token) {
+					setErrorCode('recaptcha_error');
+					return;
+				}
 
-		loginMutation(credentials)
-			.then(() => {
-				window.location.reload();
+				loginMutation({ ...credentials, reCaptchaToken: token })
+					.then(() => {
+						window.location.reload();
+					})
+					.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 			})
-			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+			.catch((error) => {
+				setErrorCode('recaptcha_error');
+				console.error('reCaptcha error:', error);
+			});
 	};
 
 	return (
@@ -79,13 +80,7 @@ export default function LoginView() {
 							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
-							error={
-								errorCode === 'invalid_username' ||
-								errorCode === 'invalid_email' ||
-								errorCode === 'empty_login'
-									? errorMessage
-									: ''
-							}
+							error={errorMessage}
 							inputProps={{
 								autoComplete: 'username',
 							}}
@@ -107,9 +102,13 @@ export default function LoginView() {
 								{submitLoading ? <Spinner size='sm' /> : 'Submit'}
 							</Button>
 							<Box id='recaptcha-badge' />
-							<Link as={RouterLink} to='/lost-password' fontSize='md'>
-								Lost your password?
-							</Link>
+							{VITE_DEV_MODE ? (
+								<Text variant='devMessage'>Lost Password disabled in dev environment</Text>
+							) : (
+								<Link as={RouterLink} to='/lost-password' fontSize='md'>
+									Lost your password?
+								</Link>
+							)}
 						</Flex>
 					</form>
 				</Box>
