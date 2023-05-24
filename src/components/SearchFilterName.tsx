@@ -1,5 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isEqual } from 'lodash';
 import { Accordion, Button, IconButton, Wrap } from '@chakra-ui/react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 
@@ -12,6 +13,7 @@ export default function SearchFilterName() {
 	const {
 		search: {
 			filters: { name },
+			results,
 			searchDrawerClose,
 		},
 		searchDispatch,
@@ -21,13 +23,15 @@ export default function SearchFilterName() {
 	const navigate = useNavigate();
 	const [open, setOpen] = useState<boolean>(false);
 
-	// Set open to true if there name is truthy
+	// Set open to true if `name` is truthy
 	useEffect(() => {
 		if (name) setOpen(true);
 	}, [name]);
 
 	// Set the results after a search
 	useEffect(() => {
+		if (isEqual(usersByName, results) || !usersByName) return;
+
 		searchDispatch({
 			type: 'SET_RESULTS',
 			payload: {
@@ -68,11 +72,15 @@ export default function SearchFilterName() {
 			variables: {
 				name,
 			},
-			fetchPolicy: 'network-only',
-		});
-
-		navigate('/results');
-		searchDrawerClose();
+			// fetchPolicy: 'network-only',
+		})
+			.then(() => {
+				navigate('/results');
+				searchDrawerClose();
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	return (
@@ -111,6 +119,7 @@ export default function SearchFilterName() {
 							aria-label='Search by name'
 							colorScheme='green'
 							type='submit'
+							form='search-by-name'
 							isDisabled={!name}
 						>
 							Search by name

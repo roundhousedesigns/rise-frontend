@@ -21,6 +21,7 @@ import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
 
 import { SearchContext } from '../../context/SearchContext';
 import { useViewer } from '../../hooks/queries/useViewer';
+import { isEqual } from 'lodash';
 
 interface Props {
 	isOpen: boolean;
@@ -43,25 +44,27 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				racialIdentities,
 				personalIdentities,
 			},
+			results,
 			searchActive,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
 	const navigate = useNavigate();
 
-	const [getSearchResults, { data }] = useCandidateSearch();
+	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
+		useCandidateSearch();
 
 	// Update SearchContext with the new results whenever the query returns.
 	useEffect(() => {
-		// if (isEqual(data?.filteredCandidates, results)) return;
+		if (isEqual(filteredCandidates, results) || !filteredCandidates) return;
 
 		searchDispatch({
 			type: 'SET_RESULTS',
 			payload: {
-				results: data?.filteredCandidates,
+				results: filteredCandidates,
 			},
 		});
-	}, [data?.filteredCandidates]);
+	}, [filteredCandidates]);
 
 	// Handle form submission
 	const handleSubmit = (e: React.FormEvent) => {
@@ -82,14 +85,18 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
 				exclude: loggedInId,
-				// first: 10,
+				// first: 20,
 				// after: null,
 			},
 			fetchPolicy: 'network-only',
-		});
-
-		navigate('/results');
-		onClose();
+		})
+			.then(() => {
+				onClose();
+				navigate('/results');
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	const handleSearchReset = () => {
@@ -137,12 +144,17 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								colorScheme='green'
 								onClick={handleSubmit}
 								form='search-candidates'
-								isDisabled={!searchActive}
+								isDisabled={!searchActive || searchResultsLoading}
+								// leftIcon={searchResultsLoading ? Spinner : ''}
 							>
-								Search
+								{searchResultsLoading ? 'Searching...' : 'Search'}
 							</Button>
 							{searchActive ? (
-								<Button colorScheme='gray' onClick={handleSearchReset}>
+								<Button
+									isDisabled={searchResultsLoading ? true : false}
+									colorScheme='gray'
+									onClick={handleSearchReset}
+								>
 									Reset Filters
 								</Button>
 							) : (

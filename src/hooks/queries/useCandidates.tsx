@@ -9,7 +9,7 @@ import { CandidateData } from '../../lib/types';
 
 const QUERY_USERS = gql`
 	query QueryCandidates($include: [Int!]!) {
-		users(where: { include: $include }) {
+		users(where: { include: $include }, first: 1000) {
 			nodes {
 				id: databaseId
 				firstName

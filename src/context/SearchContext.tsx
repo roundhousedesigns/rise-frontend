@@ -82,7 +82,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...initialSearchState.filters,
 					name: action.payload.name ? action.payload.name : '',
 				},
-				searchActive: true,
+				// Clear all other filters and set the main search controls to inactive
+				searchActive: false,
 			};
 
 		case 'SET_DEPARTMENT':
@@ -144,13 +145,13 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'SET_RESULTS':
-			if (!action.payload?.results) return state;
+			if (!action.payload?.results) {
+				return state;
+			}
 
 			return {
 				...state,
-				results: {
-					...action.payload.results
-				},
+				results: action.payload.results,
 			};
 
 		case 'RESET_SEARCH_FILTERS':
