@@ -57,6 +57,7 @@ export default function TextInput({
 					variant='filled'
 					focusBorderColor='brand.blue'
 					placeholder={placeholder}
+					fontSize='md'
 					isDisabled={isDisabled}
 					value={value}
 					name={name}
@@ -74,7 +75,7 @@ export default function TextInput({
 						mr={0}
 						my={0}
 						lineHeight='normal'
-						fontSize='sm'
+						fontSize='md'
 						flexGrow='0'
 						sx={{
 							visibility: labelHidden ? 'hidden' : 'visible',

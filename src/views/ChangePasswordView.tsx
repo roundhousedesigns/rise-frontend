@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button, Box, Spinner, useToast, Flex } from '@chakra-ui/react';
-import TextInput from '../components/common/inputs/TextInput';
-import { useChangeUserPassword } from '../hooks/mutations/useChangeUserPassword';
+import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
+import { useChangePasswordError } from '../hooks/hooks';
+import { useChangeUserPassword } from '../hooks/mutations/useChangeUserPassword';
+import { useLogout } from '../hooks/mutations/useLogout';
+import TextInput from '../components/common/inputs/TextInput';
 
 interface Props {
 	username: string;
@@ -17,10 +19,13 @@ export default function ChangePasswordView({ username }: Props) {
 	const { currentPassword, newPassword, confirmPassword } = userFields;
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
+	const [errorCode, setErrorCode] = useState<string>('');
 	const {
 		changeUserPasswordMutation,
 		results: { loading: submitLoading },
 	} = useChangeUserPassword();
+	const errorMessage = useChangePasswordError(errorCode);
+	const { logoutMutation } = useLogout();
 
 	// useEffect to check if form is valid
 	useEffect(() => {
@@ -42,33 +47,24 @@ export default function ChangePasswordView({ username }: Props) {
 		});
 	};
 
-	const toast = useToast();
-
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!currentPassword || !newPassword || !passwordsMatch) return;
 
 		changeUserPasswordMutation(username, currentPassword, newPassword)
 			.then(() => {
-				toast({
-					title: 'Success!',
-					description: 'Your password has been changed.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					position: 'top',
+				setUserFields({
+					currentPassword: '',
+					newPassword: '',
+					confirmPassword: '',
+				});
+				setErrorCode('');
+
+				logoutMutation().then(() => {
+					window.location.href = '/login?alert=Success! Please log in with your new password.&alertStatus=success';
 				});
 			})
-			.catch((errors) => {
-				toast({
-					title: 'Error',
-					description: errors || 'Something went wrong.',
-					status: 'error',
-					duration: 5000,
-					isClosable: true,
-					position: 'top',
-				});
-			});
+			.catch((errors: { message: string }) => setErrorCode(errors.message));
 	};
 
 	const passwordsMatchError = () => {
@@ -90,6 +86,7 @@ export default function ChangePasswordView({ username }: Props) {
 							label='Current Password'
 							isRequired
 							onChange={handleInputChange}
+							error={errorMessage}
 							inputProps={{
 								type: 'password',
 								autoComplete: 'current-password',

@@ -175,3 +175,34 @@ export const useResetPasswordError = (errorCode?: string): string => {
 
 	return message;
 };
+
+/**
+ * Format a user password reset error message.
+ *
+ * @param {string} errorCode The login error message returned by the server.
+ * @returns {string} The message to print.
+ */
+export const useChangePasswordError = (errorCode?: string): string => {
+	if (!errorCode) return '';
+
+	var message = '';
+
+	switch (errorCode) {
+		case 'incorrect_password':
+			message = 'Incorrect password.';
+			break;
+
+		case 'empty_login':
+			message = 'Please enter a username or email address.';
+			break;
+
+		case 'empty_password':
+			message = 'Please enter your password.';
+			break;
+
+		default:
+			message = 'Unspecified error.';
+	}
+
+	return message;
+};

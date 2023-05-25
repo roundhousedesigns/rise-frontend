@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
@@ -11,6 +11,7 @@ import {
 	Link,
 	Text,
 	Divider,
+	Alert,
 } from '@chakra-ui/react';
 
 import { handleReCaptchaVerify } from '../lib/utils';
@@ -21,7 +22,12 @@ import { useLoginError } from '../hooks/hooks';
 
 const { VITE_DEV_MODE } = import.meta.env;
 
-export default function LoginView() {
+interface Props {
+	alert?: string;
+	alertStatus?: string;
+}
+
+export default function LoginView({ alert, alertStatus }: Props) {
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
@@ -57,12 +63,14 @@ export default function LoginView() {
 					.then(() => {
 						window.location.reload();
 					})
-					.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+					.catch((errors: { message: string }) => setErrorCode(errors.message));
 			})
 			.catch((error) => {
 				setErrorCode('recaptcha_error');
 			});
 	};
+
+	const sanitizedAlertStatus = alertStatus === 'error' ? 'error' : 'success';
 
 	return (
 		<Container maxW='2xl' py={4}>
@@ -76,6 +84,7 @@ export default function LoginView() {
 					<Heading variant='pageSubtitle' fontSize='2xl'>
 						Please sign in.
 					</Heading>
+					{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
 					<form onSubmit={handleLoginSubmit}>
 						<TextInput
 							value={credentials.login}
@@ -87,6 +96,7 @@ export default function LoginView() {
 							error={['invalid_username', 'invalid_email'].includes(errorCode) ? errorMessage : ''}
 							inputProps={{
 								autoComplete: 'username',
+								fontSize: 'lg',
 							}}
 						/>
 						<TextInput
@@ -99,6 +109,7 @@ export default function LoginView() {
 							inputProps={{
 								type: 'password',
 								autoComplete: 'current-password',
+								fontSize: 'lg',
 							}}
 						/>
 						<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>

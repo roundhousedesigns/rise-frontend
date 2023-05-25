@@ -15,6 +15,7 @@ import cardTheme from './components/Card';
 import buttonTheme from './components/Button';
 import menuTheme from './components/Menu';
 import accordionTheme from './components/Accordion';
+import alertTheme from './components/Alert';
 import editableTheme from './components/Editable';
 import spinnerTheme from './components/Spinner';
 import inputTheme from './components/Input';
@@ -40,6 +41,7 @@ const overrides = {
 		Button: buttonTheme,
 		Menu: menuTheme,
 		Accordion: accordionTheme,
+		Alert: alertTheme,
 		Editable: editableTheme,
 		Spinner: spinnerTheme,
 		Input: inputTheme,
