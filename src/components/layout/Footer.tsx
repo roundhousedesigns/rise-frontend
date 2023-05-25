@@ -2,9 +2,21 @@ import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 const { VITE_APP_VERSION, VITE_DEV_MODE } = import.meta.env;
 
 export default function Footer() {
+	const DevModeMessage = () => {
+		return VITE_DEV_MODE ? (
+			<Text fontSize='5xl' color='text.dark' textAlign='center' textTransform='uppercase' mb={8}>
+				Frontend Staging
+			</Text>
+		) : (
+			<></>
+		);
+	};
+
 	return (
 		<LightMode>
 			<Box w='full' minH='20vh' py={8} alignItems='center' bgColor='brand.orange'>
+				<DevModeMessage />
+
 				<Container maxW='6xl' textAlign='center'>
 					<Text align='center'>
 						{/* TODO make this a backend field */}

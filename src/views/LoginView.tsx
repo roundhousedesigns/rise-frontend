@@ -19,9 +19,9 @@ import TextInput from '../components/common/inputs/TextInput';
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
-export default function LoginView() {
-	const { VITE_DEV_MODE } = import.meta.env;
+const { VITE_DEV_MODE } = import.meta.env;
 
+export default function LoginView() {
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
