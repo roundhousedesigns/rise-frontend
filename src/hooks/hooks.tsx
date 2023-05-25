@@ -95,16 +95,9 @@ export const useRegistrationError = (errorCode?: string): string => {
 
 	var message = '';
 
-	// TODO implement these errors, they are still copies of the login errors
-
 	switch (errorCode) {
-		case 'invalid_username':
-		case 'invalid_email':
-			message = 'Invalid username or email address.';
-			break;
-
-		case 'incorrect_password':
-			message = 'Incorrect password.';
+		case 'existing_user_login':
+			message = 'An account already exists for that email address. Please try logging in.';
 			break;
 
 		case 'empty_login':

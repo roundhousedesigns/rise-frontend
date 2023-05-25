@@ -165,6 +165,7 @@ export default function RegisterView() {
 					type='email'
 					variant='filled'
 					label='Email address'
+					error={errorMessage}
 					isRequired
 					onChange={handleInputChange}
 					inputProps={{
@@ -248,7 +249,6 @@ export default function RegisterView() {
 					>
 						{submitLoading ? <Spinner size='sm' /> : 'Create account'}
 					</Button>
-					<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
 				</Box>
 			</form>
 		</>
