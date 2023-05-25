@@ -20,7 +20,7 @@ import TextInput from '../components/common/inputs/TextInput';
 import { useLogin } from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
-const { VITE_DEV_MODE } = import.meta.env;
+// const { VITE_DEV_MODE } = import.meta.env;
 
 interface Props {
 	alert?: string;
@@ -116,15 +116,15 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							<Button type='submit' colorScheme='blue' px={6}>
 								{submitLoading ? <Spinner size='sm' /> : 'Submit'}
 							</Button>
-							{VITE_DEV_MODE ? (
+							{/* {VITE_DEV_MODE ? (
 								<Text variant='devMessage' flex='1'>
 									Lost Password disabled in dev environment
 								</Text>
-							) : (
+							) : ( */}
 								<Link as={RouterLink} to='/lost-password' fontSize='md'>
 									Lost your password?
 								</Link>
-							)}
+							{/* )} */}
 							<Box id='recaptcha-badge' />
 						</Flex>
 					</form>
