@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## [unreleased]
+
+- Added: "account already exists" message for account creation
+- Improved: header mobile layout
+- Improved: login mobile responsiveness
+- Improved: checkbox/radio button fonts
+
 ## [1.0.2beta] - 2023-05-24
 
 - Added: Search by Name
