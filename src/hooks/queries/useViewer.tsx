@@ -30,7 +30,5 @@ export const useViewer = (): ViewerProps => {
 	const firstName = result?.data?.viewer?.firstName;
 	const lastName = result?.data?.viewer?.lastName;
 
-	// Refactor the 3 variable declarations above into a single line using destructuring.
-
 	return { result, loggedInId, firstName, lastName };
 };
