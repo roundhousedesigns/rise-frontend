@@ -1,38 +1,26 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-	Button,
-	FormErrorMessage,
-	Box,
-	Stack,
-	Spinner,
-	Container,
-	Heading,
-	useToast,
-} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Button, Box, Spinner, useToast, Flex } from '@chakra-ui/react';
 import TextInput from '../components/common/inputs/TextInput';
-import { useResetPasswordError } from '../hooks/hooks';
+import { useChangeUserPassword } from '../hooks/mutations/useChangeUserPassword';
 import { ChangePasswordInput } from '../lib/types';
-import { useResetUserPassword } from '../hooks/mutations/useResetUserPassword';
 
 interface Props {
-	token: string;
-	login: string;
+	username: string;
 }
 
-export default function ResetPasswordView({ token, login }: Props) {
+export default function ChangePasswordView({ username }: Props) {
 	const [userFields, setUserFields] = useState<ChangePasswordInput>({
+		currentPassword: '',
 		newPassword: '',
 		confirmPassword: '',
 	});
-	const { newPassword, confirmPassword } = userFields;
+	const { currentPassword, newPassword, confirmPassword } = userFields;
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
-	const [errorCode, setErrorCode] = useState<string>('');
 	const {
-		resetUserPasswordMutation,
+		changeUserPasswordMutation,
 		results: { loading: submitLoading },
-	} = useResetUserPassword();
+	} = useChangeUserPassword();
 
 	// useEffect to check if form is valid
 	useEffect(() => {
@@ -55,29 +43,32 @@ export default function ResetPasswordView({ token, login }: Props) {
 	};
 
 	const toast = useToast();
-	const navigate = useNavigate();
-
-	const errorMessage = useResetPasswordError(errorCode);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!token || !login || !newPassword || !passwordsMatch) return;
+		if (!currentPassword || !newPassword || !passwordsMatch) return;
 
-		resetUserPasswordMutation(token, login, newPassword)
+		changeUserPasswordMutation(username, currentPassword, newPassword)
 			.then(() => {
 				toast({
 					title: 'Success!',
-					description: 'Please login with your new password.',
+					description: 'Your password has been changed.',
 					status: 'success',
 					duration: 5000,
 					isClosable: true,
 					position: 'top',
 				});
 			})
-			.then(() => {
-				navigate('/login');
-			})
-			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+			.catch((errors) => {
+				toast({
+					title: 'Error',
+					description: errors || 'Something went wrong.',
+					status: 'error',
+					duration: 5000,
+					isClosable: true,
+					position: 'top',
+				});
+			});
 	};
 
 	const passwordsMatchError = () => {
@@ -87,20 +78,32 @@ export default function ResetPasswordView({ token, login }: Props) {
 	};
 
 	return (
-		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
-			<Heading size='lg'>Choose your new password.</Heading>
-
+		<Box borderRadius='lg' w='full'>
 			<Box mt={2}>
 				<form onSubmit={handleSubmit}>
-					<Stack direction='row' spacing={6}>
+					<Flex gap={6} flexWrap='wrap'>
+						<TextInput
+							value={currentPassword}
+							name='currentPassword'
+							id='currentPassword'
+							variant='filled'
+							label='Current Password'
+							isRequired
+							onChange={handleInputChange}
+							inputProps={{
+								type: 'password',
+								autoComplete: 'current-password',
+							}}
+						/>
 						<TextInput
 							value={newPassword}
 							name='newPassword'
 							id='newPassword'
 							variant='filled'
-							label='Password'
+							label='New password'
 							isRequired
 							onChange={handleInputChange}
+							flex='1'
 							inputProps={{
 								type: 'password',
 								autoComplete: 'new-password',
@@ -112,24 +115,24 @@ export default function ResetPasswordView({ token, login }: Props) {
 							id='confirmPassword'
 							type='password'
 							variant='filled'
-							label='Confirm your password'
+							label='Confirm your new password'
 							isRequired
 							error={passwordsMatchError()}
 							onChange={handleInputChange}
+							flex='1'
 							inputProps={{
 								type: 'password',
 								autoComplete: 'new-password',
 							}}
 						/>
-					</Stack>
+					</Flex>
 					<Box mt={4}>
 						<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Reset password'}
+							{submitLoading ? <Spinner size='sm' /> : 'Change password'}
 						</Button>
-						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
 					</Box>
 				</form>
 			</Box>
-		</Container>
+		</Box>
 	);
 }

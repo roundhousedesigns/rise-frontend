@@ -2,7 +2,7 @@
  * useViewer hook. Query information about the current logged in user.
  */
 
-import { gql, useQuery } from '@apollo/client';
+import { QueryResult, gql, useQuery } from '@apollo/client';
 
 const QUERY_VIEWER = gql`
 	query QueryViewer {
@@ -10,15 +10,17 @@ const QUERY_VIEWER = gql`
 			id: databaseId
 			firstName
 			lastName
+			email
 		}
 	}
 `;
 
-interface ViewerProps {
-	result: any;
+export interface ViewerProps {
 	loggedInId: number;
 	firstName: string;
 	lastName: string;
+	email: string;
+	result: QueryResult;
 }
 
 export const useViewer = (): ViewerProps => {
@@ -29,6 +31,7 @@ export const useViewer = (): ViewerProps => {
 	const loggedInId = result?.data?.viewer?.id;
 	const firstName = result?.data?.viewer?.firstName;
 	const lastName = result?.data?.viewer?.lastName;
+	const email = result?.data?.viewer?.email;
 
-	return { result, loggedInId, firstName, lastName };
+	return { loggedInId, firstName, lastName, email, result };
 };

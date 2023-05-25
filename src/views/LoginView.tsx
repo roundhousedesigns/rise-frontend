@@ -84,7 +84,7 @@ export default function LoginView() {
 							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
-							error={errorMessage}
+							error={['invalid_username', 'invalid_email'].includes(errorCode) ? errorMessage : ''}
 							inputProps={{
 								autoComplete: 'username',
 							}}
