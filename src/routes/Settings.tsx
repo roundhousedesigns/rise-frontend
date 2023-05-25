@@ -37,7 +37,6 @@ export default function Settings() {
 				</SettingsSection>
 
 				{/* TODO Setting: Change your email */}
-				{/* TODO Setting: Change your password */}
 				{/* TODO Setting: Delete your account */}
 			</Flex>
 		</Page>
