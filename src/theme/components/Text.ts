@@ -12,6 +12,9 @@ const baseStyle = defineStyle({
 });
 
 const variants = {
+	sans: defineStyle({
+		fontFamily: `'Stabil Grotesk', sans-serif`,
+	}),
 	devMessage: defineStyle({
 		color: 'brand.orange',
 		_light: {
