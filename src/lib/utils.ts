@@ -142,3 +142,26 @@ export const generateRandomString = (length: number = 8): string => {
 
 	return result;
 };
+
+/**
+ * Handle reCAPTCHA verification.
+ *
+ * @param label The label for the reCAPTCHA.
+ * @param executeRecaptcha The reCAPTCHA execution function.
+ * @returns The reCAPTCHA token (Promise)
+ */
+export const handleReCaptchaVerify = async ({
+	label,
+	executeRecaptcha,
+}: {
+	label: string;
+	executeRecaptcha: ((action?: string | undefined) => Promise<string>) | undefined;
+}): Promise<string | undefined> => {
+	if (!executeRecaptcha) {
+		return;
+	}
+
+	const token = await executeRecaptcha(label);
+
+	return token;
+};

@@ -1,8 +1,19 @@
 import { SetStateAction, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { Button, Flex, Container, Heading, Box, Spinner, Link, Text } from '@chakra-ui/react';
+import {
+	Button,
+	Flex,
+	Container,
+	Heading,
+	Box,
+	Spinner,
+	Link,
+	Text,
+	Divider,
+} from '@chakra-ui/react';
 
+import { handleReCaptchaVerify } from '../lib/utils';
 import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
 import { useLogin } from '../hooks/mutations/useLogin';
@@ -25,16 +36,6 @@ export default function LoginView() {
 
 	const errorMessage = useLoginError(errorCode);
 
-	const handleReCaptchaVerify = async () => {
-		if (!executeRecaptcha) {
-			return;
-		}
-
-		const token = await executeRecaptcha('loginUser');
-
-		return token;
-	};
-
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
 			...credentials,
@@ -45,7 +46,7 @@ export default function LoginView() {
 	const handleLoginSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		handleReCaptchaVerify()
+		handleReCaptchaVerify({ label: 'login', executeRecaptcha })
 			.then((token) => {
 				if (!token) {
 					setErrorCode('recaptcha_error');
@@ -64,8 +65,12 @@ export default function LoginView() {
 	};
 
 	return (
-		<Container maxW='xl' py={4}>
+		<Container maxW='2xl' py={4}>
 			<Heading variant='pageTitle'>Welcome</Heading>
+			<Text variant='sans' fontSize='lg'>
+				You'll need an account to create a profile or to search for candidates.
+			</Text>
+			<Divider my={4} />
 			<Flex my={4} gap={14} alignItems='tp'>
 				<Box>
 					<Heading variant='pageSubtitle' fontSize='2xl'>

@@ -771,7 +771,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 				<StackItem pos='relative'>
 					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
-					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
+					<Text>Enter your 5 best credits.</Text>
 					{updateCreditOrderLoading ? (
 						<Box
 							pos='absolute'

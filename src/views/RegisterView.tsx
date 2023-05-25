@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+
+import { handleReCaptchaVerify } from '../lib/utils';
 import TextInput from '../components/common/inputs/TextInput';
 import { useRegisterUser } from '../hooks/mutations/useRegisterUser';
 import { useRegistrationError } from '../hooks/hooks';
@@ -45,16 +47,6 @@ export default function RegisterView() {
 		registerUserMutation,
 		results: { loading: submitLoading },
 	} = useRegisterUser();
-
-	const handleReCaptchaVerify = async () => {
-		if (!executeRecaptcha) {
-			return;
-		}
-
-		const token = await executeRecaptcha('registerUser');
-
-		return token;
-	};
 
 	// Check if form is valid
 	useEffect(() => {
@@ -92,7 +84,7 @@ export default function RegisterView() {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		handleReCaptchaVerify().then((token) => {
+		handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha }).then((token) => {
 			if (!token) {
 				setErrorCode('recaptcha_error');
 				return;

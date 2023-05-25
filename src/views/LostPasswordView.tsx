@@ -6,6 +6,7 @@ import { Button, Text, Flex, Container, Heading, Box, Spinner, useToast } from '
 import TextInput from '../components/common/inputs/TextInput';
 import { useSendPasswordResetEmail } from '../hooks/mutations/useSendPasswordResetEmail';
 import { useLostPasswordError } from '../hooks/hooks';
+import { handleReCaptchaVerify } from '../lib/utils';
 
 export default function LoginView() {
 	const [username, setUsername] = useState<string>('');
@@ -16,16 +17,6 @@ export default function LoginView() {
 		sendPasswordResetEmailMutation,
 		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
-
-	const handleReCaptchaVerify = async () => {
-		if (!executeRecaptcha) {
-			return;
-		}
-
-		const token = await executeRecaptcha('resetPassword');
-
-		return token;
-	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUsername(e.target.value);
@@ -39,13 +30,12 @@ export default function LoginView() {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		handleReCaptchaVerify().then((token) => {
+		handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha }).then((token) => {
 			if (!token) {
 				setErrorCode('recaptcha_error');
 				return;
 			}
 
-			// TODO handle password reset errors
 			sendPasswordResetEmailMutation({ username, reCaptchaToken: token })
 				.then(() => {
 					toast({
@@ -59,6 +49,10 @@ export default function LoginView() {
 				})
 				.then(() => {
 					navigate('/');
+				})
+				.catch((err) => {
+					// TODO handle password reset errors
+					console.log(err);
 				});
 		});
 	};
