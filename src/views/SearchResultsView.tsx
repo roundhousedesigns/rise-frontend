@@ -15,7 +15,7 @@ export default function SearchResultsView() {
 
 	// Update the results list whenever the results change.
 	useEffect(() => {
-		if (results.length === 0 || isEqual(results, resultsList)) return;
+		if (isEqual(results, resultsList)) return;
 
 		setResultsList(results);
 	}, [results]);

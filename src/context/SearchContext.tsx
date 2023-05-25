@@ -16,7 +16,7 @@ interface SearchState {
 		personalIdentities: string[];
 	};
 	searchActive: boolean;
-	advancedFiltersOpen: boolean;
+	additionalFiltersActive: number[];
 	searchDrawerClose: () => void;
 	results: number[];
 }
@@ -34,6 +34,7 @@ interface SearchAction {
 			value: string | string[] | Key[];
 		};
 		results?: number[];
+		additionalFiltersActive?: number[];
 		searchDrawerClose?: () => void;
 	};
 }
@@ -54,7 +55,7 @@ const initialSearchState: SearchState = {
 		personalIdentities: [],
 	},
 	searchActive: false,
-	advancedFiltersOpen: false,
+	additionalFiltersActive: [],
 	searchDrawerClose: () => {},
 	results: [],
 };
@@ -144,14 +145,22 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'SET_RESULTS':
-			if (!action.payload?.results) {
-				return state;
-			}
+		case 'SET_ADDITIONAL_FILTERS_ACTIVE':
+			if (!action.payload?.additionalFiltersActive) return state;
 
 			return {
 				...state,
-				results: action.payload.results,
+				additionalFiltersActive: action.payload.additionalFiltersActive,
+			};
+
+		case 'SET_RESULTS':
+			// if (!action.payload?.results) {
+			// 	return state;
+			// }
+
+			return {
+				...state,
+				results: action.payload.results || [],
 			};
 
 		case 'RESET_SEARCH_FILTERS':

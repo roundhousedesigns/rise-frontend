@@ -21,6 +21,8 @@ export default function RadioButton(props: Props): React.ReactElement {
 				bg='gray.100'
 				borderWidth={1}
 				borderColor='gray.300'
+				fontFamily={`'Stabil Grotesk', sans-serif`}
+				letterSpacing='0.04em'
 				transitionDuration='normal'
 				_hover={{
 					bg: 'blue.50',

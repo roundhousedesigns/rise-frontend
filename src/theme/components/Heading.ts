@@ -5,6 +5,7 @@ import { defineStyleConfig } from '@chakra-ui/react';
 export default defineStyleConfig({
 	baseStyle: {
 		mb: 2,
+		fontWeight: 'normal'
 	},
 	variants: {
 		pageTitle: {

@@ -31,10 +31,10 @@ export default function ProfileRadioGroup({
 		onChange: handleToggleItem,
 	});
 
-	// Set the RadioGroup value on initial render
+	// Subscribe to the state to update the UI
 	useEffect(() => {
 		setValue(defaultValue);
-	}, []);
+	}, [defaultValue]);
 
 	return items ? (
 		<FormControl>

@@ -8,14 +8,15 @@ import {
 
 interface Props {
 	heading: string;
+	headingProps?: any;
 	children: React.ReactNode;
 }
 
-export default function SearchFilterAccordionItem({ heading, children }: Props) {
+export default function SearchFilterAccordionItem({ heading, headingProps, children }: Props) {
 	return (
 		<AccordionItem>
 			<AccordionButton pl={0}>
-				<Heading flex='1' textAlign='left' my={0} pl={4} fontSize='xl' lineHeight='normal'>
+				<Heading flex='1' textAlign='left' my={0} fontSize='xl' lineHeight='normal' {...headingProps}>
 					{heading}
 				</Heading>
 				<AccordionIcon />

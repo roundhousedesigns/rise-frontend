@@ -29,16 +29,20 @@ export default function ProfileCheckboxGroup({
 		onChange: handleToggleItem,
 	});
 
-	// Set the CheckboxGroup value on initial render
+	// Subscribe to the state to update the UI
 	useEffect(() => {
 		setValue(checked);
-	}, []);
+	}, [checked]);
 
 	return items ? (
 		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>
 			{items.map((item: WPItem, index: Key) => {
 				return (
-					<CheckboxButton key={index} {...getCheckboxProps({ value: item.id.toString() })} tabIndex='9'>
+					<CheckboxButton
+						key={index}
+						{...getCheckboxProps({ value: item.id.toString() })}
+						tabIndex='9'
+					>
 						{item.name}
 					</CheckboxButton>
 				);
