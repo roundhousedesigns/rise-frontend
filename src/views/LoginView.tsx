@@ -71,8 +71,8 @@ export default function LoginView() {
 				You'll need an account to create a profile or to search for candidates.
 			</Text>
 			<Divider my={4} />
-			<Flex my={4} gap={14} alignItems='tp'>
-				<Box>
+			<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
+				<Box flex='1 0 300px'>
 					<Heading variant='pageSubtitle' fontSize='2xl'>
 						Please sign in.
 					</Heading>
@@ -105,25 +105,27 @@ export default function LoginView() {
 							<Button type='submit' colorScheme='blue' px={6}>
 								{submitLoading ? <Spinner size='sm' /> : 'Submit'}
 							</Button>
-							<Box id='recaptcha-badge' />
 							{VITE_DEV_MODE ? (
-								<Text variant='devMessage'>Lost Password disabled in dev environment</Text>
+								<Text variant='devMessage' flex='1'>
+									Lost Password disabled in dev environment
+								</Text>
 							) : (
 								<Link as={RouterLink} to='/lost-password' fontSize='md'>
 									Lost your password?
 								</Link>
 							)}
+							<Box id='recaptcha-badge' />
 						</Flex>
 					</form>
 				</Box>
-				<Box textAlign='center'>
+				<Box textAlign='center' flex='1'>
 					<Heading variant='pageSubtitle' fontSize='2xl'>
 						Don't have an account?
 					</Heading>
 					<Button
 						as={RouterLink}
 						to='/register'
-						borderRadius={{ base: 'full', md: 'lg' }}
+						borderRadius={{ base: 'md', md: 'lg' }}
 						bgColor='brand.orange'
 						_hover={{
 							bgColor: 'orange.300',

@@ -1,5 +1,5 @@
 import { usePostContent } from '../hooks/queries/usePostContent';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, SkeletonText } from '@chakra-ui/react';
 
 interface Props {
 	postId: string | number;
@@ -10,7 +10,7 @@ export default function ContentView({ postId }: Props) {
 
 	return (
 		<Box mt={4} pt={4} borderTopStyle='solid' borderTopWidth={2}>
-			{contentLoading && !contentError ? <Spinner /> : content}
+			{contentLoading && !contentError ? <SkeletonText /> : content}
 		</Box>
 	);
 }

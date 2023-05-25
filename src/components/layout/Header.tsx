@@ -129,20 +129,26 @@ export default function Header() {
 			<DarkMode>
 				<Box id='header' w='full' bg='text.dark' color='text.light'>
 					<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
-						<Stack
-							direction='row'
-							w='100%'
-							justifyContent='space-between'
-							align='center'
-							flexWrap='wrap'
-						>
+						<Stack direction='row' w='full' justifyContent='space-between' align='center'>
 							<Link as={RouterLink} to='/' my={0}>
-								<Image src={logo} alt='RISE logo' loading='eager' h='100px' />
+								<Image src={logo} alt='RISE logo' loading='eager' w='full' h='auto' maxW='50%' />
 							</Link>
 
-							{VITE_DEV_MODE ? <DevModeMessage /> : false}
+							{!loggedInId ? (
+								<Link
+									as={RouterLink}
+									to='https://risetheatre.org'
+									my={0}
+									isExternal
+									flex='0 0 auto'
+								>
+									<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
+								</Link>
+							) : (
+								false
+							)}
 
-							<Spacer />
+							{/* {VITE_DEV_MODE ? <DevModeMessage /> : false} */}
 
 							{loggedInId ? (
 								<>
@@ -241,9 +247,7 @@ export default function Header() {
 									</LightMode>
 								</>
 							) : (
-								<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal>
-									<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
-								</Link>
+								false
 							)}
 						</Stack>
 					</Container>
