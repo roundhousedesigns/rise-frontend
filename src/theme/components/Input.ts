@@ -5,12 +5,22 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 	inputAnatomy.keys
 );
 
-const xl = defineStyle({
-	fontSize: '3xl',
-	fontWeight: 'medium',
-	px: '4',
-	h: '12',
-	borderRadius: 'md',
+const baseStyle = definePartsStyle({
+	field: {
+		_placeholder: {
+			color: 'gray.500',
+		},
+	},
+});
+
+const xl = definePartsStyle({
+	field: {
+		fontSize: '3xl',
+		fontWeight: 'medium',
+		px: '4',
+		h: '12',
+		borderRadius: 'md',
+	},
 });
 
 const variants = {
@@ -34,4 +44,4 @@ const sizes = {
 	xl: definePartsStyle({ field: xl, addon: xl }),
 };
 
-export default defineMultiStyleConfig({ sizes, variants });
+export default defineMultiStyleConfig({ baseStyle, sizes, variants });

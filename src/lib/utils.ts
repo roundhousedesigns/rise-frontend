@@ -22,7 +22,13 @@ export function socialLink(network: string, value: string): string {
 		return '';
 	}
 
-	return socialLinkBases[network as keyof PersonalLinks] + value;
+	let suffix = value;
+	// If the network is not facebook, remove the @ symbol.
+	if (network !== 'facebook') {
+		suffix = suffix.replace('@', '');
+	}
+
+	return socialLinkBases[network as keyof PersonalLinks] + suffix;
 }
 
 /**

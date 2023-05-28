@@ -173,70 +173,72 @@ export default function Header() {
 											</Button>
 										) : null}
 									</Stack>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
-									<LightMode>
-										<Menu>
-											<DarkMode>
-												<MenuButton
-													aria-label='Menu'
-													as={IconButton}
-													borderRadius='full'
-													colorScheme='gray'
-													icon={<FiMenu />}
-													size='md'
-													_active={{
-														transform: 'rotate(90deg)',
-													}}
-												/>
-											</DarkMode>
-											<MenuList color='text.dark' zIndex='100'>
-												{isLargerThanMd ? null : (
+									<Box>
+										{
+											// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+											// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+										}
+										<LightMode>
+											<Menu>
+												<DarkMode>
+													<MenuButton
+														aria-label='Menu'
+														as={IconButton}
+														borderRadius='full'
+														colorScheme='gray'
+														icon={<FiMenu />}
+														size='md'
+														_active={{
+															transform: 'rotate(90deg)',
+														}}
+													/>
+												</DarkMode>
+												<MenuList color='text.dark' zIndex='100'>
+													{isLargerThanMd ? null : (
+														<MenuOptionGroup>
+															<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+																My Profile
+															</MenuItem>
+															<MenuItem
+																ref={drawerButtonRef}
+																onClick={drawerOnOpen}
+																icon={<FiSearch />}
+															>
+																Search
+															</MenuItem>
+															<MenuDivider />
+														</MenuOptionGroup>
+													)}
 													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
-															My Profile
+														<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
+															Dashboard
 														</MenuItem>
-														<MenuItem
-															ref={drawerButtonRef}
-															onClick={drawerOnOpen}
-															icon={<FiSearch />}
-														>
-															Search
-														</MenuItem>
-														<MenuDivider />
 													</MenuOptionGroup>
-												)}
-												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
-														Dashboard
+													<MenuOptionGroup>
+														<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+															Settings
+														</MenuItem>
+														<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+															Help
+														</MenuItem>
+													</MenuOptionGroup>
+													<MenuDivider />
+													<MenuItem
+														as={Link}
+														href='https://risetheatre.org'
+														icon={<FiHome />}
+														isExternal
+													>
+														RISE Home
 													</MenuItem>
-												</MenuOptionGroup>
-												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-														Settings
+													<MenuDivider />
+													<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+														Logout
 													</MenuItem>
-													<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
-														Help
-													</MenuItem>
-												</MenuOptionGroup>
-												<MenuDivider />
-												<MenuItem
-													as={Link}
-													href='https://risetheatre.org'
-													icon={<FiHome />}
-													isExternal
-												>
-													RISE Home
-												</MenuItem>
-												<MenuDivider />
-												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-													Logout
-												</MenuItem>
-											</MenuList>
-										</Menu>
-									</LightMode>
+												</MenuList>
+											</Menu>
+										</LightMode>
+									</Box>
 								</>
 							) : (
 								false

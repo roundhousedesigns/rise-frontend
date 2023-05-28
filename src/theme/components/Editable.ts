@@ -36,9 +36,6 @@ const baseStyle = definePartsStyle({
 		_focus: {
 			boxShadow: 'none',
 		},
-		_placeholder: {
-			color: 'pink',
-		},
 	},
 	textarea: {
 		borderWidth: '3px',

@@ -728,7 +728,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							</Flex>
 						</StackItem>
 
-						<StackItem>
+						<StackItem w='full' maxW='3xl'>
 							<Heading variant='contentTitle'>Social</Heading>
 
 							<SimpleGrid columns={[1, 2]} spacing={4}>
