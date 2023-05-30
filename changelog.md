@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file, starting wi
 - Improved: header mobile layout
 - Improved: login mobile responsiveness
 - Improved: checkbox/radio button fonts
+- Fixed: Deleting last credit now correctly shows the credit's deletion
+- Improved: Mobile profile edit layout
+- Improved: Input colors
+- Fixed: social network links, sanitization, and instructions
 
 ## [1.0.2beta] - 2023-05-24
 
