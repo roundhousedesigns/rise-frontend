@@ -36,8 +36,8 @@ import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png
 import circleLogo from '../../assets/images/rise-blue-circle.png';
 
 import { SearchContext } from '../../context/SearchContext';
-import { useViewer } from '../../hooks/queries/useViewer';
-import { useLogout } from '../../hooks/mutations/useLogout';
+import useViewer from '../../hooks/queries/useViewer';
+import useLogout from '../../hooks/mutations/useLogout';
 
 export default function Header() {
 	const { logoutMutation } = useLogout();

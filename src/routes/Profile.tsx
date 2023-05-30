@@ -7,7 +7,7 @@ import ErrorAlert from '../components/common/ErrorAlert';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
 
 import { isEqualNumberlike, maybeParseInt } from '../lib/utils';
-import { useViewer } from '../hooks/queries/useViewer';
+import useViewer from '../hooks/queries/useViewer';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId } = useViewer();

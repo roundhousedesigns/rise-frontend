@@ -13,7 +13,7 @@ const UPLOAD_FILE_MUTATION = gql`
 	}
 `;
 
-export default function useFileUpload() {
+const useFileUpload = () => {
 	const [mutation, results] = useMutation(UPLOAD_FILE_MUTATION);
 
 	const uploadFileMutation = (file: File, name: string, userId: number) => {
@@ -32,4 +32,6 @@ export default function useFileUpload() {
 	};
 
 	return { uploadFileMutation, results };
-}
+};
+
+export default useFileUpload;

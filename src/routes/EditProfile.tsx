@@ -5,7 +5,7 @@ import ErrorAlert from '../components/common/ErrorAlert';
 
 import { EditProfileContextProvider } from '../context/EditProfileContext';
 import { useUserProfile } from '../hooks/queries/useUserProfile';
-import { useViewer } from '../hooks/queries/useViewer';
+import useViewer from '../hooks/queries/useViewer';
 
 export default function EditProfile() {
 	const { loggedInId: userId } = useViewer();

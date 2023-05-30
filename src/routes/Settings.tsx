@@ -11,7 +11,7 @@ import Page from '../components/Page';
 import SettingsSection from '../components/common/SettingsSection';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import ChangePasswordView from '../views/ChangePasswordView';
-import { useViewer } from '../hooks/queries/useViewer';
+import useViewer from '../hooks/queries/useViewer';
 
 export default function Settings() {
 	const { email } = useViewer();

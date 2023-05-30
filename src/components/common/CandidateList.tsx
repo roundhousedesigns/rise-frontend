@@ -1,9 +1,7 @@
 import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
 import { Candidate } from '../../lib/classes';
-
 import CandidateItem from './CandidateItem';
-
-import { useCandidates } from '../../hooks/queries/useCandidates';
+import useCandidates from '../../hooks/queries/useCandidates';
 import ErrorAlert from './ErrorAlert';
 
 interface Props {

@@ -15,7 +15,7 @@ const QUERY_VIEWER = gql`
 	}
 `;
 
-export interface ViewerProps {
+interface Props {
 	loggedInId: number;
 	firstName: string;
 	lastName: string;
@@ -23,7 +23,7 @@ export interface ViewerProps {
 	result: QueryResult;
 }
 
-export const useViewer = (): ViewerProps => {
+const useViewer = (): Props => {
 	const result = useQuery(QUERY_VIEWER, {
 		// fetchPolicy: 'network-only',
 	});
@@ -35,3 +35,5 @@ export const useViewer = (): ViewerProps => {
 
 	return { loggedInId, firstName, lastName, email, result };
 };
+
+export default useViewer;

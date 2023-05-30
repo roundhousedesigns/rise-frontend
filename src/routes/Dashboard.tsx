@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Box, Heading, Button, Card, Stack } from '@chakra-ui/react';
 import Page from '../components/Page';
 
-import { useViewer } from '../hooks/queries/useViewer';
+import useViewer from '../hooks/queries/useViewer';
 
 export default function Dashboard() {
 	const { firstName } = useViewer();

@@ -29,10 +29,10 @@ export default function ProfileCheckboxGroup({
 		onChange: handleToggleItem,
 	});
 
-	// Subscribe to the state to update the UI
+	// Set the default value of the checkbox group to the checked items.
 	useEffect(() => {
 		setValue(checked);
-	}, [checked]);
+	}, []);
 
 	return items ? (
 		<Wrap justifyContent='flex-start' alignItems='center' w='full' py={2} {...rest}>

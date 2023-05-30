@@ -21,7 +21,7 @@ const QUERY_USERS = gql`
 	}
 `;
 
-export const useCandidates = (include_ids: number[]) => {
+const useCandidates = (include_ids: number[]) => {
 	let include = include_ids && include_ids.length > 0 ? include_ids : [0];
 	const result = useQuery(QUERY_USERS, {
 		variables: {
@@ -36,3 +36,5 @@ export const useCandidates = (include_ids: number[]) => {
 
 	return [preparedCandidates, omit(result, ['data'])];
 };
+
+export default useCandidates;

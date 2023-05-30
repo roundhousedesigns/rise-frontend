@@ -7,7 +7,7 @@ import Main from './components/layout/Main';
 import Footer from './components/layout/Footer';
 
 import { SearchContextProvider } from './context/SearchContext';
-import { useViewer } from './hooks/queries/useViewer';
+import useViewer from './hooks/queries/useViewer';
 
 export default function App() {
 	const {

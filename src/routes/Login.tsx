@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Page from '../components/Page';
 import LoginView from '../views/LoginView';
-import { useViewer } from '../hooks/queries/useViewer';
+import useViewer from '../hooks/queries/useViewer';
 
 export default function Login() {
 	const navigate = useNavigate();

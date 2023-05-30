@@ -15,14 +15,12 @@ import {
 	Collapse,
 	Spinner,
 } from '@chakra-ui/react';
-import { FiX } from 'react-icons/fi';
-
-import SearchWizardView from '../../views/SearchWizardView';
-import { useCandidateSearch } from '../../hooks/queries/useCandidateSearch';
-
-import { SearchContext } from '../../context/SearchContext';
-import { useViewer } from '../../hooks/queries/useViewer';
 import { isEqual } from 'lodash';
+import { FiX } from 'react-icons/fi';
+import { SearchContext } from '../../context/SearchContext';
+import useViewer from '../../hooks/queries/useViewer';
+import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
+import SearchWizardView from '../../views/SearchWizardView';
 
 interface Props {
 	isOpen: boolean;
