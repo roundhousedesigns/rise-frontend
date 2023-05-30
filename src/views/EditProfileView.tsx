@@ -400,6 +400,45 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		navigate('/profile');
 	};
 
+	const ProfileImageUploader = () => (
+		<Box mb={2} width='30%' minWidth='300px'>
+			{uploadFileMutationLoading ? (
+				<Flex alignItems='center' justifyContent='center' h='200px'>
+					<Text textAlign='center' fontSize='sm'>
+						Uploading...
+					</Text>
+					<Progress size='md' isIndeterminate />
+				</Flex>
+			) : image ? (
+				<>
+					<Image
+						src={image}
+						alt={`Profile picture`}
+						loading='eager'
+						fit='cover'
+						borderRadius='md'
+						w='xs'
+						mb={2}
+					/>
+					{/* TODO clear/remove image button */}
+					{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
+				</>
+			) : (
+				<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
+					<Icon as={FiImage} boxSize='60px' />
+				</Flex>
+			)}
+			{/* TODO size limit validation */}
+			<Input
+				type='file'
+				name='image'
+				onChange={handleFileInputChange}
+				border='none'
+				color='transparent'
+			/>
+		</Box>
+	);
+
 	return editProfile ? (
 		<form onSubmit={handleSubmit}>
 			<Flex
@@ -443,43 +482,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Box py={2} mt={2}>
 						{profileLoading && <Spinner alignSelf='center' />}
 						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-							<Box mb={2} width='30%'>
-								{/* TODO Image uploader */}
-								{uploadFileMutationLoading ? (
-									<Flex alignItems='center' justifyContent='center' h='200px'>
-										<Text textAlign='center' fontSize='sm'>
-											Uploading...
-										</Text>
-										<Progress size='md' isIndeterminate />
-									</Flex>
-								) : image ? (
-									<>
-										<Image
-											src={image}
-											alt={`Profile picture`}
-											loading='eager'
-											fit='cover'
-											borderRadius='md'
-											w='xs'
-											mb={2}
-										/>
-										{/* TODO clear/remove image button */}
-										{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
-									</>
-								) : (
-									<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
-										<Icon as={FiImage} boxSize='60px' />
-									</Flex>
-								)}
-								{/* TODO size limit validation */}
-								<Input
-									type='file'
-									name='image'
-									onChange={handleFileInputChange}
-									border='none'
-									color='transparent'
-								/>
-							</Box>
+							<ProfileImageUploader />
 							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 								<StackItem>
 									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
@@ -491,8 +494,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											onChange={handleInputChange}
 											flex='1'
 											label='First name'
+											minW='200px'
 											inputProps={{
-												size: 'xl',
 												tabIndex: 1,
 											}}
 										/>
@@ -504,8 +507,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='Last name'
 											onChange={handleInputChange}
 											flex='1'
+											minW='200px'
 											inputProps={{
-												size: 'xl',
 												tabIndex: 2,
 											}}
 										/>
@@ -516,6 +519,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											label='Pronouns'
 											onChange={handleInputChange}
 											flex='1'
+											minW='200px'
 											inputProps={{
 												size: 'md',
 												tabIndex: 3,
@@ -608,7 +612,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									items={locationTerms}
 									checked={locations ? locations.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxInput}
-
 								/>
 							</StackItem>
 							<StackItem py={4} display='flex' gap={10}>
