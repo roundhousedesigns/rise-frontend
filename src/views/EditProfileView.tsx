@@ -884,7 +884,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							mb={4}
 							onChange={handleInputChange}
 							inputProps={{
-								rows: 20,
+								rows: 10,
 							}}
 						/>
 					</Box>
