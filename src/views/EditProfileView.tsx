@@ -43,26 +43,26 @@ import {
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { Credit, UserProfile } from '../lib/classes';
+import { EditProfileContext } from '../context/EditProfileContext';
+import useViewer from '../hooks/queries/useViewer';
 import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
-import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
+import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import useFileUpload from '../hooks/mutations/useFileUpload';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import useFileUpload from '../hooks/mutations/useFileUpload';
-import { EditProfileContext } from '../context/EditProfileContext';
-import { useViewer } from '../hooks/queries/useViewer';
-import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import DeleteCreditAlertDialog from '../components/DeleteCreditAlertDialog';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
 
-export type AlertProps = {
+type AlertProps = {
 	id: string;
 	handleDeleteCredit: (id: string) => void;
 };
@@ -176,13 +176,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	// Resort the credits on rerender.
 	useEffect(() => {
-		if (credits && credits.length > 0) {
+		if (!credits) return;
+
+		if (credits.length > 0) {
 			// Remove credits with the isNew property set to true.
 			const existingCredits = credits.filter((credit) => !credit.isNew);
 
 			setCreditsSorted(
 				existingCredits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
 			);
+		} else if (credits.length === 0) {
+			setCreditsSorted([]);
 		}
 	}, [credits]);
 
@@ -317,7 +321,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleDeleteCredit = (creditId: string) => {
 		if (creditId !== '') {
-			deleteCreditMutation(creditId)
+			deleteCreditMutation(creditId, loggedInId)
 				.then(() => {
 					toast({
 						// title: 'Credit deleted.',
@@ -856,7 +860,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										false
 									)}
 								</Stack>
-								<DeleteAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
+								<DeleteCreditAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 							</Stack>
 						))
 					)}

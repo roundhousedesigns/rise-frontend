@@ -17,7 +17,7 @@ interface Props {
 	id: string;
 }
 
-export function DeleteAlertDialog({ handleDeleteCredit, id: itemId }: Props): JSX.Element {
+export default function DeleteCreditAlertDialog({ handleDeleteCredit, id: itemId }: Props): JSX.Element {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = useRef<HTMLButtonElement>(null);
 
