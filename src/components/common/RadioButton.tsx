@@ -17,7 +17,7 @@ export default function RadioButton(props: Props): React.ReactElement {
 				{...getRadioProps()}
 				{...getLabelProps}
 				cursor='pointer'
-				borderRadius='sm'
+				borderRadius='md'
 				bg='gray.100'
 				borderWidth={1}
 				borderColor='gray.300'

@@ -17,9 +17,9 @@ export default function CheckboxButton(props: Props): React.ReactElement {
 				{...getCheckboxProps()}
 				{...getLabelProps}
 				cursor='pointer'
-				borderRadius='sm'
+				borderRadius='md'
 				bg='gray.100'
-				borderWidth={1}
+				borderWidth={2}
 				borderColor='gray.300'
 				fontFamily={`'Stabil Grotesk', sans-serif`}
 				letterSpacing='0.04em'

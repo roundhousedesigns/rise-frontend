@@ -20,6 +20,7 @@ import {
 	SimpleGrid,
 	FormLabel,
 	FormControl,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import {
 	FiFacebook,
@@ -126,6 +127,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		updateCreditOrderMutation,
 		results: { loading: updateCreditOrderLoading },
 	} = useUpdateCreditOrder();
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
@@ -402,7 +405,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const ProfileImageUploader = () => (
 		<Box mb={2} width='30%' minWidth='300px'>
+			<Heading variant='contentTitle' my={0}>
+				Profile image
+			</Heading>
+			<Heading variant='contentSubtitle' my={0}>
+				Portrait orientation works best.
+			</Heading>
 			{uploadFileMutationLoading ? (
+				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
 					<Text textAlign='center' fontSize='sm'>
 						Uploading...
@@ -410,6 +420,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Progress size='md' isIndeterminate />
 				</Flex>
 			) : image ? (
+				// Image set
 				<>
 					<Image
 						src={image}
@@ -420,11 +431,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						w='xs'
 						mb={2}
 					/>
+
 					{/* TODO clear/remove image button */}
 					{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
 				</>
 			) : (
-				<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
+				// No image set
+				<Flex alignItems='center' justifyContent='center' w='full' h='100px'>
 					<Icon as={FiImage} boxSize='60px' />
 				</Flex>
 			)}
@@ -478,143 +491,150 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</ButtonGroup>
 			</Flex>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
-				<StackItem>
-					<Box py={2} mt={2}>
-						{profileLoading && <Spinner alignSelf='center' />}
-						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-							<ProfileImageUploader />
-							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
-								<StackItem>
-									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-										<TextInput
-											placeholder='First'
-											value={firstName}
-											name='firstName'
-											isRequired
-											onChange={handleInputChange}
-											flex='1'
-											label='First name'
-											minW='200px'
-											inputProps={{
-												tabIndex: 1,
-											}}
-										/>
-										<TextInput
-											placeholder='Last'
-											value={lastName}
-											name='lastName'
-											isRequired
-											label='Last name'
-											onChange={handleInputChange}
-											flex='1'
-											minW='200px'
-											inputProps={{
-												tabIndex: 2,
-											}}
-										/>
-										<TextInput
-											placeholder='pronouns'
-											value={pronouns}
-											name='pronouns'
-											label='Pronouns'
-											onChange={handleInputChange}
-											flex='1'
-											minW='200px'
-											inputProps={{
-												size: 'md',
-												tabIndex: 3,
-											}}
-										/>
-									</Flex>
-									<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
-										<TextInput
-											placeholder='homebase'
-											value={homebase}
-											name='homebase'
-											label='Where do you currently live?'
-											leftElement={<Icon as={FiHome} />}
-											onChange={handleInputChange}
-											inputProps={{
-												maxLength: 25,
-												tabIndex: 4,
-											}}
-											flex='1'
-										/>
-										<TextInput
-											value={selfTitle}
-											name='selfTitle'
-											placeholder='Title'
-											label='Title/Trade/Profession'
-											leftElement={<Icon as={FiStar} />}
-											onChange={handleInputChange}
-											inputProps={{
-												maxLength: 50,
-												tabIndex: 5,
-											}}
-											flex='1'
-										/>
-									</Flex>
-								</StackItem>
-								<StackItem display='flex' flexWrap='wrap' gap={4}>
-									<Box flex='1'>
-										<Heading variant='contentTitle' mb={2}>
-											Contact
-										</Heading>
-										<Stack direction='column' spacing={0}>
-											<TextInput
-												value={email}
-												leftElement={<Icon as={FiMail} />}
-												placeholder='me@somewhere.com'
-												label='Contact Email'
-												name='email'
-												onChange={handleInputChange}
-												inputProps={{
-													tabIndex: 6,
-												}}
-											/>
-											{/* TODO Add checkbox for "use account email address" */}
-											<TextInput
-												value={phone}
-												leftElement={<Icon as={FiPhone} />}
-												placeholder='(888) 888-8888'
-												label='Phone'
-												name='phone'
-												onChange={handleInputChange}
-												inputProps={{
-													tabIndex: 7,
-												}}
-											/>
-											<TextInput
-												value={website}
-												leftElement={<Icon as={FiGlobe} />}
-												label='Website'
-												name='website'
-												onChange={handleInputChange}
-												inputProps={{
-													tabIndex: 8,
-												}}
-											/>
-										</Stack>
-									</Box>
-								</StackItem>
-							</Stack>
-						</Flex>
-						<Stack>
-							<StackItem fontSize='sm'>
-								{/* TODO make this required */}
-								<Heading variant='contentTitle'>Work Locations</Heading>
-								<Heading variant='contentSubtitle'>
-									Select any areas in which you're a local hire.
-								</Heading>
-								<ProfileCheckboxGroup
-									name='locations'
-									isRequired
-									items={locationTerms}
-									checked={locations ? locations.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
-								/>
+				<StackItem py={2} mt={2}>
+					{profileLoading && <Spinner alignSelf='center' />}
+					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+						{isLargerThanMd ? <ProfileImageUploader /> : false}
+						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
+							<StackItem>
+								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+									<TextInput
+										placeholder='First'
+										value={firstName}
+										name='firstName'
+										isRequired
+										onChange={handleInputChange}
+										flex='1'
+										label='First name'
+										minW='200px'
+										inputProps={{
+											tabIndex: 1,
+										}}
+									/>
+									<TextInput
+										placeholder='Last'
+										value={lastName}
+										name='lastName'
+										isRequired
+										label='Last name'
+										onChange={handleInputChange}
+										flex='1'
+										minW='200px'
+										inputProps={{
+											tabIndex: 2,
+										}}
+									/>
+									<TextInput
+										placeholder='pronouns'
+										value={pronouns}
+										name='pronouns'
+										label='Pronouns'
+										onChange={handleInputChange}
+										flex='1'
+										maxW='150px'
+										inputProps={{
+											size: 'md',
+											tabIndex: 3,
+										}}
+									/>
+								</Flex>
+								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+									<TextInput
+										placeholder='homebase'
+										value={homebase}
+										name='homebase'
+										label='Where do you currently live?'
+										leftElement={<Icon as={FiHome} />}
+										onChange={handleInputChange}
+										inputProps={{
+											maxLength: 25,
+											tabIndex: 4,
+										}}
+										flex='1'
+									/>
+									<TextInput
+										value={selfTitle}
+										name='selfTitle'
+										placeholder='Title'
+										label='Title/Trade/Profession'
+										leftElement={<Icon as={FiStar} />}
+										onChange={handleInputChange}
+										inputProps={{
+											maxLength: 50,
+											tabIndex: 5,
+										}}
+										flex='1'
+									/>
+								</Flex>
 							</StackItem>
-							<StackItem py={4} display='flex' gap={10}>
+							{!isLargerThanMd ? (
+								<StackItem display='flex' flexWrap='wrap' gap={4}>
+									<ProfileImageUploader />
+								</StackItem>
+							) : (
+								false
+							)}
+							<StackItem display='flex' flexWrap='wrap' gap={4}>
+								<Box flex='1'>
+									<Heading variant='contentTitle' mb={2}>
+										Contact
+									</Heading>
+									<Stack direction='column' spacing={0}>
+										<TextInput
+											value={email}
+											leftElement={<Icon as={FiMail} />}
+											placeholder='me@somewhere.com'
+											label='Contact Email'
+											name='email'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 6,
+											}}
+										/>
+										{/* TODO Add checkbox for "use account email address" */}
+										<TextInput
+											value={phone}
+											leftElement={<Icon as={FiPhone} />}
+											placeholder='(888) 888-8888'
+											label='Phone'
+											name='phone'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 7,
+											}}
+										/>
+										<TextInput
+											value={website}
+											leftElement={<Icon as={FiGlobe} />}
+											label='Website'
+											name='website'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 8,
+											}}
+										/>
+									</Stack>
+								</Box>
+							</StackItem>
+						</Stack>
+					</Flex>
+					<Stack>
+						<StackItem fontSize='sm'>
+							{/* TODO make this required */}
+							<Heading variant='contentTitle'>Work Locations</Heading>
+							<Heading variant='contentSubtitle'>
+								Select any areas in which you're a local hire.
+							</Heading>
+							<ProfileCheckboxGroup
+								name='locations'
+								isRequired
+								items={locationTerms}
+								checked={locations ? locations.map((item) => item.toString()) : []}
+								handleChange={handleCheckboxInput}
+							/>
+						</StackItem>
+						<StackItem py={4} display='flex' gap={10}>
+							<Flex flexWrap='wrap' gap={6}>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
 									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
@@ -641,7 +661,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleRadioInputChange}
 									/>
 								</Box>
-								<Box flex='0 0 33%' textAlign='center'>
+								<Box flex='1 0 100%' textAlign='center'>
 									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
 										Resume
 									</Heading>
@@ -673,103 +693,97 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										/>
 									</Flex>
 								</Box>
-							</StackItem>
-						</Stack>
-
-						<StackItem>
-							<Flex flexWrap='wrap' gap={4}>
-								<Box flex='1'>
-									<Heading variant='contentTitle'>Unions/Guilds</Heading>
-									<Heading variant='contentSubtitle'>
-										What unions or guilds are you a member of?
-										<br />
-										<br />
-									</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup
-											name='unions'
-											items={unionTerms}
-											checked={unions ? unions.map((item) => item.toString()) : []}
-											handleChange={handleCheckboxInput}
-										/>
-									</Box>
-								</Box>
-								<Box flex='0 0 30%'>
-									<Heading variant='contentTitle'>Partner Directories</Heading>
-									<Heading variant='contentSubtitle'>
-										Are you a member of one of our partner organizations?
-									</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup
-											name='partnerDirectories'
-											items={partnerDirectoryTerms}
-											checked={
-												partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
-											}
-											handleChange={handleCheckboxInput}
-										/>
-									</Box>
-								</Box>
-								<Box flex='0 0 30%'>
-									<Heading variant='contentTitle'>Experience Levels</Heading>
-									<Heading variant='contentSubtitle'>
-										At what levels have you worked?
-										<br />
-										<br />
-									</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup
-											name='experienceLevels'
-											items={experienceLevelTerms}
-											checked={
-												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
-											}
-											handleChange={handleCheckboxInput}
-										/>
-									</Box>
-								</Box>
 							</Flex>
 						</StackItem>
+					</Stack>
 
-						<StackItem w='full' maxW='3xl'>
-							<Heading variant='contentTitle'>Social</Heading>
+					<StackItem py={4}>
+						<Flex flexWrap='wrap' gap={4}>
+							<Box flex='1 0 100%'>
+								<Heading variant='contentTitle'>Unions/Guilds</Heading>
+								<Heading variant='contentSubtitle'>
+									What unions or guilds are you a member of?
+								</Heading>
+								<Box fontSize='sm'>
+									<ProfileCheckboxGroup
+										name='unions'
+										items={unionTerms}
+										checked={unions ? unions.map((item) => item.toString()) : []}
+										handleChange={handleCheckboxInput}
+									/>
+								</Box>
+							</Box>
+							<Box flex='1'>
+								<Heading variant='contentTitle'>Experience Levels</Heading>
+								<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+								<Box fontSize='sm'>
+									<ProfileCheckboxGroup
+										name='experienceLevels'
+										items={experienceLevelTerms}
+										checked={
+											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
+										}
+										handleChange={handleCheckboxInput}
+									/>
+								</Box>
+							</Box>
+							<Box flex='1'>
+								<Heading variant='contentTitle'>Partner Directories</Heading>
+								<Heading variant='contentSubtitle'>
+									Are you a member of one of our partner organizations?
+								</Heading>
+								<Box fontSize='sm'>
+									<ProfileCheckboxGroup
+										name='partnerDirectories'
+										items={partnerDirectoryTerms}
+										checked={
+											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
+										}
+										handleChange={handleCheckboxInput}
+									/>
+								</Box>
+							</Box>
+						</Flex>
+					</StackItem>
 
-							<SimpleGrid columns={[1, 2]} spacing={4}>
-								<TextInput
-									value={socials?.linkedin}
-									leftElement={<Icon as={FiLinkedin} />}
-									label='LinkedIn @handle'
-									placeholder='@yourname'
-									name='socials.linkedin'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.facebook}
-									leftElement={<Icon as={FiFacebook} />}
-									label='Facebook URL'
-									placeholder='https://facebook.com/yourname'
-									name='socials.facebook'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.instagram}
-									leftElement={<Icon as={FiInstagram} />}
-									label='Instagram @handle'
-									placeholder='@handle'
-									name='socials.instagram'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.twitter}
-									leftElement={<Icon as={FiTwitter} />}
-									label='Twitter @handle'
-									placeholder='@handle'
-									name='socials.twitter'
-									onChange={handleSocialInputChange}
-								/>
-							</SimpleGrid>
-						</StackItem>
-					</Box>
+					<StackItem w='full' maxW='3xl'>
+						<Heading variant='contentTitle'>Social</Heading>
+
+						<SimpleGrid columns={[1, 2]} spacing={4}>
+							<TextInput
+								value={socials?.linkedin}
+								leftElement={<Icon as={FiLinkedin} />}
+								label='LinkedIn @handle'
+								placeholder='@yourname'
+								name='socials.linkedin'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.facebook}
+								leftElement={<Icon as={FiFacebook} />}
+								label='Facebook URL'
+								placeholder='https://facebook.com/yourname'
+								name='socials.facebook'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.instagram}
+								leftElement={<Icon as={FiInstagram} />}
+								label='Instagram @handle'
+								placeholder='@handle'
+								name='socials.instagram'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.twitter}
+								leftElement={<Icon as={FiTwitter} />}
+								label='Twitter @handle'
+								placeholder='@handle'
+								name='socials.twitter'
+								onChange={handleSocialInputChange}
+							/>
+						</SimpleGrid>
+					</StackItem>
 				</StackItem>
 
 				<StackItem pos='relative'>
