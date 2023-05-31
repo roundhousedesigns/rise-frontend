@@ -19,6 +19,7 @@ import {
 	LightMode,
 	Button,
 	Badge,
+	Spacer,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -124,9 +125,26 @@ export default function Header() {
 				<Box id='header' w='full' bg='text.dark' color='text.light'>
 					<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
 						<Stack direction='row' w='full' justifyContent='space-between' align='center'>
-							<Link as={RouterLink} to='/' my={0}>
-								<Image src={logo} alt='RISE logo' loading='eager' w='full' h='auto' maxW='50%' />
+							<Link
+								as={RouterLink}
+								to='/'
+								my={0}
+								w='auto'
+								display='block'
+								maxW='40%'
+								position='relative'
+							>
+								<Image
+									src={logo}
+									alt='RISE logo'
+									loading='eager'
+									h='auto'
+									position='relative'
+									display='block'
+								/>
 							</Link>
+
+							<Spacer />
 
 							{!loggedInId ? (
 								<Link
