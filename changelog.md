@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## [unreleased]
+## [1.0.3beta] - 2023-05-30
 
 - Added: "account already exists" message for account creation
 - Improved: header mobile layout
