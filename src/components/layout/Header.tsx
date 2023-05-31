@@ -20,6 +20,8 @@ import {
 	Button,
 	Badge,
 	Spacer,
+	forwardRef,
+	BoxProps,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -40,7 +42,7 @@ import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useLogout from '../../hooks/mutations/useLogout';
 
-export default function Header() {
+const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { logoutMutation } = useLogout();
 
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
@@ -120,153 +122,158 @@ export default function Header() {
 	);
 
 	return (
-		<Box flex='0 0 auto' w='full'>
+		<Box
+			ref={ref}
+			id='header'
+			w='full'
+			bg='text.dark'
+			color='text.light'
+			position='fixed'
+			top='0'
+			borderBottomWidth={2}
+			borderBottomColor='text.light'
+			zIndex={100}
+		>
 			<DarkMode>
-				<Box id='header' w='full' bg='text.dark' color='text.light'>
-					<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
-						<Stack direction='row' w='full' justifyContent='space-between' align='center'>
-							<Link
-								as={RouterLink}
-								to='/'
-								my={0}
-								w='auto'
-								display='block'
-								maxW='40%'
+				<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
+					<Stack direction='row' w='full' justifyContent='space-between' align='center'>
+						<Link
+							as={RouterLink}
+							to='/'
+							my={0}
+							w='auto'
+							display='block'
+							maxW='400px'
+							position='relative'
+						>
+							<Image
+								src={logo}
+								alt='RISE logo'
+								loading='eager'
+								h='auto'
 								position='relative'
-							>
-								<Image
-									src={logo}
-									alt='RISE logo'
-									loading='eager'
-									h='auto'
-									position='relative'
-									display='block'
-								/>
+								display='block'
+							/>
+						</Link>
+
+						<Spacer />
+
+						{!loggedInId ? (
+							<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal flex='0 0 auto'>
+								<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
 							</Link>
+						) : (
+							false
+						)}
 
-							<Spacer />
-
-							{!loggedInId ? (
-								<Link
-									as={RouterLink}
-									to='https://risetheatre.org'
-									my={0}
-									isExternal
-									flex='0 0 auto'
+						{loggedInId ? (
+							<>
+								<Stack
+									color='text.light'
+									direction='row'
+									spacing={2}
+									mr={6}
+									align='center'
+									fontSize='lg'
+									textTransform='uppercase'
 								>
-									<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
-								</Link>
-							) : (
-								false
-							)}
+									{searchActive && results.length ? <SearchResultsButton /> : false}
 
-							{loggedInId ? (
-								<>
-									<Stack
-										color='text.light'
-										direction='row'
-										spacing={2}
-										mr={6}
-										align='center'
-										fontSize='lg'
-										textTransform='uppercase'
-									>
-										{searchActive && results.length ? <SearchResultsButton /> : false}
+									<SearchButton />
 
-										<SearchButton />
-
-										{isLargerThanMd ? (
-											<Button
-												leftIcon={<FiUser />}
-												pl={3}
-												aria-label='My Profile'
-												as={RouterLink}
-												to='/profile'
-												colorScheme='gray'
-												borderRadius='lg'
-												size='md'
-												textTransform='none'
-											>
-												My Profile
-											</Button>
-										) : null}
-									</Stack>
-									<Box>
-										{
-											// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-											// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-										}
-										<LightMode>
-											<Menu>
-												<DarkMode>
-													<MenuButton
-														aria-label='Menu'
-														as={IconButton}
-														borderRadius='full'
-														colorScheme='gray'
-														icon={<FiMenu />}
-														size='md'
-														_active={{
-															transform: 'rotate(90deg)',
-														}}
-													/>
-												</DarkMode>
-												<MenuList color='text.dark' zIndex='100'>
-													{isLargerThanMd ? null : (
-														<MenuOptionGroup>
-															<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
-																My Profile
-															</MenuItem>
-															<MenuItem
-																ref={drawerButtonRef}
-																onClick={drawerOnOpen}
-																icon={<FiSearch />}
-															>
-																Search
-															</MenuItem>
-															<MenuDivider />
-														</MenuOptionGroup>
-													)}
+									{isLargerThanMd ? (
+										<Button
+											leftIcon={<FiUser />}
+											pl={3}
+											aria-label='My Profile'
+											as={RouterLink}
+											to='/profile'
+											colorScheme='gray'
+											borderRadius='lg'
+											size='md'
+											textTransform='none'
+										>
+											My Profile
+										</Button>
+									) : null}
+								</Stack>
+								<Box>
+									{
+										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
+										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
+									}
+									<LightMode>
+										<Menu>
+											<DarkMode>
+												<MenuButton
+													aria-label='Menu'
+													as={IconButton}
+													borderRadius='full'
+													colorScheme='gray'
+													icon={<FiMenu />}
+													size='md'
+													_active={{
+														transform: 'rotate(90deg)',
+													}}
+												/>
+											</DarkMode>
+											<MenuList color='text.dark' zIndex='100'>
+												{isLargerThanMd ? null : (
 													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
-															Dashboard
+														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+															My Profile
 														</MenuItem>
+														<MenuItem
+															ref={drawerButtonRef}
+															onClick={drawerOnOpen}
+															icon={<FiSearch />}
+														>
+															Search
+														</MenuItem>
+														<MenuDivider />
 													</MenuOptionGroup>
-													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-															Settings
-														</MenuItem>
-														<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
-															Help
-														</MenuItem>
-													</MenuOptionGroup>
-													<MenuDivider />
-													<MenuItem
-														as={Link}
-														href='https://risetheatre.org'
-														icon={<FiHome />}
-														isExternal
-													>
-														RISE Home
+												)}
+												<MenuOptionGroup>
+													<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
+														Dashboard
 													</MenuItem>
-													<MenuDivider />
-													<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-														Logout
+												</MenuOptionGroup>
+												<MenuOptionGroup>
+													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+														Settings
 													</MenuItem>
-												</MenuList>
-											</Menu>
-										</LightMode>
-									</Box>
-								</>
-							) : (
-								false
-							)}
-						</Stack>
-					</Container>
-				</Box>
+													<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+														Help
+													</MenuItem>
+												</MenuOptionGroup>
+												<MenuDivider />
+												<MenuItem
+													as={Link}
+													href='https://risetheatre.org'
+													icon={<FiHome />}
+													isExternal
+												>
+													RISE Home
+												</MenuItem>
+												<MenuDivider />
+												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+													Logout
+												</MenuItem>
+											</MenuList>
+										</Menu>
+									</LightMode>
+								</Box>
+							</>
+						) : (
+							false
+						)}
+					</Stack>
+				</Container>
 			</DarkMode>
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
 		</Box>
 	);
-}
+});
+
+export default Header;

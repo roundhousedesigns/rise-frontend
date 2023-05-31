@@ -142,8 +142,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleSave = () => {
+	const handleSubmit = () => {
+		console.info('before prep', editCredit);
 		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
+		console.info('after prep', creditToUpdate);
 
 		updateCreditMutation(creditToUpdate, editCredit.id)
 			.then((results) => {
@@ -170,19 +172,13 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	return (
-		<>
+		<form id='edit-credit' onSubmit={handleSubmit}>
 			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
 				<Heading size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
 				<ButtonGroup>
-					<Button
-						type='submit'
-						leftIcon={<FiCheck />}
-						aria-label='Save credit'
-						colorScheme='green'
-						onClick={handleSave}
-					>
+					<Button type='submit' leftIcon={<FiCheck />} aria-label='Save credit' colorScheme='green'>
 						Save
 					</Button>
 					<Button
@@ -323,6 +319,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</StackItem>
 				) : null}
 			</Stack>
-		</>
+		</form>
 	);
 }

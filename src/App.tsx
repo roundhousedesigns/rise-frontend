@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Spinner, Stack } from '@chakra-ui/react';
+import { Box, Spinner, Stack } from '@chakra-ui/react';
 
 import Header from './components/layout/Header';
 import Main from './components/layout/Main';
@@ -22,6 +22,27 @@ export default function App() {
 
 	// URL endpoints to be allowed when logged out
 	const publicEndpoints = ['/register', '/login', '/lost-password', '/reset-password'];
+
+	// Get the header height so we can offset the main content
+	const headerRef = useRef(null);
+	const [headerHeight, setHeaderHeight] = useState<number>(0);
+
+	useEffect(() => {
+		const observer = new ResizeObserver((entries) => {
+			for (let entry of entries) {
+				const { height } = entry.contentRect;
+				setHeaderHeight(height);
+			}
+		});
+
+		if (headerRef.current) {
+			observer.observe(headerRef.current);
+		}
+
+		return () => {
+			observer.disconnect();
+		};
+	}, [headerRef.current]);
 
 	// if the user is not logged in, redirect to the login page
 	useEffect(() => {
@@ -47,8 +68,10 @@ export default function App() {
 					color: 'text.dark',
 				}}
 			>
-				<Header />
-				{loading ? <Spinner /> : <Main />}
+				<Header ref={headerRef} />
+				<Box minH='66vh' w='full' paddingTop={`${headerHeight}px`}>
+					{loading ? <Spinner /> : <Main />}
+				</Box>
 				<Footer />
 			</Stack>
 		</SearchContextProvider>
