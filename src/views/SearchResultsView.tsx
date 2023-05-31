@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
-import { isEqual } from 'lodash';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/common/CandidateList';
 
@@ -11,14 +10,17 @@ export default function SearchResultsView() {
 	} = useContext(SearchContext);
 
 	const [resultsString, setResultsString] = useState<string>('');
-	const [resultsList, setResultsList] = useState<number[]>([]);
+	// const [resultsList, setResultsList] = useState<number[]>([]);
+
+	// TODO This WORKS, but determine if useMemo is the right call here.
+	const resultsList = useMemo(() => results, [results]);
 
 	// Update the results list whenever the results change.
-	useEffect(() => {
-		if (isEqual(results, resultsList)) return;
+	// useEffect(() => {
+	// 	if (isEqual(results, resultsList)) return;
 
-		setResultsList(results);
-	}, [results]);
+	// 	setResultsList(results);
+	// }, [results]);
 
 	// const [getSearchResults, { data }] = useCandidateSearch(handleSearchComplete);
 
