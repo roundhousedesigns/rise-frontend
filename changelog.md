@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## [1.0.3-beta.2] - 2023-05-31
+
+- Improved: Semantic versioning
+- Improved: Header is now sticky
+- Fixed: Search results no longer sometimes appear blank after navigating
+
 ## [1.0.3beta] - 2023-05-30
 
 - Added: "account already exists" message for account creation
