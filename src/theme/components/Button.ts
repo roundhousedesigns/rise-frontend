@@ -3,6 +3,10 @@ import { defineStyleConfig } from '@chakra-ui/react';
 const baseStyle = {
 	fontWeight: 'medium',
 	borderRadius: 'lg',
+	textDecoration: 'none',
+	_hover: {
+		textDecoration: 'none',
+	},
 };
 
 const variants = {

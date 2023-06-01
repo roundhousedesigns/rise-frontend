@@ -22,6 +22,12 @@ const variants = {
 			textDecorationStyle: 'solid',
 		},
 	}),
+	button: defineStyle({
+		textDecoration: 'none',
+		_hover: {
+			textDecoration: 'none',
+		},
+	}),
 };
 
 export default defineStyleConfig({

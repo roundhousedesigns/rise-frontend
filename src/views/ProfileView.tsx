@@ -19,6 +19,7 @@ import {
 	Button,
 	Wrap,
 	SimpleGrid,
+	Icon,
 } from '@chakra-ui/react';
 import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
@@ -94,6 +95,19 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		getWPItemsFromIds(ids, terms)
 			.map((term: WPItem) => term.name)
 			.join(', ');
+
+	const selectedLinkableTerms = (ids: number[], terms: WPItem[]) =>
+		getWPItemsFromIds(ids, terms).map((term: WPItem) => {
+			if (term.externalUrl) {
+				return (
+					<Button as={Link} key={term.id} href={term.externalUrl} isExternal size='sm'>
+						{term.name}
+					</Button>
+				);
+			}
+
+			return term.name;
+		});
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -200,9 +214,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 								<StackItem>
 									<Heading variant='contentTitle'>RISE Network Partner Directories</Heading>
-									<TextWithIcon icon={FiStar}>
-										{selectedTerms(partnerDirectories, partnerDirectoryTerms)}
-									</TextWithIcon>
+									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
+										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
+										<Wrap flex='1' pl={2}>
+											{selectedLinkableTerms(partnerDirectories, partnerDirectoryTerms)}
+										</Wrap>
+									</Flex>
 								</StackItem>
 							) : (
 								false
