@@ -26,6 +26,7 @@ const useFileUpload = () => {
 			refetchQueries: [
 				{
 					query: QUERY_PROFILE,
+					variables: { id: userId, author: userId },
 				},
 			],
 		});

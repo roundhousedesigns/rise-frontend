@@ -211,7 +211,7 @@ export class UserProfile extends User {
 	 * Extract IDs from a collection of nodes.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
-		return nodes.map((node) => (typeof node === 'number' ? node : node.id || 0));
+		return nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
 	}
 }
 

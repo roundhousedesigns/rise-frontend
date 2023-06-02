@@ -21,32 +21,34 @@ export const EditProfileContext = createContext({
 
 function editProfileContextReducer(state: UserProfile, action: EditProfileAction): any {
 	switch (action.type) {
-		case 'UPDATE_INPUT':
+		case 'UPDATE_INPUT': {
 			if (!action.payload.name) return state;
-			return {
-				...state,
-				[action.payload.name]: action.payload.value,
-			};
 
-		case 'UPDATE_BOOLEAN_INPUT':
+			const current = { ...state };
+			current[action.payload.name] = action.payload.value;
+
+			return new UserProfile(current);
+		}
+
+		case 'UPDATE_BOOLEAN_INPUT': {
 			if (!action.payload.name || !action.payload.value) return state;
-			return {
-				...state,
-				[action.payload.name]: sanitizeBoolean(action.payload.value),
-			};
 
-		case 'UPDATE_PERSONAL_LINKS_INPUT':
+			const current = { ...state };
+			current[action.payload.name] = sanitizeBoolean(action.payload.value);
+
+			return new UserProfile(current);
+		}
+
+		case 'UPDATE_PERSONAL_LINKS_INPUT': {
 			if (!action.payload.name) return state;
 
-			return {
-				...state,
-				socials: {
-					...state.socials,
-					[action.payload.name]: action.payload.value,
-				},
-			};
+			const current = { ...state };
+			current[action.payload.name] = action.payload.value;
 
-		case 'UPDATE_CREDIT':
+			return new UserProfile(current);
+		}
+
+		case 'UPDATE_CREDIT': {
 			if (action.payload.credit === undefined) return state;
 
 			const { credits: currentCredits } = state;
@@ -66,8 +68,9 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				...state,
 				credits: updatedCredits,
 			};
+		}
 
-		case 'ADD_CREDIT':
+		case 'ADD_CREDIT': {
 			return {
 				...state,
 				credits: [
@@ -75,8 +78,9 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 					new Credit({ id: generateRandomString(8), isNew: true, index: state.credits.length }),
 				],
 			};
+		}
 
-		case 'DELETE_CREDIT':
+		case 'DELETE_CREDIT': {
 			if (!action.payload.creditId) return state;
 
 			const trimmedCredits = state.credits.filter(
@@ -87,10 +91,11 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				...state,
 				credits: trimmedCredits,
 			};
-
+		}
 		case 'INIT':
-		case 'RESET':
+		case 'RESET': {
 			return action.payload.profile;
+		}
 
 		default:
 			return state;

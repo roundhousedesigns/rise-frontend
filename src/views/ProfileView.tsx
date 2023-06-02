@@ -151,14 +151,16 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
-								<Image
-									src={image}
-									alt={`${profile.fullName()}'s picture`}
-									borderRadius='md'
-									loading='eager'
-									fit='cover'
-									w='xs'
-								/>
+								<Box w='xs'>
+									<Image
+										src={image}
+										alt={`${profile.fullName()}'s picture`}
+										borderRadius='md'
+										loading='eager'
+										fit='cover'
+										w='full'
+									/>
+								</Box>
 							) : (
 								<Avatar size='2xl' name={profile.fullName()} mx={2} />
 							)

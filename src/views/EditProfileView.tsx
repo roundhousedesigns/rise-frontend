@@ -21,7 +21,11 @@ import {
 	FormLabel,
 	FormControl,
 	useMediaQuery,
+	chakra,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import { isEqual } from 'lodash';
+import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
 	FiGlobe,
@@ -39,17 +43,19 @@ import {
 	FiHome,
 	FiStar,
 	FiVideo,
+	FiUpload,
 } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
+
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
 import useViewer from '../hooks/queries/useViewer';
-import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
+import useUpdateProfile from '../hooks/mutations/useUpdateProfile';
 import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import useFileUpload from '../hooks/mutations/useFileUpload';
+import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
 import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
@@ -58,6 +64,7 @@ import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditAlertDialog from '../components/DeleteCreditAlertDialog';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
+import { useProfileEdited } from '../hooks/hooks';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -115,8 +122,16 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		mediaImage6,
 	} = editProfile || {};
 
+	// TODO implement edited alert dialog on exit and on save button enable/disable
+	const originalProfile = useRef<UserProfile | null>(null);
+
+	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
+	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
+	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
+	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const {
 		uploadFileMutation,
@@ -124,20 +139,29 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = useFileUpload();
 
 	const {
+		clearProfileFieldMutation,
+		results: { loading: clearProfileFieldMutationLoading },
+	} = useClearProfileField();
+
+	const {
 		updateCreditOrderMutation,
 		results: { loading: updateCreditOrderLoading },
 	} = useUpdateCreditOrder();
-
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
-
-	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
-	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
 
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
+
+	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
+
+	// Set the original profile to the current profile when it is loaded.
+	useEffect(() => {
+		if (!editProfile) return;
+
+		if (!originalProfile.current) originalProfile.current = editProfile;
+	}, [editProfile]);
 
 	// If the credits order has changed, fire the mutation to save it after a delay.
 	useEffect(() => {
@@ -292,10 +316,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const file = event.target.files[0];
-		const { name } = event.target;
+		const { name, files } = event.target;
+		const file = files[0];
+		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
 
-		if (!file || !name) return;
+		// Limit the file size
+		if (maxSize < file.size) {
+			toast({
+				title: 'File too large.',
+				position: 'top',
+				description: 'Please upload a file smaller than 2MB.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
+		setFieldCurrentlyUploading(name);
 
 		uploadFileMutation(file, name, loggedInId)
 			.then((result) => {
@@ -306,10 +345,71 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						value: result.data.uploadFile.fileUrl,
 					},
 				});
+
+				setFieldCurrentlyUploading('');
+
+				// success toast
+				toast({
+					title: 'Image saved!',
+					position: 'top',
+					description: 'Your image has been uploaded.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
 			})
 			.catch((err) => {
 				console.error(err);
 			});
+	};
+
+	const handleFileInputClear = (event: React.MouseEvent<HTMLButtonElement>) => {
+		const {
+			dataset: { field: fieldName },
+		} = event.currentTarget as HTMLButtonElement;
+
+		// DEBUG
+		console.info('trying to clear input', fieldName, event.target);
+
+		if (!fieldName) return;
+
+		setFieldCurrentlyClearing(fieldName);
+
+		clearProfileFieldMutation(loggedInId, fieldName).then((result) => {
+			const imageInputs = [
+				image,
+				mediaImage1,
+				mediaImage2,
+				mediaImage3,
+				mediaImage4,
+				mediaImage5,
+				mediaImage6,
+			];
+
+			const description = imageInputs.includes(fieldName)
+				? 'The image has been removed.'
+				: 'The file has been removed.';
+
+			// success toast
+			toast({
+				title: 'Success!',
+				position: 'top',
+				description,
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			editProfileDispatch({
+				type: 'UPDATE_INPUT',
+				payload: {
+					name: fieldName,
+					value: '',
+				},
+			});
+
+			setFieldCurrentlyClearing('');
+		});
 	};
 
 	const handleNewCredit = () => {
@@ -407,54 +507,136 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		navigate('/profile');
 	};
 
+	const ClearFieldButton = ({
+		field,
+		content = <FiXCircle />,
+	}: {
+		field: string;
+		content?: string | number | JSX.Element;
+	}) => {
+		if (!field) return null;
+
+		return (
+			<Button
+				size='md'
+				colorScheme='orange'
+				onClick={handleFileInputClear}
+				data-field={field}
+				p={0}
+			>
+				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
+					<Spinner />
+				) : (
+					content
+				)}
+			</Button>
+		);
+	};
+
+	const FileUploadButton = ({
+		fieldName,
+		content = 'Upload',
+		icon,
+		accept,
+	}: {
+		fieldName: string;
+		content?: string | number | JSX.Element;
+		icon?: JSX.Element;
+		accept?: string;
+	}) => {
+		return (
+			<FormControl>
+				<Button
+					as={FormLabel}
+					leftIcon={icon ? icon : undefined}
+					size='md'
+					w='full'
+					opacity={uploadFileMutationLoading || clearProfileFieldMutationLoading ? 0.5 : 1}
+					cursor={
+						uploadFileMutationLoading || clearProfileFieldMutationLoading ? 'progress' : 'pointer'
+					}
+				>
+					{content}
+					<Input
+						variant='file'
+						type='file'
+						formEncType='multipart/form-data'
+						multiple={false}
+						name={fieldName}
+						accept={accept}
+						isDisabled={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+						onChange={handleFileInputChange}
+					/>
+				</Button>
+			</FormControl>
+		);
+	};
+
+	const ProgressBar = () => (
+		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
+	);
+
 	const ProfileImageUploader = () => (
 		<Box mb={2} width='30%' minWidth='300px'>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' my={0}>
-				Portrait orientation works best.
+			<Heading variant='contentSubtitle' fontSize='sm'>
+				Portrait orientation works best. Max 2MB.
 			</Heading>
 			{uploadFileMutationLoading ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
-					<Text textAlign='center' fontSize='sm'>
-						Uploading...
-					</Text>
-					<Progress size='md' isIndeterminate />
+					<ProgressBar />
 				</Flex>
 			) : image ? (
 				// Image set
-				<>
-					<Image
-						src={image}
-						alt={`Profile picture`}
-						loading='eager'
-						fit='cover'
-						borderRadius='md'
-						w='xs'
-						mb={2}
-					/>
-
-					{/* TODO clear/remove image button */}
-					{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
-				</>
+				<Image
+					src={image}
+					alt={`Profile picture`}
+					loading='eager'
+					fit='cover'
+					borderRadius='md'
+					w='xs'
+					mb={2}
+				/>
 			) : (
 				// No image set
 				<Flex alignItems='center' justifyContent='center' w='full' h='100px'>
 					<Icon as={FiImage} boxSize='60px' />
 				</Flex>
 			)}
-			{/* TODO size limit validation */}
-			<Input
-				type='file'
-				name='image'
-				onChange={handleFileInputChange}
-				border='none'
-				color='transparent'
-			/>
+			<Flex gap={6}>
+				<FileUploadButton fieldName='image' accept='image/*' />
+				<ClearFieldButton field='image' />
+			</Flex>
 		</Box>
 	);
+
+	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
+		const image = eval(fieldName);
+
+		return (
+			<Box>
+				<Flex gap={6}>
+					<FileUploadButton
+						fieldName={fieldName}
+						content={text}
+						icon={<FiUpload />}
+						accept='image/*'
+					/>
+					{image ? <ClearFieldButton field={fieldName} /> : false}
+				</Flex>
+				{image ? (
+					<Image src={image} alt={text} loading='eager' fit='cover' w='xs' mb={2} />
+				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
+					<ProgressBar />
+				) : (
+					false
+				)}
+			</Box>
+		);
+	};
 
 	return editProfile ? (
 		<form onSubmit={handleSubmit}>
@@ -477,7 +659,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						leftIcon={saveLoading ? undefined : <FiSave />}
 						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 						colorScheme='green'
-						disabled={saveLoading}
+						isDisabled={saveLoading || !hasEditedProfile}
 						mx={0}
 					>
 						{saveLoading ? <Spinner size='sm' /> : 'Save'}
@@ -688,13 +870,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										</Heading>
 										{/* TODO center input button */}
 										{/* TODO add "clear" button */}
-										<Input
-											type='file'
-											name='resume'
-											onChange={handleFileInputChange}
-											border='none'
-											pl='0'
-										/>
+
+										<FileUploadButton fieldName='resume' accept='application/pdf, image/*' />
 									</Flex>
 								</Box>
 							</Flex>
@@ -1017,150 +1194,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 1</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage1'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage1 ? (
-									<Image
-										src={mediaImage1}
-										alt={`Media image 1`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 2</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage2'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage2 ? (
-									<Image
-										src={mediaImage2}
-										alt={`Media image 2`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 3</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage3'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage3 ? (
-									<Image
-										src={mediaImage3}
-										alt={`Media image 3`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 4</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage4'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage1 ? (
-									<Image
-										src={mediaImage4}
-										alt={`Media image 4`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 5</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage5'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage5 ? (
-									<Image
-										src={mediaImage5}
-										alt={`Media image 5`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 6</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage6'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage6 ? (
-									<Image
-										src={mediaImage6}
-										alt={`Media image 6`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
+							{/* TODO show only the next available uploader, up to limit. */}
+							<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
+							<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
+							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
+							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
+							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
+							<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
 						</SimpleGrid>
 					</Box>
 				</StackItem>

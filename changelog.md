@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## [unreleased] - 1.0.4-beta
+
+- Added: Externally linked user taxonomy support (Partner Directories)
+- Added: Email support button on Help page
+- Improved: File/image uploading and removal UX
+
 ## [1.0.3-beta.2] - 2023-05-31
 
 - Improved: Semantic versioning

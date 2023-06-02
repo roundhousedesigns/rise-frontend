@@ -7,7 +7,6 @@ import {
 	Spinner,
 	Stack,
 	StackItem,
-	Text,
 	Button,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
@@ -90,20 +89,21 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		skills: selectedSkills,
 	} = editCredit;
 
-	const [allDepartments] = usePositions([0]);
+	const [allDepartments] = usePositions();
 	const [getJobs, { data: jobsData, loading: jobsLoading }] = useLazyPositions();
-	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 	const jobs = useRef([]);
+	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 
 	// Refetch jobs list when department changes
 	useEffect(() => {
-		if (!selectedDepartmentIds) return;
+		if (selectedDepartmentIds.length === 0) return;
 
-		getJobs({ variables: { departments: selectedDepartmentIds } /*fetchPolicy: 'network-only'*/ });
+		getJobs({ variables: { departments: selectedDepartmentIds }, fetchPolicy: 'network-only' });
 	}, [selectedDepartmentIds]);
 
 	// Set jobs when jobsData changes.
 	useEffect(() => {
+		console.info(jobsData, jobs.current);
 		jobs.current = jobsData
 			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
 			: [];
@@ -143,9 +143,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	const handleSubmit = () => {
-		console.info('before prep', editCredit);
 		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
-		console.info('after prep', creditToUpdate);
 
 		updateCreditMutation(creditToUpdate, editCredit.id)
 			.then((results) => {
@@ -172,13 +170,19 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	return (
-		<form id='edit-credit' onSubmit={handleSubmit}>
+		<>
 			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
 				<Heading size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
 				<ButtonGroup>
-					<Button type='submit' leftIcon={<FiCheck />} aria-label='Save credit' colorScheme='green'>
+					<Button
+						type='submit'
+						leftIcon={<FiCheck />}
+						aria-label='Save credit'
+						colorScheme='green'
+						onClick={handleSubmit}
+					>
 						Save
 					</Button>
 					<Button
@@ -264,11 +268,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				<StackItem>
 					<Heading variant='contentTitle'>Department</Heading>
 					<Heading variant='contentSubtitle'>
-						Select{' '}
-						<Text as='span' fontWeight='bold'>
-							any
-						</Text>{' '}
-						department(s) you worked under.
+						Select <strong>any</strong> department(s) you worked under.
 					</Heading>
 					<ProfileCheckboxGroup
 						name='department'
@@ -285,11 +285,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					<StackItem>
 						<Heading variant='contentTitle'>Position</Heading>
 						<Heading variant='contentSubtitle'>
-							Select{' '}
-							<Text as='span' fontWeight='bold'>
-								any
-							</Text>{' '}
-							jobs that apply to this credit.
+							Select <strong>any</strong> jobs that apply to this credit.
 						</Heading>
 						<ProfileCheckboxGroup
 							name='jobs'
@@ -319,6 +315,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</StackItem>
 				) : null}
 			</Stack>
-		</form>
+		</>
 	);
 }

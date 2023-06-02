@@ -25,7 +25,7 @@ export const QUERY_POSITION_TERMS = gql`
  *
  * Queries `position` terms. Specify 0 for `parent` to get all terms.
  *
- * @param {number[]} parents - The parent term ID.
+ * @param {number[]} parents - The parent term IDs (default: [0]).
  * @returns {Array} A tuple of a prepared data object and a query result object.
  */
 export const usePositions = (parents: number[] = [0]): [WPItem[], any] => {

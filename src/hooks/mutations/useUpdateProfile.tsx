@@ -16,7 +16,7 @@ const MUTATE_UPDATE_USER = gql`
 	}
 `;
 
-export const useUpdateProfile = () => {
+const useUpdateProfile = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_USER);
 
 	const updateProfileMutation = (profile: UserProfile) => {
@@ -33,3 +33,5 @@ export const useUpdateProfile = () => {
 
 	return { updateProfileMutation, results };
 };
+
+export default useUpdateProfile;

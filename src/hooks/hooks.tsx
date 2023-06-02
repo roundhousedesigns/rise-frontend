@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { isEqual, omit } from 'lodash';
+import { UserProfile } from '../lib/classes';
 
 /**
  * Custom hooks.
@@ -205,4 +207,27 @@ export const useChangePasswordError = (errorCode?: string): string => {
 	}
 
 	return message;
+};
+
+/**
+ * Determine if a user profile has been edited.
+ *
+ * @param editProfile
+ * @param originalProfile
+ */
+export const useProfileEdited = (editProfile: UserProfile, originalProfile: UserProfile | null) => {
+	if (originalProfile === null) return;
+
+	const omitFields = [
+		'credits',
+		'image',
+		'mediaImage1',
+		'mediaImage2',
+		'mediaImage3',
+		'mediaImage4',
+		'mediaImage5',
+		'mediaImage6',
+	];
+
+	return !isEqual(omit(editProfile, omitFields), omit(originalProfile, omitFields));
 };

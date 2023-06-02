@@ -24,7 +24,7 @@ const xl = definePartsStyle({
 });
 
 const variants = {
-	filled: {
+	filled: definePartsStyle({
 		field: {
 			bg: 'gray.100',
 			_hover: {
@@ -37,7 +37,14 @@ const variants = {
 				bg: 'gray.200',
 			},
 		},
-	},
+	}),
+	file: definePartsStyle({
+		field: {
+			display: 'none',
+			border: 'none',
+			px: 0,
+		},
+	}),
 };
 
 const sizes = {
