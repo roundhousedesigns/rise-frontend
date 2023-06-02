@@ -368,9 +368,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			dataset: { field: fieldName },
 		} = event.currentTarget as HTMLButtonElement;
 
-		// DEBUG
-		console.info('trying to clear input', fieldName, event.target);
-
 		if (!fieldName) return;
 
 		setFieldCurrentlyClearing(fieldName);
@@ -607,7 +604,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</Flex>
 			)}
 			<Flex gap={6}>
-				<FileUploadButton fieldName='image' accept='image/*' />
+				<FileUploadButton fieldName='image' accept='image/*' content='Upload image' />
 				<ClearFieldButton field='image' />
 			</Flex>
 		</Box>
