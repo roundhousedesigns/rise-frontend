@@ -133,6 +133,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
+	// DEBUG
+	// detect changes in the `image` variable and output to console
+	useEffect(() => {
+		console.log('image changed', image);
+	}, [image]);
+
 	const {
 		uploadFileMutation,
 		results: { loading: uploadFileMutationLoading },
@@ -548,6 +554,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					leftIcon={icon ? icon : undefined}
 					size='md'
 					w='full'
+					colorScheme='green'
 					opacity={uploadFileMutationLoading || clearProfileFieldMutationLoading ? 0.5 : 1}
 					cursor={
 						uploadFileMutationLoading || clearProfileFieldMutationLoading ? 'progress' : 'pointer'
@@ -603,7 +610,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Icon as={FiImage} boxSize='60px' />
 				</Flex>
 			)}
-			<Flex gap={6}>
+			<Flex gap={2}>
 				<FileUploadButton fieldName='image' accept='image/*' content='Upload image' />
 				<ClearFieldButton field='image' />
 			</Flex>
@@ -615,7 +622,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		return (
 			<Box>
-				<Flex gap={6}>
+				<Flex gap={2}>
 					<FileUploadButton
 						fieldName={fieldName}
 						content={text}
@@ -625,7 +632,15 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					{image ? <ClearFieldButton field={fieldName} /> : false}
 				</Flex>
 				{image ? (
-					<Image src={image} alt={text} loading='eager' fit='cover' w='xs' mb={2} />
+					<Image
+						src={image}
+						alt={text}
+						loading='eager'
+						fit='cover'
+						w='xs'
+						mb={2}
+						borderRadius='md'
+					/>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
 					<ProgressBar />
 				) : (
@@ -1155,6 +1170,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									value={mediaVideo1}
 									name='mediaVideo1'
 									label='Video embed 1'
+									placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
 									leftElement={<FiVideo />}
 									onChange={handleInputChange}
 								/>
@@ -1173,6 +1189,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									value={mediaVideo2}
 									name='mediaVideo2'
 									label='Video embed 2'
+									placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
 									leftElement={<FiVideo />}
 									onChange={handleInputChange}
 								/>
