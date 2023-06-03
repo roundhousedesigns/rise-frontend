@@ -24,7 +24,6 @@ import {
 	chakra,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { isEqual } from 'lodash';
 import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
@@ -68,11 +67,6 @@ import { useProfileEdited } from '../hooks/hooks';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
-
-type AlertProps = {
-	id: string;
-	handleDeleteCredit: (id: string) => void;
-};
 
 interface Props {
 	profile: UserProfile | null;
@@ -127,17 +121,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
+
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
+
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
-	// DEBUG
-	// detect changes in the `image` variable and output to console
-	useEffect(() => {
-		console.log('image changed', image);
-	}, [image]);
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const {
 		uploadFileMutation,
@@ -149,10 +140,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		results: { loading: clearProfileFieldMutationLoading },
 	} = useClearProfileField();
 
-	const {
-		updateCreditOrderMutation,
-		results: { loading: updateCreditOrderLoading },
-	} = useUpdateCreditOrder();
+	const { updateCreditOrderMutation } = useUpdateCreditOrder();
 
 	const {
 		deleteCreditMutation,
@@ -164,9 +152,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
-		if (!editProfile) return;
+		if (!editProfile || originalProfile.current) return;
 
-		if (!originalProfile.current) originalProfile.current = editProfile;
+		originalProfile.current = editProfile;
 	}, [editProfile]);
 
 	// If the credits order has changed, fire the mutation to save it after a delay.
@@ -202,6 +190,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			setEditCredit(newCredit.id);
 			onOpen();
 		}
+
+		return () => {
+			setEditCredit('');
+		};
 	}, [credits]);
 
 	// Resort the credits on rerender.
@@ -218,6 +210,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		} else if (credits.length === 0) {
 			setCreditsSorted([]);
 		}
+
+		return () => {
+			setCreditsSorted([]);
+		};
 	}, [credits]);
 
 	// Moves a credit index up by one
@@ -982,24 +978,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<StackItem pos='relative'>
 					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits.</Text>
-					{updateCreditOrderLoading ? (
-						<Box
-							pos='absolute'
-							h='full'
-							w='full'
-							left='0'
-							top='0'
-							bgColor='whiteAlpha.600'
-							zIndex='1'
-							display='flex'
-							alignItems='center'
-							justifyContent='center'
-						>
-							<Spinner color='blue' size='xl' />
-						</Box>
-					) : (
-						false
-					)}
+					{/* TODO better reorder animation */}
+
 					{willDeleteCredits ? (
 						<Text variant='devAlert'>
 							Please save your profile to confirm deleting credits, or cancel to undo.

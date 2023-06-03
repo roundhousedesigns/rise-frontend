@@ -229,5 +229,11 @@ export const useProfileEdited = (editProfile: UserProfile, originalProfile: User
 		'mediaImage6',
 	];
 
-	return !isEqual(omit(editProfile, omitFields), omit(originalProfile, omitFields));
+	const profile1 = new UserProfile({
+		...omit(originalProfile, omitFields),
+		id: 0,
+	});
+	const profile2 = new UserProfile({ ...omit(editProfile, omitFields), id: 0 });
+
+	return !isEqual(profile1, profile2);
 };

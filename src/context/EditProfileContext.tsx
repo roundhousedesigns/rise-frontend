@@ -15,7 +15,7 @@ interface EditProfileAction {
 }
 
 export const EditProfileContext = createContext({
-	editProfile: {} as UserProfile,
+	editProfile: new UserProfile(),
 	editProfileDispatch: ({}: EditProfileAction) => {},
 });
 
@@ -27,7 +27,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			const current = { ...state };
 			current[action.payload.name] = action.payload.value;
 
-			return new UserProfile(current);
+			return current;
 		}
 
 		case 'UPDATE_BOOLEAN_INPUT': {
@@ -36,7 +36,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			const current = { ...state };
 			current[action.payload.name] = sanitizeBoolean(action.payload.value);
 
-			return new UserProfile(current);
+			return current;
 		}
 
 		case 'UPDATE_PERSONAL_LINKS_INPUT': {
@@ -45,7 +45,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			const current = { ...state };
 			current[action.payload.name] = action.payload.value;
 
-			return new UserProfile(current);
+			return current;
 		}
 
 		case 'UPDATE_CREDIT': {

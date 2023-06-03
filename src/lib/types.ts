@@ -15,37 +15,16 @@ export interface WPItemParams {
  * The data shape for User input.
  */
 export interface UserParams {
-	id: number;
+	id: number | null;
 	firstName?: string;
 	lastName?: string;
-}
-
-/**
- * The data shape for Candidate input.
- */
-export interface CandidateData {
-	id: number;
-	firstName?: string;
-	lastName?: string;
-	selfTitle?: string;
-	image?: string;
-}
-
-/**
- * The data shape for a PersonalLinks input.
- */
-export interface PersonalLinksParams {
-	twitter?: string;
-	linkedin?: string;
-	instagram?: string;
-	facebook?: string;
 }
 
 /**
  * The data shape for UserProfile input.
  */
 export interface UserProfileParams {
-	id: number;
+	id: number | null;
 	firstName?: string;
 	lastName?: string;
 	email?: string;
@@ -79,6 +58,27 @@ export interface UserProfileParams {
 	instagram?: string;
 	facebook?: string;
 	website?: string;
+}
+
+/**
+ * The data shape for Candidate input.
+ */
+export interface CandidateData {
+	id: number | null;
+	firstName?: string;
+	lastName?: string;
+	selfTitle?: string;
+	image?: string;
+}
+
+/**
+ * The data shape for a PersonalLinks input.
+ */
+export interface PersonalLinksParams {
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
 }
 
 /**

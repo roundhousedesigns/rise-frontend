@@ -14,14 +14,15 @@ import { decodeString, maybeParseInt } from './utils';
  * A basic user.
  */
 export class User implements UserParams {
-	id: number = 0;
+	id: number | null = null;
 	firstName?: string;
 	lastName?: string;
+	[key: string]: any;
 
 	constructor(params?: UserParams) {
 		if (params) {
 			Object.assign(this, params, {
-				id: maybeParseInt(params.id),
+				id: params.id ? maybeParseInt(params.id) : null,
 			});
 		}
 	}
@@ -32,19 +33,6 @@ export class User implements UserParams {
 	fullName(): string {
 		const { firstName, lastName } = this;
 		return [firstName, lastName].filter(Boolean).join(' ');
-	}
-}
-
-/**
- * A candidate.
- */
-export class Candidate extends User implements CandidateData, UserProfileParams {
-	selfTitle?: string;
-	image?: string;
-
-	constructor(params: CandidateData) {
-		super(params);
-		Object.assign(this, params);
 	}
 }
 
@@ -83,9 +71,8 @@ export class UserProfile extends User {
 	mediaImage5?: string;
 	mediaImage6?: string;
 	credits: Credit[] = [];
-	[other: string]: any;
 
-	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
+	constructor(userParams?: UserProfileParams, credits?: CreditParams[]) {
 		const {
 			id,
 			firstName,
@@ -121,9 +108,9 @@ export class UserProfile extends User {
 			mediaImage4,
 			mediaImage5,
 			mediaImage6,
-		} = userParams;
+		} = userParams || {};
 
-		super({ id, firstName, lastName });
+		super({ id: id ? id : null, firstName, lastName });
 
 		this.firstName = firstName ? decodeString(firstName) : firstName;
 		this.lastName = lastName ? decodeString(lastName) : lastName;
@@ -203,6 +190,11 @@ export class UserProfile extends User {
 		}
 	}
 
+	/**
+	 * Get the user's full name.
+	 *
+	 * @returns The user's full name.
+	 */
 	fullName() {
 		return super.fullName();
 	}
@@ -212,6 +204,19 @@ export class UserProfile extends User {
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
 		return nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+	}
+}
+
+/**
+ * A candidate.
+ */
+export class Candidate extends User implements CandidateData, UserProfileParams {
+	selfTitle?: string;
+	image?: string;
+
+	constructor(params: CandidateData) {
+		super(params);
+		Object.assign(this, params);
 	}
 }
 

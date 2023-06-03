@@ -103,7 +103,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	// Set jobs when jobsData changes.
 	useEffect(() => {
-		console.info(jobsData, jobs.current);
 		jobs.current = jobsData
 			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
 			: [];
