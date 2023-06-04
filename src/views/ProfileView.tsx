@@ -151,7 +151,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
-								<Box w='xs'>
+								<Box w='33%' minW='160px' maxW='400px'>
 									<Image
 										src={image}
 										alt={`${profile.fullName()}'s picture`}
@@ -165,10 +165,10 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<Avatar size='2xl' name={profile.fullName()} mx={2} />
 							)
 						) : (
-							<Avatar size='2xl' src={image} name={profile.fullName()} />
+							<Avatar size='superLg' src={image} name={profile.fullName()} />
 						)}
 
-						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>
+						<Stack direction='column' justifyContent='space-evenly' gap={2} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
 								<Heading size='xl' mr={2} lineHeight='none'>
 									{profile.fullName()}
@@ -183,6 +183,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
+
 							<StackItem>
 								<Heading variant='contentTitle'>Works In</Heading>
 								<Flex alignItems='center'>
@@ -205,6 +206,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									</Wrap>
 								</Flex>
 							</StackItem>
+
 							{unions && unions.length > 0 && unionTerms ? (
 								<StackItem>
 									<Heading variant='contentTitle'>Unions/Guilds</Heading>
@@ -213,6 +215,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							) : (
 								false
 							)}
+
 							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 								<StackItem>
 									<Heading variant='contentTitle'>RISE Network Partner Directories</Heading>
@@ -226,6 +229,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							) : (
 								false
 							)}
+
 							<StackItem>
 								<Heading variant='contentTitle'>Contact</Heading>
 								<UnorderedList listStyleType='none' m={0}>
@@ -259,32 +263,31 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</UnorderedList>
 							</StackItem>
 
-							{socials && !isEmpty(socials) && (
-								<StackItem>
-									<PersonalIconLinks socials={socials} />
-								</StackItem>
-							)}
+							<StackItem flex='1' />
 
-							{resume ? (
-								<StackItem>
-									<Button
-										href={resume}
-										as={Link}
-										textDecoration='none'
-										colorScheme='green'
-										leftIcon={<FiDownload />}
-										download
-										isExternal
-										_hover={{
-											textDecoration: 'none',
-										}}
-									>
-										Resume
-									</Button>
-								</StackItem>
-							) : (
-								false
-							)}
+							<StackItem>
+								<Flex alignItems='center' gap={6} justifyContent='space-between'>
+									{socials && !isEmpty(socials) ? <PersonalIconLinks socials={socials} /> : false}
+									{resume ? (
+										<Button
+											href={resume}
+											as={Link}
+											textDecoration='none'
+											colorScheme='green'
+											leftIcon={<FiDownload />}
+											download
+											isExternal
+											_hover={{
+												textDecoration: 'none',
+											}}
+										>
+											Resume
+										</Button>
+									) : (
+										false
+									)}
+								</Flex>
+							</StackItem>
 
 							{/* TODO Bookmark a user */}
 							{/* <StackItem>

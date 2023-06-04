@@ -470,9 +470,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					isClosable: true,
 					position: 'top',
 				});
-
-				// DEBUG
-				console.error(err);
 			});
 	};
 

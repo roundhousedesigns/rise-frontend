@@ -15,7 +15,7 @@ const QUERY_USERS = gql`
 				firstName
 				lastName
 				selfTitle
-				image(format: RAW)
+				image
 			}
 		}
 	}

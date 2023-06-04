@@ -11,6 +11,8 @@ import {
 	Stack,
 	Flex,
 	Skeleton,
+	Badge,
+	useMediaQuery,
 } from '@chakra-ui/react';
 
 import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
@@ -53,6 +55,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
 	const [getTerms, { data: termData }] = useLazyTaxonomyTerms();
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	// Set the term ID list state
 	useEffect(() => {
@@ -124,17 +128,26 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 						justifyContent='space-between'
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					>
-						<Stack direction='column' flex='1 1 50%' minW='420px'>
+						<Stack direction='column' flex='1'>
 							<Wrap>
 								<Heading fontWeight='bold' fontSize='xl' as='h3'>
 									{title}
 								</Heading>
-								<Text fontSize='lg' fontWeight='bold'>{` ${yearString()}`}</Text>
-								<Text fontSize='lg' ml={1} fontWeight='medium'>
-									{decodeString(venue)}
-									{jobLocation ? decodeString(` ✺ ${jobLocation}`) : ''}
-								</Text>
+								<Badge fontSize='md' fontWeight='bold' textTransform='none'>
+									{` ${yearString()}`}
+								</Badge>
 							</Wrap>
+							<Box display={{ base: 'block', md: 'flex' }}>
+								<Text fontWeight='medium' display={{ base: 'block', md: 'inline' }}>
+									{decodeString(venue)}
+								</Text>
+								<Text display={{ base: 'block', md: 'inline' }} px={1}>
+									{isLargerThanMd ? '✺' : ''}
+								</Text>
+								<Text display={{ base: 'block', md: 'inline' }}>
+									{jobLocation ? decodeString(`${jobLocation}`) : ''}
+								</Text>
+							</Box>
 							{jobTitle ? (
 								<Text fontSize='md' lineHeight='short'>
 									{jobTitle}
@@ -143,7 +156,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 								false
 							)}
 						</Stack>
-						<Box flex='1 1 50%'>
+						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
 							{departmentIds?.length || jobs?.length || skills?.length ? (
 								<Stack direction='column' mt={{ base: 4, md: 0 }}>
 									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>

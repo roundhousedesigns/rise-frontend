@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Link } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 
 import { Candidate } from '../../lib/classes';
 
@@ -9,8 +9,28 @@ interface Props {
 }
 
 export default function CandidateItem({ candidate, ...props }: Props) {
+	const { image } = candidate;
+
+	console.info('CandidateItem', candidate);
+
 	return (
-		<Card py={2} my={0} {...props}>
+		<Card
+			as={RouterLink}
+			to={`/profile/${candidate.id}`}
+			py={2}
+			my={0}
+			_dark={{
+				_hover: {
+					bg: 'gray.700',
+				},
+			}}
+			_light={{
+				_hover: {
+					bg: 'gray.50',
+				},
+			}}
+			{...props}
+		>
 			<Flex
 				direction='row'
 				justifyContent='flex-start'
@@ -18,32 +38,19 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 				flexWrap={{ base: 'wrap', md: 'nowrap' }}
 				gap={{ base: 'initial', md: 0 }}
 			>
-				<Avatar
-					size='sm'
-					name={candidate.fullName()}
-					flex='0 0 auto'
-					mr={2}
-					src={candidate.image}
-				/>
-				<Text
-					fontSize='md'
+				<Avatar size='md' name={candidate.fullName()} flex='0 0 auto' mr={2} src={image} />
+				<Heading
+					as='h3'
+					fontSize='lg'
 					fontWeight='normal'
 					textAlign='left'
 					flex='1'
 					mt={0}
 					mb={{ base: 1, lg: 0 }}
 				>
-					<Link as={RouterLink} to={`/profile/${candidate.id}`}>
-						{candidate.fullName() ? candidate.fullName() : 'No name'}
-					</Link>
-				</Text>
-				<Text
-					fontSize='sm'
-					textAlign='right'
-					ml={{ base: '0 !important', lg: 'initial' }}
-					flex='1'
-					noOfLines={1}
-				>
+					{candidate.fullName() ? candidate.fullName() : 'No name'}
+				</Heading>
+				<Text textAlign='right' ml={{ base: '0 !important', lg: 'initial' }} flex='1' noOfLines={1}>
 					{candidate.selfTitle}
 				</Text>
 			</Flex>

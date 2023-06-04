@@ -20,6 +20,8 @@ import editableTheme from './components/Editable';
 import spinnerTheme from './components/Spinner';
 import inputTheme from './components/Input';
 import dividerTheme from './components/Divider';
+import avatarTheme from './components/Avatar';
+import badgeTheme from './components/Badge';
 
 // Config
 const config = {
@@ -46,6 +48,8 @@ const overrides = {
 		Spinner: spinnerTheme,
 		Input: inputTheme,
 		Divider: dividerTheme,
+		Avatar: avatarTheme,
+		Badge: badgeTheme,
 	},
 };
 
