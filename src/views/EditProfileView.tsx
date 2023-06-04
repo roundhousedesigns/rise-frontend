@@ -464,15 +464,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			.catch((err) => {
 				toast({
 					// title: 'Profile not saved.',
-					description: 'There was an error saving your profile.',
+					description: 'There was an error saving your profile: ' + err,
 					status: 'error',
 					duration: 5000,
 					isClosable: true,
 					position: 'top',
 				});
-
-				// DEBUG
-				console.error(err);
 			});
 	};
 
