@@ -47,7 +47,6 @@ export default function Footer() {
 					<Text fontSize='sm' mt={8}>
 						{`Please report all bugs to: `}
 						<Link href='mailto:support@risetheatre.org'>support@risetheatre.org</Link>
-						{VITE_DEV_MODE ? ' (dev)' : ''}
 					</Text>
 				</Container>
 			</Box>

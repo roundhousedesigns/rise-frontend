@@ -1,25 +1,16 @@
-import { defineStyleConfig } from '@chakra-ui/react';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
 
-const baseStyle = {
+const baseStyle = defineStyle({
 	fontWeight: 'medium',
 	borderRadius: 'lg',
 	textDecoration: 'none',
 	_hover: {
 		textDecoration: 'none',
 	},
-};
+});
 
 const variants = {
-	socialRound: {
-		borderRadius: 'full',
-		border: 'none',
-		bg: 'blackAlpha.700',
-		color: 'text.light',
-		_hover: {
-			bg: 'blackAlpha.600',
-		},
-	},
-	invisible: {
+	invisible: defineStyle({
 		border: 'none',
 		background: 'transparent',
 		_hover: {
@@ -28,13 +19,13 @@ const variants = {
 		_active: {
 			background: 'transparent',
 		},
-	},
-	oversized: {
+	}),
+	oversized: defineStyle({
 		fontSize: 'xl',
 		px: '6',
 		py: '4',
 		borderRadius: 'lg',
-	},
+	}),
 };
 
 export default defineStyleConfig({

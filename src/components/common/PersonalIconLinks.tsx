@@ -19,7 +19,7 @@ interface Props {
  */
 const socialIcon = (label: string, name: string, value: string, icon: React.ReactElement) => (
 	<Link href={socialLink(name, value)} isExternal display='block'>
-		<IconButton variant='socialRound' aria-label={label} icon={icon} />
+		<IconButton colorScheme='green' borderRadius='full' aria-label={label} icon={icon} />
 	</Link>
 );
 
