@@ -500,7 +500,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const handleCancel = () => {
-		navigate('/profile');
+		navigate(`/profile/${loggedInSlug}`);
 	};
 
 	const ClearFieldButton = ({
