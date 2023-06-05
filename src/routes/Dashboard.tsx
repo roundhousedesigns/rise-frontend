@@ -5,7 +5,7 @@ import Page from '../components/Page';
 import useViewer from '../hooks/queries/useViewer';
 
 export default function Dashboard() {
-	const { firstName } = useViewer();
+	const { firstName, loggedInSlug } = useViewer();
 
 	return (
 		<Page>
@@ -18,7 +18,7 @@ export default function Dashboard() {
 					<Heading variant='contentTitle' my={0} lineHeight='normal'>
 						You can also:
 					</Heading>
-					<Button as={Link} to='/profile' colorScheme='green' my={0}>
+					<Button as={Link} to={`/profile/${loggedInSlug}`} colorScheme='green' my={0}>
 						View your profile
 					</Button>
 					<Button as={Link} to='/profile/edit' colorScheme='green' my={0}>

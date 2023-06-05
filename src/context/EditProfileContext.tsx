@@ -43,7 +43,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			if (!action.payload.name) return state;
 
 			const current = { ...state };
-			current[action.payload.name] = action.payload.value;
+			current.socials = { ...current.socials, [action.payload.name]: action.payload.value };
 
 			return current;
 		}

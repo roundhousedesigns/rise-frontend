@@ -1,7 +1,8 @@
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
-const { VITE_APP_VERSION, VITE_DEV_MODE } = import.meta.env;
 
 export default function Footer() {
+	const { VITE_DEV_MODE } = import.meta.env;
+
 	const DevModeMessage = () => {
 		return VITE_DEV_MODE ? (
 			<Text fontSize='5xl' color='text.dark' textAlign='center' textTransform='uppercase' mb={8}>
@@ -45,8 +46,7 @@ export default function Footer() {
 					</Text>
 					<Text fontSize='sm' mt={8}>
 						{`Please report all bugs to: `}
-						<Link href='mailto:support@risetheatre.org'>support@risetheatre.org</Link> | Version{' '}
-						{VITE_APP_VERSION}
+						<Link href='mailto:support@risetheatre.org'>support@risetheatre.org</Link>
 						{VITE_DEV_MODE ? ' (dev)' : ''}
 					</Text>
 				</Container>

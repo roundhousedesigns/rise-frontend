@@ -9,7 +9,6 @@
 
 import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 
-// TODO add exclude param for current logged in user ID (like useCandidateSearch)
 const QUERY_USERS_BY_NAME = gql`
 	query UsersByName($name: String!) {
 		usersByName(name: $name)

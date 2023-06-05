@@ -4,6 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
+const { VITE_FRONTEND_URL } = import.meta.env;
 
 /** Generate a link to a social media profile.
  *
@@ -104,9 +105,9 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @returns {Object} The prepared user profile.
  */
 export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
-	// Strip credits and media uploads from the payload
+	// Strip unwanted fields from the payload
 	const {
-		credits,
+		slug,
 		image,
 		resume,
 		mediaImage1,
@@ -115,6 +116,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
+		credits,
 		...sanitized
 	} = profile;
 
@@ -170,4 +172,14 @@ export const handleReCaptchaVerify = async ({
 	const token = await executeRecaptcha(label);
 
 	return token;
+};
+
+/**
+ * Get the URL for a user profile.
+ *
+ * @param slug The user profile slug.
+ * @returns The user profile URL.
+ */
+export const getProfileURL = (slug: string): string => {
+	return `${VITE_FRONTEND_URL}/profile/${slug}`;
 };

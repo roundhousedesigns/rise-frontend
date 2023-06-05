@@ -50,7 +50,6 @@ export default function SearchResultsView() {
 	// 			racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 	// 			personalIdentities:
 	// 				personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
-	// 			exclude: loggedInId,
 	// 			first: items_per_query,
 	// 			after: afterCursor,
 	// 		},

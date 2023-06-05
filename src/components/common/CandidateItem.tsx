@@ -9,14 +9,12 @@ interface Props {
 }
 
 export default function CandidateItem({ candidate, ...props }: Props) {
-	const { image } = candidate;
-
-	console.info('CandidateItem', candidate);
+	const { image, slug, selfTitle } = candidate;
 
 	return (
 		<Card
 			as={RouterLink}
-			to={`/profile/${candidate.id}`}
+			to={`/profile/${slug}`}
 			py={2}
 			my={0}
 			_dark={{
@@ -51,7 +49,7 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 					{candidate.fullName() ? candidate.fullName() : 'No name'}
 				</Heading>
 				<Text textAlign='right' ml={{ base: '0 !important', lg: 'initial' }} flex='1' noOfLines={1}>
-					{candidate.selfTitle}
+					{selfTitle}
 				</Text>
 			</Flex>
 		</Card>

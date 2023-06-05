@@ -20,8 +20,20 @@ import {
 	Wrap,
 	SimpleGrid,
 	Icon,
+	TagLeftIcon,
+	TagLabel,
 } from '@chakra-ui/react';
-import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser } from 'react-icons/fi';
+import {
+	FiBriefcase,
+	FiCompass,
+	FiDownload,
+	FiGlobe,
+	FiMail,
+	FiMapPin,
+	FiPhone,
+	FiStar,
+	FiUser,
+} from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
@@ -184,28 +196,34 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
 
-							<StackItem>
-								<Heading variant='contentTitle'>Works In</Heading>
-								<Flex alignItems='center'>
+							{locations && locations.length > 0 ? (
+								<StackItem>
+									<Heading variant='contentTitle'>Works In</Heading>
 									<TextWithIcon icon={FiMapPin} mr={2}>
-										{locations && locations.length > 0 && locationTerms
-											? selectedTerms(locations, locationTerms)
-											: false}
+										{locationTerms ? selectedTerms(locations, locationTerms) : false}
 									</TextWithIcon>
 									<Wrap>
 										{willTravel !== undefined && (
-											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
-												{willTravel ? 'Will Travel' : 'Local Only'}
+											<Tag
+												size='md'
+												colorScheme={willTravel ? 'green' : 'orange'}
+												textAlign='center'
+											>
+												<TagLeftIcon as={FiBriefcase} boxSize={3} />
+												<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
 											</Tag>
 										)}
 										{willTour !== undefined && (
-											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} ml={2}>
-												{willTour ? 'Will Tour' : 'No Tours'}
+											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
+												<TagLeftIcon as={FiCompass} boxSize={3} />
+												<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
 											</Tag>
 										)}
 									</Wrap>
-								</Flex>
-							</StackItem>
+								</StackItem>
+							) : (
+								false
+							)}
 
 							{unions && unions.length > 0 && unionTerms ? (
 								<StackItem>

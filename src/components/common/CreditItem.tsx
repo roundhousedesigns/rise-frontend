@@ -26,7 +26,7 @@ interface Props {
 	onClick?: () => void;
 	[props: string]: any;
 }
-export default function CreditItem({ credit, isEditable, onClick, ...rest }: Props) {
+export default function CreditItem({ credit, isEditable, onClick, ...rest }: Props): JSX.Element {
 	const {
 		title,
 		jobTitle,
@@ -128,7 +128,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 						justifyContent='space-between'
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					>
-						<Stack direction='column' flex='1'>
+						<Box flex='1'>
 							<Wrap>
 								<Heading fontWeight='bold' fontSize='xl' as='h3'>
 									{title}
@@ -137,7 +137,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 									{` ${yearString()}`}
 								</Badge>
 							</Wrap>
-							<Box display={{ base: 'block', md: 'flex' }}>
+							<Box display={{ base: 'block', md: 'flex' }} my={0}>
 								<Text fontWeight='medium' display={{ base: 'block', md: 'inline' }}>
 									{decodeString(venue)}
 								</Text>
@@ -149,13 +149,13 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 								</Text>
 							</Box>
 							{jobTitle ? (
-								<Text fontSize='md' lineHeight='short'>
+								<Text fontSize='md' lineHeight='short' my={0}>
 									{jobTitle}
 								</Text>
 							) : (
 								false
 							)}
-						</Stack>
+						</Box>
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
 							{departmentIds?.length || jobs?.length || skills?.length ? (
 								<Stack direction='column' mt={{ base: 4, md: 0 }}>

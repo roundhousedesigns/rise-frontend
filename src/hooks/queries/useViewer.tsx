@@ -8,6 +8,7 @@ const QUERY_VIEWER = gql`
 	query QueryViewer {
 		viewer {
 			id: databaseId
+			slug
 			firstName
 			lastName
 			email
@@ -17,6 +18,7 @@ const QUERY_VIEWER = gql`
 
 interface Props {
 	loggedInId: number;
+	loggedInSlug: string;
 	firstName: string;
 	lastName: string;
 	email: string;
@@ -29,11 +31,12 @@ const useViewer = (): Props => {
 	});
 
 	const loggedInId = result?.data?.viewer?.id;
+	const loggedInSlug = result?.data?.viewer?.slug;
 	const firstName = result?.data?.viewer?.firstName;
 	const lastName = result?.data?.viewer?.lastName;
 	const email = result?.data?.viewer?.email;
 
-	return { loggedInId, firstName, lastName, email, result };
+	return { loggedInId, loggedInSlug, firstName, lastName, email, result };
 };
 
 export default useViewer;

@@ -18,7 +18,6 @@ import {
 import { isEqual } from 'lodash';
 import { FiX } from 'react-icons/fi';
 import { SearchContext } from '../../context/SearchContext';
-import useViewer from '../../hooks/queries/useViewer';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import SearchWizardView from '../../views/SearchWizardView';
 
@@ -28,8 +27,6 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const { loggedInId } = useViewer();
-
 	const {
 		search: {
 			filters: {
@@ -83,7 +80,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
-				exclude: loggedInId,
 				// first: 20,
 				// after: null,
 			},

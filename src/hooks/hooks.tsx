@@ -213,10 +213,10 @@ export const useChangePasswordError = (errorCode?: string): string => {
  * Determine if a user profile has been edited.
  *
  * @param editProfile
- * @param originalProfile
+ * @param origProfile
  */
-export const useProfileEdited = (editProfile: UserProfile, originalProfile: UserProfile | null) => {
-	if (originalProfile === null) return;
+export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProfile | null) => {
+	if (origProfile === null) return;
 
 	const omitFields = [
 		'credits',
@@ -229,11 +229,8 @@ export const useProfileEdited = (editProfile: UserProfile, originalProfile: User
 		'mediaImage6',
 	];
 
-	const profile1 = new UserProfile({
-		...omit(originalProfile, omitFields),
-		id: 0,
-	});
-	const profile2 = new UserProfile({ ...omit(editProfile, omitFields), id: 0 });
+	const profile1 = new UserProfile({ ...omit(origProfile, omitFields), id: 0, slug: 'temp1' });
+	const profile2 = new UserProfile({ ...omit(editProfile, omitFields), id: 0, slug: 'temp2' });
 
 	return !isEqual(profile1, profile2);
 };

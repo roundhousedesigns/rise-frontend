@@ -53,7 +53,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const { loggedInId } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
@@ -187,7 +187,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 											pl={3}
 											aria-label='My Profile'
 											as={RouterLink}
-											to='/profile'
+											to={`/profile/${loggedInSlug}`}
 											colorScheme='gray'
 											borderRadius='lg'
 											size='md'
@@ -220,7 +220,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 											<MenuList color='text.dark' zIndex='100'>
 												{isLargerThanMd ? null : (
 													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
+														<MenuItem
+															as={RouterLink}
+															to={`/profile/${loggedInSlug}`}
+															icon={<FiHome />}
+														>
 															My Profile
 														</MenuItem>
 														<MenuItem

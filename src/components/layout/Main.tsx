@@ -30,8 +30,7 @@ export default function Main() {
 					<Route path='/' element={<Dashboard />} />
 					<Route path='/reset-password' element={<ResetPassword />} />
 					<Route path='/results' element={<Results />} />
-					<Route path='/profile' element={<Profile />} />
-					<Route path='/profile/:userId' element={<Profile />} />
+					<Route path='/profile/:slug' element={<Profile />} />
 					<Route path='/profile/edit' element={<EditProfile />} />
 					{/* <Route path='/account' element={<Account />} /> */}
 					<Route path='/settings' element={<Settings />} />

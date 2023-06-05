@@ -16,6 +16,7 @@ export interface WPItemParams {
  */
 export interface UserParams {
 	id: number | null;
+	slug: string | null;
 	firstName?: string;
 	lastName?: string;
 }
@@ -25,6 +26,7 @@ export interface UserParams {
  */
 export interface UserProfileParams {
 	id: number | null;
+	slug: string | null;
 	firstName?: string;
 	lastName?: string;
 	email?: string;
@@ -65,6 +67,7 @@ export interface UserProfileParams {
  */
 export interface CandidateData {
 	id: number | null;
+	slug: string;
 	firstName?: string;
 	lastName?: string;
 	selfTitle?: string;

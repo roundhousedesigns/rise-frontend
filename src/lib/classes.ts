@@ -15,6 +15,7 @@ import { decodeString, maybeParseInt } from './utils';
  */
 export class User implements UserParams {
 	id: number | null = null;
+	slug: string | null = null;
 	firstName?: string;
 	lastName?: string;
 	[key: string]: any;
@@ -75,6 +76,7 @@ export class UserProfile extends User {
 	constructor(userParams?: UserProfileParams, credits?: CreditParams[]) {
 		const {
 			id,
+			slug,
 			firstName,
 			lastName,
 			selfTitle,
@@ -110,7 +112,7 @@ export class UserProfile extends User {
 			mediaImage6,
 		} = userParams || {};
 
-		super({ id: id ? id : null, firstName, lastName });
+		super({ id: id ? id : null, firstName, lastName, slug: slug ? slug : null });
 
 		this.firstName = firstName ? decodeString(firstName) : firstName;
 		this.lastName = lastName ? decodeString(lastName) : lastName;
@@ -211,6 +213,7 @@ export class UserProfile extends User {
  * A candidate.
  */
 export class Candidate extends User implements CandidateData, UserProfileParams {
+	slug: string = '';
 	selfTitle?: string;
 	image?: string;
 

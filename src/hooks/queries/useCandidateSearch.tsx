@@ -19,7 +19,6 @@ const QUERY_CANDIDATES = gql`
 		$genderIdentities: [ID] = []
 		$racialIdentities: [ID] = []
 		$personalIdentities: [ID] = []
-		$exclude: [ID] = []
 	) {
 		filteredCandidates(
 			positions: $positions
@@ -30,7 +29,6 @@ const QUERY_CANDIDATES = gql`
 			genderIdentities: $genderIdentities
 			racialIdentities: $racialIdentities
 			personalIdentities: $personalIdentities
-			exclude: $exclude
 		)
 	}
 `;

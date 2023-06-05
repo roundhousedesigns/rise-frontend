@@ -2,11 +2,14 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## [unreleased] - 1.0.4-beta
+## [1.0.4-beta] - 2023-06-05
 
 - Added: Externally linked user taxonomy support (Partner Directories)
 - Added: Email support button on Help page
 - Improved: File/image uploading and removal UX
+- Improved: Profile slugs! no more ID routing
+- Removed: old AuthContext file (finally)
+- Fixed: Socials not saving on profile edit
 
 ## [1.0.3-beta.2] - 2023-05-31
 

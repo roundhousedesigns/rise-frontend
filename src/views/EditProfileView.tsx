@@ -80,7 +80,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 
 	const {
 		firstName,
@@ -449,7 +449,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		updateProfileMutation(editProfile)
 			.then(() => {
 				setWillDeleteCredits(false);
-				navigate('/profile');
+				navigate(`/profile/${loggedInSlug}`);
 			})
 			.then(() => {
 				toast({

@@ -16,6 +16,7 @@ const QUERY_USERS = gql`
 				lastName
 				selfTitle
 				image
+				slug
 			}
 		}
 	}
