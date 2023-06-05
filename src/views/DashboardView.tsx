@@ -7,11 +7,11 @@ export default function DashboardView() {
 
 	return (
 		<Card mt={4}>
-			<Heading variant='contentTitle' mb={0}>
+			<Heading as='h3' variant='contentTitle' mb={0}>
 				To start a Search, use the button in the header!
 			</Heading>
 			<Stack direction={['column', 'row']} spacing={4} alignItems={['left', 'center']}>
-				<Heading variant='contentTitle' my={0} lineHeight='normal'>
+				<Heading as='h4' variant='contentTitle' my={0} lineHeight='normal'>
 					You can also:
 				</Heading>
 				<Button as={Link} to={`/profile/${loggedInSlug}`} colorScheme='green' my={0}>
@@ -22,7 +22,7 @@ export default function DashboardView() {
 				</Button>
 			</Stack>
 			<Box mt={4}>
-				<Heading variant='contentTitle'>Need a little guidance?</Heading>
+				<Heading as='h4' variant='contentTitle'>Need a little guidance?</Heading>
 				<Button as={Link} to='/help' colorScheme='orange'>
 					Get Help
 				</Button>

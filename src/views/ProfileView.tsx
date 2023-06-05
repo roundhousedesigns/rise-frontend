@@ -139,7 +139,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		};
 
 		return (
-			<Heading size='md' mt={2} fontWeight='medium' {...props}>
+			<Heading as='h2' size='md' mt={2} fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -182,7 +182,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 						<Stack direction='column' justifyContent='space-evenly' gap={2} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
-								<Heading size='xl' mr={2} lineHeight='none'>
+								<Heading as='h1' size='xl' mr={2} lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
 								{pronouns ? (
@@ -198,7 +198,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 							{locations && locations.length > 0 ? (
 								<StackItem>
-									<Heading variant='contentTitle'>Works In</Heading>
+									<Heading as='h3' variant='contentTitle'>
+										Works In
+									</Heading>
 									<TextWithIcon icon={FiMapPin} mr={2}>
 										{locationTerms ? selectedTerms(locations, locationTerms) : false}
 									</TextWithIcon>
@@ -227,7 +229,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 							{unions && unions.length > 0 && unionTerms ? (
 								<StackItem>
-									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<Heading as='h3' variant='contentTitle'>
+										Unions/Guilds
+									</Heading>
 									<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
 								</StackItem>
 							) : (
@@ -236,7 +240,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 								<StackItem>
-									<Heading variant='contentTitle'>RISE Network Partner Directories</Heading>
+									<Heading as='h3' variant='contentTitle'>
+										RISE Network Partner Directories
+									</Heading>
 									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
 										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
 										<Wrap flex='1' pl={2}>
@@ -249,7 +255,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							)}
 
 							<StackItem>
-								<Heading variant='contentTitle'>Contact</Heading>
+								<Heading as='h3' variant='contentTitle'>
+									Contact
+								</Heading>
 								<UnorderedList listStyleType='none' m={0}>
 									{email ? (
 										<ListItem>
@@ -364,7 +372,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
 					{mediaVideos.length > 0 ? (
 						<>
-							<Heading variant='contentTitle' size='md'>
+							<Heading as='h3' variant='contentTitle' size='md'>
 								Video
 							</Heading>
 							<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
@@ -385,7 +393,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 					)}
 					{mediaImages.length > 0 ? (
 						<Box mt={6}>
-							<Heading variant='contentTitle' size='md'>
+							<Heading as='h3' variant='contentTitle' size='md'>
 								Images
 							</Heading>
 

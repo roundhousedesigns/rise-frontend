@@ -59,7 +59,7 @@ export default function LoginView() {
 
 	return (
 		<Container>
-			<Heading size='lg'>Lost password</Heading>
+			<Heading as='h3' size='lg'>Lost password</Heading>
 			<Text fontSize='sm'>
 				Please enter your email address, and we'll send you a link to reset your password.
 			</Text>

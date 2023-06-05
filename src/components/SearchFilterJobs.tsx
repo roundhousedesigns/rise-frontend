@@ -42,7 +42,7 @@ export default function SearchFilterJobs() {
 		<Box mt={8}>
 			{!loading && !error ? (
 				<>
-					<Heading variant='searchFilterTitle'>What job(s) are you looking to fill?</Heading>
+					<Heading as='h3' variant='searchFilterTitle'>What job(s) are you looking to fill?</Heading>
 					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
 						{positionItems.map((term: WPItem) => {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });

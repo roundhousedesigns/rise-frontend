@@ -127,7 +127,9 @@ export default function RegisterView() {
 
 			<Divider my={6} />
 
-			<Heading variant='contentTitle'>Create an account</Heading>
+			<Heading as='h2' variant='contentTitle'>
+				Create an account
+			</Heading>
 			<form onSubmit={handleSubmit}>
 				<Stack direction='row' spacing={6}>
 					<TextInput

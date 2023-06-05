@@ -39,7 +39,7 @@ export default function SearchFilterSkills() {
 
 	return data?.length > 0 && !loading && !error ? (
 		<Box mt={8}>
-			<Heading variant='searchFilterTitle'>What skills are you looking for?</Heading>
+			<Heading as='h3' variant='searchFilterTitle'>What skills are you looking for?</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
 				{data.map((term: WPItem) => {
 					const checkbox = getCheckboxProps({ value: term.id.toString() });

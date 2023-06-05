@@ -4,6 +4,7 @@ import {
 	Divider,
 	Flex,
 	Heading,
+	Text,
 	Spinner,
 	Stack,
 	StackItem,
@@ -171,7 +172,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	return (
 		<>
 			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
-				<Heading size='lg' lineHeight='base'>
+				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
 				<ButtonGroup>
@@ -265,10 +266,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Stack direction='column' spacing={6} fontSize='md'>
 				{/* TODO Make this required */}
 				<StackItem>
-					<Heading variant='contentTitle'>Department</Heading>
-					<Heading variant='contentSubtitle'>
+					<Heading as='h4' variant='contentTitle'>Department</Heading>
+					<Text>
 						Select <strong>any</strong> department(s) you worked under.
-					</Heading>
+					</Text>
 					<ProfileCheckboxGroup
 						name='department'
 						items={allDepartments}
@@ -282,10 +283,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				</StackItem>
 				{selectedDepartmentIds && !jobsLoading ? (
 					<StackItem>
-						<Heading variant='contentTitle'>Position</Heading>
-						<Heading variant='contentSubtitle'>
+						<Heading as='h4' variant='contentTitle'>Position</Heading>
+						<Text>
 							Select <strong>any</strong> jobs that apply to this credit.
-						</Heading>
+						</Text>
 						<ProfileCheckboxGroup
 							name='jobs'
 							items={jobs.current}
@@ -303,8 +304,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				selectedJobIds &&
 				selectedJobIds.length ? (
 					<StackItem>
-						<Heading variant='contentTitle'>Skills</Heading>
-						<Heading variant='contentSubtitle'>Select any skills used on this job.</Heading>
+						<Heading as='h4' variant='contentTitle'>Skills</Heading>
+						<Text>Select any skills used on this job.</Text>
 						<ProfileCheckboxGroup
 							name='skills'
 							items={allRelatedSkills}

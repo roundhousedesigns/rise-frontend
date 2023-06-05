@@ -46,7 +46,15 @@ export default function SearchFilterJobs({ heading }: Props) {
 		<Box>
 			{!loading && !error ? (
 				<>
-					<Heading size='md' mb={6} pb={2} w='full' borderBottom='2px' borderColor='gray.600'>
+					<Heading
+						as='h3'
+						size='md'
+						mb={6}
+						pb={2}
+						w='full'
+						borderBottom='2px'
+						borderColor='gray.600'
+					>
 						{heading}
 					</Heading>
 					<Wrap justifyContent='flex-start' alignItems='center' w='full'>

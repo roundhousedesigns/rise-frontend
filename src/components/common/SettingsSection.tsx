@@ -10,7 +10,7 @@ export default function SettingsSection({ title, children, ...props }: Props): J
 	return (
 		<Box mt={4} flex='1' {...props}>
 			{title ? (
-				<Heading variant='pageSubtitle' fontSize='2xl'>
+				<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 					{title}
 				</Heading>
 			) : (

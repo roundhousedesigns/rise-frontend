@@ -41,7 +41,7 @@ export default function SearchFilterDepartment() {
 
 	return !loading && !error ? (
 		<Box>
-			<Heading variant='searchFilterTitle'>Which department are you hiring for?</Heading>
+			<Heading as='h3' variant='searchFilterTitle'>Which department are you hiring for?</Heading>
 			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
 				{data.map((term: WPItem) => {
 					const radio = getRadioProps({ value: term.id.toString() });

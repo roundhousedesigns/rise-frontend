@@ -9,7 +9,7 @@ export default function Notfound() {
 				404, friend.
 			</Heading>
 			<Box>
-				<Heading variant='contentTitle'>We couldn't find that page.</Heading>
+				<Heading as='h3' variant='contentTitle'>We couldn't find that page.</Heading>
 				<DashboardView />
 			</Box>
 		</Page>

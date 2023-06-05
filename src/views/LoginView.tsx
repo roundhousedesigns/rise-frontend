@@ -72,14 +72,14 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 	return (
 		<Container maxW='2xl' py={4}>
-			<Heading variant='pageTitle'>Welcome</Heading>
+			<Heading as='h2' variant='pageTitle'>Welcome</Heading>
 			<Text variant='sans' fontSize='lg'>
 				You'll need an account to create a profile or to search for candidates.
 			</Text>
 			<Divider my={4} />
 			<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
 				<Box flex='1 0 300px'>
-					<Heading variant='pageSubtitle' fontSize='2xl'>
+					<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 						Please sign in.
 					</Heading>
 					{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
@@ -122,7 +122,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 					</form>
 				</Box>
 				<Box textAlign='center' flex='1'>
-					<Heading variant='pageSubtitle' fontSize='2xl'>
+					<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 						Don't have an account?
 					</Heading>
 					<Button

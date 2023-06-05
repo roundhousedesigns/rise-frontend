@@ -117,7 +117,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					}}
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
-						<Heading variant='contentTitle' mb={0} color='text.light'>
+						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
 							Search
 						</Heading>
 						<IconButton
