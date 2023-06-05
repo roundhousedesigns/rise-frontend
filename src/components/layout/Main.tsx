@@ -12,6 +12,7 @@ import Profile from '../../routes/Profile';
 import EditProfile from '../../routes/EditProfile';
 import Settings from '../../routes/Settings';
 import Help from '../../routes/Help';
+import NotFound from '../../routes/NotFound';
 
 export default function Main() {
 	return (
@@ -40,6 +41,9 @@ export default function Main() {
 					<Route path='/login' element={<Login />} />
 					<Route path='/lost-password' element={<LostPassword />} />
 					<Route path='/register' element={<Register />} />
+
+					{/* 404 */}
+					<Route path='*' element={<NotFound />} />
 				</Routes>
 			</Container>
 		</Box>
