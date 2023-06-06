@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
-import CheckboxButton from './common/CheckboxButton';
+import CheckboxButton from './common/inputs/CheckboxButton';
 
 import { SearchContext } from '../context/SearchContext';
 

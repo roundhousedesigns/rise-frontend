@@ -4,7 +4,7 @@ import { WPItem } from '../lib/classes';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
-import CheckboxButton from './common/CheckboxButton';
+import CheckboxButton from './common/inputs/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
 
 export default function SearchFilterSkills() {

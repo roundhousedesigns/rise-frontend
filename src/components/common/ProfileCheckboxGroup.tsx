@@ -1,7 +1,7 @@
 import { Key } from 'react';
 import { CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
-import CheckboxButton from './CheckboxButton';
+import CheckboxButton from './inputs/CheckboxButton';
 
 interface Props {
 	name: string;
