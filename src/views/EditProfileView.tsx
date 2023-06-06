@@ -48,6 +48,7 @@ import {
 
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
+import { useProfileEdited } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useUpdateProfile from '../hooks/mutations/useUpdateProfile';
 import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
@@ -64,7 +65,6 @@ import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditAlertDialog from '../components/DeleteCreditAlertDialog';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
-import { useProfileEdited } from '../hooks/hooks';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
 
 // TODO Refactor into smaller components.

@@ -241,7 +241,7 @@ export class PersonalLinks implements PersonalLinksParams {
  * A production credit.
  */
 export class Credit implements CreditParams {
-	id: string = '';
+	id: string;
 	index: number = 0;
 	title: string;
 	jobTitle: string;
@@ -259,6 +259,7 @@ export class Credit implements CreditParams {
 	isNew: boolean = false;
 
 	constructor(params: CreditParams) {
+		this.id = params.id.toString();
 		this.index = params.index;
 		this.title = params.title ? params.title : '';
 		this.jobTitle = params.jobTitle ? params.jobTitle : '';
