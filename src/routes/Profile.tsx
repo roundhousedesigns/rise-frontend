@@ -59,10 +59,7 @@ export default function Profile(): JSX.Element {
 	);
 
 	return (
-		<Page
-			title={profileIsLoggedInUser ? 'My Profile' : ''}
-			actions={profileIsLoggedInUser ? <PageActions /> : null}
-		>
+		<Page title={profileIsLoggedInUser ? 'My Profile' : ''} actions={<PageActions />}>
 			{profile && !loading && !error ? (
 				<ProfileView profile={profile} loading={loading} />
 			) : loading ? (
