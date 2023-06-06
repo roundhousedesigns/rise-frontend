@@ -21,6 +21,7 @@ export default function Main() {
 			w='full'
 			h='auto'
 			py={2}
+			mt={4}
 			background='none'
 			justifyContent='center'
 			alignItems='center'

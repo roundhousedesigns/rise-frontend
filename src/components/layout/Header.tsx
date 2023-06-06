@@ -35,7 +35,7 @@ import {
 } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
-import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png';
+import logo from '../../assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '../../assets/images/rise-blue-circle.png';
 
 import { SearchContext } from '../../context/SearchContext';
@@ -153,6 +153,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								h='auto'
 								position='relative'
 								display='block'
+								ml={8}
+								px={8}
+								py={4}
 							/>
 						</Link>
 
