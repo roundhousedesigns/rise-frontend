@@ -5,7 +5,7 @@ import { styles } from './global';
 
 // Foundational style overrides
 import { colors } from './foundations/colors';
-import { fonts /*fontWeights*/ } from './foundations/fonts';
+import { fonts } from './foundations/fonts';
 
 // Component style overrides
 import headingTheme from './components/Heading';
@@ -35,7 +35,6 @@ const overrides = {
 	config,
 	styles,
 	fonts,
-	// fontWeights,
 	colors,
 	components: {
 		Heading: headingTheme,

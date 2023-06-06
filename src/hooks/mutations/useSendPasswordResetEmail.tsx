@@ -16,7 +16,7 @@ const MUTATE_SEND_PASSWORD_RESET = gql`
 	}
 `;
 
-export const useSendPasswordResetEmail = () => {
+const useSendPasswordResetEmail = () => {
 	const [mutation, results] = useMutation(MUTATE_SEND_PASSWORD_RESET);
 
 	const sendPasswordResetEmailMutation = ({ username, reCaptchaToken }: LostPasswordInput) => {
@@ -33,3 +33,5 @@ export const useSendPasswordResetEmail = () => {
 
 	return { sendPasswordResetEmailMutation, results };
 };
+
+export default useSendPasswordResetEmail;

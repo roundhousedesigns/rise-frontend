@@ -13,7 +13,7 @@ import {
 import TextInput from '../components/common/inputs/TextInput';
 import { useResetPasswordError } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
-import { useResetUserPassword } from '../hooks/mutations/useResetUserPassword';
+import useResetUserPassword from '../hooks/mutations/useResetUserPassword';
 
 interface Props {
 	token: string;

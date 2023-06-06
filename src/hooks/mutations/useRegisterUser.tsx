@@ -18,7 +18,7 @@ const MUTATE_REGISTER_USER = gql`
 	}
 `;
 
-export const useRegisterUser = () => {
+const useRegisterUser = () => {
 	const [mutation, results] = useMutation(MUTATE_REGISTER_USER);
 
 	const registerUserMutation = (user: RegisterUserInput) => {
@@ -45,3 +45,5 @@ export const useRegisterUser = () => {
 
 	return { registerUserMutation, results };
 };
+
+export default useRegisterUser;

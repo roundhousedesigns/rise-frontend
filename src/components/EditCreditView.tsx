@@ -13,10 +13,10 @@ import {
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '../context/EditProfileContext';
-import { usePositions } from '../hooks/queries/usePositions';
-import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
-import { useLazyPositions } from '../hooks/queries/useLazyPositions';
-import { useUpdateCredit } from '../hooks/mutations/useUpdateCredit';
+import usePositions from '../hooks/queries/usePositions';
+import useRelatedSkills from '../hooks/queries/useRelatedSkills';
+import useLazyPositions from '../hooks/queries/useLazyPositions';
+import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import TextInput from './common/inputs/TextInput';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
@@ -266,7 +266,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Stack direction='column' spacing={6} fontSize='md'>
 				{/* TODO Make this required */}
 				<StackItem>
-					<Heading as='h4' variant='contentTitle'>Department</Heading>
+					<Heading as='h4' variant='contentTitle'>
+						Department
+					</Heading>
 					<Text>
 						Select <strong>any</strong> department(s) you worked under.
 					</Text>
@@ -283,7 +285,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				</StackItem>
 				{selectedDepartmentIds && !jobsLoading ? (
 					<StackItem>
-						<Heading as='h4' variant='contentTitle'>Position</Heading>
+						<Heading as='h4' variant='contentTitle'>
+							Position
+						</Heading>
 						<Text>
 							Select <strong>any</strong> jobs that apply to this credit.
 						</Text>
@@ -304,7 +308,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				selectedJobIds &&
 				selectedJobIds.length ? (
 					<StackItem>
-						<Heading as='h4' variant='contentTitle'>Skills</Heading>
+						<Heading as='h4' variant='contentTitle'>
+							Skills
+						</Heading>
 						<Text>Select any skills used on this job.</Text>
 						<ProfileCheckboxGroup
 							name='skills'

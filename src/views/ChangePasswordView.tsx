@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
-import { useChangeUserPassword } from '../hooks/mutations/useChangeUserPassword';
+import useChangeUserPassword  from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
 import TextInput from '../components/common/inputs/TextInput';
 

@@ -3,7 +3,7 @@ import { Button, Spinner } from '@chakra-ui/react';
 
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
-import { useUserProfile } from '../hooks/queries/useUserProfile';
+import useUserProfile from '../hooks/queries/useUserProfile';
 
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';

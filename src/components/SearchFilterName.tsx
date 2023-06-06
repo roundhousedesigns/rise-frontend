@@ -7,7 +7,7 @@ import { FiSearch, FiXCircle } from 'react-icons/fi';
 import TextInput from './common/inputs/TextInput';
 import SearchFilterAccordionItem from './common/SearchFilterAccordionItem';
 import { SearchContext } from '../context/SearchContext';
-import { useSearchByName } from '../hooks/queries/useSearchByName';
+import useSearchByName from '../hooks/queries/useSearchByName';
 
 export default function SearchFilterName() {
 	const {

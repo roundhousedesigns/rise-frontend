@@ -22,7 +22,7 @@ export const QUERY_CONTENT = gql`
  * @param id Post ID
  * @returns A tuple of a prepared HTML string and a query result object.
  */
-export const usePostContent = (id: number | string): [string | null, any] => {
+const usePostContent = (id: number | string): [string | null, any] => {
 	const result = useQuery(QUERY_CONTENT, {
 		variables: {
 			id,
@@ -34,3 +34,5 @@ export const usePostContent = (id: number | string): [string | null, any] => {
 
 	return [content, omit(result, ['data'])];
 };
+
+export default usePostContent;

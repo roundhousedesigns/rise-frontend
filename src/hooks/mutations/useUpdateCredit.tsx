@@ -29,7 +29,7 @@ const MUTATE_UPDATE_CREDIT = gql`
 	}
 `;
 
-export const useUpdateCredit = () => {
+const useUpdateCredit = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_CREDIT);
 
 	const updateCreditMutation = (credit: CreditOutput, userId: number) => {
@@ -51,3 +51,5 @@ export const useUpdateCredit = () => {
 
 	return { updateCreditMutation, results };
 };
+
+export default useUpdateCredit;

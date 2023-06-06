@@ -31,7 +31,7 @@ const QUERY_RELATED_SKILLS = gql`
  * @param {Array} jobs - An array of job IDs.
  * @returns {Array} A tuple of a prepared data object and a query result object.
  */
-export const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
+const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
 	const result = useQuery(QUERY_RELATED_SKILLS, {
 		variables: {
 			jobs,
@@ -42,3 +42,5 @@ export const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
 
 	return [preparedResult, omit(result, ['data'])];
 };
+
+export default useRelatedSkills;

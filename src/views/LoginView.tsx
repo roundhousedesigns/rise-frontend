@@ -17,7 +17,7 @@ import {
 import { handleReCaptchaVerify } from '../lib/utils';
 import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
-import { useLogin } from '../hooks/mutations/useLogin';
+import useLogin from '../hooks/mutations/useLogin';
 import { useLoginError } from '../hooks/hooks';
 
 interface Props {

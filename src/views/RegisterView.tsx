@@ -17,10 +17,10 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 import { handleReCaptchaVerify } from '../lib/utils';
 import TextInput from '../components/common/inputs/TextInput';
-import { useRegisterUser } from '../hooks/mutations/useRegisterUser';
+import useRegisterUser from '../hooks/mutations/useRegisterUser';
 import { useRegistrationError } from '../hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
-import { usePostContent } from '../hooks/queries/usePostContent';
+import usePostContent from '../hooks/queries/usePostContent';
 
 export default function RegisterView() {
 	const [userFields, setUserFields] = useState<RegisterUserInput>({

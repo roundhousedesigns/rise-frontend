@@ -17,7 +17,7 @@ const MUTATE_RESET_USER_PASSWORD = gql`
 	}
 `;
 
-export const useResetUserPassword = () => {
+const useResetUserPassword = () => {
 	const [mutation, results] = useMutation(MUTATE_RESET_USER_PASSWORD);
 
 	const resetUserPasswordMutation = (key: string, login: string, password: string) => {
@@ -33,3 +33,5 @@ export const useResetUserPassword = () => {
 
 	return { resetUserPasswordMutation, results };
 };
+
+export default useResetUserPassword;

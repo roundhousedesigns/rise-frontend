@@ -17,7 +17,7 @@ const REFRESH_AUTH_TOKEN = gql`
 	}
 `;
 
-export const useRefreshToken = () => {
+const useRefreshToken = () => {
 	const [mutation, results] = useMutation(REFRESH_AUTH_TOKEN);
 
 	const refreshTokenMutation = (refreshToken: string) => {
@@ -33,3 +33,5 @@ export const useRefreshToken = () => {
 
 	return { refreshTokenMutation, results };
 };
+
+export default useRefreshToken;

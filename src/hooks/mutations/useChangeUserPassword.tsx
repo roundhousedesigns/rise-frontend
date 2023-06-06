@@ -19,7 +19,7 @@ const MUTATE_CHANGE_USER_PASSWORD = gql`
 	}
 `;
 
-export const useChangeUserPassword = () => {
+const useChangeUserPassword = () => {
 	const [mutation, results] = useMutation(MUTATE_CHANGE_USER_PASSWORD);
 
 	const changeUserPasswordMutation = (
@@ -39,3 +39,5 @@ export const useChangeUserPassword = () => {
 
 	return { changeUserPasswordMutation, results };
 };
+
+export default useChangeUserPassword;

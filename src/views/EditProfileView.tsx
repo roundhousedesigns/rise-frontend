@@ -54,7 +54,7 @@ import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import useFileUpload from '../hooks/mutations/useFileUpload';
 import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
-import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
 
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/common/CreditItem';

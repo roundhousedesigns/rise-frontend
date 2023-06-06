@@ -93,7 +93,7 @@ export const QUERY_PROFILE = gql`
  * @param id User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
-export const useUserProfile = (id: number): [UserProfile | null, any] => {
+const useUserProfile = (id: number): [UserProfile | null, any] => {
 	const result = useQuery(QUERY_PROFILE, {
 		variables: {
 			id,
@@ -133,3 +133,5 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 
 	return [preparedProfile, omit(result, ['data'])];
 };
+
+export default useUserProfile;

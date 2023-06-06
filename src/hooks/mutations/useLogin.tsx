@@ -17,7 +17,7 @@ const MUTATE_LOGIN = gql`
 	}
 `;
 
-export const useLogin = () => {
+const useLogin = () => {
 	const [mutation, results] = useMutation(MUTATE_LOGIN);
 
 	const loginMutation = ({ login, password, reCaptchaToken }: LoginInput) => {
@@ -33,3 +33,5 @@ export const useLogin = () => {
 
 	return { loginMutation, results };
 };
+
+export default useLogin;
