@@ -99,7 +99,13 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 		return () => setLoading(false);
 	}, [termData, jobIds, skillIds]);
 
-	// TODO don't show credit until all is loaded (including depts, credits, and skills)
+	const handleCreditKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (onClick === undefined) return;
+
+		if (e.key === 'Enter' || e.key === ' ') {
+			onClick();
+		}
+	};
 
 	const yearString = () => {
 		if (workStart && workEnd && !workCurrent) {
@@ -117,6 +123,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 		<Box onClick={onClick} {...rest}>
 			<Card
 				cursor={isEditable ? 'pointer' : 'default'}
+				tabIndex={0}
+				onKeyDown={handleCreditKeyDown}
 				borderWidth={isEditable ? '3px' : '0'}
 				borderStyle='dashed'
 				borderColor='gray.300'

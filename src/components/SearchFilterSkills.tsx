@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Heading, Box, Alert, Spinner, CheckboxGroup } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
 
@@ -20,37 +20,18 @@ export default function SearchFilterSkills() {
 		});
 	};
 
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
-
-	// Set the RadioGroup value on initial render
-	useEffect(() => {
-		setValue(search.filters.skills);
-	}, []);
-
-	// Subscribe to Reset events in the Search Context
-	useEffect(() => {
-		if (search.filters.skills.length === 0) {
-			setValue([]);
-		}
-	}, [search.filters.skills.length]);
-
 	return data?.length > 0 && !loading && !error ? (
 		<Box mt={8}>
-			<Heading as='h3' variant='searchFilterTitle'>What skills are you looking for?</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
-				{data.map((term: WPItem) => {
-					const checkbox = getCheckboxProps({ value: term.id.toString() });
-
-					return (
-						<CheckboxButton key={term.id} {...checkbox}>
-							{term.name}
-						</CheckboxButton>
-					);
-				})}
-			</Wrap>
+			<Heading as='h3' variant='searchFilterTitle'>
+				What skills are you looking for?
+			</Heading>
+			<CheckboxGroup defaultValue={search.filters.skills} onChange={handleToggleTerm}>
+				{data.map((term: WPItem) => (
+					<CheckboxButton key={term.id} value={term.id.toString()}>
+						{term.name}
+					</CheckboxButton>
+				))}
+			</CheckboxGroup>
 		</Box>
 	) : loading ? (
 		<Spinner />

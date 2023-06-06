@@ -1,10 +1,10 @@
-import { useContext, useEffect } from 'react';
-import { Box, Heading, Wrap, useRadioGroup, Spinner } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
-import RadioButton from './common/RadioButton';
 
 import { SearchContext } from '../context/SearchContext';
+import RadioButton from './common/RadioButton';
 
 export default function SearchFilterDepartment() {
 	const [data, { loading, error }] = usePositions();
@@ -19,40 +19,22 @@ export default function SearchFilterDepartment() {
 		});
 	};
 
-	const { getRootProps, getRadioProps, setValue } = useRadioGroup({
-		name: 'department',
-		defaultValue: '',
-		onChange: handleToggleTerm,
-	});
-
-	// Set the RadioGroup value on initial render
-	useEffect(() => {
-		setValue(search.filters.positions.department);
-	}, []);
-
-	// Subscribe to Reset events in the Search Context
-	useEffect(() => {
-		if (search.filters.positions.department === '') {
-			setValue('');
-		}
-	}, [search.filters.positions.department]);
-
-	const group = getRootProps();
-
 	return !loading && !error ? (
 		<Box>
-			<Heading as='h3' variant='searchFilterTitle'>Which department are you hiring for?</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' w='full' fontSize='xl' {...group}>
-				{data.map((term: WPItem) => {
-					const radio = getRadioProps({ value: term.id.toString() });
-
-					return (
-						<RadioButton fontSize='md' key={term.id} {...radio}>
-							{term.name}
-						</RadioButton>
-					);
-				})}
-			</Wrap>
+			<Heading as='h3' variant='searchFilterTitle'>
+				Which department are you hiring for?
+			</Heading>
+			<RadioGroup onChange={handleToggleTerm} value={search.filters.positions.department}>
+				<Wrap>
+					{data.map((term: WPItem) => {
+						return (
+							<RadioButton key={term.id} name='search-departments' value={term.id.toString()}>
+								{term.name}
+							</RadioButton>
+						);
+					})}
+				</Wrap>
+			</RadioGroup>
 		</Box>
 	) : loading ? (
 		<Spinner />

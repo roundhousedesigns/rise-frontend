@@ -22,6 +22,7 @@ import {
 	FormControl,
 	useMediaQuery,
 	chakra,
+	VisuallyHidden,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -64,6 +65,7 @@ import DeleteCreditAlertDialog from '../components/DeleteCreditAlertDialog';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import { useProfileEdited } from '../hooks/hooks';
+import FileUploadButton from '../components/common/inputs/FileUploadButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -529,46 +531,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		);
 	};
 
-	const FileUploadButton = ({
-		fieldName,
-		content = 'Upload',
-		icon,
-		accept,
-	}: {
-		fieldName: string;
-		content?: string | number | JSX.Element;
-		icon?: JSX.Element;
-		accept?: string;
-	}) => {
-		return (
-			<FormControl>
-				<Button
-					as={FormLabel}
-					leftIcon={icon ? icon : undefined}
-					size='md'
-					w='full'
-					colorScheme='green'
-					opacity={uploadFileMutationLoading || clearProfileFieldMutationLoading ? 0.5 : 1}
-					cursor={
-						uploadFileMutationLoading || clearProfileFieldMutationLoading ? 'progress' : 'pointer'
-					}
-				>
-					{content}
-					<Input
-						variant='file'
-						type='file'
-						formEncType='multipart/form-data'
-						multiple={false}
-						name={fieldName}
-						accept={accept}
-						isDisabled={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-						onChange={handleFileInputChange}
-					/>
-				</Button>
-			</FormControl>
-		);
-	};
-
 	const ProgressBar = () => (
 		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
 	);
@@ -604,7 +566,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</Flex>
 			)}
 			<Flex gap={2}>
-				<FileUploadButton fieldName='image' accept='image/*' content='Upload image' />
+				<FileUploadButton
+					fieldName='image'
+					accept='image/*'
+					content='Upload image'
+					onChange={handleFileInputChange}
+					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+				/>
 				<ClearFieldButton field='image' />
 			</Flex>
 		</Box>
@@ -621,6 +589,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						content={text}
 						icon={<FiUpload />}
 						accept='image/*'
+						onChange={handleFileInputChange}
+						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 					/>
 					{image ? <ClearFieldButton field={fieldName} /> : false}
 				</Flex>
@@ -698,9 +668,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										flex='1'
 										label='First name'
 										minW='200px'
-										inputProps={{
-											tabIndex: 1,
-										}}
 									/>
 									<TextInput
 										placeholder='Last'
@@ -711,9 +678,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										onChange={handleInputChange}
 										flex='1'
 										minW='200px'
-										inputProps={{
-											tabIndex: 2,
-										}}
 									/>
 									<TextInput
 										placeholder='pronouns'
@@ -725,7 +689,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										maxW='150px'
 										inputProps={{
 											size: 'md',
-											tabIndex: 3,
+											tabIndex: 0,
 										}}
 									/>
 								</Flex>
@@ -739,7 +703,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										onChange={handleInputChange}
 										inputProps={{
 											maxLength: 25,
-											tabIndex: 4,
+											tabIndex: 0,
 										}}
 										flex='1'
 									/>
@@ -752,7 +716,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										onChange={handleInputChange}
 										inputProps={{
 											maxLength: 50,
-											tabIndex: 5,
+											tabIndex: 0,
 										}}
 										flex='1'
 									/>
@@ -779,7 +743,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='email'
 											onChange={handleInputChange}
 											inputProps={{
-												tabIndex: 6,
+												tabIndex: 0,
 											}}
 										/>
 										{/* TODO Add checkbox for "use account email address" */}
@@ -791,7 +755,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='phone'
 											onChange={handleInputChange}
 											inputProps={{
-												tabIndex: 7,
+												tabIndex: 0,
 											}}
 										/>
 										<TextInput
@@ -801,7 +765,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											name='website'
 											onChange={handleInputChange}
 											inputProps={{
-												tabIndex: 8,
+												tabIndex: 0,
 											}}
 										/>
 									</Stack>
@@ -809,7 +773,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							</StackItem>
 						</Stack>
 					</Flex>
-					<Stack>
+					<Stack mt={4}>
 						<StackItem fontSize='sm'>
 							{/* TODO make this required */}
 							<Heading variant='contentTitle'>Work Locations</Heading>
@@ -873,10 +837,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												'PDF or image'
 											)}
 										</Heading>
-										{/* TODO center input button */}
-										{/* TODO add "clear" button */}
-
-										<FileUploadButton fieldName='resume' accept='application/pdf, image/*' />
+										<FileUploadButton
+											fieldName='resume'
+											accept='application/pdf, image/*'
+											content='Upload'
+											onChange={handleFileInputChange}
+											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+										/>
 									</Flex>
 								</Box>
 							</Flex>

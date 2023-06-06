@@ -1,5 +1,5 @@
-import { Key, useEffect } from 'react';
-import { Flex, FormControl, FormLabel, useRadioGroup } from '@chakra-ui/react';
+import { Key } from 'react';
+import { FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
 import RadioButton from './RadioButton';
 
 interface Props {
@@ -26,37 +26,20 @@ export default function ProfileRadioGroup({
 		handleChange(name)(value);
 	};
 
-	const { setValue, getRootProps, getRadioProps } = useRadioGroup({
-		defaultValue,
-		onChange: handleToggleItem,
-	});
-
-	// Subscribe to the state to update the UI
-	useEffect(() => {
-		setValue(defaultValue);
-	}, [defaultValue]);
-
 	return items ? (
-		<FormControl>
-			<Flex
-				justifyContent='flex-start'
-				alignItems='center'
-				w='full'
-				py={2}
-				gap={2}
-				fontSize='sm'
-				{...getRootProps()}
-				{...props}
-			>
-				{items.map((item: { label: string; value: string }, index: Key) => {
-					return (
-						<RadioButton key={index} {...getRadioProps({ value: item.value })}>
-							{item.label}
-						</RadioButton>
-					);
-				})}
-			</Flex>
+		<>
+			<RadioGroup value={defaultValue} onChange={handleToggleItem} {...props}>
+				<Wrap>
+					{items.map((item: { label: string; value: string }, index: Key) => {
+						return (
+							<RadioButton key={index} value={item.value}>
+								{item.label}
+							</RadioButton>
+						);
+					})}
+				</Wrap>
+			</RadioGroup>
 			{label ? <FormLabel fontSize='sm'>{label}</FormLabel> : false}
-		</FormControl>
+		</>
 	) : null;
 }

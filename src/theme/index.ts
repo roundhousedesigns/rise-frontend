@@ -22,6 +22,8 @@ import inputTheme from './components/Input';
 import dividerTheme from './components/Divider';
 import avatarTheme from './components/Avatar';
 import badgeTheme from './components/Badge';
+import radioTheme from './components/Radio';
+import checkboxTheme from './components/Checkbox';
 
 // Config
 const config = {
@@ -50,6 +52,8 @@ const overrides = {
 		Divider: dividerTheme,
 		Avatar: avatarTheme,
 		Badge: badgeTheme,
+		Radio: radioTheme,
+		Checkbox: checkboxTheme,
 	},
 };
 

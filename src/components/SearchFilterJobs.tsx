@@ -1,5 +1,5 @@
-import { useContext, useEffect } from 'react';
-import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Heading, Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import { usePositions } from '../hooks/queries/usePositions';
 import CheckboxButton from './common/CheckboxButton';
@@ -21,39 +21,22 @@ export default function SearchFilterJobs() {
 		});
 	};
 
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
-
-	// Set the CheckboxGroup value on initial render
-	useEffect(() => {
-		setValue(search.filters.positions.jobs);
-	}, []);
-
-	// Subscribe to Reset events in the Search Context
-	useEffect(() => {
-		if (search.filters.positions.jobs.length === 0) {
-			setValue([]);
-		}
-	}, [search.filters.positions.jobs.length]);
-
 	return (
 		<Box mt={8}>
 			{!loading && !error ? (
 				<>
-					<Heading as='h3' variant='searchFilterTitle'>What job(s) are you looking to fill?</Heading>
-					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
-						{positionItems.map((term: WPItem) => {
-							const checkbox = getCheckboxProps({ value: term.id.toString() });
-
-							return (
-								<CheckboxButton fontSize='md' key={term.id} {...checkbox}>
+					<Heading as='h3' variant='searchFilterTitle'>
+						What job(s) are you looking to fill?
+					</Heading>
+					<CheckboxGroup defaultValue={search.filters.positions.jobs} onChange={handleToggleTerm}>
+						<Wrap>
+							{positionItems.map((term: WPItem) => (
+								<CheckboxButton key={term.id} value={term.id.toString()}>
 									{term.name}
 								</CheckboxButton>
-							);
-						})}
-					</Wrap>
+							))}
+						</Wrap>
+					</CheckboxGroup>
 				</>
 			) : loading ? (
 				<Spinner />
