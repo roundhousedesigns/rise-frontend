@@ -1,6 +1,5 @@
 import { ReactElement, JSXElementConstructor } from 'react';
 import { Button, IconButton, useMediaQuery } from '@chakra-ui/react';
-import { FiEdit3 } from 'react-icons/fi';
 
 interface Props {
 	label: string;

@@ -26,7 +26,7 @@ interface Props {
 	onClick?: () => void;
 	[props: string]: any;
 }
-export default function CreditItem({ credit, isEditable, onClick, ...rest }: Props): JSX.Element {
+export default function CreditItem({ credit, isEditable, onClick, ...props }: Props): JSX.Element {
 	const {
 		title,
 		jobTitle,
@@ -34,7 +34,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 		positions: { department: departmentIds, jobs: jobIds } = { department: [], jobs: [] },
 		skills: skillIds,
 		venue,
-		// year, // TODO deprecate year
 		workStart,
 		workEnd,
 		workCurrent,
@@ -119,7 +118,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	};
 
 	return (
-		<Box onClick={onClick} {...rest}>
+		<Box onClick={onClick} {...props}>
 			<Card
 				cursor={isEditable ? 'pointer' : 'default'}
 				tabIndex={0}
@@ -137,10 +136,10 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 					>
 						<Box flex='1'>
 							<Wrap>
-								<Heading fontWeight='bold' fontSize='xl' as='h3'>
+								<Heading fontWeight='bold' fontSize='xl' as='h3' my={0}>
 									{title}
 								</Heading>
-								<Badge fontSize='md' fontWeight='bold' textTransform='none'>
+								<Badge fontSize='md' fontWeight='bold' textTransform='none' lineHeight='normal'>
 									{` ${yearString()}`}
 								</Badge>
 							</Wrap>
@@ -155,14 +154,13 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 									{jobLocation ? decodeString(`${jobLocation}`) : ''}
 								</Text>
 							</Box>
-							{jobTitle ? (
+							{jobTitle && (
 								<Text fontSize='md' lineHeight='short' my={0}>
 									{jobTitle}
 								</Text>
-							) : (
-								false
 							)}
 						</Box>
+
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
 							{departmentIds?.length || jobs?.length || skills?.length ? (
 								<Stack direction='column' mt={{ base: 4, md: 0 }}>

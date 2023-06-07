@@ -1044,10 +1044,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						>
 							Identity
 						</Heading>
-						<Heading variant='contentSubtitle'>
+						<Text>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
-							<em>will not appear</em> on your public profile.
-						</Heading>
+							<em>will not appear</em> on your public profile. Select any that apply.
+						</Text>
 						<Flex gap={4} flexWrap='wrap'>
 							<Box flex='1 0 33%'>
 								<Heading variant='contentTitle'>Gender</Heading>

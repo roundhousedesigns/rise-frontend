@@ -12,10 +12,10 @@ export default function LinkWithIcon({
 	icon,
 	isExternal,
 	children,
-	...rest
+	...props
 }: Props): JSX.Element {
 	return (
-		<Link href={href} variant='dotted' fontWeight='medium' isExternal={!!isExternal} {...rest}>
+		<Link href={href} variant='dotted' fontWeight='medium' isExternal={!!isExternal} {...props}>
 			<Icon as={icon} mr={2} pos='relative' top='3px' />
 			{children}
 		</Link>

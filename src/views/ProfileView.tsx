@@ -22,7 +22,6 @@ import {
 	Icon,
 	TagLeftIcon,
 	TagLabel,
-	Spacer,
 } from '@chakra-ui/react';
 import {
 	FiBriefcase,
@@ -165,7 +164,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			<StackItem>
 				<Card p={4}>
 					<Flex
-						gap={5}
+						gap={6}
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 						justifyContent={{ base: 'center', md: 'flex-start' }}
 					>
@@ -189,9 +188,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<Avatar size='superLg' src={image} name={profile.fullName()} />
 						)}
 
-						<Stack direction='column' justifyContent='space-evenly' gap={2} lineHeight={1}>
+						<Stack direction='column' justifyContent='space-evenly' gap={4} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
-								<Heading as='h1' size='xl' mr={2} lineHeight='none'>
+								<Heading as='h1' size='xl' mr={2} my={0} lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
 								{pronouns ? (
@@ -298,8 +297,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</UnorderedList>
 							</StackItem>
 
-							<StackItem flex='1' />
-
 							<StackItem>
 								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
 									{resume && (
@@ -320,17 +317,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 											Resume
 										</Button>
 									)}
-									{socials && !isEmpty(socials) ? (
-										<>
-											<Spacer flex='1' />
-											<PersonalIconLinks
-												socials={socials}
-												flex='1 0 auto'
-												justifyContent='flex-end'
-											/>
-										</>
-									) : (
-										false
+									{socials && !isEmpty(socials) && (
+										<PersonalIconLinks
+											socials={socials}
+											flex='1 0 auto'
+											justifyContent={{ base: 'flex-start', md: 'flex-end' }}
+										/>
 									)}
 								</Flex>
 							</StackItem>

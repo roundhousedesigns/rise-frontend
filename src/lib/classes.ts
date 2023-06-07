@@ -18,7 +18,7 @@ export class User implements UserParams {
 	slug: string | null = null;
 	firstName?: string;
 	lastName?: string;
-	[key: string]: any;
+	[prop: string]: any;
 
 	constructor(params?: UserParams) {
 		if (params) {

@@ -18,11 +18,11 @@ export default function ProfileCheckboxGroup({
 	checked,
 	isRequired,
 	handleChange,
-	...rest
+	...props
 }: Props) {
 	return items ? (
-		<CheckboxGroup defaultValue={checked} onChange={handleChange(name)} {...rest}>
-			<Wrap>
+		<CheckboxGroup defaultValue={checked} onChange={handleChange(name)} {...props}>
+			<Wrap spacing={0}>
 				{items.map((item: WPItem, index: Key) => {
 					return (
 						<CheckboxButton key={index} value={item.id.toString()}>

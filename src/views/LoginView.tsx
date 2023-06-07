@@ -73,7 +73,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 	return (
 		<Container maxW='2xl' py={4}>
 			<Heading as='h2' variant='pageTitle'>Welcome</Heading>
-			<Text variant='sans' fontSize='lg'>
+			<Text fontSize='lg'>
 				You'll need an account to create a profile or to search for candidates.
 			</Text>
 			<Divider my={4} />
