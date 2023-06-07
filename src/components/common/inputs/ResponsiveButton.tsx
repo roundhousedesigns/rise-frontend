@@ -13,7 +13,7 @@ export default function ResonsiveButton({ label, icon, children, ...props }: Pro
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	return isLargerThanMd ? (
-		<Button aria-label={label} leftIcon={<FiEdit3 />} {...props}>
+		<Button aria-label={label} leftIcon={icon} {...props}>
 			{children}
 		</Button>
 	) : (
