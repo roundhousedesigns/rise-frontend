@@ -2,14 +2,12 @@ import { Radio } from '@chakra-ui/react';
 
 interface Props {
 	value?: string;
-	// isChecked?: boolean;
 	children: React.ReactNode;
 	[prop: string]: any;
 }
 
 export default function RadioButton({
 	value,
-	// isChecked,
 	children,
 	...props
 }: Props): React.ReactElement {

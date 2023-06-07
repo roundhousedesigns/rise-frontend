@@ -32,7 +32,7 @@ export default function ProfileRadioGroup({
 				<Wrap spacing={0}>
 					{items.map((item: { label: string; value: string }, index: Key) => {
 						return (
-							<RadioButton key={index} value={item.value} m={0}>
+							<RadioButton key={index} value={item.value}>
 								{item.label}
 							</RadioButton>
 						);
