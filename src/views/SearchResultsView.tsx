@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import CandidateList from '../components/common/CandidateList';
+import CandidateList from '../components/CandidateList';
 
 import { SearchContext } from '../context/SearchContext';
 

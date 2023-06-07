@@ -58,7 +58,7 @@ import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
 
 import HeadingCenterline from '../components/common/HeadingCenterline';
-import CreditItem from '../components/common/CreditItem';
+import CreditItem from '../components/CreditItem';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';

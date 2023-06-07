@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
-import { Button, Spinner } from '@chakra-ui/react';
+import { Flex, IconButton, Spinner, useMediaQuery } from '@chakra-ui/react';
+import { FiEdit3, FiShare } from 'react-icons/fi';
 
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
@@ -8,12 +9,12 @@ import useUserProfile from '../hooks/queries/useUserProfile';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
-import { FiEdit3, FiShare } from 'react-icons/fi';
 import { getProfileURL } from '../lib/utils';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();
 	const params = useParams();
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const slug = params.slug ? params.slug : '';
 
@@ -44,18 +45,26 @@ export default function Profile(): JSX.Element {
 	};
 
 	const PageActions = () => (
-		<>
-			{profileIsLoggedInUser ? (
-				<Button as={Link} to='/profile/edit' leftIcon={<FiEdit3 />} colorScheme='green'>
-					Edit
-				</Button>
-			) : (
-				false
+		<Flex flexWrap='wrap' gap={2} alignItems='center'>
+			{profileIsLoggedInUser && (
+				<IconButton
+					as={Link}
+					to='/profile/edit'
+					aria-label='Edit profile'
+					icon={<FiEdit3 />}
+					colorScheme='green'
+					size={{ base: 'md', md: 'xl' }}
+				/>
 			)}
-			<Button onClick={handleShareClick} colorScheme='blue' leftIcon={<FiShare />}>
-				Share
-			</Button>
-		</>
+
+			<IconButton
+				onClick={handleShareClick}
+				colorScheme='blue'
+				aria-label='Share profile'
+				icon={<FiShare />}
+				size={{ base: 'md', md: 'xl' }}
+			/>
+		</Flex>
 	);
 
 	return (

@@ -20,15 +20,17 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	oversized: defineStyle({
+};
+
+const sizes = {
+	xl: defineStyle({
 		fontSize: 'xl',
-		px: '6',
-		py: '4',
-		borderRadius: 'lg',
+		p: 4,
 	}),
 };
 
 export default defineStyleConfig({
 	baseStyle,
 	variants,
+	sizes,
 });

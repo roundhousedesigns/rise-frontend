@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { Accordion, Button, IconButton, Spinner, Wrap } from '@chakra-ui/react';
+import { Accordion, Flex, IconButton, Spinner } from '@chakra-ui/react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 
 import TextInput from './common/inputs/TextInput';
@@ -92,7 +92,7 @@ export default function SearchFilterName() {
 		>
 			<SearchFilterAccordionItem heading='Search by Name'>
 				<form id='search-by-name' onSubmit={handleSubmit}>
-					<Wrap>
+					<Flex gap={2} justifyContent='space-between'>
 						<TextInput
 							placeholder='Name'
 							name='name'
@@ -101,7 +101,7 @@ export default function SearchFilterName() {
 							value={name}
 							onChange={handleInputChange}
 							w='3xl'
-							flex={1}
+							flex='1 0 60%'
 							inputProps={{
 								borderWidth: '2px',
 								borderColor: 'gray.400',
@@ -114,17 +114,15 @@ export default function SearchFilterName() {
 							colorScheme='orange'
 							isDisabled={!name}
 						/>
-						<Button
+						<IconButton
 							aria-label='Search by name'
 							colorScheme='green'
 							type='submit'
 							form='search-by-name'
 							isDisabled={!name}
-							leftIcon={loading ? <Spinner /> : <FiSearch />}
-						>
-							{loading ? 'Searching...' : 'Search'}
-						</Button>
-					</Wrap>
+							icon={loading ? <Spinner /> : <FiSearch />}
+						/>
+					</Flex>
 				</form>
 			</SearchFilterAccordionItem>
 		</Accordion>

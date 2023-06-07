@@ -1,12 +1,4 @@
-import {
-	Box,
-	Flex,
-	FormControl,
-	FormLabel,
-	Icon,
-	Switch,
-	useColorMode,
-} from '@chakra-ui/react';
+import { Box, Flex, FormControl, FormLabel, Icon, Switch, useColorMode } from '@chakra-ui/react';
 import Page from '../components/Page';
 import SettingsSection from '../components/common/SettingsSection';
 import { FiMoon, FiSun } from 'react-icons/fi';
@@ -19,7 +11,7 @@ export default function Settings() {
 
 	return (
 		<Page title='Settings'>
-			<Flex gap={6} mt={4} justifyContent='space-between'>
+			<Flex gap={6} mt={4} justifyContent='space-between' flexWrap='wrap'>
 				<SettingsSection title='Theme'>
 					<FormControl display='flex' alignItems='center'>
 						<Switch id='colorMode' onChange={toggleColorMode} mr={2} />

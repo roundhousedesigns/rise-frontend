@@ -8,7 +8,6 @@ import {
 	useDisclosure,
 	DarkMode,
 	Link,
-	Stack,
 	useMediaQuery,
 	Menu,
 	MenuButton,
@@ -22,6 +21,8 @@ import {
 	Spacer,
 	forwardRef,
 	BoxProps,
+	Flex,
+	Text,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -82,7 +83,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			aria-label='Search for candidates'
 			colorScheme='gray'
 			borderRadius={{ base: 'full', md: 'lg' }}
-			size='md'
+			size='lg'
 			px={{ base: 0, md: 4 }}
 		>
 			{isLargerThanMd ? 'Search' : <FiSearch />}
@@ -101,8 +102,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 				}
 				aria-label='Search for candidates'
 				colorScheme='gray'
-				borderRadius='lg'
-				size='md'
+				borderRadius={{ base: 'full', md: 'lg' }}
+				size='lg'
 				textTransform='none'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
@@ -116,9 +117,28 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 					},
 				}}
 			>
-				Results
+				<Text as='span' display={{ base: 'none', md: 'block' }}>
+					Results
+				</Text>
 			</Button>
 		</Box>
+	);
+
+	const MyProfileButton = () => (
+		<Button
+			leftIcon={<FiUser />}
+			pl={3}
+			pr={4}
+			aria-label='My Profile'
+			as={RouterLink}
+			to={`/profile/${loggedInSlug}`}
+			colorScheme='gray'
+			borderRadius='lg'
+			size='lg'
+			textTransform='none'
+		>
+			My Profile
+		</Button>
 	);
 
 	return (
@@ -135,15 +155,15 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			zIndex={100}
 		>
 			<DarkMode>
-				<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
-					<Stack direction='row' w='full' justifyContent='space-between' align='center'>
+				<Container centerContent w='full' maxW='9xl' px={{ base: 4, md: 8 }} py={4}>
+					<Flex w='full' justifyContent='space-between' align='center'>
 						<Link
 							as={RouterLink}
 							to='/'
 							my={0}
 							w='auto'
 							display='block'
-							maxW='400px'
+							maxW={{ base: '50%', md: '400px' }}
 							position='relative'
 						>
 							<Image
@@ -153,14 +173,14 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								h='auto'
 								position='relative'
 								display='block'
-								ml={8}
-								px={8}
-								py={4}
+								ml={{ base: 1, md: 4 }}
+								pr={3}
 							/>
 						</Link>
 
 						<Spacer />
 
+						{/* Not logged in */}
 						{!loggedInId ? (
 							<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal flex='0 0 auto'>
 								<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
@@ -171,11 +191,12 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 						{loggedInId ? (
 							<>
-								<Stack
+								<Flex
 									color='text.light'
-									direction='row'
-									spacing={2}
-									mr={6}
+									gap={2}
+									mx={2}
+									flex='1 0 auto'
+									justifyContent='flex-end'
 									align='center'
 									fontSize='lg'
 									textTransform='uppercase'
@@ -184,23 +205,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 									<SearchButton />
 
-									{isLargerThanMd ? (
-										<Button
-											leftIcon={<FiUser />}
-											pl={3}
-											aria-label='My Profile'
-											as={RouterLink}
-											to={`/profile/${loggedInSlug}`}
-											colorScheme='gray'
-											borderRadius='lg'
-											size='md'
-											textTransform='none'
-										>
-											My Profile
-										</Button>
-									) : null}
-								</Stack>
-								<Box>
+									{isLargerThanMd ? <MyProfileButton /> : null}
+								</Flex>
+								<Box m={0} p={0}>
 									{
 										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
 										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
@@ -214,7 +221,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 													borderRadius='full'
 													colorScheme='gray'
 													icon={<FiMenu />}
-													size='md'
+													size='lg'
 													_active={{
 														transform: 'rotate(90deg)',
 													}}
@@ -274,7 +281,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 						) : (
 							false
 						)}
-					</Stack>
+					</Flex>
 				</Container>
 			</DarkMode>
 

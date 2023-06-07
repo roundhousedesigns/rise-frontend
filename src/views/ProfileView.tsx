@@ -22,6 +22,7 @@ import {
 	Icon,
 	TagLeftIcon,
 	TagLabel,
+	Spacer,
 } from '@chakra-ui/react';
 import {
 	FiBriefcase,
@@ -41,8 +42,8 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
-import PersonalIconLinks from '../components/common/PersonalIconLinks';
-import CreditItem from '../components/common/CreditItem';
+import PersonalIconLinks from '../components/PersonalIconLinks';
+import CreditItem from '../components/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
 
 interface Props {
@@ -112,7 +113,15 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		getWPItemsFromIds(ids, terms).map((term: WPItem) => {
 			if (term.externalUrl) {
 				return (
-					<Button as={Link} key={term.id} href={term.externalUrl} isExternal size='sm'>
+					<Button
+						as={Link}
+						key={term.id}
+						href={term.externalUrl}
+						isExternal
+						size='sm'
+						m={0}
+						colorScheme='orange'
+					>
 						{term.name}
 					</Button>
 				);
@@ -245,7 +254,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									</Heading>
 									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
 										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
-										<Wrap flex='1' pl={2}>
+										<Wrap flex='1' pl={2} spacing={2}>
 											{selectedLinkableTerms(partnerDirectories, partnerDirectoryTerms)}
 										</Wrap>
 									</Flex>
@@ -292,12 +301,12 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<StackItem flex='1' />
 
 							<StackItem>
-								<Flex alignItems='center' gap={6} justifyContent='space-between'>
-									{socials && !isEmpty(socials) ? <PersonalIconLinks socials={socials} /> : false}
-									{resume ? (
+								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
+									{resume && (
 										<Button
 											href={resume}
 											as={Link}
+											flex='1 0 auto'
 											textDecoration='none'
 											colorScheme='green'
 											leftIcon={<FiDownload />}
@@ -306,9 +315,20 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 											_hover={{
 												textDecoration: 'none',
 											}}
+											size={{ base: 'md', md: 'lg' }}
 										>
 											Resume
 										</Button>
+									)}
+									{socials && !isEmpty(socials) ? (
+										<>
+											<Spacer flex='1' />
+											<PersonalIconLinks
+												socials={socials}
+												flex='1 0 auto'
+												justifyContent='flex-end'
+											/>
+										</>
 									) : (
 										false
 									)}

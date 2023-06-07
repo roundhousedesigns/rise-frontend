@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Credit, WPItem } from '../../lib/classes';
+import { Credit, WPItem } from '../lib/classes';
 import {
 	Card,
 	Heading,
@@ -15,9 +15,9 @@ import {
 	useMediaQuery,
 } from '@chakra-ui/react';
 
-import useLazyTaxonomyTerms from '../../hooks/queries/useLazyTaxonomyTerms';
-import { decodeString, sortAndCompareArrays } from '../../lib/utils';
-import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
+import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
+import { decodeString, sortAndCompareArrays } from '../lib/utils';
+import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
 
 interface Props {
 	id?: string;
