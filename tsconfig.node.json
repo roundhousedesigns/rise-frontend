@@ -9,7 +9,7 @@
       "ESNext"
     ],
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "vite.config.ts"
