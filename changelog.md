@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## [1.0.5] - 2023-06-06
+
+- Official Launcherino!
+- Improved: Accessibility - Refactored CheckboxButton and RadioButton and respective groups to be simpler and more accessible
+- Improved: Styling
+- Improved: Mobile layouts and responsiveness
+
 ## [1.0.4-beta] - 2023-06-05
 
 - Added: Externally linked user taxonomy support (Partner Directories)
