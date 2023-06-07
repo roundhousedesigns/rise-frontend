@@ -7,7 +7,7 @@ interface Props {
 	[prop: string]: any;
 }
 
-export default function HeadingCenterline({ lineColor, children, headingAs, ...rest }: Props) {
+export default function HeadingCenterline({ lineColor, children, headingAs, ...props }: Props) {
 	return (
 		<Flex
 			alignItems='center'
@@ -16,7 +16,7 @@ export default function HeadingCenterline({ lineColor, children, headingAs, ...r
 			pos='relative'
 			textAlign='left'
 			mb={4}
-			{...rest}
+			{...props}
 		>
 			<Box h='6px' top='38%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
 			<Heading as={headingAs ? headingAs : 'h3'} variant='centerline'>

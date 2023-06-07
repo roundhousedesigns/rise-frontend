@@ -13,7 +13,6 @@ export default defineStyleConfig({
 		},
 		pageSubtitle: {
 			fontSize: '3xl',
-			fontFamily: `'Stabil Grotesk', sans-serif`,
 		},
 		contentTitle: {
 			fontSize: '2xl',
@@ -26,9 +25,7 @@ export default defineStyleConfig({
 			pb: 0,
 		},
 		centerline: {
-			size: 'xl',
-			fontFamily: `'Stabil Grotesk', sans-serif`,
-			textTransform: 'uppercase',
+			size: 'lg',
 			bg: 'text.light',
 			_dark: {
 				bg: 'text.dark',

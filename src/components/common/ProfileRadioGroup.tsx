@@ -29,7 +29,7 @@ export default function ProfileRadioGroup({
 	return items ? (
 		<Box {...props}>
 			<RadioGroup value={defaultValue} onChange={handleToggleItem}>
-				<Wrap>
+				<Wrap spacing={0}>
 					{items.map((item: { label: string; value: string }, index: Key) => {
 						return (
 							<RadioButton key={index} value={item.value} m={0}>
