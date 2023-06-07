@@ -172,8 +172,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const EditCreditButtons = ({ props }: { [prop: string]: any }) => (
-		<ButtonGroup size='md' {...props}>
+	const EditCreditButtons = () => (
+		<ButtonGroup size='md'>
 			<ResponsiveButton
 				type='submit'
 				icon={<FiCheck />}

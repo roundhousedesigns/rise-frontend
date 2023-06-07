@@ -15,7 +15,6 @@ const ResponsiveButton = forwardRef<Props, 'div'>((props, ref) => {
 
 	return isLargerThanMd ? (
 		<Button aria-label={label} leftIcon={icon} {...rest}>
-			props
 			{children}
 		</Button>
 	) : (
