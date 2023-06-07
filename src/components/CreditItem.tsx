@@ -55,7 +55,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...rest }: Pro
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
 	const [getTerms, { data: termData }] = useLazyTaxonomyTerms();
-
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	// Set the term ID list state

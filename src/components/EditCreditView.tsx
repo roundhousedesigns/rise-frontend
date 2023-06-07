@@ -8,7 +8,8 @@ import {
 	Spinner,
 	Stack,
 	StackItem,
-	Button,
+	useMediaQuery,
+	Box,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
@@ -20,6 +21,7 @@ import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
 import TextInput from './common/inputs/TextInput';
 import ProfileRadioGroup from './common/ProfileRadioGroup';
+import ResponsiveButton from './common/inputs/ResponsiveButton';
 
 // TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -72,6 +74,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
 		updateCreditMutation,
@@ -169,33 +172,38 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
+	const EditCreditButtons = ({ props }: { [prop: string]: any }) => (
+		<ButtonGroup size='md' {...props}>
+			<ResponsiveButton
+				type='submit'
+				icon={<FiCheck />}
+				label='Save'
+				colorScheme='green'
+				onClick={handleSubmit}
+			>
+				Save
+			</ResponsiveButton>
+			<ResponsiveButton
+				icon={<FiX />}
+				label='Cancel changes'
+				colorScheme='red'
+				onClick={handleCancel}
+			>
+				Cancel
+			</ResponsiveButton>
+		</ButtonGroup>
+	);
+
 	return (
-		<>
-			<Flex py={4} flexWrap='wrap' justifyContent='space-between'>
+		<Box>
+			<Flex flex='1' justifyContent='space-between' py={2}>
 				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
-				<ButtonGroup>
-					<Button
-						type='submit'
-						leftIcon={<FiCheck />}
-						aria-label='Save credit'
-						colorScheme='green'
-						onClick={handleSubmit}
-					>
-						Save
-					</Button>
-					<Button
-						leftIcon={<FiX />}
-						aria-label='Cancel changes'
-						colorScheme='red'
-						onClick={handleCancel}
-					>
-						Cancel
-					</Button>
-				</ButtonGroup>
-				{updateCreditLoading ? <Spinner /> : false}
+				<EditCreditButtons />
 			</Flex>
+
+			{updateCreditLoading ? <Spinner /> : false}
 
 			<TextInput
 				name='title'
@@ -214,14 +222,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				onChange={handleInputChange}
 			/>
 
-			<Flex gap={6}>
+			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap'>
 				<TextInput
 					name='workStart'
 					label='Start year'
 					isRequired
 					value={workStart}
 					onChange={handleInputChange}
-					flex='0 0 110px'
+					flex='1'
 				/>
 
 				<TextInput
@@ -230,37 +238,42 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					value={!workCurrent ? workEnd : ''}
 					isDisabled={workCurrent}
 					onChange={handleInputChange}
-					flex='0 0 110px'
+					flex='1'
 				/>
 
 				<ProfileRadioGroup
 					defaultValue={workCurrent ? 'true' : 'false'}
 					name='workCurrent'
 					label='Currently working here'
+					flex={{ base: '0 0 100%', md: '0 0 50%' }}
 					items={[
 						{ label: 'Yes', value: 'true' },
 						{ label: 'No', value: 'false' },
 					]}
 					handleChange={handleRadioInputChange}
-					py='0'
 				/>
 			</Flex>
-			<Flex gap={6}>
+
+			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap'>
 				<TextInput
 					name='venue'
 					label='Venue'
 					value={venue}
 					onChange={handleInputChange}
 					isRequired
+					flex='1'
 				/>
+
 				<TextInput
 					name='jobLocation'
 					label='Job Location'
 					value={jobLocation}
 					isRequired
 					onChange={handleInputChange}
+					flex='1'
 				/>
 			</Flex>
+
 			<Divider />
 
 			<Stack direction='column' spacing={6} fontSize='md'>
@@ -321,6 +334,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</StackItem>
 				) : null}
 			</Stack>
-		</>
+
+			<Flex justifyContent='flex-end' mt={4} mb={0}>
+				<EditCreditButtons />
+			</Flex>
+		</Box>
 	);
 }

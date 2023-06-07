@@ -42,6 +42,7 @@ import circleLogo from '../../assets/images/rise-blue-circle.png';
 import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useLogout from '../../hooks/mutations/useLogout';
+import ResponsiveButton from '../common/inputs/ResponsiveButton';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { logoutMutation } = useLogout();
@@ -76,18 +77,18 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	};
 
 	const SearchButton = () => (
-		<Button
+		<ResponsiveButton
 			ref={drawerButtonRef}
 			onClick={handleDrawerOpen}
-			leftIcon={isLargerThanMd ? <FiSearch /> : undefined}
-			aria-label='Search for candidates'
+			icon={<FiSearch />}
+			label='Search for candidates'
 			colorScheme='gray'
 			borderRadius={{ base: 'full', md: 'lg' }}
 			size='lg'
 			px={{ base: 0, md: 4 }}
 		>
-			{isLargerThanMd ? 'Search' : <FiSearch />}
-		</Button>
+			Search
+		</ResponsiveButton>
 	);
 
 	const SearchResultsButton = () => (

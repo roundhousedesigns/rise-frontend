@@ -1,5 +1,5 @@
 import { Key } from 'react';
-import { FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
+import { Box, FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
 import RadioButton from './inputs/RadioButton';
 
 interface Props {
@@ -27,12 +27,12 @@ export default function ProfileRadioGroup({
 	};
 
 	return items ? (
-		<>
-			<RadioGroup value={defaultValue} onChange={handleToggleItem} {...props}>
+		<Box {...props}>
+			<RadioGroup value={defaultValue} onChange={handleToggleItem}>
 				<Wrap>
 					{items.map((item: { label: string; value: string }, index: Key) => {
 						return (
-							<RadioButton key={index} value={item.value}>
+							<RadioButton key={index} value={item.value} m={0}>
 								{item.label}
 							</RadioButton>
 						);
@@ -40,6 +40,6 @@ export default function ProfileRadioGroup({
 				</Wrap>
 			</RadioGroup>
 			{label ? <FormLabel fontSize='sm'>{label}</FormLabel> : false}
-		</>
+		</Box>
 	) : null;
 }

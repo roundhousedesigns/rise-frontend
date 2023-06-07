@@ -13,16 +13,11 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
-	Input,
 	Icon,
 	Progress,
 	Link,
 	SimpleGrid,
-	FormLabel,
-	FormControl,
 	useMediaQuery,
-	chakra,
-	VisuallyHidden,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -579,7 +574,18 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	);
 
 	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
-		const image = eval(fieldName);
+		if (!fieldName) return <>No image.</>;
+
+		const imageData: { [key: string]: string | undefined } = {
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
+		};
+
+		const image = imageData[fieldName];
 
 		return (
 			<Box>
@@ -592,7 +598,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						onChange={handleFileInputChange}
 						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 					/>
-					{image ? <ClearFieldButton field={fieldName} /> : false}
+					{image ? <ClearFieldButton field={fieldName} /> : null}
 				</Flex>
 				{image ? (
 					<Image
@@ -606,9 +612,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					/>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
 					<ProgressBar />
-				) : (
-					false
-				)}
+				) : null}
 			</Box>
 		);
 	};

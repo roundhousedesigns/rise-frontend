@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { Flex, IconButton, Spinner, useMediaQuery } from '@chakra-ui/react';
+import { ButtonGroup, Spinner } from '@chakra-ui/react';
 import { FiEdit3, FiShare } from 'react-icons/fi';
 
 import useViewer from '../hooks/queries/useViewer';
@@ -10,11 +10,11 @@ import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
 import { getProfileURL } from '../lib/utils';
+import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();
 	const params = useParams();
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const slug = params.slug ? params.slug : '';
 
@@ -45,30 +45,32 @@ export default function Profile(): JSX.Element {
 	};
 
 	const PageActions = () => (
-		<Flex flexWrap='wrap' gap={2} alignItems='center'>
+		<ButtonGroup size='md' alignItems='center'>
 			{profileIsLoggedInUser && (
-				<IconButton
+				<ResponsiveButton
+					label='Edit profile'
+					icon={<FiEdit3 />}
 					as={Link}
 					to='/profile/edit'
-					aria-label='Edit profile'
-					icon={<FiEdit3 />}
 					colorScheme='green'
-					size={{ base: 'md', md: 'xl' }}
-				/>
+				>
+					Edit
+				</ResponsiveButton>
 			)}
 
-			<IconButton
-				onClick={handleShareClick}
-				colorScheme='blue'
-				aria-label='Share profile'
+			<ResponsiveButton
+				label='Share profile'
 				icon={<FiShare />}
-				size={{ base: 'md', md: 'xl' }}
-			/>
-		</Flex>
+				colorScheme='blue'
+				onClick={handleShareClick}
+			>
+				Share
+			</ResponsiveButton>
+		</ButtonGroup>
 	);
 
 	return (
-		<Page title={profileIsLoggedInUser ? 'My Profile' : ''} actions={<PageActions />}>
+		<Page title={profileIsLoggedInUser ? 'My Profile' : ''} actions={<PageActions />} pb={8}>
 			{profile && !loading && !error ? (
 				<ProfileView profile={profile} loading={loading} />
 			) : loading ? (
