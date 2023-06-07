@@ -60,7 +60,7 @@ export default function App() {
 				alignItems='center'
 				minH='100vh'
 				_dark={{
-					bg: 'text.dark',
+					bg: 'gray.900',
 					color: 'white',
 				}}
 				_light={{

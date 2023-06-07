@@ -184,7 +184,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 						{/* Not logged in */}
 						{!loggedInId ? (
 							<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal flex='0 0 auto'>
-								<Image src={circleLogo} alt='RISE icon' loading='eager' h='100px' py={4} />
+								<Image src={circleLogo} alt='RISE icon' loading='eager' h={12} />
 							</Link>
 						) : (
 							false

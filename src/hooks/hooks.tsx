@@ -221,6 +221,7 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 	if (origProfile === null) return;
 
 	const omitFields = [
+		'slug',
 		'credits',
 		'image',
 		'mediaImage1',
@@ -231,8 +232,16 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 		'mediaImage6',
 	];
 
-	const profile1 = new UserProfile({ ...omit(origProfile, omitFields), id: 0, slug: 'temp1' });
-	const profile2 = new UserProfile({ ...omit(editProfile, omitFields), id: 0, slug: 'temp2' });
+	const profile1 = new UserProfile({
+		...omit(origProfile, omitFields),
+		id: 0,
+		slug: '',
+	});
+	const profile2 = new UserProfile({
+		...omit(editProfile, omitFields),
+		id: 0,
+		slug: '',
+	});
 
 	return !isEqual(profile1, profile2);
 };

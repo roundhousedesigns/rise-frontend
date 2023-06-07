@@ -72,13 +72,15 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 	return (
 		<Container maxW='2xl' py={4}>
-			<Heading as='h2' variant='pageTitle'>Welcome</Heading>
+			<Heading as='h2' variant='pageTitle'>
+				Welcome
+			</Heading>
 			<Text fontSize='lg'>
 				You'll need an account to create a profile or to search for candidates.
 			</Text>
 			<Divider my={4} />
 			<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
-				<Box flex='1 0 300px'>
+				<Box flex='1 1 auto'>
 					<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 						Please sign in.
 					</Heading>

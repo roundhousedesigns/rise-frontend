@@ -1,21 +1,26 @@
 import { ReactElement, JSXElementConstructor } from 'react';
-import { Button, IconButton, useMediaQuery } from '@chakra-ui/react';
+import { Button, ButtonProps, IconButton, forwardRef, useMediaQuery } from '@chakra-ui/react';
 
-interface Props {
+interface Props extends ButtonProps {
 	label: string;
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
 	children: React.ReactNode;
 	[prop: string]: any;
 }
 
-export default function ResonsiveButton({ label, icon, children, ...props }: Props) {
+const ResponsiveButton = forwardRef<Props, 'div'>((props, ref) => {
+	const { label, icon, children, ...rest } = props;
+
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	return isLargerThanMd ? (
-		<Button aria-label={label} leftIcon={icon} {...props}>
+		<Button aria-label={label} leftIcon={icon} {...rest}>
+			props
 			{children}
 		</Button>
 	) : (
-		<IconButton aria-label={label} icon={icon} {...props} />
+		<IconButton aria-label={label} icon={icon} {...rest} />
 	);
-}
+});
+
+export default ResponsiveButton;

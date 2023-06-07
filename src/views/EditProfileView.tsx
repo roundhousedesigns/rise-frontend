@@ -638,7 +638,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						leftIcon={saveLoading ? undefined : <FiSave />}
 						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 						colorScheme='green'
-						isDisabled={saveLoading || !hasEditedProfile}
+						isDisabled={saveLoading || hasEditedProfile === false}
 						mx={0}
 					>
 						{saveLoading ? <Spinner size='sm' /> : 'Save'}
