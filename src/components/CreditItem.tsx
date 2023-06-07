@@ -18,6 +18,7 @@ import {
 import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
 import { decodeString, sortAndCompareArrays } from '../lib/utils';
 import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
+import SpecialChar from './common/chars/SpecialChar';
 
 interface Props {
 	id?: string;
@@ -135,25 +136,34 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					>
 						<Box flex='1'>
-							<Wrap>
-								<Heading fontWeight='bold' fontSize='xl' as='h3' my={0}>
+							<Flex alignItems='center' gap={2} flexWrap='wrap' mb={2}>
+								<Heading as='h3' fontWeight='bold' fontSize='xl' my={0}>
 									{title}
 								</Heading>
-								<Badge fontSize='md' fontWeight='bold' textTransform='none' lineHeight='normal'>
+								<Badge
+									flex='0 0 auto'
+									fontSize='md'
+									fontWeight='bold'
+									textTransform='none'
+									px={2}
+									py={1}
+								>
 									{` ${yearString()}`}
 								</Badge>
-							</Wrap>
-							<Box display={{ base: 'block', md: 'flex' }} my={0}>
-								<Text fontWeight='medium' display={{ base: 'block', md: 'inline' }}>
+							</Flex>
+							<Flex my={0} alignItems='center' flexWrap='wrap' gap={0}>
+								<Text fontWeight='medium' my={0}>
 									{decodeString(venue)}
 								</Text>
-								<Text display={{ base: 'block', md: 'inline' }} px={1}>
-									{isLargerThanMd ? '✺' : ''}
-								</Text>
-								<Text display={{ base: 'block', md: 'inline' }}>
+								{isLargerThanMd && (
+									<Text my={0} px={1} flex='0 0 auto'>
+										<SpecialChar char='starburst' />
+									</Text>
+								)}
+								<Text my={0} flex={{ base: '0 0 100%', md: '1' }}>
 									{jobLocation ? decodeString(`${jobLocation}`) : ''}
 								</Text>
-							</Box>
+							</Flex>
 							{jobTitle && (
 								<Text fontSize='md' lineHeight='short' my={0}>
 									{jobTitle}
