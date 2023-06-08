@@ -80,7 +80,7 @@ export const useLoginError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = 'Unspecified error.';
+			message = 'Unspecified error: ' + errorCode;
 	}
 
 	return message;
@@ -111,7 +111,7 @@ export const useRegistrationError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = errorCode;
+			message = 'Unspecified error: ' + errorCode;
 	}
 
 	return message;
@@ -134,7 +134,7 @@ export const useLostPasswordError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = 'Unspecified error.';
+			message = 'Unspecified error: ' + errorCode;
 	}
 
 	return message;
@@ -172,7 +172,7 @@ export const useResetPasswordError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = 'Unspecified error.';
+			message = 'Unspecified error: ' + errorCode;
 	}
 
 	return message;
@@ -203,7 +203,7 @@ export const useChangePasswordError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = 'Unspecified error.';
+			message = 'Unspecified error: ' + errorCode;
 	}
 
 	return message;
