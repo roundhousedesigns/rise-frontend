@@ -618,7 +618,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	return editProfile ? (
-		<form onSubmit={handleSubmit}>
+		<form id="edit-profile" onSubmit={handleSubmit}>
 			<Flex
 				alignItems='center'
 				justifyContent='flex-end'

@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useReducer, useRef } from 'react';
+import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
 import {
 	ButtonGroup,
 	Divider,
@@ -8,8 +8,6 @@ import {
 	Spinner,
 	Stack,
 	StackItem,
-	useMediaQuery,
-	Box,
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { FiCheck, FiX } from 'react-icons/fi';
@@ -74,7 +72,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
 		updateCreditMutation,
@@ -94,8 +91,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	} = editCredit;
 
 	const [allDepartments] = usePositions();
-	const [getJobs, { data: jobsData, loading: jobsLoading }] = useLazyPositions();
-	const jobs = useRef([]);
+	const [getJobs, { data: allJobs, loading: jobsLoading }] = useLazyPositions();
+	// const jobs = useRef([]);
+	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 
 	// Refetch jobs list when department changes
@@ -105,12 +103,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		getJobs({ variables: { departments: selectedDepartmentIds }, fetchPolicy: 'network-only' });
 	}, [selectedDepartmentIds]);
 
-	// Set jobs when jobsData changes.
+	// Set jobs when allJobs changes.
 	useEffect(() => {
-		jobs.current = jobsData
-			? jobsData.jobsByDepartments.map((item: WPItem) => new WPItem(item))
-			: [];
-	}, [jobsData]);
+		if (allJobs) {
+			setJobs(allJobs.jobsByDepartments.map((item: WPItem) => new WPItem(item)));
+		}
+
+		return () => {
+			setJobs([]);
+		};
+	}, [allJobs]);
 
 	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -145,7 +147,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
 
 		updateCreditMutation(creditToUpdate, editCredit.id)
@@ -157,8 +162,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						newCreditTempId: editCredit.isNew ? editCredit.id : null,
 					},
 				});
+
+				closeModal();
 			})
-			.then(() => closeModal())
 			.catch((err: any) => {
 				console.error(err);
 			});
@@ -174,13 +180,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	const EditCreditButtons = () => (
 		<ButtonGroup size='md'>
-			<ResponsiveButton
-				type='submit'
-				icon={<FiCheck />}
-				label='Save'
-				colorScheme='green'
-				onClick={handleSubmit}
-			>
+			<ResponsiveButton type='submit' icon={<FiCheck />} label='Save' colorScheme='green'>
 				Save
 			</ResponsiveButton>
 			<ResponsiveButton
@@ -195,7 +195,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	);
 
 	return (
-		<Box>
+		<form id='edit-credit' onSubmit={handleSubmit}>
 			<Flex flex='1' justifyContent='space-between' py={2}>
 				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
@@ -282,9 +282,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					<Heading as='h4' variant='contentTitle'>
 						Department
 					</Heading>
-					<Text>
-						Select <strong>any</strong> department(s) you worked under.
-					</Text>
+					<Text>Select all department(s) you worked under.</Text>
 					<ProfileCheckboxGroup
 						name='department'
 						items={allDepartments}
@@ -301,12 +299,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						<Heading as='h4' variant='contentTitle'>
 							Position
 						</Heading>
-						<Text>
-							Select <strong>any</strong> jobs that apply to this credit.
-						</Text>
+						<Text>Select all jobs you held on this project.</Text>
 						<ProfileCheckboxGroup
 							name='jobs'
-							items={jobs.current}
+							items={jobs}
 							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
 							handleChange={handleToggleCheckboxTerm}
 						/>
@@ -338,6 +334,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
 				<EditCreditButtons />
 			</Flex>
-		</Box>
+		</form>
 	);
 }
