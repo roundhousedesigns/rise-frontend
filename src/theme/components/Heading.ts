@@ -5,7 +5,7 @@ import { defineStyleConfig } from '@chakra-ui/react';
 export default defineStyleConfig({
 	baseStyle: {
 		mb: 2,
-		fontWeight: 'normal'
+		fontWeight: 'normal',
 	},
 	variants: {
 		pageTitle: {
@@ -26,9 +26,11 @@ export default defineStyleConfig({
 		},
 		centerline: {
 			size: 'lg',
-			bg: 'text.light',
+			_light: {
+				bg: 'gray.50',
+			},
 			_dark: {
-				bg: 'text.dark',
+				bg: 'gray.900',
 				color: 'text.light',
 			},
 			display: 'inline',

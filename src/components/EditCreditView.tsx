@@ -92,7 +92,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	const [allDepartments] = usePositions();
 	const [getJobs, { data: allJobs, loading: jobsLoading }] = useLazyPositions();
-	// const jobs = useRef([]);
 	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
 

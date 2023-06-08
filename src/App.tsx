@@ -61,10 +61,10 @@ export default function App() {
 				minH='100vh'
 				_dark={{
 					bg: 'gray.900',
-					color: 'white',
+					color: 'text.light',
 				}}
 				_light={{
-					bg: 'white',
+					bg: 'gray.50',
 					color: 'text.dark',
 				}}
 			>
