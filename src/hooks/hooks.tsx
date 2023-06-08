@@ -97,8 +97,6 @@ export const useRegistrationError = (errorCode?: string): string => {
 
 	var message = '';
 
-	console.info(errorCode);
-
 	switch (errorCode) {
 		case 'existing_user_login':
 			message = 'An account already exists for that email address. Please try logging in.';
@@ -113,7 +111,7 @@ export const useRegistrationError = (errorCode?: string): string => {
 			break;
 
 		default:
-			message = 'Unspecified error.';
+			message = errorCode;
 	}
 
 	return message;
