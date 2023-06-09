@@ -143,7 +143,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
-	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
@@ -445,7 +444,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 		updateProfileMutation(editProfile)
 			.then(() => {
-				setWillDeleteCredits(false);
 				navigate(`/profile/${loggedInSlug}`);
 			})
 			.then(() => {
@@ -551,7 +549,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					loading='eager'
 					fit='cover'
 					borderRadius='md'
-					w='xs'
+					w='full'
 					mb={2}
 				/>
 			) : (
@@ -588,7 +586,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const image = imageData[fieldName];
 
 		return (
-			<Box>
+			<Box mb={2}>
 				<Flex gap={2}>
 					<FileUploadButton
 						fieldName={fieldName}
@@ -606,8 +604,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						alt={text}
 						loading='eager'
 						fit='cover'
-						w='xs'
-						mb={2}
+						w='full'
+						mt={2}
 						borderRadius='md'
 					/>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
@@ -618,7 +616,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	return editProfile ? (
-		<form id="edit-profile" onSubmit={handleSubmit}>
+		<form id='edit-profile' onSubmit={handleSubmit}>
+			<Heading variant='contentSubtitle' mt={2}>
+				Don't forget to <Link href='#credits'>add your credits</Link> to appear in search results!
+			</Heading>
 			<Flex
 				alignItems='center'
 				justifyContent='flex-end'
@@ -705,8 +706,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										label='Where do you currently live?'
 										leftElement={<Icon as={FiHome} />}
 										onChange={handleInputChange}
+										maxLength={25}
 										inputProps={{
-											maxLength: 25,
 											tabIndex: 0,
 										}}
 										flex='1'
@@ -943,18 +944,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</StackItem>
 				</StackItem>
 
-				<StackItem pos='relative'>
+				<StackItem pos='relative' id='credits'>
 					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits.</Text>
-					{/* TODO better reorder animation */}
+					{/* TODO better reorder and delete animations */}
 
-					{willDeleteCredits ? (
-						<Text variant='devAlert'>
-							Please save your profile to confirm deleting credits, or cancel to undo.
-						</Text>
-					) : (
-						false
-					)}
 					{deleteCreditLoading ? (
 						<Spinner size='sm' colorScheme='green' />
 					) : (

@@ -171,7 +171,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
-								<Box w='33%' minW='160px' maxW='400px'>
+								<Box w='40%' minW='160px' maxW='400px'>
 									<Image
 										src={image}
 										alt={`${profile.fullName()}'s picture`}

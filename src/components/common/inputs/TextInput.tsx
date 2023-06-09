@@ -7,6 +7,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
+	Text,
 } from '@chakra-ui/react';
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 	isRequired?: boolean;
 	error?: string;
 	leftElement?: React.ReactNode;
+	maxLength?: number;
 	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
@@ -38,12 +40,24 @@ export default function TextInput({
 	error,
 	onChange,
 	leftElement,
-	leftAddon,
+	maxLength,
 	inputProps,
 	...props
 }: Props) {
+	const HelperTextFormatted = () => {
+		let text = helperText ? helperText : '';
+
+		if (maxLength) {
+			const length = value ? value.length : 0;
+			text = `${text} (${length}/${maxLength})`;
+		}
+
+		console.info(text);
+
+		return <Text as='span'>{text}</Text>;
+	};
+
 	return (
-		// TODO implement character count ("xx/yy remaining")
 		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 			<InputGroup>
 				{leftElement ? (
@@ -65,6 +79,7 @@ export default function TextInput({
 					_dark={{
 						color: 'text.dark',
 					}}
+					maxLength={maxLength ? maxLength : undefined}
 					{...inputProps}
 				/>
 			</InputGroup>
@@ -87,13 +102,9 @@ export default function TextInput({
 				) : (
 					false
 				)}
-				{helperText ? (
-					<FormHelperText my={0} flex='1'>
-						{helperText}
-					</FormHelperText>
-				) : (
-					false
-				)}
+				<FormHelperText my={0} flex='1'>
+					<HelperTextFormatted />
+				</FormHelperText>
 				{error ? (
 					<FormErrorMessage fontWeight='bold' my={0}>
 						{error}
