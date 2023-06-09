@@ -1,13 +1,32 @@
 # RISE
 
 [![DeepScan grade](https://deepscan.io/api/teams/14424/projects/23596/branches/718895/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=14424&pid=23596&bid=718895)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/46f33abd057f4c759d0a8d7628dfd124)](https://www.codacy.com/gh/roundhousedesigns/gtw-frontend/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=roundhousedesigns/gtw-frontend&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/64f466be6e654cd2a2bb790971fb07ef)](https://app.codacy.com/gh/roundhousedesigns/rise-frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-## Frontend
-
-This is the first stage of development for the RISE frontend.
+## This is the main interface for the RISE Theatre Directory.
 
 Current tooling:
 
-- Vite
-- React
+- Node ^19.4.0
+- Vite 4.3
+- React 18
+- GraphQL
+
+## Development
+
+- Clone the `dev` branch
+- Run `yarn install`
+- (Set up your environment variables)[#envvars]
+- `yarn dev` to spin up a local dev server at `http://localhost:3000`, or wherever you've specified in your `package.json`.
+- `yarn build` to build for production
+- `yarn preview` to serve a production preview
+
+## Envvars
+
+### For development:
+
+Google reCAPTCHA is heavily integrated with the frontend, and you will need to supply your own reCAPTCHA key. You can set up one here: (https://www.google.com/recaptcha/about/). Be sure to add the `localhost` domain during setup if you're running locally.
+
+VITE_FRONTEND_URL = <your backend URL (example: http://localhost:3000>
+VITE_BACKEND_URL = https://dev.risetheatre.org/graphql
+VITE_RECAPTCHA_SITE_KEY = <your recaptcha site key>
