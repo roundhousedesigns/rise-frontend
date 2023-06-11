@@ -4,7 +4,7 @@
 
 import { QueryResult, gql, useQuery } from '@apollo/client';
 
-const QUERY_VIEWER = gql`
+export const QUERY_VIEWER = gql`
 	query QueryViewer {
 		viewer {
 			id: databaseId

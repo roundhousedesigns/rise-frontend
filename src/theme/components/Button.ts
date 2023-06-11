@@ -2,7 +2,7 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
 
 const baseStyle = defineStyle({
 	fontWeight: 'medium',
-	borderRadius: 'lg',
+	borderRadius: 'md',
 	textDecoration: 'none',
 	_hover: {
 		textDecoration: 'none',

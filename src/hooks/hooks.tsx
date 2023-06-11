@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '../lib/classes';
+import { getProfilePrefix, validateProfileSlug } from '../lib/utils';
 
 /**
  * Custom hooks.
@@ -210,6 +211,41 @@ export const useChangePasswordError = (errorCode?: string): string => {
 };
 
 /**
+ * Format a change profile slug error message.
+ *
+ * @param {string} errorCode The error message returned by the server.
+ * @returns {string} The message to print.
+ */
+export const useChangeProfileSlugError = (errorCode?: string): string => {
+	if (!errorCode) return '';
+
+	var message = '';
+
+	switch (errorCode) {
+		case 'user_not_found':
+			message = 'There was an error updating your profile URL. Please contact support.';
+			break;
+
+		case 'user_not_authorized':
+			message = 'You do not appear to be logged in.';
+			break;
+
+		case 'user_slug_not_unique':
+			message = 'This alias is already in use. Please choose another.';
+			break;
+
+		case 'user_slug_invalid':
+			message = 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
+			break;
+
+		default:
+			message = 'Unspecified error: ' + errorCode;
+	}
+
+	return message;
+};
+
+/**
  * Determine if a user profile has been edited.
  *
  * @param editProfile
@@ -243,3 +279,22 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 
 	return !isEqual(profile1, profile2);
 };
+
+/**
+ * Get the URL for a user profile.
+ *
+ * @param slug The user profile slug.
+ * @returns The user profile URL.
+ */
+export const useProfileUrl = (slug: string): string => {
+	const prefix = getProfilePrefix();
+	return `${prefix}${slug}`;
+};
+
+/**
+ * Validate a user profile slug.
+ *
+ * @param slug The user profile slug.
+ * @return True if the slug is valid.
+ */
+export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);

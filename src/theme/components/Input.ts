@@ -43,6 +43,21 @@ const variants = {
 			px: 0,
 		},
 	}),
+	flushed: definePartsStyle({
+		field: {
+			borderRadius: 0,
+			borderTop: 'none',
+			borderLeft: 'none',
+			borderRight: 'none',
+			borderBottomWidth: '2px',
+			_light: {
+				color: 'text.dark',
+			},
+			_dark: {
+				color: 'text.light',
+			},
+		},
+	}),
 };
 
 const sizes = {

@@ -794,7 +794,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							/>
 						</StackItem>
 						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={6}>
+							<Flex flexWrap='wrap' gap={8}>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
 									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
@@ -821,27 +821,26 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleRadioInputChange}
 									/>
 								</Box>
-								<Box flex='1 0 100%' textAlign='center'>
+								<Box flex={{ base: '0 0 100%', md: '1' }}>
 									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
 										Resume
 									</Heading>
-									<Flex gap={3} flexWrap='wrap'>
-										<Heading variant='contentSubtitle'>
-											{resume ? (
-												<Link
-													m={0}
-													fontSize='md'
-													fontWeight='medium'
-													href={resume}
-													variant='dotted'
-													download
-												>
-													Preview your resume
-												</Link>
-											) : (
-												'PDF or image'
-											)}
-										</Heading>
+									<Heading variant='contentSubtitle'>
+										{resume ? (
+											<Link
+												fontSize='md'
+												fontWeight='medium'
+												href={resume}
+												variant='dotted'
+												download
+											>
+												Preview your resume
+											</Link>
+										) : (
+											'PDF or image'
+										)}
+									</Heading>
+									<Flex gap={2} py={1}>
 										<FileUploadButton
 											fieldName='resume'
 											accept='application/pdf, image/*'
@@ -849,6 +848,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 											onChange={handleFileInputChange}
 											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 										/>
+										{resume && <ClearFieldButton field='resume' />}
 									</Flex>
 								</Box>
 							</Flex>

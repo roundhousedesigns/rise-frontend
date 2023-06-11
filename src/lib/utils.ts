@@ -94,9 +94,9 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
  * @param {WPItem[]} items  The items to filter.
  * @returns {WPItem[]} The filtered items.
  */
-export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
+export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
 	return items.filter((item) => ids.includes(item.id));
-};
+}
 
 /**
  * Prepare a user profile for GraphQL.
@@ -130,9 +130,9 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
  * @param {number[]|string[]} b The second array to compare.
  * @returns {boolean} Whether the arrays are equal.
  */
-export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
+export function sortAndCompareArrays(a: number[] | string[], b: number[] | string[]): boolean {
 	return isEqual(a.sort(), b.sort());
-};
+}
 
 /**
  * Generate a random alphanumeric string.
@@ -140,7 +140,7 @@ export const sortAndCompareArrays = (a: number[] | string[], b: number[] | strin
  * @param length The generated string length.
  * @returns The generated string.
  */
-export const generateRandomString = (length: number = 8): string => {
+export function generateRandomString(length: number = 8): string {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let result = '';
 
@@ -149,7 +149,7 @@ export const generateRandomString = (length: number = 8): string => {
 	}
 
 	return result;
-};
+}
 
 /**
  * Handle reCAPTCHA verification.
@@ -158,13 +158,13 @@ export const generateRandomString = (length: number = 8): string => {
  * @param executeRecaptcha The reCAPTCHA execution function.
  * @returns The reCAPTCHA token (Promise)
  */
-export const handleReCaptchaVerify = async ({
+export async function handleReCaptchaVerify({
 	label,
 	executeRecaptcha,
 }: {
 	label: string;
 	executeRecaptcha: ((action?: string | undefined) => Promise<string>) | undefined;
-}): Promise<string | undefined> => {
+}): Promise<string | undefined> {
 	if (!executeRecaptcha) {
 		return;
 	}
@@ -172,14 +172,24 @@ export const handleReCaptchaVerify = async ({
 	const token = await executeRecaptcha(label);
 
 	return token;
-};
+}
 
 /**
- * Get the URL for a user profile.
+ * Get the URL prefix for a user profile. Includes the trailing slash.
  *
- * @param slug The user profile slug.
- * @returns The user profile URL.
+ * @returns string The user profile URL prefix with trailing slash.
  */
-export const getProfileURL = (slug: string): string => {
-	return `${VITE_FRONTEND_URL}/profile/${slug}`;
-};
+export const getProfilePrefix = (): string => `${VITE_FRONTEND_URL}/profile/`;
+
+/**
+ * Validate a profile slug string.
+ *
+ * @param str The string to validate.
+ * @returns boolean Whether the string is valid.
+ */
+export function validateProfileSlug(str: string): boolean {
+	if (!str) return true;
+
+	var regexp = /^[a-zA-Z0-9_-]+$/;
+	return regexp.test(str);
+}

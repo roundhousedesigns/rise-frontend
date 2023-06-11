@@ -17,7 +17,7 @@ const variants = {
 		pb: 0,
 	}),
 	contentSubtitle: defineStyle({
-		fontSize: 'md',
+		fontSize: 'lg',
 		fontWeight: 'medium',
 		mt: 0,
 		pb: 0,
