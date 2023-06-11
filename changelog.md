@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file, starting wi
 ## \[unreleased]
 
 *   Added: Profile slug editing
+*   Fixed: Clear resume button restored
 
 ## \[1.0.5] - 2023-06-06
 
