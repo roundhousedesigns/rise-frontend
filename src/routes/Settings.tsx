@@ -1,5 +1,5 @@
-import { Box, FormControl, FormLabel, Stack, Switch, useColorMode } from '@chakra-ui/react';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { Box, FormControl, FormLabel, Link, Stack, Switch, Text, useColorMode } from '@chakra-ui/react';
+import { FiDelete, FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
 import SettingsSection from '../components/common/SettingsSection';
 import ChangePasswordView from '../views/ChangePasswordView';
@@ -41,12 +41,20 @@ export default function Settings() {
 
 				{/* TODO Setting: Change your email */}
 
-				{/* TODO Setting: Change your slug */}
 				<SettingsSection title='Profile Tag'>
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}
+				<SettingsSection title='Delete your account'>
+					<Text>
+						If you'd like to delete your account entirely, please email us at{' '}
+						<Link href='mailto:support@risetheatre.org' display='inline'>
+							support@risetheatre.org
+						</Link>{' '}
+						to request your removal.
+					</Text>
+				</SettingsSection>
 			</Stack>
 		</Page>
 	);
