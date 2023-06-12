@@ -12,7 +12,7 @@ export default function RadioButton({
 	...props
 }: Props): React.ReactElement {
 	return (
-		<Radio value={value} variant='buttonStyle' m={1} position='relative' {...props}>
+		<Radio value={value} variant='buttonStyle' position='relative' {...props}>
 			{children}
 		</Radio>
 	);
