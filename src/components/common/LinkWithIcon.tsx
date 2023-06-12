@@ -1,3 +1,4 @@
+import React from 'react';
 import { Icon, Link } from '@chakra-ui/react';
 
 interface Props {

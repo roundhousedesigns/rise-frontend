@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { Box, Card, Heading } from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
-	children: React.ReactNode;
+	children: ReactNode;
 	[prop: string]: any;
 }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
@@ -40,14 +40,14 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 	const errorMessage = useLoginError(errorCode);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
 			...credentials,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const handleLoginSubmit = (e: React.FormEvent) => {
+	const handleLoginSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		handleReCaptchaVerify({ label: 'login', executeRecaptcha })

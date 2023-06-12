@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[unreleased]
 
+*   Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate user should continue to scroll
+*   Improved: Unified style of React event, element, and type imports
 *   Added: Profile slug editing
 *   Fixed: Clear resume button restored
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Box, Spinner, Flex, useClipboard, useToast, Heading } from '@chakra-ui/react';
 import { useChangeProfileSlugError, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
@@ -69,11 +69,11 @@ export default function ChangeProfileUrlView() {
 		}
 	}, [hasCopied]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSlug(e.target.value);
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!loggedInSlug || !slug) return;
 

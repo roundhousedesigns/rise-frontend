@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { As, Box, Flex, Heading } from '@chakra-ui/react';
 
 interface Props {
 	lineColor: string;
-	children: React.ReactNode;
+	children: ReactNode;
 	headingAs?: As;
 	[prop: string]: any;
 }

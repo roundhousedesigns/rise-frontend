@@ -21,7 +21,7 @@ export default function SearchFilterSkills() {
 	};
 
 	return data?.length > 0 && !loading && !error ? (
-		<Box mt={8}>
+		<Box id='filterSkills' mt={8}>
 			<Heading as='h3' variant='searchFilterTitle'>
 				What skills are you looking for?
 			</Heading>

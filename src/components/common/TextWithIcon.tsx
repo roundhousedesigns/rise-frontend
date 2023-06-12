@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { Icon, Text } from '@chakra-ui/react';
 
 interface Props {
 	icon: any;
-	children: React.ReactNode;
+	children: ReactNode;
 	[prop: string]: any;
 }
 

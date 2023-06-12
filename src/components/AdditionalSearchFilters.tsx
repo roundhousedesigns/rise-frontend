@@ -77,7 +77,7 @@ export default function AdditionalSearchFilters() {
 	}, [filters]);
 
 	return (
-		<Fade in={searchActive}>
+		<Fade in={searchActive} id='filterAdditional'>
 			<Accordion w='full' allowMultiple defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
 				<SearchFilterAccordionItem
 					heading='Additional Filters'

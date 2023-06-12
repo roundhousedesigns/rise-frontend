@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import {
 	Box,
 	Heading,
@@ -361,7 +361,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			});
 	};
 
-	const handleFileInputClear = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleFileInputClear = (event: MouseEvent<HTMLButtonElement>) => {
 		const {
 			dataset: { field: fieldName },
 		} = event.currentTarget as HTMLButtonElement;
@@ -439,7 +439,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		updateProfileMutation(editProfile)
@@ -615,10 +615,21 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		);
 	};
 
+	const handleScrollToCredits = () => {
+		const credits = document.getElementById('credits');
+		if (credits) {
+			credits.scrollIntoView({ behavior: 'smooth' });
+		}
+	};
+
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Heading variant='contentSubtitle' mt={2}>
-				Don't forget to <Link href='#credits'>add your credits</Link> to appear in search results!
+				Don't forget to{' '}
+				<Link onClick={handleScrollToCredits} title='Scroll to Credits'>
+					add your credits
+				</Link>{' '}
+				to appear in search results!
 			</Heading>
 			<Flex
 				alignItems='center'
@@ -690,7 +701,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										name='pronouns'
 										label='Pronouns'
 										onChange={handleInputChange}
-										flex='1'
 										maxW='150px'
 										inputProps={{
 											size: 'md',
@@ -707,10 +717,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										leftElement={<Icon as={FiHome} />}
 										onChange={handleInputChange}
 										maxLength={25}
+										flex='1 0 48%'
 										inputProps={{
 											tabIndex: 0,
 										}}
-										flex='1'
 									/>
 									<TextInput
 										value={selfTitle}
@@ -719,11 +729,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										label='Title/Trade/Profession'
 										leftElement={<Icon as={FiStar} />}
 										onChange={handleInputChange}
+										maxLength={50}
+										flex='1 0 48%'
 										inputProps={{
-											maxLength: 50,
 											tabIndex: 0,
 										}}
-										flex='1'
 									/>
 								</Flex>
 							</StackItem>
@@ -857,7 +867,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 					<StackItem py={4}>
 						<Flex flexWrap='wrap' gap={4}>
-							<Box flex='1 0 100%'>
+							<Box flex='1 0 100%' mb={8}>
 								<Heading variant='contentTitle'>Unions/Guilds</Heading>
 								<Heading variant='contentSubtitle'>
 									What unions or guilds are you a member of?
@@ -871,7 +881,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									/>
 								</Box>
 							</Box>
-							<Box flex='1'>
+							<Box flex='1' mb={8}>
 								<Heading variant='contentTitle'>Experience Levels</Heading>
 								<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
 								<Box fontSize='sm'>

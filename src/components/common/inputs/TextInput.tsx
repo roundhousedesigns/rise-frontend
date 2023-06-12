@@ -1,3 +1,4 @@
+import { ChangeEvent, ReactNode } from 'react';
 import {
 	Flex,
 	FormControl,
@@ -21,9 +22,9 @@ interface Props {
 	isDisabled?: boolean;
 	isRequired?: boolean;
 	error?: string;
-	leftElement?: React.ReactNode;
+	leftElement?: ReactNode;
 	maxLength?: number;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -102,10 +103,11 @@ export default function TextInput({
 				{label ? (
 					<FormLabel
 						ml={2}
+						w='full'
 						mr={0}
 						my={0}
 						lineHeight='normal'
-						fontSize='md'
+						fontSize='sm'
 						flexGrow='0'
 						sx={{
 							visibility: labelHidden ? 'hidden' : 'visible',

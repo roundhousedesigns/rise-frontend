@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { FormEvent, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	Drawer,
@@ -63,7 +63,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	}, [filteredCandidates]);
 
 	// Handle form submission
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		// set the positions array to the jobs array if it's not empty, otherwise use the department array

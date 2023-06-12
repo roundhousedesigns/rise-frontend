@@ -17,10 +17,16 @@ export default function SearchFilterDepartment() {
 				department: term,
 			},
 		});
+
+		// Scroll to next section on selection
+		const nextSection = document.getElementById('filterJobs');
+		if (nextSection) {
+			nextSection.scrollIntoView({ behavior: 'smooth' });
+		}
 	};
 
 	return !loading && !error ? (
-		<Box>
+		<Box id='filterDepartment'>
 			<Heading as='h3' variant='searchFilterTitle'>
 				Which department are you hiring for?
 			</Heading>

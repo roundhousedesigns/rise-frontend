@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { FormEvent, useContext } from 'react';
 import { Box, Fade, Spacer } from '@chakra-ui/react';
 
 import SearchFilterDepartment from '../components/SearchFilterDepartment';
@@ -11,7 +11,7 @@ import AdditionalSearchFilters from '../components/AdditionalSearchFilters';
 
 interface Props {
 	showButtons?: boolean;
-	onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+	onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
 export default function SearchWizardView({ onSubmit }: Props) {
