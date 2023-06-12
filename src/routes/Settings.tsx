@@ -1,5 +1,5 @@
 import { Box, FormControl, FormLabel, Link, Stack, Switch, Text, useColorMode } from '@chakra-ui/react';
-import { FiDelete, FiMoon, FiSun } from 'react-icons/fi';
+import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
 import SettingsSection from '../components/common/SettingsSection';
 import ChangePasswordView from '../views/ChangePasswordView';
