@@ -1033,67 +1033,51 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							}}
 						/>
 					</Box>
-					<Box>
-						<Heading
-							size='md'
-							fontWeight='bold'
-							pb={2}
-							mb={2}
-							color='blackAlpha.800'
-							border='3px dashed gray.400'
-							borderBottomWidth='3px'
-							borderBottomStyle='dashed'
-							borderBottomColor='gray.400'
-							variant='contentTitle'
-						>
-							Identity
-						</Heading>
-						<Text>
-							The following optional fields will be <strong>searchable</strong>, but{' '}
-							<em>will not appear</em> on your public profile. Select any that apply.
-						</Text>
-						<Flex gap={4} flexWrap='wrap'>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Gender</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='genderIdentities'
-										items={genderIdentityTerms}
-										checked={
-											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+				</StackItem>
+
+				<StackItem>
+					<HeadingCenterline lineColor='brand.yellow'>Identity</HeadingCenterline>
+					<Text>
+						The following optional fields will be <strong>searchable</strong>, but{' '}
+						<em>will not appear</em> on your public profile. Select any that apply.
+					</Text>
+					<Flex gap={4} flexWrap='wrap'>
+						<Box flex='1 0 33%'>
+							<Heading variant='contentTitle'>Gender</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='genderIdentities'
+									items={genderIdentityTerms}
+									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Race/Ethnicity</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='racialIdentities'
-										items={racialIdentityTerms}
-										checked={
-											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</Box>
+						<Box flex='1 0 33%'>
+							<Heading variant='contentTitle'>Race/Ethnicity</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='racialIdentities'
+									items={racialIdentityTerms}
+									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Additional</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='personalIdentities'
-										items={personalIdentityTerms}
-										checked={
-											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</Box>
+						<Box flex='1 0 33%'>
+							<Heading variant='contentTitle'>Additional</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='personalIdentities'
+									items={personalIdentityTerms}
+									checked={
+										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
+									}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-						</Flex>
-					</Box>
+						</Box>
+					</Flex>
 				</StackItem>
 
 				<StackItem>
