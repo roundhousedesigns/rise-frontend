@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, Spinner, useToast } from '@chakra-ui/react';
@@ -18,7 +18,7 @@ export default function LoginView() {
 		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUsername(e.target.value);
 	};
 
@@ -27,7 +27,7 @@ export default function LoginView() {
 
 	const errorMessage = useLostPasswordError(errorCode);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha }).then((token) => {

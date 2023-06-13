@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { ChangeEvent, useRef } from 'react';
 import { Button, VisuallyHidden } from '@chakra-ui/react';
 
 export default function FileUploadButton({
@@ -13,7 +13,7 @@ export default function FileUploadButton({
 	content?: string | number | JSX.Element;
 	icon?: JSX.Element;
 	accept?: string;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	loading?: boolean;
 }) {
 	const fileInputRef = useRef<HTMLInputElement>(null);

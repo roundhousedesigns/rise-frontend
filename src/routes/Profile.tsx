@@ -1,7 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
 import { ButtonGroup, Spinner } from '@chakra-ui/react';
-import { FiEdit3, FiShare } from 'react-icons/fi';
+import { FiEdit3 } from 'react-icons/fi';
 
+import { useProfileUrl } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
 import useUserProfile from '../hooks/queries/useUserProfile';
@@ -9,14 +10,15 @@ import useUserProfile from '../hooks/queries/useUserProfile';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ErrorAlert from '../components/common/ErrorAlert';
-import { getProfileURL } from '../lib/utils';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
+import ShareButton from '../components/common/ShareButton';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
+	const profileUrl = useProfileUrl(slug);
 
 	const [userId] = useUserId(slug);
 
@@ -24,25 +26,6 @@ export default function Profile(): JSX.Element {
 
 	// If no slug is in the route, use the logged in user's ID.
 	const [profile, { loading, error }] = useUserProfile(userId ? userId : loggedInId);
-
-	const handleShareClick = () => {
-		if (navigator.share) {
-			navigator
-				.share({
-					title: 'Share this profile',
-					text: 'Check out this profile on the RISE Theatre Directory.',
-					url: getProfileURL(slug),
-				})
-				.then(() => {
-					console.info('sucess');
-				})
-				.catch((error) => {
-					console.error('Error sharing', error);
-				});
-		} else {
-			console.log('Web Share API not supported on this browser.');
-		}
-	};
 
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>
@@ -58,14 +41,7 @@ export default function Profile(): JSX.Element {
 				</ResponsiveButton>
 			)}
 
-			<ResponsiveButton
-				label='Share profile'
-				icon={<FiShare />}
-				colorScheme='blue'
-				onClick={handleShareClick}
-			>
-				Share
-			</ResponsiveButton>
+			<ShareButton url={profileUrl} />
 		</ButtonGroup>
 	);
 

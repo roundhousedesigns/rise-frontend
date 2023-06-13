@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
 	AccordionItem,
 	AccordionButton,
@@ -9,7 +10,7 @@ import {
 interface Props {
 	heading: string;
 	headingProps?: any;
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export default function SearchFilterAccordionItem({ heading, headingProps, children }: Props) {

@@ -1,10 +1,10 @@
-import { ReactElement, JSXElementConstructor } from 'react';
+import { ReactNode, ReactElement, JSXElementConstructor } from 'react';
 import { Button, ButtonProps, IconButton, forwardRef, useMediaQuery } from '@chakra-ui/react';
 
 interface Props extends ButtonProps {
 	label: string;
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
-	children: React.ReactNode;
+	children: ReactNode;
 	[prop: string]: any;
 }
 

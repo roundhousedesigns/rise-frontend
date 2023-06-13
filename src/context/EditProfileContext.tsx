@@ -1,4 +1,4 @@
-import { createContext, useReducer } from 'react';
+import { ReactNode, createContext, useReducer } from 'react';
 import { Credit, UserProfile } from '../lib/classes';
 import { generateRandomString, sanitizeBoolean } from '../lib/utils';
 
@@ -103,7 +103,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 }
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 	initialState: UserProfile | null;
 }
 

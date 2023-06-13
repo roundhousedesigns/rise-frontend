@@ -1,3 +1,4 @@
+import { ReactElement } from 'react';
 import { IconButton, Link } from '@chakra-ui/react';
 import { socialLink } from '../../lib/utils';
 
@@ -5,7 +6,7 @@ interface Props {
 	label: string;
 	name: string;
 	value: string;
-	icon: React.ReactElement;
+	icon: ReactElement;
 }
 
 export default function SocialIcon({ label, name, value, icon }: Props) {

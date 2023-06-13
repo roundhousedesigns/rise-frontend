@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { Accordion, Flex, IconButton, Spinner } from '@chakra-ui/react';
@@ -65,7 +65,7 @@ export default function SearchFilterName() {
 	};
 
 	// Handle form submission
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		getSearchResults({

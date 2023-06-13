@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { chakra, Button, Box, Spinner, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
-import useChangeUserPassword  from '../hooks/mutations/useChangeUserPassword';
+import useViewer from '../hooks/queries/useViewer';
+import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
 import TextInput from '../components/common/inputs/TextInput';
 
-interface Props {
-	username: string;
-}
+export default function ChangePasswordView() {
+	const { email: username } = useViewer();
 
-export default function ChangePasswordView({ username }: Props) {
 	const [userFields, setUserFields] = useState<ChangePasswordInput>({
 		currentPassword: '',
 		newPassword: '',
@@ -40,14 +39,14 @@ export default function ChangePasswordView({ username }: Props) {
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!currentPassword || !newPassword || !passwordsMatch) return;
 
@@ -61,7 +60,8 @@ export default function ChangePasswordView({ username }: Props) {
 				setErrorCode('');
 
 				logoutMutation().then(() => {
-					window.location.href = '/login?alert=Success! Please log in with your new password.&alertStatus=success';
+					window.location.href =
+						'/login?alert=Success! Please log in with your new password.&alertStatus=success';
 				});
 			})
 			.catch((errors: { message: string }) => setErrorCode(errors.message));
@@ -74,62 +74,58 @@ export default function ChangePasswordView({ username }: Props) {
 	};
 
 	return (
-		<Box borderRadius='lg' w='full'>
+		<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
+			<Flex gap={6} flexWrap='wrap'>
+				<TextInput
+					value={currentPassword}
+					name='currentPassword'
+					id='currentPassword'
+					variant='filled'
+					label='Current Password'
+					isRequired
+					onChange={handleInputChange}
+					error={errorMessage}
+					inputProps={{
+						type: 'password',
+						autoComplete: 'current-password',
+					}}
+				/>
+				<TextInput
+					value={newPassword}
+					name='newPassword'
+					id='newPassword'
+					variant='filled'
+					label='New password'
+					isRequired
+					onChange={handleInputChange}
+					flex='1'
+					inputProps={{
+						type: 'password',
+						autoComplete: 'new-password',
+					}}
+				/>
+				<TextInput
+					value={confirmPassword}
+					name='confirmPassword'
+					id='confirmPassword'
+					type='password'
+					variant='filled'
+					label='Confirm your new password'
+					isRequired
+					error={passwordsMatchError()}
+					onChange={handleInputChange}
+					flex='1'
+					inputProps={{
+						type: 'password',
+						autoComplete: 'new-password',
+					}}
+				/>
+			</Flex>
 			<Box mt={2}>
-				<form onSubmit={handleSubmit}>
-					<Flex gap={6} flexWrap='wrap'>
-						<TextInput
-							value={currentPassword}
-							name='currentPassword'
-							id='currentPassword'
-							variant='filled'
-							label='Current Password'
-							isRequired
-							onChange={handleInputChange}
-							error={errorMessage}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'current-password',
-							}}
-						/>
-						<TextInput
-							value={newPassword}
-							name='newPassword'
-							id='newPassword'
-							variant='filled'
-							label='New password'
-							isRequired
-							onChange={handleInputChange}
-							flex='1'
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-						<TextInput
-							value={confirmPassword}
-							name='confirmPassword'
-							id='confirmPassword'
-							type='password'
-							variant='filled'
-							label='Confirm your new password'
-							isRequired
-							error={passwordsMatchError()}
-							onChange={handleInputChange}
-							flex='1'
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-					</Flex>
-					<Box mt={4}>
-						<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Change password'}
-						</Button>
-					</Box>
-				</form>
+				<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
+					{submitLoading ? <Spinner size='sm' /> : 'Change password'}
+				</Button>
 			</Box>
-		</Box>
+		</chakra.form>
 	);
 }

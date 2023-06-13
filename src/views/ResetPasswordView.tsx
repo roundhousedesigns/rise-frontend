@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	Button,
@@ -47,7 +47,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
@@ -59,7 +59,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 
 	const errorMessage = useResetPasswordError(errorCode);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!token || !login || !newPassword || !passwordsMatch) return;
 

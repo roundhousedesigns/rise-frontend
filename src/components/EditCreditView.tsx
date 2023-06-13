@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react';
 import {
 	ButtonGroup,
 	Divider,
@@ -146,7 +146,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
 

@@ -1,3 +1,4 @@
+import { ChangeEvent, ReactNode } from 'react';
 import {
 	Flex,
 	FormControl,
@@ -8,6 +9,7 @@ import {
 	InputGroup,
 	InputLeftElement,
 	Text,
+	Wrap,
 } from '@chakra-ui/react';
 
 interface Props {
@@ -16,12 +18,13 @@ interface Props {
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
+	variant?: string;
 	isDisabled?: boolean;
 	isRequired?: boolean;
 	error?: string;
-	leftElement?: React.ReactNode;
+	leftElement?: ReactNode;
 	maxLength?: number;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -34,6 +37,7 @@ export default function TextInput({
 	helperText,
 	placeholder,
 	value,
+	variant,
 	name,
 	isDisabled,
 	isRequired,
@@ -44,31 +48,43 @@ export default function TextInput({
 	inputProps,
 	...props
 }: Props) {
+	const inputVariant = variant ? variant : 'filled';
+
 	const HelperTextFormatted = () => {
 		let text = helperText ? helperText : '';
+		let lengthText = '';
 
 		if (maxLength) {
 			const length = value ? value.length : 0;
-			text = `${text} (${length}/${maxLength})`;
+			lengthText = `${length}/${maxLength}`;
 		}
 
-		console.info(text);
-
-		return <Text as='span'>{text}</Text>;
+		return (
+			<Flex
+				w='full'
+				justifyContent='space-between'
+				alignItems='center'
+				lineHeight='normal'
+				fontSize='xs'
+			>
+				<Text m={0}>{text}</Text>
+				<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
+					{lengthText}
+				</Text>
+			</Flex>
+		);
 	};
 
 	return (
 		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 			<InputGroup>
-				{leftElement ? (
+				{leftElement && (
 					<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
 						{leftElement}
 					</InputLeftElement>
-				) : (
-					false
 				)}
 				<Input
-					variant='filled'
+					variant={inputVariant}
 					focusBorderColor='brand.blue'
 					placeholder={placeholder}
 					fontSize='md'
@@ -87,10 +103,11 @@ export default function TextInput({
 				{label ? (
 					<FormLabel
 						ml={2}
+						w='full'
 						mr={0}
 						my={0}
 						lineHeight='normal'
-						fontSize='md'
+						fontSize='sm'
 						flexGrow='0'
 						sx={{
 							visibility: labelHidden ? 'hidden' : 'visible',
@@ -102,16 +119,16 @@ export default function TextInput({
 				) : (
 					false
 				)}
-				<FormHelperText my={0} flex='1'>
-					<HelperTextFormatted />
-				</FormHelperText>
-				{error ? (
-					<FormErrorMessage fontWeight='bold' my={0}>
-						{error}
-					</FormErrorMessage>
-				) : (
-					false
-				)}
+				<Wrap w='full'>
+					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+						<HelperTextFormatted />
+					</FormHelperText>
+					{error && (
+						<FormErrorMessage fontWeight='bold' my={0}>
+							{error}
+						</FormErrorMessage>
+					)}
+				</Wrap>
 			</Flex>
 		</FormControl>
 	);

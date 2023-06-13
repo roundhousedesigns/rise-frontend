@@ -1,4 +1,4 @@
-import { createContext, Key, useReducer } from 'react';
+import { createContext, Key, ReactNode, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
@@ -172,7 +172,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 }
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export const SearchContextProvider = ({ children }: Props) => {

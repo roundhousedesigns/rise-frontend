@@ -1,10 +1,10 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { Heading, Box, Flex } from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
-	actions?: React.ReactNode;
-	children: React.ReactNode;
+	actions?: ReactNode;
+	children: ReactNode;
 	[prop: string]: any;
 }
 

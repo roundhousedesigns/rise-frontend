@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
@@ -40,14 +40,14 @@ export default function ChangePassword({ username }: Props) {
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
 		});
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!currentPassword || !newPassword || !passwordsMatch) return;
 

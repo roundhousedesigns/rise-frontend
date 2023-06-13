@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import {
 	chakra,
 	Button,
@@ -69,7 +69,7 @@ export default function RegisterView() {
 		return () => clearTimeout(timer);
 	}, [password, confirmPassword]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
@@ -80,7 +80,7 @@ export default function RegisterView() {
 	const toast = useToast();
 	const errorMessage = useRegistrationError(errorCode);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha }).then((token) => {

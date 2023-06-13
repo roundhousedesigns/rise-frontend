@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
 import { Credit, WPItem } from '../lib/classes';
 import {
 	Card,
@@ -98,7 +98,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 		return () => setLoading(false);
 	}, [termData, jobIds, skillIds]);
 
-	const handleCreditKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+	const handleCreditKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
 		if (onClick === undefined) return;
 
 		if (e.key === 'Enter' || e.key === ' ') {
