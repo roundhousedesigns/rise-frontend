@@ -7,7 +7,7 @@ interface Props {
 	children: React.ReactNode;
 }
 
-export default function LoggedIn({ children }: Props) {
+export default function LoggedIn({ children }: Props): JSX.Element {
 	const {
 		loggedInId,
 		result: { loading },
@@ -21,8 +21,8 @@ export default function LoggedIn({ children }: Props) {
 
 	return loading ? (
 		<Skeleton />
-	) : (!loggedInId && publicEndpoints.includes(pathname)) || loggedInId ? (
-		children
+	) : !loggedInId || publicEndpoints.includes(pathname) ? (
+		<>{children}</>
 	) : (
 		<LoginView />
 	);

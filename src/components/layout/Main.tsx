@@ -16,9 +16,9 @@ import NotFound from '../../routes/NotFound';
 import LoggedIn from '../LoggedIn';
 
 export default function Main() {
-	const LoggedInComponent = ({ component }: { component: JSX.Element }) => {
-		return <LoggedIn>{component}</LoggedIn>;
-	};
+	const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
+		<LoggedIn>{component}</LoggedIn>
+	);
 
 	return (
 		<Box
