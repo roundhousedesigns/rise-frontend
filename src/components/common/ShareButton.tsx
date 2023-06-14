@@ -15,9 +15,6 @@ export default function ShareButton({ url, ...props }: Props) {
 					text: 'Check out this profile on the RISE Theatre Directory.',
 					url: url,
 				})
-				.then(() => {
-					console.info('sucess');
-				})
 				.catch((error) => {
 					console.error('Error sharing', error);
 				});

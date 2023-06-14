@@ -27,7 +27,7 @@ interface Props {
 
 const useViewer = (): Props => {
 	const result = useQuery(QUERY_VIEWER, {
-		// fetchPolicy: 'network-only',
+		fetchPolicy: 'network-only',
 	});
 
 	const loggedInId = result?.data?.viewer?.id;
