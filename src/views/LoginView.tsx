@@ -61,8 +61,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 				loginMutation({ ...credentials, reCaptchaToken: token })
 					.then((res) => {
 						if (res.data.loginWithCookiesAndReCaptcha.userId) {
-							// window.location.href = '/';
-							navigate('/');
+							navigate('');
 						}
 					})
 					.catch((errors: { message: string }) => setErrorCode(errors.message));

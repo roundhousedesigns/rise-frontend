@@ -55,6 +55,7 @@ export interface UserProfileParams {
 	genderIdentities?: number[] | WPItem[];
 	racialIdentities?: number[] | WPItem[];
 	personalIdentities?: number[] | WPItem[];
+	socials?: PersonalLinksParams;
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;

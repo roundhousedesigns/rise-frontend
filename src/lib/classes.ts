@@ -90,6 +90,7 @@ export class UserProfile extends User {
 			willTravel,
 			willTour,
 			education,
+			socials,
 			twitter,
 			linkedin,
 			instagram,
@@ -171,20 +172,20 @@ export class UserProfile extends User {
 			this.personalIdentities = this.extractIdsFromNodes(personalIdentities);
 		}
 
-		if (twitter) {
-			this.socials.twitter = twitter;
+		if (twitter || socials?.twitter) {
+			this.socials.twitter = twitter || socials?.twitter || '';
 		}
 
-		if (linkedin) {
-			this.socials.linkedin = linkedin;
+		if (linkedin || socials?.linkedin) {
+			this.socials.linkedin = linkedin || socials?.linkedin || '';
 		}
 
-		if (instagram) {
-			this.socials.instagram = instagram;
+		if (instagram || socials?.instagram) {
+			this.socials.instagram = instagram || socials?.instagram || '';
 		}
 
-		if (facebook) {
-			this.socials.facebook = facebook;
+		if (facebook || socials?.facebook) {
+			this.socials.facebook = facebook || socials?.facebook || '';
 		}
 
 		if (credits && credits.length > 0) {
