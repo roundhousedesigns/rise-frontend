@@ -60,7 +60,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 				loginMutation({ ...credentials, reCaptchaToken: token })
 					.then((res) => {
-						if (res.data.loginWithCookiesAndReCaptcha.userId) {
+						if (res.data.loginWithCookiesAndReCaptcha.success === 'SUCCESS') {
 							navigate('');
 						}
 					})

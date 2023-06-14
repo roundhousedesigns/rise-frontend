@@ -13,7 +13,7 @@ const MUTATE_LOGIN = gql`
 			input: { login: $login, password: $password, reCaptchaToken: $reCaptchaToken }
 		) {
 			clientMutationId
-			userId
+			status
 		}
 	}
 `;
