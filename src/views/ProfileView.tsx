@@ -50,6 +50,8 @@ interface Props {
 	loading: boolean;
 }
 
+// TODO Chore: create stack item component for profile to DRY yourself off
+
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.

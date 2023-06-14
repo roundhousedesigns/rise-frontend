@@ -4,6 +4,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { LoginInput } from '../../lib/types';
+import { QUERY_VIEWER } from '../queries/useViewer';
 
 // MAYBE get more user data from this mutation
 const MUTATE_LOGIN = gql`
@@ -28,6 +29,7 @@ const useLogin = () => {
 				password,
 				reCaptchaToken,
 			},
+			refetchQueries: [{ query: QUERY_VIEWER }],
 		});
 	};
 

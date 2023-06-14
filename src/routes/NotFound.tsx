@@ -1,6 +1,7 @@
 import { Box, Heading } from '@chakra-ui/react';
 import Page from '../components/Page';
 import DashboardView from '../views/DashboardView';
+import LoggedIn from '../components/LoggedIn';
 
 export default function Notfound() {
 	return (
@@ -9,8 +10,12 @@ export default function Notfound() {
 				404, friend.
 			</Heading>
 			<Box>
-				<Heading as='h3' variant='contentTitle'>We couldn't find that page.</Heading>
-				<DashboardView />
+				<Heading variant='contentTitle'>
+					We couldn't find that page.
+				</Heading>
+				<LoggedIn hideOnly={true}>
+					<DashboardView />
+				</LoggedIn>
 			</Box>
 		</Page>
 	);
