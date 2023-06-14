@@ -10,14 +10,14 @@ export default function Login() {
 	const alert = params.get('alert');
 	const alertStatus = params.get('alertStatus');
 
+	const { loggedInId } = useViewer();
+
 	// If the user is logged in, redirect them to the home page.
 	useEffect(() => {
 		if (loggedInId) {
 			navigate('/');
 		}
 	});
-
-	const { loggedInId } = useViewer();
 
 	return (
 		<Page>
