@@ -164,7 +164,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 							my={0}
 							w='auto'
 							display='block'
-							maxW={{ base: '50%', md: '400px' }}
+							maxW={{ base: '50%', md: '350px' }}
 							position='relative'
 						>
 							<Image
