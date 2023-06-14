@@ -61,7 +61,7 @@ export default function ChangeProfileUrlView() {
 			toast({
 				title: 'Copied!',
 				position: 'top',
-				description: 'Your profile URL has been copied to your clipboard.',
+				description: 'Your profile link has been copied to your clipboard.',
 				status: 'success',
 				duration: 3000,
 				isClosable: true,

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useClipboard, useToast } from '@chakra-ui/react';
 import { FiShare } from 'react-icons/fi';
 import ResponsiveButton from './inputs/ResponsiveButton';
 
@@ -7,6 +9,9 @@ interface Props {
 }
 
 export default function ShareButton({ url, ...props }: Props) {
+	const { onCopy, setValue, hasCopied } = useClipboard('');
+	const toast = useToast();
+
 	const handleShareClick = () => {
 		if (navigator.share) {
 			navigator
@@ -19,9 +24,29 @@ export default function ShareButton({ url, ...props }: Props) {
 					console.error('Error sharing', error);
 				});
 		} else {
-			console.log('Web Share API not supported on this browser.');
+			setValue(url);
+			onCopy();
 		}
 	};
+
+	// Set the copy value to the profile URL
+	useEffect(() => {
+		setValue(url);
+	}, [url]);
+
+	// Pop up the toast when the user copies the URL
+	useEffect(() => {
+		if (hasCopied) {
+			toast({
+				title: 'Copied!',
+				position: 'top',
+				description: 'The profile link has been copied to your clipboard.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+		}
+	}, [hasCopied]);
 
 	return (
 		<ResponsiveButton
