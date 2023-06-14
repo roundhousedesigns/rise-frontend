@@ -2,12 +2,14 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.6] - 2023-06-12
+## \[1.0.6] - 2023-06-12 - 2023-06-13
 
 *   Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate user should continue to scroll
 *   Improved: Unified style of React event, element, and type imports
 *   Added: Profile slug editing
 *   Fixed: Clear resume button restored
+*   Hotfixed: Social inputs not saving
+*   Hotfixed: Authentication refactor
 *   Bugs squashed, layouts fixed, quirks handled
 
 ## \[1.0.5] - 2023-06-06
