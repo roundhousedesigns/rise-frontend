@@ -30,10 +30,6 @@ export default function Footer() {
 							Roundhouse Designs
 						</Link>
 					</Text>
-					<Text fontSize='sm' mt={8}>
-						{`Please report all bugs to: `}
-						<Link href='mailto:support@risetheatre.org'>support@risetheatre.org</Link>
-					</Text>
 				</Container>
 			</Box>
 		</LightMode>
