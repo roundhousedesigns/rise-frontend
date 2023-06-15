@@ -11,14 +11,16 @@ const variants = {
 	}),
 	pageSubtitle: defineStyle({
 		fontSize: '3xl',
+		fontWeight: 'bold',
 	}),
 	contentTitle: defineStyle({
 		fontSize: '2xl',
+		fontWeight: 'bold',
 		pb: 0,
 	}),
 	contentSubtitle: defineStyle({
-		fontSize: 'lg',
-		fontWeight: 'medium',
+		fontSize: 'xl',
+		fontWeight: 'bold',
 		mt: 0,
 		pb: 0,
 	}),
