@@ -193,3 +193,23 @@ export function validateProfileSlug(str: string): boolean {
 	var regexp = /^[a-zA-Z0-9_-]+$/;
 	return regexp.test(str);
 }
+
+/**
+ * Compare 2 WPItems and sort them alphabetically by the `name` property.
+ *
+ * @param a The first WPItem.
+ * @param b The second WPItem.
+ * @returns The sort order.
+ */
+export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
+	const nameA = a.name.toLowerCase();
+	const nameB = b.name.toLowerCase();
+
+	if (nameA < nameB) {
+		return -1;
+	}
+	if (nameA > nameB) {
+		return 1;
+	}
+	return 0;
+};
