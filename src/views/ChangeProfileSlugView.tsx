@@ -1,5 +1,14 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button, Box, Spinner, Flex, useClipboard, useToast, Heading } from '@chakra-ui/react';
+import {
+	Button,
+	Box,
+	Spinner,
+	Flex,
+	useClipboard,
+	useToast,
+	Heading,
+	useMediaQuery,
+} from '@chakra-ui/react';
 import { useChangeProfileSlugError, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useChangeProfileSlug from '../hooks/mutations/useChangeProfileSlug';
@@ -21,6 +30,8 @@ export default function ChangeProfileUrlView() {
 		changeProfileSlugMutation,
 		results: { loading: submitLoading },
 	} = useChangeProfileSlug();
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const newSlugIsClean = useValidateProfileSlug(slug);
 	const errorMessage = useChangeProfileSlugError(errorCode);
@@ -85,7 +96,7 @@ export default function ChangeProfileUrlView() {
 				toast({
 					title: 'Saved!',
 					position: 'top',
-					description: 'Your profile URL has been updated.',
+					description: 'Your profile link has been updated.',
 					status: 'success',
 					duration: 3000,
 					isClosable: true,
@@ -99,57 +110,62 @@ export default function ChangeProfileUrlView() {
 	return (
 		<Box borderRadius='lg' w='full'>
 			<Heading variant='contentSubtitle'>Customize your profile's URL for easy sharing.</Heading>
-			<Flex mt={6} gap={4} alignItems='flex-start' justifyContent='space-between'>
-				<form onSubmit={handleSubmit}>
-					<Heading variant='contentSubtitle' mt={0}>
-						Your profile tag:
-					</Heading>
-					<TextInput
-						value={slug}
-						name='slug'
-						id='slug'
-						maxW='320px'
-						label='New profile tag'
-						labelHidden
-						helperText='Letters, numbers, - and _ only.'
-						error={errorMessage}
-						isRequired
-						maxLength={20}
-						onChange={handleInputChange}
-						flex='1'
-					/>
+			<Flex mt={6} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
+				<Box flex='1 1 auto'>
+					<form onSubmit={handleSubmit}>
+						<Heading variant='contentSubtitle' mt={0}>
+							Your profile tag:
+						</Heading>
+						<TextInput
+							value={slug}
+							name='slug'
+							id='slug'
+							maxW='320px'
+							label='New profile tag'
+							labelHidden
+							helperText='Letters, numbers, - and _ only.'
+							error={errorMessage}
+							isRequired
+							maxLength={20}
+							onChange={handleInputChange}
+							flex='1'
+						/>
 
-					<Box mt={4}>
-						<Button
-							type='submit'
-							colorScheme='green'
-							isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
-						>
-							{submitLoading ? <Spinner size='sm' /> : 'Save'}
-						</Button>
-						<Button
-							ml={2}
-							colorScheme='orange'
-							isDisabled={!hasEditedSlug}
-							onClick={() => setSlug(loggedInSlug)}
-						>
-							Cancel
-						</Button>
-					</Box>
-				</form>
+						<Box mt={4}>
+							<Button
+								type='submit'
+								colorScheme='green'
+								isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
+							>
+								{submitLoading ? <Spinner size='sm' /> : 'Save'}
+							</Button>
+							<Button
+								ml={2}
+								colorScheme='orange'
+								isDisabled={!hasEditedSlug}
+								onClick={() => setSlug(loggedInSlug)}
+							>
+								Cancel
+							</Button>
+						</Box>
+					</form>
+				</Box>
 
-				<Box opacity={hasEditedSlug ? 0.5 : 1} transition='opacity 300ms ease'>
+				<Box opacity={hasEditedSlug ? 0.5 : 1} transition='opacity 300ms ease' flex='1 1 auto'>
 					<Heading variant='contentSubtitle' mt={0}>
-						Your profile URL:
+						Your profile link:
 					</Heading>
 					<Button
 						mt={0}
 						isDisabled={!!hasEditedSlug}
 						title='Copy profile URL'
+						colorScheme='yellow'
 						leftIcon={hasCopied ? <FiCheck /> : <FiClipboard />}
 						onClick={onCopy}
+						maxW='100%'
+						overflow='hidden'
 					>
-						{profileUrl}
+						{isLargerThanMd ? profileUrl : 'Copy'}
 					</Button>
 				</Box>
 			</Flex>

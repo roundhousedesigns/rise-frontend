@@ -57,7 +57,7 @@ import CreditItem from '../components/CreditItem';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
-import DeleteCreditAlertDialog from '../components/DeleteCreditAlertDialog';
+import DeleteCreditButton from '../components/DeleteCreditButton';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
@@ -866,52 +866,48 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Stack>
 
 					<StackItem py={4}>
-						<Flex flexWrap='wrap' gap={4}>
-							<Box flex='1 0 100%' mb={8}>
-								<Heading variant='contentTitle'>Unions/Guilds</Heading>
-								<Heading variant='contentSubtitle'>
-									What unions or guilds are you a member of?
-								</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='unions'
-										items={unionTerms}
-										checked={unions ? unions.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						<Box mb={8}>
+							<Heading variant='contentTitle'>Unions/Guilds</Heading>
+							<Heading variant='contentSubtitle'>
+								What unions or guilds are you a member of?
+							</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='unions'
+									items={unionTerms}
+									checked={unions ? unions.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1' mb={8}>
-								<Heading variant='contentTitle'>Experience Levels</Heading>
-								<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='experienceLevels'
-										items={experienceLevelTerms}
-										checked={
-											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</Box>
+						<Box mb={8}>
+							<Heading variant='contentTitle'>Experience Levels</Heading>
+							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='experienceLevels'
+									items={experienceLevelTerms}
+									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1'>
-								<Heading variant='contentTitle'>Partner Directories</Heading>
-								<Heading variant='contentSubtitle'>
-									Are you a member of one of our partner organizations?
-								</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='partnerDirectories'
-										items={partnerDirectoryTerms}
-										checked={
-											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</Box>
+						<Box>
+							<Heading variant='contentTitle'>Partner Directories</Heading>
+							<Heading variant='contentSubtitle'>
+								Are you a member of one of our partner organizations?
+							</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='partnerDirectories'
+									items={partnerDirectoryTerms}
+									checked={
+										partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
+									}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-						</Flex>
+						</Box>
 					</StackItem>
 
 					<StackItem w='full' maxW='3xl'>
@@ -971,37 +967,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									key={index}
 									width='full'
 								/>
-								<Stack>
-									{index > 0 ? (
-										<IconButton
-											size='lg'
-											colorScheme='gray'
-											icon={<FiArrowUpCircle />}
-											aria-label='Move up Credit'
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveUp(index);
-											}}
-										/>
-									) : (
-										false
-									)}
-									{index < creditsSorted.length - 1 ? (
-										<IconButton
-											size='lg'
-											colorScheme='gray'
-											icon={<FiArrowDownCircle />}
-											aria-label='Move down Credit'
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveDown(index);
-											}}
-										/>
-									) : (
-										false
-									)}
+								<Stack
+									as={isLargerThanMd ? ButtonGroup : undefined}
+									isAttached={true}
+									gap={{ base: 2, md: 0 }}
+									direction={{ base: 'column', md: 'row' }}
+								>
+									<IconButton
+										colorScheme='gray'
+										icon={<FiArrowUpCircle />}
+										aria-label='Move up Credit'
+										isDisabled={index === 0}
+										id={credit.id}
+										onClick={() => {
+											handleCreditMoveUp(index);
+										}}
+									/>
+									<IconButton
+										colorScheme='gray'
+										icon={<FiArrowDownCircle />}
+										aria-label='Move down Credit'
+										isDisabled={index === creditsSorted.length - 1}
+										id={credit.id}
+										onClick={() => {
+											handleCreditMoveDown(index);
+										}}
+									/>
+									<DeleteCreditButton handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 								</Stack>
-								<DeleteCreditAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 							</Stack>
 						))
 					)}
@@ -1041,8 +1034,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						The following optional fields will be <strong>searchable</strong>, but{' '}
 						<em>will not appear</em> on your public profile. Select any that apply.
 					</Text>
-					<Flex gap={4} flexWrap='wrap'>
-						<Box flex='1 0 33%'>
+					<Stack mt={4} gap={4}>
+						<StackItem flex='1 0 33%'>
 							<Heading variant='contentTitle'>Gender</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
@@ -1052,8 +1045,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									handleChange={handleCheckboxInput}
 								/>
 							</Box>
-						</Box>
-						<Box flex='1 0 33%'>
+						</StackItem>
+						<StackItem flex='1 0 33%'>
 							<Heading variant='contentTitle'>Race/Ethnicity</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
@@ -1063,8 +1056,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									handleChange={handleCheckboxInput}
 								/>
 							</Box>
-						</Box>
-						<Box flex='1 0 33%'>
+						</StackItem>
+						<StackItem flex='1 0 33%'>
 							<Heading variant='contentTitle'>Additional</Heading>
 							<Box fontSize='sm'>
 								<ProfileCheckboxGroup
@@ -1076,8 +1069,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									handleChange={handleCheckboxInput}
 								/>
 							</Box>
-						</Box>
-					</Flex>
+						</StackItem>
+					</Stack>
 				</StackItem>
 
 				<StackItem>
