@@ -17,8 +17,8 @@ Current tooling:
 *   Clone the `dev` branch
 *   Run `yarn install`
 *   [Set up your environment variables](#envvars).
-    *   If you're working with @gaswirth and are using the Roundhouse development backend (which you probably are),
-        he can provide the `VITE_BACKEND_URL` and `VITE_RECAPTCHA_SITE_KEY` values.
+    *   If you're working with us and are using the Roundhouse development backend, he can provide the `VITE_BACKEND_URL` and `VITE_RECAPTCHA_SITE_KEY` values.
+    *   If you're not sure if this is you, this is you.
 *   `yarn dev` to spin up a local dev server at `http://localhost:3000`, or wherever you've specified in your `package.json`.
 *   `yarn build` to build for production
 *   `yarn preview` to serve a production preview
@@ -26,5 +26,5 @@ Current tooling:
 ## Envvars
 
     VITE_FRONTEND_URL = http://localhost:3000 (or your local dev server)
-    VITE_BACKEND_URL = your-graphql-endpoint
-    VITE_RECAPTCHA_SITE_KEY = yourkey
+    VITE_BACKEND_URL = your-graphql-https-endpoint
+    VITE_RECAPTCHA_SITE_KEY = someCrazySiteKey
