@@ -35,6 +35,7 @@ For help installing and using nvm, see this [NVM Install Guide](https://www.free
 
 2. At the root of the project directory, run:
 
+
         yarn install
 
     *Note:* To install yarn, see [How to install yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
