@@ -26,5 +26,5 @@ Current tooling:
 Google reCAPTCHA is heavily integrated with the frontend, and **even for development**, you will need to supply your own reCAPTCHA key. You can set up one here: (<https://www.google.com/recaptcha/about/>). Be sure to add the `localhost` domain during setup if you're running locally. You'll want to set up a **v3 (Score-based) key**, and you're going to use the *Site Key*.
 
     VITE_FRONTEND_URL = http://localhost:3000 (or your local dev server)
-    VITE_BACKEND_URL = https://dev.risetheatre.org/graphql
+    VITE_BACKEND_URL = (the backend graphql endpoint)
     VITE_RECAPTCHA_SITE_KEY = (your recaptcha site key)
