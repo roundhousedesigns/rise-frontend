@@ -49,7 +49,7 @@ For help installing and using nvm, see this [NVM Install Guide](https://www.free
     VITE_BACKEND_URL = (backend server URL)
     VITE_RECAPTCHA_SITE_KEY = (your recaptcha site key)
     ```
-    *Note:* ask team member for BACKEND_URL and RECAPTCHA_SITE_KEY specifics
+    *Note:* ask team member for VITE_BACKEND_URL and VITE_RECAPTCHA_SITE_KEY specifics
 
 ### Development Workflow
 *Branch Naming Convention:* Name a branch by name/ticket-name.  For example: `michael/add-readme-steps`
@@ -74,7 +74,7 @@ For help installing and using nvm, see this [NVM Install Guide](https://www.free
     * make further changes locally
     * to push further changes:
 
-            git push --force origin <your-branch-name>
+            git push origin <your-branch-name>
 
 ## Production Builds
 *   `yarn build` to build for production
