@@ -10,13 +10,13 @@ export default function DashboardView() {
 	const [notices] = useGlobalNotices();
 
 	return (
-		<>
+		<Box>
 			<Card mb={8}>
 				<Flex justifyContent='space-between' flexWrap='wrap'>
 					<Text fontSize='xl' mb={0}>
 						To start a Search, use the button in the header!
 					</Text>
-					<Flex gap={4} w='full' flexWrap='wrap' my={4}>
+					<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
 						<Button
 							as={Link}
 							leftIcon={<FiUser />}
@@ -37,7 +37,7 @@ export default function DashboardView() {
 				</Flex>
 			</Card>
 			{notices && notices.length > 0 && (
-				<>
+				<Box>
 					<Heading as='h3' variant='contentTitle' mt={4}>
 						Notices!
 					</Heading>
@@ -57,8 +57,8 @@ export default function DashboardView() {
 							</Card>
 						))}
 					</Flex>
-				</>
+				</Box>
 			)}
-		</>
+		</Box>
 	);
 }
