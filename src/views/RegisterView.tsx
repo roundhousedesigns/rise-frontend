@@ -11,6 +11,7 @@ import {
 	Divider,
 	Heading,
 	useToast,
+	Flex,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -51,13 +52,13 @@ export default function RegisterView() {
 	useEffect(() => {
 		setFormIsValid(
 			email.length > 0 &&
-				firstName.length > 0 &&
-				lastName.length > 0 &&
-				password.length > 0 &&
-				confirmPassword.length > 0 &&
-				passwordsMatch &&
-				ofAge &&
-				termsAccepted
+			firstName.length > 0 &&
+			lastName.length > 0 &&
+			password.length > 0 &&
+			confirmPassword.length > 0 &&
+			passwordsMatch &&
+			ofAge &&
+			termsAccepted
 		);
 	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
 
@@ -241,15 +242,28 @@ export default function RegisterView() {
 							</chakra.span>
 						</Checkbox>
 					</FormControl>
-					<Button
-						mt={2}
-						type='submit'
-						colorScheme='orange'
-						isDisabled={!formIsValid || submitLoading}
-						tabIndex={8}
-					>
-						{submitLoading ? <Spinner size='sm' /> : 'Create account'}
-					</Button>
+					<Flex justifyContent={'space-between'} mt={2}>
+						<Button
+							type='submit'
+							colorScheme='orange'
+							isDisabled={!formIsValid || submitLoading}
+							tabIndex={8}
+						>
+							{submitLoading ? <Spinner size='sm' /> : 'Create account'}
+						</Button>
+						<Flex align={"baseline"}>
+							<Heading size={'md'} mr={2}>
+								Already have an account?
+							</Heading>
+							<Button
+								as={RouterLink}
+								to='/login'
+								colorScheme='blue'
+								tabIndex={9}>
+								Back To Login
+							</Button>
+						</Flex>
+					</Flex>
 				</Box>
 			</form>
 		</>
