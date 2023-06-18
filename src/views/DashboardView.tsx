@@ -1,4 +1,4 @@
-import { Card, Box, Heading, Button, Flex, Text } from '@chakra-ui/react';
+import { Card, Box, Heading, Button, Flex, Text, Spacer } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
@@ -11,7 +11,7 @@ export default function DashboardView() {
 
 	return (
 		<>
-			<Card mt={4}>
+			<Card mb={8}>
 				<Flex justifyContent='space-between' flexWrap='wrap'>
 					<Text fontSize='xl' mb={0}>
 						To start a Search, use the button in the header!
@@ -29,14 +29,12 @@ export default function DashboardView() {
 						<Button as={Link} leftIcon={<FiEdit3 />} to='/profile/edit' colorScheme='green' my={0}>
 							Edit your profile
 						</Button>
+						<Spacer />
+						<Button as={Link} to='/help' colorScheme='orange'>
+							Get Help
+						</Button>
 					</Flex>
 				</Flex>
-				{/* <Box mt={4}>
-					<Heading as='h4' variant='contentTitle'>Need a little guidance?</Heading>
-					<Button as={Link} to='/help' colorScheme='orange'>
-						Get Help
-					</Button>
-				</Box> */}
 			</Card>
 			{notices && notices.length > 0 && (
 				<>
