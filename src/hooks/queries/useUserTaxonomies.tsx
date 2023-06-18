@@ -9,6 +9,7 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
+import { sortWPItemsByName } from '../../lib/utils';
 
 const QUERY_USER_TAXONOMIES = gql`
 	query UserTaxonomies {
@@ -77,23 +78,27 @@ const useUserTaxonomies = (): [{ [key: string]: WPItem[] }, any] => {
 
 	// TODO probably make this a little more elegant since it's the same op on all `result.data` props
 	const preparedResult = {
-		locations: result.data?.locations.nodes.map((term: WPItemParams) => new WPItem(term)),
-		unions: result.data?.unions.nodes.map((term: WPItemParams) => new WPItem(term)),
-		partnerDirectories: result.data?.partnerDirectories.nodes.map(
-			(term: WPItemParams) => new WPItem(term)
-		),
-		experienceLevels: result.data?.experienceLevels.nodes.map(
-			(term: WPItemParams) => new WPItem(term)
-		),
-		genderIdentities: result.data?.genderIdentities.nodes.map(
-			(term: WPItemParams) => new WPItem(term)
-		),
-		personalIdentities: result.data?.personalIdentities.nodes.map(
-			(term: WPItemParams) => new WPItem(term)
-		),
-		racialIdentities: result.data?.racialIdentities.nodes.map(
-			(term: WPItemParams) => new WPItem(term)
-		),
+		locations: result.data?.locations.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		unions: result.data?.unions.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		partnerDirectories: result.data?.partnerDirectories.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		experienceLevels: result.data?.experienceLevels.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		genderIdentities: result.data?.genderIdentities.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		personalIdentities: result.data?.personalIdentities.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
+		racialIdentities: result.data?.racialIdentities.nodes
+			.map((term: WPItemParams) => new WPItem(term))
+			?.sort(sortWPItemsByName),
 	};
 
 	return [preparedResult, omit(result, ['data'])];

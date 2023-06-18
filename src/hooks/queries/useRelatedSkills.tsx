@@ -12,6 +12,7 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
+import { sortWPItemsByName } from '../../lib/utils';
 
 const QUERY_RELATED_SKILLS = gql`
 	query RelatedSkillsQuery($jobs: [ID!]) {
@@ -39,6 +40,7 @@ const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
 	});
 
 	const preparedResult = result.data?.jobSkills.map((skill: WPItemParams) => new WPItem(skill));
+	preparedResult?.sort(sortWPItemsByName);
 
 	return [preparedResult, omit(result, ['data'])];
 };

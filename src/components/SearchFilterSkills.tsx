@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Heading, Box, Alert, Spinner, CheckboxGroup } from '@chakra-ui/react';
+import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
 import useRelatedSkills from '../hooks/queries/useRelatedSkills';
 
@@ -26,11 +26,13 @@ export default function SearchFilterSkills() {
 				What skills are you looking for?
 			</Heading>
 			<CheckboxGroup defaultValue={search.filters.skills} onChange={handleToggleTerm}>
-				{data.map((term: WPItem) => (
-					<CheckboxButton key={term.id} value={term.id.toString()}>
-						{term.name}
-					</CheckboxButton>
-				))}
+				<Wrap>
+					{data.map((term: WPItem) => (
+						<CheckboxButton key={term.id} value={term.id.toString()}>
+							{term.name}
+						</CheckboxButton>
+					))}
+				</Wrap>
 			</CheckboxGroup>
 		</Box>
 	) : loading ? (

@@ -5,9 +5,10 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
+import { omit } from 'lodash';
 import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
-import { omit } from 'lodash';
+import { sortWPItemsByName } from '../../lib/utils';
 
 export const QUERY_POSITION_TERMS = gql`
 	query JobsQuery($departments: [ID] = "") {
@@ -38,6 +39,7 @@ const usePositions = (parents: number[] = [0]): [WPItem[], any] => {
 	const preparedResult = result.data?.jobsByDepartments.map(
 		(term: WPItemParams) => new WPItem(term)
 	);
+	preparedResult?.sort(sortWPItemsByName);
 
 	return [preparedResult, omit(result, ['data'])];
 };
