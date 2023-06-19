@@ -5,7 +5,7 @@ import BackToLoginButton from '../components/common/BackToLoginButton';
 
 export default function Register() {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
-	const Button = () => (isLargerThanMd ? <BackToLoginButton /> : undefined);
+	const Button = () => (isLargerThanMd ? <BackToLoginButton /> : <></>);
 
 	return (
 		<Page title='Join the Directory' actions={<Button />}>
