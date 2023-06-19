@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.0.7] - unreleased
+
+*   Added: Back to Login button on Register page
+
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
 *   Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate user should continue to scroll
