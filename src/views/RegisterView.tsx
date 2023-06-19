@@ -12,6 +12,7 @@ import {
 	Heading,
 	useToast,
 	Flex,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -22,6 +23,7 @@ import useRegisterUser from '../hooks/mutations/useRegisterUser';
 import { useRegistrationError } from '../hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
 import usePostContent from '../hooks/queries/usePostContent';
+import BackToLoginButton from '../components/common/BackToLoginButton';
 
 export default function RegisterView() {
 	const [userFields, setUserFields] = useState<RegisterUserInput>({
@@ -42,6 +44,8 @@ export default function RegisterView() {
 	const [content, { contentLoading, contentError }] = usePostContent('576');
 
 	const { executeRecaptcha } = useGoogleReCaptcha();
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const {
 		registerUserMutation,
@@ -267,15 +271,7 @@ export default function RegisterView() {
 							{submitLoading ? <Spinner size='sm' /> : 'Create account'}
 						</Button>
 					</Box>
-					<Box w={{ base: 'full', md: 'auto' }} textAlign='right'>
-						<Heading size={'md'} mr={2}>
-							Already have <br />
-							an account?
-						</Heading>
-						<Button as={RouterLink} to='/login' colorScheme='blue' tabIndex={9}>
-							Back To Login
-						</Button>
-					</Box>
+					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent='flex-end' />}
 				</Flex>
 			</form>
 		</>
