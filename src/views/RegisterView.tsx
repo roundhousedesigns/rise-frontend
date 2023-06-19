@@ -52,13 +52,13 @@ export default function RegisterView() {
 	useEffect(() => {
 		setFormIsValid(
 			email.length > 0 &&
-			firstName.length > 0 &&
-			lastName.length > 0 &&
-			password.length > 0 &&
-			confirmPassword.length > 0 &&
-			passwordsMatch &&
-			ofAge &&
-			termsAccepted
+				firstName.length > 0 &&
+				lastName.length > 0 &&
+				password.length > 0 &&
+				confirmPassword.length > 0 &&
+				passwordsMatch &&
+				ofAge &&
+				termsAccepted
 		);
 	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
 
@@ -211,60 +211,72 @@ export default function RegisterView() {
 						}}
 					/>
 				</Stack>
-				<Box mt={4}>
-					<FormControl>
-						<Checkbox size='sm' w='full' isRequired onChange={() => setOfAge(!ofAge)} tabIndex={6}>
-							I am over 18 years of age.
-							<chakra.span color='red.300' ml={1}>
-								*
-							</chakra.span>
-						</Checkbox>
-					</FormControl>
-					<FormControl>
-						<Checkbox
-							size='sm'
-							w='full'
-							isRequired
-							onChange={() => setTermsAccepted(!termsAccepted)}
-							tabIndex={7}
-						>
-							I have read and accept the RISE Theatre Directory{' '}
-							<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
-								Terms and Conditions
-							</Link>{' '}
-							and{' '}
-							<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
-								Privacy Policy
-							</Link>
-							.
-							<chakra.span color='red.300' ml={1}>
-								*
-							</chakra.span>
-						</Checkbox>
-					</FormControl>
-					<Flex justifyContent={'space-between'} mt={2}>
+
+				<Flex
+					justifyContent={'space-between'}
+					alignItems='flex-end'
+					mt={2}
+					flex='0 0 auto'
+					flexWrap='wrap'
+					gap={8}
+				>
+					<Box mt={4} pr={8}>
+						<FormControl>
+							<Checkbox
+								size='sm'
+								w='full'
+								isRequired
+								onChange={() => setOfAge(!ofAge)}
+								tabIndex={6}
+							>
+								I am over 18 years of age.
+								<chakra.span color='red.300' ml={1}>
+									*
+								</chakra.span>
+							</Checkbox>
+						</FormControl>
+						<FormControl>
+							<Checkbox
+								size='sm'
+								w='full'
+								isRequired
+								onChange={() => setTermsAccepted(!termsAccepted)}
+								tabIndex={7}
+							>
+								I have read and accept the RISE Theatre Directory{' '}
+								<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
+									Terms and Conditions
+								</Link>{' '}
+								and{' '}
+								<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
+									Privacy Policy
+								</Link>
+								.
+								<chakra.span color='red.300' ml={1}>
+									*
+								</chakra.span>
+							</Checkbox>
+						</FormControl>
 						<Button
 							type='submit'
 							colorScheme='orange'
 							isDisabled={!formIsValid || submitLoading}
+							mt={4}
 							tabIndex={8}
 						>
 							{submitLoading ? <Spinner size='sm' /> : 'Create account'}
 						</Button>
-						<Flex align={"baseline"}>
-							<Heading size={'md'} mr={2}>
-								Already have an account?
-							</Heading>
-							<Button
-								as={RouterLink}
-								to='/login'
-								colorScheme='blue'
-								tabIndex={9}>
-								Back To Login
-							</Button>
-						</Flex>
-					</Flex>
-				</Box>
+					</Box>
+					<Box w={{ base: 'full', md: 'auto' }} textAlign='right'>
+						<Heading size={'md'} mr={2}>
+							Already have <br />
+							an account?
+						</Heading>
+						<Button as={RouterLink} to='/login' colorScheme='blue' tabIndex={9}>
+							Back To Login
+						</Button>
+					</Box>
+				</Flex>
 			</form>
 		</>
 	);
