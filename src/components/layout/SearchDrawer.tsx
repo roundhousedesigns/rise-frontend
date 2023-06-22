@@ -141,8 +141,9 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								form='search-candidates'
 								isDisabled={!searchActive || searchResultsLoading}
 								leftIcon={searchResultsLoading ? <Spinner /> : undefined}
+								isLoading={!!searchResultsLoading}
 							>
-								{searchResultsLoading ? 'Searching...' : 'Search'}
+								Search
 							</Button>
 							{searchActive ? (
 								<Button

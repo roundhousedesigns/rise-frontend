@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { chakra, Button, Box, Spinner, Flex } from '@chakra-ui/react';
+import { chakra, Button, Box, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
@@ -122,8 +122,13 @@ export default function ChangePasswordView() {
 				/>
 			</Flex>
 			<Box mt={2}>
-				<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-					{submitLoading ? <Spinner size='sm' /> : 'Change password'}
+				<Button
+					type='submit'
+					colorScheme='orange'
+					isDisabled={!formIsValid || submitLoading}
+					isLoading={!!submitLoading}
+				>
+					Change password
 				</Button>
 			</Box>
 		</chakra.form>

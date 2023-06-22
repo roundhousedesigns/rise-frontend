@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { Button, Text, Flex, Container, Heading, Box, Spinner, useToast } from '@chakra-ui/react';
+import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
 
 import TextInput from '../components/common/inputs/TextInput';
 import useSendPasswordResetEmail from '../hooks/mutations/useSendPasswordResetEmail';
@@ -81,8 +81,8 @@ export default function LoginView() {
 							}}
 							error={errorMessage}
 						/>
-						<Button type='submit' colorScheme='blue' px={6}>
-							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
+						<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+							Submit
 						</Button>
 					</Flex>
 				</form>

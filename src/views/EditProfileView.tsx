@@ -651,9 +651,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 						colorScheme='green'
 						isDisabled={saveLoading || hasEditedProfile === false}
+						isLoading={!!saveLoading}
 						mx={0}
 					>
-						{saveLoading ? <Spinner size='sm' /> : 'Save'}
+						Save
 					</Button>
 					<Button
 						type='reset'

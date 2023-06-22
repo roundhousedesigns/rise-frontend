@@ -7,7 +7,6 @@ import {
 	Container,
 	Heading,
 	Box,
-	Spinner,
 	Link,
 	Text,
 	Divider,
@@ -113,8 +112,8 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							}}
 						/>
 						<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>
-							<Button type='submit' colorScheme='blue' px={6}>
-								{submitLoading ? <Spinner size='sm' /> : 'Submit'}
+							<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+								Submit
 							</Button>
 							<Link as={RouterLink} to='/lost-password' fontSize='md'>
 								Lost your password?

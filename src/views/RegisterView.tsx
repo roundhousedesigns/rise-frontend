@@ -267,8 +267,9 @@ export default function RegisterView() {
 							isDisabled={!formIsValid || submitLoading}
 							mt={4}
 							tabIndex={8}
+							isLoading={!!submitLoading}
 						>
-							{submitLoading ? <Spinner size='sm' /> : 'Create account'}
+							Create account
 						</Button>
 					</Box>
 					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent='flex-end' />}
