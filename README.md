@@ -7,9 +7,9 @@
 
 Front end portion of RISE is built using:
 
-- Vite
-- React
-- GraphQL
+-  Vite
+-  React
+-  GraphQL
 
 ## Development Setup
 
@@ -71,19 +71,19 @@ _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `mic
 
 ### How to make pull request
 
-1. From your feature branch, run `git pull origin dev` and resolve any merge conflicts
+1.  From your feature branch, run `git pull origin dev` and resolve any merge conflicts
 
-2. After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
+2.  After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
 
-   _Note:_ your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+_Note:_ your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
 
-- In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
-- Double check the diff
-- Make further changes locally, if any mistakes are found and commit again
+-  In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
+-  Double check the diff
+-  Make further changes locally, if any mistakes are found and commit again
 
-3. When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
+3.  When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
 
 ## Production Builds
 
-- `yarn build` to build for production
-- `yarn preview` to serve a production preview
+-  `yarn build` to build for production
+-  `yarn preview` to serve a production preview
