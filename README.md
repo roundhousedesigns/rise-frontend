@@ -1,22 +1,22 @@
 # RISE
 
-[![DeepScan grade](https://deepscan.io/api/teams/14424/projects/24864/branches/769714/badge/grade.svg)](https://deepscan.io/dashboard#view=project\&tid=14424\&pid=24864\&bid=769714)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/64f466be6e654cd2a2bb790971fb07ef)](https://app.codacy.com/gh/roundhousedesigns/rise-frontend/dashboard?utm_source=gh\&utm_medium=referral\&utm_content=\&utm_campaign=Badge_grade)
+[![DeepScan grade](https://deepscan.io/api/teams/14424/projects/24864/branches/769714/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=14424&pid=24864&bid=769714)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/64f466be6e654cd2a2bb790971fb07ef)](https://app.codacy.com/gh/roundhousedesigns/rise-frontend/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Tech Stack
 
-Front end portion of RISE is built using:
+The front end portion of RISE is built using:
 
-*   Vite
-*   React
-*   GraphQL
+- Vite
+- React
+- GraphQL
 
 ## Development Setup
 
 ### Node Setup
 
 1.  Make sure Node is installed. It can be downloaded here: [NodeJS](https://nodejs.org/en/download).
-2.  Node v19.4.0 or above is required.  We recommend using `nvm` to manage node versioning control.\
+2.  Node v19.4.0 or above is required. We recommend using `nvm` to manage node versioning control.\
     For help installing and using nvm, see this [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)
 3.  Install v19.4.0 of node with the command:
 
@@ -40,24 +40,24 @@ Front end portion of RISE is built using:
 
          yarn install
 
-    *Note:* To install yarn, see [How to install yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
+    _Note:_ To install yarn, see [How to install yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable)
 
 ### Environment Variables Setup
 
-*Note:* `.env` already included in `.gitignore`
+_Note:_ `.env` already included in `.gitignore`
 
-1.  create `.env` file in the root project directory:
-2.  add the following information:
+1.  Create a `.env` file in the root project directory:
+2.  Add the following information:
 
         VITE_FRONTEND_URL = http://localhost:3000
         VITE_BACKEND_URL = (backend server URL)
         VITE_RECAPTCHA_SITE_KEY = (your recaptcha site key)
 
-    *Note:* ask team member for VITE\_BACKEND\_URL and VITE\_RECAPTCHA\_SITE\_KEY specifics
+    _Note:_ ask a team member for VITE_BACKEND_URL and VITE_RECAPTCHA_SITE_KEY specifics
 
 ### Development Workflow
 
-*Branch Naming Convention:* Name a branch by name/ticket-name.  For example: `michael/add-readme-steps`
+_Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `michael/add-readme-steps`
 
 1.  From the dev branch, create a new feature branch:
 
@@ -69,19 +69,21 @@ Front end portion of RISE is built using:
 
     and go to: `http://localhost:3000`
 
-3.  When ready to make pull request:
-    *   git pull origin dev
-    *   resolve any merge conflicts
-    *   git push origin <your-branch-name>
-    *   open a new pull request from github to merge `<your-branch-name>` into `dev`
-    *   document exactly what you did and why you did it. Include screen capture and testing steps if applicable.
-    *   double check the diff
-    *   make further changes locally
-    *   to push further changes:
+### How to make pull request
 
-            git push origin <your-branch-name>
+1.  From your feature branch, run `git pull origin dev` and resolve any merge conflicts
+
+2.  After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
+
+_Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+
+- In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
+- Double check the diff
+- Make further changes locally, if any mistakes are found and commit again
+
+3.  When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
 
 ## Production Builds
 
-*   `yarn build` to build for production
-*   `yarn preview` to serve a production preview
+- `yarn build` to build for production
+- `yarn preview` to serve a production preview
