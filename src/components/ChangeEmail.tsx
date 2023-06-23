@@ -2,13 +2,15 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
-import useChangeUserPassword  from '../hooks/mutations/useChangeUserPassword';
+import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
 import TextInput from './common/inputs/TextInput';
 
 interface Props {
 	username: string;
 }
+
+// TODO Set up ChangeEmail
 
 export default function ChangePassword({ username }: Props) {
 	const [userFields, setUserFields] = useState<ChangePasswordInput>({
@@ -125,8 +127,13 @@ export default function ChangePassword({ username }: Props) {
 						/>
 					</Flex>
 					<Box mt={4}>
-						<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Change password'}
+						<Button
+							type='submit'
+							colorScheme='orange'
+							isDisabled={!formIsValid || submitLoading}
+							isLoading={!!submitLoading}
+						>
+							Change password
 						</Button>
 					</Box>
 				</form>

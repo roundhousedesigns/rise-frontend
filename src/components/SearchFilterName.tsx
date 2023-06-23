@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { Accordion, Flex, IconButton, Spinner } from '@chakra-ui/react';
+import { Accordion, Flex, IconButton } from '@chakra-ui/react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 
 import TextInput from './common/inputs/TextInput';
@@ -120,7 +120,8 @@ export default function SearchFilterName() {
 							type='submit'
 							form='search-by-name'
 							isDisabled={!name}
-							icon={loading ? <Spinner /> : <FiSearch />}
+							isLoading={loading}
+							icon={<FiSearch />}
 						/>
 					</Flex>
 				</form>

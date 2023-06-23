@@ -5,7 +5,6 @@ import {
 	FormErrorMessage,
 	Box,
 	Stack,
-	Spinner,
 	Container,
 	Heading,
 	useToast,
@@ -125,8 +124,13 @@ export default function ResetPasswordView({ token, login }: Props) {
 						/>
 					</Stack>
 					<Box mt={4}>
-						<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Reset password'}
+						<Button
+							type='submit'
+							colorScheme='orange'
+							isDisabled={!formIsValid || submitLoading}
+							isLoading={!!submitLoading}
+						>
+							Reset password
 						</Button>
 						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
 					</Box>

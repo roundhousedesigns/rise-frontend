@@ -11,6 +11,8 @@ import {
 	Divider,
 	Heading,
 	useToast,
+	Flex,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -21,6 +23,7 @@ import useRegisterUser from '../hooks/mutations/useRegisterUser';
 import { useRegistrationError } from '../hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
 import usePostContent from '../hooks/queries/usePostContent';
+import BackToLoginButton from '../components/common/BackToLoginButton';
 
 export default function RegisterView() {
 	const [userFields, setUserFields] = useState<RegisterUserInput>({
@@ -41,6 +44,8 @@ export default function RegisterView() {
 	const [content, { contentLoading, contentError }] = usePostContent('576');
 
 	const { executeRecaptcha } = useGoogleReCaptcha();
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const {
 		registerUserMutation,
@@ -210,47 +215,65 @@ export default function RegisterView() {
 						}}
 					/>
 				</Stack>
-				<Box mt={4}>
-					<FormControl>
-						<Checkbox size='sm' w='full' isRequired onChange={() => setOfAge(!ofAge)} tabIndex={6}>
-							I am over 18 years of age.
-							<chakra.span color='red.300' ml={1}>
-								*
-							</chakra.span>
-						</Checkbox>
-					</FormControl>
-					<FormControl>
-						<Checkbox
-							size='sm'
-							w='full'
-							isRequired
-							onChange={() => setTermsAccepted(!termsAccepted)}
-							tabIndex={7}
+
+				<Flex
+					justifyContent={'space-between'}
+					alignItems='flex-end'
+					mt={2}
+					flex='0 0 auto'
+					flexWrap='wrap'
+					gap={8}
+				>
+					<Box mt={4} pr={8}>
+						<FormControl>
+							<Checkbox
+								size='sm'
+								w='full'
+								isRequired
+								onChange={() => setOfAge(!ofAge)}
+								tabIndex={6}
+							>
+								I am over 18 years of age.
+								<chakra.span color='red.300' ml={1}>
+									*
+								</chakra.span>
+							</Checkbox>
+						</FormControl>
+						<FormControl>
+							<Checkbox
+								size='sm'
+								w='full'
+								isRequired
+								onChange={() => setTermsAccepted(!termsAccepted)}
+								tabIndex={7}
+							>
+								I have read and accept the RISE Theatre Directory{' '}
+								<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
+									Terms and Conditions
+								</Link>{' '}
+								and{' '}
+								<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
+									Privacy Policy
+								</Link>
+								.
+								<chakra.span color='red.300' ml={1}>
+									*
+								</chakra.span>
+							</Checkbox>
+						</FormControl>
+						<Button
+							type='submit'
+							colorScheme='orange'
+							isDisabled={!formIsValid || submitLoading}
+							mt={4}
+							tabIndex={8}
+							isLoading={!!submitLoading}
 						>
-							I have read and accept the RISE Theatre Directory{' '}
-							<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
-								Terms and Conditions
-							</Link>{' '}
-							and{' '}
-							<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
-								Privacy Policy
-							</Link>
-							.
-							<chakra.span color='red.300' ml={1}>
-								*
-							</chakra.span>
-						</Checkbox>
-					</FormControl>
-					<Button
-						mt={2}
-						type='submit'
-						colorScheme='orange'
-						isDisabled={!formIsValid || submitLoading}
-						tabIndex={8}
-					>
-						{submitLoading ? <Spinner size='sm' /> : 'Create account'}
-					</Button>
-				</Box>
+							Create account
+						</Button>
+					</Box>
+					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent='flex-end' />}
+				</Flex>
 			</form>
 		</>
 	);
