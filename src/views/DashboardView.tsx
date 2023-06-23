@@ -1,4 +1,4 @@
-import { Card, Box, Heading, Button, Flex, Text, Spacer } from '@chakra-ui/react';
+import { Card, Box, Heading, Button, Flex, Text, Spacer, List, ListItem } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
@@ -38,25 +38,19 @@ export default function DashboardView() {
 			</Card>
 			{notices && notices.length > 0 && (
 				<Box>
-					<Heading as='h3' variant='contentTitle' mt={4}>
-						Notices!
+					<Heading as='h2' variant='pageSubtitle'>
+						Updates
 					</Heading>
-					<Flex flexWrap='wrap' gap={4}>
+					<List spacing={6} mt={4}>
 						{notices.map((notice: any) => (
-							<Card
-								key={notice.id}
-								my={0}
-								flex='0 0 auto'
-								w={{ base: 'full', sm: 'auto' }}
-								maxW={{ base: 'none', sm: 400 }}
-							>
+							<ListItem as={Card} key={notice.id} my={0}>
 								<Heading as='h4' variant='contentSubtitle'>
 									{notice.title}
 								</Heading>
 								<Box>{parse(notice.content)}</Box>
-							</Card>
+							</ListItem>
 						))}
-					</Flex>
+					</List>
 				</Box>
 			)}
 		</Box>
