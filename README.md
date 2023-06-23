@@ -5,7 +5,7 @@
 
 ## Tech Stack
 
-Front end portion of RISE is built using:
+The front end portion of RISE is built using:
 
 - Vite
 - React
@@ -46,14 +46,14 @@ Front end portion of RISE is built using:
 
 _Note:_ `.env` already included in `.gitignore`
 
-1.  create `.env` file in the root project directory:
+1.  Create a `.env` file in the root project directory:
 2.  Add the following information:
 
         VITE_FRONTEND_URL = http://localhost:3000
         VITE_BACKEND_URL = (backend server URL)
         VITE_RECAPTCHA_SITE_KEY = (your recaptcha site key)
 
-    _Note:_ ask team member for VITE_BACKEND_URL and VITE_RECAPTCHA_SITE_KEY specifics
+    _Note:_ ask a team member for VITE_BACKEND_URL and VITE_RECAPTCHA_SITE_KEY specifics
 
 ### Development Workflow
 
@@ -75,7 +75,7 @@ _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `mic
 
 2.  After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
 
-_Note:_ your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+_Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
 
 - In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
 - Double check the diff
