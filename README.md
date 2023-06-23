@@ -47,7 +47,7 @@ Front end portion of RISE is built using:
 *Note:* `.env` already included in `.gitignore`
 
 1.  create `.env` file in the root project directory:
-2.  add the following information:
+2.  Add the following information:
 
         VITE_FRONTEND_URL = http://localhost:3000
         VITE_BACKEND_URL = (backend server URL)
@@ -63,23 +63,25 @@ Front end portion of RISE is built using:
 
          git checkout -b <your-branch-name>
 
-2.  To start local development, run:
+2. To start local development, run:
 
-         yarn dev
+        yarn dev
 
-    and go to: `http://localhost:3000`
+   and go to: `http://localhost:3000`
 
-3.  When ready to make pull request:
-    *   git pull origin dev
-    *   resolve any merge conflicts
-    *   git push origin <your-branch-name>
-    *   open a new pull request from github to merge `<your-branch-name>` into `dev`
-    *   document exactly what you did and why you did it. Include screen capture and testing steps if applicable.
-    *   double check the diff
-    *   make further changes locally
-    *   to push further changes:
+### How to make pull request
 
-            git push origin <your-branch-name>
+1. From your feature branch, run `git pull origin dev` and resolve any merge conflicts
+
+2. After commiting your branch, lick on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:"  as `<your-branch-name>` 
+
+   *Note:* your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+
+*   In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
+*   Double check the diff 
+*   Make further changes locally, if any mistakes are found and commit again
+
+3. When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
 
 ## Production Builds
 
