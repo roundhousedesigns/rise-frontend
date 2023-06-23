@@ -6,6 +6,7 @@ interface Props {
 	icon: any;
 	isExternal?: boolean;
 	children: React.ReactNode;
+	[prop: string]: any;
 }
 
 export default function LinkWithIcon({

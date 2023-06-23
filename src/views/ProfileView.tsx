@@ -289,7 +289,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									)}
 									{website ? (
 										<ListItem>
-											<LinkWithIcon href={website} icon={FiGlobe}>
+											<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
 												{website}
 											</LinkWithIcon>
 										</ListItem>
