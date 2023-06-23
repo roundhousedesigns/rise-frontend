@@ -4,7 +4,7 @@ import { Icon, Link } from '@chakra-ui/react';
 interface Props {
 	href: string;
 	icon: any;
-	target: string;
+	target?: string;
 	isExternal?: boolean;
 	children: React.ReactNode;
 }
