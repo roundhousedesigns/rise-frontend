@@ -1,5 +1,5 @@
 /**
- * useGlobalNotices hook. Query a post's (or page, CPT, etc) content by ID.
+ * useUserNotices hook. Query a post's (or page, CPT, etc) content by ID.
  */
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
@@ -8,8 +8,8 @@ import { omit } from 'lodash';
 import '../../assets/css/wordpress.css';
 
 export const QUERY_GLOBAL_NOTICES = gql`
-	query LatestGlobalNoticeQuery($last: Int = 4) {
-		globalNotices(last: $last) {
+	query LatestUserNoticeQuery($last: Int = 4) {
+		userNotices(last: $last) {
 			nodes {
 				id: databaseId
 				title(format: RENDERED)
@@ -25,16 +25,16 @@ export const QUERY_GLOBAL_NOTICES = gql`
  * @param {number} last The number of notices to retrieve.
  * @returns A tuple of a prepared HTML string and a query result object.
  */
-const useGlobalNotices = (last: number = 4): [string[], any] => {
+const useUserNotices = (last: number = 4): [string[], any] => {
 	const result = useQuery(QUERY_GLOBAL_NOTICES, {
 		variables: {
 			last,
 		},
 	});
 
-	const prepareNotices = result.data?.globalNotices.nodes || [];
+	const prepareNotices = result.data?.userNotices.nodes || [];
 
 	return [prepareNotices, omit(result, ['data'])];
 };
 
-export default useGlobalNotices;
+export default useUserNotices;

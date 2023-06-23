@@ -2,12 +2,12 @@ import { Card, Box, Heading, Button, Flex, Text, Spacer } from '@chakra-ui/react
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
-import useGlobalNotices from '../hooks/queries/useGlobalNotices';
+import useUserNotices from '../hooks/queries/useUserNotices';
 import { FiEdit3, FiUser } from 'react-icons/fi';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
-	const [notices] = useGlobalNotices();
+	const [notices] = useUserNotices();
 
 	return (
 		<Box>

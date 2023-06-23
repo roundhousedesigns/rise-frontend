@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { Button, Box, Spinner, Flex } from '@chakra-ui/react';
+import { Button, Box, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
 import { useChangePasswordError } from '../hooks/hooks';
 import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
