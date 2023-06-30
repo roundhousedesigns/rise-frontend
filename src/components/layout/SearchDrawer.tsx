@@ -145,18 +145,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							>
 								Search
 							</Button>
-							{searchActive ? (
-								<Button
-									isDisabled={searchResultsLoading ? true : false}
-									colorScheme='orange'
-									onClick={handleSearchReset}
-									leftIcon={<FiRefreshCcw />}
-								>
-									Reset
-								</Button>
-							) : (
-								false
-							)}
+							<Button
+								isDisabled={searchResultsLoading ? true : false}
+								colorScheme='orange'
+								onClick={handleSearchReset}
+								leftIcon={<FiRefreshCcw />}
+							>
+								Reset
+							</Button>
 						</ButtonGroup>
 					</DrawerFooter>
 				</Collapse>
