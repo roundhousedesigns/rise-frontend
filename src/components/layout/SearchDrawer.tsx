@@ -101,9 +101,15 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		});
 	};
 
+	const realHeight = getComputedStyle(document.body).getPropertyValue('--vh').slice(0, -2);
+
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size={name ? 'auto' : 'full'}>
-			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} h='full' />
+			<DrawerOverlay
+				_dark={{ bg: 'text.light' }}
+				_light={{ bg: 'text.dark' }}
+				h={`${100 * parseFloat(realHeight)}px`}
+			/>
 			<DrawerContent>
 				<DrawerHeader
 					bg='text.dark'
