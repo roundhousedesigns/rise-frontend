@@ -102,8 +102,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size={name ? 'auto' : 'full'}>
-			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} h='100svh' />
+		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
+			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
 			<DrawerContent>
 				<DrawerHeader
 					bg='text.dark'
