@@ -1,6 +1,7 @@
 import { FormEvent, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+	chakra,
 	Drawer,
 	DrawerOverlay,
 	DrawerContent,
@@ -101,12 +102,10 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		});
 	};
 
-	const realHeight = getComputedStyle(document.body).getPropertyValue('--vh').slice(0, -2);
-
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
 			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
-			<DrawerContent height={`${100 * parseFloat(realHeight)}px`}>
+			<DrawerContent>
 				<DrawerHeader
 					bg='text.dark'
 					color='text.light'
@@ -120,7 +119,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
-							Search WORDMARKER
+							Search
 						</Heading>
 						<IconButton
 							icon={<FiX />}
@@ -135,31 +134,33 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
 				</DrawerBody>
 				<Collapse in={searchActive && !name} unmountOnExit={false}>
-					<DrawerFooter mt={0} py={2} borderTop='1px' borderTopColor='gray.300'>
-						<ButtonGroup>
-							<Button
-								colorScheme='green'
-								onClick={handleSubmit}
-								form='search-candidates'
-								isDisabled={!searchActive || searchResultsLoading}
-								leftIcon={searchResultsLoading ? <Spinner /> : undefined}
-								isLoading={!!searchResultsLoading}
-							>
-								Search
-							</Button>
-							{searchActive ? (
+					<chakra.div flexGrow={1}>
+						<DrawerFooter mt={0} py={2} borderTop='1px' borderTopColor='gray.300'>
+							<ButtonGroup>
 								<Button
-									isDisabled={searchResultsLoading ? true : false}
-									colorScheme='orange'
-									onClick={handleSearchReset}
+									colorScheme='green'
+									onClick={handleSubmit}
+									form='search-candidates'
+									isDisabled={!searchActive || searchResultsLoading}
+									leftIcon={searchResultsLoading ? <Spinner /> : undefined}
+									isLoading={!!searchResultsLoading}
 								>
-									Reset
+									Search
 								</Button>
-							) : (
-								false
-							)}
-						</ButtonGroup>
-					</DrawerFooter>
+								{searchActive ? (
+									<Button
+										isDisabled={searchResultsLoading ? true : false}
+										colorScheme='orange'
+										onClick={handleSearchReset}
+									>
+										Reset
+									</Button>
+								) : (
+									false
+								)}
+							</ButtonGroup>
+						</DrawerFooter>
+					</chakra.div>
 				</Collapse>
 			</DrawerContent>
 		</Drawer>
