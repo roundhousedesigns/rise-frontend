@@ -101,10 +101,12 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		});
 	};
 
+	const realHeight = getComputedStyle(document.body).getPropertyValue('--vh').slice(0, -2);
+
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
 			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
-			<DrawerContent>
+			<DrawerContent height={`${100 * parseFloat(realHeight)}px`}>
 				<DrawerHeader
 					bg='text.dark'
 					color='text.light'
@@ -118,7 +120,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
-							Search
+							Search WORDMARKER
 						</Heading>
 						<IconButton
 							icon={<FiX />}
