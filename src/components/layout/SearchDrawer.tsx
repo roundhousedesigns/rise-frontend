@@ -104,12 +104,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
 			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
-			<DrawerContent
-				display='flex'
-				flexDirection='column'
-				height='100%'
-				paddingBottom='2rem' // Adjust the bottom padding as per your needs
-			>
+			<DrawerContent display='flex' flexDirection='column' height='100%'>
 				<DrawerHeader
 					bg='text.dark'
 					color='text.light'
@@ -123,7 +118,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
-							Search WORDRO
+							Search BORKBORK
 						</Heading>
 						<IconButton
 							icon={<FiX />}
