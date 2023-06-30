@@ -13,6 +13,21 @@ export default function App() {
 		result: { loading },
 	} = useViewer();
 
+	const windowRef = useRef(window);
+
+	const windowResizeHandler = () => {
+		document.documentElement.style.setProperty('--vh', window.innerHeight / 100 + 'px');
+	};
+
+	useEffect(() => {
+		windowRef.current.addEventListener('resize', windowResizeHandler);
+
+		return () => {
+			window.removeEventListener('resize', windowResizeHandler);
+		};
+	}, []);
+
+
 	// Get the header height so we can offset the main content
 	const headerRef = useRef(null);
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
