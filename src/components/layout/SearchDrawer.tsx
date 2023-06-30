@@ -16,7 +16,7 @@ import {
 	Spinner,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '../../context/SearchContext';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import SearchWizardView from '../../views/SearchWizardView';
@@ -118,7 +118,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				>
 					<Stack direction='row' justifyContent='space-between' alignItems='center'>
 						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
-							Search BORKBORK
+							Search
 						</Heading>
 						<IconButton
 							icon={<FiX />}
@@ -140,7 +140,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								onClick={handleSubmit}
 								form='search-candidates'
 								isDisabled={!searchActive || searchResultsLoading}
-								leftIcon={searchResultsLoading ? <Spinner /> : undefined}
+								leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
 								isLoading={!!searchResultsLoading}
 							>
 								Search
@@ -150,6 +150,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 									isDisabled={searchResultsLoading ? true : false}
 									colorScheme='orange'
 									onClick={handleSearchReset}
+									leftIcon={<FiRefreshCcw />}
 								>
 									Reset
 								</Button>
