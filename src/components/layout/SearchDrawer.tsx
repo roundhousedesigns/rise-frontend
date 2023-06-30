@@ -103,7 +103,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size={name ? 'auto' : 'full'}>
-			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
+			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} h='full' />
 			<DrawerContent>
 				<DrawerHeader
 					bg='text.dark'
@@ -148,10 +148,10 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							{searchActive ? (
 								<Button
 									isDisabled={searchResultsLoading ? true : false}
-									colorScheme='gray'
+									colorScheme='orange'
 									onClick={handleSearchReset}
 								>
-									Reset Filters
+									Reset
 								</Button>
 							) : (
 								false
