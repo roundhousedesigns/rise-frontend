@@ -9,7 +9,7 @@ interface Props extends ButtonProps {
 }
 
 const ResponsiveButton = forwardRef<Props, 'div'>((props, ref) => {
-	const { label, icon, children, ...rest } = props;
+	const { label, icon, loading, children, ...rest } = props;
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 

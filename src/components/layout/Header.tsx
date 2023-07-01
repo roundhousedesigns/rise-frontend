@@ -208,76 +208,70 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 									{isLargerThanMd ? <MyProfileButton /> : null}
 								</Flex>
-								<Box m={0} p={0}>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
-									<LightMode>
-										<Menu>
-											<DarkMode>
-												<MenuButton
-													aria-label='Menu'
-													as={IconButton}
-													borderRadius='full'
-													colorScheme='gray'
-													icon={<FiMenu />}
-													size='lg'
-													_active={{
-														transform: 'rotate(90deg)',
-													}}
-												/>
-											</DarkMode>
-											<MenuList color='text.dark' zIndex='100'>
-												{isLargerThanMd ? null : (
-													<MenuOptionGroup>
-														<MenuItem
-															as={RouterLink}
-															to={`/profile/${loggedInSlug}`}
-															icon={<FiHome />}
-														>
-															My Profile
-														</MenuItem>
-														<MenuItem
-															ref={drawerButtonRef}
-															onClick={drawerOnOpen}
-															icon={<FiSearch />}
-														>
-															Search
-														</MenuItem>
-														<MenuDivider />
-													</MenuOptionGroup>
-												)}
+								<LightMode>
+									<Menu>
+										<DarkMode>
+											<MenuButton
+												aria-label='Menu'
+												as={IconButton}
+												borderRadius='full'
+												colorScheme='gray'
+												icon={<FiMenu />}
+												size='lg'
+												_active={{
+													transform: 'rotate(90deg)',
+												}}
+											/>
+										</DarkMode>
+										<MenuList color='text.dark' zIndex='100'>
+											{isLargerThanMd ? null : (
 												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
-														Dashboard
+													<MenuItem
+														as={RouterLink}
+														to={`/profile/${loggedInSlug}`}
+														icon={<FiHome />}
+													>
+														My Profile
 													</MenuItem>
+													<MenuItem
+														ref={drawerButtonRef}
+														onClick={drawerOnOpen}
+														icon={<FiSearch />}
+													>
+														Search
+													</MenuItem>
+													<MenuDivider />
 												</MenuOptionGroup>
-												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-														Settings
-													</MenuItem>
-													<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
-														Help
-													</MenuItem>
-												</MenuOptionGroup>
-												<MenuDivider />
-												<MenuItem
-													as={Link}
-													href='https://risetheatre.org'
-													icon={<FiHome />}
-													isExternal
-												>
-													RISE Home
+											)}
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
+													Dashboard
 												</MenuItem>
-												<MenuDivider />
-												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-													Logout
+											</MenuOptionGroup>
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+													Settings
 												</MenuItem>
-											</MenuList>
-										</Menu>
-									</LightMode>
-								</Box>
+												<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+													Help
+												</MenuItem>
+											</MenuOptionGroup>
+											<MenuDivider />
+											<MenuItem
+												as={Link}
+												href='https://risetheatre.org'
+												icon={<FiHome />}
+												isExternal
+											>
+												RISE Home
+											</MenuItem>
+											<MenuDivider />
+											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
+								</LightMode>
 							</>
 						) : (
 							false

@@ -268,7 +268,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								<Heading as='h3' variant='contentTitle'>
 									Contact
 								</Heading>
-								<UnorderedList listStyleType='none' m={0}>
+								<UnorderedList listStyleType='none' m={0} spacing={1}>
 									{email ? (
 										<ListItem>
 											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
@@ -290,7 +290,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									{website ? (
 										<ListItem>
 											<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
-												{website}
+												Visit Website
 											</LinkWithIcon>
 										</ListItem>
 									) : (

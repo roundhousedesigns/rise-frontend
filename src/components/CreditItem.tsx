@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
-import { Credit, WPItem } from '../lib/classes';
 import {
 	useMediaQuery,
 	Card,
@@ -14,9 +13,9 @@ import {
 	Skeleton,
 	Badge,
 } from '@chakra-ui/react';
-
-import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
+import { Credit, WPItem } from '../lib/classes';
 import { decodeString, sortAndCompareArrays } from '../lib/utils';
+import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
 import SpecialChar from './common/chars/SpecialChar';
 
@@ -190,7 +189,12 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 									</>
 								) : isEditable ? (
 									<Wrap justify='right'>
-										<Text textAlign={{ base: 'left', md: 'right' }} maxWidth='250px' fontSize='2xs' fontStyle='italic'>
+										<Text
+											textAlign={{ base: 'left', md: 'right' }}
+											maxWidth='250px'
+											fontSize='sm'
+											lineHeight='short'
+										>
 											This credit won't be searchable until you add at least one department and a
 											job.
 										</Text>
