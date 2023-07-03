@@ -20,7 +20,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { handleReCaptchaVerify } from '../lib/utils';
 import TextInput from '../components/common/inputs/TextInput';
 import useRegisterUser from '../hooks/mutations/useRegisterUser';
-import { useRegistrationError } from '../hooks/hooks';
+import { useRegistrationError, useValidatePassword } from '../hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
 import usePostContent from '../hooks/queries/usePostContent';
 import BackToLoginButton from '../components/common/BackToLoginButton';
@@ -56,13 +56,13 @@ export default function RegisterView() {
 	useEffect(() => {
 		setFormIsValid(
 			email.length > 0 &&
-				firstName.length > 0 &&
-				lastName.length > 0 &&
-				password.length > 0 &&
-				confirmPassword.length > 0 &&
-				passwordsMatch &&
-				ofAge &&
-				termsAccepted
+			firstName.length > 0 &&
+			lastName.length > 0 &&
+			password.length > 0 &&
+			confirmPassword.length > 0 &&
+			passwordsMatch &&
+			ofAge &&
+			termsAccepted
 		);
 	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
 
@@ -87,6 +87,10 @@ export default function RegisterView() {
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
+
+		// MICHAEL TEST
+		console.log(useValidatePassword(userFields.password))
+		//
 
 		handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha }).then((token) => {
 			if (!token) {

@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { chakra, Button, Box, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
-import { useChangePasswordError } from '../hooks/hooks';
+import { useChangePasswordError, useValidatePassword } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
@@ -49,6 +49,10 @@ export default function ChangePasswordView() {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!currentPassword || !newPassword || !passwordsMatch) return;
+
+		// MICHAEL TEST
+		console.log(useValidatePassword(newPassword))
+		//
 
 		changeUserPasswordMutation(username, currentPassword, newPassword)
 			.then(() => {
