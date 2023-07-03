@@ -615,20 +615,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		);
 	};
 
-	const handleScrollToCredits = () => {
-		const credits = document.getElementById('credits');
-		if (credits) {
-			credits.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
-		}
-	};
-
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Text variant='contentSubtitle' mt={2}>
-				<Button onClick={handleScrollToCredits} title='Scroll to Credits' textDecoration='none'>
-					Jump to Credits
-				</Button>
-			</Text>
 			<Flex
 				alignItems='center'
 				justifyContent='flex-end'

@@ -3,8 +3,6 @@ import {
 	ModalOverlay,
 	ModalBody,
 	ModalContent,
-	// ModalFooter,
-	// ModalHeader,
 } from '@chakra-ui/react';
 import EditCreditView from '../views/EditCreditView';
 
