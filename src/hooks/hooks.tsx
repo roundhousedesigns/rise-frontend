@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '../lib/classes';
 import { getProfilePrefix, validateProfileSlug } from '../lib/utils';
+import { passwordStrength } from 'check-password-strength';
 
 /**
  * Custom hooks.
@@ -195,6 +196,10 @@ export const useChangePasswordError = (errorCode?: string): string => {
 			message = 'Incorrect password.';
 			break;
 
+		case 'weak_password':
+			message = 'Weak password - password must be 8 characters long and contain one each of: \n- uppercase letter\n- lowercase letter\n- number\n- special character(\'!@#$%^&*()_+-=][]{}\"\';:/?.>,<`~)\",';
+			break;
+
 		case 'empty_login':
 			message = 'Please enter a username or email address.';
 			break;
@@ -298,3 +303,31 @@ export const useProfileUrl = (slug: string): string => {
  * @return True if the slug is valid.
  */
 export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);
+
+/**
+ * Validate a password to meet requirements
+ * 
+ * @param password The password to validate
+ * @return Error message.  'valid password' if valid.
+ * 
+ * TODO: figuring out typing to allow (in index.d.ts):
+ * const passwordRequirements = [{id?: number, value?: string, minDiversity?: number, minLength?: number}, {...}]
+ * passwordStrength(password, passwordRequirements);
+ */
+export const useValidatePassword = (password: string): string => {
+	const { value } = passwordStrength(password, [
+		{
+			id: 0,
+			value: "Too weak - password must be 8 characters long and contain one each of: \n- uppercase letter\n- lowercase letter\n- number\n- special character('!@#$%^&*()_+-=][]{}\"\';:/?.>,<`~)",
+			minDiversity: 0,
+			minLength: 0
+		},
+		{
+			id: 1,
+			value: 'valid password',
+			minDiversity: 4,
+			minLength: 8
+		}
+	])
+	return value;
+}
