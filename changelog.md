@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.7] - unreleased
+## \[1.0.7] - 2023-07-03
 
 - Fixed: Mobile Safari's floating bottom URL bar blocks sticky Search buttons.
 - Fixed: Credits without `position` terms infinitely loading
