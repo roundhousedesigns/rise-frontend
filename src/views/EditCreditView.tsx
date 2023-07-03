@@ -265,41 +265,45 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						handleChange={handleToggleCheckboxTerm}
 					/>
 				</StackItem>
-				{selectedDepartmentIds && !jobsLoading ? (
-					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
-							Position
-						</Heading>
-						<Text>Select all jobs you held on this project.</Text>
-						<ProfileCheckboxGroup
-							name='jobs'
-							items={jobs}
-							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
-							handleChange={handleToggleCheckboxTerm}
-						/>
-					</StackItem>
-				) : jobsLoading ? (
-					<Spinner />
-				) : null}
+				<StackItem>
+					<Heading as='h4' variant='contentTitle'>
+						Position
+					</Heading>
+					{selectedDepartmentIds.length && !jobsLoading ? (
+						<>
+							<Text>Select all jobs you held on this project.</Text>
+							<ProfileCheckboxGroup
+								name='jobs'
+								items={jobs}
+								checked={selectedJobIds?.map((item: number) => item.toString())}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</>
+					) : jobsLoading ? (
+						<Spinner />
+					) : null}
+				</StackItem>
 
-				{allRelatedSkills &&
-				allRelatedSkills.length > 0 &&
-				selectedDepartmentIds &&
-				selectedJobIds &&
-				selectedJobIds.length ? (
-					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
-							Skills
-						</Heading>
-						<Text>Select any skills used on this job.</Text>
-						<ProfileCheckboxGroup
-							name='skills'
-							items={allRelatedSkills}
-							checked={selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []}
-							handleChange={handleToggleCheckboxTerm}
-						/>
-					</StackItem>
-				) : null}
+				<StackItem>
+					<Heading as='h4' variant='contentTitle'>
+						Skills
+					</Heading>
+					{allRelatedSkills &&
+					allRelatedSkills.length > 0 &&
+					selectedDepartmentIds &&
+					selectedJobIds &&
+					selectedJobIds.length ? (
+						<>
+							<Text>Select any skills used on this job.</Text>
+							<ProfileCheckboxGroup
+								name='skills'
+								items={allRelatedSkills}
+								checked={selectedSkills?.map((item: number) => item.toString())}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</>
+					) : null}
+				</StackItem>
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
