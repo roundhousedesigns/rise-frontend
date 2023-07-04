@@ -9,7 +9,7 @@ import {
 	Heading,
 	useMediaQuery,
 } from '@chakra-ui/react';
-import { useChangeProfileSlugError, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
+import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useChangeProfileSlug from '../hooks/mutations/useChangeProfileSlug';
 import TextInput from '../components/common/inputs/TextInput';
@@ -34,7 +34,7 @@ export default function ChangeProfileUrlView() {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const newSlugIsClean = useValidateProfileSlug(slug);
-	const errorMessage = useChangeProfileSlugError(errorCode);
+	const errorMessage = useErrorMessage(errorCode);
 
 	const hasEditedSlug = slug !== loggedInSlug;
 
