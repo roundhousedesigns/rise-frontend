@@ -1,25 +1,15 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react';
-import {
-	ButtonGroup,
-	Divider,
-	Flex,
-	Heading,
-	Text,
-	Spinner,
-	Stack,
-	StackItem,
-} from '@chakra-ui/react';
+import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
-import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '../context/EditProfileContext';
 import usePositions from '../hooks/queries/usePositions';
 import useRelatedSkills from '../hooks/queries/useRelatedSkills';
 import useLazyPositions from '../hooks/queries/useLazyPositions';
 import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
-import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-import TextInput from './common/inputs/TextInput';
-import ProfileRadioGroup from './common/ProfileRadioGroup';
-import ResponsiveButton from './common/inputs/ResponsiveButton';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+import TextInput from '../components/common/inputs/TextInput';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
+import EditCreditButtons from '../components/EditCreditButtons';
 
 // TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -177,32 +167,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const EditCreditButtons = () => (
-		<ButtonGroup size='md'>
-			<ResponsiveButton type='submit' icon={<FiCheck />} label='Save' colorScheme='green'>
-				Save
-			</ResponsiveButton>
-			<ResponsiveButton
-				icon={<FiX />}
-				label='Cancel changes'
-				colorScheme='red'
-				onClick={handleCancel}
-			>
-				Cancel
-			</ResponsiveButton>
-		</ButtonGroup>
-	);
-
 	return (
 		<form id='edit-credit' onSubmit={handleSubmit}>
 			<Flex flex='1' justifyContent='space-between' py={2}>
 				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
-				<EditCreditButtons />
+				<EditCreditButtons handleCancel={handleCancel} isLoading={updateCreditLoading} />
 			</Flex>
-
-			{updateCreditLoading ? <Spinner /> : false}
 
 			<TextInput
 				name='title'
@@ -293,45 +265,49 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						handleChange={handleToggleCheckboxTerm}
 					/>
 				</StackItem>
-				{selectedDepartmentIds && !jobsLoading ? (
-					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
-							Position
-						</Heading>
-						<Text>Select all jobs you held on this project.</Text>
-						<ProfileCheckboxGroup
-							name='jobs'
-							items={jobs}
-							checked={selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []}
-							handleChange={handleToggleCheckboxTerm}
-						/>
-					</StackItem>
-				) : jobsLoading ? (
-					<Spinner />
-				) : null}
+				<StackItem>
+					<Heading as='h4' variant='contentTitle'>
+						Position
+					</Heading>
+					{selectedDepartmentIds.length && !jobsLoading ? (
+						<>
+							<Text>Select all jobs you held on this project.</Text>
+							<ProfileCheckboxGroup
+								name='jobs'
+								items={jobs}
+								checked={selectedJobIds?.map((item: number) => item.toString())}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</>
+					) : jobsLoading ? (
+						<Spinner />
+					) : null}
+				</StackItem>
 
-				{allRelatedSkills &&
-				allRelatedSkills.length > 0 &&
-				selectedDepartmentIds &&
-				selectedJobIds &&
-				selectedJobIds.length ? (
-					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
-							Skills
-						</Heading>
-						<Text>Select any skills used on this job.</Text>
-						<ProfileCheckboxGroup
-							name='skills'
-							items={allRelatedSkills}
-							checked={selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []}
-							handleChange={handleToggleCheckboxTerm}
-						/>
-					</StackItem>
-				) : null}
+				<StackItem>
+					<Heading as='h4' variant='contentTitle'>
+						Skills
+					</Heading>
+					{allRelatedSkills &&
+					allRelatedSkills.length > 0 &&
+					selectedDepartmentIds &&
+					selectedJobIds &&
+					selectedJobIds.length ? (
+						<>
+							<Text>Select any skills used on this job.</Text>
+							<ProfileCheckboxGroup
+								name='skills'
+								items={allRelatedSkills}
+								checked={selectedSkills?.map((item: number) => item.toString())}
+								handleChange={handleToggleCheckboxTerm}
+							/>
+						</>
+					) : null}
+				</StackItem>
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
-				<EditCreditButtons />
+				<EditCreditButtons handleCancel={handleCancel} isLoading={updateCreditLoading} />
 			</Flex>
 		</form>
 	);

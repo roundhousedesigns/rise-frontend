@@ -39,7 +39,7 @@ export default function App() {
 			<Stack
 				direction='column'
 				alignItems='center'
-				minH='100vh'
+				minH='-webkit-fill-available'
 				_dark={{
 					bg: 'gray.900',
 					color: 'text.light',

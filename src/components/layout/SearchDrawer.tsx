@@ -16,7 +16,7 @@ import {
 	Spinner,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '../../context/SearchContext';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import SearchWizardView from '../../views/SearchWizardView';
@@ -102,9 +102,9 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='top' size={name ? 'auto' : 'full'}>
+		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
 			<DrawerOverlay _dark={{ bg: 'text.light' }} _light={{ bg: 'text.dark' }} />
-			<DrawerContent>
+			<DrawerContent display='flex' flexDirection='column' height='100%'>
 				<DrawerHeader
 					bg='text.dark'
 					color='text.light'
@@ -140,22 +140,19 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								onClick={handleSubmit}
 								form='search-candidates'
 								isDisabled={!searchActive || searchResultsLoading}
-								leftIcon={searchResultsLoading ? <Spinner /> : undefined}
+								leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
 								isLoading={!!searchResultsLoading}
 							>
 								Search
 							</Button>
-							{searchActive ? (
-								<Button
-									isDisabled={searchResultsLoading ? true : false}
-									colorScheme='gray'
-									onClick={handleSearchReset}
-								>
-									Reset Filters
-								</Button>
-							) : (
-								false
-							)}
+							<Button
+								isDisabled={searchResultsLoading ? true : false}
+								colorScheme='orange'
+								onClick={handleSearchReset}
+								leftIcon={<FiRefreshCcw />}
+							>
+								Reset
+							</Button>
 						</ButtonGroup>
 					</DrawerFooter>
 				</Collapse>

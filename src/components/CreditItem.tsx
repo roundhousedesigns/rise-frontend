@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
-import { Credit, WPItem } from '../lib/classes';
 import {
+	useMediaQuery,
 	Card,
 	Heading,
 	Text,
@@ -12,11 +12,10 @@ import {
 	Flex,
 	Skeleton,
 	Badge,
-	useMediaQuery,
 } from '@chakra-ui/react';
-
-import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
+import { Credit, WPItem } from '../lib/classes';
 import { decodeString, sortAndCompareArrays } from '../lib/utils';
+import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
 import SpecialChar from './common/chars/SpecialChar';
 
@@ -44,9 +43,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	// Loading state
-	const [loading, setLoading] = useState<boolean>(true);
-
 	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
 	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
@@ -54,7 +50,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	const [jobs, setJobs] = useState<WPItem[]>([]);
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
-	const [getTerms, { data: termData }] = useLazyTaxonomyTerms();
+	const [getTerms, { data: termData, loading: termsLoading }] = useLazyTaxonomyTerms();
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	// Set the term ID list state
@@ -81,8 +77,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	useEffect(() => {
 		if (!termData) return;
 
-		setLoading(true);
-
 		const {
 			terms: { nodes },
 		} = termData;
@@ -92,10 +86,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 
 		setJobs(jobTerms);
 		setSkills(skillTerms);
-
-		setLoading(false);
-
-		return () => setLoading(false);
 	}, [termData, jobIds, skillIds]);
 
 	const handleCreditKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -129,7 +119,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 				borderColor='gray.300'
 				_hover={isEditable ? { borderColor: 'gray.500' } : {}}
 			>
-				<Skeleton isLoaded={!loading}>
+				<Skeleton isLoaded={!termsLoading}>
 					<Flex
 						alignItems='flex-start'
 						justifyContent='space-between'
@@ -172,31 +162,47 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 						</Box>
 
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
-							{departmentIds?.length || jobs?.length || skills?.length ? (
-								<Stack direction='column' mt={{ base: 4, md: 0 }}>
-									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-										{department?.map((department: WPItem) => (
-											<Tag key={department.id} colorScheme='orange'>
-												<TagLabel>{decodeString(department.name)}</TagLabel>
-											</Tag>
-										))}
+							<Stack direction='column' mt={{ base: 4, md: 0 }}>
+								{departmentIds?.length || jobs?.length || skills?.length ? (
+									<>
+										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+											{department?.map((department: WPItem) => (
+												<Tag key={department.id} colorScheme='orange'>
+													<TagLabel>{decodeString(department.name)}</TagLabel>
+												</Tag>
+											))}
+										</Wrap>
+										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+											{jobs?.map((job: WPItem) => (
+												<Tag key={job.id} colorScheme='blue'>
+													<TagLabel>{decodeString(job.name)}</TagLabel>
+												</Tag>
+											))}
+										</Wrap>
+										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
+											{skills?.map((skill: WPItem) => (
+												<Tag key={skill.id} colorScheme='green'>
+													<TagLabel>{decodeString(skill.name)}</TagLabel>
+												</Tag>
+											))}
+										</Wrap>
+									</>
+								) : isEditable ? (
+									<Wrap justify='right'>
+										<Text
+											textAlign={{ base: 'left', md: 'right' }}
+											maxWidth='250px'
+											fontSize='sm'
+											lineHeight='short'
+										>
+											This credit won't be searchable until you add at least one department and a
+											job.
+										</Text>
 									</Wrap>
-									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-										{jobs?.map((job: WPItem) => (
-											<Tag key={job.id} colorScheme='blue'>
-												<TagLabel>{decodeString(job.name)}</TagLabel>
-											</Tag>
-										))}
-									</Wrap>
-									<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-										{skills?.map((skill: WPItem) => (
-											<Tag key={skill.id} colorScheme='green'>
-												<TagLabel>{decodeString(skill.name)}</TagLabel>
-											</Tag>
-										))}
-									</Wrap>
-								</Stack>
-							) : null}
+								) : (
+									false
+								)}
+							</Stack>
 						</Box>
 					</Flex>
 				</Skeleton>
