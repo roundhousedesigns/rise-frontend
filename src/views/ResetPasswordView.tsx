@@ -10,7 +10,7 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import TextInput from '../components/common/inputs/TextInput';
-import { useResetPasswordError } from '../hooks/hooks';
+import { useErrorMessage } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
 import useResetUserPassword from '../hooks/mutations/useResetUserPassword';
 
@@ -56,7 +56,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const errorMessage = useResetPasswordError(errorCode);
+	const errorMessage = useErrorMessage(errorCode);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();

@@ -202,16 +202,22 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 						<Stack direction='column' justifyContent='space-evenly' gap={4} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
-								<Heading as='h1' size='xl' mr={2} my={0} lineHeight='none'>
-									{profile.fullName()}
-								</Heading>
-								{pronouns ? (
-									<Tag colorScheme='blue' size='md'>
-										{pronouns}
-									</Tag>
-								) : (
-									false
-								)}
+								<Flex
+									justifyContent={{ base: 'center', md: 'flex-start' }}
+									flexWrap='wrap'
+									alignItems='center'
+								>
+									<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
+										{profile.fullName()}
+									</Heading>
+									{pronouns ? (
+										<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+											{pronouns}
+										</Tag>
+									) : (
+										false
+									)}
+								</Flex>
 
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
@@ -426,14 +432,14 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 
 							<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 								{mediaImages.map((image: string | undefined, index: Key) => (
-									// TODO add image captions
+									// TODO add image captions/alt
 									<Image
 										key={index}
 										src={image}
 										borderRadius='md'
 										fit='cover'
 										mb={2}
-										// alt={`${profile.fullName()}'s picture`}
+										alt={`${profile.fullName()}'s image`}
 									/>
 								))}
 							</Box>
