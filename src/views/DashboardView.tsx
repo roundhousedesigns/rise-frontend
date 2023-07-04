@@ -2,11 +2,9 @@ import { Card, Box, Heading, Stack, Button } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '../hooks/queries/useViewer';
-import useUserNotices from '../hooks/queries/useUserNotices';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
-	const [notices] = useUserNotices();
 
 	return (
 		<Card mt={4}>
