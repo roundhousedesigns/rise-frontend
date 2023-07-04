@@ -20,7 +20,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { handleReCaptchaVerify } from '../lib/utils';
 import TextInput from '../components/common/inputs/TextInput';
 import useRegisterUser from '../hooks/mutations/useRegisterUser';
-import { useRegistrationError } from '../hooks/hooks';
+import { useErrorMessage } from '../hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
 import usePostContent from '../hooks/queries/usePostContent';
 import BackToLoginButton from '../components/common/BackToLoginButton';
@@ -83,7 +83,7 @@ export default function RegisterView() {
 
 	const navigate = useNavigate();
 	const toast = useToast();
-	const errorMessage = useRegistrationError(errorCode);
+	const errorMessage = useErrorMessage(errorCode);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();

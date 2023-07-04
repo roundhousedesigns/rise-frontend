@@ -33,6 +33,7 @@ import {
 	FiPhone,
 	FiStar,
 	FiUser,
+	FiLink,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
@@ -110,8 +111,14 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			.map((term: WPItem) => term.name)
 			.join(', ');
 
-	const selectedLinkableTerms = (ids: number[], terms: WPItem[]) =>
-		getWPItemsFromIds(ids, terms).map((term: WPItem) => {
+	function selectedLinkableTerms({
+		ids,
+		terms,
+	}: {
+		ids: number[];
+		terms: WPItem[];
+	}): (JSX.Element | string)[] {
+		return getWPItemsFromIds(ids, terms).map((term: WPItem) => {
 			if (term.externalUrl) {
 				return (
 					<Button
@@ -122,14 +129,17 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						size='sm'
 						m={0}
 						colorScheme='orange'
+						leftIcon={<FiLink />}
 					>
 						{term.name}
 					</Button>
 				);
 			}
 
+			// No link if no URL.
 			return term.name;
 		});
+	}
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -262,7 +272,10 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
 										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
 										<Wrap flex='1' pl={2} spacing={2}>
-											{selectedLinkableTerms(partnerDirectories, partnerDirectoryTerms)}
+											{selectedLinkableTerms({
+												ids: partnerDirectories,
+												terms: partnerDirectoryTerms,
+											})}
 										</Wrap>
 									</Flex>
 								</StackItem>
