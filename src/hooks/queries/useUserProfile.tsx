@@ -70,13 +70,13 @@ export const QUERY_PROFILE = gql`
 				workStart(format: RENDERED)
 				workEnd(format: RENDERED)
 				workCurrent
-				positions {
+				positions(first: 30) {
 					nodes {
 						id: databaseId
 						parentId: parentDatabaseId
 					}
 				}
-				skills {
+				skills(first: 30) {
 					nodes {
 						id: databaseId
 					}
