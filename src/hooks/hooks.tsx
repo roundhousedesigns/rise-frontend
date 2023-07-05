@@ -52,197 +52,51 @@ export const useLocalStorage = (
 };
 
 /**
- * Format a login error message.
+ * Format an error message based on the error code.
  *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
+ * @param {string} errorCode The error message returned by the server.
+ * @param {string} defaultMessage The default message to use if no specific case matches.
+ * @returns {string} The formatted error message.
  */
-export const useLoginError = (errorCode?: string): string => {
+export const useErrorMessage = (
+	errorCode?: string,
+	defaultMessage: string = 'Unspecified error'
+): string => {
 	if (!errorCode) return '';
 
-	var message = '';
-
 	switch (errorCode) {
+		// Common errors
 		case 'invalid_username':
 		case 'invalid_email':
-			message = 'No account exists for that email address.';
-			break;
-
+			return 'No account exists for that email address.';
 		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
+			return 'Incorrect password.';
 		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
+			return 'Please enter a username or email address.';
 		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
+			return 'Please enter your password.';
 
-		default:
-			message = 'Unspecified error: ' + errorCode;
-	}
-
-	return message;
-};
-
-/**
- * Format a user registration error message.
- *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
- */
-export const useRegistrationError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	switch (errorCode) {
+		// Registration errors
 		case 'existing_user_login':
-			message = 'An account already exists for that email address. Please try logging in.';
-			break;
+			return 'An account already exists for that email address. Please try logging in.';
 
-		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
-		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
-
-		default:
-			message = 'Unspecified error: ' + errorCode;
-	}
-
-	return message;
-};
-
-/**
- * Format a lost password error message.
- *
- * @param {string} errorCode The error message returned by the server.
- * @returns {string} The message to print.
- */
-export const useLostPasswordError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	switch (errorCode) {
+		// ReCAPTCHA errors
 		case 'recaptcha_error':
-			message = 'Invalid reCAPTCHA.';
-			break;
+			return 'Invalid reCAPTCHA.';
 
-		default:
-			message = 'Unspecified error: ' + errorCode;
-	}
-
-	return message;
-};
-
-/**
- * Format a user password reset error message.
- *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
- */
-export const useResetPasswordError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	// TODO implement these errors, they are still copies of the login errors
-
-	switch (errorCode) {
-		case 'invalid_username':
-		case 'invalid_email':
-			message = 'Invalid username or email address.';
-			break;
-
-		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
-		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
-		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
-
-		default:
-			message = 'Unspecified error: ' + errorCode;
-	}
-
-	return message;
-};
-
-/**
- * Format a user password reset error message.
- *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
- */
-export const useChangePasswordError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	switch (errorCode) {
-		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
-		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
-		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
-
-		default:
-			message = 'Unspecified error: ' + errorCode;
-	}
-
-	return message;
-};
-
-/**
- * Format a change profile slug error message.
- *
- * @param {string} errorCode The error message returned by the server.
- * @returns {string} The message to print.
- */
-export const useChangeProfileSlugError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	switch (errorCode) {
+		// Change profile slug errors
 		case 'user_not_found':
-			message = 'There was an error updating your profile URL. Please contact support.';
-			break;
-
+			return 'There was an error updating your profile URL. Please contact support.';
 		case 'user_not_authorized':
-			message = 'You do not appear to be logged in.';
-			break;
-
+			return 'You do not appear to be logged in.';
 		case 'user_slug_not_unique':
-			message = 'This alias is already in use. Please choose another.';
-			break;
-
+			return 'This alias is already in use. Please choose another.';
 		case 'user_slug_invalid':
-			message = 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
-			break;
+			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
 		default:
-			message = 'Unspecified error: ' + errorCode;
+			return defaultMessage + ': ' + errorCode;
 	}
-
-	return message;
 };
 
 /**
