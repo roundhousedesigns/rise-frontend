@@ -17,6 +17,7 @@ export default function ChangePasswordView() {
 	});
 	const { currentPassword, newPassword, confirmPassword } = userFields;
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
 	const {
@@ -26,18 +27,30 @@ export default function ChangePasswordView() {
 	const errorMessage = useErrorMessage(errorCode);
 	const { logoutMutation } = useLogout();
 
-	// useEffect to check if form is valid
-	useEffect(() => {
-		setFormIsValid(newPassword.length > 0 && confirmPassword.length > 0 && passwordsMatch);
-	}, [passwordsMatch, newPassword, confirmPassword]);
+	const newPasswordStrength = useValidatePassword(newPassword);
 
-	// useEffect to check if passwords match, debounce to prevent spamming
+	// Check if form is valid
+	useEffect(() => {
+		setFormIsValid(
+			newPassword.length > 0 && confirmPassword.length > 0 && passwordStrongEnough && passwordsMatch
+		);
+	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
+
+	// Check if passwords match and are complex enough, debounce to prevent spamming
 	useEffect(() => {
 		const timer = setTimeout(() => {
+			setPasswordStrongEnough(newPasswordStrength === 'strong');
 			setPasswordsMatch(newPassword === confirmPassword);
-		}, 500);
+		}, 300);
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
+
+	// Set an error code if either of the password checks doesn't pass
+	useEffect(() => {
+		if (!passwordsMatch) setErrorCode('password_mismatch');
+		else if (newPassword.length && !passwordStrongEnough) setErrorCode('password_too_weak');
+		else setErrorCode('');
+	}, [passwordsMatch, passwordStrongEnough]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
@@ -49,10 +62,6 @@ export default function ChangePasswordView() {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!currentPassword || !newPassword || !passwordsMatch) return;
-
-		// MICHAEL TEST
-		console.log(useValidatePassword(newPassword))
-		//
 
 		changeUserPasswordMutation(username, currentPassword, newPassword)
 			.then(() => {
@@ -71,12 +80,6 @@ export default function ChangePasswordView() {
 			.catch((errors: { message: string }) => setErrorCode(errors.message));
 	};
 
-	const passwordsMatchError = () => {
-		return passwordsMatch || (!passwordsMatch && (!newPassword || !confirmPassword))
-			? ''
-			: 'Passwords do not match';
-	};
-
 	return (
 		<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
 			<Flex gap={6} flexWrap='wrap'>
@@ -88,7 +91,7 @@ export default function ChangePasswordView() {
 					label='Current Password'
 					isRequired
 					onChange={handleInputChange}
-					error={errorMessage}
+					error={errorCode === 'incorrect_password' ? errorMessage : ''}
 					inputProps={{
 						type: 'password',
 						autoComplete: 'current-password',
@@ -102,6 +105,11 @@ export default function ChangePasswordView() {
 					label='New password'
 					isRequired
 					onChange={handleInputChange}
+					error={
+						errorCode && errorCode !== 'incorrect_password' && errorCode !== 'password_mismatch'
+							? errorMessage
+							: ''
+					}
 					flex='1'
 					inputProps={{
 						type: 'password',
@@ -116,7 +124,7 @@ export default function ChangePasswordView() {
 					variant='filled'
 					label='Confirm your new password'
 					isRequired
-					error={passwordsMatchError()}
+					error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
 					onChange={handleInputChange}
 					flex='1'
 					inputProps={{

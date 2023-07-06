@@ -61,7 +61,7 @@ export const useLocalStorage = (
  */
 export const useErrorMessage = (
 	errorCode?: string,
-	defaultMessage: string = 'Unspecified error'
+	defaultMessage: string = 'Error'
 ): string => {
 	if (!errorCode) return '';
 
@@ -76,6 +76,10 @@ export const useErrorMessage = (
 			return 'Please enter a username or email address.';
 		case 'empty_password':
 			return 'Please enter your password.';
+		case 'password_mismatch':
+			return 'Passwords do not match.';
+		case 'password_too_weak':
+			return 'Password is too weak. Please choose a stronger password.';
 
 		// Registration errors
 		case 'existing_user_login':
@@ -158,27 +162,29 @@ export const useValidateProfileSlug = (slug: string): boolean => validateProfile
  * Validate a password to meet requirements
  *
  * @param password The password to validate
- * @return Error message.  'valid password' if valid.
+ * @return string|undefined 'weak' or 'strong'
  *
  * TODO: figuring out typing to allow (in index.d.ts):
  * const passwordRequirements = [{id?: number, value?: string, minDiversity?: number, minLength?: number}, {...}]
  * passwordStrength(password, passwordRequirements);
  */
-export const useValidatePassword = (password: string): string => {
+export const useValidatePassword = (password: string): string | undefined => {
+	if (!password || password.length < 1) return;
+
 	const { value } = passwordStrength(password, [
 		{
 			id: 0,
-			value:
-				"Too weak - password must be 8 characters long and contain one each of: \n- uppercase letter\n- lowercase letter\n- number\n- special character('!@#$%^&*()_+-=][]{}\"';:/?.>,<`~)",
+			value: 'weak',
 			minDiversity: 0,
 			minLength: 0,
 		},
 		{
 			id: 1,
-			value: 'valid password',
+			value: 'strong',
 			minDiversity: 4,
 			minLength: 8,
 		},
 	]);
+
 	return value;
 };

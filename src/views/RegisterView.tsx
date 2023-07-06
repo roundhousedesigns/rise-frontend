@@ -38,10 +38,12 @@ export default function RegisterView() {
 	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 	const [ofAge, setOfAge] = useState<boolean>(false);
 	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
-
 	const [content, { contentLoading, contentError }] = usePostContent('576');
+
+	const passwordStrength = useValidatePassword(password);
 
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -56,23 +58,42 @@ export default function RegisterView() {
 	useEffect(() => {
 		setFormIsValid(
 			email.length > 0 &&
-			firstName.length > 0 &&
-			lastName.length > 0 &&
-			password.length > 0 &&
-			confirmPassword.length > 0 &&
-			passwordsMatch &&
-			ofAge &&
-			termsAccepted
+				firstName.length > 0 &&
+				lastName.length > 0 &&
+				password.length > 0 &&
+				confirmPassword.length > 0 &&
+				passwordStrongEnough &&
+				passwordsMatch &&
+				ofAge &&
+				termsAccepted
 		);
-	}, [email, firstName, lastName, passwordsMatch, password, confirmPassword, ofAge, termsAccepted]);
+	}, [
+		email,
+		firstName,
+		lastName,
+		password,
+		confirmPassword,
+		passwordStrongEnough,
+		passwordsMatch,
+		ofAge,
+		termsAccepted,
+	]);
 
 	// useEffect to check if passwords match, debounce to prevent spamming
 	useEffect(() => {
 		const timer = setTimeout(() => {
+			setPasswordStrongEnough(passwordStrength === 'strong');
 			setPasswordsMatch(password === confirmPassword);
 		}, 500);
 		return () => clearTimeout(timer);
 	}, [password, confirmPassword]);
+
+	// Set an error code if either of the password checks doesn't pass
+	useEffect(() => {
+		if (!passwordsMatch) setErrorCode('password_mismatch');
+		else if (password.length && !passwordStrongEnough) setErrorCode('password_too_weak');
+		else setErrorCode('');
+	}, [passwordsMatch, passwordStrongEnough]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
@@ -87,10 +108,6 @@ export default function RegisterView() {
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
-
-		// MICHAEL TEST
-		console.log(useValidatePassword(userFields.password))
-		//
 
 		handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha }).then((token) => {
 			if (!token) {
@@ -114,12 +131,6 @@ export default function RegisterView() {
 				})
 				.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 		});
-	};
-
-	const passwordsMatchError = () => {
-		return passwordsMatch || (!passwordsMatch && (!password || !confirmPassword))
-			? ''
-			: 'Passwords do not match';
 	};
 
 	return (
@@ -175,7 +186,11 @@ export default function RegisterView() {
 					type='email'
 					variant='filled'
 					label='Email address'
-					error={errorMessage}
+					error={
+						errorCode !== 'password_too_weak' && errorCode !== 'password_mismatch' && errorCode
+							? errorMessage
+							: ''
+					}
 					isRequired
 					onChange={handleInputChange}
 					inputProps={{
@@ -193,6 +208,7 @@ export default function RegisterView() {
 						variant='filled'
 						label='Password'
 						isRequired
+						error={errorCode && errorCode === 'password_too_weak' ? errorMessage : ''}
 						onChange={handleInputChange}
 						inputProps={{
 							size: 'xl',
@@ -209,7 +225,7 @@ export default function RegisterView() {
 						variant='filled'
 						label='Confirm your password'
 						isRequired
-						error={passwordsMatchError()}
+						error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
 						onChange={handleInputChange}
 						inputProps={{
 							size: 'xl',

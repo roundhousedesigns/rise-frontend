@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Improved: Credits saved without `position` terms show a reminder on Edit screen
 - Added: deprecated.ts file to track deprecated code
 - Improved: Combined error handler hooks into one `useErrorMessage` hook
+- Added: Basic password complexity enforcement
 
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
