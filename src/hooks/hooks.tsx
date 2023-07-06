@@ -59,10 +59,7 @@ export const useLocalStorage = (
  * @param {string} defaultMessage The default message to use if no specific case matches.
  * @returns {string} The formatted error message.
  */
-export const useErrorMessage = (
-	errorCode?: string,
-	defaultMessage: string = 'Error'
-): string => {
+export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Error'): string => {
 	if (!errorCode) return '';
 
 	switch (errorCode) {
