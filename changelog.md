@@ -5,17 +5,17 @@ All notable changes to this project will be documented in this file, starting wi
 ## \[1.0.7] - 2023-07-03
 
 - Fixed: Mobile Safari's floating bottom URL bar blocks sticky Search buttons.
-- Fixed: Credits without `position` terms infinitely loading
+- Fixed: Credits without `position` terms were stuck infinitely loading
 - Added: Back to Login button on Register page
 - Added: Jump to Credits button (Edit Profile)
-- Improved: Cache policy on related skills
-- Improved: Changed website URL display to "View Website" to handle for long, ugly links
-- Improved: Minor styling tweaks
-- Improved: Credit Save/Cancel buttons no longer rerendering unncessarily
-- Improved: Credits saved without `position` terms show a reminder on Edit screen
-- Added: deprecated.ts file to track deprecated code
-- Improved: Combined error handler hooks into one `useErrorMessage` hook
 - Added: Basic password complexity enforcement
+- Improved: Cache policy on related skills
+- Improved: Changed website URL display to "View Website" to handle for overlong layout-breaking links
+- Improved: Minor styling tweaks
+- Improved: Credit Save/Cancel buttons no longer re-rendering unncessarily (flashing)
+- Improved: Credits saved without `position` terms now show a reminder to add on the Edit screen
+- Improved: Combined error handler hooks into one `useErrorMessage` hook
+- Improved: deprecated.ts file to track deprecated code
 
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
