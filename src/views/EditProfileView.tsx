@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef, ChangeEvent } from 'react';
+import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import {
 	Box,
 	Heading,
@@ -13,14 +13,14 @@ import {
 	ButtonGroup,
 	useToast,
 	useDisclosure,
-	Input,
 	Icon,
 	Progress,
 	Link,
 	SimpleGrid,
-	FormLabel,
-	FormControl,
+	useMediaQuery,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
+import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
 	FiGlobe,
@@ -38,33 +38,32 @@ import {
 	FiHome,
 	FiStar,
 	FiVideo,
+	FiUpload,
 } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
+
 import { Credit, UserProfile } from '../lib/classes';
-import { useUpdateProfile } from '../hooks/mutations/useUpdateProfile';
-import { useDeleteCredit } from '../hooks/mutations/useDeleteCredit';
-import { useUpdateCreditOrder } from '../hooks/mutations/useUpdateCreditOrder';
+import { EditProfileContext } from '../context/EditProfileContext';
+import { useProfileEdited } from '../hooks/hooks';
+import useViewer from '../hooks/queries/useViewer';
+import useUpdateProfile from '../hooks/mutations/useUpdateProfile';
+import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
+import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
+import useFileUpload from '../hooks/mutations/useFileUpload';
+import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
+import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
+
 import HeadingCenterline from '../components/common/HeadingCenterline';
-import CreditItem from '../components/common/CreditItem';
+import CreditItem from '../components/CreditItem';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import useFileUpload from '../hooks/mutations/useFileUpload';
-import { EditProfileContext } from '../context/EditProfileContext';
-import { useViewer } from '../hooks/queries/useViewer';
-import { DeleteAlertDialog } from '../components/DeleteAlertDialog';
+import DeleteCreditButton from '../components/DeleteCreditButton';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
+import FileUploadButton from '../components/common/inputs/FileUploadButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
-
-export type AlertProps = {
-	id: string;
-	handleDeleteCredit: (id: string) => void;
-};
 
 interface Props {
 	profile: UserProfile | null;
@@ -78,7 +77,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 
 	const {
 		firstName,
@@ -99,6 +98,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		resume,
 		phone,
 		unions,
+		partnerDirectories,
 		experienceLevels,
 		genderIdentities,
 		racialIdentities,
@@ -113,8 +113,19 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		mediaImage6,
 	} = editProfile || {};
 
+	// TODO implement edited alert dialog on exit and on save button enable/disable
+	const originalProfile = useRef<UserProfile | null>(null);
+
+	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
+	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
+
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
+
+	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
+	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const {
 		uploadFileMutation,
@@ -122,18 +133,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	} = useFileUpload();
 
 	const {
-		updateCreditOrderMutation,
-		results: { loading: updateCreditOrderLoading },
-	} = useUpdateCreditOrder();
+		clearProfileFieldMutation,
+		results: { loading: clearProfileFieldMutationLoading },
+	} = useClearProfileField();
 
-	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
-	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+	const { updateCreditOrderMutation } = useUpdateCreditOrder();
 
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
-	const [willDeleteCredits, setWillDeleteCredits] = useState<Boolean>(false);
+
+	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
+
+	// Set the original profile to the current profile when it is loaded.
+	useEffect(() => {
+		if (!editProfile || originalProfile.current) return;
+
+		originalProfile.current = editProfile;
+	}, [editProfile]);
 
 	// If the credits order has changed, fire the mutation to save it after a delay.
 	useEffect(() => {
@@ -168,18 +186,30 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			setEditCredit(newCredit.id);
 			onOpen();
 		}
+
+		return () => {
+			setEditCredit('');
+		};
 	}, [credits]);
 
 	// Resort the credits on rerender.
 	useEffect(() => {
-		if (credits && credits.length > 0) {
+		if (!credits) return;
+
+		if (credits.length > 0) {
 			// Remove credits with the isNew property set to true.
 			const existingCredits = credits.filter((credit) => !credit.isNew);
 
 			setCreditsSorted(
 				existingCredits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
 			);
+		} else if (credits.length === 0) {
+			setCreditsSorted([]);
 		}
+
+		return () => {
+			setCreditsSorted([]);
+		};
 	}, [credits]);
 
 	// Moves a credit index up by one
@@ -211,6 +241,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		{
 			locations: locationTerms,
 			unions: unionTerms,
+			partnerDirectories: partnerDirectoryTerms,
 			experienceLevels: experienceLevelTerms,
 			genderIdentities: genderIdentityTerms,
 			personalIdentities: personalIdentityTerms,
@@ -283,10 +314,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const file = event.target.files[0];
-		const { name } = event.target;
+		const { name, files } = event.target;
+		const file = files[0];
+		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
 
-		if (!file || !name) return;
+		// Limit the file size
+		if (maxSize < file.size) {
+			toast({
+				title: 'File too large.',
+				position: 'top',
+				description: 'Please upload a file smaller than 2MB.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
+		setFieldCurrentlyUploading(name);
 
 		uploadFileMutation(file, name, loggedInId)
 			.then((result) => {
@@ -297,10 +343,68 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						value: result.data.uploadFile.fileUrl,
 					},
 				});
+
+				setFieldCurrentlyUploading('');
+
+				// success toast
+				toast({
+					title: 'Image saved!',
+					position: 'top',
+					description: 'Your image has been uploaded.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
 			})
 			.catch((err) => {
 				console.error(err);
 			});
+	};
+
+	const handleFileInputClear = (event: MouseEvent<HTMLButtonElement>) => {
+		const {
+			dataset: { field: fieldName },
+		} = event.currentTarget as HTMLButtonElement;
+
+		if (!fieldName) return;
+
+		setFieldCurrentlyClearing(fieldName);
+
+		clearProfileFieldMutation(loggedInId, fieldName).then((result) => {
+			const imageInputs = [
+				image,
+				mediaImage1,
+				mediaImage2,
+				mediaImage3,
+				mediaImage4,
+				mediaImage5,
+				mediaImage6,
+			];
+
+			const description = imageInputs.includes(fieldName)
+				? 'The image has been removed.'
+				: 'The file has been removed.';
+
+			// success toast
+			toast({
+				title: 'Success!',
+				position: 'top',
+				description,
+				status: 'success',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			editProfileDispatch({
+				type: 'UPDATE_INPUT',
+				payload: {
+					name: fieldName,
+					value: '',
+				},
+			});
+
+			setFieldCurrentlyClearing('');
+		});
 	};
 
 	const handleNewCredit = () => {
@@ -312,7 +416,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const handleDeleteCredit = (creditId: string) => {
 		if (creditId !== '') {
-			deleteCreditMutation(creditId)
+			deleteCreditMutation(creditId, loggedInId)
 				.then(() => {
 					toast({
 						// title: 'Credit deleted.',
@@ -335,13 +439,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		}
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		updateProfileMutation(editProfile)
 			.then(() => {
-				setWillDeleteCredits(false);
-				navigate('/profile');
+				navigate(`/profile/${loggedInSlug}`);
 			})
 			.then(() => {
 				toast({
@@ -356,15 +459,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			.catch((err) => {
 				toast({
 					// title: 'Profile not saved.',
-					description: 'There was an error saving your profile.',
+					description: 'There was an error saving your profile: ' + err,
 					status: 'error',
 					duration: 5000,
 					isClosable: true,
 					position: 'top',
 				});
-
-				// DEBUG
-				console.error(err);
 			});
 	};
 
@@ -395,11 +495,128 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const handleCancel = () => {
-		navigate('/profile');
+		navigate(`/profile/${loggedInSlug}`);
+	};
+
+	const ClearFieldButton = ({
+		field,
+		content = <FiXCircle />,
+	}: {
+		field: string;
+		content?: string | number | JSX.Element;
+	}) => {
+		if (!field) return null;
+
+		return (
+			<Button
+				size='md'
+				colorScheme='orange'
+				onClick={handleFileInputClear}
+				data-field={field}
+				p={0}
+			>
+				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
+					<Spinner />
+				) : (
+					content
+				)}
+			</Button>
+		);
+	};
+
+	const ProgressBar = () => (
+		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
+	);
+
+	const ProfileImageUploader = () => (
+		<Box mb={2} width='30%' minWidth='300px'>
+			<Heading variant='contentTitle' my={0}>
+				Profile image
+			</Heading>
+			<Heading variant='contentSubtitle' fontSize='sm'>
+				Portrait orientation works best. Max 2MB.
+			</Heading>
+			{uploadFileMutationLoading ? (
+				// Uploading
+				<Flex alignItems='center' justifyContent='center' h='200px'>
+					<ProgressBar />
+				</Flex>
+			) : image ? (
+				// Image set
+				<Image
+					src={image}
+					alt={`Profile picture`}
+					loading='eager'
+					fit='cover'
+					borderRadius='md'
+					w='full'
+					mb={2}
+				/>
+			) : (
+				// No image set
+				<Flex alignItems='center' justifyContent='center' w='full' h='100px'>
+					<Icon as={FiImage} boxSize='60px' />
+				</Flex>
+			)}
+			<Flex gap={2}>
+				<FileUploadButton
+					fieldName='image'
+					accept='image/*'
+					content='Upload image'
+					onChange={handleFileInputChange}
+					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+				/>
+				<ClearFieldButton field='image' />
+			</Flex>
+		</Box>
+	);
+
+	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
+		if (!fieldName) return <>No image.</>;
+
+		const imageData: { [key: string]: string | undefined } = {
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
+		};
+
+		const image = imageData[fieldName];
+
+		return (
+			<Box mb={2}>
+				<Flex gap={2}>
+					<FileUploadButton
+						fieldName={fieldName}
+						content={text}
+						icon={<FiUpload />}
+						accept='image/*'
+						onChange={handleFileInputChange}
+						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+					/>
+					{image ? <ClearFieldButton field={fieldName} /> : null}
+				</Flex>
+				{image ? (
+					<Image
+						src={image}
+						alt={text}
+						loading='eager'
+						fit='cover'
+						w='full'
+						mt={2}
+						borderRadius='md'
+					/>
+				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
+					<ProgressBar />
+				) : null}
+			</Box>
+		);
 	};
 
 	return editProfile ? (
-		<form onSubmit={handleSubmit}>
+		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Flex
 				alignItems='center'
 				justifyContent='flex-end'
@@ -419,10 +636,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						leftIcon={saveLoading ? undefined : <FiSave />}
 						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
 						colorScheme='green'
-						disabled={saveLoading}
+						isDisabled={saveLoading || hasEditedProfile === false}
+						isLoading={!!saveLoading}
 						mx={0}
 					>
-						{saveLoading ? <Spinner size='sm' /> : 'Save'}
+						Save
 					</Button>
 					<Button
 						type='reset'
@@ -437,165 +655,143 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</ButtonGroup>
 			</Flex>
 			<Stack direction='column' flexWrap='nowrap' gap={4}>
-				<StackItem>
-					<Box py={2} mt={2}>
-						{profileLoading && <Spinner alignSelf='center' />}
-						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-							<Box mb={2} width='30%'>
-								{/* TODO Image uploader */}
-								{uploadFileMutationLoading ? (
-									<Flex alignItems='center' justifyContent='center' h='200px'>
-										<Text textAlign='center' fontSize='sm'>
-											Uploading...
-										</Text>
-										<Progress size='md' isIndeterminate />
-									</Flex>
-								) : image ? (
-									<>
-										<Image
-											src={image}
-											alt={`Profile picture`}
-											loading='eager'
-											fit='cover'
-											borderRadius='md'
-											w='xs'
-											mb={2}
-										/>
-										{/* TODO clear/remove image button */}
-										{/* <Button size='sm' colorScheme='orange'>Remove image</Button> */}
-									</>
-								) : (
-									<Flex alignItems='center' justifyContent='center' w='full' h='200px'>
-										<Icon as={FiImage} boxSize='60px' />
-									</Flex>
-								)}
-								{/* TODO size limit validation */}
-								<Input
-									type='file'
-									name='image'
-									onChange={handleFileInputChange}
-									border='none'
-									color='transparent'
-								/>
-							</Box>
-							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
-								<StackItem>
-									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-										<TextInput
-											placeholder='First'
-											value={firstName}
-											name='firstName'
-											isRequired
-											onChange={handleInputChange}
-											flex='1'
-											label='First name'
-											inputProps={{
-												size: 'xl',
-											}}
-										/>
-										<TextInput
-											placeholder='Last'
-											value={lastName}
-											name='lastName'
-											isRequired
-											label='Last name'
-											onChange={handleInputChange}
-											flex='1'
-											inputProps={{
-												size: 'xl',
-											}}
-										/>
-										<TextInput
-											placeholder='pronouns'
-											value={pronouns}
-											name='pronouns'
-											label='Pronouns'
-											onChange={handleInputChange}
-											flex='1'
-											inputProps={{
-												size: 'md',
-											}}
-										/>
-									</Flex>
-									<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
-										<TextInput
-											placeholder='homebase'
-											value={homebase}
-											name='homebase'
-											label='Where do you currently live?'
-											leftElement={<Icon as={FiHome} />}
-											onChange={handleInputChange}
-											inputProps={{
-												maxLength: 25,
-											}}
-											flex='1'
-										/>
-										<TextInput
-											value={selfTitle}
-											name='selfTitle'
-											placeholder='Title'
-											label='Title/Trade/Profession'
-											leftElement={<Icon as={FiStar} />}
-											onChange={handleInputChange}
-											inputProps={{
-												maxLength: 50,
-											}}
-											flex='1'
-										/>
-									</Flex>
-								</StackItem>
-								<StackItem display='flex' flexWrap='wrap' gap={4}>
-									<Box flex='1'>
-										<Heading variant='contentTitle' mb={2}>
-											Contact
-										</Heading>
-										<Stack direction='column' spacing={0}>
-											<TextInput
-												value={email}
-												leftElement={<Icon as={FiMail} />}
-												isRequired
-												placeholder='me@somewhere.com'
-												label='Contact Email'
-												name='email'
-												onChange={handleInputChange}
-											/>
-											{/* TODO Add checkbox for "use account email address" */}
-											<TextInput
-												value={phone}
-												leftElement={<Icon as={FiPhone} />}
-												placeholder='(888) 888-8888'
-												label='Phone'
-												name='phone'
-												onChange={handleInputChange}
-											/>
-											<TextInput
-												value={website}
-												leftElement={<Icon as={FiGlobe} />}
-												label='Website'
-												name='website'
-												onChange={handleInputChange}
-											/>
-										</Stack>
-									</Box>
-								</StackItem>
-							</Stack>
-						</Flex>
-						<Stack>
-							<StackItem fontSize='sm'>
-								{/* TODO make this required */}
-								<Heading variant='contentTitle'>Work Locations</Heading>
-								<Heading variant='contentSubtitle'>
-									Select any areas in which you're a local hire.
-								</Heading>
-								<ProfileCheckboxGroup
-									name='locations'
-									isRequired
-									items={locationTerms}
-									checked={locations ? locations.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
-								/>
+				<StackItem py={2} mt={2}>
+					{profileLoading && <Spinner alignSelf='center' />}
+					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+						{isLargerThanMd ? <ProfileImageUploader /> : false}
+						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
+							<StackItem>
+								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+									<TextInput
+										placeholder='First'
+										value={firstName}
+										name='firstName'
+										isRequired
+										onChange={handleInputChange}
+										flex='1'
+										label='First name'
+										minW='200px'
+									/>
+									<TextInput
+										placeholder='Last'
+										value={lastName}
+										name='lastName'
+										isRequired
+										label='Last name'
+										onChange={handleInputChange}
+										flex='1'
+										minW='200px'
+									/>
+									<TextInput
+										placeholder='pronouns'
+										value={pronouns}
+										name='pronouns'
+										label='Pronouns'
+										onChange={handleInputChange}
+										maxW='150px'
+										inputProps={{
+											size: 'md',
+											tabIndex: 0,
+										}}
+									/>
+								</Flex>
+								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+									<TextInput
+										placeholder='homebase'
+										value={homebase}
+										name='homebase'
+										label='Where do you currently live?'
+										leftElement={<Icon as={FiHome} />}
+										onChange={handleInputChange}
+										maxLength={25}
+										flex='1 0 48%'
+										inputProps={{
+											tabIndex: 0,
+										}}
+									/>
+									<TextInput
+										value={selfTitle}
+										name='selfTitle'
+										placeholder='Title'
+										label='Title/Trade/Profession'
+										leftElement={<Icon as={FiStar} />}
+										onChange={handleInputChange}
+										maxLength={50}
+										flex='1 0 48%'
+										inputProps={{
+											tabIndex: 0,
+										}}
+									/>
+								</Flex>
 							</StackItem>
-							<StackItem py={4} display='flex' gap={10}>
+							{!isLargerThanMd ? (
+								<StackItem display='flex' flexWrap='wrap' gap={4}>
+									<ProfileImageUploader />
+								</StackItem>
+							) : (
+								false
+							)}
+							<StackItem display='flex' flexWrap='wrap' gap={4}>
+								<Box flex='1'>
+									<Heading variant='contentTitle' mb={2}>
+										Contact
+									</Heading>
+									<Stack direction='column' spacing={0}>
+										<TextInput
+											value={email}
+											leftElement={<Icon as={FiMail} />}
+											placeholder='me@somewhere.com'
+											label='Contact Email'
+											name='email'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+										{/* TODO Add checkbox for "use account email address" */}
+										<TextInput
+											value={phone}
+											leftElement={<Icon as={FiPhone} />}
+											placeholder='(888) 888-8888'
+											label='Phone'
+											name='phone'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+										<TextInput
+											value={website}
+											leftElement={<Icon as={FiGlobe} />}
+											label='Website'
+											name='website'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+									</Stack>
+								</Box>
+							</StackItem>
+						</Stack>
+					</Flex>
+					<Stack mt={4}>
+						<StackItem fontSize='sm'>
+							{/* TODO make this required */}
+							<Heading variant='contentTitle'>Work Locations</Heading>
+							<Heading variant='contentSubtitle'>
+								Select any areas in which you're a local hire.
+							</Heading>
+							<ProfileCheckboxGroup
+								name='locations'
+								isRequired
+								items={locationTerms}
+								checked={locations ? locations.map((item) => item.toString()) : []}
+								handleChange={handleCheckboxInput}
+							/>
+						</StackItem>
+						<StackItem py={4} display='flex' gap={10}>
+							<Flex flexWrap='wrap' gap={8}>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
 									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
@@ -622,143 +818,130 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 										handleChange={handleRadioInputChange}
 									/>
 								</Box>
-								<Box flex='0 0 33%' textAlign='center'>
+								<Box flex={{ base: '0 0 100%', md: '1' }}>
 									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
 										Resume
 									</Heading>
-									<Flex gap={3} flexWrap='wrap'>
-										<Heading variant='contentSubtitle'>
-											{resume ? (
-												<Link
-													m={0}
-													fontSize='md'
-													fontWeight='medium'
-													href={resume}
-													variant='dotted'
-													download
-												>
-													Preview your resume
-												</Link>
-											) : (
-												'PDF or image'
-											)}
-										</Heading>
-										{/* TODO center input button */}
-										{/* TODO add "clear" button */}
-										<Input
-											type='file'
-											name='resume'
-											onChange={handleFileInputChange}
-											border='none'
-											pl='0'
-										/>
-									</Flex>
-								</Box>
-							</StackItem>
-						</Stack>
-
-						<StackItem>
-							<Flex flexWrap='wrap' gap={4}>
-								<Box flex='1'>
-									<Heading variant='contentTitle'>Unions/Guilds</Heading>
 									<Heading variant='contentSubtitle'>
-										What unions or guilds are you a member of?
+										{resume ? (
+											<Link
+												fontSize='md'
+												fontWeight='medium'
+												href={resume}
+												variant='dotted'
+												download
+											>
+												Preview your resume
+											</Link>
+										) : (
+											'PDF or image'
+										)}
 									</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup
-											name='unions'
-											items={unionTerms}
-											checked={unions ? unions.map((item) => item.toString()) : []}
-											handleChange={handleCheckboxInput}
+									<Flex gap={2} py={1}>
+										<FileUploadButton
+											fieldName='resume'
+											accept='application/pdf, image/*'
+											content='Upload'
+											onChange={handleFileInputChange}
+											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 										/>
-									</Box>
-								</Box>
-								<Box flex='0 0 30%'>
-									<Heading variant='contentTitle'>Experience Levels</Heading>
-									<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-									<Box fontSize='sm'>
-										<ProfileCheckboxGroup
-											name='experienceLevels'
-											items={experienceLevelTerms}
-											checked={
-												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
-											}
-											handleChange={handleCheckboxInput}
-										/>
-									</Box>
+										{resume && <ClearFieldButton field='resume' />}
+									</Flex>
 								</Box>
 							</Flex>
 						</StackItem>
+					</Stack>
 
-						<StackItem>
-							<Heading variant='contentTitle'>Social</Heading>
+					<StackItem py={4}>
+						<Box mb={8}>
+							<Heading variant='contentTitle'>Unions/Guilds</Heading>
+							<Heading variant='contentSubtitle'>
+								What unions or guilds are you a member of?
+							</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='unions'
+									items={unionTerms}
+									checked={unions ? unions.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
+							</Box>
+						</Box>
+						<Box mb={8}>
+							<Heading variant='contentTitle'>Experience Levels</Heading>
+							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='experienceLevels'
+									items={experienceLevelTerms}
+									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
+							</Box>
+						</Box>
+						<Box>
+							<Heading variant='contentTitle'>Partner Directories</Heading>
+							<Heading variant='contentSubtitle'>
+								Are you a member of one of our partner organizations?
+							</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='partnerDirectories'
+									items={partnerDirectoryTerms}
+									checked={
+										partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
+									}
+									handleChange={handleCheckboxInput}
+								/>
+							</Box>
+						</Box>
+					</StackItem>
 
-							<SimpleGrid columns={[1, 2]} spacing={4}>
-								<TextInput
-									value={socials?.linkedin}
-									leftElement={<Icon as={FiLinkedin} />}
-									label='LinkedIn @handle'
-									placeholder='@yourname'
-									name='socials.linkedin'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.facebook}
-									leftElement={<Icon as={FiFacebook} />}
-									label='Facebook URL'
-									placeholder='https://facebook.com/yourname'
-									name='socials.facebook'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.instagram}
-									leftElement={<Icon as={FiInstagram} />}
-									label='Instagram @handle'
-									placeholder='@handle'
-									name='socials.instagram'
-									onChange={handleSocialInputChange}
-								/>
-								<TextInput
-									value={socials?.twitter}
-									leftElement={<Icon as={FiTwitter} />}
-									label='Twitter @handle'
-									placeholder='@handle'
-									name='socials.twitter'
-									onChange={handleSocialInputChange}
-								/>
-							</SimpleGrid>
-						</StackItem>
-					</Box>
+					<StackItem w='full' maxW='3xl'>
+						<Heading variant='contentTitle'>Social</Heading>
+
+						<SimpleGrid columns={[1, 2]} spacing={4}>
+							<TextInput
+								value={socials?.linkedin}
+								leftElement={<Icon as={FiLinkedin} />}
+								label='LinkedIn @handle'
+								placeholder='@yourname'
+								name='socials.linkedin'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.facebook}
+								leftElement={<Icon as={FiFacebook} />}
+								label='Facebook URL'
+								placeholder='https://facebook.com/yourname'
+								name='socials.facebook'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.instagram}
+								leftElement={<Icon as={FiInstagram} />}
+								label='Instagram @handle'
+								placeholder='@handle'
+								name='socials.instagram'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.twitter}
+								leftElement={<Icon as={FiTwitter} />}
+								label='Twitter @handle'
+								placeholder='@handle'
+								name='socials.twitter'
+								onChange={handleSocialInputChange}
+							/>
+						</SimpleGrid>
+					</StackItem>
 				</StackItem>
 
-				<StackItem pos='relative'>
+				<StackItem pos='relative' id='credits'>
 					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
-					<Text>Enter your 5 best credits. Reordering credits is under development.</Text>
-					{updateCreditOrderLoading ? (
-						<Box
-							pos='absolute'
-							h='full'
-							w='full'
-							left='0'
-							top='0'
-							bgColor='whiteAlpha.600'
-							zIndex='1'
-							display='flex'
-							alignItems='center'
-							justifyContent='center'
-						>
-							<Spinner color='blue' size='xl' />
-						</Box>
-					) : (
-						false
-					)}
-					{willDeleteCredits ? (
-						<Text variant='devAlert'>
-							Please save your profile to confirm deleting credits, or cancel to undo.
-						</Text>
-					) : (
-						false
-					)}
+					<Text>Enter your 5 best credits.</Text>
+					{/* TODO better reorder and delete animations */}
+
 					{deleteCreditLoading ? (
 						<Spinner size='sm' colorScheme='green' />
 					) : (
@@ -771,37 +954,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									key={index}
 									width='full'
 								/>
-								<Stack>
-									{index > 0 ? (
-										<IconButton
-											size='lg'
-											colorScheme='gray'
-											icon={<FiArrowUpCircle />}
-											aria-label='Move up Credit'
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveUp(index);
-											}}
-										/>
-									) : (
-										false
-									)}
-									{index < creditsSorted.length - 1 ? (
-										<IconButton
-											size='lg'
-											colorScheme='gray'
-											icon={<FiArrowDownCircle />}
-											aria-label='Move down Credit'
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveDown(index);
-											}}
-										/>
-									) : (
-										false
-									)}
+								<Stack
+									as={isLargerThanMd ? ButtonGroup : undefined}
+									isAttached={true}
+									gap={{ base: 2, md: 0 }}
+									direction={{ base: 'column', md: 'row' }}
+								>
+									<IconButton
+										colorScheme='gray'
+										icon={<FiArrowUpCircle />}
+										aria-label='Move up Credit'
+										isDisabled={index === 0}
+										id={credit.id}
+										onClick={() => {
+											handleCreditMoveUp(index);
+										}}
+									/>
+									<IconButton
+										colorScheme='gray'
+										icon={<FiArrowDownCircle />}
+										aria-label='Move down Credit'
+										isDisabled={index === creditsSorted.length - 1}
+										id={credit.id}
+										onClick={() => {
+											handleCreditMoveDown(index);
+										}}
+									/>
+									<DeleteCreditButton handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 								</Stack>
-								<DeleteAlertDialog handleDeleteCredit={handleDeleteCredit} id={credit.id} />
 							</Stack>
 						))
 					)}
@@ -829,71 +1009,55 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							mb={4}
 							onChange={handleInputChange}
 							inputProps={{
-								rows: 20,
+								rows: 10,
 							}}
 						/>
 					</Box>
-					<Box>
-						<Heading
-							size='md'
-							fontWeight='bold'
-							pb={2}
-							mb={2}
-							color='blackAlpha.800'
-							border='3px dashed gray.400'
-							borderBottomWidth='3px'
-							borderBottomStyle='dashed'
-							borderBottomColor='gray.400'
-							variant='contentTitle'
-						>
-							Identity
-						</Heading>
-						<Heading variant='contentSubtitle'>
-							The following optional fields will be <strong>searchable</strong>, but{' '}
-							<em>will not appear</em> on your public profile.
-						</Heading>
-						<Flex gap={4} flexWrap='wrap'>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Gender</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='genderIdentities'
-										items={genderIdentityTerms}
-										checked={
-											genderIdentities ? genderIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+				</StackItem>
+
+				<StackItem>
+					<HeadingCenterline lineColor='brand.yellow'>Identity</HeadingCenterline>
+					<Text>
+						The following optional fields will be <strong>searchable</strong>, but{' '}
+						<em>will not appear</em> on your public profile. Select any that apply.
+					</Text>
+					<Stack mt={4} gap={4}>
+						<StackItem flex='1 0 33%'>
+							<Heading variant='contentTitle'>Gender</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='genderIdentities'
+									items={genderIdentityTerms}
+									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Race/Ethnicity</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='racialIdentities'
-										items={racialIdentityTerms}
-										checked={
-											racialIdentities ? racialIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</StackItem>
+						<StackItem flex='1 0 33%'>
+							<Heading variant='contentTitle'>Race/Ethnicity</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='racialIdentities'
+									items={racialIdentityTerms}
+									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-							<Box flex='1 0 33%'>
-								<Heading variant='contentTitle'>Additional</Heading>
-								<Box fontSize='sm'>
-									<ProfileCheckboxGroup
-										name='personalIdentities'
-										items={personalIdentityTerms}
-										checked={
-											personalIdentities ? personalIdentities.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxInput}
-									/>
-								</Box>
+						</StackItem>
+						<StackItem flex='1 0 33%'>
+							<Heading variant='contentTitle'>Additional</Heading>
+							<Box fontSize='sm'>
+								<ProfileCheckboxGroup
+									name='personalIdentities'
+									items={personalIdentityTerms}
+									checked={
+										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
+									}
+									handleChange={handleCheckboxInput}
+								/>
 							</Box>
-						</Flex>
-					</Box>
+						</StackItem>
+					</Stack>
 				</StackItem>
 
 				<StackItem>
@@ -922,6 +1086,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									value={mediaVideo1}
 									name='mediaVideo1'
 									label='Video embed 1'
+									placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
 									leftElement={<FiVideo />}
 									onChange={handleInputChange}
 								/>
@@ -940,6 +1105,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									value={mediaVideo2}
 									name='mediaVideo2'
 									label='Video embed 2'
+									placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
 									leftElement={<FiVideo />}
 									onChange={handleInputChange}
 								/>
@@ -958,150 +1124,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 1</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage1'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage1 ? (
-									<Image
-										src={mediaImage1}
-										alt={`Media image 1`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 2</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage2'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage2 ? (
-									<Image
-										src={mediaImage2}
-										alt={`Media image 2`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 3</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage3'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage3 ? (
-									<Image
-										src={mediaImage3}
-										alt={`Media image 3`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 4</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage4'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage1 ? (
-									<Image
-										src={mediaImage4}
-										alt={`Media image 4`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 5</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage5'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage5 ? (
-									<Image
-										src={mediaImage5}
-										alt={`Media image 5`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<FormControl>
-									<FormLabel>Image 6</FormLabel>
-									<Input
-										type='file'
-										name='mediaImage6'
-										onChange={handleFileInputChange}
-										border='none'
-										pl='0'
-									/>
-								</FormControl>
-								{mediaImage6 ? (
-									<Image
-										src={mediaImage6}
-										alt={`Media image 6`}
-										loading='eager'
-										fit='cover'
-										w='xs'
-										mb={2}
-									/>
-								) : (
-									false
-								)}
-							</Box>
+							{/* TODO show only the next available uploader, up to limit. */}
+							<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
+							<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
+							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
+							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
+							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
+							<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
 						</SimpleGrid>
 					</Box>
 				</StackItem>

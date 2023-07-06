@@ -34,6 +34,9 @@ export const QUERY_PROFILE = gql`
 			unions {
 				id: databaseId
 			}
+			partnerDirectories {
+				id: databaseId
+			}
 			experienceLevels {
 				id: databaseId
 			}
@@ -67,13 +70,13 @@ export const QUERY_PROFILE = gql`
 				workStart(format: RENDERED)
 				workEnd(format: RENDERED)
 				workCurrent
-				positions {
+				positions(first: 30) {
 					nodes {
 						id: databaseId
 						parentId: parentDatabaseId
 					}
 				}
-				skills {
+				skills(first: 30) {
 					nodes {
 						id: databaseId
 					}
@@ -90,7 +93,7 @@ export const QUERY_PROFILE = gql`
  * @param id User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
-export const useUserProfile = (id: number): [UserProfile | null, any] => {
+const useUserProfile = (id: number): [UserProfile | null, any] => {
 	const result = useQuery(QUERY_PROFILE, {
 		variables: {
 			id,
@@ -130,3 +133,5 @@ export const useUserProfile = (id: number): [UserProfile | null, any] => {
 
 	return [preparedProfile, omit(result, ['data'])];
 };
+
+export default useUserProfile;

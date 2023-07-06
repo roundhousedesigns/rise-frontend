@@ -4,6 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
+const { VITE_FRONTEND_URL } = import.meta.env;
 
 /** Generate a link to a social media profile.
  *
@@ -22,7 +23,13 @@ export function socialLink(network: string, value: string): string {
 		return '';
 	}
 
-	return socialLinkBases[network as keyof PersonalLinks] + value;
+	let suffix = value;
+	// If the network is not facebook, remove the @ symbol.
+	if (network !== 'facebook') {
+		suffix = suffix.replace('@', '');
+	}
+
+	return socialLinkBases[network as keyof PersonalLinks] + suffix;
 }
 
 /**
@@ -87,9 +94,9 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
  * @param {WPItem[]} items  The items to filter.
  * @returns {WPItem[]} The filtered items.
  */
-export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
+export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
 	return items.filter((item) => ids.includes(item.id));
-};
+}
 
 /**
  * Prepare a user profile for GraphQL.
@@ -98,9 +105,9 @@ export const getWPItemsFromIds = (ids: number[], items: WPItem[]): WPItem[] => {
  * @returns {Object} The prepared user profile.
  */
 export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
-	// Strip credits and media uploads from the payload
+	// Strip unwanted fields from the payload
 	const {
-		credits,
+		slug,
 		image,
 		resume,
 		mediaImage1,
@@ -109,6 +116,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
+		credits,
 		...sanitized
 	} = profile;
 
@@ -122,9 +130,9 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
  * @param {number[]|string[]} b The second array to compare.
  * @returns {boolean} Whether the arrays are equal.
  */
-export const sortAndCompareArrays = (a: number[] | string[], b: number[] | string[]): boolean => {
+export function sortAndCompareArrays(a: number[] | string[], b: number[] | string[]): boolean {
 	return isEqual(a.sort(), b.sort());
-};
+}
 
 /**
  * Generate a random alphanumeric string.
@@ -132,7 +140,7 @@ export const sortAndCompareArrays = (a: number[] | string[], b: number[] | strin
  * @param length The generated string length.
  * @returns The generated string.
  */
-export const generateRandomString = (length: number = 8): string => {
+export function generateRandomString(length: number = 8): string {
 	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let result = '';
 
@@ -141,4 +149,67 @@ export const generateRandomString = (length: number = 8): string => {
 	}
 
 	return result;
+}
+
+/**
+ * Handle reCAPTCHA verification.
+ *
+ * @param label The label for the reCAPTCHA.
+ * @param executeRecaptcha The reCAPTCHA execution function.
+ * @returns The reCAPTCHA token (Promise)
+ */
+export async function handleReCaptchaVerify({
+	label,
+	executeRecaptcha,
+}: {
+	label: string;
+	executeRecaptcha: ((action?: string | undefined) => Promise<string>) | undefined;
+}): Promise<string | undefined> {
+	if (!executeRecaptcha) {
+		return;
+	}
+
+	const token = await executeRecaptcha(label);
+
+	return token;
+}
+
+/**
+ * Get the URL prefix for a user profile. Includes the trailing slash.
+ *
+ * @returns string The user profile URL prefix with trailing slash.
+ */
+export const getProfilePrefix = (): string => `${VITE_FRONTEND_URL}/profile/`;
+
+/**
+ * Validate a profile slug string.
+ *
+ * @param str The string to validate.
+ * @returns boolean Whether the string is valid.
+ */
+export function validateProfileSlug(str: string): boolean {
+	if (!str) return true;
+
+	var regexp = /^[a-zA-Z0-9_-]+$/;
+	return regexp.test(str);
+}
+
+/**
+ * Compare 2 WPItems and sort them alphabetically by the `name` property.
+ *
+ * @param a The first WPItem.
+ * @param b The second WPItem.
+ * @returns The sort order.
+ */
+export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
+	const nameA = a.name.toLowerCase();
+	const nameB = b.name.toLowerCase();
+
+	if (nameA < nameB) {
+		return -1;
+	}
+	if (nameA > nameB) {
+		return 1;
+	}
+	return 0;
 };

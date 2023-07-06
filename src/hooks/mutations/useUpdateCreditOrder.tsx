@@ -14,7 +14,7 @@ const MUTATE_UPDATE_CREDIT_ORDER = gql`
 	}
 `;
 
-export const useUpdateCreditOrder = () => {
+const useUpdateCreditOrder = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_CREDIT_ORDER);
 
 	const updateCreditOrderMutation = (creditIds: string[]) => {
@@ -30,3 +30,5 @@ export const useUpdateCreditOrder = () => {
 
 	return { updateCreditOrderMutation, results };
 };
+
+export default useUpdateCreditOrder;

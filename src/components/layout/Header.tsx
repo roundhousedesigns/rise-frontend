@@ -7,9 +7,7 @@ import {
 	Container,
 	useDisclosure,
 	DarkMode,
-	Spacer,
 	Link,
-	Stack,
 	useMediaQuery,
 	Menu,
 	MenuButton,
@@ -20,17 +18,33 @@ import {
 	LightMode,
 	Button,
 	Badge,
+	Spacer,
+	forwardRef,
+	BoxProps,
+	Flex,
+	Text,
 } from '@chakra-ui/react';
-import { FiSearch, FiMenu, FiLogOut, FiSettings, FiHome, FiUser } from 'react-icons/fi';
+import {
+	FiSearch,
+	FiMenu,
+	FiLogOut,
+	FiSettings,
+	FiHome,
+	FiUser,
+	FiHelpCircle,
+	FiCompass,
+} from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
-import logo from '../../assets/images/RISETHEATREDIRECTORY-white-logo-050423.png';
+import logo from '../../assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
+import circleLogo from '../../assets/images/rise-blue-circle.png';
 
 import { SearchContext } from '../../context/SearchContext';
-import { useViewer } from '../../hooks/queries/useViewer';
-import { useLogout } from '../../hooks/mutations/useLogout';
+import useViewer from '../../hooks/queries/useViewer';
+import useLogout from '../../hooks/mutations/useLogout';
+import ResponsiveButton from '../common/inputs/ResponsiveButton';
 
-export default function Header() {
+const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { logoutMutation } = useLogout();
 
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
@@ -38,11 +52,23 @@ export default function Header() {
 
 	const {
 		search: { searchActive, results },
+		searchDispatch,
 	} = useContext(SearchContext);
 
-	const { loggedInId } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
+	const handleDrawerOpen = () => {
+		drawerOnOpen();
+
+		searchDispatch({
+			type: 'OPEN_SEARCH',
+			payload: {
+				searchDrawerClose: drawerOnClose,
+			},
+		});
+	};
 
 	const handleLogout = () => {
 		logoutMutation().then(() => {
@@ -51,31 +77,18 @@ export default function Header() {
 	};
 
 	const SearchButton = () => (
-		<Box position='relative'>
-			<Button
-				ref={drawerButtonRef}
-				onClick={drawerOnOpen}
-				leftIcon={<FiSearch />}
-				aria-label='Search for candidates'
-				colorScheme='gray'
-				borderRadius='2xl'
-				size='lg'
-				fontSize='lg'
-				pr={{ base: 0, md: 6 }}
-				pl={{ base: 0, md: 2 }}
-				_before={{
-					base: {
-						pl: 2,
-						content: '""',
-					},
-					md: {
-						pl: 0,
-					},
-				}}
-			>
-				{isLargerThanMd ? 'Search' : ''}
-			</Button>
-		</Box>
+		<ResponsiveButton
+			ref={drawerButtonRef}
+			onClick={handleDrawerOpen}
+			icon={<FiSearch />}
+			label='Search for candidates'
+			colorScheme='gray'
+			borderRadius={{ base: 'full', md: 'lg' }}
+			size='lg'
+			px={{ base: 0, md: 4 }}
+		>
+			Search
+		</ResponsiveButton>
 	);
 
 	const SearchResultsButton = () => (
@@ -90,9 +103,8 @@ export default function Header() {
 				}
 				aria-label='Search for candidates'
 				colorScheme='gray'
-				borderRadius='2xl'
+				borderRadius={{ base: 'full', md: 'lg' }}
 				size='lg'
-				fontSize='lg'
 				textTransform='none'
 				pr={{ base: 0, md: 6 }}
 				pl={{ base: 0, md: 2 }}
@@ -106,124 +118,171 @@ export default function Header() {
 					},
 				}}
 			>
-				Results
+				<Text as='span' display={{ base: 'none', md: 'block' }}>
+					Results
+				</Text>
 			</Button>
 		</Box>
 	);
 
+	const MyProfileButton = () => (
+		<Button
+			leftIcon={<FiUser />}
+			pl={3}
+			pr={4}
+			aria-label='My Profile'
+			as={RouterLink}
+			to={`/profile/${loggedInSlug}`}
+			colorScheme='gray'
+			borderRadius='lg'
+			size='lg'
+			textTransform='none'
+		>
+			My Profile
+		</Button>
+	);
+
 	return (
-		<Box flex='0 0 auto' w='full'>
+		<Box
+			ref={ref}
+			id='header'
+			w='full'
+			bg='text.dark'
+			color='text.light'
+			position='fixed'
+			top='0'
+			borderBottomWidth={2}
+			borderBottomColor='text.light'
+			zIndex={100}
+		>
 			<DarkMode>
-				<Box id='header' w='full' bg='text.dark' color='text.light'>
-					<Container centerContent w='full' maxW='9xl' pl={0} pr={8}>
-						<Stack
-							direction='row'
-							w='100%'
-							justifyContent='space-between'
-							align='center'
-							flexWrap='wrap'
+				<Container centerContent w='full' maxW='9xl' px={{ base: 4, md: 8 }} py={4}>
+					<Flex w='full' justifyContent='space-between' align='center'>
+						<Link
+							as={RouterLink}
+							to='/'
+							my={0}
+							w='auto'
+							display='block'
+							maxW={{ base: '50%', md: '350px' }}
+							position='relative'
 						>
-							<Link as={RouterLink} to='/' my={0}>
-								<Image
-									src={logo}
-									w={{ base: '200px', sm: 'auto' }}
-									alt='RISE logo'
-									loading='eager'
-									h='100px'
-								/>
+							<Image
+								src={logo}
+								alt='RISE logo'
+								loading='eager'
+								h='auto'
+								position='relative'
+								display='block'
+								ml={{ base: 1, md: 4 }}
+								pr={3}
+							/>
+						</Link>
+
+						<Spacer />
+
+						{/* Not logged in */}
+						{!loggedInId ? (
+							<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal flex='0 0 auto'>
+								<Image src={circleLogo} alt='RISE icon' loading='eager' h={12} />
 							</Link>
+						) : (
+							false
+						)}
 
-							<Spacer />
+						{loggedInId ? (
+							<>
+								<Flex
+									color='text.light'
+									gap={2}
+									mx={2}
+									flex='1 0 auto'
+									justifyContent='flex-end'
+									align='center'
+									fontSize='lg'
+									textTransform='uppercase'
+								>
+									{searchActive && results.length ? <SearchResultsButton /> : false}
 
-							{loggedInId ? (
-								<>
-									<Stack
-										color='text.light'
-										direction='row'
-										spacing={2}
-										mr={6}
-										align='center'
-										fontSize='lg'
-										textTransform='uppercase'
-									>
-										{searchActive && results.length ? <SearchResultsButton /> : false}
+									<SearchButton />
 
-										<SearchButton />
-
-										{isLargerThanMd ? (
-											<Button
-												leftIcon={<FiUser />}
-												pl={3}
-												aria-label='My Profile'
-												as={RouterLink}
-												to='/profile'
+									{isLargerThanMd ? <MyProfileButton /> : null}
+								</Flex>
+								<LightMode>
+									<Menu>
+										<DarkMode>
+											<MenuButton
+												aria-label='Menu'
+												as={IconButton}
+												borderRadius='full'
 												colorScheme='gray'
-												borderRadius='2xl'
+												icon={<FiMenu />}
 												size='lg'
-												fontSize='lg'
-												textTransform='none'
-											>
-												My Profile
-											</Button>
-										) : null}
-									</Stack>
-									{
-										// HACK Wrapping <Menu> in <Box> removes Chakra CSS warning bug.
-										// @link {https://github.com/chakra-ui/chakra-ui/issues/3440}
-									}
-									<LightMode>
-										<Menu>
-											<DarkMode>
-												<MenuButton
-													aria-label='Menu'
-													as={IconButton}
-													borderRadius='2xl'
-													colorScheme='gray'
-													icon={<FiMenu />}
-													size='lg'
-												/>
-											</DarkMode>
-											<MenuList color='text.dark' zIndex='100'>
-												{isLargerThanMd ? null : (
-													<MenuOptionGroup>
-														<MenuItem as={RouterLink} to='/profile' icon={<FiHome />}>
-															My Profile
-														</MenuItem>
-														<MenuItem
-															ref={drawerButtonRef}
-															onClick={drawerOnOpen}
-															icon={<FiSearch />}
-														>
-															Search
-														</MenuItem>
-														<MenuDivider />
-													</MenuOptionGroup>
-												)}
+												_active={{
+													transform: 'rotate(90deg)',
+												}}
+											/>
+										</DarkMode>
+										<MenuList color='text.dark' zIndex='100'>
+											{isLargerThanMd ? null : (
 												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/' icon={<FiHome />}>
-														Dashboard
+													<MenuItem
+														as={RouterLink}
+														to={`/profile/${loggedInSlug}`}
+														icon={<FiHome />}
+													>
+														My Profile
 													</MenuItem>
-												</MenuOptionGroup>
-												<MenuOptionGroup>
-													<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
-														Settings
+													<MenuItem
+														ref={drawerButtonRef}
+														onClick={drawerOnOpen}
+														icon={<FiSearch />}
+													>
+														Search
 													</MenuItem>
+													<MenuDivider />
 												</MenuOptionGroup>
-												<MenuDivider />
-												<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
-													Logout
+											)}
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
+													Dashboard
 												</MenuItem>
-											</MenuList>
-										</Menu>
-									</LightMode>
-								</>
-							) : null}
-						</Stack>
-					</Container>
-				</Box>
+											</MenuOptionGroup>
+											<MenuOptionGroup>
+												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+													Settings
+												</MenuItem>
+												<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+													Help
+												</MenuItem>
+											</MenuOptionGroup>
+											<MenuDivider />
+											<MenuItem
+												as={Link}
+												href='https://risetheatre.org'
+												icon={<FiHome />}
+												isExternal
+											>
+												RISE Home
+											</MenuItem>
+											<MenuDivider />
+											<MenuItem icon={<FiLogOut />} onClick={handleLogout}>
+												Logout
+											</MenuItem>
+										</MenuList>
+									</Menu>
+								</LightMode>
+							</>
+						) : (
+							false
+						)}
+					</Flex>
+				</Container>
 			</DarkMode>
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
 		</Box>
 	);
-}
+});
+
+export default Header;

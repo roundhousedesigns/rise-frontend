@@ -14,14 +14,16 @@ import { decodeString, maybeParseInt } from './utils';
  * A basic user.
  */
 export class User implements UserParams {
-	id: number = 0;
+	id: number | null = null;
+	slug: string | null = null;
 	firstName?: string;
 	lastName?: string;
+	[prop: string]: any;
 
 	constructor(params?: UserParams) {
 		if (params) {
 			Object.assign(this, params, {
-				id: maybeParseInt(params.id),
+				id: params.id ? maybeParseInt(params.id) : null,
 			});
 		}
 	}
@@ -32,19 +34,6 @@ export class User implements UserParams {
 	fullName(): string {
 		const { firstName, lastName } = this;
 		return [firstName, lastName].filter(Boolean).join(' ');
-	}
-}
-
-/**
- * A candidate.
- */
-export class Candidate extends User implements CandidateData, UserProfileParams {
-	selfTitle?: string;
-	image?: string;
-
-	constructor(params: CandidateData) {
-		super(params);
-		Object.assign(this, params);
 	}
 }
 
@@ -69,6 +58,7 @@ export class UserProfile extends User {
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
+	partnerDirectories: number[] = [];
 	experienceLevels: number[] = [];
 	genderIdentities: number[] = [];
 	racialIdentities: number[] = [];
@@ -82,11 +72,11 @@ export class UserProfile extends User {
 	mediaImage5?: string;
 	mediaImage6?: string;
 	credits: Credit[] = [];
-	[other: string]: any;
 
-	constructor(userParams: UserProfileParams, credits?: CreditParams[]) {
+	constructor(userParams?: UserProfileParams, credits?: CreditParams[]) {
 		const {
 			id,
+			slug,
 			firstName,
 			lastName,
 			selfTitle,
@@ -100,6 +90,7 @@ export class UserProfile extends User {
 			willTravel,
 			willTour,
 			education,
+			socials,
 			twitter,
 			linkedin,
 			instagram,
@@ -107,6 +98,7 @@ export class UserProfile extends User {
 			website,
 			locations,
 			unions,
+			partnerDirectories,
 			experienceLevels,
 			genderIdentities,
 			racialIdentities,
@@ -119,9 +111,9 @@ export class UserProfile extends User {
 			mediaImage4,
 			mediaImage5,
 			mediaImage6,
-		} = userParams;
+		} = userParams || {};
 
-		super({ id, firstName, lastName });
+		super({ id: id ? id : null, firstName, lastName, slug: slug ? slug : null });
 
 		this.firstName = firstName ? decodeString(firstName) : firstName;
 		this.lastName = lastName ? decodeString(lastName) : lastName;
@@ -160,6 +152,10 @@ export class UserProfile extends User {
 			this.unions = this.extractIdsFromNodes(unions);
 		}
 
+		if (partnerDirectories && partnerDirectories.length > 0) {
+			this.partnerDirectories = this.extractIdsFromNodes(partnerDirectories);
+		}
+
 		if (experienceLevels && experienceLevels.length > 0) {
 			this.experienceLevels = this.extractIdsFromNodes(experienceLevels);
 		}
@@ -176,20 +172,20 @@ export class UserProfile extends User {
 			this.personalIdentities = this.extractIdsFromNodes(personalIdentities);
 		}
 
-		if (twitter) {
-			this.socials.twitter = twitter;
+		if (twitter || socials?.twitter) {
+			this.socials.twitter = twitter || socials?.twitter || '';
 		}
 
-		if (linkedin) {
-			this.socials.linkedin = linkedin;
+		if (linkedin || socials?.linkedin) {
+			this.socials.linkedin = linkedin || socials?.linkedin || '';
 		}
 
-		if (instagram) {
-			this.socials.instagram = instagram;
+		if (instagram || socials?.instagram) {
+			this.socials.instagram = instagram || socials?.instagram || '';
 		}
 
-		if (facebook) {
-			this.socials.facebook = facebook;
+		if (facebook || socials?.facebook) {
+			this.socials.facebook = facebook || socials?.facebook || '';
 		}
 
 		if (credits && credits.length > 0) {
@@ -197,6 +193,11 @@ export class UserProfile extends User {
 		}
 	}
 
+	/**
+	 * Get the user's full name.
+	 *
+	 * @returns The user's full name.
+	 */
 	fullName() {
 		return super.fullName();
 	}
@@ -205,7 +206,21 @@ export class UserProfile extends User {
 	 * Extract IDs from a collection of nodes.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
-		return nodes.map((node) => (typeof node === 'number' ? node : node.id || 0));
+		return nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+	}
+}
+
+/**
+ * A candidate.
+ */
+export class Candidate extends User implements CandidateData, UserProfileParams {
+	slug: string = '';
+	selfTitle?: string;
+	image?: string;
+
+	constructor(params: CandidateData) {
+		super(params);
+		Object.assign(this, params);
 	}
 }
 
@@ -306,11 +321,13 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
+	externalUrl?: string;
 
 	constructor(params: WPItemParams) {
 		this.id = params.id ? maybeParseInt(params.id) : 0;
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : undefined;
 		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
+		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
 	}
 }

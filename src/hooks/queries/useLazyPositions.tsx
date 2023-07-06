@@ -14,6 +14,8 @@ import { QUERY_POSITION_TERMS } from './usePositions';
  *
  * @returns {Array} The useLazyQuery return tuple.
  */
-export const useLazyPositions = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
+const useLazyPositions = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
 	return useLazyQuery(QUERY_POSITION_TERMS);
 };
+
+export default useLazyPositions;

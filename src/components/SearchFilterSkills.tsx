@@ -1,17 +1,13 @@
-import { useContext, useEffect } from 'react';
-import { Heading, Wrap, Box, Alert, useCheckboxGroup, Spinner } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
-import { useRelatedSkills } from '../hooks/queries/useRelatedSkills';
+import useRelatedSkills from '../hooks/queries/useRelatedSkills';
 
 import ErrorAlert from './common/ErrorAlert';
-import CheckboxButton from './common/CheckboxButton';
+import CheckboxButton from './common/inputs/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
 
-interface Props {
-	heading: string;
-}
-
-export default function SearchFilterSkills({ heading }: Props) {
+export default function SearchFilterSkills() {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const [data, { loading, error }] = useRelatedSkills(search.filters.positions.jobs);
 
@@ -24,39 +20,20 @@ export default function SearchFilterSkills({ heading }: Props) {
 		});
 	};
 
-	const { getCheckboxProps, setValue } = useCheckboxGroup({
-		defaultValue: [],
-		onChange: handleToggleTerm,
-	});
-
-	// Set the RadioGroup value on initial render
-	useEffect(() => {
-		setValue(search.filters.skills);
-	}, []);
-
-	// Subscribe to Reset events in the Search Context
-	useEffect(() => {
-		if (search.filters.skills.length === 0) {
-			setValue([]);
-		}
-	}, [search.filters.skills.length]);
-
 	return data?.length > 0 && !loading && !error ? (
-		<Box>
-			<Heading size='md' mb={6} w='full' borderBottom='2px' borderColor='gray.600'>
-				{heading}
+		<Box id='filterSkills' mt={8}>
+			<Heading as='h3' variant='searchFilterTitle'>
+				What skills are you looking for?
 			</Heading>
-			<Wrap justifyContent='flex-start' alignItems='center' fontSize='sm' w='full'>
-				{data.map((term: WPItem) => {
-					const checkbox = getCheckboxProps({ value: term.id.toString() });
-
-					return (
-						<CheckboxButton key={term.id} {...checkbox}>
+			<CheckboxGroup defaultValue={search.filters.skills} onChange={handleToggleTerm}>
+				<Wrap>
+					{data.map((term: WPItem) => (
+						<CheckboxButton key={term.id} value={term.id.toString()}>
 							{term.name}
 						</CheckboxButton>
-					);
-				})}
-			</Wrap>
+					))}
+				</Wrap>
+			</CheckboxGroup>
 		</Box>
 	) : loading ? (
 		<Spinner />

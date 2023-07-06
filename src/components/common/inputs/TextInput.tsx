@@ -1,3 +1,4 @@
+import { ChangeEvent, ReactNode } from 'react';
 import {
 	Flex,
 	FormControl,
@@ -7,6 +8,8 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
+	Text,
+	Wrap,
 } from '@chakra-ui/react';
 
 interface Props {
@@ -15,11 +18,13 @@ interface Props {
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
+	variant?: string;
 	isDisabled?: boolean;
 	isRequired?: boolean;
 	error?: string;
-	leftElement?: React.ReactNode;
-	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	leftElement?: ReactNode;
+	maxLength?: number;
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -32,33 +37,65 @@ export default function TextInput({
 	helperText,
 	placeholder,
 	value,
+	variant,
 	name,
 	isDisabled,
 	isRequired,
 	error,
 	onChange,
 	leftElement,
-	leftAddon,
+	maxLength,
 	inputProps,
 	...props
 }: Props) {
+	const inputVariant = variant ? variant : 'filled';
+
+	const HelperTextFormatted = () => {
+		let text = helperText ? helperText : '';
+		let lengthText = '';
+
+		if (maxLength) {
+			const length = value ? value.length : 0;
+			lengthText = `${length}/${maxLength}`;
+		}
+
+		return (
+			<Flex
+				w='full'
+				justifyContent='space-between'
+				alignItems='center'
+				lineHeight='normal'
+				fontSize='xs'
+			>
+				<Text m={0}>{text}</Text>
+				<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
+					{lengthText}
+				</Text>
+			</Flex>
+		);
+	};
+
 	return (
-		// TODO implement character count ("xx/yy remaining")
 		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 			<InputGroup>
-				{leftElement ? (
-					<InputLeftElement pointerEvents='none'>{leftElement}</InputLeftElement>
-				) : (
-					false
+				{leftElement && (
+					<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+						{leftElement}
+					</InputLeftElement>
 				)}
 				<Input
-					variant='filled'
-					focusBorderColor='blue.200'
+					variant={inputVariant}
+					focusBorderColor='brand.blue'
 					placeholder={placeholder}
+					fontSize='md'
 					isDisabled={isDisabled}
 					value={value}
 					name={name}
 					onChange={onChange}
+					_dark={{
+						color: 'text.dark',
+					}}
+					maxLength={maxLength ? maxLength : undefined}
 					{...inputProps}
 				/>
 			</InputGroup>
@@ -66,6 +103,7 @@ export default function TextInput({
 				{label ? (
 					<FormLabel
 						ml={2}
+						w='full'
 						mr={0}
 						my={0}
 						lineHeight='normal'
@@ -81,20 +119,16 @@ export default function TextInput({
 				) : (
 					false
 				)}
-				{helperText ? (
-					<FormHelperText my={0} flex='1'>
-						{helperText}
+				<Wrap w='full'>
+					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+						<HelperTextFormatted />
 					</FormHelperText>
-				) : (
-					false
-				)}
-				{error ? (
-					<FormErrorMessage fontWeight='bold' my={0}>
-						{error}
-					</FormErrorMessage>
-				) : (
-					false
-				)}
+					{error && (
+						<FormErrorMessage fontWeight='bold' my={0}>
+							{error}
+						</FormErrorMessage>
+					)}
+				</Wrap>
 			</Flex>
 		</FormControl>
 	);

@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { isEqual, omit } from 'lodash';
+import { UserProfile } from '../lib/classes';
+import { getProfilePrefix, validateProfileSlug } from '../lib/utils';
 
 /**
  * Custom hooks.
@@ -26,10 +29,7 @@ export const useLocalStorage = (
 		deserialize?: (val: string) => any;
 	} = {}
 ) => {
-	// TODO type useState
-	// Type suggestion: useState<() => string>
-	// still unclear if the return type is always string or not.
-	const [state, setState] = useState(() => {
+	const [state, setState] = useState<any>(() => {
 		const valueInLocalStorage = window.localStorage.getItem(key);
 		if (valueInLocalStorage) {
 			return deserialize(valueInLocalStorage);
@@ -52,113 +52,103 @@ export const useLocalStorage = (
 };
 
 /**
- * Format a login error message.
+ * Format an error message based on the error code.
  *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
+ * @param {string} errorCode The error message returned by the server.
+ * @param {string} defaultMessage The default message to use if no specific case matches.
+ * @returns {string} The formatted error message.
  */
-export const useLoginError = (errorCode?: string): string => {
+export const useErrorMessage = (
+	errorCode?: string,
+	defaultMessage: string = 'Unspecified error'
+): string => {
 	if (!errorCode) return '';
 
-	var message = '';
-
 	switch (errorCode) {
+		// Common errors
 		case 'invalid_username':
 		case 'invalid_email':
-			message = 'Login not found.';
-			break;
-
+			return 'No account exists for that email address.';
 		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
+			return 'Incorrect password.';
 		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
+			return 'Please enter a username or email address.';
 		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
+			return 'Please enter your password.';
+
+		// Registration errors
+		case 'existing_user_login':
+			return 'An account already exists for that email address. Please try logging in.';
+
+		// ReCAPTCHA errors
+		case 'recaptcha_error':
+			return 'Invalid reCAPTCHA.';
+
+		// Change profile slug errors
+		case 'user_not_found':
+			return 'There was an error updating your profile URL. Please contact support.';
+		case 'user_not_authorized':
+			return 'You do not appear to be logged in.';
+		case 'user_slug_not_unique':
+			return 'This alias is already in use. Please choose another.';
+		case 'user_slug_invalid':
+			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
 		default:
-			message = 'Unspecified error.';
+			return defaultMessage + ': ' + errorCode;
 	}
-
-	return message;
 };
 
 /**
- * Format a user registration error message.
+ * Determine if a user profile has been edited.
  *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
+ * @param editProfile
+ * @param origProfile
  */
-export const useRegistrationError = (errorCode?: string): string => {
-	if (!errorCode) return '';
+export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProfile | null) => {
+	if (origProfile === null) return;
 
-	var message = '';
+	const omitFields = [
+		'slug',
+		'credits',
+		'image',
+		'mediaImage1',
+		'mediaImage2',
+		'mediaImage3',
+		'mediaImage4',
+		'mediaImage5',
+		'mediaImage6',
+	];
 
-	// TODO implement these errors, they are still copies of the login errors
+	const profile1 = new UserProfile({
+		...omit(origProfile, omitFields),
+		id: 0,
+		slug: '',
+	});
+	const profile2 = new UserProfile({
+		...omit(editProfile, omitFields),
+		id: 0,
+		slug: '',
+	});
 
-	switch (errorCode) {
-		case 'invalid_username':
-		case 'invalid_email':
-			message = 'Invalid username or email address.';
-			break;
-
-		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
-		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
-		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
-
-		default:
-			message = 'Unspecified error.';
-	}
-
-	return message;
+	return !isEqual(profile1, profile2);
 };
 
 /**
- * Format a user password reset error message.
+ * Get the URL for a user profile.
  *
- * @param {string} errorCode The login error message returned by the server.
- * @returns {string} The message to print.
+ * @param slug The user profile slug.
+ * @returns The user profile URL.
  */
-export const useResetPasswordError = (errorCode?: string): string => {
-	if (!errorCode) return '';
-
-	var message = '';
-
-	// TODO implement these errors, they are still copies of the login errors
-
-	switch (errorCode) {
-		case 'invalid_username':
-		case 'invalid_email':
-			message = 'Invalid username or email address.';
-			break;
-
-		case 'incorrect_password':
-			message = 'Incorrect password.';
-			break;
-
-		case 'empty_login':
-			message = 'Please enter a username or email address.';
-			break;
-
-		case 'empty_password':
-			message = 'Please enter your password.';
-			break;
-
-		default:
-			message = 'Unspecified error.';
-	}
-
-	return message;
+export const useProfileUrl = (slug: string): string => {
+	const prefix = getProfilePrefix();
+	return `${prefix}${slug}`;
 };
+
+/**
+ * Validate a user profile slug.
+ *
+ * @param slug The user profile slug.
+ * @return True if the slug is valid.
+ */
+export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);

@@ -8,43 +8,25 @@ export interface WPItemParams {
 	name?: string;
 	slug?: string;
 	parentId?: number;
+	[key: string]: any;
 }
 
 /**
  * The data shape for User input.
  */
 export interface UserParams {
-	id: number;
+	id: number | null;
+	slug: string | null;
 	firstName?: string;
 	lastName?: string;
-}
-
-/**
- * The data shape for Candidate input.
- */
-export interface CandidateData {
-	id: number;
-	firstName?: string;
-	lastName?: string;
-	selfTitle?: string;
-	image?: string;
-}
-
-/**
- * The data shape for a PersonalLinks input.
- */
-export interface PersonalLinksParams {
-	twitter?: string;
-	linkedin?: string;
-	instagram?: string;
-	facebook?: string;
 }
 
 /**
  * The data shape for UserProfile input.
  */
 export interface UserProfileParams {
-	id: number;
+	id: number | null;
+	slug: string | null;
 	firstName?: string;
 	lastName?: string;
 	email?: string;
@@ -68,15 +50,39 @@ export interface UserProfileParams {
 	mediaImage6?: string;
 	locations?: number[] | WPItem[];
 	unions?: number[] | WPItem[];
+	partnerDirectories?: number[] | WPItem[];
 	experienceLevels?: number[] | WPItem[];
 	genderIdentities?: number[] | WPItem[];
 	racialIdentities?: number[] | WPItem[];
 	personalIdentities?: number[] | WPItem[];
+	socials?: PersonalLinksParams;
 	twitter?: string;
 	linkedin?: string;
 	instagram?: string;
 	facebook?: string;
 	website?: string;
+}
+
+/**
+ * The data shape for Candidate input.
+ */
+export interface CandidateData {
+	id: number | null;
+	slug: string;
+	firstName?: string;
+	lastName?: string;
+	selfTitle?: string;
+	image?: string;
+}
+
+/**
+ * The data shape for a PersonalLinks input.
+ */
+export interface PersonalLinksParams {
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
 }
 
 /**
@@ -128,6 +134,15 @@ export interface CreditOutput {
 export interface LoginInput {
 	login: string;
 	password: string;
+	reCaptchaToken: string;
+}
+
+/**
+ * The data shape for lost password input.
+ */
+export interface LostPasswordInput {
+	username: string;
+	reCaptchaToken: string;
 }
 
 /**
@@ -139,6 +154,7 @@ export interface RegisterUserInput {
 	lastName: string;
 	password: string;
 	confirmPassword: string;
+	reCaptchaToken: string;
 }
 
 /**

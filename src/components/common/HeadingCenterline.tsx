@@ -1,12 +1,14 @@
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { ReactNode } from 'react';
+import { As, Box, Flex, Heading } from '@chakra-ui/react';
 
 interface Props {
 	lineColor: string;
-	children: React.ReactNode;
+	children: ReactNode;
+	headingAs?: As;
 	[prop: string]: any;
 }
 
-export default function HeadingCenterline({ lineColor, children, ...rest }: Props) {
+export default function HeadingCenterline({ lineColor, children, headingAs, ...props }: Props) {
 	return (
 		<Flex
 			alignItems='center'
@@ -15,21 +17,10 @@ export default function HeadingCenterline({ lineColor, children, ...rest }: Prop
 			pos='relative'
 			textAlign='left'
 			mb={4}
-			{...rest}
+			{...props}
 		>
-			<Box h='6px' top='48%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
-			<Heading
-				size='xl'
-				bg='text.light'
-				_dark={{
-					bg: 'gray.800',
-					color: 'text.light',
-				}}
-				display='inline'
-				lineHeight='none'
-				zIndex='2'
-				pr={2}
-			>
+			<Box h='6px' top='38%' bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
+			<Heading as={headingAs ? headingAs : 'h3'} variant='centerline'>
 				{children}
 			</Heading>
 		</Flex>

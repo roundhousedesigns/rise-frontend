@@ -19,8 +19,22 @@ import {
 	Button,
 	Wrap,
 	SimpleGrid,
+	Icon,
+	TagLeftIcon,
+	TagLabel,
 } from '@chakra-ui/react';
-import { FiDownload, FiGlobe, FiMail, FiMapPin, FiPhone, FiUser } from 'react-icons/fi';
+import {
+	FiBriefcase,
+	FiCompass,
+	FiDownload,
+	FiGlobe,
+	FiMail,
+	FiMapPin,
+	FiPhone,
+	FiStar,
+	FiUser,
+	FiLink,
+} from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
@@ -28,14 +42,16 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
-import PersonalIconLinks from '../components/common/PersonalIconLinks';
-import CreditItem from '../components/common/CreditItem';
+import PersonalIconLinks from '../components/PersonalIconLinks';
+import CreditItem from '../components/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
 
 interface Props {
 	profile: UserProfile | null;
 	loading: boolean;
 }
+
+// TODO Chore: create stack item component for profile to DRY yourself off
 
 /**
  * @param {UserProfile} profile The user profile data.
@@ -53,6 +69,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		website,
 		socials,
 		unions,
+		partnerDirectories,
 		willTravel,
 		willTour,
 		email,
@@ -85,12 +102,44 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
 		: [];
 
-	const [{ locations: locationTerms, unions: unionTerms }] = useUserTaxonomies();
+	const [
+		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
+	] = useUserTaxonomies();
 
 	const selectedTerms = (ids: number[], terms: WPItem[]) =>
 		getWPItemsFromIds(ids, terms)
 			.map((term: WPItem) => term.name)
 			.join(', ');
+
+	function selectedLinkableTerms({
+		ids,
+		terms,
+	}: {
+		ids: number[];
+		terms: WPItem[];
+	}): (JSX.Element | string)[] {
+		return getWPItemsFromIds(ids, terms).map((term: WPItem) => {
+			if (term.externalUrl) {
+				return (
+					<Button
+						as={Link}
+						key={term.id}
+						href={term.externalUrl}
+						isExternal
+						size='sm'
+						m={0}
+						colorScheme='orange'
+						leftIcon={<FiLink />}
+					>
+						{term.name}
+					</Button>
+				);
+			}
+
+			// No link if no URL.
+			return term.name;
+		});
+	}
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -110,7 +159,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		};
 
 		return (
-			<Heading size='md' mt={2} fontWeight='medium' {...props}>
+			<Heading as='h2' size='md' mt={2} fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -125,77 +174,120 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem>
-				<Card py={6} bg='blackAlpha.100'>
+				<Card p={4}>
 					<Flex
-						gap={5}
+						gap={6}
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 						justifyContent={{ base: 'center', md: 'flex-start' }}
 					>
 						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
-								<Image
-									src={image}
-									alt={`${profile.fullName()}'s picture`}
-									loading='eager'
-									fit='cover'
-									w='xs'
-								/>
+								<Box w='40%' minW='160px' maxW='400px'>
+									<Image
+										src={image}
+										alt={`${profile.fullName()}'s picture`}
+										borderRadius='md'
+										loading='eager'
+										fit='cover'
+										w='full'
+									/>
+								</Box>
 							) : (
-								<Avatar size='2xl' name={`${profile.fullName()}'s picture`} mx={2} />
+								<Avatar size='2xl' name={profile.fullName()} mx={2} />
 							)
 						) : (
-							<Avatar size='2xl' src={image} name={`${profile.fullName()}'s picture`} />
+							<Avatar size='superLg' src={image} name={profile.fullName()} />
 						)}
 
-						<Stack direction='column' justifyContent='stretch' gap={2} lineHeight={1}>
+						<Stack direction='column' justifyContent='space-evenly' gap={4} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
-								<Heading size='xl' mr={2} lineHeight='none'>
-									{profile.fullName()}
-								</Heading>
-								{pronouns ? (
-									<Tag colorScheme='blue' size='md'>
-										{pronouns}
-									</Tag>
-								) : (
-									false
-								)}
+								<Flex
+									justifyContent={{ base: 'center', md: 'flex-start' }}
+									flexWrap='wrap'
+									alignItems='center'
+								>
+									<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
+										{profile.fullName()}
+									</Heading>
+									{pronouns ? (
+										<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+											{pronouns}
+										</Tag>
+									) : (
+										false
+									)}
+								</Flex>
 
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
-							<StackItem>
-								<Heading variant='contentTitle'>Works In</Heading>
-								<Flex alignItems='center'>
+
+							{locations && locations.length > 0 ? (
+								<StackItem>
+									<Heading as='h3' variant='contentTitle'>
+										Works In
+									</Heading>
 									<TextWithIcon icon={FiMapPin} mr={2}>
-										{locations && locations.length > 0 && locationTerms
-											? selectedTerms(locations, locationTerms)
-											: false}
+										{locationTerms ? selectedTerms(locations, locationTerms) : false}
 									</TextWithIcon>
 									<Wrap>
 										{willTravel !== undefined && (
-											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} ml={2}>
-												{willTravel ? 'Will Travel' : 'Local Only'}
+											<Tag
+												size='md'
+												colorScheme={willTravel ? 'green' : 'orange'}
+												textAlign='center'
+											>
+												<TagLeftIcon as={FiBriefcase} boxSize={3} />
+												<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
 											</Tag>
 										)}
 										{willTour !== undefined && (
-											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} ml={2}>
-												{willTour ? 'Will Tour' : 'No Tours'}
+											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
+												<TagLeftIcon as={FiCompass} boxSize={3} />
+												<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
 											</Tag>
 										)}
 									</Wrap>
-								</Flex>
-							</StackItem>
+								</StackItem>
+							) : (
+								false
+							)}
+
 							{unions && unions.length > 0 && unionTerms ? (
 								<StackItem>
-									<Heading variant='contentTitle'>Unions/Guilds</Heading>
+									<Heading as='h3' variant='contentTitle'>
+										Unions/Guilds
+									</Heading>
 									<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
 								</StackItem>
 							) : (
 								false
 							)}
+
+							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
+								<StackItem>
+									<Heading as='h3' variant='contentTitle'>
+										RISE Network Partner Directories
+									</Heading>
+									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
+										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
+										<Wrap flex='1' pl={2} spacing={2}>
+											{selectedLinkableTerms({
+												ids: partnerDirectories,
+												terms: partnerDirectoryTerms,
+											})}
+										</Wrap>
+									</Flex>
+								</StackItem>
+							) : (
+								false
+							)}
+
 							<StackItem>
-								<Heading variant='contentTitle'>Contact</Heading>
-								<UnorderedList listStyleType='none' m={0}>
+								<Heading as='h3' variant='contentTitle'>
+									Contact
+								</Heading>
+								<UnorderedList listStyleType='none' m={0} spacing={1}>
 									{email ? (
 										<ListItem>
 											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
@@ -216,8 +308,8 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									)}
 									{website ? (
 										<ListItem>
-											<LinkWithIcon href={website} icon={FiGlobe}>
-												{website}
+											<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
+												Visit Website
 											</LinkWithIcon>
 										</ListItem>
 									) : (
@@ -226,31 +318,35 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 								</UnorderedList>
 							</StackItem>
 
-							{socials && !isEmpty(socials) && (
-								<StackItem>
-									<PersonalIconLinks socials={socials} />
-								</StackItem>
-							)}
-
-							{resume ? (
-								<StackItem>
-									<Button
-										href={resume}
-										as={Link}
-										colorScheme='green'
-										leftIcon={<FiDownload />}
-										download
-										isExternal
-										_hover={{
-											textDecoration: 'none',
-										}}
-									>
-										Resume
-									</Button>
-								</StackItem>
-							) : (
-								false
-							)}
+							<StackItem>
+								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
+									{resume && (
+										<Button
+											href={resume}
+											as={Link}
+											flex='1 0 auto'
+											textDecoration='none'
+											colorScheme='green'
+											leftIcon={<FiDownload />}
+											download
+											isExternal
+											_hover={{
+												textDecoration: 'none',
+											}}
+											size={{ base: 'md', md: 'lg' }}
+										>
+											Resume
+										</Button>
+									)}
+									{socials && !isEmpty(socials) && (
+										<PersonalIconLinks
+											socials={socials}
+											flex='1 0 auto'
+											justifyContent={{ base: 'flex-start', md: 'flex-end' }}
+										/>
+									)}
+								</Flex>
+							</StackItem>
 
 							{/* TODO Bookmark a user */}
 							{/* <StackItem>
@@ -289,7 +385,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{description && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
-					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+					<Text whiteSpace='pre-wrap' borderRadius='md'>
 						{description.trim()}
 					</Text>
 				</StackItem>
@@ -298,7 +394,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 			{education && (
 				<StackItem>
 					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-					<Text whiteSpace='pre-wrap' bg='gray.100' borderRadius='md' p={4}>
+					<Text whiteSpace='pre-wrap' borderRadius='md'>
 						{education.trim()}
 					</Text>
 				</StackItem>
@@ -309,7 +405,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
 					{mediaVideos.length > 0 ? (
 						<>
-							<Heading variant='contentTitle' size='md'>
+							<Heading as='h3' variant='contentTitle' size='md'>
 								Video
 							</Heading>
 							<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
@@ -330,20 +426,20 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 					)}
 					{mediaImages.length > 0 ? (
 						<Box mt={6}>
-							<Heading variant='contentTitle' size='md'>
+							<Heading as='h3' variant='contentTitle' size='md'>
 								Images
 							</Heading>
 
 							<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 								{mediaImages.map((image: string | undefined, index: Key) => (
-									// TODO add image captions
+									// TODO add image captions/alt
 									<Image
 										key={index}
 										src={image}
 										borderRadius='md'
 										fit='cover'
 										mb={2}
-										// alt={`${profile.fullName()}'s picture`}
+										alt={`${profile.fullName()}'s image`}
 									/>
 								))}
 							</Box>

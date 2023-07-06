@@ -1,33 +1,36 @@
-import { defineStyleConfig } from '@chakra-ui/react';
+import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
+
+const baseStyle = defineStyle({
+	my: 2,
+	textUnderlineOffset: '0.2em',
+	textDecoration: 'underline',
+});
+
+const variants = {
+	nav: defineStyle({
+		textDecoration: 'none',
+		_hover: {
+			textDecoration: 'none',
+		},
+	}),
+	dotted: defineStyle({
+		textDecoration: 'underline',
+		textDecorationStyle: 'dotted',
+		textDecorationThickness: '1px',
+		lineHeight: 'tall',
+		_hover: {
+			textDecorationStyle: 'solid',
+		},
+	}),
+	button: defineStyle({
+		textDecoration: 'none',
+		_hover: {
+			textDecoration: 'none',
+		},
+	}),
+};
 
 export default defineStyleConfig({
-	variants: {
-		default: {
-			my: 2,
-			textUnderlineOffset: '0.2em',
-			color: 'brand.blue',
-		},
-		nav: {
-			textDecoration: 'none',
-			_hover: {
-				textDecoration: 'none',
-			},
-		},
-		dotted: {
-			textDecoration: 'underline',
-			textDecorationStyle: 'dotted',
-			textDecorationThickness: '1px',
-			lineHeight: 'tall',
-			_hover: {
-				textDecorationStyle: 'solid',
-			},
-		},
-		footer: {
-			color: 'inherit',
-			textDecoration: 'underline',
-		},
-	},
-	defaultProps: {
-		variant: 'default',
-	},
+	baseStyle,
+	variants,
 });

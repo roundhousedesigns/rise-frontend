@@ -1,19 +1,18 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	Button,
 	FormErrorMessage,
 	Box,
 	Stack,
-	Spinner,
 	Container,
 	Heading,
 	useToast,
 } from '@chakra-ui/react';
 import TextInput from '../components/common/inputs/TextInput';
-import { useResetPasswordError } from '../hooks/hooks';
+import { useErrorMessage } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
-import { useResetUserPassword } from '../hooks/mutations/useResetUserPassword';
+import useResetUserPassword from '../hooks/mutations/useResetUserPassword';
 
 interface Props {
 	token: string;
@@ -21,7 +20,7 @@ interface Props {
 }
 
 export default function ResetPasswordView({ token, login }: Props) {
-	const [userFields, serUserFields] = useState<ChangePasswordInput>({
+	const [userFields, setUserFields] = useState<ChangePasswordInput>({
 		newPassword: '',
 		confirmPassword: '',
 	});
@@ -47,8 +46,8 @@ export default function ResetPasswordView({ token, login }: Props) {
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		serUserFields({
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setUserFields({
 			...userFields,
 			[e.target.name]: e.target.value,
 		});
@@ -57,9 +56,9 @@ export default function ResetPasswordView({ token, login }: Props) {
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const errorMessage = useResetPasswordError(errorCode);
+	const errorMessage = useErrorMessage(errorCode);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 		if (!token || !login || !newPassword || !passwordsMatch) return;
 
@@ -88,7 +87,9 @@ export default function ResetPasswordView({ token, login }: Props) {
 
 	return (
 		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
-			<Heading size='lg'>Choose your new password.</Heading>
+			<Heading as='h3' size='lg'>
+				Choose your new password.
+			</Heading>
 
 			<Box mt={2}>
 				<form onSubmit={handleSubmit}>
@@ -123,8 +124,13 @@ export default function ResetPasswordView({ token, login }: Props) {
 						/>
 					</Stack>
 					<Box mt={4}>
-						<Button type='submit' colorScheme='orange' isDisabled={!formIsValid || submitLoading}>
-							{submitLoading ? <Spinner size='sm' /> : 'Reset password'}
+						<Button
+							type='submit'
+							colorScheme='orange'
+							isDisabled={!formIsValid || submitLoading}
+							isLoading={!!submitLoading}
+						>
+							Reset password
 						</Button>
 						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
 					</Box>

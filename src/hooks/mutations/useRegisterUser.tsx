@@ -7,28 +7,22 @@ import { RegisterUserInput } from '../../lib/types';
 
 const MUTATE_REGISTER_USER = gql`
 	mutation RegisterUserMutation(
-		$input: RegisterUserInput = {
-			username: ""
-			email: ""
-			lastName: ""
-			firstName: ""
-			password: ""
-		}
+		$input: RegisterUserWithReCaptchaInput = { reCaptchaToken: "", username: "" }
 	) {
-		registerUser(input: $input) {
-			clientMutationId
+		registerUserWithReCaptcha(input: $input) {
 			user {
 				databaseId
 			}
+			clientMutationId
 		}
 	}
 `;
 
-export const useRegisterUser = () => {
+const useRegisterUser = () => {
 	const [mutation, results] = useMutation(MUTATE_REGISTER_USER);
 
 	const registerUserMutation = (user: RegisterUserInput) => {
-		const { email, firstName, lastName, password, confirmPassword } = user;
+		const { email, firstName, lastName, password, confirmPassword, reCaptchaToken } = user;
 
 		// TODO: Verify if this additional check is necessary
 		if (password !== confirmPassword) {
@@ -43,6 +37,7 @@ export const useRegisterUser = () => {
 					lastName,
 					firstName,
 					password,
+					reCaptchaToken,
 				},
 			},
 		});
@@ -50,3 +45,5 @@ export const useRegisterUser = () => {
 
 	return { registerUserMutation, results };
 };
+
+export default useRegisterUser;

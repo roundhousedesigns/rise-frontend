@@ -1,3 +1,4 @@
+import { ChangeEvent, ReactNode } from 'react';
 import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
 
 interface Props {
@@ -6,10 +7,8 @@ interface Props {
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
-	leftElement?: React.ReactNode;
-	onChange: (
-		e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>
-	) => void;
+	leftElement?: ReactNode;
+	onChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
 	};

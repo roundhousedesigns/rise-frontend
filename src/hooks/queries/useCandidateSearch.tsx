@@ -9,7 +9,7 @@
 
 import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 
-export const QUERY_CANDIDATES = gql`
+const QUERY_CANDIDATES = gql`
 	query FilteredCandidates(
 		$positions: [ID] = []
 		$skills: [ID] = []
@@ -19,7 +19,6 @@ export const QUERY_CANDIDATES = gql`
 		$genderIdentities: [ID] = []
 		$racialIdentities: [ID] = []
 		$personalIdentities: [ID] = []
-		$exclude: [ID] = []
 	) {
 		filteredCandidates(
 			positions: $positions
@@ -30,7 +29,6 @@ export const QUERY_CANDIDATES = gql`
 			genderIdentities: $genderIdentities
 			racialIdentities: $racialIdentities
 			personalIdentities: $personalIdentities
-			exclude: $exclude
 		)
 	}
 `;
@@ -42,6 +40,8 @@ export const QUERY_CANDIDATES = gql`
  *
  * @returns {Array} The useLazyQuery return tuple.
  */
-export const useCandidateSearch = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
+const useCandidateSearch = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
 	return useLazyQuery(QUERY_CANDIDATES);
 };
+
+export default useCandidateSearch;

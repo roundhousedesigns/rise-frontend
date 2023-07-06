@@ -1,68 +1,88 @@
-import { useState } from 'react';
-import { Button, Text, Flex, Container, Heading, Box, Spinner, useToast } from '@chakra-ui/react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
 
 import TextInput from '../components/common/inputs/TextInput';
-import { useSendPasswordResetEmail } from '../hooks/mutations/useSendPasswordResetEmail';
-import { useNavigate } from 'react-router-dom';
+import useSendPasswordResetEmail from '../hooks/mutations/useSendPasswordResetEmail';
+import { useErrorMessage } from '../hooks/hooks';
+import { handleReCaptchaVerify } from '../lib/utils';
 
 export default function LoginView() {
 	const [username, setUsername] = useState<string>('');
+	const [errorCode, setErrorCode] = useState<string>('');
+	const { executeRecaptcha } = useGoogleReCaptcha();
+
 	const {
 		sendPasswordResetEmailMutation,
 		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUsername(e.target.value);
 	};
 
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	// const errorMessage = useLoginError(errorCode);
+	const errorMessage = useErrorMessage(errorCode);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		// TODO handle password reset errors
-		sendPasswordResetEmailMutation(username)
-			.then(() => {
-				toast({
-					title: 'Email sent',
-					description: 'Please check your inbox for reset instructions.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					position: 'top',
+		handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha }).then((token) => {
+			if (!token) {
+				setErrorCode('recaptcha_error');
+				return;
+			}
+
+			sendPasswordResetEmailMutation({ username, reCaptchaToken: token })
+				.then(() => {
+					toast({
+						title: 'Email sent',
+						description: 'Please check your inbox for reset instructions.',
+						status: 'success',
+						duration: 5000,
+						isClosable: true,
+						position: 'top',
+					});
+				})
+				.then(() => {
+					navigate('/');
+				})
+				.catch((err) => {
+					// TODO handle password reset errors
+					console.log(err);
 				});
-			})
-			.then(() => {
-				navigate('/');
-			});
+		});
 	};
 
 	return (
-		<Container>
-			<Heading size='lg'>Lost password</Heading>
-			<Text fontSize='sm'>
+		<Container maxW='2xl' mt={6}>
+			<Heading as='h2' size='xl' mb={4}>
+				Lost password
+			</Heading>
+			<Text fontSize='md'>
 				Please enter your email address, and we'll send you a link to reset your password.
 			</Text>
 			<Box my={4}>
 				<form onSubmit={handleSubmit}>
-					<TextInput
-						value={username}
-						name='username'
-						label='Email'
-						autoComplete='username'
-						isRequired
-						onChange={handleInputChange}
-						inputProps={{
-							autoComplete: 'username',
-						}}
-					/>
-					<Flex justifyContent='flex-start' gap={4}>
-						<Button type='submit' colorScheme='blue' px={6}>
-							{submitLoading ? <Spinner size='sm' /> : 'Submit'}
+					<Flex gap={2}>
+						<TextInput
+							value={username}
+							name='username'
+							label='Email'
+							labelHidden
+							autoComplete='username'
+							isRequired
+							onChange={handleInputChange}
+							inputProps={{
+								autoComplete: 'username',
+							}}
+							error={errorMessage}
+						/>
+						<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+							Submit
 						</Button>
 					</Flex>
 				</form>

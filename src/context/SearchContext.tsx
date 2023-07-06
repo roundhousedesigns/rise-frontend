@@ -1,7 +1,8 @@
-import { createContext, Key, useReducer } from 'react';
+import { createContext, Key, ReactNode, useReducer } from 'react';
 
 interface SearchState {
 	filters: {
+		name: string;
 		positions: {
 			department: string;
 			jobs: string[];
@@ -15,13 +16,15 @@ interface SearchState {
 		personalIdentities: string[];
 	};
 	searchActive: boolean;
-	advancedFiltersOpen: boolean;
+	additionalFiltersActive: number[];
+	searchDrawerClose: () => void;
 	results: number[];
 }
 
 interface SearchAction {
 	type: string;
 	payload: {
+		name?: string;
 		department?: string;
 		jobs?: string[];
 		skills?: string[];
@@ -31,11 +34,14 @@ interface SearchAction {
 			value: string | string[] | Key[];
 		};
 		results?: number[];
+		additionalFiltersActive?: number[];
+		searchDrawerClose?: () => void;
 	};
 }
 
 const initialSearchState: SearchState = {
 	filters: {
+		name: '',
 		positions: {
 			department: '',
 			jobs: [],
@@ -49,7 +55,8 @@ const initialSearchState: SearchState = {
 		personalIdentities: [],
 	},
 	searchActive: false,
-	advancedFiltersOpen: false,
+	additionalFiltersActive: [],
+	searchDrawerClose: () => {},
 	results: [],
 };
 
@@ -60,6 +67,26 @@ export const SearchContext = createContext({
 
 function searchContextReducer(state: SearchState, action: SearchAction): SearchState {
 	switch (action.type) {
+		case 'OPEN_SEARCH': {
+			if (!action.payload?.searchDrawerClose) return state;
+
+			return {
+				...state,
+				searchDrawerClose: action.payload.searchDrawerClose,
+			};
+		}
+
+		case 'SET_NAME':
+			return {
+				...state,
+				filters: {
+					...initialSearchState.filters,
+					name: action.payload.name ? action.payload.name : '',
+				},
+				// Clear all other filters and set the main search controls to inactive
+				searchActive: false,
+			};
+
 		case 'SET_DEPARTMENT':
 			if (!action.payload?.department) return state;
 
@@ -118,18 +145,22 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
-		case 'TOGGLE_ADVANCED_FILTERS_OPEN':
+		case 'SET_ADDITIONAL_FILTERS_ACTIVE':
+			if (!action.payload?.additionalFiltersActive) return state;
+
 			return {
 				...state,
-				advancedFiltersOpen: !state.advancedFiltersOpen,
+				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
 
 		case 'SET_RESULTS':
-			if (!action.payload?.results) return state;
+			// if (!action.payload?.results) {
+			// 	return state;
+			// }
 
 			return {
 				...state,
-				results: action.payload.results,
+				results: action.payload.results || [],
 			};
 
 		case 'RESET_SEARCH_FILTERS':
@@ -141,7 +172,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 }
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export const SearchContextProvider = ({ children }: Props) => {
