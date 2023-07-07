@@ -12,6 +12,11 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
+			starredProfileConnections {
+				nodes {
+					databaseId
+				}
+			}
 		}
 	}
 `;
@@ -23,6 +28,7 @@ interface Props {
 	lastName: string;
 	email: string;
 	result: QueryResult;
+	starredProfiles: number[];
 }
 
 const useViewer = (): Props => {
@@ -30,13 +36,27 @@ const useViewer = (): Props => {
 		// fetchPolicy: 'network-only',
 	});
 
-	const loggedInId = result?.data?.viewer?.id;
-	const loggedInSlug = result?.data?.viewer?.slug;
-	const firstName = result?.data?.viewer?.firstName;
-	const lastName = result?.data?.viewer?.lastName;
-	const email = result?.data?.viewer?.email;
+	const {
+		id: loggedInId,
+		slug: loggedInSlug,
+		firstName,
+		lastName,
+		email,
+		starredProfileConnections,
+	} = result?.data?.viewer || {};
 
-	return { loggedInId, loggedInSlug, firstName, lastName, email, result };
+	const starredProfiles =
+		starredProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
+
+	return {
+		loggedInId,
+		loggedInSlug,
+		firstName,
+		lastName,
+		email,
+		starredProfiles,
+		result,
+	};
 };
 
 export default useViewer;
