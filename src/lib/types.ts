@@ -166,6 +166,11 @@ export interface ChangePasswordInput {
 	confirmPassword: string;
 }
 
+export interface ToggleStarredProfileInput {
+	userId: number;
+	toggledUserId: number;
+}
+
 /**
  * The data shape for a search query.
  */

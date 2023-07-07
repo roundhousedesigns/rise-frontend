@@ -45,6 +45,7 @@ import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
+import useViewer from '../hooks/queries/useViewer';
 
 interface Props {
 	profile: UserProfile | null;
@@ -59,6 +60,7 @@ interface Props {
  */
 export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+	const { sanitizedStarredProfiles: starredProfiles } = useViewer();
 
 	const {
 		image,
