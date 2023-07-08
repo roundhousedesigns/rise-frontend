@@ -203,10 +203,13 @@ export class UserProfile extends User {
 	}
 
 	/**
-	 * Extract IDs from a collection of nodes.
+	 * Extract sorted IDs from a collection of nodes.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
-		return nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+		const ids = nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+
+		// return the IDs sorted in ascending order (aids in profile edited/united comparison)
+		return ids.sort((a, b) => a - b);
 	}
 }
 

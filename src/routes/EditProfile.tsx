@@ -7,6 +7,8 @@ import { forwardRef, useRef } from 'react';
 import { EditProfileContextProvider } from '../context/EditProfileContext';
 import useUserProfile from '../hooks/queries/useUserProfile';
 import useViewer from '../hooks/queries/useViewer';
+import { FiArrowDown, FiXCircle } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 
 const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 	const handleClick = () => {
@@ -17,7 +19,14 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 	};
 
 	return (
-		<Button onClick={handleClick} ref={ref} title='Scroll to Credits' textDecoration='none'>
+		<Button
+			onClick={handleClick}
+			leftIcon={<FiArrowDown />}
+			ref={ref}
+			title='Scroll to Credits'
+			textDecoration='none'
+			colorScheme='blue'
+		>
 			Jump to Credits
 		</Button>
 	);
@@ -28,8 +37,23 @@ export default function EditProfile() {
 	const [profile, { loading, error }] = useUserProfile(Number(userId));
 	const ref = useRef<HTMLButtonElement>(null);
 
+	const navigate = useNavigate();
+
+	const handleCancel = () => {
+		navigate(-1);
+	};
+
+	const PageActions = () => (
+		<>
+			<JumpToCreditsButton ref={ref} />
+			<Button onClick={handleCancel} leftIcon={<FiXCircle />} title='Cancel' colorScheme='orange'>
+				Cancel
+			</Button>
+		</>
+	);
+
 	return (
-		<Page title={'Update Profile'} actions={<JumpToCreditsButton ref={ref} />}>
+		<Page title={'Update Profile'} actions={<PageActions />}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} profileLoading={loading} />
