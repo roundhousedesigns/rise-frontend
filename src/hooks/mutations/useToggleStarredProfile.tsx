@@ -29,18 +29,20 @@ const useToggleStarredProfile = () => {
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_STARRED_PROFILE);
 
 	const toggleStarredProfileMutation = (loggedInId: number, toggledProfileId: number) => {
+		console.log('running toggleStarredProfileMutation on (', loggedInId, ', ', toggledProfileId);
+
 		return mutation({
 			variables: {
 				clientMutationId: 'toggleStarredProfileMutation',
 				loggedInId,
 				toggledProfileId,
 			},
-			refetchQueries: [
-				{
-					query: QUERY_VIEWER,
-					fetchPolicy: 'network-only',
-				},
-			],
+			// refetchQueries: [
+			// 	{
+			// 		query: QUERY_VIEWER,
+			// 		fetchPolicy: 'network-only',
+			// 	},
+			// ],
 		});
 	};
 

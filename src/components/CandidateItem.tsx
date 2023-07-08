@@ -4,17 +4,25 @@ import { FiStar } from 'react-icons/fi';
 import { Candidate } from '../lib/classes';
 import useToggleStarredProfile from '../hooks/mutations/useToggleStarredProfile';
 import useViewer from '../hooks/queries/useViewer';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
+// TODO type remove and add Candidate
 interface Props {
 	candidate: Candidate;
+	removeCandidate?: any;
+	addCandidate?: any;
 	[prop: string]: any;
 }
 
-export default function CandidateItem({ candidate, ...props }: Props) {
+export default function CandidateItem({ candidate, removeCandidate, addCandidate, ...props }: Props) {
 	const { id, image, slug, selfTitle } = candidate;
 	const { loggedInId, starredProfiles } = useViewer();
 	const [isStarred, setIsStarred] = useState<boolean>(false);
+
+	const handleDeleteCandidate = useCallback(() => {
+		console.log('CI - handleDeleteCandidate')
+		removeCandidate(candidate);
+	}, [candidate, removeCandidate])
 
 	const {
 		toggleStarredProfileMutation,
@@ -34,10 +42,15 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 
 	// TODO Why do we need to prefix 'MouseEvent' with 'React'?
 	const toggleStarredProfileHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+		console.log('CI - toggleStarredProfileHandler')
+		console.log('id: ', id, 'loggedInId: ', loggedInId)
 		event.preventDefault();
 		event.stopPropagation();
 
 		if (!id) return;
+		
+		if (starredProfiles.includes(Number(id))) removeCandidate(id);
+		else addCandidate(id);
 
 		toggleStarredProfileMutation(loggedInId, id)
 			.then((res) => {
@@ -47,6 +60,13 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 				console.error(err);
 			});
 	};
+
+	// toggleStarredProfileMutation(loggedInId, 84);
+	// toggleStarredProfileMutation(loggedInId, 360);
+	// toggleStarredProfileMutation(loggedInId, 8);
+	// toggleStarredProfileMutation(loggedInId, 2);
+	// toggleStarredProfileMutation(loggedInId, 82);
+	// toggleStarredProfileMutation(loggedInId, 214);
 
 	return (
 		<Flex alignItems='center'>
