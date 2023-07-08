@@ -44,9 +44,8 @@ export default function AdditionalSearchFilters() {
 	] = useUserTaxonomies();
 
 	// Exclude "white" from racial identities
-	// TODO Maybe send 'white' exclusion to the backend
 	const racialIdentityTerms = racialIdentityTermsUnfiltered
-		? racialIdentityTermsUnfiltered.filter((item) => item.slug !== 'text.light')
+		? racialIdentityTermsUnfiltered.filter((item) => item.slug !== 'white')
 		: [];
 
 	const handleInputChange = (name: string) => (newValue: string | Key[]) => {

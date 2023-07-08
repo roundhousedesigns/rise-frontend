@@ -1,9 +1,9 @@
 import { Card, Box, Heading, Button, Flex, Text, Spacer, List, ListItem } from '@chakra-ui/react';
+import { FiEdit3, FiLifeBuoy, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
-import { FiEdit3, FiUser } from 'react-icons/fi';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
