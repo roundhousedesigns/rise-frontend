@@ -30,7 +30,7 @@ export default function DashboardView() {
 							Edit your profile
 						</Button>
 						<Spacer />
-						<Button as={Link} to='/help' colorScheme='orange'>
+						<Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
 							Get Help
 						</Button>
 					</Flex>
