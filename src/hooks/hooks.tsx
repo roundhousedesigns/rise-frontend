@@ -67,12 +67,14 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'invalid_username':
 		case 'invalid_email':
 			return 'No account exists for that email address.';
-		case 'incorrect_password':
-			return 'Incorrect password.';
 		case 'empty_login':
 			return 'Please enter a username or email address.';
+
+		// Password Errors
 		case 'empty_password':
 			return 'Please enter your password.';
+		case 'incorrect_password':
+			return 'Incorrect password.';
 		case 'password_mismatch':
 			return 'Passwords do not match.';
 		case 'password_too_weak':
@@ -166,7 +168,7 @@ export const useValidateProfileSlug = (slug: string): boolean => validateProfile
  * passwordStrength(password, passwordRequirements);
  */
 export const useValidatePassword = (password: string): string | undefined => {
-	if (!password || password.length < 1) return;
+	if (!password) return;
 
 	const { value } = passwordStrength(password, [
 		{

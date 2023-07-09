@@ -16,7 +16,7 @@ export default function ChangePasswordView() {
 		confirmPassword: '',
 	});
 	const { currentPassword, newPassword, confirmPassword } = userFields;
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
 	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
@@ -29,11 +29,13 @@ export default function ChangePasswordView() {
 
 	const newPasswordStrength = useValidatePassword(newPassword);
 
-	// Check if form is valid
+	// Set an error code if either of the password checks doesn't pass, otherwise set form is valid
 	useEffect(() => {
-		setFormIsValid(
-			newPassword.length > 0 && confirmPassword.length > 0 && passwordStrongEnough && passwordsMatch
-		);
+		setFormIsValid(false);
+		if (!passwordsMatch) return setErrorCode('password_mismatch');
+		else if (newPassword.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
+		else setFormIsValid(true);
+		setErrorCode('');
 	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
 
 	// Check if passwords match and are complex enough, debounce to prevent spamming
@@ -41,16 +43,16 @@ export default function ChangePasswordView() {
 		const timer = setTimeout(() => {
 			setPasswordStrongEnough(newPasswordStrength === 'strong');
 			setPasswordsMatch(newPassword === confirmPassword);
-		}, 300);
+		}, 500);
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	// Set an error code if either of the password checks doesn't pass
-	useEffect(() => {
-		if (!passwordsMatch) setErrorCode('password_mismatch');
-		else if (newPassword.length && !passwordStrongEnough) setErrorCode('password_too_weak');
-		else setErrorCode('');
-	}, [passwordsMatch, passwordStrongEnough]);
+	// // Set an error code if either of the password checks doesn't pass
+	// useEffect(() => {
+	// 	if (!passwordsMatch) setErrorCode('password_mismatch');
+	// 	else if (newPassword.length && !passwordStrongEnough) setErrorCode('password_too_weak');
+	// 	else setErrorCode('');
+	// }, [passwordsMatch, passwordStrongEnough]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({

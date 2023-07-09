@@ -37,7 +37,7 @@ export default function RegisterView() {
 	const { email, firstName, lastName, password, confirmPassword } = userFields;
 	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
 	const [ofAge, setOfAge] = useState<boolean>(false);
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
 	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
@@ -56,7 +56,9 @@ export default function RegisterView() {
 
 	// Check if form is valid
 	useEffect(() => {
-		setFormIsValid(
+		if (!passwordsMatch) return setErrorCode('password_mismatch');
+		else if (password.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
+		else setFormIsValid(
 			email.length > 0 &&
 				firstName.length > 0 &&
 				lastName.length > 0 &&
@@ -66,7 +68,8 @@ export default function RegisterView() {
 				passwordsMatch &&
 				ofAge &&
 				termsAccepted
-		);
+		)
+		setErrorCode('');
 	}, [
 		email,
 		firstName,
@@ -89,11 +92,11 @@ export default function RegisterView() {
 	}, [password, confirmPassword]);
 
 	// Set an error code if either of the password checks doesn't pass
-	useEffect(() => {
-		if (!passwordsMatch) setErrorCode('password_mismatch');
-		else if (password.length && !passwordStrongEnough) setErrorCode('password_too_weak');
-		else setErrorCode('');
-	}, [passwordsMatch, passwordStrongEnough]);
+	// useEffect(() => {
+	// 	if (!passwordsMatch) setErrorCode('password_mismatch');
+	// 	else if (password.length && !passwordStrongEnough) setErrorCode('password_too_weak');
+	// 	else setErrorCode('');
+	// }, [passwordsMatch, passwordStrongEnough]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
