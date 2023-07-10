@@ -3,28 +3,10 @@ import { FiEdit3, FiLifeBuoy, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import CandidateList from '../components/CandidateList';
 import useViewer from '../hooks/queries/useViewer';
-import { useState, useCallback } from 'react';
 
 export default function DashboardView() {
-	const { loggedInSlug, starredProfiles } = useViewer();
-	const [starredCandidates, setStarredCandidates] = useState(starredProfiles);
-	console.log('starredProfiles:', starredProfiles)
-	console.log('starredCandidates:', starredCandidates)
-
-	const removeCandidate = useCallback((candidateToDelete: number) => {
-		console.log('DBView - removeCandidate:', candidateToDelete)
-		setStarredCandidates((starredCandidates: number[]): number[] => {
-			return starredCandidates.filter((candidate) => candidate !== candidateToDelete)
-		});
-	}, [starredCandidates])
-
-	const addCandidate = useCallback((candidateToAdd: number) => {
-		console.log('DBView - addCandidate:', candidateToAdd);
-		setStarredCandidates((starredCandidates: number[]): number[] => {
-			// starredCandidates.push(candidateToAdd);
-			return starredCandidates;
-		})
-	}, [starredCandidates])
+	const { loggedInSlug, starredProfiles, loggedInId } = useViewer();
+	console.log('starredProfiles in Dashboard: ', starredProfiles);
 
 	return (
 		<>
@@ -62,7 +44,7 @@ export default function DashboardView() {
 				<Heading as='h4' variant='contentTitle'>
 					Saved Profiles
 				</Heading>
-				<CandidateList userIds={starredCandidates} removeCandidate={removeCandidate} addCandidate={addCandidate}/>
+				<CandidateList userIds={starredProfiles} starredProfiles={starredProfiles} loggedInId={loggedInId} />
 			</Card>
 		</>
 	);

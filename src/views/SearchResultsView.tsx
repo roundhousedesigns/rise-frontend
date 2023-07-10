@@ -1,6 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/CandidateList';
+import useViewer from '../hooks/queries/useViewer';
 
 import { SearchContext } from '../context/SearchContext';
 
@@ -14,6 +15,8 @@ export default function SearchResultsView() {
 
 	// TODO This WORKS, but determine if useMemo is the right call here.
 	const resultsList = useMemo(() => results, [results]);
+
+	const { starredProfiles, loggedInId } = useViewer();
 
 	// Update the results list whenever the results change.
 	// useEffect(() => {
@@ -30,8 +33,8 @@ export default function SearchResultsView() {
 			resultsList.length === 0
 				? 'No results.'
 				: resultsList.length === 1
-				? '1 result.'
-				: `${resultsList.length} results.`
+					? '1 result.'
+					: `${resultsList.length} results.`
 		);
 	}, [resultsList, searchActive]);
 
@@ -62,7 +65,7 @@ export default function SearchResultsView() {
 			<Text fontSize='sm' pb={2}>
 				{resultsString}
 			</Text>
-			<CandidateList userIds={resultsList} />
+			<CandidateList userIds={resultsList} starredProfiles={starredProfiles} loggedInId={loggedInId} />
 			{/* <Button onClick={handleLoadMore}>More Results</Button> */}
 		</Box>
 	);

@@ -11,58 +11,54 @@ interface Props {
 	candidate: Candidate;
 	removeCandidate?: any;
 	addCandidate?: any;
+	loggedInId: number;
+	defaultStar: any;
 	[prop: string]: any;
 }
 
-export default function CandidateItem({ candidate, removeCandidate, addCandidate, ...props }: Props) {
+export default function CandidateItem({ candidate, removeCandidate, addCandidate, loggedInId, defaultStar, ...props }: Props) {
 	const { id, image, slug, selfTitle } = candidate;
-	const { loggedInId, starredProfiles } = useViewer();
-	const [isStarred, setIsStarred] = useState<boolean>(false);
+	// const { loggedInId } = useViewer();
+	const [isStarred, setIsStarred] = useState<boolean>(defaultStar);
 
-	const handleDeleteCandidate = useCallback(() => {
-		console.log('CI - handleDeleteCandidate')
-		removeCandidate(candidate);
-	}, [candidate, removeCandidate])
+	// const handleDeleteCandidate = useCallback(() => {
+	// 	console.log('CI - handleDeleteCandidate')
+	// 	removeCandidate(candidate);
+	// }, [candidate, removeCandidate]);
 
 	const {
 		toggleStarredProfileMutation,
 		results: { loading },
 	} = useToggleStarredProfile();
 
-	// Set the state of the star icon based on whether the profile is starred
-	useEffect(() => {
-		if (!id) return;
-
-		if (starredProfiles.includes(id) && !isStarred) {
-			setIsStarred(true);
-		} else if (!starredProfiles.includes(id) && isStarred) {
-			setIsStarred(false);
-		}
-	}, [id, starredProfiles]);
-
 	// TODO Why do we need to prefix 'MouseEvent' with 'React'?
 	const toggleStarredProfileHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
 		console.log('CI - toggleStarredProfileHandler')
-		console.log('id: ', id, 'loggedInId: ', loggedInId)
+		console.log('id: ', id, 'loggedInId: ', loggedInId, 'isStarred: ', isStarred)
 		event.preventDefault();
 		event.stopPropagation();
 
 		if (!id) return;
-		
-		if (starredProfiles.includes(Number(id))) removeCandidate(id);
-		else addCandidate(id);
 
-		toggleStarredProfileMutation(loggedInId, id)
-			.then((res) => {
-				setIsStarred(!!isStarred);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		if (isStarred) {
+			removeCandidate(id);
+		} else {
+			addCandidate(id);
+		}
+
+		setIsStarred(!isStarred)
+
+		// toggleStarredProfileMutation(loggedInId, id)
+		// 	.then((res) => {
+		// 		setIsStarred(!!isStarred);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.error(err);
+		// 	});
 	};
 
-	// toggleStarredProfileMutation(loggedInId, 84);
 	// toggleStarredProfileMutation(loggedInId, 360);
+	// toggleStarredProfileMutation(loggedInId, 84);
 	// toggleStarredProfileMutation(loggedInId, 8);
 	// toggleStarredProfileMutation(loggedInId, 2);
 	// toggleStarredProfileMutation(loggedInId, 82);
