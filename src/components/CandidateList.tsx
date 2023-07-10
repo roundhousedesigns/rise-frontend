@@ -15,10 +15,10 @@ interface Props {
 // TODO Set up search results pagination in GraphQL
 
 export default function CandidateList({ userIds, starredProfiles, loggedInId }: Props): JSX.Element {
-	const [preparedCandidates, { loading, error }] = useCandidates(userIds);
+	let [preparedCandidates, { loading, error }] = useCandidates(userIds);
 	const [starredCandidates, setStarredCandidates] = useState(starredProfiles);
+	const [visibleCandidates, setVisibleCandidates] = useState(preparedCandidates);
 
-	console.log('starredProfiles: ', starredProfiles);
 	console.log('starredCandidates: ', starredCandidates);
 	console.log('preparedCandidates: ', preparedCandidates);
 
@@ -28,7 +28,8 @@ export default function CandidateList({ userIds, starredProfiles, loggedInId }: 
 	}
 
 	const addCandidate = (profileToAdd: number) => {
-		console.log('addCandidate with id: ', profileToAdd)
+		console.log('addCandidate with id: ', profileToAdd);
+		setStarredCandidates((starredCandidates) => starredCandidates.concat(profileToAdd));
 	}
 
 	return preparedCandidates && !loading && !error ? (
