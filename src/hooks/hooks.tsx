@@ -78,7 +78,7 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'password_mismatch':
 			return 'Passwords do not match.';
 		case 'password_too_weak':
-			return 'Password is too weak. Please choose a stronger password.';
+			return 'Please make sure your password contains at least one lowercase letter, one uppercase letter, one number, and one special character.';
 
 		// Registration errors
 		case 'existing_user_login':

@@ -13,10 +13,12 @@ import {
 	useToast,
 	Flex,
 	useMediaQuery,
+	Tooltip,
+	Icon,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-
+import { FiHelpCircle } from 'react-icons/fi';
 import { handleReCaptchaVerify } from '../lib/utils';
 import TextInput from '../components/common/inputs/TextInput';
 import useRegisterUser from '../hooks/mutations/useRegisterUser';
@@ -58,17 +60,18 @@ export default function RegisterView() {
 	useEffect(() => {
 		if (!passwordsMatch) return setErrorCode('password_mismatch');
 		else if (password.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
-		else setFormIsValid(
-			email.length > 0 &&
-				firstName.length > 0 &&
-				lastName.length > 0 &&
-				password.length > 0 &&
-				confirmPassword.length > 0 &&
-				passwordStrongEnough &&
-				passwordsMatch &&
-				ofAge &&
-				termsAccepted
-		)
+		else
+			setFormIsValid(
+				email.length > 0 &&
+					firstName.length > 0 &&
+					lastName.length > 0 &&
+					password.length > 0 &&
+					confirmPassword.length > 0 &&
+					passwordStrongEnough &&
+					passwordsMatch &&
+					ofAge &&
+					termsAccepted
+			);
 		setErrorCode('');
 	}, [
 		email,
@@ -90,13 +93,6 @@ export default function RegisterView() {
 		}, 500);
 		return () => clearTimeout(timer);
 	}, [password, confirmPassword]);
-
-	// Set an error code if either of the password checks doesn't pass
-	// useEffect(() => {
-	// 	if (!passwordsMatch) setErrorCode('password_mismatch');
-	// 	else if (password.length && !passwordStrongEnough) setErrorCode('password_too_weak');
-	// 	else setErrorCode('');
-	// }, [passwordsMatch, passwordStrongEnough]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
@@ -202,14 +198,27 @@ export default function RegisterView() {
 						tabIndex: 3,
 					}}
 				/>
-				<Stack direction='row' spacing={6}>
+				<Stack direction='row' spacing={6} flexWrap='wrap'>
 					<TextInput
 						value={password}
 						name='password'
 						id='password'
 						type='password'
 						variant='filled'
-						label='Password'
+						label={
+							<>
+								Password{' '}
+								<Tooltip
+									hasArrow
+									label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+								>
+									<chakra.span>
+										<Icon as={FiHelpCircle} />
+									</chakra.span>
+								</Tooltip>
+							</>
+						}
+						flex={1}
 						isRequired
 						error={errorCode && errorCode === 'password_too_weak' ? errorMessage : ''}
 						onChange={handleInputChange}
@@ -227,6 +236,7 @@ export default function RegisterView() {
 						type='password'
 						variant='filled'
 						label='Confirm your password'
+						flex={1}
 						isRequired
 						error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
 						onChange={handleInputChange}

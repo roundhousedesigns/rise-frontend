@@ -8,7 +8,11 @@ import {
 	Container,
 	Heading,
 	useToast,
+	chakra,
+	Icon,
+	Tooltip,
 } from '@chakra-ui/react';
+import { FiHelpCircle } from 'react-icons/fi';
 import TextInput from '../components/common/inputs/TextInput';
 import { useErrorMessage, useValidatePassword } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
@@ -59,13 +63,6 @@ export default function ResetPasswordView({ token, login }: Props) {
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
 
-	// // Set an error code if either of the password checks doesn't pass
-	// useEffect(() => {
-	// 	if (!passwordsMatch) setErrorCode('password_mismatch');
-	// 	else if (newPassword.length && !passwordStrongEnough) setErrorCode('password_too_weak');
-	// 	else setErrorCode('');
-	// }, [passwordsMatch, passwordStrongEnough]);
-
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setUserFields({
 			...userFields,
@@ -108,7 +105,19 @@ export default function ResetPasswordView({ token, login }: Props) {
 							name='newPassword'
 							id='newPassword'
 							variant='filled'
-							label='Password'
+							label={
+								<>
+									Password{' '}
+									<Tooltip
+										hasArrow
+										label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+									>
+										<chakra.span>
+											<Icon as={FiHelpCircle} />
+										</chakra.span>
+									</Tooltip>
+								</>
+							}
 							error={errorCode}
 							isRequired
 							onChange={handleInputChange}
