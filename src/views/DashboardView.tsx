@@ -39,7 +39,7 @@ export default function DashboardView() {
 			{notices && notices.length > 0 && (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
-						Updates
+						Updates and Notices
 					</Heading>
 					<List spacing={6} mt={4}>
 						{notices.map((notice: any) => (
