@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '../lib/classes';
 import { getProfilePrefix, validateProfileSlug } from '../lib/utils';
+import { passwordStrength } from 'check-password-strength';
 
 /**
  * Custom hooks.
@@ -58,10 +59,7 @@ export const useLocalStorage = (
  * @param {string} defaultMessage The default message to use if no specific case matches.
  * @returns {string} The formatted error message.
  */
-export const useErrorMessage = (
-	errorCode?: string,
-	defaultMessage: string = 'Unspecified error'
-): string => {
+export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Error'): string => {
 	if (!errorCode) return '';
 
 	switch (errorCode) {
@@ -69,12 +67,18 @@ export const useErrorMessage = (
 		case 'invalid_username':
 		case 'invalid_email':
 			return 'No account exists for that email address.';
-		case 'incorrect_password':
-			return 'Incorrect password.';
 		case 'empty_login':
 			return 'Please enter a username or email address.';
+
+		// Password Errors
 		case 'empty_password':
 			return 'Please enter your password.';
+		case 'incorrect_password':
+			return 'Incorrect password.';
+		case 'password_mismatch':
+			return 'Passwords do not match.';
+		case 'password_too_weak':
+			return 'Please make sure your password contains at least one lowercase letter, one uppercase letter, one number, and one special character.';
 
 		// Registration errors
 		case 'existing_user_login':
@@ -152,3 +156,34 @@ export const useProfileUrl = (slug: string): string => {
  * @return True if the slug is valid.
  */
 export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);
+
+/**
+ * Validate a password to meet requirements
+ *
+ * @param password The password to validate
+ * @return string|undefined 'weak' or 'strong'
+ *
+ * TODO: figuring out typing to allow (in index.d.ts):
+ * const passwordRequirements = [{id?: number, value?: string, minDiversity?: number, minLength?: number}, {...}]
+ * passwordStrength(password, passwordRequirements);
+ */
+export const useValidatePassword = (password: string): string | undefined => {
+	if (!password) return;
+
+	const { value } = passwordStrength(password, [
+		{
+			id: 0,
+			value: 'weak',
+			minDiversity: 0,
+			minLength: 0,
+		},
+		{
+			id: 1,
+			value: 'strong',
+			minDiversity: 4,
+			minLength: 8,
+		},
+	]);
+
+	return value;
+};

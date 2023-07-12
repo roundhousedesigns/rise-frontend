@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { chakra, Button, Box, Flex } from '@chakra-ui/react';
+import { chakra, Button, Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
+import { FiHelpCircle } from 'react-icons/fi';
 import { ChangePasswordInput } from '../lib/types';
-import { useErrorMessage } from '../hooks/hooks';
+import { useErrorMessage, useValidatePassword } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
@@ -16,7 +17,8 @@ export default function ChangePasswordView() {
 		confirmPassword: '',
 	});
 	const { currentPassword, newPassword, confirmPassword } = userFields;
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
+	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
 	const {
@@ -26,14 +28,21 @@ export default function ChangePasswordView() {
 	const errorMessage = useErrorMessage(errorCode);
 	const { logoutMutation } = useLogout();
 
-	// useEffect to check if form is valid
-	useEffect(() => {
-		setFormIsValid(newPassword.length > 0 && confirmPassword.length > 0 && passwordsMatch);
-	}, [passwordsMatch, newPassword, confirmPassword]);
+	const newPasswordStrength = useValidatePassword(newPassword);
 
-	// useEffect to check if passwords match, debounce to prevent spamming
+	// Set an error code if either of the password checks doesn't pass, otherwise set form is valid
+	useEffect(() => {
+		setFormIsValid(false);
+		if (!passwordsMatch) return setErrorCode('password_mismatch');
+		else if (newPassword.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
+		else setFormIsValid(true);
+		setErrorCode('');
+	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
+
+	// Check if passwords match and are complex enough, debounce to prevent spamming
 	useEffect(() => {
 		const timer = setTimeout(() => {
+			setPasswordStrongEnough(newPasswordStrength === 'strong');
 			setPasswordsMatch(newPassword === confirmPassword);
 		}, 500);
 		return () => clearTimeout(timer);
@@ -67,12 +76,6 @@ export default function ChangePasswordView() {
 			.catch((errors: { message: string }) => setErrorCode(errors.message));
 	};
 
-	const passwordsMatchError = () => {
-		return passwordsMatch || (!passwordsMatch && (!newPassword || !confirmPassword))
-			? ''
-			: 'Passwords do not match';
-	};
-
 	return (
 		<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
 			<Flex gap={6} flexWrap='wrap'>
@@ -81,10 +84,22 @@ export default function ChangePasswordView() {
 					name='currentPassword'
 					id='currentPassword'
 					variant='filled'
-					label='Current Password'
+					label={
+						<>
+							Current password{' '}
+							<Tooltip
+								hasArrow
+								label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+							>
+								<chakra.span>
+									<Icon as={FiHelpCircle} />
+								</chakra.span>
+							</Tooltip>
+						</>
+					}
 					isRequired
 					onChange={handleInputChange}
-					error={errorMessage}
+					error={errorCode === 'incorrect_password' ? errorMessage : ''}
 					inputProps={{
 						type: 'password',
 						autoComplete: 'current-password',
@@ -98,6 +113,11 @@ export default function ChangePasswordView() {
 					label='New password'
 					isRequired
 					onChange={handleInputChange}
+					error={
+						errorCode && errorCode !== 'incorrect_password' && errorCode !== 'password_mismatch'
+							? errorMessage
+							: ''
+					}
 					flex='1'
 					inputProps={{
 						type: 'password',
@@ -112,7 +132,7 @@ export default function ChangePasswordView() {
 					variant='filled'
 					label='Confirm your new password'
 					isRequired
-					error={passwordsMatchError()}
+					error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
 					onChange={handleInputChange}
 					flex='1'
 					inputProps={{
