@@ -8,9 +8,13 @@ import {
 	Container,
 	Heading,
 	useToast,
+	chakra,
+	Icon,
+	Tooltip,
 } from '@chakra-ui/react';
+import { FiHelpCircle } from 'react-icons/fi';
 import TextInput from '../components/common/inputs/TextInput';
-import { useErrorMessage } from '../hooks/hooks';
+import { useErrorMessage, useValidatePassword } from '../hooks/hooks';
 import { ChangePasswordInput } from '../lib/types';
 import useResetUserPassword from '../hooks/mutations/useResetUserPassword';
 
@@ -25,7 +29,8 @@ export default function ResetPasswordView({ token, login }: Props) {
 		confirmPassword: '',
 	});
 	const { newPassword, confirmPassword } = userFields;
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
+	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
 	const {
@@ -33,15 +38,27 @@ export default function ResetPasswordView({ token, login }: Props) {
 		results: { loading: submitLoading },
 	} = useResetUserPassword();
 
-	// useEffect to check if form is valid
+	const toast = useToast();
+	const navigate = useNavigate();
+
+	const errorMessage = useErrorMessage(errorCode);
+
+	const newPasswordStrength = useValidatePassword(newPassword);
+
+	// Set an error code if either of the password checks doesn't pass, otherwise set form is valid
 	useEffect(() => {
-		setFormIsValid(newPassword.length > 0 && confirmPassword.length > 0 && passwordsMatch);
-	}, [passwordsMatch, newPassword, confirmPassword]);
+		setFormIsValid(false);
+		if (!passwordsMatch) return setErrorCode('password_mismatch');
+		else if (newPassword.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
+		else setFormIsValid(true);
+		setErrorCode('');
+	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
 
 	// useEffect to check if passwords match, debounce to prevent spamming
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			setPasswordsMatch(newPassword === confirmPassword);
+			setPasswordStrongEnough(newPasswordStrength === 'strong');
 		}, 500);
 		return () => clearTimeout(timer);
 	}, [newPassword, confirmPassword]);
@@ -52,11 +69,6 @@ export default function ResetPasswordView({ token, login }: Props) {
 			[e.target.name]: e.target.value,
 		});
 	};
-
-	const toast = useToast();
-	const navigate = useNavigate();
-
-	const errorMessage = useErrorMessage(errorCode);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
@@ -79,12 +91,6 @@ export default function ResetPasswordView({ token, login }: Props) {
 			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
 	};
 
-	const passwordsMatchError = () => {
-		return passwordsMatch || (!passwordsMatch && (!newPassword || !confirmPassword))
-			? ''
-			: 'Passwords do not match';
-	};
-
 	return (
 		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
 			<Heading as='h3' size='lg'>
@@ -99,7 +105,20 @@ export default function ResetPasswordView({ token, login }: Props) {
 							name='newPassword'
 							id='newPassword'
 							variant='filled'
-							label='Password'
+							label={
+								<>
+									Password{' '}
+									<Tooltip
+										hasArrow
+										label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+									>
+										<chakra.span>
+											<Icon as={FiHelpCircle} />
+										</chakra.span>
+									</Tooltip>
+								</>
+							}
+							error={errorCode}
 							isRequired
 							onChange={handleInputChange}
 							inputProps={{
@@ -115,7 +134,6 @@ export default function ResetPasswordView({ token, login }: Props) {
 							variant='filled'
 							label='Confirm your password'
 							isRequired
-							error={passwordsMatchError()}
 							onChange={handleInputChange}
 							inputProps={{
 								type: 'password',
