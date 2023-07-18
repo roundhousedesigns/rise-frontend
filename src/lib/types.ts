@@ -166,7 +166,7 @@ export interface ChangePasswordInput {
 	confirmPassword: string;
 }
 
-export interface ToggleStarredProfileInput {
+export interface updateStarredProfilesInput {
 	userId: number;
 	toggledUserId: number;
 }

@@ -1,63 +1,53 @@
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Heading, IconButton } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading, IconButton, useToken } from '@chakra-ui/react';
 import { FiStar } from 'react-icons/fi';
 import { Candidate } from '../lib/classes';
-import useToggleStarredProfile from '../hooks/mutations/useToggleStarredProfile';
 import useViewer from '../hooks/queries/useViewer';
-import { useEffect, useState } from 'react';
+import useUpdateStarredProfiles from '../hooks/mutations/useUpdateStarredProfiles';
 
 interface Props {
 	candidate: Candidate;
 	[prop: string]: any;
 }
 
-export default function CandidateItem({ candidate, ...props }: Props) {
+const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate;
 	const { loggedInId, starredProfiles } = useViewer();
 	const [isStarred, setIsStarred] = useState<boolean>(false);
 
-	const {
-		toggleStarredProfileMutation,
-		results: { loading },
-	} = useToggleStarredProfile();
+	const [brandYellow] = useToken('colors', ['brand.yellow']);
 
-	// Set the state of the star icon based on whether the profile is starred
+	const { updateStarredProfilesMutation, results: mutationResults } = useUpdateStarredProfiles();
+
 	useEffect(() => {
 		if (!id) return;
 
-		if (starredProfiles.includes(id) && !isStarred) {
-			setIsStarred(true);
-		} else if (!starredProfiles.includes(id) && isStarred) {
-			setIsStarred(false);
-		}
+		setIsStarred(starredProfiles.includes(id));
 	}, [id, starredProfiles]);
 
-	// TODO Why do we need to prefix 'MouseEvent' with 'React'?
-	const toggleStarredProfileHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		event.stopPropagation();
-
+	const updateStarredProfilesHandler = () => {
 		if (!id) return;
 
-		toggleStarredProfileMutation(loggedInId, id)
-			.then((res) => {
-				setIsStarred(!!isStarred);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		const updatedStarredProfiles = isStarred
+			? starredProfiles.filter((profileId) => profileId !== id)
+			: [...starredProfiles, id];
+
+		// setIsStarred(!isStarred);
+
+		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles).catch((err) => {
+			console.error(err);
+		});
 	};
 
 	return (
 		<Flex alignItems='center'>
 			<IconButton
-				as={FiStar}
+				icon={<FiStar color={isStarred ? brandYellow : ''} fill={isStarred ? brandYellow : ''} />}
 				aria-label="Toggle candidate's starred status"
-				onClick={toggleStarredProfileHandler}
-				color={isStarred ? 'brand.yellow' : ''}
-				fill={isStarred ? 'brand.yellow' : ''}
+				onClick={updateStarredProfilesHandler}
 				boxSize={8}
-				isLoading={loading}
+				isLoading={mutationResults.loading}
 				bg='transparent'
 				py={2}
 				px={1}
@@ -112,4 +102,6 @@ export default function CandidateItem({ candidate, ...props }: Props) {
 			</Card>
 		</Flex>
 	);
-}
+};
+
+export default CandidateItem;

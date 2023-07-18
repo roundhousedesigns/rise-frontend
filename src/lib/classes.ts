@@ -38,6 +38,37 @@ export class User implements UserParams {
 }
 
 /**
+ * The logged in user.
+ */
+export class CurrentUser extends User {
+	email: string;
+	starredProfiles: number[];
+
+	constructor(params?: UserParams & { email: string; starredProfiles: number[] }) {
+		const { id, firstName, lastName, slug, email, starredProfiles } = params || {};
+
+		super({
+			id: id ? id : null,
+			firstName: firstName ? firstName : '',
+			lastName: lastName ? lastName : '',
+			slug: slug ? slug : null,
+		});
+
+		this.email = email ? email : '';
+		this.starredProfiles = starredProfiles ? starredProfiles : [];
+	}
+
+	/**
+	 * Get the user's full name.
+	 *
+	 * @returns The user's full name.
+	 */
+	fullName() {
+		return super.fullName();
+	}
+}
+
+/**
  * A user profile
  */
 export class UserProfile extends User {
