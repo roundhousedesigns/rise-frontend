@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
 import { Candidate } from '../lib/classes';
-import CandidateItem from './CandidateItem';
 import useCandidates from '../hooks/queries/useCandidates';
+import CandidateItem from './CandidateItem';
 import ErrorAlert from './common/ErrorAlert';
 
 interface Props {
@@ -24,11 +24,14 @@ const CandidateList = ({ userIds }: Props): JSX.Element => {
 				<ErrorAlert message={error.message} />
 			) : memoizedCandidates ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{memoizedCandidates.map((candidate: Candidate) => (
-						<ListItem key={candidate.id}>
-							<CandidateItem candidate={candidate} />
-						</ListItem>
-					))}
+					{memoizedCandidates.map((candidate: Candidate) => {
+						const id = candidate.id ? candidate.id : 0;
+						return (
+							<ListItem key={id}>
+								<CandidateItem candidate={candidate} />
+							</ListItem>
+						);
+					})}
 				</List>
 			) : (
 				<Text>No candidates to show.</Text>

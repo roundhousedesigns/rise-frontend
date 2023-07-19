@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading, IconButton, useToken } from '@chakra-ui/react';
 import { FiStar } from 'react-icons/fi';
@@ -14,17 +14,16 @@ interface Props {
 const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate;
 	const { loggedInId, starredProfiles } = useViewer();
-	const [isStarred, setIsStarred] = useState<boolean>(false);
 
 	const [brandYellow] = useToken('colors', ['brand.yellow']);
 
-	const { updateStarredProfilesMutation, results: mutationResults } = useUpdateStarredProfiles();
-
-	useEffect(() => {
+	const isStarred = useMemo(() => {
 		if (!id) return;
 
-		setIsStarred(starredProfiles.includes(id));
+		return starredProfiles.includes(id);
 	}, [id, starredProfiles]);
+
+	const { updateStarredProfilesMutation, results: mutationResults } = useUpdateStarredProfiles();
 
 	const updateStarredProfilesHandler = () => {
 		if (!id) return;
