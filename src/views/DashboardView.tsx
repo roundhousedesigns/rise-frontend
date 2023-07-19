@@ -1,5 +1,16 @@
-import { Card, Box, Heading, Button, Flex, Text, Spacer, List, ListItem } from '@chakra-ui/react';
-import { FiEdit3, FiLifeBuoy, FiUser } from 'react-icons/fi';
+import {
+	Card,
+	Box,
+	Heading,
+	Button,
+	Flex,
+	Text,
+	Spacer,
+	List,
+	ListItem,
+	Icon,
+} from '@chakra-ui/react';
+import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
@@ -14,7 +25,19 @@ export default function DashboardView() {
 			<Card mb={8}>
 				<Flex justifyContent='space-between' flexWrap='wrap'>
 					<Text fontSize='xl' mb={0}>
-						To start a Search, use the button in the header!
+						To start a Search, use the{' '}
+						{
+							<Icon
+								as={FiSearch}
+								mx={1}
+								bg='brand.green'
+								borderRadius='full'
+								p={1}
+								boxSize={6}
+								aria-label='Sample search icon'
+							/>
+						}{' '}
+						button in the header.
 					</Text>
 					<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
 						<Button
