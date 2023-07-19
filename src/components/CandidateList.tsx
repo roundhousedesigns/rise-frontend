@@ -24,7 +24,7 @@ const CandidateList = ({ userIds }: Props): JSX.Element => {
 				<ErrorAlert message={error.message} />
 			) : memoizedCandidates ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{preparedCandidates.map((candidate: Candidate) => (
+					{memoizedCandidates.map((candidate: Candidate) => (
 						<ListItem key={candidate.id}>
 							<CandidateItem candidate={candidate} />
 						</ListItem>

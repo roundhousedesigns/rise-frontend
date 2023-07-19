@@ -76,7 +76,14 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					gap={{ base: 'initial', md: 0 }}
 				>
-					<Avatar size='md' name={candidate.fullName()} flex='0 0 auto' mr={2} src={image} />
+					<Avatar
+						size='md'
+						name={candidate.fullName()}
+						flex='0 0 auto'
+						mr={2}
+						src={image}
+						ignoreFallback={image ? true : false}
+					/>
 					<Heading
 						as='h3'
 						fontSize='lg'
