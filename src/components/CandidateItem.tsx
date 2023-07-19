@@ -33,8 +33,6 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 			? starredProfiles.filter((profileId) => profileId !== id)
 			: [...starredProfiles, id];
 
-		// setIsStarred(!isStarred);
-
 		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles).catch((err) => {
 			console.error(err);
 		});

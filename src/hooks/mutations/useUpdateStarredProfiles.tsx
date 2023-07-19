@@ -29,12 +29,12 @@ const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 const useUpdateStarredProfiles = () => {
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_STARRED_PROFILE);
 
-	const updateStarredProfilesMutation = (loggedInId: number, starredProfiles: number[]) => {
+	const updateStarredProfilesMutation = (loggedInId: number, updatedStarredProfiles: number[]) => {
 		return mutation({
 			variables: {
 				clientMutationId: 'updateStarredProfilesMutation',
 				loggedInId,
-				starredProfiles,
+				starredProfiles: updatedStarredProfiles,
 			},
 			update: (cache, { data }) => {
 				const updatedViewer = data?.updateStarredProfiles?.viewer;
@@ -58,10 +58,10 @@ const useUpdateStarredProfiles = () => {
 					success: true,
 					viewer: {
 						__typename: 'User',
-						id: loggedInId,
+						id: 'temp-id',
 						starredProfileConnections: {
 							__typename: 'User_starred_profile_connections_connection',
-							nodes: starredProfiles.map((profileId) => ({
+							nodes: updatedStarredProfiles.map((profileId) => ({
 								__typename: 'User',
 								databaseId: profileId,
 							})),

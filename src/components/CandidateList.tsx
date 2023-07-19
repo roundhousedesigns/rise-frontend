@@ -11,15 +11,10 @@ interface Props {
 
 const CandidateList = ({ userIds }: Props): JSX.Element => {
 	const [preparedCandidates, { loading, error }] = useCandidates(userIds);
-	const candidateList = useMemo((): number[] => {
-		if (!preparedCandidates) return [];
-
-		return preparedCandidates.map((candidate: Candidate) => (
-			<ListItem key={candidate.id}>
-				<CandidateItem candidate={candidate} />
-			</ListItem>
-		));
-	}, [preparedCandidates]);
+	const memoizedCandidates = useMemo(
+		() => preparedCandidates,
+		[preparedCandidates?.map((candidate: Candidate) => candidate.id)]
+	);
 
 	return (
 		<>
@@ -27,9 +22,13 @@ const CandidateList = ({ userIds }: Props): JSX.Element => {
 				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
-			) : candidateList ? (
+			) : memoizedCandidates ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{candidateList}
+					{preparedCandidates.map((candidate: Candidate) => (
+						<ListItem key={candidate.id}>
+							<CandidateItem candidate={candidate} />
+						</ListItem>
+					))}
 				</List>
 			) : (
 				<Text>No candidates to show.</Text>
