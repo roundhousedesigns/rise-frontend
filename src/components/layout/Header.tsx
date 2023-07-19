@@ -8,7 +8,6 @@ import {
 	useDisclosure,
 	DarkMode,
 	Link,
-	useMediaQuery,
 	Menu,
 	MenuButton,
 	MenuList,
@@ -23,6 +22,7 @@ import {
 	BoxProps,
 	Flex,
 	Text,
+	useBreakpointValue,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -57,7 +57,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 	const { loggedInId, loggedInSlug } = useViewer();
 
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const isLargerThanMd = useBreakpointValue(
+		{
+			base: false,
+			md: true,
+		},
+		{ ssr: false }
+	);
 
 	const handleDrawerOpen = () => {
 		drawerOnOpen();
@@ -203,9 +209,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									textTransform='uppercase'
 								>
 									{searchActive && results.length ? <SearchResultsButton /> : false}
-
 									<SearchButton />
-
 									{isLargerThanMd ? <MyProfileButton /> : null}
 								</Flex>
 								<LightMode>

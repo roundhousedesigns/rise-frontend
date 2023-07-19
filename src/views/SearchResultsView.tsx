@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/CandidateList';
 
@@ -6,21 +6,19 @@ import { SearchContext } from '../context/SearchContext';
 
 export default function SearchResultsView() {
 	const {
-		search: { results, searchActive },
+		search: { results },
 	} = useContext(SearchContext);
 
-	const [resultsString, setResultsString] = useState<string>('No results.');
-
 	// Set the results string based on the number of results.
-	useEffect(() => {
-		setResultsString(
-			results.length === 0
-				? 'No results.'
-				: results.length === 1
-				? '1 result.'
-				: `${results.length} results.`
-		);
-	}, [results, searchActive]);
+	const resultsString = useMemo(() => {
+		if (results.length === 0) {
+			return 'No results.';
+		} else if (results.length === 1) {
+			return '1 result.';
+		} else {
+			return `${results.length} results.`;
+		}
+	}, [results]);
 
 	return (
 		<Box>

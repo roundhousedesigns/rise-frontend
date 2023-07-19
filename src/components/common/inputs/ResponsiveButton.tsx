@@ -1,5 +1,5 @@
 import { ReactNode, ReactElement, JSXElementConstructor } from 'react';
-import { Button, ButtonProps, IconButton, forwardRef, useMediaQuery } from '@chakra-ui/react';
+import { Button, ButtonProps, IconButton, forwardRef, useBreakpointValue } from '@chakra-ui/react';
 
 interface Props extends ButtonProps {
 	label: string;
@@ -11,9 +11,15 @@ interface Props extends ButtonProps {
 const ResponsiveButton = forwardRef<Props, 'div'>((props, ref) => {
 	const { label, icon, loading, children, ...rest } = props;
 
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+	const isFullSize = useBreakpointValue(
+		{
+			base: false,
+			md: true,
+		},
+		{ ssr: false }
+	);
 
-	return isLargerThanMd ? (
+	return isFullSize ? (
 		<Button aria-label={label} leftIcon={icon} {...rest}>
 			{children}
 		</Button>

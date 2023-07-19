@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading, IconButton, useToken } from '@chakra-ui/react';
-import { FiStar } from 'react-icons/fi';
+import { FiBookmark } from 'react-icons/fi';
 import { Candidate } from '../lib/classes';
 import useViewer from '../hooks/queries/useViewer';
 import useUpdateStarredProfiles from '../hooks/mutations/useUpdateStarredProfiles';
@@ -15,7 +15,7 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate;
 	const { loggedInId, starredProfiles } = useViewer();
 
-	const [brandYellow] = useToken('colors', ['brand.yellow']);
+	const [brandOrange, lightGray] = useToken('colors', ['brand.orange', 'gray.300']);
 
 	const isStarred = useMemo(() => {
 		if (!id) return;
@@ -40,10 +40,21 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 	return (
 		<Flex alignItems='center'>
 			<IconButton
-				icon={<FiStar color={isStarred ? brandYellow : ''} fill={isStarred ? brandYellow : ''} />}
-				aria-label="Toggle candidate's starred status"
+				icon={
+					<FiBookmark
+						color={isStarred ? brandOrange : ''}
+						fill={isStarred ? brandOrange : 'transparent'}
+						stroke={lightGray}
+						strokeWidth={2}
+					/>
+				}
+				aria-label={
+					isStarred ? 'Remove this candidate from your saved candidates' : 'Save this candidate'
+				}
+				title="Toggle bookmark"
 				onClick={updateStarredProfilesHandler}
-				boxSize={8}
+				boxSize={10}
+				size='xl'
 				isLoading={mutationResults.loading}
 				bg='transparent'
 				py={2}
