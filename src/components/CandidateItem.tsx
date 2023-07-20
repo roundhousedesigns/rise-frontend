@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading, IconButton, useToken } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
@@ -17,24 +17,36 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 
 	const [brandOrange, lightGray] = useToken('colors', ['brand.orange', 'gray.300']);
 
-	const isStarred = useMemo(() => {
-		if (!id) return;
+	// const isStarred = useMemo(() => {
+	// 	if (!id) return;
 
-		return starredProfiles.includes(id);
-	}, [id, starredProfiles]);
+	// 	return starredProfiles.includes(id);
+	// }, [id, starredProfiles]);
+	const [isStarred, setIsStarred] = useState(starredProfiles.includes(Number(id)));
 
 	const { updateStarredProfilesMutation, results: mutationResults } = useUpdateStarredProfiles();
 
 	const updateStarredProfilesHandler = () => {
+		console.log('toggle Star for: ', id)
+
 		if (!id) return;
 
 		const updatedStarredProfiles = isStarred
 			? starredProfiles.filter((profileId) => profileId !== id)
 			: [...starredProfiles, id];
 
-		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles).catch((err) => {
-			console.error(err);
-		});
+		setIsStarred(isStarred ? false : true);
+		console.log('CandidateItem state: isStarred', isStarred)
+		console.log('CandidateItem state: updatedStarredProfiles', updatedStarredProfiles)
+
+		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles)
+			.then(() => {
+				console.log('mutation complete')
+				console.log('-----------------')
+			})
+			.catch((err) => {
+				console.error(err);
+			});
 	};
 
 	return (
@@ -55,7 +67,7 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 				onClick={updateStarredProfilesHandler}
 				boxSize={10}
 				size='xl'
-				isLoading={mutationResults.loading}
+				// isLoading={mutationResults.loading}
 				bg='transparent'
 				py={2}
 				px={1}
