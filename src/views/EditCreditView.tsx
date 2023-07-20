@@ -15,7 +15,6 @@ import { sortWPItemsByName } from '../lib/utils';
 
 // TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
-	console.log("editCreditReducer called with state = ", state, "action = ", action);
 
   switch (action.type) {
 		case 'UPDATE_INPUT':
@@ -66,7 +65,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
-  console.log("editCreditView component loaded with editCredit = ", editCredit);
 
 	const {
 		updateCreditMutation,
@@ -88,10 +86,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const [allDepartments] = usePositions();
 	const [getJobs, { data: allJobs, loading: jobsLoading }] = useLazyPositions();
 	const [jobs, setJobs] = useState<WPItem[]>([]);
-  const [getRelatedSkills, { data: allRelatedSkills, loading: relatedSkillsLoading}] = useLazyRelatedSkills();
+  const [
+    getRelatedSkills,
+    { data: allRelatedSkills, loading: relatedSkillsLoading}
+  ] = useLazyRelatedSkills();
   const [skills, setSkills] = useState<WPItem[]>([]);
-
-  console.log("EditCreditView rendered with jobs = ", jobs, " skills = ", skills)
 
   // fetch jobs & skills lists on mount
   useEffect(() => {
@@ -105,23 +104,22 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
    * @returns {Array} returns array of numbers of related/visible jobIds
    */
   const refetchAndSetJobs = async (departmentIds: number[]) => {
-    console.log("refetchAndSetJobs called with departmentIds = ", departmentIds);
-
     if (departmentIds.length === 0) {
       setJobs([]);
       return [];
     }
 
-    const jobData = await getJobs({ variables: { departments: departmentIds }, fetchPolicy: 'network-only' });
-    console.log("jobData in refetchJobs = ", jobData);
+    const jobData = await getJobs({
+      variables: { departments: departmentIds },
+      fetchPolicy: 'network-only'
+    });
     const jobsByDept = jobData?.data?.jobsByDepartments
 
     if (jobsByDept) {
       setJobs(jobsByDept.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
       const jobsByDeptIds = jobsByDept.map((j: WPItem)=> Number(j.id));
       return jobsByDeptIds;
-    }
-    else {
+    } else {
       setJobs([]);
       return [];
     }
@@ -133,15 +131,15 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
  */
 
 const refetchAndSetSkills = async (jobIds: number[]) => {
-  console.log("refetchAndSetSkills called with jobIds = ", jobIds);
-
   if (jobIds.length === 0) {
     setSkills([]);
     return [];
   }
 
-  const skillData = await getRelatedSkills({ variables: { jobs: jobIds }, fetchPolicy: 'network-only' });
-  console.log("skillData in refetchSkills = ", skillData);
+  const skillData = await getRelatedSkills({
+    variables: { jobs: jobIds },
+    fetchPolicy: 'network-only'
+  });
   const relatedSkills = skillData?.data?.jobSkills
 
   if (relatedSkills) {
@@ -178,33 +176,39 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 	};
 
   const handleDepartmentsChange = (name: string) => async (terms: string[]) => {
-    console.log("handleDepartmentsChange called with name = ", name, "terms = ", terms)
     // update depts:
     const termsAsNums = terms.map((i)=> Number(i));
     dispatchCheckboxTermChange(name, termsAsNums);
+
     // update jobs to align with selected depts:
     const visibleJobs = await refetchAndSetJobs(termsAsNums);
-    const filteredSelectedJobIds = selectedJobIds.filter((id: number) => visibleJobs.includes(id));
-    dispatchCheckboxTermChange("jobs", filteredSelectedJobIds)
+    const filteredSelectedJobIds = selectedJobIds.filter(
+      (id: number) => visibleJobs.includes(id)
+    );
+    dispatchCheckboxTermChange("jobs", filteredSelectedJobIds);
+
     // update skills to align with selected jobs:
     const visibleSkills = await refetchAndSetSkills(filteredSelectedJobIds);
-    const filteredSelectedSkillIds = selectedSkills.filter((id: number) => visibleSkills.includes(id));
+    const filteredSelectedSkillIds = selectedSkills.filter(
+      (id: number) => visibleSkills.includes(id)
+    );
     dispatchCheckboxTermChange("skills", filteredSelectedSkillIds);
   }
 
   const handleJobsChange = (name: string) => async (terms: string[]) => {
-    console.log("handleJobsChange called with name = ", name, "terms = ", terms)
     // update jobs
     const termsAsNums = terms.map((i)=> Number(i));
     dispatchCheckboxTermChange(name, termsAsNums);
+
     // update skills to align with selected jobs:
     const visibleSkills = await refetchAndSetSkills(termsAsNums);
-    const filteredSelectedSkillIds = selectedSkills.filter((id: number) => visibleSkills.includes(id));
+    const filteredSelectedSkillIds = selectedSkills.filter(
+      (id: number) => visibleSkills.includes(id)
+    );
     dispatchCheckboxTermChange("skills", filteredSelectedSkillIds);
   }
 
   const handleSkillsChange = (name: string) => (terms: string[]) => {
-    console.log("handleSkillsChange called with name = ", name, "terms = ", terms)
     // update skills
     const termsAsNums = terms.map((i)=> Number(i));
     dispatchCheckboxTermChange(name, termsAsNums);
