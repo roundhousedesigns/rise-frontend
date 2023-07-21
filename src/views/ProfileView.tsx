@@ -208,39 +208,36 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						<Stack direction='column' justifyContent='space-evenly' gap={4} width={'100%'} lineHeight={1}>
 							<StackItem display='flex' flexWrap='wrap'>
 								<Flex
-										width={'100%'}
-										justifyContent={'space-between'}
-									>
-									<Flex
-										justifyContent={{ base: 'center', md: 'flex-start' }}
-										flexWrap='wrap'
-										alignItems='center'
-									>
-										<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
-											{profile.fullName()}
-										</Heading>
-										{pronouns ? (
-											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
-												{pronouns}
-											</Tag>
-										) : (
-											false
-										)}
-									</Flex>
-									<IconButton
-										icon={
-												<FiBookmark
-													color={brandOrange}
-													fill={brandOrange}
-													stroke={lightGray}
-													strokeWidth={2}
-												/>
-											}
-											aria-label={'Save this candidate'}
-											title="Toggle bookmark"
-									/>
+									justifyContent={{ base: 'center', md: 'flex-start' }}
+									flexWrap='wrap'
+									alignItems='center'
+								>
+									<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
+										{profile.fullName()}
+									</Heading>
+									{pronouns ? (
+										<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+											{pronouns}
+										</Tag>
+									) : (
+										false
+									)}
 								</Flex>
-
+								<IconButton
+									icon={
+											<FiBookmark
+												color={brandOrange}
+												fill={brandOrange}
+												stroke={lightGray}
+												strokeWidth={2}
+											/>
+										}
+									aria-label={'Save this candidate'}
+									title="Toggle bookmark"
+									position={'absolute'}
+									top={4}
+									right={4}
+								/>
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
 
