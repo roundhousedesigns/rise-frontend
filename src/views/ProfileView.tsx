@@ -22,7 +22,6 @@ import {
 	Icon,
 	TagLeftIcon,
 	TagLabel,
-	useToken,
 } from '@chakra-ui/react';
 import {
 	FiBriefcase,
@@ -51,7 +50,7 @@ import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 
 interface Props {
 	profile: UserProfile | null;
-	loading: boolean;
+	loading?: boolean;
 }
 
 // TODO Chore: create stack item component for profile to DRY yourself off
@@ -61,7 +60,9 @@ interface Props {
  * @returns {JSX.Element} The Props component.
  */
 export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
-	const { loggedInId } = useViewer();
+	const { loggedInId, bookmarkedProfiles } = useViewer();
+
+	// TODO probably replace this with `useBreakpointValue`
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
@@ -115,8 +116,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		getWPItemsFromIds(ids, terms)
 			.map((term: WPItem) => term.name)
 			.join(', ');
-
-	const [brandOrange, lightGray] = useToken('colors', ['brand.orange', 'gray.300']);
 
 	function selectedLinkableTerms({
 		ids,
@@ -233,7 +232,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									)}
 								</Flex>
 								{id && id !== loggedInId ? (
-									<BookmarkToggleIcon id={id} position='absolute' top={4} right={4} />
+									<BookmarkToggleIcon
+										id={id}
+										isBookmarked={bookmarkedProfiles?.includes(Number(id))}
+										position='absolute'
+										top={4}
+										right={4}
+									/>
 								) : (
 									false
 								)}
@@ -365,18 +370,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									)}
 								</Flex>
 							</StackItem>
-
-							{/* TODO Bookmark a user */}
-							{/* <StackItem>
-								<Button
-									colorScheme='green'
-									onClick={() => {
-										alert('Pin!');
-									}}
-								>
-									Save This Candidate
-								</Button>
-							</StackItem> */}
 						</Stack>
 					</Flex>
 				</Card>

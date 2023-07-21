@@ -29,7 +29,10 @@ const MUTATE_TOGGLE_BOOKMARKED_PROFILE = gql`
 const useUpdateBookmarkedProfiles = () => {
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_BOOKMARKED_PROFILE);
 
-	const updateBookmarkedProfilesMutation = (loggedInId: number, updatedBookmarkedProfiles: number[]) => {
+	const updateBookmarkedProfilesMutation = (
+		loggedInId: number,
+		updatedBookmarkedProfiles: number[]
+	) => {
 		return mutation({
 			variables: {
 				clientMutationId: 'updateBookmarkedProfilesMutation',

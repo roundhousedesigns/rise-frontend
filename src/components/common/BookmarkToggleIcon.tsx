@@ -28,9 +28,8 @@ export default function BookmarkToggleIcon({ id, isBookmarked, isDisabled, ...pr
 		// Optimism!
 		setLocalIsBookmarked(!localIsBookmarked);
 
-		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles).catch((err) => {
-			console.error(err);
-		});
+		// Fire off the mutation.
+		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
 
 	return (
