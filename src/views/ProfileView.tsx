@@ -22,7 +22,6 @@ import {
 	Icon,
 	TagLeftIcon,
 	TagLabel,
-	IconButton,
 	useToken,
 } from '@chakra-ui/react';
 import {
@@ -36,11 +35,11 @@ import {
 	FiStar,
 	FiUser,
 	FiLink,
-	FiBookmark
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
+import useViewer from '../hooks/queries/useViewer';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -48,6 +47,7 @@ import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
+import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 
 interface Props {
 	profile: UserProfile | null;
@@ -61,9 +61,11 @@ interface Props {
  * @returns {JSX.Element} The Props component.
  */
 export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
+	const { loggedInId } = useViewer();
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
 
 	const {
+		id,
 		image,
 		pronouns,
 		selfTitle,
@@ -155,6 +157,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				</Text>
 			);
 		};
+
 		const HomeBase = () => {
 			return (
 				<Text as='span' textDecoration='underline'>
@@ -205,7 +208,13 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 							<Avatar size='superLg' src={image} name={profile.fullName()} />
 						)}
 
-						<Stack direction='column' justifyContent='space-evenly' gap={4} width={'100%'} lineHeight={1}>
+						<Stack
+							direction='column'
+							justifyContent='space-evenly'
+							gap={4}
+							width={'100%'}
+							lineHeight={1}
+						>
 							<StackItem display='flex' flexWrap='wrap'>
 								<Flex
 									justifyContent={{ base: 'center', md: 'flex-start' }}
@@ -223,21 +232,11 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 										false
 									)}
 								</Flex>
-								<IconButton
-									icon={
-											<FiBookmark
-												color={brandOrange}
-												fill={brandOrange}
-												stroke={lightGray}
-												strokeWidth={2}
-											/>
-										}
-									aria-label={'Save this candidate'}
-									title="Toggle bookmark"
-									position={'absolute'}
-									top={4}
-									right={4}
-								/>
+								{id && id !== loggedInId ? (
+									<BookmarkToggleIcon id={id} position='absolute' top={4} right={4} />
+								) : (
+									false
+								)}
 								<ProfileSubtitle flex='0 0 100%' w='full' />
 							</StackItem>
 

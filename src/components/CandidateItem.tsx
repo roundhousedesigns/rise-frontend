@@ -1,10 +1,8 @@
-import { useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Heading, IconButton, useToken } from '@chakra-ui/react';
-import { FiBookmark } from 'react-icons/fi';
+import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Candidate } from '../lib/classes';
 import useViewer from '../hooks/queries/useViewer';
-import useUpdateStarredProfiles from '../hooks/mutations/useUpdateStarredProfiles';
+import BookmarkToggleIcon from './common/BookmarkToggleIcon';
 
 interface Props {
 	candidate: Candidate;
@@ -15,64 +13,15 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate;
 	const { loggedInId, starredProfiles } = useViewer();
 
-	const [brandOrange, lightGray] = useToken('colors', ['brand.orange', 'gray.300']);
-
-	// const isStarred = useMemo(() => {
-	// 	if (!id) return;
-
-	// 	return starredProfiles.includes(id);
-	// }, [id, starredProfiles]);
-	const [isStarred, setIsStarred] = useState(starredProfiles.includes(Number(id)));
-
-	const { updateStarredProfilesMutation, results: mutationResults } = useUpdateStarredProfiles();
-
-	const updateStarredProfilesHandler = () => {
-		console.log('toggle Star for: ', id)
-
-		if (!id) return;
-
-		const updatedStarredProfiles = isStarred
-			? starredProfiles.filter((profileId) => profileId !== id)
-			: [...starredProfiles, id];
-
-		setIsStarred(isStarred ? false : true);
-		console.log('CandidateItem state: isStarred', isStarred)
-		console.log('CandidateItem state: updatedStarredProfiles', updatedStarredProfiles)
-
-		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles)
-			.then(() => {
-				console.log('mutation complete')
-				console.log('-----------------')
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-	};
+	const isStarred = starredProfiles.includes(Number(id));
 
 	return (
 		<Flex alignItems='center'>
-			<IconButton
-				icon={
-					<FiBookmark
-						color={isStarred ? brandOrange : ''}
-						fill={isStarred ? brandOrange : 'transparent'}
-						stroke={lightGray}
-						strokeWidth={2}
-					/>
-				}
-				aria-label={
-					isStarred ? 'Remove this candidate from your saved candidates' : 'Save this candidate'
-				}
-				title="Toggle bookmark"
-				onClick={updateStarredProfilesHandler}
-				boxSize={10}
-				size='xl'
-				// isLoading={mutationResults.loading}
-				bg='transparent'
-				py={2}
-				px={1}
-				cursor='pointer'
-			/>
+			{id ? (
+				<BookmarkToggleIcon id={id} isStarred={isStarred} isDisabled={loggedInId === id} />
+			) : (
+				false
+			)}
 			<Card
 				flex={1}
 				as={RouterLink}
