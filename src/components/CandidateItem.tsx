@@ -11,14 +11,14 @@ interface Props {
 
 const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate;
-	const { loggedInId, starredProfiles } = useViewer();
+	const { loggedInId, bookmarkedProfiles } = useViewer();
 
-	const isStarred = starredProfiles.includes(Number(id));
+	const isBookmarked = bookmarkedProfiles.includes(Number(id));
 
 	return (
 		<Flex alignItems='center'>
 			{id ? (
-				<BookmarkToggleIcon id={id} isStarred={isStarred} isDisabled={loggedInId === id} />
+				<BookmarkToggleIcon id={id} isBookmarked={isBookmarked} isDisabled={loggedInId === id} />
 			) : (
 				false
 			)}

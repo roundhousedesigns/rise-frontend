@@ -12,7 +12,7 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
-			starredProfileConnections {
+			bookmarkedProfileConnections {
 				nodes {
 					databaseId
 				}
@@ -28,7 +28,7 @@ interface Props {
 	lastName: string;
 	email: string;
 	result: QueryResult;
-	starredProfiles: number[];
+	bookmarkedProfiles: number[];
 }
 
 const useViewer = (): Props => {
@@ -40,11 +40,11 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
-		starredProfileConnections,
+		bookmarkedProfileConnections,
 	} = result?.data?.viewer || {};
 
-	const starredProfiles =
-		starredProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
+	const bookmarkedProfiles =
+		bookmarkedProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
 
 	return {
 		loggedInId,
@@ -52,7 +52,7 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
-		starredProfiles,
+		bookmarkedProfiles,
 		result,
 	};
 };
