@@ -27,6 +27,14 @@ const sizes = {
 		fontSize: 'xl',
 		p: 4,
 	}),
+	xxl: defineStyle({
+		fontSize: '2xl',
+		p: 4,
+	}),
+	xxxl: defineStyle({
+		fontSize: '3xl',
+		p: 4,
+	}),
 };
 
 export default defineStyleConfig({

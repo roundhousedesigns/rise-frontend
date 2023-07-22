@@ -37,8 +37,9 @@ import {
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
-import { Credit, UserProfile, WPItem } from '../lib/classes';
+import { Credit, WPItem } from '../lib/classes';
 import useViewer from '../hooks/queries/useViewer';
+import useUserProfile from '../hooks/queries/useUserProfile';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
@@ -49,18 +50,17 @@ import TextWithIcon from '../components/common/TextWithIcon';
 import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 
 interface Props {
-	profile: UserProfile | null;
-	loading?: boolean;
+	profileId: number;
 }
-
-// TODO Chore: create stack item component for profile to DRY yourself off
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, loading }: Props): JSX.Element | null {
+export default function ProfileView({ profileId }: Props): JSX.Element | null {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
+	// If no slug is in the route, use the logged in user's ID.
+	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
 	// TODO probably replace this with `useBreakpointValue`
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
@@ -178,7 +178,9 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 		);
 	};
 
-	return profile ? (
+	return loading ? (
+		<Spinner />
+	) : profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem>
 				<Card p={4}>
@@ -187,7 +189,6 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 						justifyContent={{ base: 'center', md: 'flex-start' }}
 					>
-						{loading && <Spinner alignSelf='center' />}
 						{isLargerThanMd ? (
 							image ? (
 								<Box w='40%' minW='160px' maxW='400px'>
@@ -235,6 +236,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 									<BookmarkToggleIcon
 										id={id}
 										isBookmarked={bookmarkedProfiles?.includes(Number(id))}
+										size='xxxl'
 										position='absolute'
 										top={4}
 										right={4}
