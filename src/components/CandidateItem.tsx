@@ -2,25 +2,29 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Candidate } from '../lib/classes';
 import useViewer from '../hooks/queries/useViewer';
-import BookmarkToggleIcon from './common/BookmarkToggleIcon';
+import BookmarkControlIcon from './common/BookmarkControlIcon';
 
 interface Props {
 	candidate: Candidate;
+	removeItem?: boolean;
 	[prop: string]: any;
 }
 
-const CandidateItem = ({ candidate, ...props }: Props) => {
-	const { id, image, slug, selfTitle } = candidate;
+const CandidateItem = ({ candidate, removeItem, ...props }: Props) => {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
+	const { id, image, slug, selfTitle } = candidate;
 
 	const isBookmarked = bookmarkedProfiles.includes(Number(id));
 
 	return (
 		<Flex alignItems='center'>
-			{id ? (
-				<BookmarkToggleIcon id={id} isBookmarked={isBookmarked} isDisabled={loggedInId === id} />
-			) : (
-				false
+			{id && !removeItem && (
+				<BookmarkControlIcon
+					id={id}
+					isBookmarked={isBookmarked}
+					removeItem={removeItem}
+					isDisabled={loggedInId === id}
+				/>
 			)}
 			<Card
 				flex={1}
@@ -76,6 +80,14 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 					</Text>
 				</Flex>
 			</Card>
+			{id && removeItem && (
+				<BookmarkControlIcon
+					id={id}
+					isBookmarked={isBookmarked}
+					removeItem={removeItem}
+					isDisabled={loggedInId === id}
+				/>
+			)}
 		</Flex>
 	);
 };

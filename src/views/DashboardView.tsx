@@ -24,15 +24,15 @@ export default function DashboardView() {
 		<Box>
 			<Card mb={8}>
 				<Flex justifyContent='space-between' flexWrap='wrap'>
-					<Text fontSize='xl' mb={0}>
+					<Text fontSize='xl' mb={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
 						{
-							<Icon
-								as={FiSearch}
+							<IconButton
+								icon={<FiSearch />}
 								mx={1}
-								bg='brand.green'
-								borderRadius='full'
-								p={1}
+								py={1}
+								cursor='pointer'
+								title='Search'
 								boxSize={6}
 								aria-label='Sample search icon'
 							/>

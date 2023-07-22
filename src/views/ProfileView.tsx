@@ -47,7 +47,7 @@ import LinkWithIcon from '../components/common/LinkWithIcon';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
 import TextWithIcon from '../components/common/TextWithIcon';
-import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
+import BookmarkControlIcon from '../components/common/BookmarkControlIcon';
 
 interface Props {
 	profileId: number;
@@ -233,7 +233,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 									)}
 								</Flex>
 								{id && id !== loggedInId ? (
-									<BookmarkToggleIcon
+									<BookmarkControlIcon
 										id={id}
 										isBookmarked={bookmarkedProfiles?.includes(Number(id))}
 										size='xxxl'
