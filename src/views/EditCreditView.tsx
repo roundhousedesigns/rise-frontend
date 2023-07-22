@@ -3,7 +3,6 @@ import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra
 import { Credit, WPItem } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
 import usePositions from '../hooks/queries/usePositions';
-import useRelatedSkills from '../hooks/queries/useRelatedSkills';
 import useLazyPositions from '../hooks/queries/useLazyPositions';
 import useLazyRelatedSkills from '../hooks/queries/useLazyRelatedSkills';
 import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
@@ -84,11 +83,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	} = editCredit;
 
 	const [allDepartments] = usePositions();
-	const [getJobs, { data: allJobs, loading: jobsLoading }] = useLazyPositions();
+	const [getJobs, { loading: jobsLoading }] = useLazyPositions();
 	const [jobs, setJobs] = useState<WPItem[]>([]);
   const [
     getRelatedSkills,
-    { data: allRelatedSkills, loading: relatedSkillsLoading}
+    { loading: relatedSkillsLoading}
   ] = useLazyRelatedSkills();
   const [skills, setSkills] = useState<WPItem[]>([]);
 
@@ -363,7 +362,11 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 							<ProfileCheckboxGroup
 								name='jobs'
 								items={jobs}
-								checked={selectedJobIds?.map((item: number) => item.toString())}
+								checked={
+                  selectedJobIds
+                  ? selectedJobIds.map((item: number) => item.toString())
+                  : []
+                }
 								handleChange={handleJobsChange}
 							/>
 						</>
@@ -382,7 +385,11 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 							<ProfileCheckboxGroup
 								name='skills'
 								items={skills}
-								checked={selectedSkills?.map((item: number) => item.toString())}
+								checked={
+                  selectedSkills
+                  ? selectedSkills.map((item: number) => item.toString())
+                  : []
+                }
 								handleChange={handleSkillsChange}
 							/>
 						</>
