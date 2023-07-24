@@ -33,11 +33,13 @@ const CandidateItem = ({ candidate, removeItem, ...props }: Props) => {
 				py={2}
 				my={0}
 				_dark={{
+					bg: 'gray.800',
 					_hover: {
-						bg: 'gray.700',
+						bg: 'gray.900',
 					},
 				}}
 				_light={{
+					bg: 'gray.100',
 					_hover: {
 						bg: 'gray.50',
 					},

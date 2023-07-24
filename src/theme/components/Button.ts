@@ -20,12 +20,6 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	headerButton: defineStyle({
-		borderRadius: { base: 'full', md: 'lg' },
-		size: 'lg',
-		px: { base: 0, md: 4 },
-		textTransform: 'none',
-	}),
 	bookmark: defineStyle({
 		size: 'xl',
 		px: 1,
@@ -39,7 +33,14 @@ const variants = {
 	}),
 	remove: defineStyle({
 		bg: 'transparent',
-		// boxSize: 12
+	}),
+	inline: defineStyle({
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 'full',
+		mx: 1,
+		bg: 'blackAlpha.300',
 	}),
 };
 

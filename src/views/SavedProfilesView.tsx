@@ -12,16 +12,14 @@ export default function SavedProfilesView() {
 				To save a profile, click the{' '}
 				<IconButton
 					icon={<FiBookmark />}
+					variant='inline'
 					mx={1}
 					fill={bookmarkOn ? 'brand.orange' : 'transparent'}
-					cursor='pointer'
-					p={1}
-					boxSize={6}
 					aria-label='Sample bookmark icon'
 					title='Bookmark'
 					onClick={() => setBookmarkOn(!bookmarkOn)}
 				/>{' '}
-				icon on or next to a profile.
+				icon on a person's profile, or next to a name in search results.
 			</Text>
 			<SavedCandidateList />
 		</Card>

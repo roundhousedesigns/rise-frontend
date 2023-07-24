@@ -247,6 +247,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
 													Dashboard
 												</MenuItem>
+												<MenuItem as={RouterLink} to='/saved' icon={<FiBookmark />}>
+													Saved Profiles
+												</MenuItem>
 											</MenuOptionGroup>
 											<MenuOptionGroup>
 												<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>

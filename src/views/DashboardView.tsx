@@ -29,12 +29,9 @@ export default function DashboardView() {
 						{
 							<IconButton
 								icon={<FiSearch />}
-								mx={1}
-								py={1}
-								cursor='pointer'
+								variant='inline'
 								title='Search'
-								boxSize={6}
-								aria-label='Sample search icon'
+								aria-label='Sample magnifying glass search icon'
 							/>
 						}{' '}
 						button in the header.
