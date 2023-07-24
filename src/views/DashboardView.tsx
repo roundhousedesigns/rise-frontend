@@ -24,7 +24,7 @@ export default function DashboardView() {
 		<Box>
 			<Card mb={8}>
 				<Flex justifyContent='space-between' flexWrap='wrap'>
-					<Text fontSize='xl' mb={0} display='flex' alignItems='center' flexWrap='wrap'>
+					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
 						{
 							<IconButton

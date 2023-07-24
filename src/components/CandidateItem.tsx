@@ -18,7 +18,7 @@ const CandidateItem = ({ candidate, removeItem, ...props }: Props) => {
 
 	return (
 		<Flex alignItems='center'>
-			{id && !removeItem && (
+			{id && (
 				<BookmarkControlIcon
 					id={id}
 					isBookmarked={isBookmarked}
@@ -80,14 +80,6 @@ const CandidateItem = ({ candidate, removeItem, ...props }: Props) => {
 					</Text>
 				</Flex>
 			</Card>
-			{id && removeItem && (
-				<BookmarkControlIcon
-					id={id}
-					isBookmarked={isBookmarked}
-					removeItem={removeItem}
-					isDisabled={loggedInId === id}
-				/>
-			)}
 		</Flex>
 	);
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, useToken } from '@chakra-ui/react';
+import { IconButton, useColorMode, useToken } from '@chakra-ui/react';
 import { FiBookmark, FiMinusCircle } from 'react-icons/fi';
 import { toggleArrayItem } from '../../lib/utils';
 import useViewer from '../../hooks/queries/useViewer';
@@ -25,10 +25,12 @@ export default function BookmarkControlIcon({
 		typeof isBookmarked === 'boolean' ? isBookmarked : false
 	);
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
-	const [brandOrange, brandRed, lightGray] = useToken('colors', [
+	const { colorMode } = useColorMode();
+	const [orange, red, lightGray, darkGray] = useToken('colors', [
 		'brand.orange',
 		'brand.red',
 		'gray.300',
+		'gray.600',
 	]);
 
 	const updateBookmarkedProfilesHandler = () => {
@@ -52,28 +54,22 @@ export default function BookmarkControlIcon({
 		<IconButton
 			icon={
 				removeItem ? (
-					<FiMinusCircle color={brandRed} fill={brandRed} stroke={lightGray} strokeWidth={2} />
+					<FiMinusCircle color={red} fill={red} stroke={lightGray} strokeWidth={2} size={30} />
 				) : (
 					<FiBookmark
-						color={localIsBookmarked ? brandOrange : ''}
-						fill={localIsBookmarked ? brandOrange : 'transparent'}
-						stroke={lightGray}
-						strokeWidth={2}
+						color={localIsBookmarked ? orange : ''}
+						fill={localIsBookmarked ? orange : 'transparent'}
+						stroke={colorMode === 'dark' ? lightGray : darkGray}
+						strokeWidth={1}
+						size={24}
 					/>
 				)
 			}
+			variant={removeItem ? 'remove' : 'bookmark'}
 			aria-label={iconLabel}
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
-			boxSize={10}
-			borderRadius='full'
-			size='xl'
-			bg='transparent'
-			mr={removeItem ? 0 : 1}
-			ml={removeItem ? 1 : 0}
-			py={2}
-			px={1}
-			cursor='pointer'
+			mr={removeItem ? 0 : 2}
 			{...props}
 		/>
 	);

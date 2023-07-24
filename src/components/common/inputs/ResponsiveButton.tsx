@@ -4,28 +4,29 @@ import { Button, ButtonProps, IconButton, forwardRef, useBreakpointValue } from 
 interface Props extends ButtonProps {
 	label: string;
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
+	variant?: string;
 	children: ReactNode;
 	[prop: string]: any;
 }
 
-const ResponsiveButton = forwardRef<Props, 'div'>((props, ref) => {
-	const { label, icon, loading, children, ...rest } = props;
+const ResponsiveButton = forwardRef<Props, 'div'>(
+	({ label, icon, variant, children, ...rest }, ref) => {
+		const isFullSize = useBreakpointValue(
+			{
+				base: false,
+				md: true,
+			},
+			{ ssr: false }
+		);
 
-	const isFullSize = useBreakpointValue(
-		{
-			base: false,
-			md: true,
-		},
-		{ ssr: false }
-	);
-
-	return isFullSize ? (
-		<Button aria-label={label} leftIcon={icon} {...rest}>
-			{children}
-		</Button>
-	) : (
-		<IconButton aria-label={label} icon={icon} {...rest} />
-	);
-});
+		return isFullSize ? (
+			<Button aria-label={label} variant={variant} title={label} leftIcon={icon} {...rest}>
+				{children}
+			</Button>
+		) : (
+			<IconButton aria-label={label} variant={variant} title={label} icon={icon} {...rest} />
+		);
+	}
+);
 
 export default ResponsiveButton;

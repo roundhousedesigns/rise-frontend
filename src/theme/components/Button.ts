@@ -20,6 +20,27 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
+	headerButton: defineStyle({
+		borderRadius: { base: 'full', md: 'lg' },
+		size: 'lg',
+		px: { base: 0, md: 4 },
+		textTransform: 'none',
+	}),
+	bookmark: defineStyle({
+		size: 'xl',
+		px: 1,
+		cursor: 'pointer',
+		_dark: {
+			bg: 'blackAlpha.400',
+		},
+		_light: {
+			bg: 'blackAlpha.200',
+		},
+	}),
+	remove: defineStyle({
+		bg: 'transparent',
+		// boxSize: 12
+	}),
 };
 
 const sizes = {

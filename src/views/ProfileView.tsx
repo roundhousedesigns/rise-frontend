@@ -1,4 +1,5 @@
 import { Key } from 'react';
+import { useParams } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import {
 	Box,
@@ -38,16 +39,18 @@ import {
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, WPItem } from '../lib/classes';
+import { useProfileUrl } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useUserProfile from '../hooks/queries/useUserProfile';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import CreditsTagLegend from '../components/CreditsTagLegend';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
-import PersonalIconLinks from '../components/PersonalIconLinks';
-import CreditItem from '../components/CreditItem';
+import ShareButton from '../components/common/ShareButton';
 import TextWithIcon from '../components/common/TextWithIcon';
 import BookmarkControlIcon from '../components/common/BookmarkControlIcon';
+import CreditsTagLegend from '../components/CreditsTagLegend';
+import PersonalIconLinks from '../components/PersonalIconLinks';
+import CreditItem from '../components/CreditItem';
 
 interface Props {
 	profileId: number;
@@ -59,11 +62,17 @@ interface Props {
  */
 export default function ProfileView({ profileId }: Props): JSX.Element | null {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
+	const params = useParams();
+
+	const slug = params.slug ? params.slug : '';
+
 	// If no slug is in the route, use the logged in user's ID.
 	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
 	// TODO probably replace this with `useBreakpointValue`
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+
+	const profileUrl = useProfileUrl(slug);
 
 	const {
 		id,
@@ -182,199 +191,203 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 		<Spinner />
 	) : profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<StackItem>
-				<Card p={4}>
-					<Flex
-						gap={6}
-						flexWrap={{ base: 'wrap', md: 'nowrap' }}
-						justifyContent={{ base: 'center', md: 'flex-start' }}
-					>
-						{isLargerThanMd ? (
-							image ? (
-								<Box w='40%' minW='160px' maxW='400px'>
-									<Image
-										src={image}
-										alt={`${profile.fullName()}'s picture`}
-										borderRadius='md'
-										loading='eager'
-										fit='cover'
-										w='full'
-									/>
-								</Box>
-							) : (
-								<Avatar size='2xl' name={profile.fullName()} mx={2} />
-							)
+			<StackItem as={Card} p={4}>
+				<Flex
+					bg={{ base: 'blackAlpha.200', md: 'transparent' }}
+					position='absolute'
+					top={0}
+					left={0}
+					w='full'
+					p={2}
+					justifyContent={{ base: 'space-between', md: 'flex-end' }}
+					display='flex'
+					gap={{ base: 0, md: 2 }}
+				>
+					<ShareButton url={profileUrl} />
+					{id && id !== loggedInId ? (
+						<BookmarkControlIcon
+							id={id}
+							isBookmarked={bookmarkedProfiles?.includes(Number(id))}
+							size='xxxl'
+						/>
+					) : (
+						false
+					)}
+				</Flex>
+				<Flex
+					gap={6}
+					flexWrap={{ base: 'wrap', md: 'nowrap' }}
+					justifyContent={{ base: 'center', md: 'flex-start' }}
+				>
+					{isLargerThanMd ? (
+						image ? (
+							<Box w='40%' minW='160px' maxW='400px'>
+								<Image
+									src={image}
+									alt={`${profile.fullName()}'s picture`}
+									borderRadius='md'
+									loading='eager'
+									fit='cover'
+									w='full'
+								/>
+							</Box>
 						) : (
-							<Avatar size='superLg' src={image} name={profile.fullName()} />
-						)}
+							<Avatar size='2xl' name={profile.fullName()} mx={2} />
+						)
+					) : (
+						<Avatar size='superLg' src={image} name={profile.fullName()} />
+					)}
 
-						<Stack
-							direction='column'
-							justifyContent='space-evenly'
-							gap={4}
-							width={'100%'}
-							lineHeight={1}
-						>
-							<StackItem display='flex' flexWrap='wrap'>
-								<Flex
-									justifyContent={{ base: 'center', md: 'flex-start' }}
-									flexWrap='wrap'
-									alignItems='center'
-								>
-									<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
-										{profile.fullName()}
-									</Heading>
-									{pronouns ? (
-										<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
-											{pronouns}
-										</Tag>
-									) : (
-										false
-									)}
-								</Flex>
-								{id && id !== loggedInId ? (
-									<BookmarkControlIcon
-										id={id}
-										isBookmarked={bookmarkedProfiles?.includes(Number(id))}
-										size='xxxl'
-										position='absolute'
-										top={4}
-										right={4}
-									/>
+					<Stack
+						direction='column'
+						justifyContent='space-evenly'
+						gap={4}
+						width={'100%'}
+						lineHeight={1}
+					>
+						<StackItem display='flex' flexWrap='wrap'>
+							<Flex
+								justifyContent={{ base: 'center', md: 'flex-start' }}
+								flexWrap='wrap'
+								alignItems='center'
+							>
+								<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
+									{profile.fullName()}
+								</Heading>
+								{pronouns ? (
+									<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+										{pronouns}
+									</Tag>
 								) : (
 									false
 								)}
-								<ProfileSubtitle flex='0 0 100%' w='full' />
-							</StackItem>
+							</Flex>
+							<ProfileSubtitle flex='0 0 100%' w='full' />
+						</StackItem>
 
-							{locations && locations.length > 0 ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										Works In
-									</Heading>
-									<TextWithIcon icon={FiMapPin} mr={2}>
-										{locationTerms ? selectedTerms(locations, locationTerms) : false}
-									</TextWithIcon>
-									<Wrap>
-										{willTravel !== undefined && (
-											<Tag
-												size='md'
-												colorScheme={willTravel ? 'green' : 'orange'}
-												textAlign='center'
-											>
-												<TagLeftIcon as={FiBriefcase} boxSize={3} />
-												<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
-											</Tag>
-										)}
-										{willTour !== undefined && (
-											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
-												<TagLeftIcon as={FiCompass} boxSize={3} />
-												<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
-											</Tag>
-										)}
-									</Wrap>
-								</StackItem>
-							) : (
-								false
-							)}
-
-							{unions && unions.length > 0 && unionTerms ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										Unions/Guilds
-									</Heading>
-									<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
-								</StackItem>
-							) : (
-								false
-							)}
-
-							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										RISE Network Partner Directories
-									</Heading>
-									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
-										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
-										<Wrap flex='1' pl={2} spacing={2}>
-											{selectedLinkableTerms({
-												ids: partnerDirectories,
-												terms: partnerDirectoryTerms,
-											})}
-										</Wrap>
-									</Flex>
-								</StackItem>
-							) : (
-								false
-							)}
-
+						{locations && locations.length > 0 ? (
 							<StackItem>
 								<Heading as='h3' variant='contentTitle'>
-									Contact
+									Works In
 								</Heading>
-								<UnorderedList listStyleType='none' m={0} spacing={1}>
-									{email ? (
-										<ListItem>
-											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
-												{email}
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
+								<TextWithIcon icon={FiMapPin} mr={2}>
+									{locationTerms ? selectedTerms(locations, locationTerms) : false}
+								</TextWithIcon>
+								<Wrap>
+									{willTravel !== undefined && (
+										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} textAlign='center'>
+											<TagLeftIcon as={FiBriefcase} boxSize={3} />
+											<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
+										</Tag>
 									)}
-									{phone ? (
-										<ListItem>
-											<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
-												{phone}
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
+									{willTour !== undefined && (
+										<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
+											<TagLeftIcon as={FiCompass} boxSize={3} />
+											<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
+										</Tag>
 									)}
-									{website ? (
-										<ListItem>
-											<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
-												Visit Website
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
-									)}
-								</UnorderedList>
+								</Wrap>
 							</StackItem>
+						) : (
+							false
+						)}
 
+						{unions && unions.length > 0 && unionTerms ? (
 							<StackItem>
-								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
-									{resume && (
-										<Button
-											href={resume}
-											as={Link}
-											flex='1 0 auto'
-											textDecoration='none'
-											colorScheme='green'
-											leftIcon={<FiDownload />}
-											download
-											isExternal
-											_hover={{
-												textDecoration: 'none',
-											}}
-											size={{ base: 'md', md: 'lg' }}
-										>
-											Resume
-										</Button>
-									)}
-									{socials && !isEmpty(socials) && (
-										<PersonalIconLinks
-											socials={socials}
-											flex='1 0 auto'
-											justifyContent={{ base: 'flex-start', md: 'flex-end' }}
-										/>
-									)}
+								<Heading as='h3' variant='contentTitle'>
+									Unions/Guilds
+								</Heading>
+								<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
+							</StackItem>
+						) : (
+							false
+						)}
+
+						{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
+							<StackItem>
+								<Heading as='h3' variant='contentTitle'>
+									RISE Network Partner Directories
+								</Heading>
+								<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
+									<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
+									<Wrap flex='1' pl={2} spacing={2}>
+										{selectedLinkableTerms({
+											ids: partnerDirectories,
+											terms: partnerDirectoryTerms,
+										})}
+									</Wrap>
 								</Flex>
 							</StackItem>
-						</Stack>
-					</Flex>
-				</Card>
+						) : (
+							false
+						)}
+
+						<StackItem>
+							<Heading as='h3' variant='contentTitle'>
+								Contact
+							</Heading>
+							<UnorderedList listStyleType='none' m={0} spacing={1}>
+								{email ? (
+									<ListItem>
+										<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
+											{email}
+										</LinkWithIcon>
+									</ListItem>
+								) : (
+									false
+								)}
+								{phone ? (
+									<ListItem>
+										<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
+											{phone}
+										</LinkWithIcon>
+									</ListItem>
+								) : (
+									false
+								)}
+								{website ? (
+									<ListItem>
+										<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
+											Visit Website
+										</LinkWithIcon>
+									</ListItem>
+								) : (
+									false
+								)}
+							</UnorderedList>
+						</StackItem>
+
+						<StackItem>
+							<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
+								{resume && (
+									<Button
+										href={resume}
+										as={Link}
+										flex='1 0 auto'
+										textDecoration='none'
+										colorScheme='green'
+										leftIcon={<FiDownload />}
+										download
+										isExternal
+										_hover={{
+											textDecoration: 'none',
+										}}
+										size={{ base: 'md', md: 'lg' }}
+									>
+										Resume
+									</Button>
+								)}
+								{socials && !isEmpty(socials) && (
+									<PersonalIconLinks
+										socials={socials}
+										flex='1 0 auto'
+										justifyContent={{ base: 'flex-start', md: 'flex-end' }}
+									/>
+								)}
+							</Flex>
+						</StackItem>
+					</Stack>
+				</Flex>
 			</StackItem>
 
 			{credits && credits.length > 0 && (

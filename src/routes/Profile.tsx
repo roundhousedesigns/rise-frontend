@@ -1,22 +1,17 @@
 import { Link, useParams } from 'react-router-dom';
 import { ButtonGroup } from '@chakra-ui/react';
 import { FiEdit3 } from 'react-icons/fi';
-
-import { useProfileUrl } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
-
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
-import ShareButton from '../components/common/ShareButton';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
-	const profileUrl = useProfileUrl(slug);
 
 	const [userId] = useUserId(slug);
 
@@ -38,8 +33,6 @@ export default function Profile(): JSX.Element {
 					Edit
 				</ResponsiveButton>
 			)}
-
-			<ShareButton url={profileUrl} />
 		</ButtonGroup>
 	);
 
