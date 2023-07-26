@@ -17,7 +17,7 @@ import { handleReCaptchaVerify } from '../lib/utils';
 import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
 import useLogin from '../hooks/mutations/useLogin';
-import { useErrorMessage } from '../hooks/hooks';
+import { useLoginError } from '../hooks/hooks';
 
 interface Props {
 	alert?: string;
@@ -38,7 +38,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const navigate = useNavigate();
 
-	const errorMessage = useErrorMessage(errorCode);
+	const errorMessage = useLoginError(errorCode);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setCredentials({

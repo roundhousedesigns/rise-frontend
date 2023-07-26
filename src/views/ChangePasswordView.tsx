@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { chakra, Button, Box, Flex } from '@chakra-ui/react';
 import { ChangePasswordInput } from '../lib/types';
-import { useErrorMessage } from '../hooks/hooks';
+import { useChangePasswordError } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
 import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
 import useLogout from '../hooks/mutations/useLogout';
@@ -23,7 +23,7 @@ export default function ChangePasswordView() {
 		changeUserPasswordMutation,
 		results: { loading: submitLoading },
 	} = useChangeUserPassword();
-	const errorMessage = useErrorMessage(errorCode);
+	const errorMessage = useChangePasswordError(errorCode);
 	const { logoutMutation } = useLogout();
 
 	// useEffect to check if form is valid

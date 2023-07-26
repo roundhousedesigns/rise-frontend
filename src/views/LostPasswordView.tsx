@@ -5,7 +5,7 @@ import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-u
 
 import TextInput from '../components/common/inputs/TextInput';
 import useSendPasswordResetEmail from '../hooks/mutations/useSendPasswordResetEmail';
-import { useErrorMessage } from '../hooks/hooks';
+import { useLostPasswordError } from '../hooks/hooks';
 import { handleReCaptchaVerify } from '../lib/utils';
 
 export default function LoginView() {
@@ -25,7 +25,7 @@ export default function LoginView() {
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const errorMessage = useErrorMessage(errorCode);
+	const errorMessage = useLostPasswordError(errorCode);
 
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();

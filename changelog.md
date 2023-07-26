@@ -9,12 +9,10 @@ All notable changes to this project will be documented in this file, starting wi
 - Added: Back to Login button on Register page
 - Added: Jump to Credits button (Edit Profile)
 - Improved: Cache policy on related skills
-- Improved: Changed website URL display to "View Website" to handle for long, ugly links
+- Improved: Changed website URL display to "View Website" to handle for long, ugly links.
 - Improved: Minor styling tweaks
 - Improved: Credit Save/Cancel buttons no longer rerendering unncessarily
 - Improved: Credits saved without `position` terms show a reminder on Edit screen
-- Added: deprecated.ts file to track deprecated code
-- Improved: Combined error handler hooks into one `useErrorMessage` hook
 
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
