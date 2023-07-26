@@ -14,11 +14,11 @@ import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
-import useUserNotices from '../hooks/queries/useUserNotices';
+// import useUserNotices from '../hooks/queries/useUserNotices';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
-	const [notices] = useUserNotices();
+	// const [notices] = useUserNotices();
 
 	return (
 		<Box>
@@ -59,7 +59,7 @@ export default function DashboardView() {
 					</Flex>
 				</Flex>
 			</Card>
-			{notices && notices.length > 0 && (
+			{/* {notices && notices.length > 0 && (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates and Notices
@@ -75,7 +75,7 @@ export default function DashboardView() {
 						))}
 					</List>
 				</Box>
-			)}
+			)} */}
 		</Box>
 	);
 }
