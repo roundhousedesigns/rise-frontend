@@ -136,8 +136,8 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				);
 			}
 
-			// No link if no URL.
-			return term.name;
+			// No button if no URL.
+			return <Tag key={term.id} colorScheme='red'>{term.name}</Tag>;
 		});
 	}
 
