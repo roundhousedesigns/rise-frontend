@@ -128,8 +128,7 @@ export default function ProfileView({ profile, loading }: Props): JSX.Element | 
 				);
 			}
 
-			// No button if no URL.
-			return <Tag key={term.id} colorScheme='red'>{term.name}</Tag>;
+			return term.name;
 		});
 
 	// Build the subtitle string.
