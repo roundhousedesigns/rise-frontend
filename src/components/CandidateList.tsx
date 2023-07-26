@@ -25,11 +25,14 @@ const CandidateList = ({ userIds }: Props): JSX.Element => {
 			) : memoizedCandidates ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
 					{memoizedCandidates.map((candidate: Candidate) => {
-						const id = candidate.id ? candidate.id : 0;
-						return (
+						const { id } = candidate || {};
+
+						return id ? (
 							<ListItem key={id}>
 								<CandidateItem candidate={candidate} />
 							</ListItem>
+						) : (
+							false
 						);
 					})}
 				</List>

@@ -33,6 +33,8 @@ const useLogin = () => {
 		});
 	};
 
+	console.info(results);
+
 	return { loginMutation, results };
 };
 

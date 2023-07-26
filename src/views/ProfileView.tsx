@@ -47,7 +47,7 @@ import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
 import ShareButton from '../components/common/ShareButton';
 import TextWithIcon from '../components/common/TextWithIcon';
-import BookmarkControlIcon from '../components/common/BookmarkControlIcon';
+import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
@@ -205,7 +205,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 				>
 					<ShareButton url={profileUrl} />
 					{id && id !== loggedInId ? (
-						<BookmarkControlIcon
+						<BookmarkToggleIcon
 							id={id}
 							isBookmarked={bookmarkedProfiles?.includes(Number(id))}
 							size='xxxl'
