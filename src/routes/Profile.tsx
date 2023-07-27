@@ -12,13 +12,9 @@ export default function Profile(): JSX.Element {
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
-
 	const [userId] = useUserId(slug);
-
 	const profileIsLoggedInUser = loggedInSlug === slug;
-
-	// If no slug is in the route, use the logged in user's ID.
-	const profileId = userId ? userId : loggedInId;
+	const profileId = profileIsLoggedInUser ? loggedInId : userId;
 
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>

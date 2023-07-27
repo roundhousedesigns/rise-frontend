@@ -1,5 +1,5 @@
-import { useState, MouseEvent } from 'react';
-import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
+import { useRef } from 'react';
+import { chakra, List, ListItem, Spinner } from '@chakra-ui/react';
 import { Candidate } from '../lib/classes';
 import useCandidates from '../hooks/queries/useCandidates';
 import useViewer from '../hooks/queries/useViewer';
@@ -7,39 +7,36 @@ import CandidateItem from '../components/CandidateItem';
 import ErrorAlert from '../components/common/ErrorAlert';
 import useUpdateBookmarkedProfiles from '../hooks/mutations/useUpdateBookmarkedProfiles';
 
-const SavedCandidateList = (): JSX.Element => {
+interface Props {
+	[prop: string]: any;
+}
+
+const SavedCandidateList = ({ ...props }): JSX.Element => {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
-	const [preparedCandidates, { loading, error }] = useCandidates(bookmarkedProfiles);
-	const [preparedCandidateIds, setPreparedCandidateIds] = useState<number[]>([]);
+	const [preparedCandidates, { error, loading }] = useCandidates(bookmarkedProfiles);
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
 
-	// set the preparedCandidateIds state to the bookmarkedProfiles array
-	// this will be used to render the CandidateItem components
-	if (bookmarkedProfiles.length > 0 && preparedCandidateIds.length === 0) {
-		setPreparedCandidateIds(bookmarkedProfiles);
-	}
+	const preparedCandidateIds = useRef<number[]>(bookmarkedProfiles);
 
-	const removeHandler = (id: number) => (event: MouseEvent<HTMLButtonElement>) => {
-		const updatedCandidateIds = preparedCandidateIds.filter(
+	const removeHandler = (id: number) => () => {
+		preparedCandidateIds.current = preparedCandidateIds.current.filter(
 			(candidateId: number) => candidateId !== id
 		);
 
-		setPreparedCandidateIds(updatedCandidateIds);
-
 		// Fire off the mutation.
-		updateBookmarkedProfilesMutation(loggedInId, updatedCandidateIds);
+		updateBookmarkedProfilesMutation(loggedInId, preparedCandidateIds.current);
 	};
 
 	return (
-		<>
+		<chakra.div {...props}>
 			{loading ? (
 				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
-			) : preparedCandidates ? (
+			) : preparedCandidates?.length ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{preparedCandidateIds?.map((id: number) => {
-						// get the candidate from the preparedCandidates array
+					{preparedCandidateIds.current?.map((id: number) => {
+						// Find the candidate in the preparedCandidates array
 						const candidate = preparedCandidates.find(
 							(candidate: Candidate) => candidate.id === id
 						);
@@ -52,9 +49,9 @@ const SavedCandidateList = (): JSX.Element => {
 					})}
 				</List>
 			) : (
-				<Text>No candidates to show.</Text>
+				false
 			)}
-		</>
+		</chakra.div>
 	);
 };
 

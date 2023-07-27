@@ -9,7 +9,6 @@ import {
 	Text,
 	Stack,
 	Card,
-	useMediaQuery,
 	Avatar,
 	Tag,
 	Spinner,
@@ -23,6 +22,7 @@ import {
 	Icon,
 	TagLeftIcon,
 	TagLabel,
+	useBreakpointValue,
 } from '@chakra-ui/react';
 import {
 	FiBriefcase,
@@ -69,8 +69,13 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 	// If no slug is in the route, use the logged in user's ID.
 	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
-	// TODO probably replace this with `useBreakpointValue`
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48em)');
+	const isLargerThanMd = useBreakpointValue(
+		{
+			base: false,
+			md: true,
+		},
+		{ ssr: false }
+	);
 
 	const profileUrl = useProfileUrl(slug);
 

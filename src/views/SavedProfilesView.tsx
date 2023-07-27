@@ -8,7 +8,7 @@ export default function SavedProfilesView() {
 
 	return (
 		<Card title='Saved Profiles'>
-			<Text size='sm' mt='0' display='flex' alignItems='center' flexWrap='wrap'>
+			<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 				To save a profile, click the{' '}
 				<IconButton
 					icon={<FiBookmark />}
@@ -21,7 +21,7 @@ export default function SavedProfilesView() {
 				/>{' '}
 				icon on a person's profile, or next to a name in search results.
 			</Text>
-			<SavedCandidateList />
+			<SavedCandidateList my={0} />
 		</Card>
 	);
 }

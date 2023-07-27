@@ -22,7 +22,6 @@ const useUserId = (slug: string): [number | null, any] => {
 		variables: {
 			slug,
 		},
-		fetchPolicy: 'network-only',
 	});
 
 	const { userBySlug: userId } = result.data || {};
