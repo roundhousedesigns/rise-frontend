@@ -8,7 +8,7 @@ import {
 	Spacer,
 	List,
 	ListItem,
-	Icon,
+	IconButton,
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
