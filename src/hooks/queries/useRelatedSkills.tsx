@@ -14,7 +14,7 @@ import { WPItemParams } from '../../lib/types';
 import { WPItem } from '../../lib/classes';
 import { sortWPItemsByName } from '../../lib/utils';
 
-const QUERY_RELATED_SKILLS = gql`
+export const QUERY_RELATED_SKILLS = gql`
 	query RelatedSkillsQuery($jobs: [ID!]) {
 		jobSkills(jobs: $jobs) {
 			id: databaseId
