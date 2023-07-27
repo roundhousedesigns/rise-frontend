@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[1.0.8] - Unreleased
 
+- Feature: Saved Profiles (bookmarked profiles).
+- Feature: Dashboard updates feed
 - Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
 - Added: Basic password complexity enforcement
 - Feature: Saved Profiles (bookmarked profiles).
