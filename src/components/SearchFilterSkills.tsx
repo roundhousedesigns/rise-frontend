@@ -8,8 +8,13 @@ import CheckboxButton from './common/inputs/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
 
 export default function SearchFilterSkills() {
-	const { search, searchDispatch } = useContext(SearchContext);
-	const [data, { loading, error }] = useRelatedSkills(search.filters.positions.jobs);
+	const {
+		search: {
+			filters: { positions, skills },
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
+	const [data, { loading, error }] = useRelatedSkills(positions.jobs);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -25,7 +30,7 @@ export default function SearchFilterSkills() {
 			<Heading as='h3' variant='searchFilterTitle'>
 				What skills are you looking for?
 			</Heading>
-			<CheckboxGroup defaultValue={search.filters.skills} onChange={handleToggleTerm}>
+			<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm}>
 				<Wrap>
 					{data.map((term: WPItem) => (
 						<CheckboxButton key={term.id} value={term.id.toString()}>

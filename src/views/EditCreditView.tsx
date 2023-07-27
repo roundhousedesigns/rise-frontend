@@ -14,8 +14,7 @@ import { sortWPItemsByName } from '../lib/utils';
 
 // TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
-
-  switch (action.type) {
+	switch (action.type) {
 		case 'UPDATE_INPUT':
 			return {
 				...state,
@@ -85,68 +84,75 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const [allDepartments] = usePositions();
 	const [getJobs, { loading: jobsLoading }] = useLazyPositions();
 	const [jobs, setJobs] = useState<WPItem[]>([]);
-  const [getRelatedSkills, { loading: relatedSkillsLoading}] = useLazyRelatedSkills();
-  const [skills, setSkills] = useState<WPItem[]>([]);
+	const [getRelatedSkills, { loading: relatedSkillsLoading }] = useLazyRelatedSkills();
+	const [skills, setSkills] = useState<WPItem[]>([]);
 
-  // fetch jobs & skills lists on mount
-  useEffect(() => {
-    refetchAndSetJobs(selectedDepartmentIds);
-    refetchAndSetSkills(selectedJobIds)
-  }, []);
+	// Fetch jobs & skills lists on mount
+	useEffect(() => {
+		refetchAndSetJobs(selectedDepartmentIds);
+		refetchAndSetSkills(selectedJobIds);
+	}, []);
 
+	/** Fetches jobs given array of departmentIds, sets jobs
+	 *
+	 * @returns {Array} returns array of numbers of related/visible jobIds
+	 */
+	const refetchAndSetJobs = async (departmentIds: number[]) => {
+		if (departmentIds.length === 0) {
+			setJobs([]);
 
-  /** Fetches jobs given array of departmentIds, sets jobs
-   *
-   * @returns {Array} returns array of numbers of related/visible jobIds
-   */
-  const refetchAndSetJobs = async (departmentIds: number[]) => {
-    if (departmentIds.length === 0) {
-      setJobs([]);
-      return [];
-    }
+			return [];
+		}
 
-    const jobData = await getJobs({
-      variables: { departments: departmentIds },
-      fetchPolicy: 'network-only'
-    });
-    const jobsByDept = jobData?.data?.jobsByDepartments
+		const jobData = await getJobs({
+			variables: { departments: departmentIds },
+			fetchPolicy: 'network-only',
+		});
 
-    if (jobsByDept) {
-      setJobs(jobsByDept.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
-      const jobsByDeptIds = jobsByDept.map((j: WPItem)=> Number(j.id));
-      return jobsByDeptIds;
-    } else {
-      setJobs([]);
-      return [];
-    }
-  }
+		const jobsByDept = jobData?.data?.jobsByDepartments;
 
-/** Fetches skills given array of jobIds, sets skills
- *
- * @returns {Array} returns array of numbers related/visible skillIds
- */
+		if (jobsByDept) {
+			setJobs(jobsByDept.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
 
-const refetchAndSetSkills = async (jobIds: number[]) => {
-  if (jobIds.length === 0) {
-    setSkills([]);
-    return [];
-  }
+			const jobsByDeptIds = jobsByDept.map((j: WPItem) => Number(j.id));
 
-  const skillData = await getRelatedSkills({
-    variables: { jobs: jobIds },
-    fetchPolicy: 'network-only'
-  });
-  const relatedSkills = skillData?.data?.jobSkills
+			return jobsByDeptIds;
+		} else {
+			setJobs([]);
 
-  if (relatedSkills) {
-    setSkills(relatedSkills.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
-    const relatedSkillIds = relatedSkills.map((s: WPItem)=> Number(s.id));
-    return relatedSkillIds;
-  } else {
-    setSkills([]);
-    return [];
-  }
-}
+			return [];
+		}
+	};
+
+	/** Fetches skills given array of jobIds, sets skills
+	 *
+	 * @returns {Array} returns array of numbers related/visible skillIds
+	 */
+
+	const refetchAndSetSkills = async (jobIds: number[]) => {
+		if (jobIds.length === 0) {
+			setSkills([]);
+			return [];
+		}
+
+		const skillData = await getRelatedSkills({
+			variables: { jobs: jobIds },
+			fetchPolicy: 'network-only',
+		});
+		const relatedSkills = skillData?.data?.jobSkills;
+
+		if (relatedSkills) {
+			setSkills(relatedSkills.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
+
+			const relatedSkillIds = relatedSkills.map((s: WPItem) => Number(s.id));
+
+			return relatedSkillIds;
+		} else {
+			setSkills([]);
+
+			return [];
+		}
+	};
 
 	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -171,44 +177,42 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 		});
 	};
 
-  const handleDepartmentsChange = (name: string) => async (terms: string[]) => {
-    // update depts:
-    const termsAsNums = terms.map((i)=> Number(i));
-    dispatchCheckboxTermChange(name, termsAsNums);
+	const handleDepartmentsChange = (name: string) => async (terms: string[]) => {
+		// update depts:
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
 
-    // update jobs to align with selected depts:
-    const visibleJobs = await refetchAndSetJobs(termsAsNums);
-    const filteredSelectedJobIds = selectedJobIds.filter(
-      (id: number) => visibleJobs.includes(id)
-    );
-    dispatchCheckboxTermChange("jobs", filteredSelectedJobIds);
+		// update jobs to align with selected depts:
+		const visibleJobs = await refetchAndSetJobs(termsAsNums);
+		const filteredSelectedJobIds = selectedJobIds.filter((id: number) => visibleJobs.includes(id));
+		dispatchCheckboxTermChange('jobs', filteredSelectedJobIds);
 
-    // update skills to align with selected jobs:
-    const visibleSkills = await refetchAndSetSkills(filteredSelectedJobIds);
-    const filteredSelectedSkillIds = selectedSkills.filter(
-      (id: number) => visibleSkills.includes(id)
-    );
-    dispatchCheckboxTermChange("skills", filteredSelectedSkillIds);
-  }
+		// update skills to align with selected jobs:
+		const visibleSkills = await refetchAndSetSkills(filteredSelectedJobIds);
+		const filteredSelectedSkillIds = selectedSkills.filter((id: number) =>
+			visibleSkills.includes(id)
+		);
+		dispatchCheckboxTermChange('skills', filteredSelectedSkillIds);
+	};
 
-  const handleJobsChange = (name: string) => async (terms: string[]) => {
-    // update jobs
-    const termsAsNums = terms.map((i)=> Number(i));
-    dispatchCheckboxTermChange(name, termsAsNums);
+	const handleJobsChange = (name: string) => async (terms: string[]) => {
+		// update jobs
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
 
-    // update skills to align with selected jobs:
-    const visibleSkills = await refetchAndSetSkills(termsAsNums);
-    const filteredSelectedSkillIds = selectedSkills.filter(
-      (id: number) => visibleSkills.includes(id)
-    );
-    dispatchCheckboxTermChange("skills", filteredSelectedSkillIds);
-  }
+		// update skills to align with selected jobs:
+		const visibleSkills = await refetchAndSetSkills(termsAsNums);
+		const filteredSelectedSkillIds = selectedSkills.filter((id: number) =>
+			visibleSkills.includes(id)
+		);
+		dispatchCheckboxTermChange('skills', filteredSelectedSkillIds);
+	};
 
-  const handleSkillsChange = (name: string) => (terms: string[]) => {
-    // update skills
-    const termsAsNums = terms.map((i)=> Number(i));
-    dispatchCheckboxTermChange(name, termsAsNums);
-  }
+	const handleSkillsChange = (name: string) => (terms: string[]) => {
+		// update skills
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
+	};
 
 	const handleRadioInputChange = (name: string) => (value: string) => {
 		editCreditDispatch({
@@ -360,10 +364,8 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 								name='jobs'
 								items={jobs}
 								checked={
-                  selectedJobIds
-                  ? selectedJobIds.map((item: number) => item.toString())
-                  : []
-                }
+									selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []
+								}
 								handleChange={handleJobsChange}
 							/>
 						</>
@@ -383,10 +385,8 @@ const refetchAndSetSkills = async (jobIds: number[]) => {
 								name='skills'
 								items={skills}
 								checked={
-                  selectedSkills
-                  ? selectedSkills.map((item: number) => item.toString())
-                  : []
-                }
+									selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []
+								}
 								handleChange={handleSkillsChange}
 							/>
 						</>
