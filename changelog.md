@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file, starting wi
 ## \[1.0.8] - Unreleased
 
 - Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
+- Added: Basic password complexity enforcement
 
 ## \[1.0.7] - 2023-07-03
 
@@ -12,7 +13,6 @@ All notable changes to this project will be documented in this file, starting wi
 - Fixed: Credits without `position` terms were stuck infinitely loading
 - Added: Back to Login button on Register page
 - Added: Jump to Credits button (Edit Profile)
-- Added: Basic password complexity enforcement
 - Improved: Cache policy on related skills
 - Improved: Changed website URL display to "View Website" to handle for overlong layout-breaking links
 - Improved: Minor styling tweaks
