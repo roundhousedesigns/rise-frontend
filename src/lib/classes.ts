@@ -7,6 +7,7 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
+	WPPostParams,
 } from './types';
 import { decodeString, maybeParseInt } from './utils';
 
@@ -363,5 +364,23 @@ export class WPItem implements WPItemParams {
 		this.slug = params.slug ? params.slug : undefined;
 		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
+	}
+}
+
+/**
+ * A WordPress post.
+ */
+export class WPPost extends WPItem {
+	postType: string;
+	title?: string;
+	excerpt?: string;
+	content?: string;
+
+	constructor(params: WPItemParams & WPPostParams) {
+		super(params);
+		this.postType = params.postType;
+		this.title = params.title ? unescape(params.title) : undefined;
+		this.excerpt = params.excerpt ? unescape(params.excerpt) : undefined;
+		this.content = params.content ? unescape(params.content) : undefined;
 	}
 }

@@ -6,6 +6,7 @@ import { omit } from 'lodash';
 
 // WordPress block styles
 import '../../assets/css/wordpress.css';
+import { WPPost } from '../../lib/classes';
 
 export const QUERY_GLOBAL_NOTICES = gql`
 	query LatestUserNoticeQuery($last: Int = 4) {
@@ -25,16 +26,21 @@ export const QUERY_GLOBAL_NOTICES = gql`
  * @param {number} last The number of notices to retrieve.
  * @returns A tuple of a prepared HTML string and a query result object.
  */
-const useUserNotices = (last: number = 4): [string[], any] => {
+const useUserNotices = (last: number = 4): [WPPost[], any] => {
 	const result = useQuery(QUERY_GLOBAL_NOTICES, {
 		variables: {
 			last,
 		},
 	});
 
-	const prepareNotices = result.data?.userNotices.nodes || [];
-
-	return [prepareNotices, omit(result, ['data'])];
+	const preparedNotices =
+		result.data?.userNotices.nodes.map((notice: any) => {
+			const { __typename: postType, id, title, content } = notice;
+			return new WPPost({ postType, id, title, content });
+		}) || [];
+		
+		console.info(preparedNotices);
+	return [preparedNotices, omit(result, ['data'])];
 };
 
 export default useUserNotices;

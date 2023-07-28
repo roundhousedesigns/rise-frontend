@@ -49,14 +49,16 @@ export default function BookmarkToggleIcon({ id, isBookmarked, isDisabled, ...pr
 					fill={isBookmarkedState ? orange : 'transparent'}
 					stroke={colorMode === 'dark' ? lightGray : darkGray}
 					strokeWidth={1}
-					size={24}
+					size={32}
 				/>
 			}
-			variant={'bookmark'}
+			variant='bookmark'
 			aria-label={iconLabel}
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
-			mr={2}
+			mx={2}
+			py={1}
+			px={2}
 			{...props}
 		/>
 	);

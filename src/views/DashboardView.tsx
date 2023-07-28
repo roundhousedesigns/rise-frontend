@@ -12,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import parse from 'html-react-parser';
 import useViewer from '../hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
+import ShortPost from '../components/common/ShortPost';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
@@ -59,15 +59,12 @@ export default function DashboardView() {
 			{notices && notices.length > 0 && (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
-						Updates and Notices
+						Updates
 					</Heading>
 					<List spacing={6} mt={4}>
 						{notices.map((notice: any) => (
-							<ListItem as={Card} key={notice.id} my={0}>
-								<Heading as='h4' variant='contentSubtitle'>
-									{notice.title}
-								</Heading>
-								<Box>{parse(notice.content)}</Box>
+							<ListItem as={Card} key={notice.id} my={0} p={0}>
+								<ShortPost post={notice} />
 							</ListItem>
 						))}
 					</List>

@@ -198,7 +198,9 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem as={Card} p={4}>
 				<Flex
-					bg={{ base: 'blackAlpha.200', md: 'transparent' }}
+					bg={{ md: 'transparent !important' }}
+					_dark={{ bg: 'blackAlpha.200' }}
+					_light={{ bg: 'blackAlpha.100' }}
 					position='absolute'
 					top={0}
 					left={0}
