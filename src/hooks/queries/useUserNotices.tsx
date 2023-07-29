@@ -38,8 +38,7 @@ const useUserNotices = (last: number = 4): [WPPost[], any] => {
 			const { __typename: postType, id, title, content } = notice;
 			return new WPPost({ postType, id, title, content });
 		}) || [];
-		
-		console.info(preparedNotices);
+
 	return [preparedNotices, omit(result, ['data'])];
 };
 
