@@ -20,6 +20,8 @@ import {
 	Link,
 	SimpleGrid,
 	Slide,
+	Input,
+	Center
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -573,6 +575,42 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			</Flex>
 		</Box>
 	);
+
+	/**
+	 * Michael's Area
+	 * 
+	 */
+
+	const DragDropFile = () => {
+		// drag state
+		const [dragActive, setDragActive] = useState(false);
+
+		// handle drag events
+		const handleDrag = (e: DragEvent) => {
+			e.preventDefault();
+			e.stopPropagation();
+
+			if (e.type === 'dragenter' || e.type === 'dragover') {
+				setDragActive(true);
+			} else if (e.type === 'dragleave') {
+				setDragActive(false);
+			}
+		}
+
+		return (
+			<Box as="form" id="form-file-upload" h={250} w={500} maxW={'100%'} textAlign={'center'} position={'relative'} border={'1px red dotted'}>
+				<Input type="file" id="input-file-upload" multiple display={'none'}/>
+				<Flex as="label" htmlFor="input-file-upload" h={'100%'} alignContent={'center'} justifyContent={'center'}>
+					<Center>
+						<Box>
+							<Text>Drag and drop your file here or</Text>
+							<Button className="upload-button" cursor={'pointer'} padding={1} backgroundColor={'transparent'} textDecorationLine={'underline'}>Upload a file</Button>
+						</Box>
+					</Center>
+				</Flex>
+			</Box>
+		);
+	}
 
 	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
 		if (!fieldName) return <>No image.</>;
@@ -1134,6 +1172,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
 							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
 							<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
+							<DragDropFile/>
 						</SimpleGrid>
 					</Box>
 				</StackItem>
