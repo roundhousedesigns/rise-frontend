@@ -597,17 +597,79 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			}
 		}
 
+		// triggers when file is dropped
+		// TODO - Add logic for image upload here
+		const handleDrop = (e: DragEvent) => {
+			e.preventDefault();
+			e.stopPropagation();
+			setDragActive(false);
+			console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
+		}
+
+		// triggers when file is selected with click
+		// TODO - Add logic for image upload here
+		const handleChange = (e: ChangeEvent) => {
+			e.preventDefault();
+			console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
+		}
+
+		// TODO - additional styling: bgcolor on drag, make cursor: pointer for entire box? add an upload icon?
+		// i love the look of this: https://pro.chakra-ui.com/components/application/form-elements/drop-zone?color=blue&theme=Chakra+UI+Pro
 		return (
-			<Box as="form" id="form-file-upload" h={250} w={500} maxW={'100%'} textAlign={'center'} position={'relative'} border={'1px red dotted'}>
-				<Input type="file" id="input-file-upload" multiple display={'none'}/>
-				<Flex as="label" htmlFor="input-file-upload" h={'100%'} alignContent={'center'} justifyContent={'center'}>
+			<Box 
+				as="form" 
+				onDragEnter={handleDrag}
+				onSubmit={(e: SubmitEvent) => e.preventDefault()}
+				id="form-file-upload" 
+				h={250} 
+				w={500} 
+				maxW={'100%'} 
+				textAlign={'center'} 
+				position={'relative'} 
+				border={'1px red dotted'}
+			>
+				<Input 
+					type="file" 
+					id="input-file-upload" 
+					// multiple 
+					display={'none'}
+					onChange={handleChange}
+				/>
+				<Flex 
+					as="label" 
+					htmlFor="input-file-upload"
+					h={'100%'} 
+					alignContent={'center'} 
+					justifyContent={'center'}
+					backgroundColor={dragActive ? '#ffffff' : 'transparent'}
+				>
 					<Center>
 						<Box>
 							<Text>Drag and drop your file here or</Text>
-							<Button className="upload-button" cursor={'pointer'} padding={1} backgroundColor={'transparent'} textDecorationLine={'underline'}>Upload a file</Button>
+							<Text 
+								className="upload-button" 
+								cursor={'pointer'} 
+								padding={1} 
+								backgroundColor={'transparent'} 
+								textDecorationLine={'underline'}
+							>
+								Click to upload a file
+							</Text>
 						</Box>
 					</Center>
 				</Flex>
+				{dragActive && 
+					<Box 
+						onDragEnter={handleDrag} 
+						onDragLeave={handleDrag} 
+						onDragOver={handleDrag} 
+						onDrop={handleDrop}
+						position={'absolute'}
+						w={'100%'}
+						h={'100%'}
+						top={0}
+						right={0}
+					/>}
 			</Box>
 		);
 	}
