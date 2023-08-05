@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
-
 import Dashboard from '../../routes/Dashboard';
 import Login from '../../routes/Login';
 import LostPassword from '../../routes/LostPassword';

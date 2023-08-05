@@ -61,7 +61,7 @@ interface Props {
  * @returns {JSX.Element} The Props component.
  */
 export default function ProfileView({ profileId }: Props): JSX.Element | null {
-	const { loggedInId, bookmarkedProfiles } = useViewer();
+	const { loggedInId } = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
@@ -211,15 +211,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 					gap={{ base: 0, md: 2 }}
 				>
 					<ShareButton url={profileUrl} />
-					{id && id !== loggedInId ? (
-						<BookmarkToggleIcon
-							id={id}
-							isBookmarked={bookmarkedProfiles?.includes(Number(id))}
-							size='xxxl'
-						/>
-					) : (
-						false
-					)}
+					{id && id !== loggedInId ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
 				</Flex>
 				<Flex
 					gap={6}

@@ -13,19 +13,17 @@ interface Props {
 }
 
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
-	const { loggedInId, bookmarkedProfiles } = useViewer();
+	const { loggedInId } = useViewer();
 	const { id, image, slug, selfTitle } = candidate;
 
 	if (!id) return null;
-
-	const isBookmarked = bookmarkedProfiles.includes(Number(id));
 
 	return (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
 				<RemoveBookmarkIcon id={id} removeHandler={onRemove(id)} />
 			) : (
-				<BookmarkToggleIcon id={id} isBookmarked={isBookmarked} isDisabled={loggedInId === id} />
+				<BookmarkToggleIcon id={id} isDisabled={loggedInId === id} />
 			)}
 			<Card
 				flex={1}

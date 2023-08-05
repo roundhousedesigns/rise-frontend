@@ -7,18 +7,17 @@ import useUpdateBookmarkedProfiles from '../../hooks/mutations/useUpdateBookmark
 
 interface Props {
 	id: number;
-	isBookmarked?: boolean;
 	isDisabled?: boolean;
 	[prop: string]: any;
 }
 
-export default function BookmarkToggleIcon({ id, isBookmarked, isDisabled, ...props }: Props) {
+export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
-	const [isBookmarkedState, setIsBookmarkedState] = useState<boolean>(
-		typeof isBookmarked === 'boolean' ? isBookmarked : false
-	);
+	const [isBookmarked, setIsBookmarked] = useState<boolean>(bookmarkedProfiles.includes(id));
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
+
 	const { colorMode } = useColorMode();
+
 	const [orange, lightGray, darkGray] = useToken('colors', [
 		'brand.orange',
 		'gray.300',
@@ -27,17 +26,16 @@ export default function BookmarkToggleIcon({ id, isBookmarked, isDisabled, ...pr
 
 	const updateBookmarkedProfilesHandler = () => {
 		if (!id) return;
-
 		const updatedBookmarkedProfiles = toggleArrayItem(bookmarkedProfiles, id);
 
 		// Optimism!
-		setIsBookmarkedState(!isBookmarkedState);
+		setIsBookmarked(!isBookmarked);
 
-		// Fire off the mutation.
+		// Fire the mutation.
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
 
-	const iconLabel = isBookmarkedState
+	const iconLabel = isBookmarked
 		? 'Remove this candidate from your saved candidates'
 		: 'Save this candidate';
 
@@ -45,8 +43,8 @@ export default function BookmarkToggleIcon({ id, isBookmarked, isDisabled, ...pr
 		<IconButton
 			icon={
 				<FiBookmark
-					color={isBookmarkedState ? orange : ''}
-					fill={isBookmarkedState ? orange : 'transparent'}
+					color={isBookmarked ? orange : ''}
+					fill={isBookmarked ? orange : 'transparent'}
 					stroke={colorMode === 'dark' ? lightGray : darkGray}
 					strokeWidth={1}
 					size={32}
