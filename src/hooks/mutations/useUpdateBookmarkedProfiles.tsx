@@ -15,13 +15,7 @@ const MUTATE_TOGGLE_BOOKMARKED_PROFILE = gql`
 			}
 		) {
 			clientMutationId
-			viewer {
-				bookmarkedProfileConnections {
-					nodes {
-						databaseId
-					}
-				}
-			}
+			updatedBookmarkedProfiles
 		}
 	}
 `;
@@ -39,39 +33,39 @@ const useUpdateBookmarkedProfiles = () => {
 				loggedInId,
 				bookmarkedProfiles: updatedBookmarkedProfiles,
 			},
-			update: (cache, { data }) => {
-				const updatedViewer = data?.updateBookmarkedProfiles?.viewer;
-				if (updatedViewer) {
-					cache.modify({
-						id: cache.identify(updatedViewer),
-						fields: {
-							bookmarkedProfileConnections(existingConnections = {}) {
-								return {
-									...existingConnections,
-									nodes: updatedViewer.bookmarkedProfileConnections.nodes,
-								};
-							},
-						},
-					});
-				}
-			},
-			optimisticResponse: {
-				updateBookmarkedProfiles: {
-					clientMutationId: 'updateBookmarkedProfilesMutation',
-					success: true,
-					viewer: {
-						__typename: 'User',
-						id: 'temp-id',
-						bookmarkedProfileConnections: {
-							__typename: 'User_bookmarked_profile_connections_connection',
-							nodes: updatedBookmarkedProfiles.map((profileId) => ({
-								__typename: 'User',
-								databaseId: profileId,
-							})),
-						},
-					},
-				},
-			},
+			// update: (cache, { data }) => {
+			// 	const updatedViewer = data?.updateBookmarkedProfiles?.viewer;
+			// 	if (updatedViewer) {
+			// 		cache.modify({
+			// 			id: cache.identify(updatedViewer),
+			// 			fields: {
+			// 				bookmarkedProfileConnections(existingConnections = {}) {
+			// 					return {
+			// 						...existingConnections,
+			// 						nodes: updatedViewer.bookmarkedProfileConnections.nodes,
+			// 					};
+			// 				},
+			// 			},
+			// 		});
+			// 	}
+			// },
+			// optimisticResponse: {
+			// 	updateBookmarkedProfiles: {
+			// 		clientMutationId: 'updateBookmarkedProfilesMutation',
+			// 		success: true,
+			// 		viewer: {
+			// 			__typename: 'User',
+			// 			id: 'temp-id',
+			// 			bookmarkedProfileConnections: {
+			// 				__typename: 'User_bookmarked_profile_connections_connection',
+			// 				nodes: updatedBookmarkedProfiles.map((profileId) => ({
+			// 					__typename: 'User',
+			// 					databaseId: profileId,
+			// 				})),
+			// 			},
+			// 		},
+			// 	},
+			// },
 			refetchQueries: [
 				{
 					query: QUERY_VIEWER,
