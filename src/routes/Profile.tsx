@@ -3,6 +3,7 @@ import { ButtonGroup } from '@chakra-ui/react';
 import { FiEdit3 } from 'react-icons/fi';
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
+import useUserProfile from '../hooks/queries/useUserProfile';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
@@ -15,6 +16,8 @@ export default function Profile(): JSX.Element {
 	const [userId] = useUserId(slug);
 	const profileIsLoggedInUser = loggedInSlug === slug;
 	const profileId = profileIsLoggedInUser ? loggedInId : userId;
+
+	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>
@@ -33,8 +36,13 @@ export default function Profile(): JSX.Element {
 	);
 
 	return (
-		<Page title={profileIsLoggedInUser ? 'My Profile' : ''} actions={<PageActions />} pb={8}>
-			{profileId ? <ProfileView profileId={profileId} /> : false}
+		<Page
+			title={profileIsLoggedInUser ? 'My Profile' : ''}
+			actions={<PageActions />}
+			loading={loading}
+			pb={8}
+		>
+			{profile ? <ProfileView profile={profile} allowBookmark={loggedInId !== profileId} /> : false}
 		</Page>
 	);
 }

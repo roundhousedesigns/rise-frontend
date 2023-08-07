@@ -14,11 +14,11 @@ import Help from '../../routes/Help';
 import NotFound from '../../routes/NotFound';
 import LoggedIn from '../LoggedIn';
 
-export default function Main() {
-	const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
-		<LoggedIn>{component}</LoggedIn>
-	);
+const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
+	<LoggedIn>{component}</LoggedIn>
+);
 
+export default function Main() {
 	return (
 		<Box
 			id='main'

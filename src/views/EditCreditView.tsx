@@ -106,7 +106,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 		const jobData = await getJobs({
 			variables: { departments: departmentIds },
-			fetchPolicy: 'network-only',
 		});
 
 		const jobsByDept = jobData?.data?.jobsByDepartments;
@@ -137,7 +136,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 		const skillData = await getRelatedSkills({
 			variables: { jobs: jobIds },
-			fetchPolicy: 'network-only',
 		});
 		const relatedSkills = skillData?.data?.jobSkills;
 

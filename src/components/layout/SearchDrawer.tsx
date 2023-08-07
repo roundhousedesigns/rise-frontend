@@ -83,7 +83,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				// first: 20,
 				// after: null,
 			},
-			fetchPolicy: 'network-only',
 		})
 			.then(() => {
 				onClose();

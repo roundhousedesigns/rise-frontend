@@ -1,33 +1,25 @@
-import { useEffect, useRef } from 'react';
-import { isEqual } from 'lodash';
 import { chakra, List, ListItem, Spinner } from '@chakra-ui/react';
-import { Candidate } from '../lib/classes';
+import { AnimatePresence, motion } from 'framer-motion';
 import useCandidates from '../hooks/queries/useCandidates';
 import useViewer from '../hooks/queries/useViewer';
 import CandidateItem from '../components/CandidateItem';
 import ErrorAlert from '../components/common/ErrorAlert';
 import useUpdateBookmarkedProfiles from '../hooks/mutations/useUpdateBookmarkedProfiles';
+import { Candidate } from '../lib/classes';
+import { toggleArrayItem } from '../lib/utils';
+
+const MotionBox = motion(chakra.div);
 
 const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element => {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
 	const [preparedCandidates, { error, loading }] = useCandidates(bookmarkedProfiles);
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
 
-	const preparedCandidateIds = useRef<number[]>([]);
-
-	useEffect(() => {
-		if (isEqual(preparedCandidateIds.current, bookmarkedProfiles)) return;
-
-		preparedCandidateIds.current = bookmarkedProfiles;
-	}, [bookmarkedProfiles, preparedCandidateIds.current]);
-
 	const removeHandler = (id: number) => () => {
+		const ids = toggleArrayItem(bookmarkedProfiles, id);
+
 		// Fire off the mutation.
-		updateBookmarkedProfilesMutation(loggedInId, preparedCandidateIds.current).then((res) => {
-			preparedCandidateIds.current = preparedCandidateIds.current.filter(
-				(candidateId: number) => candidateId !== id
-			);
-		});
+		updateBookmarkedProfilesMutation(loggedInId, ids);
 	};
 
 	return (
@@ -36,23 +28,30 @@ const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element 
 				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
-			) : preparedCandidates?.length ? (
-				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{preparedCandidateIds.current?.map((id: number, index: number) => {
-						// Find the candidate in the preparedCandidates array
-						const candidate = preparedCandidates.find(
-							(candidate: Candidate) => candidate.id === id
-						);
-
-						return (
-							<ListItem key={id}>
-								<CandidateItem candidate={candidate} onRemove={removeHandler} />
-							</ListItem>
-						);
-					})}
-				</List>
 			) : (
-				false
+				<List alignItems='left' h='auto' w='full' spacing={4}>
+					<AnimatePresence>
+						{' '}
+						{/* Wrap the list with AnimatePresence */}
+						{bookmarkedProfiles?.map((id) => {
+							const candidate = preparedCandidates.find(
+								(candidate: Candidate) => candidate.id === id
+							);
+							return (
+								<MotionBox
+									key={id}
+									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
+									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
+									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
+								>
+									<ListItem>
+										<CandidateItem candidate={candidate} onRemove={removeHandler} />
+									</ListItem>
+								</MotionBox>
+							);
+						})}
+					</AnimatePresence>
+				</List>
 			)}
 		</chakra.div>
 	);

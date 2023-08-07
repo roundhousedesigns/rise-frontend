@@ -1,10 +1,10 @@
-import { Card, Text, IconButton } from '@chakra-ui/react';
+import { Card, Text, IconButton, Box } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
 import SavedCandidateList from './SavedCandidateList';
 
 export default function SavedProfilesView() {
 	return (
-		<>
+		<Box>
 			<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 				To save someone's profile, click the{' '}
 				<IconButton
@@ -19,6 +19,6 @@ export default function SavedProfilesView() {
 			<Card title='Saved Profiles'>
 				<SavedCandidateList my={0} />
 			</Card>
-		</>
+		</Box>
 	);
 }

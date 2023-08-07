@@ -11,7 +11,6 @@ import {
 	Card,
 	Avatar,
 	Tag,
-	Spinner,
 	UnorderedList,
 	ListItem,
 	StackItem,
@@ -38,10 +37,8 @@ import {
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
-import { Credit, WPItem } from '../lib/classes';
+import { Credit, UserProfile, WPItem } from '../lib/classes';
 import { useProfileUrl } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
-import useUserProfile from '../hooks/queries/useUserProfile';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
@@ -53,21 +50,18 @@ import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
 
 interface Props {
-	profileId: number;
+	profile: UserProfile;
+	allowBookmark?: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profileId }: Props): JSX.Element | null {
-	const { loggedInId } = useViewer();
+export default function ProfileView({ profile, allowBookmark = true }: Props): JSX.Element | null {
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
-
-	// If no slug is in the route, use the logged in user's ID.
-	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
 	const isLargerThanMd = useBreakpointValue(
 		{
@@ -192,9 +186,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 		);
 	};
 
-	return loading ? (
-		<Spinner />
-	) : profile ? (
+	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem as={Card} p={4}>
 				<Flex
@@ -211,7 +203,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 					gap={{ base: 0, md: 2 }}
 				>
 					<ShareButton url={profileUrl} />
-					{id && id !== loggedInId ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
+					{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
 				</Flex>
 				<Flex
 					gap={6}

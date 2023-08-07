@@ -72,7 +72,6 @@ export default function SearchFilterName() {
 			variables: {
 				name,
 			},
-			// fetchPolicy: 'network-only',
 		})
 			.then(() => {
 				navigate('/results');

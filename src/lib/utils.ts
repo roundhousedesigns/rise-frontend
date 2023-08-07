@@ -124,7 +124,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 };
 
 /**
- * Compare two arrays and sort them before comparing.
+ * Sort two arrays and compare them.
  *
  * @param {number[]|string[]} a The first array to compare.
  * @param {number[]|string[]} b The second array to compare.

@@ -17,7 +17,6 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
 
 	const { colorMode } = useColorMode();
-
 	const [orange, lightGray, darkGray] = useToken('colors', [
 		'brand.orange',
 		'gray.300',
@@ -26,12 +25,15 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 
 	const updateBookmarkedProfilesHandler = () => {
 		if (!id) return;
-		const updatedBookmarkedProfiles = toggleArrayItem(bookmarkedProfiles, id);
 
-		// Optimism!
+		// Optimistically update local state
 		setIsBookmarked(!isBookmarked);
 
-		// Fire the mutation.
+		// Update the bookmarked profiles list
+		const updatedBookmarkedProfiles = toggleArrayItem(bookmarkedProfiles, id);
+
+		// TODO maybe debounce the mutation?
+		// Fire the mutation
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
 
