@@ -15,8 +15,9 @@ const MotionBox = motion(chakra.div);
 const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element => {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
 	const [preparedCandidates, { error }] = useCandidates(bookmarkedProfiles);
-	const preparedCandidateIds = useRef<number[]>(bookmarkedProfiles);
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
+
+	const preparedCandidateIds = useRef<number[]>(bookmarkedProfiles);
 
 	useEffect(() => {
 		if (isEqual(preparedCandidateIds.current, bookmarkedProfiles)) return;

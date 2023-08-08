@@ -14,7 +14,8 @@ interface Props {
 
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { loggedInId } = useViewer();
-	const { id, image, slug, selfTitle } = candidate;
+
+	const { id, image, slug, selfTitle } = candidate || {};
 
 	if (!id) return null;
 
