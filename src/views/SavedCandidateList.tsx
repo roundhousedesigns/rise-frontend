@@ -38,32 +38,31 @@ const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element 
 		<chakra.div {...props}>
 			{error ? (
 				<ErrorAlert message={error.message} />
-			) : (
-				<List alignItems='left' h='auto' w='full' spacing={4}>
+			) : preparedCandidates ? (
+				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
 					<AnimatePresence>
-						{' '}
-						{/* Wrap the list with AnimatePresence */}
-						{preparedCandidates &&
-							preparedCandidateIds.current?.map((id) => {
-								const candidate = preparedCandidates.find(
-									(candidate: Candidate) => candidate.id === id
-								);
+						{preparedCandidateIds.current?.map((id) => {
+							const candidate = preparedCandidates.find(
+								(candidate: Candidate) => candidate.id === id
+							);
 
-								return (
-									<MotionBox
-										key={id}
-										initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
-										animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
-										exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
-									>
-										<ListItem>
-											<CandidateItem candidate={candidate} onRemove={removeHandler} />
-										</ListItem>
-									</MotionBox>
-								);
-							})}
+							return (
+								<MotionBox
+									key={id}
+									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
+									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
+									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
+								>
+									<ListItem>
+										<CandidateItem candidate={candidate} onRemove={removeHandler} />
+									</ListItem>
+								</MotionBox>
+							);
+						})}
 					</AnimatePresence>
 				</List>
+			) : (
+				false
 			)}
 		</chakra.div>
 	);

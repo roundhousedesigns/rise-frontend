@@ -35,6 +35,7 @@ const variants = {
 		bg: 'transparent',
 	}),
 	inline: defineStyle({
+		cursor: 'default',
 		display: 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
