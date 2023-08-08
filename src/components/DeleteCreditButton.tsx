@@ -3,15 +3,15 @@ import { FiTrash } from 'react-icons/fi';
 import ConfirmActionDialog from './common/ConfirmActionDialog';
 
 interface Props {
-	handleDeleteCredit: (id: string) => void;
 	id: string;
+	handleDeleteCredit: (id: string) => void;
 }
 
-export default function DeleteCreditButton({ handleDeleteCredit, id: itemId }: Props): JSX.Element {
+export default function DeleteCreditButton({ handleDeleteCredit, id }: Props): JSX.Element {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleDelete = () => {
-		handleDeleteCredit(itemId);
+		handleDeleteCredit(id);
 		onClose();
 	};
 

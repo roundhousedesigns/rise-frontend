@@ -22,7 +22,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	return (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
-				<RemoveBookmarkIcon id={id} removeHandler={onRemove(id)} />
+				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
 			) : (
 				<BookmarkToggleIcon id={id} isDisabled={loggedInId === id} />
 			)}
