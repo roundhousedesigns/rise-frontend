@@ -4,14 +4,14 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[1.0.8] - Unreleased
 
-- Feature: Saved Profiles (bookmarked profiles).
-- Feature: Dashboard updates feed
+- Feature: Saved Profiles (bookmarked profiles)
+- Feature: Dashboard updates/notices feed
+- Feature: Basic password complexity enforcement
 - Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
-- Added: Basic password complexity enforcement
-- Feature: Saved Profiles (bookmarked profiles).
-- Feature: Notifications/updates
+- Improved: Added common `ConfirmActionDialog`` component for confirmation dialogs
 - Improved: Profile Share icon moved into Card component.
 - Improved: Menu icon standout color
+- Improved: Styling and layout
 
 ## \[1.0.7] - 2023-07-03
 
