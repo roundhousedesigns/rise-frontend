@@ -1,4 +1,4 @@
-import { Card, Text, IconButton, Box } from '@chakra-ui/react';
+import { Text, IconButton, Box } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
 import SavedCandidateList from './SavedCandidateList';
 
@@ -16,9 +16,8 @@ export default function SavedProfilesView() {
 				/>{' '}
 				icon on a person's profile, or next to a name in search results.
 			</Text>
-			<Card title='Saved Profiles'>
-				<SavedCandidateList my={0} />
-			</Card>
+
+			<SavedCandidateList my={0} />
 		</Box>
 	);
 }

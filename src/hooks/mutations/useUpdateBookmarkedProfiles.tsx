@@ -49,25 +49,25 @@ const useUpdateBookmarkedProfiles = () => {
         loggedInId,
         bookmarkedProfiles: updatedBookmarkedProfiles,
       },
-      update: (cache, { data }) => {
-        const viewerData = cache.readQuery<ViewerData>({ query: QUERY_VIEWER });
-        const updatedViewer = data?.updateBookmarkedProfiles?.viewer;
+      // update: (cache, { data }) => {
+      //   const viewerData = cache.readQuery<ViewerData>({ query: QUERY_VIEWER });
+      //   const updatedViewer = data?.updateBookmarkedProfiles?.viewer;
 
-        if (viewerData && updatedViewer) {
-          cache.writeQuery({
-            query: QUERY_VIEWER,
-            data: {
-              viewer: {
-                ...viewerData.viewer,
-                bookmarkedProfileConnections: {
-                  ...viewerData.viewer.bookmarkedProfileConnections,
-                  nodes: updatedViewer.bookmarkedProfileConnections.nodes,
-                },
-              },
-            },
-          });
-        }
-      },
+      //   if (viewerData && updatedViewer) {
+      //     cache.writeQuery({
+      //       query: QUERY_VIEWER,
+      //       data: {
+      //         viewer: {
+      //           ...viewerData.viewer,
+      //           bookmarkedProfileConnections: {
+      //             ...viewerData.viewer.bookmarkedProfileConnections,
+      //             nodes: updatedViewer.bookmarkedProfileConnections.nodes,
+      //           },
+      //         },
+      //       },
+      //     });
+      //   }
+      // },
       refetchQueries: [
         {
           query: QUERY_VIEWER,
