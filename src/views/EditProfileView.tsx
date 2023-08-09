@@ -328,6 +328,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const { name, files } = event.target;
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+		console.log(`name: ${name}, file: ${file}`)
 
 		// Limit the file size
 		if (maxSize < file.size) {
@@ -354,6 +355,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						value: result.data.uploadFile.fileUrl,
 					},
 				});
+
+				console.log('url:', result.data.uploadFile.fileUrl)
 
 				setFieldCurrentlyUploading('');
 
@@ -581,7 +584,19 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	 * 
 	 */
 
-	const DragDropFile = () => {
+	const DragDropFile = ({ fieldName, text }: { fieldName: string; text: string }) => {
+		// taken from MediaImageUploader
+		const imageData: { [key: string]: string | undefined } = {
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
+		};
+
+		const image = imageData[fieldName];
+
 		// drag state
 		const [dragActive, setDragActive] = useState(false);
 
@@ -589,6 +604,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const handleDrag = (e: DragEvent) => {
 			e.preventDefault();
 			e.stopPropagation();
+			console.log('handleDrag')
 
 			if (e.type === 'dragenter' || e.type === 'dragover') {
 				setDragActive(true);
@@ -603,15 +619,16 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			e.preventDefault();
 			e.stopPropagation();
 			setDragActive(false);
-			console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
+
+			console.log('so close to getting handleDrop working...');
 		}
 
 		// triggers when file is selected with click
 		// TODO - Add logic for image upload here
-		const handleChange = (e: ChangeEvent) => {
-			e.preventDefault();
-			console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
-		}
+		// const handleChange = (e: ChangeEvent) => {
+		// 	e.preventDefault();
+		// 	console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
+		// }
 
 		// TODO - additional styling: bgcolor on drag, make cursor: pointer for entire box? add an upload icon?
 		// i love the look of this: https://pro.chakra-ui.com/components/application/form-elements/drop-zone?color=blue&theme=Chakra+UI+Pro
@@ -631,10 +648,36 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				<Input 
 					type="file" 
 					id="input-file-upload" 
+					name={fieldName}
 					// multiple 
 					display={'none'}
-					onChange={handleChange}
+					onChange={handleFileInputChange}
 				/>
+				{image ? (
+				<Box>
+					<Flex gap={2}>
+						<FileUploadButton
+						fieldName={fieldName}
+						content={'upload another image'}
+						icon={<FiUpload />}
+						accept='image/*'
+						onChange={handleFileInputChange}
+						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+						/>
+						<ClearFieldButton 
+							field={fieldName}/>
+					</Flex>
+					<Image
+							src={image}
+							alt={text}
+							loading='eager'
+							fit='cover'
+							w='full'
+							mt={2}
+							borderRadius='md'
+						/>
+				</Box>
+				) : (
 				<Flex 
 					as="label" 
 					htmlFor="input-file-upload"
@@ -647,31 +690,32 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Box>
 							<Text>Drag and drop your file here or</Text>
 							<Text 
-								className="upload-button" 
 								cursor={'pointer'} 
 								padding={1} 
 								backgroundColor={'transparent'} 
 								textDecorationLine={'underline'}
 							>
-								Click to upload a file
+							Click to upload a file
 							</Text>
 						</Box>
 					</Center>
-				</Flex>
-				{dragActive && 
+					{dragActive && 
 					<Box 
 						onDragEnter={handleDrag} 
 						onDragLeave={handleDrag} 
 						onDragOver={handleDrag} 
-						onDrop={handleDrop}
+						onDrop={(handleDrop)}
+						name={fieldName}
 						position={'absolute'}
 						w={'100%'}
 						h={'100%'}
 						top={0}
 						right={0}
 					/>}
+				</Flex>
+				)}
 			</Box>
-		);
+		)
 	}
 
 	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
@@ -1233,8 +1277,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
 							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
 							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
-							<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
-							<DragDropFile/>
+							{/* <MediaImageUploader fieldName='mediaImage6' text='Image 6' /> */}
+							<DragDropFile fieldName='mediaImage6' text='Image 6'/>
 						</SimpleGrid>
 					</Box>
 				</StackItem>
