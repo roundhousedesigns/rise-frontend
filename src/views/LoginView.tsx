@@ -49,8 +49,6 @@ export default function LoginView({ alert, alertStatus }: Props) {
 		});
 	};
 
-	console.info('id', loggedInId);
-
 	const handleLoginSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
