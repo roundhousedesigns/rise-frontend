@@ -62,6 +62,8 @@ export default function LoginView({ alert, alertStatus }: Props) {
 						if (res.data.loginWithCookiesAndReCaptcha.success === 'SUCCESS') {
 							console.info('successful');
 							navigate('');
+						} else {
+							console.info('bad', res.data.loginWithCookiesAndReCaptcha.success);
 						}
 					})
 					.catch((errors: { message: string }) => setErrorCode(errors.message));
