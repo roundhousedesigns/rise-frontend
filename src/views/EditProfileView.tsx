@@ -149,8 +149,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
-	console.info(hasEditedProfile);
-
 	const {
 		isOpen: creditModalIsOpen,
 		onOpen: creditModalOnOpen,
