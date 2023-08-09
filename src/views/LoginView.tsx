@@ -63,7 +63,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							console.info('successful');
 							navigate('');
 						} else {
-							console.info('bad', res.data.loginWithCookiesAndReCaptcha.success);
+							console.info('bad', res);
 						}
 					})
 					.catch((errors: { message: string }) => setErrorCode(errors.message));
