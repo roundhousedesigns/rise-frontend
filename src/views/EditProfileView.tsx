@@ -149,6 +149,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
+	console.info(hasEditedProfile);
+
 	const {
 		isOpen: creditModalIsOpen,
 		onOpen: creditModalOnOpen,
@@ -617,38 +619,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			</Box>
 		);
 	};
-
-	const SaveButtons = () => (
-		<Slide
-			in={hasEditedProfile === true}
-			direction='bottom'
-			style={{
-				position: 'fixed',
-				bottom: 0,
-				left: 0,
-				width: 'full',
-				backgroundColor: colorMode === 'dark' ? 'white' : '#222',
-				borderTopWidth: '1px',
-				borderTopColor: 'gray.100',
-				textAlign: 'right',
-			}}
-		>
-			<Button
-				type='submit'
-				form='edit-profile'
-				leftIcon={saveLoading ? undefined : <FiSave />}
-				aria-label={'Save changes'}
-				colorScheme='green'
-				isDisabled={saveLoading}
-				isLoading={!!saveLoading}
-				size='lg'
-				mr={4}
-				my={2}
-			>
-				Save Changes
-			</Button>
-		</Slide>
-	);
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
@@ -1138,7 +1108,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 				</StackItem>
 			</Stack>
-			<SaveButtons />
+			<Slide
+				in={hasEditedProfile === true}
+				direction='bottom'
+				style={{
+					position: 'fixed',
+					bottom: 0,
+					left: 0,
+					width: 'full',
+					backgroundColor: colorMode === 'dark' ? 'white' : '#222',
+					borderTopWidth: '1px',
+					borderTopColor: 'gray.100',
+					textAlign: 'right',
+				}}
+			>
+				<Button
+					type='submit'
+					form='edit-profile'
+					leftIcon={saveLoading ? undefined : <FiSave />}
+					aria-label={'Save changes'}
+					colorScheme='green'
+					isDisabled={saveLoading}
+					isLoading={!!saveLoading}
+					size='lg'
+					mr={4}
+					my={2}
+				>
+					Save Changes
+				</Button>
+			</Slide>
 		</form>
 	) : null;
 }
