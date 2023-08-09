@@ -8,7 +8,7 @@ import Register from '../../routes/Register';
 import Profile from '../../routes/Profile';
 import EditProfile from '../../routes/EditProfile';
 import Results from '../../routes/Results';
-import SavedProfiles from '../../routes/SavedProfiles';
+import BookmarkedProfiles from '../../routes/BookmarkedProfiles';
 import Settings from '../../routes/Settings';
 import Help from '../../routes/Help';
 import NotFound from '../../routes/NotFound';
@@ -37,7 +37,7 @@ export default function Main() {
 					<Route path='/profile/:slug' element={<LoggedInComponent component={<Profile />} />} />
 					<Route path='/profile/edit' element={<LoggedInComponent component={<EditProfile />} />} />
 					<Route path='/results' element={<LoggedInComponent component={<Results />} />} />
-					<Route path='/saved' element={<LoggedInComponent component={<SavedProfiles />} />} />
+					<Route path='/bookmarks' element={<LoggedInComponent component={<BookmarkedProfiles />} />} />
 					<Route path='/settings' element={<LoggedInComponent component={<Settings />} />} />
 					<Route path='/help' element={<LoggedInComponent component={<Help />} />} />
 

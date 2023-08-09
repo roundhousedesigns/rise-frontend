@@ -457,7 +457,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			})
 			.then(() => {
 				toast({
-					title: 'Saved!',
+					title: 'Bookmarked!',
 					description: 'Your profile has been updated.',
 					status: 'success',
 					duration: 5000,

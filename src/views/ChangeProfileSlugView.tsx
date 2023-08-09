@@ -94,7 +94,7 @@ export default function ChangeProfileUrlView() {
 
 				// toast success
 				toast({
-					title: 'Saved!',
+					title: 'Bookmarked!',
 					position: 'top',
 					description: 'Your profile link has been updated.',
 					status: 'success',

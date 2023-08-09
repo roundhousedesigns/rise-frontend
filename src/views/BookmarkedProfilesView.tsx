@@ -1,8 +1,8 @@
 import { Text, IconButton, Box } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
-import SavedCandidateList from './SavedCandidateList';
+import BookmarkedCandidateList from './BookmarkedCandidateList';
 
-export default function SavedProfilesView() {
+export default function BookmarkedProfilesView() {
 	return (
 		<Box>
 			<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
@@ -17,7 +17,7 @@ export default function SavedProfilesView() {
 				icon on a person's profile, or next to a name in search results.
 			</Text>
 
-			<SavedCandidateList my={0} />
+			<BookmarkedCandidateList my={0} />
 		</Box>
 	);
 }

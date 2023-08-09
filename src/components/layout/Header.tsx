@@ -93,10 +93,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		</ResponsiveButton>
 	);
 
-	const SavedProfilesButton = () => (
+	const BookmarkedProfilesButton = () => (
 		<ResponsiveButton
 			as={RouterLink}
-			to='/saved'
+			to='/bookmarks'
 			icon={
 				isLargerThanMd ? (
 					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
@@ -106,9 +106,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 					<FiBookmark fill={orange} />
 				)
 			}
-			label='Saved candidates'
+			label='Bookmarked candidates'
 		>
-			Saved
+			Bookmarked
 		</ResponsiveButton>
 	);
 
@@ -203,7 +203,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									align='center'
 									fontSize='lg'
 								>
-									{bookmarkedProfiles.length ? <SavedProfilesButton /> : false}
+									{bookmarkedProfiles.length ? <BookmarkedProfilesButton /> : false}
 									{searchActive && results.length ? <SearchResultsButton /> : false}
 									<SearchButton />
 									{isLargerThanMd ? <MyProfileButton /> : null}
@@ -247,8 +247,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
 													Dashboard
 												</MenuItem>
-												<MenuItem as={RouterLink} to='/saved' icon={<FiBookmark />}>
-													Saved Profiles
+												<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
+													Bookmarked Profiles
 												</MenuItem>
 											</MenuOptionGroup>
 											<MenuOptionGroup>

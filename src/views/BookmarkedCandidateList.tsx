@@ -12,7 +12,7 @@ import { toggleArrayItem } from '../lib/utils';
 
 const MotionBox = motion(chakra.div);
 
-const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element => {
+const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element => {
 	const { loggedInId, bookmarkedProfiles } = useViewer();
 	const [preparedCandidates, { error }] = useCandidates(bookmarkedProfiles);
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
@@ -68,4 +68,4 @@ const SavedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element 
 	);
 };
 
-export default SavedCandidateList;
+export default BookmarkedCandidateList;
