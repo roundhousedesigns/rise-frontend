@@ -124,7 +124,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 };
 
 /**
- * Compare two arrays and sort them before comparing.
+ * Sort two arrays and compare them.
  *
  * @param {number[]|string[]} a The first array to compare.
  * @param {number[]|string[]} b The second array to compare.
@@ -212,4 +212,19 @@ export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
 		return 1;
 	}
 	return 0;
+};
+
+/**
+ * Toggle the existence of an item in an array of primitive values.
+ *
+ * @param array The array to toggle the item in.
+ * @param item The item to toggle.
+ * @returns The new array.
+ */
+export const toggleArrayItem = (array: any[], item: any): any[] => {
+	if (array.includes(item)) {
+		return array.filter((i) => i !== item);
+	}
+
+	return [...array, item];
 };

@@ -14,7 +14,7 @@ import {
 
 interface Props {
 	name: string;
-	label?: string;
+	label?: string | JSX.Element;
 	helperText?: string;
 	placeholder?: string;
 	value?: string;

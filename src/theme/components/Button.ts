@@ -20,11 +20,42 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
+	bookmark: defineStyle({
+		size: 'xl',
+		px: 1,
+		cursor: 'pointer',
+		_dark: {
+			bg: 'blackAlpha.400',
+		},
+		_light: {
+			bg: 'blackAlpha.200',
+		},
+	}),
+	remove: defineStyle({
+		bg: 'transparent',
+	}),
+	inline: defineStyle({
+		cursor: 'default',
+		display: 'inline-flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 'full',
+		mx: 1,
+		bg: 'blackAlpha.300',
+	}),
 };
 
 const sizes = {
 	xl: defineStyle({
 		fontSize: 'xl',
+		p: 4,
+	}),
+	xxl: defineStyle({
+		fontSize: '2xl',
+		p: 4,
+	}),
+	xxxl: defineStyle({
+		fontSize: '3xl',
 		p: 4,
 	}),
 };

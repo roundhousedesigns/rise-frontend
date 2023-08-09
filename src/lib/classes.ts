@@ -7,6 +7,7 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
+	WPPostParams,
 } from './types';
 import { decodeString, maybeParseInt } from './utils';
 
@@ -34,6 +35,37 @@ export class User implements UserParams {
 	fullName(): string {
 		const { firstName, lastName } = this;
 		return [firstName, lastName].filter(Boolean).join(' ');
+	}
+}
+
+/**
+ * The logged in user.
+ */
+export class CurrentUser extends User {
+	email: string;
+	bookmarkedProfiles: number[];
+
+	constructor(params?: UserParams & { email: string; bookmarkedProfiles: number[] }) {
+		const { id, firstName, lastName, slug, email, bookmarkedProfiles } = params || {};
+
+		super({
+			id: id ? id : null,
+			firstName: firstName ? firstName : '',
+			lastName: lastName ? lastName : '',
+			slug: slug ? slug : null,
+		});
+
+		this.email = email ? email : '';
+		this.bookmarkedProfiles = bookmarkedProfiles ? bookmarkedProfiles : [];
+	}
+
+	/**
+	 * Get the user's full name.
+	 *
+	 * @returns The user's full name.
+	 */
+	fullName() {
+		return super.fullName();
 	}
 }
 
@@ -203,10 +235,13 @@ export class UserProfile extends User {
 	}
 
 	/**
-	 * Extract IDs from a collection of nodes.
+	 * Extract sorted IDs from a collection of nodes.
 	 */
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
-		return nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+		const ids = nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
+
+		// return the IDs sorted in ascending order (aids in profile edited/united comparison)
+		return ids.sort((a, b) => a - b);
 	}
 }
 
@@ -329,5 +364,23 @@ export class WPItem implements WPItemParams {
 		this.slug = params.slug ? params.slug : undefined;
 		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
+	}
+}
+
+/**
+ * A WordPress post.
+ */
+export class WPPost extends WPItem {
+	postType: string;
+	title?: string;
+	excerpt?: string;
+	content?: string;
+
+	constructor(params: WPItemParams & WPPostParams) {
+		super(params);
+		this.postType = params.postType;
+		this.title = params.title ? unescape(params.title) : undefined;
+		this.excerpt = params.excerpt ? unescape(params.excerpt) : undefined;
+		this.content = params.content ? unescape(params.content) : undefined;
 	}
 }

@@ -103,11 +103,11 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 }
 
 interface Props {
-	children: ReactNode;
 	initialState: UserProfile | null;
+	children: ReactNode;
 }
 
-export const EditProfileContextProvider = ({ children, initialState }: Props) => {
+export const EditProfileContextProvider = ({ initialState, children }: Props) => {
 	const [editProfile, editProfileDispatch] = useReducer(editProfileContextReducer, initialState);
 
 	return (

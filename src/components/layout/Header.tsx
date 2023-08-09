@@ -8,7 +8,6 @@ import {
 	useDisclosure,
 	DarkMode,
 	Link,
-	useMediaQuery,
 	Menu,
 	MenuButton,
 	MenuList,
@@ -16,13 +15,13 @@ import {
 	MenuDivider,
 	MenuOptionGroup,
 	LightMode,
-	Button,
 	Badge,
 	Spacer,
 	forwardRef,
 	BoxProps,
 	Flex,
-	Text,
+	useBreakpointValue,
+	useToken,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -33,19 +32,22 @@ import {
 	FiUser,
 	FiHelpCircle,
 	FiCompass,
+	FiBookmark,
+	FiFileText,
 } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
 import logo from '../../assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '../../assets/images/rise-blue-circle.png';
-
 import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useLogout from '../../hooks/mutations/useLogout';
 import ResponsiveButton from '../common/inputs/ResponsiveButton';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
+	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
 	const { logoutMutation } = useLogout();
+	const [orange] = useToken('colors', ['brand.orange']);
 
 	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
 	const drawerButtonRef = useRef(null);
@@ -55,9 +57,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const { loggedInId, loggedInSlug } = useViewer();
-
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const isLargerThanMd = useBreakpointValue(
+		{
+			base: false,
+			md: true,
+		},
+		{ ssr: false }
+	);
 
 	const handleDrawerOpen = () => {
 		drawerOnOpen();
@@ -79,67 +85,63 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const SearchButton = () => (
 		<ResponsiveButton
 			ref={drawerButtonRef}
-			onClick={handleDrawerOpen}
 			icon={<FiSearch />}
+			onClick={handleDrawerOpen}
 			label='Search for candidates'
-			colorScheme='gray'
-			borderRadius={{ base: 'full', md: 'lg' }}
-			size='lg'
-			px={{ base: 0, md: 4 }}
 		>
 			Search
 		</ResponsiveButton>
 	);
 
+	const BookmarkedProfilesButton = () => (
+		<ResponsiveButton
+			as={RouterLink}
+			to='/bookmarks'
+			icon={
+				isLargerThanMd ? (
+					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
+						{bookmarkedProfiles.length}
+					</Badge>
+				) : (
+					<FiBookmark fill={orange} />
+				)
+			}
+			label='Bookmarked candidates'
+		>
+			Bookmarked
+		</ResponsiveButton>
+	);
+
 	const SearchResultsButton = () => (
-		<Box position='relative'>
-			<Button
-				as={RouterLink}
-				to='/results'
-				leftIcon={
+		<ResponsiveButton
+			as={RouterLink}
+			to='/results'
+			icon={
+				isLargerThanMd ? (
 					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
 						{results.length}
 					</Badge>
-				}
-				aria-label='Search for candidates'
-				colorScheme='gray'
-				borderRadius={{ base: 'full', md: 'lg' }}
-				size='lg'
-				textTransform='none'
-				pr={{ base: 0, md: 6 }}
-				pl={{ base: 0, md: 2 }}
-				_before={{
-					base: {
-						pl: 2,
-						content: '""',
-					},
-					md: {
-						pl: 0,
-					},
-				}}
-			>
-				<Text as='span' display={{ base: 'none', md: 'block' }}>
-					Results
-				</Text>
-			</Button>
-		</Box>
+				) : (
+					<FiFileText />
+				)
+			}
+			label='Search results'
+		>
+			Results
+		</ResponsiveButton>
 	);
 
 	const MyProfileButton = () => (
-		<Button
-			leftIcon={<FiUser />}
+		<ResponsiveButton
+			as={RouterLink}
+			icon={<FiUser />}
 			pl={3}
 			pr={4}
-			aria-label='My Profile'
-			as={RouterLink}
+			label='My Profile'
 			to={`/profile/${loggedInSlug}`}
-			colorScheme='gray'
-			borderRadius='lg'
-			size='lg'
-			textTransform='none'
 		>
 			My Profile
-		</Button>
+		</ResponsiveButton>
 	);
 
 	return (
@@ -200,12 +202,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									justifyContent='flex-end'
 									align='center'
 									fontSize='lg'
-									textTransform='uppercase'
 								>
+									{bookmarkedProfiles.length ? <BookmarkedProfilesButton /> : false}
 									{searchActive && results.length ? <SearchResultsButton /> : false}
-
 									<SearchButton />
-
 									{isLargerThanMd ? <MyProfileButton /> : null}
 								</Flex>
 								<LightMode>
@@ -215,9 +215,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												aria-label='Menu'
 												as={IconButton}
 												borderRadius='full'
-												colorScheme='gray'
+												colorScheme='yellow'
 												icon={<FiMenu />}
-												size='lg'
+												size='md'
 												_active={{
 													transform: 'rotate(90deg)',
 												}}
@@ -246,6 +246,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 											<MenuOptionGroup>
 												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
 													Dashboard
+												</MenuItem>
+												<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
+													Bookmarked Profiles
 												</MenuItem>
 											</MenuOptionGroup>
 											<MenuOptionGroup>

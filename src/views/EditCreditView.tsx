@@ -3,13 +3,14 @@ import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra
 import { Credit, WPItem } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
 import usePositions from '../hooks/queries/usePositions';
-import useRelatedSkills from '../hooks/queries/useRelatedSkills';
 import useLazyPositions from '../hooks/queries/useLazyPositions';
+import useLazyRelatedSkills from '../hooks/queries/useLazyRelatedSkills';
 import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import TextInput from '../components/common/inputs/TextInput';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditButtons from '../components/EditCreditButtons';
+import { sortWPItemsByName } from '../lib/utils';
 
 // TODO type this reducer
 function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
@@ -81,27 +82,75 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	} = editCredit;
 
 	const [allDepartments] = usePositions();
-	const [getJobs, { data: allJobs, loading: jobsLoading }] = useLazyPositions();
+	const [getJobs, { loading: jobsLoading }] = useLazyPositions();
 	const [jobs, setJobs] = useState<WPItem[]>([]);
-	const [allRelatedSkills] = useRelatedSkills(selectedJobIds);
+	const [getRelatedSkills, { loading: relatedSkillsLoading }] = useLazyRelatedSkills();
+	const [skills, setSkills] = useState<WPItem[]>([]);
 
-	// Refetch jobs list when department changes
+	// Fetch jobs & skills lists on mount
 	useEffect(() => {
-		if (selectedDepartmentIds.length === 0) return;
+		refetchAndSetJobs(selectedDepartmentIds);
+		refetchAndSetSkills(selectedJobIds);
+	}, []);
 
-		getJobs({ variables: { departments: selectedDepartmentIds }, fetchPolicy: 'network-only' });
-	}, [selectedDepartmentIds]);
+	/** Fetches jobs given array of departmentIds, sets jobs
+	 *
+	 * @returns {Array} returns array of numbers of related/visible jobIds
+	 */
+	const refetchAndSetJobs = async (departmentIds: number[]) => {
+		if (departmentIds.length === 0) {
+			setJobs([]);
 
-	// Set jobs when allJobs changes.
-	useEffect(() => {
-		if (allJobs) {
-			setJobs(allJobs.jobsByDepartments.map((item: WPItem) => new WPItem(item)));
+			return [];
 		}
 
-		return () => {
+		const jobData = await getJobs({
+			variables: { departments: departmentIds },
+		});
+
+		const jobsByDept = jobData?.data?.jobsByDepartments;
+
+		if (jobsByDept) {
+			setJobs(jobsByDept.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
+
+			const jobsByDeptIds = jobsByDept.map((j: WPItem) => Number(j.id));
+
+			return jobsByDeptIds;
+		} else {
 			setJobs([]);
-		};
-	}, [allJobs]);
+
+			return [];
+		}
+	};
+
+	/** Fetches skills given array of jobIds, sets skills
+	 *
+	 * @returns {Array} returns array of numbers related/visible skillIds
+	 */
+
+	const refetchAndSetSkills = async (jobIds: number[]) => {
+		if (jobIds.length === 0) {
+			setSkills([]);
+			return [];
+		}
+
+		const skillData = await getRelatedSkills({
+			variables: { jobs: jobIds },
+		});
+		const relatedSkills = skillData?.data?.jobSkills;
+
+		if (relatedSkills) {
+			setSkills(relatedSkills.map((item: WPItem) => new WPItem(item)).sort(sortWPItemsByName));
+
+			const relatedSkillIds = relatedSkills.map((s: WPItem) => Number(s.id));
+
+			return relatedSkillIds;
+		} else {
+			setSkills([]);
+
+			return [];
+		}
+	};
 
 	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
@@ -117,13 +166,50 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleToggleCheckboxTerm = (name: string) => (terms: string[]) => {
+	const dispatchCheckboxTermChange = (name: string, terms: number[]) => {
 		editCreditDispatch({
 			type: `UPDATE_${name.toUpperCase()}`,
 			payload: {
 				value: terms,
 			},
 		});
+	};
+
+	const handleDepartmentsChange = (name: string) => async (terms: string[]) => {
+		// update depts:
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
+
+		// update jobs to align with selected depts:
+		const visibleJobs = await refetchAndSetJobs(termsAsNums);
+		const filteredSelectedJobIds = selectedJobIds.filter((id: number) => visibleJobs.includes(id));
+		dispatchCheckboxTermChange('jobs', filteredSelectedJobIds);
+
+		// update skills to align with selected jobs:
+		const visibleSkills = await refetchAndSetSkills(filteredSelectedJobIds);
+		const filteredSelectedSkillIds = selectedSkills.filter((id: number) =>
+			visibleSkills.includes(id)
+		);
+		dispatchCheckboxTermChange('skills', filteredSelectedSkillIds);
+	};
+
+	const handleJobsChange = (name: string) => async (terms: string[]) => {
+		// update jobs
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
+
+		// update skills to align with selected jobs:
+		const visibleSkills = await refetchAndSetSkills(termsAsNums);
+		const filteredSelectedSkillIds = selectedSkills.filter((id: number) =>
+			visibleSkills.includes(id)
+		);
+		dispatchCheckboxTermChange('skills', filteredSelectedSkillIds);
+	};
+
+	const handleSkillsChange = (name: string) => (terms: string[]) => {
+		// update skills
+		const termsAsNums = terms.map((i) => Number(i));
+		dispatchCheckboxTermChange(name, termsAsNums);
 	};
 
 	const handleRadioInputChange = (name: string) => (value: string) => {
@@ -262,7 +348,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								? selectedDepartmentIds.map((item: number) => item.toString())
 								: []
 						}
-						handleChange={handleToggleCheckboxTerm}
+						handleChange={handleDepartmentsChange}
 					/>
 				</StackItem>
 				<StackItem>
@@ -275,8 +361,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 							<ProfileCheckboxGroup
 								name='jobs'
 								items={jobs}
-								checked={selectedJobIds?.map((item: number) => item.toString())}
-								handleChange={handleToggleCheckboxTerm}
+								checked={
+									selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []
+								}
+								handleChange={handleJobsChange}
 							/>
 						</>
 					) : jobsLoading ? (
@@ -288,20 +376,20 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					<Heading as='h4' variant='contentTitle'>
 						Skills
 					</Heading>
-					{allRelatedSkills &&
-					allRelatedSkills.length > 0 &&
-					selectedDepartmentIds &&
-					selectedJobIds &&
-					selectedJobIds.length ? (
+					{selectedJobIds.length && !relatedSkillsLoading ? (
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
 								name='skills'
-								items={allRelatedSkills}
-								checked={selectedSkills?.map((item: number) => item.toString())}
-								handleChange={handleToggleCheckboxTerm}
+								items={skills}
+								checked={
+									selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []
+								}
+								handleChange={handleSkillsChange}
 							/>
 						</>
+					) : relatedSkillsLoading ? (
+						<Spinner />
 					) : null}
 				</StackItem>
 			</Stack>

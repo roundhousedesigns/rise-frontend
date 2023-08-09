@@ -12,6 +12,16 @@ export interface WPItemParams {
 }
 
 /**
+ * The data shape for a WordPress post item.
+ */
+export interface WPPostParams extends WPItemParams {
+	postType: string;
+	title?: string;
+	excerpt?: string;
+	content?: string;
+}
+
+/**
  * The data shape for User input.
  */
 export interface UserParams {
@@ -164,6 +174,11 @@ export interface ChangePasswordInput {
 	currentPassword?: string;
 	newPassword: string;
 	confirmPassword: string;
+}
+
+export interface updateBookmarkedProfilesInput {
+	userId: number;
+	toggledUserId: number;
 }
 
 /**

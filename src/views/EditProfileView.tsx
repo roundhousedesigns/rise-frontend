@@ -1,5 +1,7 @@
 import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import {
+	useMediaQuery,
+	useColorMode,
 	Box,
 	Heading,
 	Image,
@@ -17,7 +19,7 @@ import {
 	Progress,
 	Link,
 	SimpleGrid,
-	useMediaQuery,
+	Slide,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -78,6 +80,7 @@ interface Props {
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const { loggedInId, loggedInSlug } = useViewer();
+	const { colorMode } = useColorMode();
 
 	const {
 		firstName,
@@ -146,6 +149,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
+	const {
+		isOpen: creditModalIsOpen,
+		onOpen: creditModalOnOpen,
+		onClose: creditModalOnClose,
+	} = useDisclosure();
+
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
 		if (!editProfile || originalProfile.current) return;
@@ -184,7 +193,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const newCredit = credits.find((credit) => credit.isNew);
 		if (newCredit && newCredit.id !== editCreditId.current) {
 			setEditCredit(newCredit.id);
-			onOpen();
+			creditModalOnOpen();
 		}
 
 		return () => {
@@ -448,7 +457,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			})
 			.then(() => {
 				toast({
-					// title: 'Profile saved.',
+					title: 'Bookmarked!',
 					description: 'Your profile has been updated.',
 					status: 'success',
 					duration: 5000,
@@ -458,7 +467,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			})
 			.catch((err) => {
 				toast({
-					// title: 'Profile not saved.',
+					title: 'Oops!',
 					description: 'There was an error saving your profile: ' + err,
 					status: 'error',
 					duration: 5000,
@@ -468,11 +477,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			});
 	};
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
-
 	const handleEditCredit = (creditId: string) => {
 		setEditCredit(creditId);
-		onOpen();
+		creditModalOnOpen();
 	};
 
 	const handleCloseEditCredit = () => {
@@ -491,11 +498,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			}
 		}
 
-		onClose();
-	};
-
-	const handleCancel = () => {
-		navigate(`/profile/${loggedInSlug}`);
+		creditModalOnClose();
 	};
 
 	const ClearFieldButton = ({
@@ -617,44 +620,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Flex
-				alignItems='center'
-				justifyContent='flex-end'
-				borderTopWidth='1px'
-				borderTopColor='gray.100'
-				position='fixed'
-				bottom='0'
-				left='0'
-				width='full'
-				height='56px'
-				bgColor='text.light'
-				zIndex='100'
-			>
-				<ButtonGroup rowGap={2} gap={2} size='md' mr={4}>
-					<Button
-						type='submit'
-						leftIcon={saveLoading ? undefined : <FiSave />}
-						aria-label={saveLoading ? 'Saving...' : 'Save profile'}
-						colorScheme='green'
-						isDisabled={saveLoading || hasEditedProfile === false}
-						isLoading={!!saveLoading}
-						mx={0}
-					>
-						Save
-					</Button>
-					<Button
-						type='reset'
-						leftIcon={<FiXCircle />}
-						colorScheme='orange'
-						aria-label='Cancel editing'
-						onClick={handleCancel}
-						marginInlineStart='0 !important'
-					>
-						Cancel
-					</Button>
-				</ButtonGroup>
-			</Flex>
-			<Stack direction='column' flexWrap='nowrap' gap={4}>
+			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
 					{profileLoading && <Spinner alignSelf='center' />}
 					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
@@ -941,6 +907,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
 					<Text>Enter your 5 best credits.</Text>
 					{/* TODO better reorder and delete animations */}
+					{/* TODO "Success" (or error) toast after saving credit and modal closes */}
 
 					{deleteCreditLoading ? (
 						<Spinner size='sm' colorScheme='green' />
@@ -990,7 +957,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							New Credit
 						</Button>
 					)}
-					<EditCreditModal isOpen={isOpen} onClose={handleCloseEditCredit} creditId={editCredit} />
+					<EditCreditModal
+						isOpen={creditModalIsOpen}
+						onClose={handleCloseEditCredit}
+						creditId={editCredit}
+					/>
 				</StackItem>
 
 				<StackItem>
@@ -1135,6 +1106,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 				</StackItem>
 			</Stack>
+			<Slide
+				in={hasEditedProfile === true}
+				direction='bottom'
+				style={{
+					position: 'fixed',
+					bottom: 0,
+					left: 0,
+					width: 'full',
+					backgroundColor: colorMode === 'dark' ? 'white' : '#222',
+					borderTopWidth: '1px',
+					borderTopColor: 'gray.100',
+					textAlign: 'right',
+				}}
+			>
+				<Button
+					type='submit'
+					form='edit-profile'
+					leftIcon={saveLoading ? undefined : <FiSave />}
+					aria-label={'Save changes'}
+					colorScheme='green'
+					isDisabled={saveLoading}
+					isLoading={!!saveLoading}
+					size='lg'
+					mr={4}
+					my={2}
+				>
+					Save Changes
+				</Button>
+			</Slide>
 		</form>
 	) : null;
 }

@@ -1,4 +1,13 @@
-import { Box, FormControl, FormLabel, Link, Stack, Switch, Text, useColorMode } from '@chakra-ui/react';
+import {
+	Box,
+	FormControl,
+	FormLabel,
+	Link,
+	Stack,
+	Switch,
+	Text,
+	useColorMode,
+} from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
 import SettingsSection from '../components/common/SettingsSection';
@@ -11,7 +20,7 @@ export default function Settings() {
 
 	return (
 		<Page title='Settings'>
-			<Stack direction='column' spacing={4} maxW='2xl' mx='auto' mt={4}>
+			<Stack direction='column' spacing={4} maxW='2xl' mt={4}>
 				<SettingsSection title='Theme'>
 					<FormControl display='flex' alignItems='center'>
 						<Switch
