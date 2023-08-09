@@ -60,15 +60,13 @@ export default function LoginView({ alert, alertStatus }: Props) {
 				loginMutation({ ...credentials, reCaptchaToken: token })
 					.then((res) => {
 						if (res.data.loginWithCookiesAndReCaptcha.status === 'SUCCESS') {
-							console.info('successful');
-							navigate('');
-						} else {
-							console.info('bad', res.data.loginWithCookiesAndReCaptcha.status);
+							// reload the page to get the new cookie
+							window.location.reload();
 						}
 					})
 					.catch((errors: { message: string }) => setErrorCode(errors.message));
 			})
-			.catch((error) => {
+			.catch(() => {
 				setErrorCode('recaptcha_error');
 			});
 	};
