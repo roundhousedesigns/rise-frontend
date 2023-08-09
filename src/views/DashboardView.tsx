@@ -56,7 +56,7 @@ export default function DashboardView() {
 					</Flex>
 				</Flex>
 			</Card>
-			{notices && notices.length > 0 && (
+			{notices.length > 0 && (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates
