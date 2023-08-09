@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.8] - Unreleased
+## \[1.0.8] - 2023-08-09
 
 - Feature: Saved Profiles (bookmarked profiles)
 - Feature: Dashboard updates/notices feed
