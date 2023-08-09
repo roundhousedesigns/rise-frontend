@@ -18,7 +18,6 @@ import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
 import useLogin from '../hooks/mutations/useLogin';
 import { useErrorMessage } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
 
 interface Props {
 	alert?: string;
