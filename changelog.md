@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.8] - Unreleased
+## \[1.0.9] - Unreleased
+
+- Fixed: Additional Filter state not resetting visually after clicking "Reset"
+- Fixed: Search submit button bar bg color
+
+## \[1.0.8] - 2023-08-09
 
 - Feature: Saved Profiles (bookmarked profiles)
 - Feature: Dashboard updates/notices feed

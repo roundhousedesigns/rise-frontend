@@ -132,7 +132,14 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
 				</DrawerBody>
 				<Collapse in={searchActive && !name} unmountOnExit={false}>
-					<DrawerFooter mt={0} py={2} borderTop='1px' borderTopColor='gray.300'>
+					<DrawerFooter
+						mt={0}
+						py={2}
+						borderTop='1px'
+						borderTopColor='gray.300'
+						_light={{ bgColor: 'gray.300' }}
+						_dark={{ bgColor: 'gray.100' }}
+					>
 						<ButtonGroup>
 							<Button
 								colorScheme='green'
