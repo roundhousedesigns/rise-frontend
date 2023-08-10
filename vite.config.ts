@@ -1,18 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { dependencies } from './package.json';
 
 // FIXME VSCode can't follow the alias here for autocomplete, definitions, etc
 // import * as path from 'path';
-
-function renderChunks(deps: Record<string, string>) {
-	let chunks = {};
-	Object.keys(deps).forEach((key) => {
-		if (['react', 'react-router-dom', 'react-dom'].includes(key)) return;
-		chunks[key] = [key];
-	});
-	return chunks;
-}
 
 export default defineConfig({
 	plugins: [react()],
@@ -21,11 +11,19 @@ export default defineConfig({
 	},
 	build: {
 		rollupOptions: {
+			makeAbsoluteExternalsRelative: true,
+			preserveEntrySignatures: 'strict',
 			output: {
-				manualChunks: {
-					vendor: ['react'],
-					...renderChunks(dependencies),
+				// manualChunks: (id) => {
+				// 	if (id.includes('node_modules'))
+				// 		return id.toString().split('node_modules/')[1].split('/')[0].toString();
+				// },
+				esModule: true,
+				generatedCode: {
+					reservedNamesAsProps: false,
 				},
+				interop: 'compat',
+				systemNullSetters: false,
 			},
 		},
 	},
