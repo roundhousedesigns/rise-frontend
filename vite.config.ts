@@ -5,15 +5,6 @@ import { dependencies } from './package.json';
 // FIXME VSCode can't follow the alias here for autocomplete, definitions, etc
 // import * as path from 'path';
 
-function renderChunks(deps: Record<string, string>) {
-	let chunks = {};
-	Object.keys(deps).forEach((key) => {
-		if (['react', 'react-router-dom', 'chakra-ui'].includes(key)) return;
-		chunks[key] = [key];
-	});
-	return chunks;
-}
-
 export default defineConfig({
 	plugins: [react()],
 	server: {
@@ -21,13 +12,25 @@ export default defineConfig({
 	},
 	build: {
 		rollupOptions: {
+			makeAbsoluteExternalsRelative: true,
+			preserveEntrySignatures: 'strict',
 			output: {
-				manualChunks: {
-					vendor: ['react', 'react-router-dom', 'chakra-ui'],
-					...renderChunks(dependencies),
+				esModule: true,
+				generatedCode: {
+					reservedNamesAsProps: false,
+				},
+				interop: 'compat',
+				systemNullSetters: false,
+				manualChunks(id) {
+					if (id.includes('react-player')) {
+						return 'react-player';
+					}
+
+					return 'vendor';
 				},
 			},
 		},
+		chunkSizeWarningLimit: 1100,
 	},
 	// resolve: {
 	// 	alias: {
