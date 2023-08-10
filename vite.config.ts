@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { dependencies } from './package.json';
 
 // FIXME VSCode can't follow the alias here for autocomplete, definitions, etc
 // import * as path from 'path';
