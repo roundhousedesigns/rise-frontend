@@ -131,7 +131,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 	}: {
 		ids: number[];
 		terms: WPItem[];
-	}): (JSX.Element | string)[] {
+	}): (JSX.Element | null)[] {
 		return getWPItemsFromIds(ids, terms).map((term: WPItem) => {
 			if (term.externalUrl) {
 				return (
@@ -150,8 +150,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 				);
 			}
 
-			// No link if no URL.
-			return term.name;
+			return null;
 		});
 	}
 

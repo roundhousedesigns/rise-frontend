@@ -39,7 +39,7 @@ const QUERY_USER_TAXONOMIES = gql`
 				id: databaseId
 				slug
 				name
-				# externalUrl
+				externalUrl
 			}
 		}
 		genderIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
