@@ -8,7 +8,7 @@ import { dependencies } from './package.json';
 function renderChunks(deps: Record<string, string>) {
 	let chunks = {};
 	Object.keys(deps).forEach((key) => {
-		if (['react'].includes(key)) return;
+		if (['react','react-router-dom'].includes(key)) return;
 		chunks[key] = [key];
 	});
 	return chunks;
@@ -23,7 +23,7 @@ export default defineConfig({
 		rollupOptions: {
 			output: {
 				manualChunks: {
-					vendor: ['react'],
+					vendor: ['react','react-router-dom'],
 					...renderChunks(dependencies),
 				},
 			},
