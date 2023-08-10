@@ -19,13 +19,9 @@ import {
 	Wrap,
 	SimpleGrid,
 	Icon,
-	TagLeftIcon,
-	TagLabel,
 	useBreakpointValue,
 } from '@chakra-ui/react';
 import {
-	FiBriefcase,
-	FiCompass,
 	FiDownload,
 	FiGlobe,
 	FiMail,
@@ -34,6 +30,7 @@ import {
 	FiStar,
 	FiUser,
 	FiLink,
+	FiMap,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
@@ -120,10 +117,22 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
 	] = useUserTaxonomies();
 
-	const selectedTerms = (ids: number[], terms: WPItem[]) =>
-		getWPItemsFromIds(ids, terms)
-			.map((term: WPItem) => term.name)
-			.join(', ');
+	interface MyProps {
+		ids: number[];
+		terms: WPItem[];
+	}
+
+	const SelectedTerms = ({ ids, terms }: MyProps) => {
+		const items = getWPItemsFromIds(ids, terms);
+
+		return items ? (
+			<Wrap>
+				{items.map((item: WPItem) => (
+					<Tag key={item.id}>{item.name}</Tag>
+				))}
+			</Wrap>
+		) : null;
+	};
 
 	function selectedLinkableTerms({
 		ids,
@@ -261,22 +270,22 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									Works In
 								</Heading>
 								<TextWithIcon icon={FiMapPin} mr={2}>
-									{locationTerms ? selectedTerms(locations, locationTerms) : false}
+									{locationTerms ? SelectedTerms({ ids: locations, terms: locationTerms }) : false}
 								</TextWithIcon>
-								<Wrap>
-									{willTravel !== undefined && (
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} textAlign='center'>
-											<TagLeftIcon as={FiBriefcase} boxSize={3} />
-											<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
-										</Tag>
-									)}
-									{willTour !== undefined && (
-										<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
-											<TagLeftIcon as={FiCompass} boxSize={3} />
-											<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
-										</Tag>
-									)}
-								</Wrap>
+								<TextWithIcon icon={FiMap} mr={2}>
+									<Wrap>
+										{willTravel !== undefined && (
+											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
+												{willTravel ? 'Will Travel' : 'Local Only'}
+											</Tag>
+										)}
+										{willTour !== undefined && (
+											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'}>
+												{willTour ? 'Will Tour' : 'No Tours'}
+											</Tag>
+										)}
+									</Wrap>
+								</TextWithIcon>
 							</StackItem>
 						) : (
 							false
@@ -287,7 +296,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								<Heading as='h3' variant='contentTitle'>
 									Unions/Guilds
 								</Heading>
-								<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
+								<TextWithIcon icon={FiUser}>
+									{SelectedTerms({ ids: unions, terms: unionTerms })}
+								</TextWithIcon>
 							</StackItem>
 						) : (
 							false
