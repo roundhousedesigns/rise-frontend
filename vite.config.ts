@@ -19,16 +19,16 @@ export default defineConfig({
 	server: {
 		port: 3000,
 	},
-	// build: {
-	// 	rollupOptions: {
-	// 		output: {
-	// 			manualChunks: {
-	// 				vendor: ['react', 'react-router-dom', 'react-dom'],
-	// 				...renderChunks(dependencies),
-	// 			},
-	// 		},
-	// 	},
-	// },
+	build: {
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					vendor: ['react'],
+					...renderChunks(dependencies),
+				},
+			},
+		},
+	},
 	// resolve: {
 	// 	alias: {
 	// 		"@": path.resolve(__dirname, "./src"),
