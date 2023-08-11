@@ -5,7 +5,7 @@ import ChangePasswordView from '../views/ChangePasswordView';
 import ChangeProfileSlugView from '../views/ChangeProfileSlugView';
 import SettingsSection from '../components/common/SettingsSection';
 import ToggleOptionSwitch from '../components/common/ToggleOptionSwitch';
-import SearchOnlyToggle from '../components/common/SearchOnlyToggle';
+import HideProfileToggle from '../components/common/HideProfileToggle';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -26,7 +26,7 @@ export default function Settings() {
 				</SettingsSection>
 
 				<SettingsSection title='Profile and Visuals'>
-					<SearchOnlyToggle />
+					<HideProfileToggle />
 					<ToggleOptionSwitch
 						id='darkMode'
 						checked={colorMode === 'dark'}

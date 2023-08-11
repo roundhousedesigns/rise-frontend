@@ -58,7 +58,7 @@ import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
 import CreditItem from '../components/CreditItem';
 import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditButton from '../components/DeleteCreditButton';
-import SearchOnlyToggle from '../components/common/SearchOnlyToggle';
+import HideProfileToggle from '../components/common/HideProfileToggle';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
@@ -82,7 +82,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug, searchOnly } = useViewer();
+	const { loggedInId, loggedInSlug, hideProfile } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -635,10 +635,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Box bg={searchOnly ? 'brand.red' : 'brand.green'} borderRadius='md' mt={4} px={4} py={2}>
-				<SearchOnlyToggle />
+			<Box bg={hideProfile ? 'brand.red' : 'brand.green'} borderRadius='md' mt={4} px={4} py={2}>
+				<HideProfileToggle />
 			</Box>
-			{!searchOnly ? (
+			{!hideProfile ? (
 				<>
 					<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 						<StackItem py={2} mt={2}>

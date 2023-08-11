@@ -48,7 +48,7 @@ export default function ToggleOptionSwitch({
 			<FormLabel htmlFor={id} m={0} fontSize='lg'>
 				{label}
 				{subtext ? (
-					<Text as='span' fontSize='sm'>
+					<Text as='span' fontSize='sm' pl={2} fontStyle='italic'>
 						{' '}
 						{subtext}
 					</Text>
