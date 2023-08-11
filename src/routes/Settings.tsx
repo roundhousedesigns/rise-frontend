@@ -1,25 +1,17 @@
-import {
-	Box,
-	Flex,
-	FormControl,
-	FormLabel,
-	Link,
-	Switch,
-	Text,
-	useColorMode,
-} from '@chakra-ui/react';
+import { Box, Flex, Link, Text, useColorMode } from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
 import ChangePasswordView from '../views/ChangePasswordView';
 import ChangeProfileSlugView from '../views/ChangeProfileSlugView';
-import WrapWithIcon from '../components/common/WrapWithIcon';
 import SettingsSection from '../components/common/SettingsSection';
+import ToggleOptionSwitch from '../components/common/ToggleOptionSwitch';
+import SearchOnlyToggle from '../components/common/SearchOnlyToggle';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<Page title='Settings'>
+		<Page title='Account Settings'>
 			<Flex gap={6} mt={2} flexWrap='wrap'>
 				<SettingsSection title='Change your password'>
 					<Box w='full'>
@@ -33,25 +25,15 @@ export default function Settings() {
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
-				<SettingsSection title='Theme'>
-					<FormControl display='flex' alignItems='center'>
-						<Switch
-							id='colorMode'
-							onChange={toggleColorMode}
-							isChecked={colorMode === 'dark'}
-							mr={2}
-							colorScheme='green'
-						/>
-						<WrapWithIcon
-							as={FormLabel}
-							htmlFor='colorMode'
-							mx={2}
-							fontSize='lg'
-							icon={colorMode === 'dark' ? FiMoon : FiSun}
-						>
-							Dark Mode
-						</WrapWithIcon>
-					</FormControl>
+				<SettingsSection title='Profile and Visuals'>
+					<SearchOnlyToggle />
+					<ToggleOptionSwitch
+						id='darkMode'
+						checked={colorMode === 'dark'}
+						callback={toggleColorMode}
+						label='Dark Mode'
+						icon={colorMode === 'dark' ? FiMoon : FiSun}
+					/>
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}
