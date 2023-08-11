@@ -37,14 +37,14 @@ import { getWPItemsFromIds } from '../lib/utils';
 import { Credit, UserProfile, WPItem } from '../lib/classes';
 import { useProfileUrl } from '../hooks/hooks';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import LinkWithIcon from '../components/common/LinkWithIcon';
-import ShareButton from '../components/common/ShareButton';
-import TextWithIcon from '../components/common/TextWithIcon';
 import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import LinkWithIcon from '../components/common/LinkWithIcon';
+import ShareButton from '../components/common/ShareButton';
+import WrapWithIcon from '../components/common/WrapWithIcon';
 
 interface Props {
 	profile: UserProfile;
@@ -269,10 +269,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								<Heading as='h3' variant='contentTitle'>
 									Works In
 								</Heading>
-								<TextWithIcon icon={FiMapPin} mr={2}>
+								<WrapWithIcon icon={FiMapPin} mr={2}>
 									{locationTerms ? SelectedTerms({ ids: locations, terms: locationTerms }) : false}
-								</TextWithIcon>
-								<TextWithIcon icon={FiMap} mr={2}>
+								</WrapWithIcon>
+								<WrapWithIcon icon={FiMap} mr={2}>
 									<Wrap>
 										{willTravel !== undefined && (
 											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
@@ -285,7 +285,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											</Tag>
 										)}
 									</Wrap>
-								</TextWithIcon>
+								</WrapWithIcon>
 							</StackItem>
 						) : (
 							false
@@ -296,9 +296,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								<Heading as='h3' variant='contentTitle'>
 									Unions/Guilds
 								</Heading>
-								<TextWithIcon icon={FiUser}>
+								<WrapWithIcon icon={FiUser}>
 									{SelectedTerms({ ids: unions, terms: unionTerms })}
-								</TextWithIcon>
+								</WrapWithIcon>
 							</StackItem>
 						) : (
 							false

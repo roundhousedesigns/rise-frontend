@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file, starting wi
 
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
+- Improve: Settings page layout
 
 ## \[1.0.8] - 2023-08-09
 

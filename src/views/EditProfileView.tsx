@@ -42,6 +42,7 @@ import {
 	FiStar,
 	FiVideo,
 	FiUpload,
+	FiFileText,
 } from 'react-icons/fi';
 
 import { Credit, UserProfile } from '../lib/classes';
@@ -64,6 +65,7 @@ import DeleteCreditButton from '../components/DeleteCreditButton';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
+import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -571,13 +573,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</Card>
 			)}
 			<Flex gap={2}>
-				<FileUploadButton
-					fieldName='image'
-					accept='image/*'
-					content='Upload image'
-					onChange={handleFileInputChange}
-					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-				/>
+				{uploadFileMutationLoading ? (
+					<ProgressBar />
+				) : (
+					<FileUploadButton
+						fieldName='image'
+						accept='image/*'
+						content='Upload image'
+						icon={<FiUpload />}
+						onChange={handleFileInputChange}
+					/>
+				)}
 				{image && <ClearFieldButton field='image' />}
 			</Flex>
 		</Stack>
@@ -766,7 +772,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							/>
 						</StackItem>
 						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={8}>
+							<Flex flexWrap='wrap' gap={10}>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
 									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
@@ -799,23 +805,26 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Heading>
 									<Heading variant='contentSubtitle'>
 										{resume ? (
-											<Link
-												fontSize='md'
-												fontWeight='medium'
+											<ResponsiveButton
+												icon={<FiFileText />}
+												as={Link}
 												href={resume}
-												variant='dotted'
 												download
+												label='Preview Resume'
+												colorScheme='blue'
+												my={0}
 											>
-												Preview your resume
-											</Link>
+												Preview Resume
+											</ResponsiveButton>
 										) : (
 											'PDF or image'
 										)}
 									</Heading>
-									<Flex gap={2} py={1}>
+									<Flex gap={2}>
 										<FileUploadButton
 											fieldName='resume'
 											accept='application/pdf, image/*'
+											icon={<FiUpload />}
 											content='Upload'
 											onChange={handleFileInputChange}
 											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
