@@ -20,6 +20,7 @@ import {
 	Link,
 	SimpleGrid,
 	Slide,
+	Card,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -531,12 +532,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
 	);
 
-	const ProfileImageUploader = () => (
-		<Box mb={2} width='30%' minWidth='300px'>
+	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
+		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' fontSize='sm'>
+			<Heading variant='contentSubtitle' fontSize='sm' mb={0}>
 				Portrait orientation works best. Max 2MB.
 			</Heading>
 			{uploadFileMutationLoading ? (
@@ -557,9 +558,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				/>
 			) : (
 				// No image set
-				<Flex alignItems='center' justifyContent='center' w='full' h='100px'>
+				<Card
+					height='100%'
+					alignItems='center'
+					justifyContent='center'
+					w='full'
+					my={2}
+					_light={{ bgColor: 'whiteAlpha.700' }}
+					_dark={{ bgColor: 'blackAlpha.400' }}
+				>
 					<Icon as={FiImage} boxSize='60px' />
-				</Flex>
+				</Card>
 			)}
 			<Flex gap={2}>
 				<FileUploadButton
@@ -569,9 +578,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					onChange={handleFileInputChange}
 					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 				/>
-				<ClearFieldButton field='image' />
+				{image && <ClearFieldButton field='image' />}
 			</Flex>
-		</Box>
+		</Stack>
 	);
 
 	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
@@ -623,7 +632,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
 					{profileLoading && <Spinner alignSelf='center' />}
-					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
 						{isLargerThanMd ? <ProfileImageUploader /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 							<StackItem>
