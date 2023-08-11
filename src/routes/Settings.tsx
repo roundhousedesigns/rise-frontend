@@ -1,38 +1,26 @@
-import { Box, FormControl, FormLabel, Link, Stack, Switch, Text, useColorMode } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	FormControl,
+	FormLabel,
+	Link,
+	Switch,
+	Text,
+	useColorMode,
+} from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
-import SettingsSection from '../components/common/SettingsSection';
 import ChangePasswordView from '../views/ChangePasswordView';
 import ChangeProfileSlugView from '../views/ChangeProfileSlugView';
-import TextWithIcon from '../components/common/TextWithIcon';
+import WrapWithIcon from '../components/common/WrapWithIcon';
+import SettingsSection from '../components/common/SettingsSection';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
 		<Page title='Settings'>
-			<Stack direction='column' spacing={4} maxW='2xl' mx='auto' mt={4}>
-				<SettingsSection title='Theme'>
-					<FormControl display='flex' alignItems='center'>
-						<Switch
-							id='colorMode'
-							onChange={toggleColorMode}
-							isChecked={colorMode === 'dark'}
-							mr={2}
-							colorScheme='green'
-						/>
-						<TextWithIcon
-							as={FormLabel}
-							htmlFor='colorMode'
-							mx={2}
-							fontSize='lg'
-							icon={colorMode === 'dark' ? FiMoon : FiSun}
-						>
-							Dark Mode
-						</TextWithIcon>
-					</FormControl>
-				</SettingsSection>
-
+			<Flex gap={6} mt={2} flexWrap='wrap'>
 				<SettingsSection title='Change your password'>
 					<Box w='full'>
 						<ChangePasswordView />
@@ -45,6 +33,27 @@ export default function Settings() {
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
+				<SettingsSection title='Theme'>
+					<FormControl display='flex' alignItems='center'>
+						<Switch
+							id='colorMode'
+							onChange={toggleColorMode}
+							isChecked={colorMode === 'dark'}
+							mr={2}
+							colorScheme='green'
+						/>
+						<WrapWithIcon
+							as={FormLabel}
+							htmlFor='colorMode'
+							mx={2}
+							fontSize='lg'
+							icon={colorMode === 'dark' ? FiMoon : FiSun}
+						>
+							Dark Mode
+						</WrapWithIcon>
+					</FormControl>
+				</SettingsSection>
+
 				{/* TODO Setting: Delete your account */}
 				<SettingsSection title='Delete your account'>
 					<Text>
@@ -55,7 +64,7 @@ export default function Settings() {
 						to request your removal.
 					</Text>
 				</SettingsSection>
-			</Stack>
+			</Flex>
 		</Page>
 	);
 }

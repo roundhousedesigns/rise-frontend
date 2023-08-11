@@ -11,7 +11,6 @@ import {
 	Card,
 	Avatar,
 	Tag,
-	Spinner,
 	UnorderedList,
 	ListItem,
 	StackItem,
@@ -20,13 +19,9 @@ import {
 	Wrap,
 	SimpleGrid,
 	Icon,
-	TagLeftIcon,
-	TagLabel,
 	useBreakpointValue,
 } from '@chakra-ui/react';
 import {
-	FiBriefcase,
-	FiCompass,
 	FiDownload,
 	FiGlobe,
 	FiMail,
@@ -35,39 +30,35 @@ import {
 	FiStar,
 	FiUser,
 	FiLink,
+	FiMap,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '../lib/utils';
-import { Credit, WPItem } from '../lib/classes';
+import { Credit, UserProfile, WPItem } from '../lib/classes';
 import { useProfileUrl } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
-import useUserProfile from '../hooks/queries/useUserProfile';
 import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import LinkWithIcon from '../components/common/LinkWithIcon';
-import ShareButton from '../components/common/ShareButton';
-import TextWithIcon from '../components/common/TextWithIcon';
 import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
 import CreditsTagLegend from '../components/CreditsTagLegend';
 import PersonalIconLinks from '../components/PersonalIconLinks';
 import CreditItem from '../components/CreditItem';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import LinkWithIcon from '../components/common/LinkWithIcon';
+import ShareButton from '../components/common/ShareButton';
+import WrapWithIcon from '../components/common/WrapWithIcon';
 
 interface Props {
-	profileId: number;
+	profile: UserProfile;
+	allowBookmark?: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profileId }: Props): JSX.Element | null {
-	const { loggedInId, bookmarkedProfiles } = useViewer();
+export default function ProfileView({ profile, allowBookmark = true }: Props): JSX.Element | null {
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
-
-	// If no slug is in the route, use the logged in user's ID.
-	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
 
 	const isLargerThanMd = useBreakpointValue(
 		{
@@ -126,10 +117,22 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
 	] = useUserTaxonomies();
 
-	const selectedTerms = (ids: number[], terms: WPItem[]) =>
-		getWPItemsFromIds(ids, terms)
-			.map((term: WPItem) => term.name)
-			.join(', ');
+	interface MyProps {
+		ids: number[];
+		terms: WPItem[];
+	}
+
+	const SelectedTerms = ({ ids, terms }: MyProps) => {
+		const items = getWPItemsFromIds(ids, terms);
+
+		return items ? (
+			<Wrap>
+				{items.map((item: WPItem) => (
+					<Tag key={item.id}>{item.name}</Tag>
+				))}
+			</Wrap>
+		) : null;
+	};
 
 	function selectedLinkableTerms({
 		ids,
@@ -137,7 +140,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 	}: {
 		ids: number[];
 		terms: WPItem[];
-	}): (JSX.Element | string)[] {
+	}): (JSX.Element | null)[] {
 		return getWPItemsFromIds(ids, terms).map((term: WPItem) => {
 			if (term.externalUrl) {
 				return (
@@ -156,8 +159,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 				);
 			}
 
-			// No link if no URL.
-			return term.name;
+			return null;
 		});
 	}
 
@@ -192,9 +194,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 		);
 	};
 
-	return loading ? (
-		<Spinner />
-	) : profile ? (
+	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem as={Card} p={4}>
 				<Flex
@@ -211,15 +211,7 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 					gap={{ base: 0, md: 2 }}
 				>
 					<ShareButton url={profileUrl} />
-					{id && id !== loggedInId ? (
-						<BookmarkToggleIcon
-							id={id}
-							isBookmarked={bookmarkedProfiles?.includes(Number(id))}
-							size='xxxl'
-						/>
-					) : (
-						false
-					)}
+					{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
 				</Flex>
 				<Flex
 					gap={6}
@@ -277,23 +269,23 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 								<Heading as='h3' variant='contentTitle'>
 									Works In
 								</Heading>
-								<TextWithIcon icon={FiMapPin} mr={2}>
-									{locationTerms ? selectedTerms(locations, locationTerms) : false}
-								</TextWithIcon>
-								<Wrap>
-									{willTravel !== undefined && (
-										<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'} textAlign='center'>
-											<TagLeftIcon as={FiBriefcase} boxSize={3} />
-											<TagLabel>{willTravel ? 'Will Travel' : 'Local Only'}</TagLabel>
-										</Tag>
-									)}
-									{willTour !== undefined && (
-										<Tag size='md' colorScheme={willTour ? 'green' : 'orange'} textAlign='center'>
-											<TagLeftIcon as={FiCompass} boxSize={3} />
-											<TagLabel>{willTour ? 'Will Tour' : 'No Tours'}</TagLabel>
-										</Tag>
-									)}
-								</Wrap>
+								<WrapWithIcon icon={FiMapPin} mr={2}>
+									{locationTerms ? SelectedTerms({ ids: locations, terms: locationTerms }) : false}
+								</WrapWithIcon>
+								<WrapWithIcon icon={FiMap} mr={2}>
+									<Wrap>
+										{willTravel !== undefined && (
+											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
+												{willTravel ? 'Will Travel' : 'Local Only'}
+											</Tag>
+										)}
+										{willTour !== undefined && (
+											<Tag size='md' colorScheme={willTour ? 'green' : 'orange'}>
+												{willTour ? 'Will Tour' : 'No Tours'}
+											</Tag>
+										)}
+									</Wrap>
+								</WrapWithIcon>
 							</StackItem>
 						) : (
 							false
@@ -304,7 +296,9 @@ export default function ProfileView({ profileId }: Props): JSX.Element | null {
 								<Heading as='h3' variant='contentTitle'>
 									Unions/Guilds
 								</Heading>
-								<TextWithIcon icon={FiUser}>{selectedTerms(unions, unionTerms)}</TextWithIcon>
+								<WrapWithIcon icon={FiUser}>
+									{SelectedTerms({ ids: unions, terms: unionTerms })}
+								</WrapWithIcon>
 							</StackItem>
 						) : (
 							false

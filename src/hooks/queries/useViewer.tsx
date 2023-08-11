@@ -12,7 +12,7 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
-			bookmarkedProfileConnections {
+			bookmarkedProfileConnections(first: 50) {
 				nodes {
 					databaseId
 				}
@@ -44,7 +44,8 @@ const useViewer = (): Props => {
 	} = result?.data?.viewer || {};
 
 	const bookmarkedProfiles =
-		bookmarkedProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
+		bookmarkedProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) ||
+		[];
 
 	return {
 		loggedInId,

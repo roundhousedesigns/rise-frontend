@@ -132,9 +132,11 @@ export default function ChangePasswordView() {
 					variant='filled'
 					label='Confirm your new password'
 					isRequired
-					error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
+					error={
+						errorCode && errorCode === 'password_mismatch' && confirmPassword ? errorMessage : ''
+					}
 					onChange={handleInputChange}
-					flex='1'
+					flex={{ base: 'auto', md: '1' }}
 					inputProps={{
 						type: 'password',
 						autoComplete: 'new-password',

@@ -100,7 +100,6 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			author: Number(id),
 			last: 5,
 		},
-		fetchPolicy: 'network-only',
 	});
 
 	// Prepare the credits data object.

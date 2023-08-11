@@ -20,6 +20,7 @@ import {
 	Link,
 	SimpleGrid,
 	Slide,
+	Card,
 	Input,
 	Center
 } from '@chakra-ui/react';
@@ -43,6 +44,7 @@ import {
 	FiStar,
 	FiVideo,
 	FiUpload,
+	FiFileText,
 } from 'react-icons/fi';
 
 import { Credit, UserProfile } from '../lib/classes';
@@ -65,6 +67,7 @@ import DeleteCreditButton from '../components/DeleteCreditButton';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
+import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -462,7 +465,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			})
 			.then(() => {
 				toast({
-					title: 'Saved!',
+					title: 'Bookmarked!',
 					description: 'Your profile has been updated.',
 					status: 'success',
 					duration: 5000,
@@ -536,12 +539,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
 	);
 
-	const ProfileImageUploader = () => (
-		<Box mb={2} width='30%' minWidth='300px'>
+	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
+		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' fontSize='sm'>
+			<Heading variant='contentSubtitle' fontSize='sm' mb={0}>
 				Portrait orientation works best. Max 2MB.
 			</Heading>
 			{uploadFileMutationLoading ? (
@@ -562,21 +565,33 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				/>
 			) : (
 				// No image set
-				<Flex alignItems='center' justifyContent='center' w='full' h='100px'>
+				<Card
+					height='100%'
+					alignItems='center'
+					justifyContent='center'
+					w='full'
+					my={2}
+					_light={{ bgColor: 'whiteAlpha.700' }}
+					_dark={{ bgColor: 'blackAlpha.400' }}
+				>
 					<Icon as={FiImage} boxSize='60px' />
-				</Flex>
+				</Card>
 			)}
 			<Flex gap={2}>
-				<FileUploadButton
-					fieldName='image'
-					accept='image/*'
-					content='Upload image'
-					onChange={handleFileInputChange}
-					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-				/>
-				<ClearFieldButton field='image' />
+				{uploadFileMutationLoading ? (
+					<ProgressBar />
+				) : (
+					<FileUploadButton
+						fieldName='image'
+						accept='image/*'
+						content='Upload image'
+						icon={<FiUpload />}
+						onChange={handleFileInputChange}
+					/>
+				)}
+				{image && <ClearFieldButton field='image' />}
 			</Flex>
-		</Box>
+		</Stack>
 	);
 
 	/**
@@ -762,44 +777,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		);
 	};
 
-	const SaveButtons = () => (
-		<Slide
-			in={hasEditedProfile === true}
-			direction='bottom'
-			style={{
-				position: 'fixed',
-				bottom: 0,
-				left: 0,
-				width: 'full',
-				backgroundColor: colorMode === 'dark' ? 'white' : '#222',
-				borderTopWidth: '1px',
-				borderTopColor: 'gray.100',
-				textAlign: 'right',
-			}}
-		>
-			<Button
-				type='submit'
-				form='edit-profile'
-				leftIcon={saveLoading ? undefined : <FiSave />}
-				aria-label={'Save changes'}
-				colorScheme='green'
-				isDisabled={saveLoading}
-				isLoading={!!saveLoading}
-				size='lg'
-				mr={4}
-				my={2}
-			>
-				Save Changes
-			</Button>
-		</Slide>
-	);
-
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
 					{profileLoading && <Spinner alignSelf='center' />}
-					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
+					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
 						{isLargerThanMd ? <ProfileImageUploader /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
 							<StackItem>
@@ -933,7 +916,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							/>
 						</StackItem>
 						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={8}>
+							<Flex flexWrap='wrap' gap={10}>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
 									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
@@ -966,23 +949,26 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Heading>
 									<Heading variant='contentSubtitle'>
 										{resume ? (
-											<Link
-												fontSize='md'
-												fontWeight='medium'
+											<ResponsiveButton
+												icon={<FiFileText />}
+												as={Link}
 												href={resume}
-												variant='dotted'
 												download
+												label='Preview Resume'
+												colorScheme='blue'
+												my={0}
 											>
-												Preview your resume
-											</Link>
+												Preview Resume
+											</ResponsiveButton>
 										) : (
 											'PDF or image'
 										)}
 									</Heading>
-									<Flex gap={2} py={1}>
+									<Flex gap={2}>
 										<FileUploadButton
 											fieldName='resume'
 											accept='application/pdf, image/*'
+											icon={<FiUpload />}
 											content='Upload'
 											onChange={handleFileInputChange}
 											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
@@ -1283,7 +1269,35 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 				</StackItem>
 			</Stack>
-			<SaveButtons />
+			<Slide
+				in={hasEditedProfile === true}
+				direction='bottom'
+				style={{
+					position: 'fixed',
+					bottom: 0,
+					left: 0,
+					width: 'full',
+					backgroundColor: colorMode === 'dark' ? 'white' : '#222',
+					borderTopWidth: '1px',
+					borderTopColor: 'gray.100',
+					textAlign: 'right',
+				}}
+			>
+				<Button
+					type='submit'
+					form='edit-profile'
+					leftIcon={saveLoading ? undefined : <FiSave />}
+					aria-label={'Save changes'}
+					colorScheme='green'
+					isDisabled={saveLoading}
+					isLoading={!!saveLoading}
+					size='lg'
+					mr={4}
+					my={2}
+				>
+					Save Changes
+				</Button>
+			</Slide>
 		</form>
 	) : null;
 }

@@ -154,10 +154,6 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'SET_RESULTS':
-			// if (!action.payload?.results) {
-			// 	return state;
-			// }
-
 			return {
 				...state,
 				results: action.payload.results || [],
@@ -171,11 +167,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 	}
 }
 
-interface Props {
-	children: ReactNode;
-}
-
-export const SearchContextProvider = ({ children }: Props) => {
+export const SearchContextProvider = ({ children }: { children: ReactNode }) => {
 	const [search, searchDispatch] = useReducer(searchContextReducer, initialSearchState);
 
 	return (

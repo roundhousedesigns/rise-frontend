@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, Text } from '@chakra-ui/react';
+import { Icon, Wrap } from '@chakra-ui/react';
 
 interface Props {
 	icon: any;
@@ -8,11 +8,11 @@ interface Props {
 	[prop: string]: any;
 }
 
-export default function TextWithIcon({ icon, iconProps, children, ...props }: Props): JSX.Element {
+export default function WrapWithIcon({ icon, iconProps, children, ...props }: Props): JSX.Element {
 	return (
-		<Text display='flex' alignItems='center' {...props}>
+		<Wrap display='flex' my={2} alignItems='center' {...props}>
 			{icon ? <Icon as={icon} mr={2} boxSize={4} {...iconProps} /> : null}
 			{children}
-		</Text>
+		</Wrap>
 	);
 }

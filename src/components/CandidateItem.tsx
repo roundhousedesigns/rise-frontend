@@ -1,4 +1,3 @@
-import { MouseEventHandler } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Candidate } from '../lib/classes';
@@ -8,24 +7,23 @@ import RemoveBookmarkIcon from './common/RemoveBookmarkIcon';
 
 interface Props {
 	candidate: Candidate;
-	onRemove?: (id: number) => MouseEventHandler<HTMLButtonElement>;
+	onRemove?: (id: number) => () => void;
 	[prop: string]: any;
 }
 
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
-	const { loggedInId, bookmarkedProfiles } = useViewer();
-	const { id, image, slug, selfTitle } = candidate;
+	const { loggedInId } = useViewer();
+
+	const { id, image, slug, selfTitle } = candidate || {};
 
 	if (!id) return null;
-
-	const isBookmarked = bookmarkedProfiles.includes(Number(id));
 
 	return (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
-				<RemoveBookmarkIcon id={id} removeHandler={onRemove(id)} />
+				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
 			) : (
-				<BookmarkToggleIcon id={id} isBookmarked={isBookmarked} isDisabled={loggedInId === id} />
+				<BookmarkToggleIcon id={id} isDisabled={loggedInId === id} />
 			)}
 			<Card
 				flex={1}

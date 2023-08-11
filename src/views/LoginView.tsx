@@ -18,7 +18,6 @@ import { LoginInput } from '../lib/types';
 import TextInput from '../components/common/inputs/TextInput';
 import useLogin from '../hooks/mutations/useLogin';
 import { useErrorMessage } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
 
 interface Props {
 	alert?: string;
@@ -26,7 +25,6 @@ interface Props {
 }
 
 export default function LoginView({ alert, alertStatus }: Props) {
-	const { loggedInId } = useViewer();
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
@@ -61,13 +59,13 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 				loginMutation({ ...credentials, reCaptchaToken: token })
 					.then((res) => {
-						if (res.data.loginWithCookiesAndReCaptcha.success === 'SUCCESS') {
-							navigate('');
+						if (res.data.loginWithCookiesAndReCaptcha.status === 'SUCCESS') {
+							navigate('/');
 						}
 					})
 					.catch((errors: { message: string }) => setErrorCode(errors.message));
 			})
-			.catch((error) => {
+			.catch(() => {
 				setErrorCode('recaptcha_error');
 			});
 	};

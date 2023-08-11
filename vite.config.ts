@@ -11,14 +11,25 @@ export default defineConfig({
 	},
 	build: {
 		rollupOptions: {
+			makeAbsoluteExternalsRelative: true,
+			preserveEntrySignatures: 'strict',
 			output: {
+				esModule: true,
+				generatedCode: {
+					reservedNamesAsProps: false,
+				},
+				interop: 'compat',
+				systemNullSetters: false,
 				manualChunks(id) {
-					if (id.includes('node_modules')) {
-						return id.toString().split('node_modules/')[1].split('/')[0].toString();
+					if (id.includes('react-player')) {
+						return 'react-player';
 					}
+
+					return 'vendor';
 				},
 			},
 		},
+		chunkSizeWarningLimit: 1100,
 	},
 	// resolve: {
 	// 	alias: {

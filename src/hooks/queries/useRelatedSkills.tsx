@@ -37,7 +37,6 @@ const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
 		variables: {
 			jobs,
 		},
-		fetchPolicy: 'cache-and-network',
 	});
 
 	const preparedResult = result.data?.jobSkills.map((skill: WPItemParams) => new WPItem(skill));
