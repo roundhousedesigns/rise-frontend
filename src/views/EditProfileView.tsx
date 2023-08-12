@@ -22,8 +22,6 @@ import {
 	Slide,
 	Card,
 	Input,
-	Center,
-	border
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -378,7 +376,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			});
 	};
 
-	const handleFileUpload = (file, name) => {
+	const handleFileUpload = (file: File, name: string) => {
 		if (!file) return;
 
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
@@ -588,8 +586,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const ProgressBar = () => (
-		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
+		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full'/>
 	);
+
+	const ProgressSpinner = () => (
+			<Spinner
+				thickness='5px'
+				speed='.8s'
+				color='blue.500'
+				size='xl'
+			/>
+	)
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
 		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
@@ -651,17 +658,27 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	 * 
 	 */
 
-	const FileUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
+	const MediaImageDropzone = ({ fieldName, text }: { fieldName: string; text: string }) => {
+		const [dragActive, setDragActive] = useState(false);
 
-		const onDrop = (acceptedFiles) => {
-			console.log('FileUploader onDrop: ', acceptedFiles[0], 'name: ', fieldName)
+		// handle drag events
+		const onDragOver = () => setDragActive(true);
+		const onDragEnter = () => setDragActive(true);
+		const onDragLeave = () => setDragActive(false);
+		const onDrop = (acceptedFiles: File[]) => {
+			setDragActive(false);
 			handleFileUpload(acceptedFiles[0], fieldName)
 		}
 
+		// React-Dropzone set-up and options
 		const {getRootProps, getInputProps} = useDropzone({
 			onDrop,
+			onDragLeave,
+			onDragOver,
+			onDragEnter,
 		});
 
+		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
 			mediaImage1,
 			mediaImage2,
@@ -672,7 +689,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		};
 
 		const image = imageData[fieldName];
-		console.log('image:', image)
 	
 		return (
 			<Box 
@@ -703,7 +719,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						/>
 				</Box>
 			) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-				<ProgressBar />
+				<Flex alignItems='center' justifyContent='center' padding={50}>
+					<ProgressSpinner />
+				</Flex>
 			) : (
 				<Flex 
 					border={'1px gray dashed'}
@@ -712,154 +730,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					justifyContent={'center'}
 				>
 					<Box {...getRootProps({width: '100%'})}>
-						<Flex h={'100%'} w={'100%'} padding={5} flexDirection={'column'} alignItems={'center'} justifyItems={'center'}>
-							<Input type='file' {...getInputProps()} />
-							<FiUpload />
-							<Text>To upload image, click or drag and drop</Text>
-							<Text fontSize={15}>PNG, JPG or GIF up to 2MB</Text>
+						<Flex 
+							h={'100%'} 
+							w={'100%'} 
+							padding={5} 
+							flexDirection={'column'} 
+							alignItems={'center'} 
+							justifyItems={'center'} 
+							backgroundColor={dragActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'}>
+							<Input {...getInputProps({type: 'file'})} />
+							<FiUpload size={'1.5rem'}/>
+							<Text fontSize={'md'}>Click to upload or drag and drop</Text>
+							<Text fontSize={'xs'}>PNG, JPG, WEBP, BMP or GIF up to 2MB</Text>
 						</Flex>
 					</Box>
 				</Flex>
 			)}
 			</Box>
 		);
-	}
-
-	const DragDropFile = ({ fieldName, text }: { fieldName: string; text: string }) => {
-
-		const imageData: { [key: string]: string | undefined } = {
-			mediaImage1,
-			mediaImage2,
-			mediaImage3,
-			mediaImage4,
-			mediaImage5,
-			mediaImage6,
-		};
-
-		const image = imageData[fieldName];
-
-		// drag state
-		const [dragActive, setDragActive] = useState(false);
-
-		// handle drag events
-		const handleDrag = (e: DragEvent) => {
-			e.preventDefault();
-			e.stopPropagation();
-			console.log('handleDrag')
-
-			if (e.type === 'dragenter' || e.type === 'dragover') {
-				setDragActive(true);
-			} else if (e.type === 'dragleave') {
-				setDragActive(false);
-			}
-
-		}
-
-		// triggers when file is dropped
-		// TODO - Add logic for image upload here
-		const handleDrop = (e: React.DragEvent<HTMLInputElement>) => {
-			e.preventDefault();
-			e.stopPropagation();
-			setDragActive(false);
-
-			if (e.dataTransfer?.files && e.dataTransfer.files[0]) {
-				// at least one file has been dropped so do something
-				// handleFiles(e.dataTransfer.files);
-			}
-
-			console.log('so close to getting handleDrop working...');
-		}
-
-		// TODO - resolving typing
-		// TODO - additional styling: bgcolor on drag, make cursor: pointer for entire box? add an upload icon?
-		// i love the look of this: https://pro.chakra-ui.com/components/application/form-elements/drop-zone?color=blue&theme=Chakra+UI+Pro
-		return (
-			<Box 
-				as="form" 
-				onDragEnter={handleDrag}
-				onSubmit={(e: SubmitEvent) => e.preventDefault()}
-				id="form-file-upload" 
-				h={250} 
-				w={500} 
-				maxW={'100%'} 
-				textAlign={'center'} 
-				position={'relative'} 
-				border={'1px red dotted'}
-			>
-				{image ? (
-				<Box>
-					<Flex gap={2}>
-						<FileUploadButton
-						fieldName={fieldName}
-						content={'upload another image'}
-						icon={<FiUpload />}
-						accept='image/*'
-						onChange={handleFileInputChange}
-						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-						/>
-						<ClearFieldButton 
-							field={fieldName}/>
-					</Flex>
-					<Image
-							src={image}
-							alt={text}
-							loading='eager'
-							fit='cover'
-							w='full'
-							mt={2}
-							borderRadius='md'
-						/>
-				</Box>
-				) : (
-				<>
-					<Input 
-					type="file" 
-					id="input-file-upload" 
-					name={fieldName}
-					// multiple 
-					// display={'none'}
-					onChange={handleFileInputChange}
-					/>
-					<Flex 
-						as="label" 
-						htmlFor="input-file-upload"
-						h={'100%'} 
-						alignContent={'center'} 
-						justifyContent={'center'}
-						backgroundColor={dragActive ? '#ffffff' : 'transparent'}
-					>
-						{/* <Center>
-							<Box>
-								<Text>Drag and drop your file here or</Text>
-								<Text 
-									cursor={'pointer'} 
-									padding={1} 
-									backgroundColor={'transparent'} 
-									textDecorationLine={'underline'}
-								>
-								Click to upload a file
-								</Text>
-							</Box>
-						</Center> */}
-						{dragActive && 
-						<Box 
-							onDragEnter={handleDrag} 
-							onDragLeave={handleDrag} 
-							onDragOver={handleDrag} 
-							onDrop={(handleDrop)}
-							name={fieldName}
-							position={'absolute'}
-							w={'100%'}
-							h={'100%'}
-							top={0}
-							right={0}
-							backgroundColor={'yellow'}
-						/>}
-					</Flex>
-				</>
-				)}
-			</Box>
-		)
 	}
 
 	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
@@ -1393,13 +1281,12 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
 							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
 							<MediaImageUploader fieldName='mediaImage6' text='Image 6' /> */}
-							{/* <DragDropFile fieldName='mediaImage6' text='Image 6'/> */}
-							<FileUploader fieldName='mediaImage1' text='Image 1'/>
-							<FileUploader fieldName='mediaImage2' text='Image 2'/>
-							<FileUploader fieldName='mediaImage3' text='Image 3'/>
-							<FileUploader fieldName='mediaImage4' text='Image 4'/>
-							<FileUploader fieldName='mediaImage5' text='Image 5'/>
-							<FileUploader fieldName='mediaImage6' text='Image 6'/>
+							<MediaImageDropzone fieldName='mediaImage1' text='Image 1'/>
+							<MediaImageDropzone fieldName='mediaImage2' text='Image 2'/>
+							<MediaImageDropzone fieldName='mediaImage3' text='Image 3'/>
+							<MediaImageDropzone fieldName='mediaImage4' text='Image 4'/>
+							<MediaImageDropzone fieldName='mediaImage5' text='Image 5'/>
+							<MediaImageDropzone fieldName='mediaImage6' text='Image 6'/>
 						</SimpleGrid>
 					</Box>
 				</StackItem>
