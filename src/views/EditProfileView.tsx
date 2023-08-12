@@ -331,7 +331,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const { name, files } = event.target;
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
-		console.log('handleFileInputChange file:', file)
 
 		// Limit the file size
 		if (maxSize < file.size) {
@@ -653,11 +652,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		</Stack>
 	);
 
-	/**
-	 * Michael's Area
-	 * 
-	 */
-
 	const MediaImageDropzone = ({ fieldName, text }: { fieldName: string; text: string }) => {
 		const [dragActive, setDragActive] = useState(false);
 
@@ -749,50 +743,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			</Box>
 		);
 	}
-
-	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
-		if (!fieldName) return <>No image.</>;
-
-		const imageData: { [key: string]: string | undefined } = {
-			mediaImage1,
-			mediaImage2,
-			mediaImage3,
-			mediaImage4,
-			mediaImage5,
-			mediaImage6,
-		};
-
-		const image = imageData[fieldName];
-
-		return (
-			<Box mb={2}>
-				<Flex gap={2}>
-					<FileUploadButton
-						fieldName={fieldName}
-						content={text}
-						icon={<FiUpload />}
-						accept='image/*'
-						onChange={handleFileInputChange}
-						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-					/>
-					{image ? <ClearFieldButton field={fieldName} /> : null}
-				</Flex>
-				{image ? (
-					<Image
-						src={image}
-						alt={text}
-						loading='eager'
-						fit='cover'
-						w='full'
-						mt={2}
-						borderRadius='md'
-					/>
-				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-					<ProgressBar />
-				) : null}
-			</Box>
-		);
-	};
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
@@ -1275,12 +1225,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
-							{/* <MediaImageUploader fieldName='mediaImage1' text='Image 1' />
-							<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
-							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
-							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
-							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
-							<MediaImageUploader fieldName='mediaImage6' text='Image 6' /> */}
 							<MediaImageDropzone fieldName='mediaImage1' text='Image 1'/>
 							<MediaImageDropzone fieldName='mediaImage2' text='Image 2'/>
 							<MediaImageDropzone fieldName='mediaImage3' text='Image 3'/>
