@@ -22,7 +22,8 @@ import {
 	Slide,
 	Card,
 	Input,
-	Center
+	Center,
+	border
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -46,6 +47,7 @@ import {
 	FiUpload,
 	FiFileText,
 } from 'react-icons/fi';
+import {useDropzone} from 'react-dropzone';
 
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
@@ -331,9 +333,59 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const { name, files } = event.target;
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
-		console.log(`name: ${name}, file: ${file}`)
+		console.log('handleFileInputChange file:', file)
 
 		// Limit the file size
+		if (maxSize < file.size) {
+			toast({
+				title: 'File too large.',
+				position: 'top',
+				description: 'Please upload a file smaller than 2MB.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
+		setFieldCurrentlyUploading(name);
+
+		uploadFileMutation(file, name, loggedInId)
+			.then((result) => {
+				editProfileDispatch({
+					type: 'UPDATE_INPUT',
+					payload: {
+						name,
+						value: result.data.uploadFile.fileUrl,
+					},
+				});
+
+				setFieldCurrentlyUploading('');
+
+				// success toast
+				toast({
+					title: 'Image saved!',
+					position: 'top',
+					description: 'Your image has been uploaded.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	const handleFileUpload = (file, name) => {
+		if (!file) return;
+
+		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+		console.log('handleFileUpload file:', file)
+		console.log('size: ', file.size, 'name: ', name)
+
+		// // Limit the file size
 		if (maxSize < file.size) {
 			toast({
 				title: 'File too large.',
@@ -599,8 +651,82 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	 * 
 	 */
 
+	const FileUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
+
+		const onDrop = (acceptedFiles) => {
+			console.log('FileUploader onDrop: ', acceptedFiles[0], 'name: ', fieldName)
+			handleFileUpload(acceptedFiles[0], fieldName)
+		}
+
+		const {getRootProps, getInputProps} = useDropzone({
+			onDrop,
+		});
+
+		const imageData: { [key: string]: string | undefined } = {
+			mediaImage1,
+			mediaImage2,
+			mediaImage3,
+			mediaImage4,
+			mediaImage5,
+			mediaImage6,
+		};
+
+		const image = imageData[fieldName];
+		console.log('image:', image)
+	
+		return (
+			<Box 
+				maxW={'100%'} 
+			>
+			{image ? (
+				<Box>
+					<Flex gap={2}>
+						<FileUploadButton
+						fieldName={fieldName}
+						content={'upload another image'}
+						icon={<FiUpload />}
+						accept='image/*'
+						onChange={handleFileInputChange}
+						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+						/>
+						<ClearFieldButton 
+							field={fieldName}/>
+					</Flex>
+					<Image
+							src={image}
+							alt={text}
+							loading='eager'
+							fit='cover'
+							w='full'
+							mt={2}
+							borderRadius='md'
+						/>
+				</Box>
+			) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
+				<ProgressBar />
+			) : (
+				<Flex 
+					border={'1px gray dashed'}
+					borderRadius='md'
+					alignContent={'center'}
+					justifyContent={'center'}
+				>
+					<Box {...getRootProps({width: '100%'})}>
+						<Flex h={'100%'} w={'100%'} padding={5} flexDirection={'column'} alignItems={'center'} justifyItems={'center'}>
+							<Input type='file' {...getInputProps()} />
+							<FiUpload />
+							<Text>To upload image, click or drag and drop</Text>
+							<Text fontSize={15}>PNG, JPG or GIF up to 2MB</Text>
+						</Flex>
+					</Box>
+				</Flex>
+			)}
+			</Box>
+		);
+	}
+
 	const DragDropFile = ({ fieldName, text }: { fieldName: string; text: string }) => {
-		// taken from MediaImageUploader
+
 		const imageData: { [key: string]: string | undefined } = {
 			mediaImage1,
 			mediaImage2,
@@ -626,25 +752,25 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			} else if (e.type === 'dragleave') {
 				setDragActive(false);
 			}
+
 		}
 
 		// triggers when file is dropped
 		// TODO - Add logic for image upload here
-		const handleDrop = (e: DragEvent) => {
+		const handleDrop = (e: React.DragEvent<HTMLInputElement>) => {
 			e.preventDefault();
 			e.stopPropagation();
 			setDragActive(false);
 
+			if (e.dataTransfer?.files && e.dataTransfer.files[0]) {
+				// at least one file has been dropped so do something
+				// handleFiles(e.dataTransfer.files);
+			}
+
 			console.log('so close to getting handleDrop working...');
 		}
 
-		// triggers when file is selected with click
-		// TODO - Add logic for image upload here
-		// const handleChange = (e: ChangeEvent) => {
-		// 	e.preventDefault();
-		// 	console.log('you done did it!  you uploaded a file! Or at least console logged that you did...')
-		// }
-
+		// TODO - resolving typing
 		// TODO - additional styling: bgcolor on drag, make cursor: pointer for entire box? add an upload icon?
 		// i love the look of this: https://pro.chakra-ui.com/components/application/form-elements/drop-zone?color=blue&theme=Chakra+UI+Pro
 		return (
@@ -660,14 +786,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				position={'relative'} 
 				border={'1px red dotted'}
 			>
-				<Input 
-					type="file" 
-					id="input-file-upload" 
-					name={fieldName}
-					// multiple 
-					display={'none'}
-					onChange={handleFileInputChange}
-				/>
 				{image ? (
 				<Box>
 					<Flex gap={2}>
@@ -693,41 +811,52 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						/>
 				</Box>
 				) : (
-				<Flex 
-					as="label" 
-					htmlFor="input-file-upload"
-					h={'100%'} 
-					alignContent={'center'} 
-					justifyContent={'center'}
-					backgroundColor={dragActive ? '#ffffff' : 'transparent'}
-				>
-					<Center>
-						<Box>
-							<Text>Drag and drop your file here or</Text>
-							<Text 
-								cursor={'pointer'} 
-								padding={1} 
-								backgroundColor={'transparent'} 
-								textDecorationLine={'underline'}
-							>
-							Click to upload a file
-							</Text>
-						</Box>
-					</Center>
-					{dragActive && 
-					<Box 
-						onDragEnter={handleDrag} 
-						onDragLeave={handleDrag} 
-						onDragOver={handleDrag} 
-						onDrop={(handleDrop)}
-						name={fieldName}
-						position={'absolute'}
-						w={'100%'}
-						h={'100%'}
-						top={0}
-						right={0}
-					/>}
-				</Flex>
+				<>
+					<Input 
+					type="file" 
+					id="input-file-upload" 
+					name={fieldName}
+					// multiple 
+					// display={'none'}
+					onChange={handleFileInputChange}
+					/>
+					<Flex 
+						as="label" 
+						htmlFor="input-file-upload"
+						h={'100%'} 
+						alignContent={'center'} 
+						justifyContent={'center'}
+						backgroundColor={dragActive ? '#ffffff' : 'transparent'}
+					>
+						{/* <Center>
+							<Box>
+								<Text>Drag and drop your file here or</Text>
+								<Text 
+									cursor={'pointer'} 
+									padding={1} 
+									backgroundColor={'transparent'} 
+									textDecorationLine={'underline'}
+								>
+								Click to upload a file
+								</Text>
+							</Box>
+						</Center> */}
+						{dragActive && 
+						<Box 
+							onDragEnter={handleDrag} 
+							onDragLeave={handleDrag} 
+							onDragOver={handleDrag} 
+							onDrop={(handleDrop)}
+							name={fieldName}
+							position={'absolute'}
+							w={'100%'}
+							h={'100%'}
+							top={0}
+							right={0}
+							backgroundColor={'yellow'}
+						/>}
+					</Flex>
+				</>
 				)}
 			</Box>
 		)
@@ -1258,13 +1387,19 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Heading variant='contentTitle'>Images</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
-							<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
+							{/* <MediaImageUploader fieldName='mediaImage1' text='Image 1' />
 							<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
 							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
 							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
 							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
-							{/* <MediaImageUploader fieldName='mediaImage6' text='Image 6' /> */}
-							<DragDropFile fieldName='mediaImage6' text='Image 6'/>
+							<MediaImageUploader fieldName='mediaImage6' text='Image 6' /> */}
+							{/* <DragDropFile fieldName='mediaImage6' text='Image 6'/> */}
+							<FileUploader fieldName='mediaImage1' text='Image 1'/>
+							<FileUploader fieldName='mediaImage2' text='Image 2'/>
+							<FileUploader fieldName='mediaImage3' text='Image 3'/>
+							<FileUploader fieldName='mediaImage4' text='Image 4'/>
+							<FileUploader fieldName='mediaImage5' text='Image 5'/>
+							<FileUploader fieldName='mediaImage6' text='Image 6'/>
 						</SimpleGrid>
 					</Box>
 				</StackItem>
