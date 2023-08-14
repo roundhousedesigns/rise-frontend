@@ -3,7 +3,11 @@ import useViewer from '../../hooks/queries/useViewer';
 import useToggleHideProfile from '../../hooks/mutations/useToggleHideProfile';
 import ToggleOptionSwitch from './ToggleOptionSwitch';
 
-export default function HideProfileToggle() {
+interface Props {
+	[prop: string]: any;
+}
+
+export default function HideProfileToggle({ ...props }: Props): JSX.Element {
 	const { loggedInId, hideProfile } = useViewer();
 	const {
 		toggleHideProfileMutation,
@@ -20,9 +24,10 @@ export default function HideProfileToggle() {
 			checked={hideProfile}
 			callback={handleToggleHideProfile}
 			label='Hide Profile'
-			subtext={`Your profile is currently ${hideProfile ? 'hidden' : 'visible'}`}
+			subtext={`Your profile is ${hideProfile ? 'hidden' : 'visible'} in the directory.`}
 			icon={hideProfile ? FiEyeOff : FiEye}
 			loading={loading}
+			{...props}
 		/>
 	);
 }

@@ -10,6 +10,7 @@ interface Props {
 	icon?: As;
 	loading?: boolean;
 	callback: () => void;
+	[prop: string]: any;
 }
 export default function ToggleOptionSwitch({
 	checked,
@@ -20,6 +21,7 @@ export default function ToggleOptionSwitch({
 	icon,
 	loading,
 	callback,
+	...props
 }: Props): JSX.Element {
 	const [toggleState, setToggleState] = useState<boolean>(checked);
 
@@ -34,12 +36,13 @@ export default function ToggleOptionSwitch({
 	};
 
 	return (
-		<FormControl display='flex' alignItems='center' py={1}>
-			{icon ? <Icon as={icon as As} mr={2} boxSize={6} /> : false}
+		<FormControl display='flex' alignItems='center' py={1} {...props}>
+			{icon ? <Icon as={icon as As} mr={1} boxSize={8} p={1} color='inherit' /> : false}
 			<Switch
 				id={id}
 				onChange={handleChange}
 				isChecked={toggleState}
+				color='inherit'
 				mr={4}
 				ml={2}
 				colorScheme={colorScheme}
@@ -48,7 +51,7 @@ export default function ToggleOptionSwitch({
 			<FormLabel htmlFor={id} m={0} fontSize='lg'>
 				{label}
 				{subtext ? (
-					<Text as='span' fontSize='sm' pl={2} fontStyle='italic'>
+					<Text as='span' fontSize='sm' pl={2} fontStyle='italic' color='inherit'>
 						{' '}
 						{subtext}
 					</Text>
