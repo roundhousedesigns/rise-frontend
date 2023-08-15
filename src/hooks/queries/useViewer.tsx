@@ -12,6 +12,7 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
+			searchHistory
 			bookmarkedProfileConnections(first: 50) {
 				nodes {
 					databaseId
@@ -28,11 +29,14 @@ interface Props {
 	lastName: string;
 	email: string;
 	result: QueryResult;
+	searchHistory: string;
 	bookmarkedProfiles: number[];
 }
 
 const useViewer = (): Props => {
-	const result = useQuery(QUERY_VIEWER);
+	const result = useQuery(QUERY_VIEWER, {
+		fetchPolicy: 'cache-and-network',
+	});
 
 	const {
 		id: loggedInId,
@@ -40,6 +44,7 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
+		searchHistory,
 		bookmarkedProfileConnections,
 	} = result?.data?.viewer || {};
 
@@ -53,6 +58,7 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
+		searchHistory,
 		bookmarkedProfiles,
 		result,
 	};

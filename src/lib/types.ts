@@ -8,6 +8,7 @@ export interface WPItemParams {
 	name?: string;
 	slug?: string;
 	parentId?: number;
+	parent?: any;
 	[key: string]: any;
 }
 

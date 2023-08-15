@@ -228,3 +228,44 @@ export const toggleArrayItem = (array: any[], item: any): any[] => {
 
 	return [...array, item];
 };
+
+/**
+ * Extract the IDs of terms from a JSON string.
+ * @param json The JSON string to extract the IDs from.
+ * @returns The IDs of the terms.
+ */
+export function getUniqueTermIdsFromString(json: any): number[] {
+	const numericStrings = json.match(/\d+/g);
+	const ids = numericStrings?.map((id: string) => Number(id));
+
+	return ids ? [...new Set<number>(ids)] : [];
+}
+
+/**
+ * Extract the IDs of terms from an object.
+ * @param obj  The object to extract the IDs from.
+ * @returns The IDs of the terms.
+ */
+export function extractSearchTermIds(obj: Record<string, any>): number[] {
+	const numbersArray: number[] = [];
+
+	Object.keys(obj).forEach((key) => {
+		const value = obj[key];
+
+		// If the value is an object, recurse.
+		if (typeof value === 'object' && value !== null) {
+			numbersArray.push(...extractSearchTermIds(value));
+		}
+
+		// If the value is a string, check if it's a number.
+		if (typeof value === 'string') {
+			const number = Number(value);
+
+			if (!isNaN(number)) {
+				numbersArray.push(number);
+			}
+		}
+	});
+
+	return numbersArray;
+}

@@ -43,7 +43,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
 	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
 	// The term items for each set.
