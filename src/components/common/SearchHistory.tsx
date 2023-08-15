@@ -1,50 +1,13 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isEqual } from 'lodash';
 import { UnorderedList, ListItem, Heading, Text } from '@chakra-ui/react';
-import { WPItem } from '../../lib/classes';
 import { extractSearchTermIds, getUniqueTermIdsFromString } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
-import { isEqual } from 'lodash';
-
-/**
- * Get all the term IDs from the params object.
- *
- * @param string The JSON string.
- * @returns {number[]} The term IDs.
- */
-const searchString = (termIds: number[], allTerms: WPItem[]): string => {
-	if (!allTerms) return '';
-
-	const terms: WPItem[] = termIds.map(
-		(termId) => allTerms.find((term: WPItem) => term.id === termId) as WPItem
-	);
-
-	const departments = terms.filter((term) => term.taxonomyName === 'position' && !term.parent);
-	const jobs = terms.filter((term) => {
-		return term.taxonomyName === 'position' && term.parent;
-	});
-	const skills = terms.filter((term) => term.taxonomyName === 'skill');
-	const others = terms.filter(
-		(term) => term.taxonomyName !== 'position' && term.taxonomyName !== 'skill'
-	);
-
-	const departmentString = departments.map((department) => department.name).join('/');
-	const jobString = jobs.map((position) => position.name).join('/');
-	const skillString = skills.map((skill) => skill.name).join(', ');
-	const otherString = others.map((other) => other.name).join(', ');
-
-	// Combine the strings with commas, checking if the string is empty first.
-	let text = '';
-	if (departmentString) text += `Department: ${departmentString}`;
-	if (jobString) text += `${text ? ', ' : ''} Job: ${jobString}`;
-	if (skillString) text += `${text ? ', ' : ''} Skills: ${skillString}`;
-	if (otherString) text += `${text ? ', ' : ''} Filters: ${otherString}`;
-
-	return text;
-};
+import ReadableSearchString from './ReadableSearchString';
 
 export default function SearchHistory() {
 	const { loggedInId } = useViewer();
@@ -104,17 +67,17 @@ export default function SearchHistory() {
 				Your recent searches
 			</Heading>
 			{searches.length > 0 ? (
-				<UnorderedList>
+				<UnorderedList fontSize='lg' spacing={2}>
 					{searches.map((search: number[], index: number) => {
-						const text = searchString(search, terms);
 						return (
 							<ListItem
 								key={index}
 								data-search={JSON.stringify(searchHistoryArr[index])}
 								data-user-id={loggedInId}
 								onClick={handleClick}
+								cursor='pointer'
 							>
-								{text}
+								<ReadableSearchString termIds={search} allTerms={terms} />
 							</ListItem>
 						);
 					})}
