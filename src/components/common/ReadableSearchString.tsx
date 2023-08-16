@@ -14,11 +14,16 @@ export default function ReadableSearchString({ termIds, allTerms }: Props) {
 	);
 
 	const departments: WPItem[] = [];
+
 	terms.forEach((term) => {
 		const { taxonomyName } = term;
 		if (taxonomyName !== 'position') return;
 
-		departments.push(term.parent);
+		if (term.parent) {
+			departments.push(term.parent);
+		} else {
+			departments.push(term);
+		}
 	});
 	const jobs = terms.filter((term) => {
 		return term.taxonomyName === 'position' && term.parent;
@@ -28,8 +33,12 @@ export default function ReadableSearchString({ termIds, allTerms }: Props) {
 		(term) => term.taxonomyName !== 'position' && term.taxonomyName !== 'skill'
 	);
 
-	const departmentString = departments.map((department) => department.name).join('/');
-	const jobString = jobs.map((position) => position.name).join('/');
+	const departmentString = departments
+		.map((department) => {
+			return department.name;
+		})
+		.join('/');
+	const jobString = jobs.map((job) => job.name).join('/');
 	const skillString = skills.map((skill) => skill.name).join(', ');
 	const otherString = others.map((other) => other.name).join(', ');
 

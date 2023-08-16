@@ -2,15 +2,41 @@ import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { List, ListItem, Heading, Text, IconButton, Flex, Box } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch } from 'react-icons/fi';
+import { FiRefreshCw } from 'react-icons/fi';
+import { WPItem } from '../../lib/classes';
 import { extractSearchTermIds, getUniqueTermIdsFromString } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import ReadableSearchString from './ReadableSearchString';
-import { WPItem } from '../../lib/classes';
 import { SearchFilterSet } from '../../lib/types';
+
+function assembleStorableSearchParams(searchObj: any, terms: WPItem[]) {
+	let departmentId: number = 0;
+
+	// Get the term from `terms` that matches the first `position` in the search object.
+	// (There will only ever be one department, so we can bail after the first match.)
+	for (let term of terms) {
+		if (term.id === Number(searchObj.positions[0])) {
+			if (!term.parent) {
+				departmentId = term.id;
+			} else {
+				departmentId = term.parent.id;
+			}
+
+			break;
+		}
+	}
+
+	return {
+		...searchObj,
+		positions: {
+			department: departmentId.toString(),
+			jobs: searchObj.positions,
+		},
+	};
+}
 
 export default function SearchHistory() {
 	const { loggedInId } = useViewer();
@@ -38,34 +64,20 @@ export default function SearchHistory() {
 	// Get all the term IDs from the params object.
 	const termIds = getUniqueTermIdsFromString(searchHistory);
 	const [terms] = useTaxonomyTerms(termIds);
-	var departmentId: WPItem;
 
-	// TODO also set state on the search filters
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		const { search, userId } = event.currentTarget.dataset;
 
 		if (!search || !userId) return;
 
 		const searchObj = JSON.parse(search);
 
-		// Get the term from `terms` that matches the first `position` in the search object.
-		for (let term of terms) {
-			if (term.id === Number(searchObj.positions[0])) {
-				departmentId = term.parent.id;
-				break;
-			}
-		}
+		const filterSet = assembleStorableSearchParams(searchObj, terms);
 
 		searchDispatch({
 			type: 'RESTORE_FILTER_SET',
 			payload: {
-				filterSet: {
-					...searchObj,
-					positions: {
-						department: departmentId.toString(),
-						jobs: searchObj.positions,
-					},
-				},
+				filterSet,
 			},
 		});
 
@@ -91,7 +103,13 @@ export default function SearchHistory() {
 			<Heading as='h2' variant='pageSubtitle' color='white'>
 				Search History
 			</Heading>
-			<Text>Rerun your last {searches.length > 1 ? `${searches.length} searches` : 'search'}:</Text>
+			<Text>
+				<Text as='span' textDecoration='underline'>
+					Rerun
+				</Text>{' '}
+				your last {searches.length > 1 ? `${searches.length} searches` : 'search'}:
+			</Text>
+
 			{searches.length > 0 ? (
 				<List spacing={2}>
 					{searches.map((search: number[], index: number) => {
@@ -99,14 +117,15 @@ export default function SearchHistory() {
 							<ListItem key={index}>
 								<Flex alignItems='center' justifyContent='flex-start'>
 									<IconButton
-										icon={<FiSearch />}
-										onClick={handleClick}
+										icon={<FiRefreshCw />}
+										onClick={handleSearchClick}
 										data-search={JSON.stringify(searchHistoryArr[index])}
 										data-user-id={loggedInId}
 										aria-label={`Rerun this search`}
 										size='sm'
 										mr={2}
 									/>
+
 									<ReadableSearchString termIds={search} allTerms={terms} />
 								</Flex>
 							</ListItem>

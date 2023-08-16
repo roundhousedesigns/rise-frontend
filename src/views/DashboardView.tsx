@@ -23,51 +23,41 @@ export default function DashboardView() {
 
 	return (
 		<Box>
-			<Flex gap={4}>
-				<Card flex='1'>
-					<Flex justifyContent='space-between' flexWrap='wrap'>
-						<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
-							To start a Search, use the{' '}
-							{
-								<IconButton
-									icon={<FiSearch />}
-									variant='inline'
-									title='Search'
-									aria-label='Sample magnifying glass search icon'
-								/>
-							}{' '}
-							button in the header.
-						</Text>
-						<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
-							<Button
-								as={Link}
-								leftIcon={<FiUser />}
-								to={`/profile/${loggedInSlug}`}
-								colorScheme='blue'
-								my={0}
-							>
-								View your profile
-							</Button>
-							<Button
-								as={Link}
-								leftIcon={<FiEdit3 />}
-								to='/profile/edit'
-								colorScheme='green'
-								my={0}
-							>
-								Edit your profile
-							</Button>
-							<Spacer />
-							<Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
-								Get Help
-							</Button>
-						</Flex>
+			<Card>
+				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
+					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
+						To start a Search, use the{' '}
+						{
+							<IconButton
+								icon={<FiSearch />}
+								variant='inline'
+								title='Search'
+								aria-label='Sample magnifying glass search icon'
+							/>
+						}{' '}
+						button in the header.
+					</Text>
+					<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
+						<Button
+							as={Link}
+							leftIcon={<FiUser />}
+							to={`/profile/${loggedInSlug}`}
+							colorScheme='blue'
+							my={0}
+						>
+							View your profile
+						</Button>
+						<Button as={Link} leftIcon={<FiEdit3 />} to='/profile/edit' colorScheme='green' my={0}>
+							Edit your profile
+						</Button>
+						<Spacer />
+						<Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
+							Get Help
+						</Button>
 					</Flex>
-				</Card>
-				<Card flex='1'>
-					<SearchHistory />
-				</Card>
-			</Flex>
+				</Flex>
+				<SearchHistory />
+			</Card>
 
 			{notices && notices.length > 0 && (
 				<Box>

@@ -198,16 +198,12 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem as={Card} p={4}>
 				<Flex
-					bg={{ md: 'transparent !important' }}
 					position='absolute'
 					top={0}
-					left={0}
-					w='full'
+					right={0}
+					w={{ base: 'full', md: 'auto' }}
 					p={2}
 					justifyContent={{ base: 'space-between', md: 'flex-end' }}
-					display='flex'
-					gap={{ base: 0, md: 2 }}
-					zIndex={1}
 				>
 					<ShareButton url={profileUrl} />
 					{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
@@ -242,7 +238,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 						gap={4}
 						width={'100%'}
 						lineHeight={1}
-						zIndex={100}
 					>
 						<StackItem display='flex' flexWrap='wrap'>
 							<Flex
