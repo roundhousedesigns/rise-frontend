@@ -1,5 +1,5 @@
-import { Text } from '@chakra-ui/react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
+import { Box, Text } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
 
 interface Props {
@@ -34,22 +34,22 @@ export default function ReadableSearchString({ termIds, allTerms }: Props) {
 	const otherString = others.map((other) => other.name).join(', ');
 
 	return (
-		<>
+		<Box>
 			{departmentString ? <Section title='Department'>{departmentString}</Section> : null}
 			{jobString ? <Section title='Job'>{jobString}</Section> : null}
 			{skillString ? <Section title='Skill'>{skillString}</Section> : null}
-			{otherString ? <Section title='Other'>{otherString}</Section> : null}
-		</>
+			{otherString ? <Section title='Filters'>{otherString}</Section> : null}
+		</Box>
 	);
 }
 
 const Section = ({ title, children }: { title: string; children: ReactNode }) => (
-	<Text as='span'>
+	<>
 		<Text as='span' fontWeight='bold'>
 			{title}:&nbsp;
 		</Text>
 		<Text as='span' pr={2}>
 			{children}
 		</Text>
-	</Text>
+	</>
 );

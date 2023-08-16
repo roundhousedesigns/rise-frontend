@@ -33,6 +33,7 @@ interface SearchAction {
 			name: string;
 			value: string | string[] | Key[];
 		};
+		filterSet?: any;
 		results?: number[];
 		additionalFiltersActive?: number[];
 		searchDrawerClose?: () => void;
@@ -151,6 +152,15 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			return {
 				...state,
 				additionalFiltersActive: action.payload.additionalFiltersActive,
+			};
+
+		case 'RESTORE_FILTER_SET':
+			if (!action.payload?.filterSet) return state;
+
+			return {
+				...state,
+				filters: action.payload.filterSet,
+				searchActive: true,
 			};
 
 		case 'SET_RESULTS':

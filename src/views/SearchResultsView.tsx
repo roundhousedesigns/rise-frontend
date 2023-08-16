@@ -3,6 +3,7 @@ import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/CandidateList';
 
 import { SearchContext } from '../context/SearchContext';
+import ReadableSearchString from '../components/common/ReadableSearchString';
 
 export default function SearchResultsView() {
 	const {
@@ -10,7 +11,7 @@ export default function SearchResultsView() {
 	} = useContext(SearchContext);
 
 	// Set the results string based on the number of results.
-	const resultsString = useMemo(() => {
+	const resultsCountString = useMemo(() => {
 		if (results.length === 0) {
 			return 'No results.';
 		} else if (results.length === 1) {
@@ -23,7 +24,8 @@ export default function SearchResultsView() {
 	return (
 		<Box>
 			<Text fontSize='sm' pb={2}>
-				{resultsString}
+				{resultsCountString}
+				{/* <ReadableSearchString  */}
 			</Text>
 			<CandidateList userIds={results} />
 		</Box>
