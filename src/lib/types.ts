@@ -185,10 +185,17 @@ export interface updateBookmarkedProfilesInput {
 /**
  * The data shape for a search query.
  */
-export interface SearchParams {
+export interface SearchFilterSet {
 	positions: {
-		department?: string[];
+		department: string;
 		jobs?: string[];
-		skills?: string[];
 	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	[key: string]: any;
 }

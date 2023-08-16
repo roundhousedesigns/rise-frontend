@@ -3,11 +3,13 @@ import { Box, Text } from '@chakra-ui/react';
 import CandidateList from '../components/CandidateList';
 
 import { SearchContext } from '../context/SearchContext';
-import ReadableSearchString from '../components/common/ReadableSearchString';
 
 export default function SearchResultsView() {
 	const {
-		search: { results },
+		search: {
+			// filters: { filterSet },
+			results,
+		},
 	} = useContext(SearchContext);
 
 	// Set the results string based on the number of results.
@@ -25,7 +27,7 @@ export default function SearchResultsView() {
 		<Box>
 			<Text fontSize='sm' pb={2}>
 				{resultsCountString}
-				{/* <ReadableSearchString  */}
+				{/* TODO add results string here w/ param details */}
 			</Text>
 			<CandidateList userIds={results} />
 		</Box>

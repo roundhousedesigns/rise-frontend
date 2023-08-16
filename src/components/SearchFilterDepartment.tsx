@@ -30,7 +30,7 @@ export default function SearchFilterDepartment() {
 			<Heading as='h3' variant='searchFilterTitle'>
 				Which department are you hiring for?
 			</Heading>
-			<RadioGroup onChange={handleToggleTerm} value={search.filters.positions.department}>
+			<RadioGroup onChange={handleToggleTerm} value={search.filters.filterSet.positions.department}>
 				<Wrap>
 					{data.map((term: WPItem) => {
 						return (

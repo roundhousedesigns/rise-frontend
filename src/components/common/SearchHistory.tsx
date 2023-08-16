@@ -1,7 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { isEqual } from 'lodash';
 import { List, ListItem, Heading, Text, IconButton, Flex, Box } from '@chakra-ui/react';
+import { isEqual } from 'lodash';
+import { FiSearch } from 'react-icons/fi';
 import { extractSearchTermIds, getUniqueTermIdsFromString } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
@@ -9,7 +10,7 @@ import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import ReadableSearchString from './ReadableSearchString';
 import { WPItem } from '../../lib/classes';
-import { FiSearch } from 'react-icons/fi';
+import { SearchFilterSet } from '../../lib/types';
 
 export default function SearchHistory() {
 	const { loggedInId } = useViewer();
@@ -82,7 +83,7 @@ export default function SearchHistory() {
 	// Get the term IDs for each search.
 	const searchHistoryArr = searchHistory ? JSON.parse(searchHistory) : [];
 	const searches = searchHistoryArr
-		? searchHistoryArr.map((search: object) => extractSearchTermIds(search))
+		? searchHistoryArr.map((search: SearchFilterSet) => extractSearchTermIds(search))
 		: [];
 
 	return (

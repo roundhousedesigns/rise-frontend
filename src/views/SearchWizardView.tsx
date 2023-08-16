@@ -19,7 +19,9 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		search: {
 			filters: {
 				name,
-				positions: { department, jobs },
+				filterSet: {
+					positions: { department, jobs },
+				},
 			},
 		},
 	} = useContext(SearchContext);

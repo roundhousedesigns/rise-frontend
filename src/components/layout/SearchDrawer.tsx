@@ -34,14 +34,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		search: {
 			filters: {
 				name,
-				positions: { jobs, department },
-				skills,
-				unions,
-				locations,
-				experienceLevels,
-				genderIdentities,
-				racialIdentities,
-				personalIdentities,
+				filterSet: {
+					positions: { jobs, department },
+					skills,
+					unions,
+					locations,
+					experienceLevels,
+					genderIdentities,
+					racialIdentities,
+					personalIdentities,
+				},
 			},
 			results,
 			searchActive,
@@ -70,7 +72,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		e.preventDefault();
 
 		// set the positions array to the jobs array if it's not empty, otherwise use the department array
-		const positions = jobs.length > 0 ? jobs : department;
+		const positions = jobs && jobs.length > 0 ? jobs : department;
 
 		getSearchResults({
 			variables: {

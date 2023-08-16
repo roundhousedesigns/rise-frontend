@@ -10,7 +10,9 @@ import { SearchContext } from '../context/SearchContext';
 export default function SearchFilterSkills() {
 	const {
 		search: {
-			filters: { positions, skills },
+			filters: {
+				filterSet: { positions, skills },
+			},
 		},
 		searchDispatch,
 	} = useContext(SearchContext);

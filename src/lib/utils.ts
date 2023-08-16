@@ -4,6 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
+import { SearchFilterSet } from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /** Generate a link to a social media profile.
@@ -246,7 +247,9 @@ export function getUniqueTermIdsFromString(json: any): number[] {
  * @param obj  The object to extract the IDs from.
  * @returns The IDs of the terms.
  */
-export function extractSearchTermIds(obj: Record<string, any>): number[] {
+export function extractSearchTermIds(obj: SearchFilterSet): number[] {
+	if (!obj) return [];
+
 	const numbersArray: number[] = [];
 
 	Object.keys(obj).forEach((key) => {

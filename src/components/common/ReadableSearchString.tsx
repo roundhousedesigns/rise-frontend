@@ -7,7 +7,7 @@ interface Props {
 	allTerms: WPItem[];
 }
 export default function ReadableSearchString({ termIds, allTerms }: Props) {
-	if (!allTerms) return null;
+	if (!termIds || !allTerms) return null;
 
 	const terms: WPItem[] = termIds.map(
 		(termId) => allTerms.find((term: WPItem) => term.id === termId) as WPItem
