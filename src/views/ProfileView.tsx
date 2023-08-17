@@ -11,7 +11,7 @@ import {
 	Card,
 	Avatar,
 	Tag,
-	UnorderedList,
+	List,
 	ListItem,
 	StackItem,
 	Link,
@@ -126,11 +126,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		const items = getWPItemsFromIds(ids, terms);
 
 		return items ? (
-			<Wrap>
+			<Flex gap={1} flexWrap='wrap'>
 				{items.map((item: WPItem) => (
 					<Tag key={item.id}>{item.name}</Tag>
 				))}
-			</Wrap>
+			</Flex>
 		) : null;
 	};
 
@@ -327,7 +327,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							<Heading as='h3' variant='contentTitle'>
 								Contact
 							</Heading>
-							<UnorderedList listStyleType='none' m={0} spacing={1}>
+							<List m={0} spacing={1}>
 								{email ? (
 									<ListItem>
 										<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
@@ -355,7 +355,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								) : (
 									false
 								)}
-							</UnorderedList>
+							</List>
 						</StackItem>
 
 						<StackItem>
@@ -399,13 +399,13 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					<Flex justifyContent='flex-end'>
 						<CreditsTagLegend mr={4} />
 					</Flex>
-					<UnorderedList listStyleType='none' m={0}>
+					<List m={0}>
 						{creditsSorted.map((credit: Credit) => (
 							<ListItem key={credit.id}>
 								<CreditItem credit={credit} />
 							</ListItem>
 						))}
-					</UnorderedList>
+					</List>
 				</StackItem>
 			)}
 

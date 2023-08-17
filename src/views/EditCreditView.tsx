@@ -21,12 +21,12 @@ function editCreditReducer(state: Credit, action: { type: string; payload: any }
 				[action.payload.name]: action.payload.value,
 			};
 
-		case 'UPDATE_DEPARTMENT':
+		case 'UPDATE_DEPARTMENTS':
 			return {
 				...state,
 				positions: {
 					...state.positions,
-					department: action.payload.value.map((item: number) => item),
+					departments: action.payload.value.map((item: number) => item),
 				},
 			};
 
@@ -77,7 +77,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		workStart,
 		workEnd,
 		workCurrent,
-		positions: { department: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
+		positions: { departments: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
 
@@ -341,7 +341,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					</Heading>
 					<Text>Select all department(s) you worked under.</Text>
 					<ProfileCheckboxGroup
-						name='department'
+						name='departments'
 						items={allDepartments}
 						checked={
 							selectedDepartmentIds
