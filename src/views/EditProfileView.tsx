@@ -870,8 +870,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<TextInput
 								value={socials?.linkedin}
 								leftElement={<Icon as={FiLinkedin} />}
-								label='LinkedIn @handle'
-								placeholder='@yourname'
+								label='LinkedIn URL'
+								placeholder='https://linkedin/in/yourprofile'
 								name='socials.linkedin'
 								onChange={handleSocialInputChange}
 							/>
