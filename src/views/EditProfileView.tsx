@@ -891,42 +891,42 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<StackItem w='full' maxW='3xl'>
 								<Heading variant='contentTitle'>Social</Heading>
 
-								<SimpleGrid columns={[1, 2]} spacing={4}>
-									<TextInput
-										value={socials?.linkedin}
-										leftElement={<Icon as={FiLinkedin} />}
-										label='LinkedIn @handle'
-										placeholder='@yourname'
-										name='socials.linkedin'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.facebook}
-										leftElement={<Icon as={FiFacebook} />}
-										label='Facebook URL'
-										placeholder='https://facebook.com/yourname'
-										name='socials.facebook'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.instagram}
-										leftElement={<Icon as={FiInstagram} />}
-										label='Instagram @handle'
-										placeholder='@handle'
-										name='socials.instagram'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.twitter}
-										leftElement={<Icon as={FiTwitter} />}
-										label='Twitter @handle'
-										placeholder='@handle'
-										name='socials.twitter'
-										onChange={handleSocialInputChange}
-									/>
-								</SimpleGrid>
-							</StackItem>
-						</StackItem>
+						<SimpleGrid columns={[1, 2]} spacing={4}>
+							<TextInput
+								value={socials?.linkedin}
+								leftElement={<Icon as={FiLinkedin} />}
+								label='LinkedIn URL'
+								placeholder='https://linkedin/in/yourprofile'
+								name='socials.linkedin'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.facebook}
+								leftElement={<Icon as={FiFacebook} />}
+								label='Facebook URL'
+								placeholder='https://facebook.com/yourname'
+								name='socials.facebook'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.instagram}
+								leftElement={<Icon as={FiInstagram} />}
+								label='Instagram @handle'
+								placeholder='@handle'
+								name='socials.instagram'
+								onChange={handleSocialInputChange}
+							/>
+							<TextInput
+								value={socials?.twitter}
+								leftElement={<Icon as={FiTwitter} />}
+								label='Twitter @handle'
+								placeholder='@handle'
+								name='socials.twitter'
+								onChange={handleSocialInputChange}
+							/>
+						</SimpleGrid>
+					</StackItem>
+				</StackItem>
 
 						<StackItem pos='relative' id='credits'>
 							<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>

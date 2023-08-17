@@ -2,11 +2,16 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.9] - Unreleased
+## \[1.0.9] - unreleased
 
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
+
+## \[1.0.8-hotfix1] - 2023-08-17
+
+- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.\
+- Fixed: LinkedIn social links now reference full URL instead of handle
 
 ## \[1.0.8] - 2023-08-09
 
@@ -14,7 +19,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Feature: Dashboard updates/notices feed
 - Feature: Basic password complexity enforcement
 - Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
-- Improved: Added common `ConfirmActionDialog`` component for confirmation dialogs
+- Improved: Added common `ConfirmActionDialog` component for confirmation dialogs
 - Improved: Profile Share icon moved into Card component.
 - Improved: Menu icon standout color
 - Improved: Styling and layout
