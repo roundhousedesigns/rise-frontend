@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Feature: Dashboard updates/notices feed
 - Feature: Basic password complexity enforcement
 - Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
-- Improved: Added common `ConfirmActionDialog`` component for confirmation dialogs
+- Improved: Added common `ConfirmActionDialog` component for confirmation dialogs
 - Improved: Profile Share icon moved into Card component.
 - Improved: Menu icon standout color
 - Improved: Styling and layout
