@@ -126,7 +126,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		const items = getWPItemsFromIds(ids, terms);
 
 		return items ? (
-			<Flex gap={1}>
+			<Flex gap={1} flexWrap='wrap'>
 				{items.map((item: WPItem) => (
 					<Tag key={item.id}>{item.name}</Tag>
 				))}
