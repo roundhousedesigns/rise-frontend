@@ -4,7 +4,8 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 
-- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
+- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.\
+- Fixed: LinkedIn social links now reference full URL instead of handle
 
 ## \[1.0.8] - 2023-08-09
 
