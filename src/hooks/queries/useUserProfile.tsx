@@ -86,7 +86,6 @@ export const QUERY_PROFILE = gql`
 	}
 `;
 
-// FIXME $author not used?
 /**
  * Query to retrieve one User by database ID.
  *
@@ -107,12 +106,21 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 		// If credit at least has an id and a title, return a new Credit object
 		if (!credit.id || !credit.title) return null;
 
-		const departments = credit.positions?.nodes.filter(
-			(position: { __typename: string; id: number; parentId: number }) => position.parentId === null
-		);
-		const jobs = credit.positions?.nodes.filter(
+		const jobs = credit.positions.nodes.filter(
 			(position: { __typename: string; id: number; parentId: number }) => position.parentId !== null
 		);
+		const departments = credit.positions.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId === null
+		);
+
+		// Backwards compatibility for old credits
+		if ((!departments || !departments.length) && jobs) {
+			jobs.forEach((job: WPItem) => {
+				if (job.parentId) {
+					departments.push(new WPItem({ id: job.parentId }));
+				}
+			});
+		}
 
 		const newCredit = new Credit({
 			id: credit.id,
