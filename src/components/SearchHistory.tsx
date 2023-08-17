@@ -1,11 +1,14 @@
-import { List, ListItem, Heading, Text, Box } from '@chakra-ui/react';
+import { List, ListItem, Heading, Text, Box, Spinner } from '@chakra-ui/react';
 import { SearchFilterSetRaw } from '../lib/types';
 import { extractSearchTermIds } from '../lib/utils';
 import useViewer from '../hooks/queries/useViewer';
-import SavedSearch from './common/SavedSearch';
+import SavedSearchItem from './common/SavedSearchItem';
 
 export default function SearchHistory() {
-	const { searchHistory } = useViewer();
+	const {
+		searchHistory,
+		result: { loading },
+	} = useViewer();
 
 	// Get the term IDs for each search.
 	const searchHistoryArr = searchHistory ? JSON.parse(searchHistory) : [];
@@ -26,15 +29,16 @@ export default function SearchHistory() {
 				<Text as='span' textDecoration='underline'>
 					save
 				</Text>{' '}
-				your last{' '}
-				{searchTermIdSets.length > 1 ? `${searchTermIdSets.length} searches` : 'search'}:
+				your last {searchTermIdSets.length > 1 ? `${searchTermIdSets.length} searches` : 'search'}:
 			</Text>
 
-			{searchTermIdSets.length > 0 ? (
+			{loading ? (
+				<Spinner />
+			) : searchTermIdSets.length > 0 ? (
 				<List spacing={2}>
 					{searchTermIdSets.map((_ignored: any, index: number) => (
 						<ListItem key={index}>
-							<SavedSearch searchTerms={searchHistoryArr[index]} />
+							<SavedSearchItem searchTerms={searchHistoryArr[index]} />
 						</ListItem>
 					))}
 				</List>

@@ -31,7 +31,7 @@ interface Props {
 	searchTerms: SearchFilterSetRaw;
 }
 
-export default function SavedSearch({ searchTerms }: Props) {
+export default function SavedSearchItem({ searchTerms }: Props) {
 	const { loggedInId } = useViewer();
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
 		searchTerms.searchName ? searchTerms.searchName : ''
@@ -131,6 +131,7 @@ export default function SavedSearch({ searchTerms }: Props) {
 				) : (
 					<ReadableSearchString termIds={termIds} allTerms={terms} />
 				)}
+				{/* TODO Delete search */}
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>

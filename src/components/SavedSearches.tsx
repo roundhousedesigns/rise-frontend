@@ -2,9 +2,9 @@ import { List, ListItem, Heading, Text, Box } from '@chakra-ui/react';
 import { extractSearchTermIds } from '../lib/utils';
 import { SearchFilterSetRaw } from '../lib/types';
 import useViewer from '../hooks/queries/useViewer';
-import SavedSearch from './common/SavedSearch';
+import SavedSearchItem from './common/SavedSearchItem';
 
-export default function SavedSearches() {
+export default function SavedSearchItemes() {
 	const { savedSearches } = useViewer();
 
 	// Get the term IDs for each search.
@@ -24,7 +24,7 @@ export default function SavedSearches() {
 				<List spacing={2}>
 					{searchTermIdSets.map((_ignored: any, index: number) => (
 						<ListItem key={index}>
-							<SavedSearch searchTerms={savedSearchesArr[index]} />
+							<SavedSearchItem searchTerms={savedSearchesArr[index]} />
 						</ListItem>
 					))}
 				</List>
