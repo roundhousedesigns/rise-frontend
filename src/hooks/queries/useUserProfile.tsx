@@ -107,7 +107,14 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 		// If credit at least has an id and a title, return a new Credit object
 		if (!credit.id || !credit.title) return null;
 
-		return new Credit({
+		const departments = credit.positions?.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId === null
+		);
+		const jobs = credit.positions?.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId !== null
+		);
+
+		const newCredit = new Credit({
 			id: credit.id,
 			index: credit.index,
 			title: credit.title,
@@ -118,10 +125,12 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			workStart: credit.workStart,
 			workEnd: credit.workEnd,
 			workCurrent: credit.workCurrent,
-			department: credit.positions?.nodes.map((job: WPItem) => job.parentId),
-			jobs: credit.positions?.nodes.map((job: WPItem) => job.id),
+			departments: departments?.map((department: WPItem) => department.id),
+			jobs: jobs?.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
+
+		return newCredit;
 	});
 
 	// Reorder the credits

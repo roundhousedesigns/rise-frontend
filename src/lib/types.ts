@@ -99,7 +99,7 @@ export interface PersonalLinksParams {
  * The data shape for Credit input.
  */
 export interface CreditParams {
-	id: string | number; // Using a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
+	id: string | number; // Allowing a string here because we sometimes need to generate a unique ID for a new credit, and alphanumeric is better.
 	index: number;
 	title?: string;
 	jobTitle?: string;
@@ -109,10 +109,10 @@ export interface CreditParams {
 	workStart?: string;
 	workEnd?: string;
 	workCurrent?: boolean;
-	department?: number[];
+	departments?: number[];
 	jobs?: number[];
 	positions?: {
-		department: number[];
+		departments: number[];
 		jobs: number[];
 	};
 	skills?: number[];
@@ -133,7 +133,8 @@ export interface CreditOutput {
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
-	positions: number[];
+	departments: number[];
+	jobs: number[];
 	skills: number[];
 	isNew: boolean;
 }
@@ -186,7 +187,7 @@ export interface updateBookmarkedProfilesInput {
  */
 export interface SearchParams {
 	positions: {
-		department?: string[];
+		departments?: string[];
 		jobs?: string[];
 		skills?: string[];
 	};
