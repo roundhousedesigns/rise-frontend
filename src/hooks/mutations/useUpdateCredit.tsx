@@ -33,6 +33,7 @@ const useUpdateCredit = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_CREDIT);
 
 	const updateCreditMutation = (credit: CreditOutput, userId: number) => {
+		console.info(credit);
 		return mutation({
 			variables: {
 				input: {
