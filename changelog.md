@@ -2,10 +2,9 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.9] - Unreleased
+## \[1.0.8-hotfix1] - 2023-08-17
 
-- Fixed: Additional Filter state not resetting visually after clicking "Reset"
-- Fixed: Search submit button bar bg color
+- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
 
 ## \[1.0.8] - 2023-08-09
 
