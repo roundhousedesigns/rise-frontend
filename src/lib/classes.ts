@@ -288,9 +288,9 @@ export class Credit implements CreditParams {
 	workEnd: string;
 	workCurrent: boolean;
 	positions: {
-		department: number[];
+		departments: number[];
 		jobs: number[];
-	} = { department: [], jobs: [] };
+	} = { departments: [], jobs: [] };
 	skills: number[];
 	isNew: boolean = false;
 
@@ -306,28 +306,28 @@ export class Credit implements CreditParams {
 		this.workEnd = params.workEnd ? params.workEnd : '';
 		this.workCurrent = params.workCurrent || false;
 		this.skills = params.skills ? params.skills : [];
-		this.positions = this.getPositions(params) || { department: [], jobs: [] };
+		this.positions = this.getPositions(params) || { departments: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;
 	}
 
 	/**
 	 * Get the positions of the credit.
 	 * @param {CreditParams} params - Credit parameters
-	 * @returns {Object} An object containing department and jobs
+	 * @returns {Object} An object containing departments and jobs
 	 */
-	private getPositions(params: CreditParams): { department: number[]; jobs: number[] } {
+	private getPositions(params: CreditParams): { departments: number[]; jobs: number[] } {
 		if (params.positions) {
 			return params.positions;
 		}
 
 		if (
-			params.department &&
-			params.department.length > 0 &&
+			params.departments &&
+			params.departments.length > 0 &&
 			params.jobs &&
 			params.jobs.length > 0
 		) {
 			return {
-				department: params.department.map((department) => Number(department)),
+				departments: params.departments.map((departments) => Number(departments)),
 				jobs: params.jobs.map((job) => Number(job)),
 			};
 		}
@@ -340,10 +340,13 @@ export class Credit implements CreditParams {
 	 * @returns {CreditOutput} A sanitized credit object.
 	 */
 	prepareCreditForGraphQL(): CreditOutput {
+		const { positions, ...rest } = this;
+
 		return {
-			...this,
+			...rest,
 			id: Number(this.id),
-			positions: this.positions.jobs,
+			departments: positions.departments,
+			jobs: positions.jobs,
 		};
 	}
 }

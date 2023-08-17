@@ -15,8 +15,8 @@ const { VITE_FRONTEND_URL } = import.meta.env;
 export function socialLink(network: string, value: string): string {
 	const socialLinkBases: PersonalLinks = {
 		twitter: 'https://twitter.com/',
-		linkedin: 'https://www.linkedin.com/in/',
 		instagram: 'https://www.instagram.com/',
+		linkedin: '',
 		facebook: '',
 	};
 

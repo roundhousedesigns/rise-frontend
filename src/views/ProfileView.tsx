@@ -11,7 +11,7 @@ import {
 	Card,
 	Avatar,
 	Tag,
-	UnorderedList,
+	List,
 	ListItem,
 	StackItem,
 	Link,
@@ -44,7 +44,7 @@ import CreditItem from '../components/CreditItem';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import LinkWithIcon from '../components/common/LinkWithIcon';
 import ShareButton from '../components/common/ShareButton';
-import WrapWithIcon from '../components/common/WrapWithIcon';
+import IconContent from '../components/common/IconContent';
 
 interface Props {
 	profile: UserProfile;
@@ -126,11 +126,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		const items = getWPItemsFromIds(ids, terms);
 
 		return items ? (
-			<Wrap>
+			<Flex gap={1} flexWrap='wrap'>
 				{items.map((item: WPItem) => (
 					<Tag key={item.id}>{item.name}</Tag>
 				))}
-			</Wrap>
+			</Flex>
 		) : null;
 	};
 
@@ -264,10 +264,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								<Heading as='h3' variant='contentTitle'>
 									Works In
 								</Heading>
-								<WrapWithIcon icon={FiMapPin} mr={2}>
+								<IconContent icon={FiMapPin} mr={2}>
 									{locationTerms ? SelectedTerms({ ids: locations, terms: locationTerms }) : false}
-								</WrapWithIcon>
-								<WrapWithIcon icon={FiMap} mr={2}>
+								</IconContent>
+								<IconContent icon={FiMap} mr={2}>
 									<Wrap>
 										{willTravel !== undefined && (
 											<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
@@ -280,7 +280,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											</Tag>
 										)}
 									</Wrap>
-								</WrapWithIcon>
+								</IconContent>
 							</StackItem>
 						) : (
 							false
@@ -291,9 +291,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								<Heading as='h3' variant='contentTitle'>
 									Unions/Guilds
 								</Heading>
-								<WrapWithIcon icon={FiUser}>
+								<IconContent icon={FiUser}>
 									{SelectedTerms({ ids: unions, terms: unionTerms })}
-								</WrapWithIcon>
+								</IconContent>
 							</StackItem>
 						) : (
 							false
@@ -322,7 +322,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							<Heading as='h3' variant='contentTitle'>
 								Contact
 							</Heading>
-							<UnorderedList listStyleType='none' m={0} spacing={1}>
+							<List m={0} spacing={1}>
 								{email ? (
 									<ListItem>
 										<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
@@ -350,7 +350,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								) : (
 									false
 								)}
-							</UnorderedList>
+							</List>
 						</StackItem>
 
 						<StackItem>
@@ -394,13 +394,13 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					<Flex justifyContent='flex-end'>
 						<CreditsTagLegend mr={4} />
 					</Flex>
-					<UnorderedList listStyleType='none' m={0}>
+					<List m={0}>
 						{creditsSorted.map((credit: Credit) => (
 							<ListItem key={credit.id}>
 								<CreditItem credit={credit} />
 							</ListItem>
 						))}
-					</UnorderedList>
+					</List>
 				</StackItem>
 			)}
 

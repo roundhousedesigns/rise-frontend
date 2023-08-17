@@ -12,7 +12,7 @@ import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '../components/Page';
 import ChangePasswordView from '../views/ChangePasswordView';
 import ChangeProfileSlugView from '../views/ChangeProfileSlugView';
-import WrapWithIcon from '../components/common/WrapWithIcon';
+import IconContent from '../components/common/IconContent';
 import SettingsSection from '../components/common/SettingsSection';
 
 export default function Settings() {
@@ -42,7 +42,7 @@ export default function Settings() {
 							mr={2}
 							colorScheme='green'
 						/>
-						<WrapWithIcon
+						<IconContent
 							as={FormLabel}
 							htmlFor='colorMode'
 							mx={2}
@@ -50,7 +50,7 @@ export default function Settings() {
 							icon={colorMode === 'dark' ? FiMoon : FiSun}
 						>
 							Dark Mode
-						</WrapWithIcon>
+						</IconContent>
 					</FormControl>
 				</SettingsSection>
 

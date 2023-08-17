@@ -31,7 +31,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 		title,
 		jobTitle,
 		jobLocation,
-		positions: { department: departmentIds, jobs: jobIds } = { department: [], jobs: [] },
+		positions: { departments: departmentIds, jobs: jobIds } = { departments: [], jobs: [] },
 		skills: skillIds,
 		venue,
 		workStart,
@@ -43,7 +43,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	const [termList, setTermList] = useState<number[]>([]);
 	const memoizedTermList = useMemo(() => termList, [termList]);
 
-	const [department] = useTaxonomyTerms(departmentIds ? departmentIds : []);
+	// FIXME When departmentIds doesn't exist or is empty, the hook returns the first page of all terms.
+	const [departments] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
 	// The term items for each set.
 	const [jobs, setJobs] = useState<WPItem[]>([]);
@@ -165,7 +166,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 								{departmentIds?.length || jobs?.length || skills?.length ? (
 									<>
 										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-											{department?.map((department: WPItem) => (
+											{departments?.map((department: WPItem) => (
 												<Tag key={department.id} colorScheme='orange'>
 													<TagLabel>{decodeString(department.name)}</TagLabel>
 												</Tag>
