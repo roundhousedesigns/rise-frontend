@@ -20,10 +20,12 @@ const useSaveSearch = () => {
 
 	const saveSearchFiltersMutation = ({
 		filterSet,
+		oldSearchName,
 		searchName,
 		searchUserId,
 	}: {
 		filterSet: SearchFilterSetRaw;
+		oldSearchName?: string;
 		searchName: string;
 		searchUserId: number;
 	}) => {
@@ -31,6 +33,7 @@ const useSaveSearch = () => {
 			variables: {
 				input: {
 					filterSet,
+					oldSearchName,
 					searchName,
 					searchUserId,
 				},

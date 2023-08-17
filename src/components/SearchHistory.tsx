@@ -1,8 +1,8 @@
 import { List, ListItem, Heading, Text, Box } from '@chakra-ui/react';
-import { extractSearchTermIds } from '../../lib/utils';
-import { SearchFilterSetRaw } from '../../lib/types';
-import useViewer from '../../hooks/queries/useViewer';
-import SavedSearch from './SavedSearch';
+import { SearchFilterSetRaw } from '../lib/types';
+import { extractSearchTermIds } from '../lib/utils';
+import useViewer from '../hooks/queries/useViewer';
+import SavedSearch from './common/SavedSearch';
 
 export default function SearchHistory() {
 	const { searchHistory } = useViewer();
@@ -27,7 +27,7 @@ export default function SearchHistory() {
 					save
 				</Text>{' '}
 				your last{' '}
-				{searchTermIdSets.length > 1 ? `${searchTermIdSets.length} searchTermIdSets` : 'search'}:
+				{searchTermIdSets.length > 1 ? `${searchTermIdSets.length} searches` : 'search'}:
 			</Text>
 
 			{searchTermIdSets.length > 0 ? (

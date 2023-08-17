@@ -250,9 +250,14 @@ export function getUniqueTermIdsFromString(json: any): number[] {
 export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw): number[] {
 	if (!obj) return [];
 
+	const ignoreKeys = ['searchName'];
+
 	const numbersArray: number[] = [];
 
 	Object.keys(obj).forEach((key) => {
+		// Ignore the 'searchName' key
+		if (ignoreKeys.includes(key)) return;
+
 		const value = obj[key];
 
 		// If the value is an object, recurse.

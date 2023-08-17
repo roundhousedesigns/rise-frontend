@@ -12,6 +12,7 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
+			savedSearches
 			searchHistory
 			bookmarkedProfileConnections(first: 50) {
 				nodes {
@@ -29,6 +30,7 @@ interface Props {
 	lastName: string;
 	email: string;
 	result: QueryResult;
+	savedSearches: string;
 	searchHistory: string;
 	bookmarkedProfiles: number[];
 }
@@ -44,6 +46,7 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
+		savedSearches,
 		searchHistory,
 		bookmarkedProfileConnections,
 	} = result?.data?.viewer || {};
@@ -58,6 +61,7 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
+		savedSearches,
 		searchHistory,
 		bookmarkedProfiles,
 		result,

@@ -15,7 +15,8 @@ import { Link } from 'react-router-dom';
 import useViewer from '../hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
 import ShortPost from '../components/common/ShortPost';
-import SearchHistory from '../components/common/SearchHistory';
+import SearchHistory from '../components/SearchHistory';
+import SavedSearches from '../components/SavedSearches';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
@@ -56,7 +57,10 @@ export default function DashboardView() {
 						</Button>
 					</Flex>
 				</Flex>
-				<SearchHistory />
+				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
+					<SavedSearches />
+					<SearchHistory />
+				</Flex>
 			</Card>
 
 			{notices && notices.length > 0 && (

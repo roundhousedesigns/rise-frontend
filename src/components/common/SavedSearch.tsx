@@ -15,7 +15,7 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiRefreshCw, FiSave } from 'react-icons/fi';
+import { FiEdit3, FiRefreshCw, FiSave } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
@@ -33,12 +33,16 @@ interface Props {
 
 export default function SavedSearch({ searchTerms }: Props) {
 	const { loggedInId } = useViewer();
-	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>('');
+	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
+		searchTerms.searchName ? searchTerms.searchName : ''
+	);
 	const [getSearchResults, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
 		searchDispatch,
 	} = useContext(SearchContext);
+
+	const isNamedSearch = searchTerms.searchName && searchTerms.searchName !== '';
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialSaveModalRef = useRef(null);
@@ -85,12 +89,16 @@ export default function SavedSearch({ searchTerms }: Props) {
 	};
 
 	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		// Omit the searchName property from the searchTerms object.
+		const { searchName, ...filterSet } = searchTerms;
+
 		saveSearchFiltersMutation({
 			searchUserId: loggedInId,
+			oldSearchName: searchTerms.searchName ? searchTerms.searchName : undefined,
 			searchName: saveSearchFieldText,
-			filterSet: searchTerms,
+			filterSet,
 		}).then(() => {
-			alert('saved!');
+			alert('a success toast here, soon!');
 			onClose();
 		});
 	};
@@ -106,23 +114,29 @@ export default function SavedSearch({ searchTerms }: Props) {
 					icon={<FiRefreshCw />}
 					onClick={handleSearchClick}
 					aria-label={`Rerun this search`}
+					title={`Rerun this search`}
 					size='sm'
 					mr={2}
 				/>
 				<IconButton
-					icon={<FiSave />}
+					icon={isNamedSearch ? <FiEdit3 /> : <FiSave />}
 					onClick={() => onOpen()}
-					aria-label={`Save this search`}
+					aria-label={isNamedSearch ? 'Rename this search' : 'Save this search'}
+					title={isNamedSearch ? 'Rename this search' : 'Save this search'}
 					size='sm'
 					mr={2}
 				/>
-				<ReadableSearchString termIds={termIds} allTerms={terms} />
+				{isNamedSearch ? (
+					searchTerms.searchName
+				) : (
+					<ReadableSearchString termIds={termIds} allTerms={terms} />
+				)}
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Save this Search</ModalHeader>
+					<ModalHeader>{isNamedSearch ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
 						<FormControl>
