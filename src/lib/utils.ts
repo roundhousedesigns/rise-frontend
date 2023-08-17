@@ -4,7 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
-import { SearchFilterSet } from './types';
+import { SearchFilterSet, SearchFilterSetRaw } from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /** Generate a link to a social media profile.
@@ -247,7 +247,7 @@ export function getUniqueTermIdsFromString(json: any): number[] {
  * @param obj  The object to extract the IDs from.
  * @returns The IDs of the terms.
  */
-export function extractSearchTermIds(obj: SearchFilterSet): number[] {
+export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw): number[] {
 	if (!obj) return [];
 
 	const numbersArray: number[] = [];
@@ -271,4 +271,53 @@ export function extractSearchTermIds(obj: SearchFilterSet): number[] {
 	});
 
 	return numbersArray;
+}
+
+/**
+ * Prepare a search object for use in frontend searching.
+ *
+ * @param searchObj The search object to prepare.
+ * @param terms The terms to use for preparing the search object.
+ * @returns The prepared search object.
+ */
+export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchFilterSet {
+	let departmentId: number = 0;
+
+	// Get the term from `terms` that matches the first `position` in the search object.
+	// (There will only ever be one department, so we can bail after the first match.)
+	for (let term of terms) {
+		if (term.id === Number(searchObj.positions[0])) {
+			if (!term.parent) {
+				departmentId = term.id;
+			} else {
+				departmentId = term.parent.id;
+			}
+
+			break;
+		}
+	}
+
+	return {
+		...searchObj,
+		positions: {
+			department: departmentId.toString(),
+			jobs: searchObj.positions,
+		},
+	};
+}
+
+/**
+ * Prepare a search object for saving to the database. Flattens the `positions` object to a single `positions` property
+ * containing an array of job IDs.
+ *
+ * @param searchObj
+ * @returns
+ */
+export function prepareSearchFiltersForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
+	const preparedSearchObj: SearchFilterSetRaw = {
+		...searchObj,
+		positions: searchObj.positions.jobs,
+	};
+
+	return preparedSearchObj;
 }

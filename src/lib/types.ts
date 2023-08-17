@@ -149,14 +149,6 @@ export interface LoginInput {
 }
 
 /**
- * The data shape for lost password input.
- */
-export interface LostPasswordInput {
-	username: string;
-	reCaptchaToken: string;
-}
-
-/**
  * The data shape for user registration input.
  */
 export interface RegisterUserInput {
@@ -197,5 +189,22 @@ export interface SearchFilterSet {
 	genderIdentities?: string[];
 	racialIdentities?: string[];
 	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
 	[key: string]: any;
 }
