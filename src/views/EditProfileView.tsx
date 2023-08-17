@@ -58,7 +58,7 @@ import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
 import CreditItem from '../components/CreditItem';
 import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditButton from '../components/DeleteCreditButton';
-import HideProfileToggle from '../components/common/HideProfileToggle';
+import DisableProfileToggle from '../components/common/DisableProfileToggle';
 import HeadingCenterline from '../components/common/HeadingCenterline';
 import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
@@ -82,7 +82,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug, hideProfile } = useViewer();
+	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -635,10 +635,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Box bg={hideProfile ? 'brand.red' : 'brand.green'} borderRadius='md' mt={4} px={4} py={2}>
-				<HideProfileToggle />
+			<Box
+				bg={disableProfile ? 'brand.red' : 'brand.green'}
+				color={'text.light'}
+				borderRadius='md'
+				mt={4}
+				px={4}
+				py={2}
+			>
+				<DisableProfileToggle />
 			</Box>
-			{!hideProfile ? (
+			{!disableProfile ? (
 				<>
 					<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 						<StackItem py={2} mt={2}>
@@ -891,42 +898,42 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<StackItem w='full' maxW='3xl'>
 								<Heading variant='contentTitle'>Social</Heading>
 
-						<SimpleGrid columns={[1, 2]} spacing={4}>
-							<TextInput
-								value={socials?.linkedin}
-								leftElement={<Icon as={FiLinkedin} />}
-								label='LinkedIn URL'
-								placeholder='https://linkedin/in/yourprofile'
-								name='socials.linkedin'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.facebook}
-								leftElement={<Icon as={FiFacebook} />}
-								label='Facebook URL'
-								placeholder='https://facebook.com/yourname'
-								name='socials.facebook'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.instagram}
-								leftElement={<Icon as={FiInstagram} />}
-								label='Instagram @handle'
-								placeholder='@handle'
-								name='socials.instagram'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.twitter}
-								leftElement={<Icon as={FiTwitter} />}
-								label='Twitter @handle'
-								placeholder='@handle'
-								name='socials.twitter'
-								onChange={handleSocialInputChange}
-							/>
-						</SimpleGrid>
-					</StackItem>
-				</StackItem>
+								<SimpleGrid columns={[1, 2]} spacing={4}>
+									<TextInput
+										value={socials?.linkedin}
+										leftElement={<Icon as={FiLinkedin} />}
+										label='LinkedIn URL'
+										placeholder='https://linkedin/in/yourprofile'
+										name='socials.linkedin'
+										onChange={handleSocialInputChange}
+									/>
+									<TextInput
+										value={socials?.facebook}
+										leftElement={<Icon as={FiFacebook} />}
+										label='Facebook URL'
+										placeholder='https://facebook.com/yourname'
+										name='socials.facebook'
+										onChange={handleSocialInputChange}
+									/>
+									<TextInput
+										value={socials?.instagram}
+										leftElement={<Icon as={FiInstagram} />}
+										label='Instagram @handle'
+										placeholder='@handle'
+										name='socials.instagram'
+										onChange={handleSocialInputChange}
+									/>
+									<TextInput
+										value={socials?.twitter}
+										leftElement={<Icon as={FiTwitter} />}
+										label='Twitter @handle'
+										placeholder='@handle'
+										name='socials.twitter'
+										onChange={handleSocialInputChange}
+									/>
+								</SimpleGrid>
+							</StackItem>
+						</StackItem>
 
 						<StackItem pos='relative' id='credits'>
 							<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
