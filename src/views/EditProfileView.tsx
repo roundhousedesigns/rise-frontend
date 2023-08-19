@@ -379,8 +379,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		if (!file) return;
 
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
-		console.log('handleFileUpload file:', file)
-		console.log('size: ', file.size, 'name: ', name)
 
 		// // Limit the file size
 		if (maxSize < file.size) {
@@ -407,8 +405,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						value: result.data.uploadFile.fileUrl,
 					},
 				});
-
-				console.log('url:', result.data.uploadFile.fileUrl)
 
 				setFieldCurrentlyUploading('');
 
