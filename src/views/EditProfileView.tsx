@@ -326,9 +326,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const { name, files } = event.target;
+		const { name, files, accept } = event.target;
+
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+
+		// Check the file type
+		if (accept && !accept.includes(file.type)) {
+			toast({
+				title: 'Invalid file type.',
+				position: 'top',
+				description: 'Please upload a valid file type.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
 
 		// Limit the file size
 		if (maxSize < file.size) {
@@ -573,18 +588,14 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				</Card>
 			)}
 			<Flex gap={2}>
-				{uploadFileMutationLoading ? (
-					<ProgressBar />
-				) : (
-					<FileUploadButton
-						fieldName='image'
-						accept='image/*'
-						content='Upload image'
-						icon={<FiUpload />}
-						onChange={handleFileInputChange}
-					/>
-				)}
-				{image && <ClearFieldButton field='image' />}
+				<FileUploadButton
+					fieldName='image'
+					accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
+					content='Upload image'
+					onChange={handleFileInputChange}
+					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+				/>
+				<ClearFieldButton field='image' />
 			</Flex>
 		</Stack>
 	);
@@ -610,7 +621,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						fieldName={fieldName}
 						content={text}
 						icon={<FiUpload />}
-						accept='image/*'
+						accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
 						onChange={handleFileInputChange}
 						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 					/>
@@ -1136,6 +1147,9 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							</Box>
 							<Box mt={6}>
 								<Heading variant='contentTitle'>Images</Heading>
+								<Heading variant='contentSubtitle' fontSize='md'>
+									Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
+								</Heading>
 								<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 									{/* TODO show only the next available uploader, up to limit. */}
 									<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
@@ -1178,9 +1192,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</Button>
 					</Slide>
 				</>
-			) : (
-				false
-			)}
+			) : null}
 		</form>
 	) : null;
 }
