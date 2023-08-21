@@ -680,7 +680,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<Flex gap={2}>
 							<FileUploadButton
 								fieldName={fieldName}
-								content={'upload another image'}
+								content={'Replace this image'}
 								icon={<FiUpload />}
 								accept='image/*'
 								onChange={handleFileInputChange}
