@@ -45,7 +45,7 @@ import {
 	FiUpload,
 	FiFileText,
 } from 'react-icons/fi';
-import {useDropzone} from 'react-dropzone';
+import { useDropzone } from 'react-dropzone';
 
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
@@ -581,17 +581,10 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	};
 
 	const ProgressBar = () => (
-		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full'/>
+		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
 	);
 
-	const ProgressSpinner = () => (
-			<Spinner
-				thickness='5px'
-				speed='.8s'
-				color='blue.500'
-				size='xl'
-			/>
-	)
+	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
 		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
@@ -657,11 +650,11 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const onDragLeave = () => setDragActive(false);
 		const onDrop = (acceptedFiles: File[]) => {
 			setDragActive(false);
-			handleFileUpload(acceptedFiles[0], fieldName)
-		}
+			handleFileUpload(acceptedFiles[0], fieldName);
+		};
 
 		// React-Dropzone set-up and options
-		const {getRootProps, getInputProps} = useDropzone({
+		const { getRootProps, getInputProps } = useDropzone({
 			onDrop,
 			onDragLeave,
 			onDragOver,
@@ -679,26 +672,23 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		};
 
 		const image = imageData[fieldName];
-	
+
 		return (
-			<Box 
-				maxW={'100%'} 
-			>
-			{image ? (
-				<Box>
-					<Flex gap={2}>
-						<FileUploadButton
-						fieldName={fieldName}
-						content={'upload another image'}
-						icon={<FiUpload />}
-						accept='image/*'
-						onChange={handleFileInputChange}
-						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-						/>
-						<ClearFieldButton 
-							field={fieldName}/>
-					</Flex>
-					<Image
+			<Box maxW={'100%'}>
+				{image ? (
+					<Box>
+						<Flex gap={2}>
+							<FileUploadButton
+								fieldName={fieldName}
+								content={'upload another image'}
+								icon={<FiUpload />}
+								accept='image/*'
+								onChange={handleFileInputChange}
+								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+							/>
+							<ClearFieldButton field={fieldName} />
+						</Flex>
+						<Image
 							src={image}
 							alt={text}
 							loading='eager'
@@ -707,38 +697,39 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							mt={2}
 							borderRadius='md'
 						/>
-				</Box>
-			) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-				<Flex alignItems='center' justifyContent='center' padding={50}>
-					<ProgressSpinner />
-				</Flex>
-			) : (
-				<Flex 
-					border={'1px gray dashed'}
-					borderRadius='md'
-					alignContent={'center'}
-					justifyContent={'center'}
-				>
-					<Box {...getRootProps({width: '100%'})}>
-						<Flex 
-							h={'100%'} 
-							w={'100%'} 
-							padding={5} 
-							flexDirection={'column'} 
-							alignItems={'center'} 
-							justifyItems={'center'} 
-							backgroundColor={dragActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'}>
-							<Input {...getInputProps({type: 'file'})} />
-							<FiUpload size={'1.5rem'}/>
-							<Text fontSize={'md'}>Click to upload or drag and drop</Text>
-							<Text fontSize={'xs'}>PNG, JPG, WEBP, BMP or GIF up to 2MB</Text>
-						</Flex>
 					</Box>
-				</Flex>
-			)}
+				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
+					<Flex alignItems='center' justifyContent='center' padding={50}>
+						<ProgressSpinner />
+					</Flex>
+				) : (
+					<Flex
+						border={'1px gray dashed'}
+						borderRadius='md'
+						alignContent={'center'}
+						justifyContent={'center'}
+					>
+						<Box {...getRootProps({ width: '100%' })}>
+							<Flex
+								h={'100%'}
+								w={'100%'}
+								padding={5}
+								flexDirection={'column'}
+								alignItems={'center'}
+								justifyItems={'center'}
+								backgroundColor={dragActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'}
+							>
+								<Input {...getInputProps({ type: 'file' })} />
+								<FiUpload size={'1.5rem'} />
+								<Text fontSize={'md'}>Click to upload or drag and drop</Text>
+								<Text fontSize={'xs'}>PNG, JPG, WEBP, BMP or GIF up to 2MB</Text>
+							</Flex>
+						</Box>
+					</Flex>
+				)}
 			</Box>
 		);
-	}
+	};
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
@@ -1219,14 +1210,20 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
+						<Heading variant='contentSubtitle'>
+							Upload JPGs, PNGs, or GIFs{' '}
+							<Text as='span' fontSize='sm'>
+								(2MB or less, please.)
+							</Text>
+						</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
-							<MediaImageDropzone fieldName='mediaImage1' text='Image 1'/>
-							<MediaImageDropzone fieldName='mediaImage2' text='Image 2'/>
-							<MediaImageDropzone fieldName='mediaImage3' text='Image 3'/>
-							<MediaImageDropzone fieldName='mediaImage4' text='Image 4'/>
-							<MediaImageDropzone fieldName='mediaImage5' text='Image 5'/>
-							<MediaImageDropzone fieldName='mediaImage6' text='Image 6'/>
+							<MediaImageDropzone fieldName='mediaImage1' text='Image 1' />
+							<MediaImageDropzone fieldName='mediaImage2' text='Image 2' />
+							<MediaImageDropzone fieldName='mediaImage3' text='Image 3' />
+							<MediaImageDropzone fieldName='mediaImage4' text='Image 4' />
+							<MediaImageDropzone fieldName='mediaImage5' text='Image 5' />
+							<MediaImageDropzone fieldName='mediaImage6' text='Image 6' />
 						</SimpleGrid>
 					</Box>
 				</StackItem>
