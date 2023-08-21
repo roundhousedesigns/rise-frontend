@@ -323,9 +323,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const { name, files } = event.target;
+		const { name, files, accept } = event.target;
+
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+
+		// Check the file type
+		if (accept && !accept.includes(file.type)) {
+			toast({
+				title: 'Invalid file type.',
+				position: 'top',
+				description: 'Please upload a valid file type.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
 
 		// Limit the file size
 		if (maxSize < file.size) {
@@ -595,7 +610,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						fieldName={fieldName}
 						content={text}
 						icon={<FiUpload />}
-						accept='image/*'
+						accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
 						onChange={handleFileInputChange}
 						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 					/>
