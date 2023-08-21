@@ -677,6 +677,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				'image/gif': [],
 				'image/webp': [],
 				'image/heic': [],
+				'application/pdf': [],
+				'text/plain': [],
 			},
 			onDragLeave,
 			onDragOver,
