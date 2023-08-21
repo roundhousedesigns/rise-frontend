@@ -328,9 +328,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const { name, files } = event.target;
+		const { name, files, accept } = event.target;
+
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+
+		// Check the file type
+		if (accept && !accept.includes(file.type)) {
+			toast({
+				title: 'Invalid file type.',
+				position: 'top',
+				description: 'Please upload a valid file type.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
 
 		// Limit the file size
 		if (maxSize < file.size) {
@@ -630,7 +645,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 				) : (
 					<FileUploadButton
 						fieldName='image'
-						accept='image/*'
+						accept='image/jpeg,image/png,image/gif,image/webp,image/heic'
 						content='Upload image'
 						icon={<FiUpload />}
 						onChange={handleFileInputChange}
@@ -656,6 +671,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		// React-Dropzone set-up and options
 		const { getRootProps, getInputProps } = useDropzone({
 			onDrop,
+			accept: {
+				'image/jpeg': [],
+				'image/png': [],
+				'image/gif': [],
+				'image/webp': [],
+				'image/heic': [],
+			},
 			onDragLeave,
 			onDragOver,
 			onDragEnter,
@@ -682,7 +704,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								fieldName={fieldName}
 								content={'Replace this image'}
 								icon={<FiUpload />}
-								accept='image/*'
+								accept='image/jpeg,image/png,image/gif,image/webp,image/heic'
 								onChange={handleFileInputChange}
 								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 							/>
@@ -717,12 +739,19 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								flexDirection={'column'}
 								alignItems={'center'}
 								justifyItems={'center'}
-								backgroundColor={dragActive ? 'rgba(255, 255, 255, 0.15)' : 'transparent'}
+								transition='background-color 50ms ease'
+								cursor='pointer'
+								_light={{
+									backgroundColor: dragActive ? 'blackAlpha.200' : 'transparent',
+								}}
+								_dark={{
+									backgroundColor: dragActive ? 'whiteAlpha.300' : 'transparent',
+								}}
 							>
 								<Input {...getInputProps({ type: 'file' })} />
 								<FiUpload size={'1.5rem'} />
-								<Text fontSize={'md'}>Click to upload or drag and drop</Text>
-								<Text fontSize={'xs'}>PNG, JPG, WEBP, BMP or GIF up to 2MB</Text>
+								<Text>Drag an image to upload, or click to choose.</Text>
+								<Text fontSize={'xs'}>JPG, PNG, GIF, WEBP, or HEIC up to 2MB</Text>
 							</Flex>
 						</Box>
 					</Flex>
@@ -1210,11 +1239,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
-						<Heading variant='contentSubtitle'>
-							Upload JPGs, PNGs, or GIFs{' '}
-							<Text as='span' fontSize='sm'>
-								(2MB or less, please.)
-							</Text>
+						<Heading variant='contentSubtitle' fontSize='md'>
+							Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
 						</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
