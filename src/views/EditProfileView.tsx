@@ -564,7 +564,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			<Flex gap={2}>
 				<FileUploadButton
 					fieldName='image'
-					accept='image/*'
+					accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
 					content='Upload image'
 					onChange={handleFileInputChange}
 					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
@@ -1094,11 +1094,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
-						<Heading variant='contentSubtitle'>
-							Upload JPGs, PNGs, or GIFs{' '}
-							<Text as='span' fontSize='sm'>
-								(2MB or less, please.)
-							</Text>
+						<Heading variant='contentSubtitle' fontSize='md'>
+							Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
 						</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
