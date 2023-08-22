@@ -47,19 +47,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	} = useContext(SearchContext);
 	const navigate = useNavigate();
 
-	const [
-		getSearchResults,
-		{ data: { filteredCandidates: scoredCandidates } = [], loading: searchResultsLoading },
-	] = useCandidateSearch();
-
-	// Sort the results by score
-	const sortedScoredCandidates = scoredCandidates?.sort((a: any, b: any) => b.score - a.score);
-
-	console.info('sorted', sortedScoredCandidates);
-
-	const filteredCandidates = sortedScoredCandidates?.map((candidate: any) =>
-		Number(candidate.user_id)
-	);
+	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
+		useCandidateSearch();
 
 	// Update SearchContext with the new results whenever the query returns.
 	useEffect(() => {
@@ -91,6 +80,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
+				// first: 20,
+				// after: null,
 			},
 		})
 			.then(() => {
