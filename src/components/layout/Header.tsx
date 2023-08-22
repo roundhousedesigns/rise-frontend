@@ -155,7 +155,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			top='0'
 			borderBottomWidth={2}
 			borderBottomColor='text.light'
-			zIndex={100}
+			zIndex={1000}
 		>
 			<DarkMode>
 				<Container centerContent w='full' maxW='9xl' px={{ base: 4, md: 8 }} py={4}>
