@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[1.0.9] - unreleased
 
+- Feature: Added Drag and Drop to file upload fields. (Thanks @gacetta)
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
