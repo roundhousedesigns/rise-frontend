@@ -1,4 +1,12 @@
-import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
+import React, {
+	useContext,
+	useState,
+	useEffect,
+	useRef,
+	ChangeEvent,
+	MouseEvent,
+	FormEvent,
+} from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -16,11 +24,11 @@ import {
 	useToast,
 	useDisclosure,
 	Icon,
-	Progress,
 	Link,
 	SimpleGrid,
 	Slide,
-	Card,
+	Input,
+	As,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -37,13 +45,15 @@ import {
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
-	FiImage,
 	FiHome,
 	FiStar,
 	FiVideo,
 	FiUpload,
 	FiFileText,
+	FiUser,
+	FiCheckCircle,
 } from 'react-icons/fi';
+import { useDropzone } from 'react-dropzone';
 
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
@@ -66,6 +76,7 @@ import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
+import WrapWithIcon from '../components/common/WrapWithIcon';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -326,11 +337,74 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
 
-		const { name, files } = event.target;
+		const { name, files, accept } = event.target;
+
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
 
+		// Check the file type
+		if (accept && !accept.includes(file.type)) {
+			toast({
+				title: 'Invalid file type.',
+				position: 'top',
+				description: 'Please upload a valid file type.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
 		// Limit the file size
+		if (maxSize < file.size) {
+			toast({
+				title: 'File too large.',
+				position: 'top',
+				description: 'Please upload a file smaller than 2MB.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
+		setFieldCurrentlyUploading(name);
+
+		uploadFileMutation(file, name, loggedInId)
+			.then((result) => {
+				editProfileDispatch({
+					type: 'UPDATE_INPUT',
+					payload: {
+						name,
+						value: result.data.uploadFile.fileUrl,
+					},
+				});
+
+				setFieldCurrentlyUploading('');
+
+				// success toast
+				toast({
+					title: 'Image saved!',
+					position: 'top',
+					description: 'Your image has been uploaded.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	const handleFileUpload = (file: File, name: string) => {
+		if (!file) return;
+
+		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+
+		// // Limit the file size
 		if (maxSize < file.size) {
 			toast({
 				title: 'File too large.',
@@ -530,9 +604,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		);
 	};
 
-	const ProgressBar = () => (
-		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
-	);
+	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
 		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
@@ -545,54 +617,97 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			{uploadFileMutationLoading ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
-					<ProgressBar />
+					<ProgressSpinner />
 				</Flex>
 			) : image ? (
 				// Image set
-				<Image
-					src={image}
-					alt={`Profile picture`}
-					loading='eager'
-					fit='cover'
-					borderRadius='md'
-					w='full'
-					mb={2}
-				/>
-			) : (
-				// No image set
-				<Card
-					height='100%'
-					alignItems='center'
-					justifyContent='center'
-					w='full'
-					my={2}
-					_light={{ bgColor: 'whiteAlpha.700' }}
-					_dark={{ bgColor: 'blackAlpha.400' }}
-				>
-					<Icon as={FiImage} boxSize='60px' />
-				</Card>
-			)}
-			<Flex gap={2}>
-				{uploadFileMutationLoading ? (
-					<ProgressBar />
-				) : (
-					<FileUploadButton
-						fieldName='image'
-						accept='image/*'
-						content='Upload image'
-						icon={<FiUpload />}
-						onChange={handleFileInputChange}
+				<>
+					<Image
+						src={image}
+						alt={`Profile picture`}
+						loading='eager'
+						fit='cover'
+						borderRadius='md'
+						w='full'
 					/>
-				)}
-				{image && <ClearFieldButton field='image' />}
-			</Flex>
+					<ClearFieldButton
+						field='image'
+						content={
+							<WrapWithIcon icon={FiXCircle} iconProps={{ mr: 0, alignSelf: 'center' }}>
+								Remove image
+							</WrapWithIcon>
+						}
+					/>
+				</>
+			) : (
+				<FileDropzone
+					fieldName='image'
+					text='Profile image'
+					icon={FiUser}
+					h='full'
+					iconProps={{ mb: 2, boxSize: '80px' }}
+				/>
+			)}
 		</Stack>
 	);
 
-	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
-		if (!fieldName) return <>No image.</>;
+	interface FileDropzoneProps {
+		fieldName: string;
+		text: string;
+		icon?: As | null;
+		allowPdf?: boolean;
+		iconProps?: { [key: string]: any };
+		[prop: string]: any;
+	}
 
+	const FileDropzone = ({
+		fieldName,
+		text,
+		icon = FiUpload,
+		allowPdf = false,
+		iconProps,
+		...props
+	}: FileDropzoneProps) => {
+		const [dragActive, setDragActive] = useState(false);
+
+		// handle drag events
+		const onDragOver = () => setDragActive(true);
+		const onDragEnter = () => setDragActive(true);
+		const onDragLeave = () => setDragActive(false);
+		const onDrop = (acceptedFiles: File[]) => {
+			setDragActive(false);
+			handleFileUpload(acceptedFiles[0], fieldName);
+		};
+
+		// React-Dropzone set-up and options
+		const accept: { [key: string]: any } = {
+			'image/jpeg': [],
+			'image/png': [],
+			'image/gif': [],
+			'image/webp': [],
+			'image/heic': [],
+		};
+
+		if (allowPdf) {
+			accept['application/pdf'] = [];
+		}
+
+		const { getRootProps, getInputProps } = useDropzone({
+			accept,
+			onDrop,
+			onDragLeave,
+			onDragOver,
+			onDragEnter,
+		});
+
+		const acceptString = allowPdf
+			? 'JPG, PNG, GIF, WEBP, HEIC, or PDF up to 2MB'
+			: 'JPG, PNG, GIF, WEBP, or HEIC up to 2MB';
+
+		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
+			image,
+			resume,
 			mediaImage1,
 			mediaImage2,
 			mediaImage3,
@@ -601,34 +716,66 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			mediaImage6,
 		};
 
-		const image = imageData[fieldName];
+		const currentImage = imageData[fieldName];
 
 		return (
-			<Box mb={2}>
-				<Flex gap={2}>
-					<FileUploadButton
-						fieldName={fieldName}
-						content={text}
-						icon={<FiUpload />}
-						accept='image/*'
-						onChange={handleFileInputChange}
-						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-					/>
-					{image ? <ClearFieldButton field={fieldName} /> : null}
-				</Flex>
-				{image ? (
-					<Image
-						src={image}
-						alt={text}
-						loading='eager'
-						fit='cover'
-						w='full'
-						mt={2}
-						borderRadius='md'
-					/>
+			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
+				{currentImage ? (
+					<>
+						<Flex gap={2}>
+							<FileUploadButton
+								fieldName={fieldName}
+								content='Replace this image'
+								icon={<FiUpload />}
+								accept='image/jpeg,image/png,image/gif,image/webp,image/heic'
+								onChange={handleFileInputChange}
+								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+							/>
+							<ClearFieldButton field={fieldName} />
+						</Flex>
+						<Image
+							src={currentImage}
+							alt={text}
+							loading='eager'
+							fit='cover'
+							w='full'
+							mt={2}
+							borderRadius='md'
+						/>
+					</>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-					<ProgressBar />
-				) : null}
+					<Flex alignItems='center' justifyContent='center' padding={50}>
+						<ProgressSpinner />
+					</Flex>
+				) : (
+					<Flex
+						{...getRootProps({ width: '100%' })}
+						h='100%'
+						w='100%'
+						padding={5}
+						flexDirection='column'
+						alignItems='center'
+						justifyContent='center'
+						transition='background-color 50ms ease'
+						cursor='pointer'
+						borderWidth='2px'
+						borderRadius='md'
+						borderStyle='dashed'
+						_light={{
+							backgroundColor: dragActive ? 'blackAlpha.200' : 'blackAlpha.50',
+							borderColor: 'blackAlpha.700',
+						}}
+						_dark={{
+							backgroundColor: dragActive ? 'whiteAlpha.600' : 'blackAlpha.400',
+							borderColor: 'text.light',
+						}}
+					>
+						<Input {...getInputProps({ type: 'file' })} />
+						{icon ? <Icon as={icon} boxSize={10} {...iconProps} /> : false}
+						<Text textAlign='center'>Drag a file to upload, or click to choose.</Text>
+						<Text fontSize='xs'>{acceptString}</Text>
+					</Flex>
+				)}
 			</Box>
 		);
 	};
@@ -800,36 +947,51 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									/>
 								</Box>
 								<Box flex={{ base: '0 0 100%', md: '1' }}>
-									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
-										Resume
-									</Heading>
-									<Heading variant='contentSubtitle'>
-										{resume ? (
-											<ResponsiveButton
-												icon={<FiFileText />}
-												as={Link}
-												href={resume}
-												download
-												label='Preview Resume'
-												colorScheme='blue'
-												my={0}
-											>
-												Preview Resume
-											</ResponsiveButton>
-										) : (
-											'PDF or image'
+									<Heading
+										variant='contentTitle'
+										flex='0 0 100%'
+										textAlign='left'
+										alignItems='center'
+										display='flex'
+									>
+										Resume{' '}
+										{resume && (
+											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
 										)}
 									</Heading>
+									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+									{resume ? (
+										<ResponsiveButton
+											icon={<FiFileText />}
+											as={Link}
+											href={resume}
+											download
+											label='Preview Resume'
+											colorScheme='blue'
+											mt={0}
+										>
+											Preview Resume
+										</ResponsiveButton>
+									) : (
+										false
+									)}
 									<Flex gap={2}>
-										<FileUploadButton
-											fieldName='resume'
-											accept='application/pdf, image/*'
-											icon={<FiUpload />}
-											content='Upload'
-											onChange={handleFileInputChange}
-											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-										/>
-										{resume && <ClearFieldButton field='resume' />}
+										{resume ? (
+											<ClearFieldButton
+												field='resume'
+												content={
+													<WrapWithIcon
+														icon={FiXCircle}
+														px={4}
+														iconProps={{ mr: 0, alignSelf: 'center' }}
+													>
+														Remove Resume
+													</WrapWithIcon>
+												}
+											/>
+										) : (
+											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+										)}
 									</Flex>
 								</Box>
 							</Flex>
@@ -1112,14 +1274,17 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					</Box>
 					<Box mt={6}>
 						<Heading variant='contentTitle'>Images</Heading>
+						<Heading variant='contentSubtitle' fontSize='md'>
+							Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
+						</Heading>
 						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 							{/* TODO show only the next available uploader, up to limit. */}
-							<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
-							<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
-							<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
-							<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
-							<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
-							<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
+							<FileDropzone fieldName='mediaImage1' text='Image 1' />
+							<FileDropzone fieldName='mediaImage2' text='Image 2' />
+							<FileDropzone fieldName='mediaImage3' text='Image 3' />
+							<FileDropzone fieldName='mediaImage4' text='Image 4' />
+							<FileDropzone fieldName='mediaImage5' text='Image 5' />
+							<FileDropzone fieldName='mediaImage6' text='Image 6' />
 						</SimpleGrid>
 					</Box>
 				</StackItem>
