@@ -32,14 +32,14 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 });
 
 export default function EditProfile() {
-	const { loggedInId } = useViewer();
+	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const [profile, { loading, error }] = useUserProfile(loggedInId);
 	const ref = useRef<HTMLButtonElement>(null);
 
 	const navigate = useNavigate();
 
 	const handleCancel = () => {
-		navigate(-1);
+		navigate(`/profile/${loggedInSlug}`);
 	};
 
 	const PageActions = () => (
@@ -52,7 +52,7 @@ export default function EditProfile() {
 	);
 
 	return (
-		<Page title={'Update Profile'} actions={<PageActions />}>
+		<Page title={'Update Profile'} actions={!disableProfile ? <PageActions /> : undefined}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} profileLoading={loading} />
