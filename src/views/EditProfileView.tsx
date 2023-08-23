@@ -684,8 +684,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			'image/jpeg': [],
 			'image/png': [],
 			'image/gif': [],
-			'image/webp': [],
-			'image/heic': [],
+			'image/webp': []
 		};
 
 		if (allowPdf) {
@@ -701,8 +700,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 
 		const acceptString = allowPdf
-			? 'JPG, PNG, GIF, WEBP, HEIC, or PDF up to 2MB'
-			: 'JPG, PNG, GIF, WEBP, or HEIC up to 2MB';
+			? 'JPG, PNG, GIF, WEBP, or PDF up to 2MB'
+			: 'JPG, PNG, GIF, or WEBP up to 2MB';
 
 		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
@@ -727,7 +726,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								fieldName={fieldName}
 								content='Replace this image'
 								icon={<FiUpload />}
-								accept='image/jpeg,image/png,image/gif,image/webp,image/heic'
+								accept='image/jpeg,image/png,image/gif,image/webp'
 								onChange={handleFileInputChange}
 								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 							/>
