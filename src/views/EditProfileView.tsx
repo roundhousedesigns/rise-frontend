@@ -51,6 +51,7 @@ import {
 	FiUpload,
 	FiFileText,
 	FiUser,
+	FiCheckCircle,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 
@@ -75,6 +76,7 @@ import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
+import WrapWithIcon from '../components/common/WrapWithIcon';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -627,12 +629,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						fit='cover'
 						borderRadius='md'
 						w='full'
-						mb={2}
 					/>
-					<ClearFieldButton field='image' />
+					<ClearFieldButton
+						field='image'
+						content={
+							<WrapWithIcon icon={FiXCircle} iconProps={{ mr: 0, alignSelf: 'center' }}>
+								Remove image
+							</WrapWithIcon>
+						}
+					/>
 				</>
 			) : (
-				<FileDropzone fieldName='image' text='Profile image' icon={FiUser} withBorder={false} />
+				<FileDropzone
+					fieldName='image'
+					text='Profile image'
+					icon={FiUser}
+					h='full'
+					iconProps={{ mb: 2, boxSize: '80px' }}
+				/>
 			)}
 		</Stack>
 	);
@@ -641,16 +655,18 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		fieldName: string;
 		text: string;
 		icon?: As | null;
+		allowPdf?: boolean;
 		iconProps?: { [key: string]: any };
-		withBorder?: boolean;
+		[prop: string]: any;
 	}
 
 	const FileDropzone = ({
 		fieldName,
 		text,
 		icon = FiUpload,
+		allowPdf = false,
 		iconProps,
-		withBorder = true,
+		...props
 	}: FileDropzoneProps) => {
 		const [dragActive, setDragActive] = useState(false);
 
@@ -664,23 +680,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		};
 
 		// React-Dropzone set-up and options
+		const accept: { [key: string]: any } = {
+			'image/jpeg': [],
+			'image/png': [],
+			'image/gif': [],
+			'image/webp': [],
+			'image/heic': [],
+		};
+
+		if (allowPdf) {
+			accept['application/pdf'] = [];
+		}
+
 		const { getRootProps, getInputProps } = useDropzone({
+			accept,
 			onDrop,
-			accept: {
-				'image/jpeg': [],
-				'image/png': [],
-				'image/gif': [],
-				'image/webp': [],
-				'image/heic': [],
-			},
 			onDragLeave,
 			onDragOver,
 			onDragEnter,
 		});
 
+		const acceptString = allowPdf
+			? 'JPG, PNG, GIF, WEBP, HEIC, or PDF up to 2MB'
+			: 'JPG, PNG, GIF, WEBP, or HEIC up to 2MB';
+
 		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
 			image,
+			resume,
 			mediaImage1,
 			mediaImage2,
 			mediaImage3,
@@ -692,7 +719,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		const currentImage = imageData[fieldName];
 
 		return (
-			<Box maxW={'100%'} p={0} bgColor='whiteAlpha.200' borderRadius='md'>
+			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
 				{currentImage ? (
 					<>
 						<Flex gap={2}>
@@ -721,28 +748,33 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						<ProgressSpinner />
 					</Flex>
 				) : (
-					<Stack
+					<Flex
 						{...getRootProps({ width: '100%' })}
 						h='100%'
 						w='100%'
 						padding={5}
-						direction='column'
+						flexDirection='column'
 						alignItems='center'
-						justifyItems='center'
+						justifyContent='center'
 						transition='background-color 50ms ease'
 						cursor='pointer'
+						borderWidth='2px'
+						borderRadius='md'
+						borderStyle='dashed'
 						_light={{
-							backgroundColor: dragActive ? 'blackAlpha.200' : 'transparent',
+							backgroundColor: dragActive ? 'blackAlpha.200' : 'blackAlpha.50',
+							borderColor: 'blackAlpha.700',
 						}}
 						_dark={{
-							backgroundColor: dragActive ? 'whiteAlpha.300' : 'transparent',
+							backgroundColor: dragActive ? 'whiteAlpha.600' : 'blackAlpha.400',
+							borderColor: 'text.light',
 						}}
 					>
 						<Input {...getInputProps({ type: 'file' })} />
 						{icon ? <Icon as={icon} boxSize={10} {...iconProps} /> : false}
-						<Text textAlign='center'>Drag an image to upload, or click to choose.</Text>
-						<Text fontSize='xs'>JPG, PNG, GIF, WEBP, or HEIC up to 2MB</Text>
-					</Stack>
+						<Text textAlign='center'>Drag a file to upload, or click to choose.</Text>
+						<Text fontSize='xs'>{acceptString}</Text>
+					</Flex>
 				)}
 			</Box>
 		);
@@ -915,36 +947,51 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									/>
 								</Box>
 								<Box flex={{ base: '0 0 100%', md: '1' }}>
-									<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
-										Resume
-									</Heading>
-									<Heading variant='contentSubtitle'>
-										{resume ? (
-											<ResponsiveButton
-												icon={<FiFileText />}
-												as={Link}
-												href={resume}
-												download
-												label='Preview Resume'
-												colorScheme='blue'
-												my={0}
-											>
-												Preview Resume
-											</ResponsiveButton>
-										) : (
-											'PDF or image'
+									<Heading
+										variant='contentTitle'
+										flex='0 0 100%'
+										textAlign='left'
+										alignItems='center'
+										display='flex'
+									>
+										Resume{' '}
+										{resume && (
+											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
 										)}
 									</Heading>
+									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+									{resume ? (
+										<ResponsiveButton
+											icon={<FiFileText />}
+											as={Link}
+											href={resume}
+											download
+											label='Preview Resume'
+											colorScheme='blue'
+											mt={0}
+										>
+											Preview Resume
+										</ResponsiveButton>
+									) : (
+										false
+									)}
 									<Flex gap={2}>
-										<FileUploadButton
-											fieldName='resume'
-											accept='application/pdf, image/*'
-											icon={<FiUpload />}
-											content='Upload'
-											onChange={handleFileInputChange}
-											loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-										/>
-										{resume && <ClearFieldButton field='resume' />}
+										{resume ? (
+											<ClearFieldButton
+												field='resume'
+												content={
+													<WrapWithIcon
+														icon={FiXCircle}
+														px={4}
+														iconProps={{ mr: 0, alignSelf: 'center' }}
+													>
+														Remove Resume
+													</WrapWithIcon>
+												}
+											/>
+										) : (
+											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+										)}
 									</Flex>
 								</Box>
 							</Flex>
