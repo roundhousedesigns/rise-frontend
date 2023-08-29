@@ -10,7 +10,7 @@ interface Props extends ButtonProps {
 }
 
 const ResponsiveButton = forwardRef<Props, 'div'>(
-	({ label, icon, variant, children, ...rest }, ref) => {
+	({ label, icon, variant, children, ...props }, ref) => {
 		const isFullSize = useBreakpointValue(
 			{
 				base: false,
@@ -20,11 +20,11 @@ const ResponsiveButton = forwardRef<Props, 'div'>(
 		);
 
 		return isFullSize ? (
-			<Button aria-label={label} variant={variant} title={label} leftIcon={icon} {...rest}>
+			<Button aria-label={label} variant={variant} title={label} leftIcon={icon} {...props}>
 				{children}
 			</Button>
 		) : (
-			<IconButton aria-label={label} variant={variant} title={label} icon={icon} {...rest} />
+			<IconButton aria-label={label} variant={variant} title={label} icon={icon} {...props} />
 		);
 	}
 );

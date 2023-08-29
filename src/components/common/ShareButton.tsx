@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useClipboard, useToast } from '@chakra-ui/react';
-import { FiShare } from 'react-icons/fi';
+import { FiShare2 } from 'react-icons/fi';
 import ResponsiveButton from './inputs/ResponsiveButton';
 
 interface Props {
@@ -51,8 +51,7 @@ export default function ShareButton({ url, ...props }: Props) {
 	return (
 		<ResponsiveButton
 			label='Share profile'
-			icon={<FiShare />}
-			colorScheme='blue'
+			icon={<FiShare2 />}
 			onClick={handleShareClick}
 			{...props}
 		>
