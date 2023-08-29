@@ -168,8 +168,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		<Flex
 			bg={{ base: 'transparent !important' }}
 			position={{ base: 'absolute', md: 'relative' }}
-			top={{ base: 0 }}
-			right={{ base: 0 }}
+			top={{ base: 0, md: 'initial' }}
+			right={{ base: 0, md: 'initial' }}
 			w={{ base: '100%', md: 'auto' }}
 			p={2}
 			justifyContent={{ base: 'space-between', md: 'flex-end' }}
