@@ -20,17 +20,6 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	bookmark: defineStyle({
-		size: 'xl',
-		px: 1,
-		cursor: 'pointer',
-		_dark: {
-			bg: 'blackAlpha.400',
-		},
-		_light: {
-			bg: 'blackAlpha.200',
-		},
-	}),
 	remove: defineStyle({
 		bg: 'transparent',
 	}),

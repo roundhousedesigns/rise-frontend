@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.0.9.1] - 2023-08-29
+
+- Fix: Profile share/bookmark buttons zIndex
+
 ## \[1.0.9] - 2023-08-23
 
 - Feature: Added Drag and Drop to file upload fields. (Thanks @gacetta)
