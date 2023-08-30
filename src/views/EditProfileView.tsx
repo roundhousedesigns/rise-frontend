@@ -646,16 +646,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Box
-				bg={disableProfile ? 'brand.red' : 'brand.green'}
-				color={'text.light'}
-				borderRadius='md'
-				mt={4}
-				px={4}
-				py={2}
-			>
-				<DisableProfileToggle />
-			</Box>
+			<DisableProfileToggle withContainer={true} mt={2} />
 			{!disableProfile ? (
 				<>
 					<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
@@ -1192,7 +1183,13 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						</Button>
 					</Slide>
 				</>
-			) : null}
+			) : (
+				<Card borderWidth='2px' borderStyle='dashed' borderColor='whiteAlpha.300' opacity={0.5}>
+					<Text>
+						Set your profile to <em>visible</em> to edit your profile.
+					</Text>
+				</Card>
+			)}
 		</form>
 	) : null;
 }

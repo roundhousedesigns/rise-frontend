@@ -250,7 +250,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 						gap={4}
 						width={'100%'}
 						lineHeight={1}
-						zIndex={100}
 					>
 						<StackItem display='flex' flexWrap='wrap'>
 							<Flex

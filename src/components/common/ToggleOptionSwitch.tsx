@@ -6,10 +6,10 @@ interface Props {
 	id: string;
 	colorScheme?: string;
 	label: string;
-	subtext?: string;
 	icon?: As;
 	loading?: boolean;
 	callback: () => void;
+	children?: string | JSX.Element;
 	[prop: string]: any;
 }
 export default function ToggleOptionSwitch({
@@ -17,10 +17,10 @@ export default function ToggleOptionSwitch({
 	id,
 	colorScheme = 'green',
 	label,
-	subtext,
 	icon,
 	loading,
 	callback,
+	children,
 	...props
 }: Props): JSX.Element {
 	const [toggleState, setToggleState] = useState<boolean>(checked);
@@ -50,10 +50,9 @@ export default function ToggleOptionSwitch({
 			/>
 			<FormLabel htmlFor={id} m={0} fontSize='lg'>
 				{label}
-				{subtext ? (
-					<Text as='span' fontSize='sm' pl={2} fontStyle='italic' color='inherit'>
-						{' '}
-						{subtext}
+				{children ? (
+					<Text as='span' fontSize='xs' pl={2} fontStyle='italic' color='inherit'>
+						{children}
 					</Text>
 				) : (
 					''
