@@ -1,4 +1,12 @@
-import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
+import React, {
+	useContext,
+	useState,
+	useEffect,
+	useRef,
+	ChangeEvent,
+	MouseEvent,
+	FormEvent,
+} from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -16,11 +24,11 @@ import {
 	useToast,
 	useDisclosure,
 	Icon,
-	Progress,
 	Link,
 	SimpleGrid,
 	Slide,
-	Card,
+	Input,
+	As,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -37,13 +45,15 @@ import {
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
-	FiImage,
 	FiHome,
 	FiStar,
 	FiVideo,
 	FiUpload,
 	FiFileText,
+	FiUser,
+	FiCheckCircle,
 } from 'react-icons/fi';
+import { useDropzone } from 'react-dropzone';
 
 import { Credit, UserProfile } from '../lib/classes';
 import { EditProfileContext } from '../context/EditProfileContext';
@@ -65,7 +75,6 @@ import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
-import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -388,6 +397,54 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			});
 	};
 
+	const handleFileUpload = (file: File, name: string) => {
+		if (!file) return;
+
+		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
+
+		// // Limit the file size
+		if (maxSize < file.size) {
+			toast({
+				title: 'File too large.',
+				position: 'top',
+				description: 'Please upload a file smaller than 2MB.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+			});
+
+			return;
+		}
+
+		setFieldCurrentlyUploading(name);
+
+		uploadFileMutation(file, name, loggedInId)
+			.then((result) => {
+				editProfileDispatch({
+					type: 'UPDATE_INPUT',
+					payload: {
+						name,
+						value: result.data.uploadFile.fileUrl,
+					},
+				});
+
+				setFieldCurrentlyUploading('');
+
+				// success toast
+				toast({
+					title: 'Image saved!',
+					position: 'top',
+					description: 'Your image has been uploaded.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
 	const handleFileInputClear = (event: MouseEvent<HTMLButtonElement>) => {
 		const {
 			dataset: { field: fieldName },
@@ -521,33 +578,34 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const ClearFieldButton = ({
 		field,
-		content = <FiXCircle />,
+		icon = <FiXCircle />,
+		children,
 	}: {
 		field: string;
-		content?: string | number | JSX.Element;
+		icon?: JSX.Element;
+		children?: JSX.Element | string;
 	}) => {
 		if (!field) return null;
 
 		return (
 			<Button
+				leftIcon={icon ? icon : undefined}
 				size='md'
 				colorScheme='orange'
 				onClick={handleFileInputClear}
 				data-field={field}
-				p={0}
+				py={0}
 			>
 				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
 					<Spinner />
 				) : (
-					content
+					children
 				)}
 			</Button>
 		);
 	};
 
-	const ProgressBar = () => (
-		<Progress size='md' isIndeterminate colorScheme='blue' hasStripe={true} w='full' />
-	);
+	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
 		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
@@ -560,50 +618,89 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			{uploadFileMutationLoading ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
-					<ProgressBar />
+					<ProgressSpinner />
 				</Flex>
 			) : image ? (
 				// Image set
-				<Image
-					src={image}
-					alt={`Profile picture`}
-					loading='eager'
-					fit='cover'
-					borderRadius='md'
-					w='full'
-					mb={2}
-				/>
+				<>
+					<Image
+						src={image}
+						alt={`Profile picture`}
+						loading='eager'
+						fit='cover'
+						borderRadius='md'
+						w='full'
+					/>
+					<ClearFieldButton field='image'>Remove Image</ClearFieldButton>
+				</>
 			) : (
-				// No image set
-				<Card
-					height='100%'
-					alignItems='center'
-					justifyContent='center'
-					w='full'
-					my={2}
-					_light={{ bgColor: 'whiteAlpha.700' }}
-					_dark={{ bgColor: 'blackAlpha.400' }}
-				>
-					<Icon as={FiImage} boxSize='60px' />
-				</Card>
-			)}
-			<Flex gap={2}>
-				<FileUploadButton
+				<FileDropzone
 					fieldName='image'
-					accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
-					content='Upload image'
-					onChange={handleFileInputChange}
-					loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+					text='Profile image'
+					icon={FiUser}
+					h='full'
+					iconProps={{ mb: 2, boxSize: '80px' }}
 				/>
-				<ClearFieldButton field='image' />
-			</Flex>
+			)}
 		</Stack>
 	);
 
-	const MediaImageUploader = ({ fieldName, text }: { fieldName: string; text: string }) => {
-		if (!fieldName) return <>No image.</>;
+	interface FileDropzoneProps {
+		fieldName: string;
+		text: string;
+		icon?: As | null;
+		allowPdf?: boolean;
+		iconProps?: { [key: string]: any };
+		[prop: string]: any;
+	}
 
+	const FileDropzone = ({
+		fieldName,
+		text,
+		icon = FiUpload,
+		allowPdf = false,
+		iconProps,
+		...props
+	}: FileDropzoneProps) => {
+		const [dragActive, setDragActive] = useState(false);
+
+		// handle drag events
+		const onDragOver = () => setDragActive(true);
+		const onDragEnter = () => setDragActive(true);
+		const onDragLeave = () => setDragActive(false);
+		const onDrop = (acceptedFiles: File[]) => {
+			setDragActive(false);
+			handleFileUpload(acceptedFiles[0], fieldName);
+		};
+
+		// React-Dropzone set-up and options
+		const accept: { [key: string]: any } = {
+			'image/jpeg': [],
+			'image/png': [],
+			'image/gif': [],
+			'image/webp': [],
+		};
+
+		if (allowPdf) {
+			accept['application/pdf'] = [];
+		}
+
+		const { getRootProps, getInputProps } = useDropzone({
+			accept,
+			onDrop,
+			onDragLeave,
+			onDragOver,
+			onDragEnter,
+		});
+
+		const acceptString = allowPdf
+			? 'JPG, PNG, GIF, WEBP, or PDF up to 2MB'
+			: 'JPG, PNG, GIF, or WEBP up to 2MB';
+
+		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
+			image,
+			resume,
 			mediaImage1,
 			mediaImage2,
 			mediaImage3,
@@ -612,243 +709,277 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			mediaImage6,
 		};
 
-		const image = imageData[fieldName];
+		const currentImage = imageData[fieldName];
 
 		return (
-			<Box mb={2}>
-				<Flex gap={2}>
-					<FileUploadButton
-						fieldName={fieldName}
-						content={text}
-						icon={<FiUpload />}
-						accept='image/jpeg, image/png, image/gif, image/webp, image/heic'
-						onChange={handleFileInputChange}
-						loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-					/>
-					{image ? <ClearFieldButton field={fieldName} /> : null}
-				</Flex>
-				{image ? (
-					<Image
-						src={image}
-						alt={text}
-						loading='eager'
-						fit='cover'
-						w='full'
-						mt={2}
-						borderRadius='md'
-					/>
+			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
+				{currentImage ? (
+					<>
+						<Flex gap={2}>
+							<FileUploadButton
+								fieldName={fieldName}
+								content='Replace this image'
+								icon={<FiUpload />}
+								accept='image/jpeg,image/png,image/gif,image/webp'
+								onChange={handleFileInputChange}
+								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+							/>
+							<ClearFieldButton field={fieldName} />
+						</Flex>
+						<Image
+							src={currentImage}
+							alt={text}
+							loading='eager'
+							fit='cover'
+							w='full'
+							mt={2}
+							borderRadius='md'
+						/>
+					</>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-					<ProgressBar />
-				) : null}
+					<Flex alignItems='center' justifyContent='center' padding={50}>
+						<ProgressSpinner />
+					</Flex>
+				) : (
+					<Flex
+						{...getRootProps({ width: '100%' })}
+						h='100%'
+						w='100%'
+						padding={5}
+						flexDirection='column'
+						alignItems='center'
+						justifyContent='center'
+						transition='background-color 50ms ease'
+						cursor='pointer'
+						borderWidth='2px'
+						borderRadius='md'
+						borderStyle='dashed'
+						_light={{
+							backgroundColor: dragActive ? 'blackAlpha.200' : 'blackAlpha.50',
+							borderColor: 'blackAlpha.700',
+						}}
+						_dark={{
+							backgroundColor: dragActive ? 'whiteAlpha.600' : 'blackAlpha.400',
+							borderColor: 'text.light',
+						}}
+					>
+						<Input {...getInputProps({ type: 'file' })} />
+						{icon ? <Icon as={icon} boxSize={10} {...iconProps} /> : false}
+						<Text textAlign='center'>Drag a file to upload, or click to choose.</Text>
+						<Text fontSize='xs'>{acceptString}</Text>
+					</Flex>
+				)}
 			</Box>
 		);
 	};
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<DisableProfileToggle withContainer={true} mt={2} />
-			{!disableProfile ? (
-				<>
-					<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
-						<StackItem py={2} mt={2}>
-							{profileLoading && <Spinner alignSelf='center' />}
-							<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
-								{isLargerThanMd ? <ProfileImageUploader /> : false}
-								<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
-									<StackItem>
-										<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-											<TextInput
-												placeholder='First'
-												value={firstName}
-												name='firstName'
-												isRequired
-												onChange={handleInputChange}
-												flex='1'
-												label='First name'
-												minW='200px'
-											/>
-											<TextInput
-												placeholder='Last'
-												value={lastName}
-												name='lastName'
-												isRequired
-												label='Last name'
-												onChange={handleInputChange}
-												flex='1'
-												minW='200px'
-											/>
-											<TextInput
-												placeholder='pronouns'
-												value={pronouns}
-												name='pronouns'
-												label='Pronouns'
-												onChange={handleInputChange}
-												maxW='150px'
-												inputProps={{
-													size: 'md',
-													tabIndex: 0,
-												}}
-											/>
-										</Flex>
-										<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
-											<TextInput
-												placeholder='homebase'
-												value={homebase}
-												name='homebase'
-												label='Where do you currently live?'
-												leftElement={<Icon as={FiHome} />}
-												onChange={handleInputChange}
-												maxLength={25}
-												flex='1 0 48%'
-												inputProps={{
-													tabIndex: 0,
-												}}
-											/>
-											<TextInput
-												value={selfTitle}
-												name='selfTitle'
-												placeholder='Title'
-												label='Title/Trade/Profession'
-												leftElement={<Icon as={FiStar} />}
-												onChange={handleInputChange}
-												maxLength={50}
-												flex='1 0 48%'
-												inputProps={{
-													tabIndex: 0,
-												}}
-											/>
-										</Flex>
-									</StackItem>
-									{!isLargerThanMd ? (
-										<StackItem display='flex' flexWrap='wrap' gap={4}>
-											<ProfileImageUploader />
-										</StackItem>
+			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
+				<StackItem py={2} mt={2}>
+					{profileLoading && <Spinner alignSelf='center' />}
+					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
+						{isLargerThanMd ? <ProfileImageUploader /> : false}
+						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
+							<StackItem>
+								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+									<TextInput
+										placeholder='First'
+										value={firstName}
+										name='firstName'
+										isRequired
+										onChange={handleInputChange}
+										flex='1'
+										label='First name'
+										minW='200px'
+									/>
+									<TextInput
+										placeholder='Last'
+										value={lastName}
+										name='lastName'
+										isRequired
+										label='Last name'
+										onChange={handleInputChange}
+										flex='1'
+										minW='200px'
+									/>
+									<TextInput
+										placeholder='pronouns'
+										value={pronouns}
+										name='pronouns'
+										label='Pronouns'
+										onChange={handleInputChange}
+										maxW='150px'
+										inputProps={{
+											size: 'md',
+											tabIndex: 0,
+										}}
+									/>
+								</Flex>
+								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+									<TextInput
+										placeholder='homebase'
+										value={homebase}
+										name='homebase'
+										label='Where do you currently live?'
+										leftElement={<Icon as={FiHome} />}
+										onChange={handleInputChange}
+										maxLength={25}
+										flex='1 0 48%'
+										inputProps={{
+											tabIndex: 0,
+										}}
+									/>
+									<TextInput
+										value={selfTitle}
+										name='selfTitle'
+										placeholder='Title'
+										label='Title/Trade/Profession'
+										leftElement={<Icon as={FiStar} />}
+										onChange={handleInputChange}
+										maxLength={50}
+										flex='1 0 48%'
+										inputProps={{
+											tabIndex: 0,
+										}}
+									/>
+								</Flex>
+							</StackItem>
+							{!isLargerThanMd ? (
+								<StackItem display='flex' flexWrap='wrap' gap={4}>
+									<ProfileImageUploader />
+								</StackItem>
+							) : (
+								false
+							)}
+							<StackItem display='flex' flexWrap='wrap' gap={4}>
+								<Box flex='1'>
+									<Heading variant='contentTitle' mb={2}>
+										Contact
+									</Heading>
+									<Stack direction='column' spacing={0}>
+										<TextInput
+											value={email}
+											leftElement={<Icon as={FiMail} />}
+											placeholder='me@somewhere.com'
+											label='Contact Email'
+											name='email'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+										{/* TODO Add checkbox for "use account email address" */}
+										<TextInput
+											value={phone}
+											leftElement={<Icon as={FiPhone} />}
+											placeholder='(888) 888-8888'
+											label='Phone'
+											name='phone'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+										<TextInput
+											value={website}
+											leftElement={<Icon as={FiGlobe} />}
+											label='Website'
+											name='website'
+											onChange={handleInputChange}
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+									</Stack>
+								</Box>
+							</StackItem>
+						</Stack>
+					</Flex>
+					<Stack mt={4}>
+						<StackItem fontSize='sm'>
+							{/* TODO make this required */}
+							<Heading variant='contentTitle'>Work Locations</Heading>
+							<Heading variant='contentSubtitle'>
+								Select any areas in which you're a local hire.
+							</Heading>
+							<ProfileCheckboxGroup
+								name='locations'
+								isRequired
+								items={locationTerms}
+								checked={locations ? locations.map((item) => item.toString()) : []}
+								handleChange={handleCheckboxInput}
+							/>
+						</StackItem>
+						<StackItem py={4} display='flex' gap={10}>
+							<Flex flexWrap='wrap' gap={10}>
+								<Box>
+									<Heading variant='contentTitle'>Travel</Heading>
+									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTravel ? 'true' : 'false'}
+										name='willTravel'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleRadioInputChange}
+									/>
+								</Box>
+								<Box>
+									<Heading variant='contentTitle'>Tour</Heading>
+									<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+									<ProfileRadioGroup
+										defaultValue={willTour ? 'true' : 'false'}
+										name='willTour'
+										items={[
+											{ label: 'Yes', value: 'true' },
+											{ label: 'No', value: 'false' },
+										]}
+										handleChange={handleRadioInputChange}
+									/>
+								</Box>
+								<Box flex={{ base: '0 0 100%', md: '1' }}>
+									<Heading
+										variant='contentTitle'
+										flex='0 0 100%'
+										textAlign='left'
+										alignItems='center'
+										display='flex'
+									>
+										Resume{' '}
+										{resume && (
+											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
+										)}
+									</Heading>
+									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+									{resume ? (
+										<Button
+											leftIcon={<FiFileText />}
+											as={Link}
+											href={resume}
+											target='_blank'
+											download
+											aria-label='Preview Resume'
+											colorScheme='blue'
+											mt={0}
+										>
+											Preview Resume
+										</Button>
 									) : (
 										false
 									)}
-									<StackItem display='flex' flexWrap='wrap' gap={4}>
-										<Box flex='1'>
-											<Heading variant='contentTitle' mb={2}>
-												Contact
-											</Heading>
-											<Stack direction='column' spacing={0}>
-												<TextInput
-													value={email}
-													leftElement={<Icon as={FiMail} />}
-													placeholder='me@somewhere.com'
-													label='Contact Email'
-													name='email'
-													onChange={handleInputChange}
-													inputProps={{
-														tabIndex: 0,
-													}}
-												/>
-												{/* TODO Add checkbox for "use account email address" */}
-												<TextInput
-													value={phone}
-													leftElement={<Icon as={FiPhone} />}
-													placeholder='(888) 888-8888'
-													label='Phone'
-													name='phone'
-													onChange={handleInputChange}
-													inputProps={{
-														tabIndex: 0,
-													}}
-												/>
-												<TextInput
-													value={website}
-													leftElement={<Icon as={FiGlobe} />}
-													label='Website'
-													name='website'
-													onChange={handleInputChange}
-													inputProps={{
-														tabIndex: 0,
-													}}
-												/>
-											</Stack>
-										</Box>
-									</StackItem>
-								</Stack>
-							</Flex>
-							<Stack mt={4}>
-								<StackItem fontSize='sm'>
-									{/* TODO make this required */}
-									<Heading variant='contentTitle'>Work Locations</Heading>
-									<Heading variant='contentSubtitle'>
-										Select any areas in which you're a local hire.
-									</Heading>
-									<ProfileCheckboxGroup
-										name='locations'
-										isRequired
-										items={locationTerms}
-										checked={locations ? locations.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxInput}
-									/>
-								</StackItem>
-								<StackItem py={4} display='flex' gap={10}>
-									<Flex flexWrap='wrap' gap={10}>
-										<Box>
-											<Heading variant='contentTitle'>Travel</Heading>
-											<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
-											<ProfileRadioGroup
-												defaultValue={willTravel ? 'true' : 'false'}
-												name='willTravel'
-												items={[
-													{ label: 'Yes', value: 'true' },
-													{ label: 'No', value: 'false' },
-												]}
-												handleChange={handleRadioInputChange}
-											/>
-										</Box>
-										<Box>
-											<Heading variant='contentTitle'>Tour</Heading>
-											<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
-											<ProfileRadioGroup
-												defaultValue={willTour ? 'true' : 'false'}
-												name='willTour'
-												items={[
-													{ label: 'Yes', value: 'true' },
-													{ label: 'No', value: 'false' },
-												]}
-												handleChange={handleRadioInputChange}
-											/>
-										</Box>
-										<Box flex={{ base: '0 0 100%', md: '1' }}>
-											<Heading variant='contentTitle' flex='0 0 100%' textAlign='left'>
-												Resume
-											</Heading>
-											<Heading variant='contentSubtitle'>
-												{resume ? (
-													<ResponsiveButton
-														icon={<FiFileText />}
-														as={Link}
-														href={resume}
-														download
-														label='Preview Resume'
-														colorScheme='blue'
-														my={0}
-													>
-														Preview Resume
-													</ResponsiveButton>
-												) : (
-													'PDF or image'
-												)}
-											</Heading>
-											<Flex gap={2}>
-												<FileUploadButton
-													fieldName='resume'
-													accept='application/pdf, image/*'
-													icon={<FiUpload />}
-													content='Upload'
-													onChange={handleFileInputChange}
-													loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-												/>
-												{resume && <ClearFieldButton field='resume' />}
-											</Flex>
-										</Box>
+									<Flex gap={2}>
+										{resume ? (
+											<ClearFieldButton field='resume'>Remove Resume</ClearFieldButton>
+										) : (
+											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+										)}
 									</Flex>
-								</StackItem>
-							</Stack>
+								</Box>
+							</Flex>
+						</StackItem>
+					</Stack>
 
 							<StackItem py={4}>
 								<Box mb={8}>
@@ -1088,108 +1219,98 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							/>
 						</StackItem>
 
-						<StackItem>
-							<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
-							<Heading variant='contentSubtitle'>
-								Showcase your work with images and videos.
-							</Heading>
+				<StackItem>
+					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
+					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
+					<Box>
+						<Heading variant='contentTitle'>Videos</Heading>
+						<SimpleGrid columns={[1, 2]} spacing={8}>
 							<Box>
-								<Heading variant='contentTitle'>Videos</Heading>
-								<SimpleGrid columns={[1, 2]} spacing={8}>
-									<Box>
-										<TextInput
-											value={mediaVideo1}
-											name='mediaVideo1'
-											label='Video embed 1'
-											placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
-											leftElement={<FiVideo />}
-											onChange={handleInputChange}
-										/>
-										{mediaVideo1 ? (
-											<Box position='relative' paddingBottom='56.25%' w='full'>
-												<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-													<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
-												</Box>
-											</Box>
-										) : (
-											false
-										)}
+								<TextInput
+									value={mediaVideo1}
+									name='mediaVideo1'
+									label='Video embed 1'
+									placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
+									leftElement={<FiVideo />}
+									onChange={handleInputChange}
+								/>
+								{mediaVideo1 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+										</Box>
 									</Box>
-									<Box>
-										<TextInput
-											value={mediaVideo2}
-											name='mediaVideo2'
-											label='Video embed 2'
-											placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
-											leftElement={<FiVideo />}
-											onChange={handleInputChange}
-										/>
-										{mediaVideo2 ? (
-											<Box position='relative' paddingBottom='56.25%' w='full'>
-												<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-													<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
-												</Box>
-											</Box>
-										) : (
-											false
-										)}
+								) : (
+									false
+								)}
+							</Box>
+							<Box>
+								<TextInput
+									value={mediaVideo2}
+									name='mediaVideo2'
+									label='Video embed 2'
+									placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
+									leftElement={<FiVideo />}
+									onChange={handleInputChange}
+								/>
+								{mediaVideo2 ? (
+									<Box position='relative' paddingBottom='56.25%' w='full'>
+										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+											<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+										</Box>
 									</Box>
-								</SimpleGrid>
+								) : (
+									false
+								)}
 							</Box>
-							<Box mt={6}>
-								<Heading variant='contentTitle'>Images</Heading>
-								<Heading variant='contentSubtitle' fontSize='md'>
-									Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
-								</Heading>
-								<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-									{/* TODO show only the next available uploader, up to limit. */}
-									<MediaImageUploader fieldName='mediaImage1' text='Image 1' />
-									<MediaImageUploader fieldName='mediaImage2' text='Image 2' />
-									<MediaImageUploader fieldName='mediaImage3' text='Image 3' />
-									<MediaImageUploader fieldName='mediaImage4' text='Image 4' />
-									<MediaImageUploader fieldName='mediaImage5' text='Image 5' />
-									<MediaImageUploader fieldName='mediaImage6' text='Image 6' />
-								</SimpleGrid>
-							</Box>
-						</StackItem>
-					</Stack>
-					<Slide
-						in={hasEditedProfile === true}
-						direction='bottom'
-						style={{
-							position: 'fixed',
-							bottom: 0,
-							left: 0,
-							width: 'full',
-							backgroundColor: colorMode === 'dark' ? 'white' : '#222',
-							borderTopWidth: '1px',
-							borderTopColor: 'gray.100',
-							textAlign: 'right',
-						}}
-					>
-						<Button
-							type='submit'
-							form='edit-profile'
-							leftIcon={saveLoading ? undefined : <FiSave />}
-							aria-label={'Save changes'}
-							colorScheme='green'
-							isDisabled={saveLoading}
-							isLoading={!!saveLoading}
-							size='lg'
-							mr={4}
-							my={2}
-						>
-							Save Changes
-						</Button>
-					</Slide>
-				</>
-			) : (
-				<Card borderWidth='2px' borderStyle='dashed' borderColor='whiteAlpha.300' opacity={0.5}>
-					<Text>
-						Set your profile to <em>visible</em> to edit your profile.
-					</Text>
-				</Card>
-			)}
+						</SimpleGrid>
+					</Box>
+					<Box mt={6}>
+						<Heading variant='contentTitle'>Images</Heading>
+						<Heading variant='contentSubtitle' fontSize='md'>
+							Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
+						</Heading>
+						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
+							{/* TODO show only the next available uploader, up to limit. */}
+							<FileDropzone fieldName='mediaImage1' text='Image 1' />
+							<FileDropzone fieldName='mediaImage2' text='Image 2' />
+							<FileDropzone fieldName='mediaImage3' text='Image 3' />
+							<FileDropzone fieldName='mediaImage4' text='Image 4' />
+							<FileDropzone fieldName='mediaImage5' text='Image 5' />
+							<FileDropzone fieldName='mediaImage6' text='Image 6' />
+						</SimpleGrid>
+					</Box>
+				</StackItem>
+			</Stack>
+			<Slide
+				in={hasEditedProfile === true}
+				direction='bottom'
+				style={{
+					position: 'fixed',
+					bottom: 0,
+					left: 0,
+					width: 'full',
+					backgroundColor: colorMode === 'dark' ? 'white' : '#222',
+					borderTopWidth: '1px',
+					borderTopColor: 'gray.100',
+					textAlign: 'right',
+				}}
+			>
+				<Button
+					type='submit'
+					form='edit-profile'
+					leftIcon={saveLoading ? undefined : <FiSave />}
+					aria-label={'Save changes'}
+					colorScheme='green'
+					isDisabled={saveLoading}
+					isLoading={!!saveLoading}
+					size='lg'
+					mr={4}
+					my={2}
+				>
+					Save Changes
+				</Button>
+			</Slide>
 		</form>
 	) : null;
 }

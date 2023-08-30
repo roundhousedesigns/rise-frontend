@@ -2,15 +2,21 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.0.9] - unreleased
+## \[1.0.9.1] - 2023-08-29
 
+- Fix: Profile share/bookmark buttons zIndex
+- Improve: Drag and Drop file upload styling
+
+## \[1.0.9] - 2023-08-23
+
+- Feature: Added Drag and Drop to file upload fields. (Thanks @gacetta)
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 
-- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.\
+- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
 - Fixed: LinkedIn social links now reference full URL instead of handle
 
 ## \[1.0.8] - 2023-08-09

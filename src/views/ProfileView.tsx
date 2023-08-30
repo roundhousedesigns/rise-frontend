@@ -20,6 +20,7 @@ import {
 	SimpleGrid,
 	Icon,
 	useBreakpointValue,
+	Spacer,
 } from '@chakra-ui/react';
 import {
 	FiDownload,
@@ -166,6 +167,24 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		});
 	}
 
+	const ShareBookmarkButtons = ({ ...props }: { [prop: string]: any }) => (
+		<Flex
+			bg={{ base: 'transparent !important' }}
+			position={{ base: 'absolute', md: 'relative' }}
+			top={{ base: 0, md: 'initial' }}
+			right={{ base: 0, md: 'initial' }}
+			w={{ base: '100%', md: 'auto' }}
+			p={2}
+			justifyContent={{ base: 'space-between', md: 'flex-end' }}
+			display='flex'
+			gap={{ base: 0, md: 2 }}
+			{...props}
+		>
+			<ShareButton url={profileUrl} />
+			{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' mx={{ base: 0 }} /> : false}
+		</Flex>
+	);
+
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
 		const SelfTitle = () => {
@@ -200,26 +219,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
 			<StackItem as={Card} p={4}>
-				{!disableProfile ? (
-					<Flex
-						bg={{ md: 'transparent !important' }}
-						position='absolute'
-						top={0}
-						left={0}
-						w='full'
-						p={2}
-						justifyContent={{ base: 'space-between', md: 'flex-end' }}
-						display='flex'
-						gap={{ base: 0, md: 2 }}
-						zIndex={1}
-					>
-						<ShareButton url={profileUrl} />
-						{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' /> : false}
-					</Flex>
-				) : (
-					false
-				)}
-
+				{!isLargerThanMd ? <ShareBookmarkButtons /> : false}
 				<Flex
 					gap={6}
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -253,11 +253,12 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					>
 						<StackItem display='flex' flexWrap='wrap'>
 							<Flex
-								justifyContent={{ base: 'center', md: 'flex-start' }}
+								justifyContent={{ base: 'center', md: 'space-between' }}
+								w='full'
 								flexWrap='wrap'
 								alignItems='center'
 							>
-								<Heading as='h1' size='xl' mr={2} my={0} fontWeight='bold' lineHeight='none'>
+								<Heading as='h1' size='xl' mr={2} mt={0} mb={1} fontWeight='bold' lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
 								{pronouns ? (
@@ -267,6 +268,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								) : (
 									false
 								)}
+								<Spacer flex={1} />
+								{isLargerThanMd ? <ShareBookmarkButtons p={0} /> : false}
 							</Flex>
 							<ProfileSubtitle flex='0 0 100%' w='full' />
 						</StackItem>
