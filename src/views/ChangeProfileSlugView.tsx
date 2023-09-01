@@ -8,6 +8,7 @@ import {
 	useToast,
 	Heading,
 	useMediaQuery,
+	Wrap,
 } from '@chakra-ui/react';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
 import useViewer from '../hooks/queries/useViewer';
@@ -113,25 +114,21 @@ export default function ChangeProfileUrlView() {
 			<Flex mt={6} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
 				<Box flex='1 1 auto'>
 					<form onSubmit={handleSubmit}>
-						<Heading variant='contentSubtitle' mt={0}>
-							Your profile tag:
-						</Heading>
-						<TextInput
-							value={slug}
-							name='slug'
-							id='slug'
-							maxW='320px'
-							label='New profile tag'
-							labelHidden
-							helperText='Letters, numbers, - and _ only.'
-							error={errorMessage}
-							isRequired
-							maxLength={20}
-							onChange={handleInputChange}
-							flex='1'
-						/>
-
-						<Box mt={4}>
+						<Wrap>
+							<TextInput
+								value={slug}
+								name='slug'
+								id='slug'
+								maxW='300px'
+								label='New profile tag'
+								labelHidden
+								helperText='Letters, numbers, - and _ only.'
+								error={errorMessage}
+								isRequired
+								maxLength={20}
+								onChange={handleInputChange}
+								flex='1'
+							/>
 							<Button
 								type='submit'
 								colorScheme='green'
@@ -140,14 +137,13 @@ export default function ChangeProfileUrlView() {
 								{submitLoading ? <Spinner size='sm' /> : 'Save'}
 							</Button>
 							<Button
-								ml={2}
 								colorScheme='orange'
 								isDisabled={!hasEditedSlug}
 								onClick={() => setSlug(loggedInSlug)}
 							>
 								Cancel
 							</Button>
-						</Box>
+						</Wrap>
 					</form>
 				</Box>
 
