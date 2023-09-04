@@ -776,7 +776,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			<DisableProfileToggle withContainer={true} mt={2} />
 			{!disableProfile ? (
 				<>
 					<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
@@ -848,6 +847,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 												}}
 											/>
 										</Flex>
+										<DisableProfileToggle withContainer={true} mt={2} />
 									</StackItem>
 									{!isLargerThanMd ? (
 										<StackItem display='flex' flexWrap='wrap' gap={4}>
