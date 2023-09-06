@@ -65,16 +65,16 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import useFileUpload from '../hooks/mutations/useFileUpload';
 import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
-
-import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/CreditItem';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditButton from '../components/DeleteCreditButton';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
+import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -91,7 +91,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug } = useViewer();
+	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -138,7 +138,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const editCreditId = useRef<string>('');
 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
-	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<boolean>(false);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
@@ -775,6 +775,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
+			{disableProfile ? <ProfileDisabledNotice /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
 					{profileLoading && <Spinner alignSelf='center' />}

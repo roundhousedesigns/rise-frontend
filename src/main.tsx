@@ -31,7 +31,8 @@ const httpLink = createUploadLink({
 });
 
 const client = new ApolloClient({
-	link: httpLink,
+	// FIXME Type as any
+	link: httpLink as any,
 	cache: new InMemoryCache(),
 });
 
