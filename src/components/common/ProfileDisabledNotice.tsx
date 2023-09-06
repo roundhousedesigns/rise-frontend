@@ -1,9 +1,13 @@
 import { Card, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
-export default function ProfileDisabledNotice() {
+interface Props {
+	[prop: string]: any;
+}
+
+export default function ProfileDisabledNotice({ ...props }: Props) {
 	return (
-		<Card borderWidth='2px' borderStyle='dashed' borderColor='whiteAlpha.300' fontSize='sm'>
+		<Card fontSize='sm' {...props}>
 			<Text>
 				<Text as='span' fontStyle='italic' color='brand.orange !important'>
 					Your profile is currently hidden.
