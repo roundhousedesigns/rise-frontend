@@ -21,7 +21,7 @@
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
     "framer-motion": "^8.5.0",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.0",
     "html-react-parser": "^3.0.16",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -31,7 +31,7 @@
     "react-google-recaptcha-v3": "^1.10.1",
     "react-icons": "^4.7.1",
     "react-player": "^2.11.1",
-    "react-router-dom": "^6.14.2",
+    "react-router-dom": "^6.15.0",
     "semver": "^7.5.4",
     "web-vitals": "^3.4.0"
   },
