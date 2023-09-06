@@ -52,7 +52,8 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 					size={32}
 				/>
 			}
-			variant='bookmark'
+			size='xl'
+			cursor='pointer'
 			aria-label={iconLabel}
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}

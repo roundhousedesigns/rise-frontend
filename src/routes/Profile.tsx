@@ -1,5 +1,5 @@
-import { Link, useParams } from 'react-router-dom';
 import { ButtonGroup } from '@chakra-ui/react';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import { FiEdit3 } from 'react-icons/fi';
 import useViewer from '../hooks/queries/useViewer';
 import useUserId from '../hooks/queries/useUserId';
@@ -25,7 +25,7 @@ export default function Profile(): JSX.Element {
 				<ResponsiveButton
 					label='Edit profile'
 					icon={<FiEdit3 />}
-					as={Link}
+					as={RouterLink}
 					to='/profile/edit'
 					colorScheme='green'
 				>

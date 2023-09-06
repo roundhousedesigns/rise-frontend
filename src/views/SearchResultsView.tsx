@@ -18,6 +18,8 @@ export default function SearchResultsView() {
 			return 'No results.';
 		} else if (results.length === 1) {
 			return '1 result.';
+		} else if (results.length > 100) {
+			return 'More than 100 results.';
 		} else {
 			return `${results.length} results.`;
 		}

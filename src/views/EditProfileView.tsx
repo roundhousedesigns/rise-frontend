@@ -65,18 +65,16 @@ import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
 import useFileUpload from '../hooks/mutations/useFileUpload';
 import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
-
-import HeadingCenterline from '../components/common/HeadingCenterline';
 import CreditItem from '../components/CreditItem';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditModal from '../components/EditCreditModal';
 import DeleteCreditButton from '../components/DeleteCreditButton';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
+import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
-import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
-import WrapWithIcon from '../components/common/WrapWithIcon';
+import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -93,7 +91,7 @@ interface Props {
 // TODO kill profileLoading prop, just use it in the parent.
 export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug } = useViewer();
+	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -140,7 +138,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 	const editCreditId = useRef<string>('');
 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
-	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<Boolean>(false);
+	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<boolean>(false);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
@@ -580,25 +578,28 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	const ClearFieldButton = ({
 		field,
-		content = <FiXCircle />,
+		icon = <FiXCircle />,
+		children,
 	}: {
 		field: string;
-		content?: string | number | JSX.Element;
+		icon?: JSX.Element;
+		children?: JSX.Element | string;
 	}) => {
 		if (!field) return null;
 
 		return (
 			<Button
+				leftIcon={icon ? icon : undefined}
 				size='md'
 				colorScheme='orange'
 				onClick={handleFileInputClear}
 				data-field={field}
-				p={0}
+				py={0}
 			>
 				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
 					<Spinner />
 				) : (
-					content
+					children
 				)}
 			</Button>
 		);
@@ -630,14 +631,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 						borderRadius='md'
 						w='full'
 					/>
-					<ClearFieldButton
-						field='image'
-						content={
-							<WrapWithIcon icon={FiXCircle} iconProps={{ mr: 0, alignSelf: 'center' }}>
-								Remove image
-							</WrapWithIcon>
-						}
-					/>
+					<ClearFieldButton field='image'>Remove Image</ClearFieldButton>
 				</>
 			) : (
 				<FileDropzone
@@ -685,7 +679,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			'image/png': [],
 			'image/gif': [],
 			'image/webp': [],
-			'image/heic': [],
 		};
 
 		if (allowPdf) {
@@ -701,8 +694,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 		});
 
 		const acceptString = allowPdf
-			? 'JPG, PNG, GIF, WEBP, HEIC, or PDF up to 2MB'
-			: 'JPG, PNG, GIF, WEBP, or HEIC up to 2MB';
+			? 'JPG, PNG, GIF, WEBP, or PDF up to 2MB'
+			: 'JPG, PNG, GIF, or WEBP up to 2MB';
 
 		// imageData from context
 		const imageData: { [key: string]: string | undefined } = {
@@ -727,7 +720,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								fieldName={fieldName}
 								content='Replace this image'
 								icon={<FiUpload />}
-								accept='image/jpeg,image/png,image/gif,image/webp,image/heic'
+								accept='image/jpeg,image/png,image/gif,image/webp'
 								onChange={handleFileInputChange}
 								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 							/>
@@ -782,6 +775,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
+			{disableProfile ? <ProfileDisabledNotice /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
 					{profileLoading && <Spinner alignSelf='center' />}
@@ -961,34 +955,24 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
 									{resume ? (
-										<ResponsiveButton
-											icon={<FiFileText />}
+										<Button
+											leftIcon={<FiFileText />}
 											as={Link}
 											href={resume}
+											target='_blank'
 											download
-											label='Preview Resume'
+											aria-label='Preview Resume'
 											colorScheme='blue'
 											mt={0}
 										>
 											Preview Resume
-										</ResponsiveButton>
+										</Button>
 									) : (
 										false
 									)}
 									<Flex gap={2}>
 										{resume ? (
-											<ClearFieldButton
-												field='resume'
-												content={
-													<WrapWithIcon
-														icon={FiXCircle}
-														px={4}
-														iconProps={{ mr: 0, alignSelf: 'center' }}
-													>
-														Remove Resume
-													</WrapWithIcon>
-												}
-											/>
+											<ClearFieldButton field='resume'>Remove Resume</ClearFieldButton>
 										) : (
 											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
 										)}

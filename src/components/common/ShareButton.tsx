@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { useClipboard, useToast } from '@chakra-ui/react';
-import { FiShare } from 'react-icons/fi';
-import ResponsiveButton from './inputs/ResponsiveButton';
+import { IconButton, useClipboard, useToast } from '@chakra-ui/react';
+import { FiShare2 } from 'react-icons/fi';
 
 interface Props {
 	url: string;
@@ -21,7 +20,7 @@ export default function ShareButton({ url, ...props }: Props) {
 					url: url,
 				})
 				.catch((error) => {
-					console.error('Error sharing', error);
+					console.error(error);
 				});
 		} else {
 			setValue(url);
@@ -49,14 +48,12 @@ export default function ShareButton({ url, ...props }: Props) {
 	}, [hasCopied]);
 
 	return (
-		<ResponsiveButton
-			label='Share profile'
-			icon={<FiShare />}
-			colorScheme='blue'
+		<IconButton
+			aria-label='Share profile'
+			title='Share profile'
+			icon={<FiShare2 />}
 			onClick={handleShareClick}
 			{...props}
-		>
-			Share
-		</ResponsiveButton>
+		/>
 	);
 }
