@@ -7,10 +7,9 @@ import useUserProfile from '../hooks/queries/useUserProfile';
 import Page from '../components/Page';
 import ProfileView from '../views/ProfileView';
 import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
-import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
 
 export default function Profile(): JSX.Element {
-	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
@@ -43,13 +42,7 @@ export default function Profile(): JSX.Element {
 			loading={loading}
 			pb={8}
 		>
-			{profile && !disableProfile ? (
-				<ProfileView profile={profile} allowBookmark={loggedInId !== profileId} />
-			) : profile && disableProfile ? (
-				<ProfileDisabledNotice />
-			) : (
-				false
-			)}
+			{profile ? <ProfileView profile={profile} allowBookmark={loggedInId !== profileId} /> : false}
 		</Page>
 	);
 }
