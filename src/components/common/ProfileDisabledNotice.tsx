@@ -8,7 +8,7 @@ export default function ProfileDisabledNotice() {
 				<Text as='span' fontStyle='italic' color='brand.orange !important'>
 					Your profile is currently hidden.
 				</Text>{' '}
-				You may still search, but to appear in searches, turn on your profile's visibility in{' '}
+				You may still search, but to appear in the directory, turn on your profile's visibility in{' '}
 				<Link as={RouterLink} to='/settings'>
 					Settings
 				</Link>
