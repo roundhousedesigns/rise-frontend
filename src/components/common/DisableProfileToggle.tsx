@@ -5,14 +5,10 @@ import ToggleOptionSwitch from './ToggleOptionSwitch';
 import { Box, Text } from '@chakra-ui/react';
 
 interface Props {
-	withContainer?: boolean;
 	[prop: string]: any;
 }
 
-export default function DisableProfileToggle({
-	withContainer = false,
-	...addlProps
-}: Props): JSX.Element {
+export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 	const { loggedInId, disableProfile } = useViewer();
 	const {
 		toggleDisableProfileMutation,
@@ -23,21 +19,11 @@ export default function DisableProfileToggle({
 		toggleDisableProfileMutation(loggedInId);
 	};
 
-	const boxProps = withContainer
-		? {
-				bg: disableProfile ? 'brand.red' : 'brand.green',
-				color: 'text.light',
-				borderRadius: 'md',
-				m: 0,
-				px: 4,
-		  }
-		: {};
-
 	return (
-		<Box {...boxProps} {...addlProps}>
+		<Box {...props}>
 			<ToggleOptionSwitch
 				id='disableProfile'
-				checked={disableProfile}
+				checked={!disableProfile}
 				callback={handleToggleDisableProfile}
 				label='Visibility'
 				icon={disableProfile ? FiEyeOff : FiEye}

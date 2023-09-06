@@ -25,7 +25,7 @@ export default function Settings() {
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
-				<SettingsSection title='Profile and Visuals'>
+				<SettingsSection title='Options'>
 					<DisableProfileToggle />
 					<ToggleOptionSwitch
 						id='darkMode'
