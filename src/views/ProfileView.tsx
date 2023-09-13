@@ -416,96 +416,90 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					</Flex>
 				</StackItem>
 
-				{disableProfile === false ? (
-					<>
-						{credits && credits.length > 0 && (
-							<StackItem>
-								<HeadingCenterline lineColor='brand.blue' mb={1}>
-									Credits
-								</HeadingCenterline>
-								<Flex justifyContent='flex-end'>
-									<CreditsTagLegend mr={4} />
-								</Flex>
-								<List m={0}>
-									{creditsSorted.map((credit: Credit) => (
-										<ListItem key={credit.id}>
-											<CreditItem credit={credit} />
-										</ListItem>
-									))}
-								</List>
-							</StackItem>
-						)}
+				{credits && credits.length > 0 && (
+					<StackItem>
+						<HeadingCenterline lineColor='brand.blue' mb={1}>
+							Credits
+						</HeadingCenterline>
+						<Flex justifyContent='flex-end'>
+							<CreditsTagLegend mr={4} />
+						</Flex>
+						<List m={0}>
+							{creditsSorted.map((credit: Credit) => (
+								<ListItem key={credit.id}>
+									<CreditItem credit={credit} />
+								</ListItem>
+							))}
+						</List>
+					</StackItem>
+				)}
 
-						{description && (
-							<StackItem>
-								<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
-								<Text whiteSpace='pre-wrap' borderRadius='md'>
-									{description.trim()}
-								</Text>
-							</StackItem>
-						)}
+				{description && (
+					<StackItem>
+						<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
+						<Text whiteSpace='pre-wrap' borderRadius='md'>
+							{description.trim()}
+						</Text>
+					</StackItem>
+				)}
 
-						{education && (
-							<StackItem>
-								<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
-								<Text whiteSpace='pre-wrap' borderRadius='md'>
-									{education.trim()}
-								</Text>
-							</StackItem>
-						)}
+				{education && (
+					<StackItem>
+						<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
+						<Text whiteSpace='pre-wrap' borderRadius='md'>
+							{education.trim()}
+						</Text>
+					</StackItem>
+				)}
 
-						{mediaVideos.length > 0 || mediaImages.length > 0 ? (
-							<StackItem>
-								<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
-								{mediaVideos.length > 0 ? (
-									<>
-										<Heading as='h3' variant='contentTitle' size='md'>
-											Video
-										</Heading>
-										<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
-											{mediaVideos.map((video: string | undefined, index: Key) => {
-												if (!video) return false;
-												return (
-													<Box key={index} position='relative' paddingBottom='56.25%'>
-														<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-															<ReactPlayer url={video} controls width='100%' height='100%' />
-														</Box>
-													</Box>
-												);
-											})}
-										</SimpleGrid>
-									</>
-								) : (
-									false
-								)}
-								{mediaImages.length > 0 ? (
-									<Box mt={6}>
-										<Heading as='h3' variant='contentTitle' size='md'>
-											Images
-										</Heading>
-
-										<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
-											{mediaImages.map((image: string | undefined, index: Key) => (
-												// TODO add image captions/alt
-												<Image
-													key={index}
-													src={image}
-													borderRadius='md'
-													fit='cover'
-													mb={2}
-													alt={`${profile.fullName()}'s image`}
-												/>
-											))}
-										</Box>
-									</Box>
-								) : (
-									false
-								)}
-							</StackItem>
+				{mediaVideos.length > 0 || mediaImages.length > 0 ? (
+					<StackItem>
+						<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
+						{mediaVideos.length > 0 ? (
+							<>
+								<Heading as='h3' variant='contentTitle' size='md'>
+									Video
+								</Heading>
+								<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
+									{mediaVideos.map((video: string | undefined, index: Key) => {
+										if (!video) return false;
+										return (
+											<Box key={index} position='relative' paddingBottom='56.25%'>
+												<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+													<ReactPlayer url={video} controls width='100%' height='100%' />
+												</Box>
+											</Box>
+										);
+									})}
+								</SimpleGrid>
+							</>
 						) : (
 							false
 						)}
-					</>
+						{mediaImages.length > 0 ? (
+							<Box mt={6}>
+								<Heading as='h3' variant='contentTitle' size='md'>
+									Images
+								</Heading>
+
+								<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+									{mediaImages.map((image: string | undefined, index: Key) => (
+										// TODO add image captions/alt
+										<Image
+											key={index}
+											src={image}
+											borderRadius='md'
+											fit='cover'
+											mb={2}
+											alt={`${profile.fullName()}'s image`}
+										/>
+									))}
+								</Box>
+							</Box>
+						) : (
+							false
+						)}
+					</StackItem>
 				) : (
 					false
 				)}
