@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
+import { decodeString } from '../../lib/utils';
 
 const Section = ({ title, children }: { title: string; children: ReactNode }) => (
 	<>
@@ -19,7 +20,7 @@ interface Props {
 	[prop: string]: any;
 }
 
-export default function ReadableSearchString({ termIds, allTerms, ...props }: Props) {
+export default function SearchParamTags({ termIds, allTerms, ...props }: Props) {
 	if (!termIds || !allTerms) return null;
 
 	const terms: WPItem[] = termIds.map(
@@ -59,10 +60,41 @@ export default function ReadableSearchString({ termIds, allTerms, ...props }: Pr
 
 	return (
 		<Box {...props}>
-			{departmentString ? <Section title='Department'>{departmentString}</Section> : null}
-			{jobString ? <Section title='Job'>{jobString}</Section> : null}
-			{skillString ? <Section title='Skill'>{skillString}</Section> : null}
-			{otherString ? <Section title='Filters'>{otherString}</Section> : null}
+			{departments ? (
+				<Wrap>
+					{departments.map((department: WPItem, index: number) => (
+						<Tag key={index} colorScheme='orange'>
+							<TagLabel>{department.name}</TagLabel>
+						</Tag>
+					))}
+				</Wrap>
+			) : (
+				false
+			)}
+
+			{jobs ? (
+				<Wrap>
+					{jobs.map((job: WPItem, index: number) => (
+						<Tag key={index} colorScheme='blue'>
+							<TagLabel>{job.name}</TagLabel>
+						</Tag>
+					))}
+				</Wrap>
+			) : (
+				false
+			)}
+
+			{skills && skills.length > 0 ? (
+				<Tag colorScheme='green'>{`Skills: ${skills.length}`}</Tag>
+			) : (
+				false
+			)}
+
+			{filters && filters.length > 0 ? (
+				<Tag colorScheme='purple'>{`Filters: ${filters.length}`}</Tag>
+			) : (
+				false
+			)}
 		</Box>
 	);
 }

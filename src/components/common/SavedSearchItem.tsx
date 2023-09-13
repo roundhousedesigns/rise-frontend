@@ -15,7 +15,7 @@ import {
 	useDisclosure,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiRefreshCw, FiSave } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiSave } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
@@ -23,7 +23,7 @@ import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useViewer from '../../hooks/queries/useViewer';
 import TextInput from './inputs/TextInput';
-import ReadableSearchString from './ReadableSearchString';
+import SearchParamTags from './SearchParamTags';
 import { SearchFilterSetRaw } from '../../lib/types';
 import useSaveSearch from '../../hooks/mutations/useSaveSearch';
 
@@ -77,15 +77,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 			},
 		});
 
-		getSearchResults({
-			variables: { ...searchTerms, searchUserId: loggedInId },
-		})
-			.then(() => {
-				navigate('/results');
-			})
-			.catch((err) => {
-				console.error(err);
-			});
+		// OPEN THE SEARCH DRAWER HERE
 	};
 
 	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -111,7 +103,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 		<>
 			<Flex alignItems='center' justifyContent='flex-start'>
 				<IconButton
-					icon={<FiRefreshCw />}
+					icon={<FiSearch />}
 					onClick={handleSearchClick}
 					aria-label={`Rerun this search`}
 					title={`Rerun this search`}
@@ -129,7 +121,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 				{isNamedSearch ? (
 					searchTerms.searchName
 				) : (
-					<ReadableSearchString termIds={termIds} allTerms={terms} />
+					<SearchParamTags termIds={termIds} allTerms={terms} />
 				)}
 				{/* TODO Delete search */}
 			</Flex>
