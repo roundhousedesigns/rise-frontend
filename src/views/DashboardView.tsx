@@ -24,7 +24,7 @@ export default function DashboardView() {
 
 	return (
 		<Box>
-			<Card>
+			<Card mb={0}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
@@ -57,11 +57,16 @@ export default function DashboardView() {
 						</Button>
 					</Flex>
 				</Flex>
-				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
-					<SavedSearches />
-					<SearchHistory />
-				</Flex>
 			</Card>
+
+			<Flex justifyContent='space-between' flexWrap='wrap' mb={2} gap={4}>
+				<Card>
+					<SavedSearches />
+				</Card>
+				<Card>
+					<SearchHistory />
+				</Card>
+			</Flex>
 
 			{notices && notices.length > 0 && (
 				<Box>

@@ -2,11 +2,24 @@ import { ReactNode } from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
 
+const Section = ({ title, children }: { title: string; children: ReactNode }) => (
+	<>
+		<Text as='span' fontWeight='bold'>
+			{title}:&nbsp;
+		</Text>
+		<Text as='span' pr={2}>
+			{children}
+		</Text>
+	</>
+);
+
 interface Props {
 	termIds: number[];
 	allTerms: WPItem[];
+	[prop: string]: any;
 }
-export default function ReadableSearchString({ termIds, allTerms }: Props) {
+
+export default function ReadableSearchString({ termIds, allTerms, ...props }: Props) {
 	if (!termIds || !allTerms) return null;
 
 	const terms: WPItem[] = termIds.map(
@@ -45,7 +58,7 @@ export default function ReadableSearchString({ termIds, allTerms }: Props) {
 	const otherString = filters.map((other) => other.name).join(', ');
 
 	return (
-		<Box>
+		<Box {...props}>
 			{departmentString ? <Section title='Department'>{departmentString}</Section> : null}
 			{jobString ? <Section title='Job'>{jobString}</Section> : null}
 			{skillString ? <Section title='Skill'>{skillString}</Section> : null}
@@ -53,14 +66,3 @@ export default function ReadableSearchString({ termIds, allTerms }: Props) {
 		</Box>
 	);
 }
-
-const Section = ({ title, children }: { title: string; children: ReactNode }) => (
-	<>
-		<Text as='span' fontWeight='bold'>
-			{title}:&nbsp;
-		</Text>
-		<Text as='span' pr={2}>
-			{children}
-		</Text>
-	</>
-);
