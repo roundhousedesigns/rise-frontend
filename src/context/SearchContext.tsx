@@ -1,19 +1,10 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
+import { SearchFilterSet } from '../lib/types';
 
 interface SearchState {
 	filters: {
 		name: string;
-		positions: {
-			department: string;
-			jobs: string[];
-		};
-		skills: string[];
-		unions: string[];
-		locations: string[];
-		experienceLevels: string[];
-		genderIdentities: string[];
-		racialIdentities: string[];
-		personalIdentities: string[];
+		filterSet: SearchFilterSet;
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
@@ -33,6 +24,7 @@ interface SearchAction {
 			name: string;
 			value: string | string[] | Key[];
 		};
+		filterSet?: SearchFilterSet;
 		results?: number[];
 		additionalFiltersActive?: number[];
 		searchDrawerClose?: () => void;
@@ -42,17 +34,19 @@ interface SearchAction {
 const initialSearchState: SearchState = {
 	filters: {
 		name: '',
-		positions: {
-			department: '',
-			jobs: [],
+		filterSet: {
+			positions: {
+				departments: [],
+				jobs: [],
+			},
+			skills: [],
+			unions: [],
+			locations: [],
+			experienceLevels: [],
+			genderIdentities: [],
+			racialIdentities: [],
+			personalIdentities: [],
 		},
-		skills: [],
-		unions: [],
-		locations: [],
-		experienceLevels: [],
-		genderIdentities: [],
-		racialIdentities: [],
-		personalIdentities: [],
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
@@ -94,11 +88,13 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					positions: {
-						...state.filters.positions,
-						department: action.payload.department,
-						// Clear jobs
-						jobs: [],
+					filterSet: {
+						...state.filters.filterSet,
+						positions: {
+							departments: [action.payload.department],
+							// Clear jobs
+							jobs: [],
+						},
 					},
 				},
 				searchActive: true,
@@ -111,12 +107,14 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					positions: {
-						...state.filters.positions,
-						jobs: action.payload.jobs,
+					filterSet: {
+						positions: {
+							...state.filters.filterSet.positions,
+							jobs: action.payload.jobs,
+						},
+						// Clear skills
+						skills: [],
 					},
-					// Clear skills
-					skills: [],
 				},
 				searchActive: true,
 			};
@@ -128,7 +126,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					skills: action.payload.skills,
+					filterSet: {
+						...state.filters.filterSet,
+						skills: action.payload.skills,
+					},
 				},
 				searchActive: true,
 			};
@@ -140,7 +141,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
-					[action.payload.filter.name]: action.payload.filter.value,
+					filterSet: {
+						...state.filters.filterSet,
+						[action.payload.filter.name]: action.payload.filter.value,
+					},
 				},
 				searchActive: true,
 			};
@@ -151,6 +155,18 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			return {
 				...state,
 				additionalFiltersActive: action.payload.additionalFiltersActive,
+			};
+
+		case 'RESTORE_FILTER_SET':
+			if (!action.payload?.filterSet) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet: action.payload.filterSet,
+				},
+				searchActive: true,
 			};
 
 		case 'SET_RESULTS':

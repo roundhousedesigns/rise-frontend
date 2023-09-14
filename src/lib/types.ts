@@ -192,3 +192,38 @@ export interface SearchParams {
 		skills?: string[];
 	};
 }
+
+/**
+ * The data shape for a search query.
+ */
+export interface SearchFilterSet {
+	positions: {
+		departments?: string[];
+		jobs?: string[];
+	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}

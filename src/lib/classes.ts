@@ -359,6 +359,9 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
+	// TODO check if `parent` is necessary with existing `parentId`
+	parent?: any;
+	taxonomyName?: string;
 	externalUrl?: string;
 
 	constructor(params: WPItemParams) {
@@ -366,6 +369,8 @@ export class WPItem implements WPItemParams {
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : undefined;
 		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
+		this.parent = params.parent ? new WPItem(params.parent.node) : undefined;
+		this.taxonomyName = params.taxonomyName ? params.taxonomyName : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
 	}
 }

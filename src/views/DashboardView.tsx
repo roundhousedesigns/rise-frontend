@@ -14,6 +14,8 @@ import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '../hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
+import SavedSearches from '../components/SavedSearches';
+import SearchHistory from '../components/SearchHistory';
 import ShortPost from '../components/common/ShortPost';
 
 export default function DashboardView() {
@@ -56,6 +58,16 @@ export default function DashboardView() {
 					</Flex>
 				</Flex>
 			</Card>
+
+			<Flex justifyContent='space-between' flexWrap='wrap' mb={2} gap={4}>
+				<Card>
+					<SavedSearches />
+				</Card>
+				<Card>
+					<SearchHistory />
+				</Card>
+			</Flex>
+
 			{notices && notices.length > 0 && (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
