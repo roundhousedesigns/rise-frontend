@@ -8,16 +8,18 @@ import TextInput from './common/inputs/TextInput';
 import SearchFilterAccordionItem from './common/SearchFilterAccordionItem';
 import { SearchContext } from '../context/SearchContext';
 import useSearchByName from '../hooks/queries/useSearchByName';
+import SearchDrawerContext from '../context/SearchDrawerContext';
 
 export default function SearchFilterName() {
 	const {
 		search: {
 			filters: { name },
 			results,
-			searchDrawerClose,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
+
+	const { closeDrawer } = useContext(SearchDrawerContext);
 
 	const [getSearchResults, { data: { usersByName } = [], loading }] = useSearchByName();
 	const navigate = useNavigate();
@@ -75,7 +77,7 @@ export default function SearchFilterName() {
 		})
 			.then(() => {
 				navigate('/results');
-				searchDrawerClose();
+				closeDrawer();
 			})
 			.catch((err) => {
 				console.error(err);

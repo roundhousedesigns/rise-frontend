@@ -4,8 +4,8 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { SearchFilterSetRaw } from '../../lib/types';
+import { QUERY_VIEWER } from '../queries/useViewer';
 
-// TODO deprecate year
 const MUTATE_SAVE_SEARCH = gql`
 	mutation SaveSearchFilters($input: SaveSearchFiltersInput = {}) {
 		saveSearchFilters(input: $input) {
@@ -16,7 +16,9 @@ const MUTATE_SAVE_SEARCH = gql`
 `;
 
 const useSaveSearch = () => {
-	const [mutation, results] = useMutation(MUTATE_SAVE_SEARCH);
+	const [mutation, results] = useMutation(MUTATE_SAVE_SEARCH, {
+		refetchQueries: [QUERY_VIEWER],
+	});
 
 	const saveSearchFiltersMutation = ({
 		filterSet,

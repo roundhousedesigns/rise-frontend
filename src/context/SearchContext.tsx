@@ -8,7 +8,6 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	searchDrawerClose: () => void;
 	results: number[];
 }
 
@@ -27,7 +26,6 @@ interface SearchAction {
 		filterSet?: SearchFilterSet;
 		results?: number[];
 		additionalFiltersActive?: number[];
-		searchDrawerClose?: () => void;
 	};
 }
 
@@ -36,7 +34,7 @@ const initialSearchState: SearchState = {
 		name: '',
 		filterSet: {
 			positions: {
-				department: '',
+				departments: [],
 				jobs: [],
 			},
 			skills: [],
@@ -50,7 +48,6 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
-	searchDrawerClose: () => {},
 	results: [],
 };
 
@@ -61,15 +58,6 @@ export const SearchContext = createContext({
 
 function searchContextReducer(state: SearchState, action: SearchAction): SearchState {
 	switch (action.type) {
-		case 'OPEN_SEARCH': {
-			if (!action.payload?.searchDrawerClose) return state;
-
-			return {
-				...state,
-				searchDrawerClose: action.payload.searchDrawerClose,
-			};
-		}
-
 		case 'SET_NAME':
 			return {
 				...state,
@@ -91,7 +79,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet: {
 						...state.filters.filterSet,
 						positions: {
-							department: action.payload.department,
+							departments: [action.payload.department],
 							// Clear jobs
 							jobs: [],
 						},

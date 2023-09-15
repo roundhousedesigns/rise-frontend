@@ -13,12 +13,13 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	useDisclosure,
+	useToast,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
+import SearchDrawerContext from '../../context/SearchDrawerContext';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useViewer from '../../hooks/queries/useViewer';
@@ -36,11 +37,13 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
 		searchTerms.searchName ? searchTerms.searchName : ''
 	);
-	const [getSearchResults, { data: { filteredCandidates } = [] }] = useCandidateSearch();
+	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
 		searchDispatch,
 	} = useContext(SearchContext);
+
+	const { openDrawer } = useContext(SearchDrawerContext);
 
 	const isNamedSearch = searchTerms.searchName && searchTerms.searchName !== '';
 
@@ -49,7 +52,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 
 	const { saveSearchFiltersMutation } = useSaveSearch();
 
-	const navigate = useNavigate();
+	const toast = useToast();
 
 	// Update SearchContext with the new results whenever the query returns.
 	useEffect(() => {
@@ -77,7 +80,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 			},
 		});
 
-		// OPEN THE SEARCH DRAWER HERE
+		openDrawer();
 	};
 
 	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -90,7 +93,14 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 			searchName: saveSearchFieldText,
 			filterSet,
 		}).then(() => {
-			alert('a success toast here, soon!');
+			toast({
+				title: 'Saved!',
+				position: 'top',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+
 			onClose();
 		});
 	};

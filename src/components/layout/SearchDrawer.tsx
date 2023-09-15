@@ -35,7 +35,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			filters: {
 				name,
 				filterSet: {
-					positions: { jobs, department },
+					positions: { jobs, departments },
 					skills,
 					unions,
 					locations,
@@ -50,6 +50,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
+
 	const navigate = useNavigate();
 
 	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
@@ -71,8 +72,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		// set the positions array to the jobs array if it's not empty, otherwise use the department array
-		const positions = jobs && jobs.length > 0 ? jobs : department;
+		// set the positions array to the jobs array if it's not empty, otherwise use the departments array
+		const positions = jobs && jobs.length > 0 ? jobs : departments;
 
 		getSearchResults({
 			variables: {
