@@ -1,18 +1,7 @@
 import { ReactNode } from 'react';
-import { Box, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
+import { Flex, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
 import { decodeString } from '../../lib/utils';
-
-const Section = ({ title, children }: { title: string; children: ReactNode }) => (
-	<>
-		<Text as='span' fontWeight='bold'>
-			{title}:&nbsp;
-		</Text>
-		<Text as='span' pr={2}>
-			{children}
-		</Text>
-	</>
-);
 
 interface Props {
 	termIds: number[];
@@ -49,17 +38,8 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 		(term) => term.taxonomyName !== 'position' && term.taxonomyName !== 'skill'
 	);
 
-	const departmentString = departments
-		.map((department) => {
-			return department.name;
-		})
-		.join('/');
-	const jobString = jobs.map((job) => job.name).join('/');
-	const skillString = skills.map((skill) => skill.name).join(', ');
-	const otherString = filters.map((other) => other.name).join(', ');
-
 	return (
-		<Box {...props}>
+		<Flex flexWrap='wrap' gap={1} {...props}>
 			{departments ? (
 				<Wrap>
 					{departments.map((department: WPItem, index: number) => (
@@ -85,16 +65,20 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 			)}
 
 			{skills && skills.length > 0 ? (
-				<Tag colorScheme='green'>{`Skills: ${skills.length}`}</Tag>
+				<Tag colorScheme='green'>
+					<TagLabel>{`Skills: ${skills.length}`}</TagLabel>
+				</Tag>
 			) : (
 				false
 			)}
 
 			{filters && filters.length > 0 ? (
-				<Tag colorScheme='purple'>{`Filters: ${filters.length}`}</Tag>
+				<Tag colorScheme='purple'>
+					<TagLabel>{`Filters: ${filters.length}`}</TagLabel>
+				</Tag>
 			) : (
 				false
 			)}
-		</Box>
+		</Flex>
 	);
 }

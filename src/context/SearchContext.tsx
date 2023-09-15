@@ -15,7 +15,7 @@ interface SearchAction {
 	type: string;
 	payload: {
 		name?: string;
-		department?: string;
+		departments?: string[];
 		jobs?: string[];
 		skills?: string[];
 		locations?: string[];
@@ -70,7 +70,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'SET_DEPARTMENT':
-			if (!action.payload?.department) return state;
+			if (!action.payload?.departments) return state;
 
 			return {
 				...state,
@@ -79,7 +79,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet: {
 						...state.filters.filterSet,
 						positions: {
-							departments: [action.payload.department],
+							departments: action.payload.departments,
 							// Clear jobs
 							jobs: [],
 						},

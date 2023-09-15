@@ -59,11 +59,11 @@ export default function DashboardView() {
 				</Flex>
 			</Card>
 
-			<Flex justifyContent='space-between' flexWrap='wrap' mb={2} gap={4}>
-				<Card>
+			<Flex flexWrap='wrap' mb={2} gap={4}>
+				<Card flex='0 1 400px'>
 					<SavedSearches />
 				</Card>
-				<Card>
+				<Card flex='0 1 400px'>
 					<SearchHistory />
 				</Card>
 			</Flex>

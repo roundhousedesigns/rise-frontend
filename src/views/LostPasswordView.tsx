@@ -52,7 +52,7 @@ export default function LoginView() {
 				})
 				.catch((err) => {
 					// TODO handle password reset errors
-					console.log(err);
+					console.error(err);
 				});
 		});
 	};

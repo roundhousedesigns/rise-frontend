@@ -305,7 +305,7 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
 	return {
 		...searchObj,
 		positions: {
-			department: departmentId.toString(),
+			departments: [departmentId.toString()],
 			jobs: searchObj.positions,
 		},
 	};

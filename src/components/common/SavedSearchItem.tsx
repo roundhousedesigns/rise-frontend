@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef, MouseEventHandler } from 'react';
 import {
 	Flex,
 	IconButton,
@@ -14,9 +14,12 @@ import {
 	ModalOverlay,
 	useDisclosure,
 	useToast,
+	Spacer,
+	Text,
+	Link,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiSearch, FiSave } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
 import SearchDrawerContext from '../../context/SearchDrawerContext';
@@ -30,16 +33,17 @@ import useSaveSearch from '../../hooks/mutations/useSaveSearch';
 
 interface Props {
 	searchTerms: SearchFilterSetRaw;
+	withDelete?: boolean;
 }
 
-export default function SavedSearchItem({ searchTerms }: Props) {
+export default function SavedSearchItem({ searchTerms, withDelete = true }: Props) {
 	const { loggedInId } = useViewer();
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
 		searchTerms.searchName ? searchTerms.searchName : ''
 	);
 	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
-		search: { results },
+		search: { filters, results },
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -70,7 +74,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 	const termIds = extractSearchTermIds(searchTerms);
 	const [terms] = useTaxonomyTerms(termIds);
 
-	const handleSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleSearchClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
 		const filterSet = prepareSearchFilterSet(searchTerms, terms);
 
 		searchDispatch({
@@ -109,31 +113,41 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 		setSaveSearchFieldText(event.target.value);
 	};
 
+	const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		console.log('delete');
+	};
+
 	return (
 		<>
-			<Flex alignItems='center' justifyContent='flex-start'>
-				<IconButton
-					icon={<FiSearch />}
-					onClick={handleSearchClick}
-					aria-label={`Rerun this search`}
-					title={`Rerun this search`}
-					size='sm'
-					mr={2}
-				/>
-				<IconButton
-					icon={isNamedSearch ? <FiEdit3 /> : <FiSave />}
-					onClick={() => onOpen()}
-					aria-label={isNamedSearch ? 'Rename this search' : 'Save this search'}
-					title={isNamedSearch ? 'Rename this search' : 'Save this search'}
-					size='sm'
-					mr={2}
-				/>
+			<Flex alignItems='center' justifyContent='flex-start' flexWrap='wrap'>
 				{isNamedSearch ? (
-					searchTerms.searchName
+					<>
+						<Text>{searchTerms.searchName}</Text>
+						{withDelete ? (
+							<>
+								<Spacer />
+								<IconButton
+									icon={<FiDelete />}
+									onClick={handleDelete}
+									colorScheme='red'
+									aria-label={`Delete this search`}
+									title={`Delete`}
+									size='sm'
+									mr={2}
+								/>
+							</>
+						) : (
+							false
+						)}
+						<Link onClick={handleSearchClick} mr={2} flex='0 0 100%'>
+							<SearchParamTags termIds={termIds} allTerms={terms} />
+						</Link>
+					</>
 				) : (
-					<SearchParamTags termIds={termIds} allTerms={terms} />
+					<Link onClick={handleSearchClick} mr={2} flex='1'>
+						<SearchParamTags termIds={termIds} allTerms={terms} />
+					</Link>
 				)}
-				{/* TODO Delete search */}
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>

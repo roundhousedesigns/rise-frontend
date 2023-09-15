@@ -7,10 +7,17 @@ import CheckboxButton from './common/inputs/CheckboxButton';
 import { SearchContext } from '../context/SearchContext';
 
 export default function SearchFilterJobs() {
-	const { search, searchDispatch } = useContext(SearchContext);
-	const [positionItems, { loading, error }] = usePositions([
-		parseInt(search.filters.filterSet.positions.department),
-	]);
+	const {
+		search: {
+			filters: {
+				filterSet: {
+					positions: { departments = [], jobs },
+				},
+			},
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
+	const [jobItems, { loading, error }] = usePositions([parseInt(departments[0])]);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
@@ -28,9 +35,9 @@ export default function SearchFilterJobs() {
 					<Heading as='h3' variant='searchFilterTitle'>
 						What job(s) are you looking to fill?
 					</Heading>
-					<CheckboxGroup defaultValue={search.filters.filterSet.positions.jobs} onChange={handleToggleTerm}>
+					<CheckboxGroup defaultValue={jobs} onChange={handleToggleTerm}>
 						<Wrap>
-							{positionItems.map((term: WPItem) => (
+							{jobItems.map((term: WPItem) => (
 								<CheckboxButton key={term.id} value={term.id.toString()}>
 									{term.name}
 								</CheckboxButton>
