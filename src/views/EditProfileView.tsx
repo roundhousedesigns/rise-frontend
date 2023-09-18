@@ -1058,7 +1058,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							<TextInput
 								value={socials?.twitter}
 								leftElement={<Icon as={XIcon} />}
-								label='Twitter @handle'
+								label='X/Twitter @handle'
 								placeholder='@handle'
 								name='socials.twitter'
 								onChange={handleSocialInputChange}
