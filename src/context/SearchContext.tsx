@@ -145,17 +145,33 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
 
-		case 'RESTORE_FILTER_SET':
-			if (!action.payload?.filterSet) return state;
+		case 'RESTORE_FILTER_SET': {
+			const {
+				payload: { filterSet },
+			} = action;
+
+			if (!filterSet) return state;
+
+			const activateFilters =
+				!!filterSet.unions ||
+				!!filterSet.locations ||
+				!!filterSet.experienceLevels ||
+				!!filterSet.genderIdentities ||
+				!!filterSet.racialIdentities ||
+				!!filterSet.personalIdentities
+					? true
+					: false;
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					filterSet: action.payload.filterSet,
+					filterSet,
 				},
 				searchActive: true,
+				additionalFiltersActive: activateFilters ? [] : [], // TODO FIX RESTORING ADDL FILTERS
 			};
+		}
 
 		case 'SET_RESULTS':
 			return {
