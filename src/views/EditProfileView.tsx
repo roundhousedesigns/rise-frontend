@@ -41,7 +41,6 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
-	FiTwitter,
 	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
@@ -75,6 +74,7 @@ import TextInput from '../components/common/inputs/TextInput';
 import TextareaInput from '../components/common/inputs/TextareaInput';
 import FileUploadButton from '../components/common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
+import XIcon from '../components/common/icons/X';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -1057,8 +1057,8 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 							/>
 							<TextInput
 								value={socials?.twitter}
-								leftElement={<Icon as={FiTwitter} />}
-								label='Twitter @handle'
+								leftElement={<Icon as={XIcon} />}
+								label='X/Twitter @handle'
 								placeholder='@handle'
 								name='socials.twitter'
 								onChange={handleSocialInputChange}
