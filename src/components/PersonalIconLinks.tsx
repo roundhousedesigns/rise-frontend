@@ -22,7 +22,7 @@ export default function PersonalIconLinks({ socials, ...props }: Props): JSX.Ele
 			)}
 
 			{twitter && (
-				<SocialIcon label='Twitter' name='twitter' value={twitter} icon={<XIcon />} />
+				<SocialIcon label='X/Twitter' name='twitter' value={twitter} icon={<XIcon />} />
 			)}
 
 			{instagram && (
