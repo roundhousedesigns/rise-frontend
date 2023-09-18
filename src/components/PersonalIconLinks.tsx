@@ -1,7 +1,8 @@
 import { Flex } from '@chakra-ui/react';
-import { FiFacebook, FiInstagram, FiTwitter, FiLinkedin } from 'react-icons/fi';
+import { FiFacebook, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import { PersonalLinks } from '../lib/classes';
 import SocialIcon from './common/SocialIcon';
+import XIcon from './common/icons/X';
 
 interface Props {
 	socials: PersonalLinks;
@@ -21,7 +22,7 @@ export default function PersonalIconLinks({ socials, ...props }: Props): JSX.Ele
 			)}
 
 			{twitter && (
-				<SocialIcon label='Twitter' name='twitter' value={twitter} icon={<FiTwitter />} />
+				<SocialIcon label='Twitter' name='twitter' value={twitter} icon={<XIcon />} />
 			)}
 
 			{instagram && (
