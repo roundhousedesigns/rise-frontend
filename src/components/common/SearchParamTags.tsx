@@ -1,7 +1,5 @@
-import { ReactNode } from 'react';
-import { Flex, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
+import { Flex, Tag, TagLabel, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../../lib/classes';
-import { decodeString } from '../../lib/utils';
 
 interface Props {
 	termIds: number[];
@@ -40,7 +38,7 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 
 	return (
 		<Flex flexWrap='wrap' gap={1} {...props}>
-			{departments ? (
+			{departments.length ? (
 				<Wrap>
 					{departments.map((department: WPItem, index: number) => (
 						<Tag key={index} colorScheme='orange'>

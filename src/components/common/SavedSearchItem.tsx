@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef, MouseEventHandler } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import {
 	Flex,
 	IconButton,
@@ -16,7 +16,7 @@ import {
 	useToast,
 	Spacer,
 	Text,
-	Link,
+	Wrap,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
@@ -43,7 +43,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 	);
 	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
-		search: { filters, results },
+		search: { results },
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -74,7 +74,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 	const termIds = extractSearchTermIds(searchTerms);
 	const [terms] = useTaxonomyTerms(termIds);
 
-	const handleSearchClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+	const handleSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		const filterSet = prepareSearchFilterSet(searchTerms, terms);
 
 		searchDispatch({
@@ -85,6 +85,10 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 		});
 
 		openDrawer();
+	};
+
+	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		onOpen();
 	};
 
 	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -109,7 +113,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 		});
 	};
 
-	const handleSaveSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSaveSearchFieldText(event.target.value);
 	};
 
@@ -123,30 +127,61 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 				{isNamedSearch ? (
 					<>
 						<Text>{searchTerms.searchName}</Text>
-						{withDelete ? (
-							<>
-								<Spacer />
-								<IconButton
-									icon={<FiDelete />}
-									onClick={handleDelete}
-									colorScheme='red'
-									aria-label={`Delete this search`}
-									title={`Delete`}
-									size='sm'
-									mr={2}
-								/>
-							</>
-						) : (
-							false
-						)}
-						<Link onClick={handleSearchClick} mr={2} flex='0 0 100%'>
-							<SearchParamTags termIds={termIds} allTerms={terms} />
-						</Link>
+						<Spacer />
+						<Wrap>
+							{withDelete ? (
+								<>
+									<IconButton
+										icon={<FiSearch />}
+										onClick={handleSearchClick}
+										colorScheme='green'
+										aria-label={`Run this search`}
+										title={`Search`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiEdit3 />}
+										onClick={handleEditClick}
+										colorScheme='blue'
+										aria-label={`Rename this search`}
+										title={`Rename`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiDelete />}
+										onClick={handleDelete}
+										colorScheme='red'
+										aria-label={`Delete this search`}
+										title={`Delete`}
+										size='sm'
+									/>
+								</>
+							) : (
+								<>
+									<IconButton
+										icon={<FiSearch />}
+										onClick={handleSearchClick}
+										colorScheme='green'
+										aria-label={`Run this search`}
+										title={`Search`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiSave />}
+										onClick={handleSaveSearchClick}
+										colorScheme='blue'
+										aria-label={`Save this search`}
+										title={`Save`}
+										size='sm'
+									/>
+								</>
+							)}
+						</Wrap>
+
+						<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
 					</>
 				) : (
-					<Link onClick={handleSearchClick} mr={2} flex='1'>
-						<SearchParamTags termIds={termIds} allTerms={terms} />
-					</Link>
+					<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
 				)}
 			</Flex>
 
@@ -161,7 +196,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 							<TextInput
 								name='searchName'
 								placeholder='My search'
-								onChange={handleSaveSearchNameChange}
+								onChange={handleSavedSearchNameChange}
 								value={saveSearchFieldText}
 								ref={initialSaveModalRef}
 							/>
