@@ -51,7 +51,6 @@ export default function TextInput({
 	const inputVariant = variant ? variant : 'filled';
 
 	const HelperTextFormatted = () => {
-		let text = helperText ? helperText : '';
 		let lengthText = '';
 
 		if (maxLength) {
@@ -67,7 +66,7 @@ export default function TextInput({
 				lineHeight='normal'
 				fontSize='xs'
 			>
-				<Text m={0}>{text}</Text>
+				<Text m={0}>{helperText}</Text>
 				<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
 					{lengthText}
 				</Text>
@@ -119,12 +118,16 @@ export default function TextInput({
 				) : (
 					false
 				)}
-				<Wrap w='full'>
-					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
-						<HelperTextFormatted />
-					</FormHelperText>
+				<Wrap w='full' alignItems='flex-start'>
+					{helperText ? (
+						<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+							<HelperTextFormatted />
+						</FormHelperText>
+					) : (
+						false
+					)}
 					{error && (
-						<FormErrorMessage fontWeight='bold' my={0}>
+						<FormErrorMessage fontWeight='bold' mt={0}>
 							{error}
 						</FormErrorMessage>
 					)}

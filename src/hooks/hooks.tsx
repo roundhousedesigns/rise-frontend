@@ -63,12 +63,16 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 	if (!errorCode) return '';
 
 	switch (errorCode) {
-		// Common errors
+		// Login errors
 		case 'invalid_username':
 		case 'invalid_email':
 			return 'No account exists for that email address.';
 		case 'empty_login':
 			return 'Please enter a username or email address.';
+		case 'invalid_account':
+			return 'Please use a different account.';
+		case 'bad_login':
+			return 'Something went wrong. Please try again.';
 
 		// Password Errors
 		case 'empty_password':
@@ -83,10 +87,14 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		// Registration errors
 		case 'existing_user_login':
 			return 'An account already exists for that email address. Please try logging in.';
+		case 'unspecified_create_user_error':
+			return 'Something went wrong. Please try again.';
 
 		// ReCAPTCHA errors
 		case 'recaptcha_error':
-			return 'Invalid reCAPTCHA.';
+		case 'no_recaptcha_token':
+		case 'bad_recaptcha_token':
+			return 'reCAPTCHA error.';
 
 		// Change profile slug errors
 		case 'user_not_found':
