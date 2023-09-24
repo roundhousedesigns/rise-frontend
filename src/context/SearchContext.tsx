@@ -1,5 +1,4 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
-import { SearchFilterSet } from '../lib/types';
 
 interface SearchState {
 	filters: {
@@ -129,6 +128,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
+					filterSet: {
+						...state.filters.filterSet,
+						[action.payload.filter.name]: action.payload.filter.value,
+					},
+				},
 					filterSet: {
 						...state.filters.filterSet,
 						[action.payload.filter.name]: action.payload.filter.value,

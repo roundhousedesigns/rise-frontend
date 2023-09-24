@@ -14,6 +14,8 @@ import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '../hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
+import SavedSearches from '../components/SavedSearches';
+import SearchHistory from '../components/SearchHistory';
 import ShortPost from '../components/common/ShortPost';
 import SearchHistory from '../components/SearchHistory';
 import SavedSearches from '../components/SavedSearches';

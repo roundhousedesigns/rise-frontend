@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.0.9.3] - 2023-09-22
+
+- Improve: Admins barred from frontend login
+- Improve: Login and lost/reset password error handling
+
 ## \[1.0.9.2] - 2023-09-06
 
 - Feature: Hidden profile checkbox. Enable or disable visibility on your public profile.

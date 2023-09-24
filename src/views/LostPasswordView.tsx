@@ -15,7 +15,7 @@ export default function LoginView() {
 
 	const {
 		sendPasswordResetEmailMutation,
-		results: { loading: submitLoading },
+		results: { loading: submitLoading, error: resetError },
 	} = useSendPasswordResetEmail();
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,8 +51,7 @@ export default function LoginView() {
 					navigate('/');
 				})
 				.catch((err) => {
-					// TODO handle password reset errors
-					console.error(err);
+					setErrorCode(err.message);
 				});
 		});
 	};

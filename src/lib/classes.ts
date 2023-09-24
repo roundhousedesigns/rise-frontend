@@ -359,6 +359,7 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
+	// TODO check if `parent` is necessary with existing `parentId`
 	parent?: any;
 	taxonomyName?: string;
 	externalUrl?: string;
