@@ -109,6 +109,8 @@ export interface CreditParams {
 	workStart?: string;
 	workEnd?: string;
 	workCurrent?: boolean;
+	intern?: boolean;
+	fellow?: boolean;
 	departments?: number[];
 	jobs?: number[];
 	positions?: {
@@ -133,6 +135,8 @@ export interface CreditOutput {
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
+	intern: boolean;
+	fellow: boolean;
 	departments: number[];
 	jobs: number[];
 	skills: number[];

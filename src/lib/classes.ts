@@ -287,6 +287,8 @@ export class Credit implements CreditParams {
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
+	intern: boolean;
+	fellow: boolean;
 	positions: {
 		departments: number[];
 		jobs: number[];
@@ -305,6 +307,8 @@ export class Credit implements CreditParams {
 		this.workStart = params.workStart ? params.workStart : '';
 		this.workEnd = params.workEnd ? params.workEnd : '';
 		this.workCurrent = params.workCurrent || false;
+		this.intern = params.intern || false;
+		this.fellow = params.fellow || false;
 		this.skills = params.skills ? params.skills : [];
 		this.positions = this.getPositions(params) || { departments: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;

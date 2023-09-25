@@ -77,6 +77,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		workStart,
 		workEnd,
 		workCurrent,
+		intern,
+		fellow,
 		positions: { departments: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
@@ -302,6 +304,30 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					defaultValue={workCurrent ? 'true' : 'false'}
 					name='workCurrent'
 					label='Currently working here'
+					flex={{ base: '0 0 100%', md: '0 0 50%' }}
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
+				/>
+
+				<ProfileRadioGroup
+					defaultValue={intern ? 'true' : 'false'}
+					name='intern'
+					label='Intern'
+					flex={{ base: '0 0 100%', md: '0 0 50%' }}
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
+				/>
+
+				<ProfileRadioGroup
+					defaultValue={fellow ? 'true' : 'false'}
+					name='fellow'
+					label='Fellow'
 					flex={{ base: '0 0 100%', md: '0 0 50%' }}
 					items={[
 						{ label: 'Yes', value: 'true' },
