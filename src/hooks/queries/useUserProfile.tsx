@@ -70,6 +70,8 @@ export const QUERY_PROFILE = gql`
 				workStart(format: RENDERED)
 				workEnd(format: RENDERED)
 				workCurrent
+				intern
+				fellow
 				positions(first: 50) {
 					nodes {
 						id: databaseId
@@ -122,6 +124,7 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			});
 		}
 
+		// TODO Clean this up (destructuring?)
 		const newCredit = new Credit({
 			id: credit.id,
 			index: credit.index,
@@ -133,6 +136,8 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			workStart: credit.workStart,
 			workEnd: credit.workEnd,
 			workCurrent: credit.workCurrent,
+			intern: credit.intern,
+			fellow: credit.fellow,
 			departments: departments?.map((department: WPItem) => department.id),
 			jobs: jobs?.map((job: WPItem) => job.id),
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),

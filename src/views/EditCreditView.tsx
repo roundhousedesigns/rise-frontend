@@ -77,6 +77,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		workStart,
 		workEnd,
 		workCurrent,
+		intern,
+		fellow,
 		positions: { departments: selectedDepartmentIds = [], jobs: selectedJobIds = [] },
 		skills: selectedSkills,
 	} = editCredit;
@@ -255,31 +257,32 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	return (
 		<form id='edit-credit' onSubmit={handleSubmit}>
-			<Flex flex='1' justifyContent='space-between' py={2}>
+			<Flex flex='1' justifyContent='space-between' py={2} mb={2}>
 				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
 				<EditCreditButtons handleCancel={handleCancel} isLoading={updateCreditLoading} />
 			</Flex>
 
-			<TextInput
-				name='title'
-				label='Production/Show/Company Title'
-				value={title}
-				isRequired
-				onChange={handleInputChange}
-				flex='1'
-			/>
+			<Flex gap={4}>
+				<TextInput
+					name='title'
+					label='Production/Show/Company Title'
+					value={title}
+					isRequired
+					onChange={handleInputChange}
+				/>
 
-			<TextInput
-				name='jobTitle'
-				label='Job/Position Title'
-				isRequired
-				value={jobTitle}
-				onChange={handleInputChange}
-			/>
+				<TextInput
+					name='jobTitle'
+					label='Job/Position Title'
+					isRequired
+					value={jobTitle}
+					onChange={handleInputChange}
+				/>
+			</Flex>
 
-			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap'>
+			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap' mt={1}>
 				<TextInput
 					name='workStart'
 					label='Start year'
@@ -302,7 +305,6 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					defaultValue={workCurrent ? 'true' : 'false'}
 					name='workCurrent'
 					label='Currently working here'
-					flex={{ base: '0 0 100%', md: '0 0 50%' }}
 					items={[
 						{ label: 'Yes', value: 'true' },
 						{ label: 'No', value: 'false' },
@@ -311,7 +313,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				/>
 			</Flex>
 
-			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap'>
+			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap' mt={1}>
 				<TextInput
 					name='venue'
 					label='Venue'
@@ -328,6 +330,30 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					isRequired
 					onChange={handleInputChange}
 					flex='1'
+				/>
+			</Flex>
+
+			<Flex justifyContent='flex-start' w='full' gap={4} flexWrap='wrap' mt={1}>
+				<ProfileRadioGroup
+					defaultValue={intern ? 'true' : 'false'}
+					name='intern'
+					label={`This ${workCurrent ? 'is' : 'was'} an internship`}
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
+				/>
+
+				<ProfileRadioGroup
+					defaultValue={fellow ? 'true' : 'false'}
+					name='fellow'
+					label={`This ${workCurrent ? 'is' : 'was'} a fellowship`}
+					items={[
+						{ label: 'Yes', value: 'true' },
+						{ label: 'No', value: 'false' },
+					]}
+					handleChange={handleRadioInputChange}
 				/>
 			</Flex>
 
