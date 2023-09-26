@@ -71,8 +71,6 @@ export default function LoginView() {
 							value={username}
 							name='username'
 							label='Email'
-							labelHidden
-							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
 							inputProps={{

@@ -43,13 +43,15 @@ import { SearchContext } from '../../context/SearchContext';
 import useViewer from '../../hooks/queries/useViewer';
 import useLogout from '../../hooks/mutations/useLogout';
 import ResponsiveButton from '../common/inputs/ResponsiveButton';
+import SearchDrawerContext from '../../context/SearchDrawerContext';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
 	const { logoutMutation } = useLogout();
 	const [orange] = useToken('colors', ['brand.orange']);
 
-	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
+	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
+
 	const drawerButtonRef = useRef(null);
 
 	const {
@@ -66,14 +68,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	);
 
 	const handleDrawerOpen = () => {
-		drawerOnOpen();
-
-		searchDispatch({
-			type: 'OPEN_SEARCH',
-			payload: {
-				searchDrawerClose: drawerOnClose,
-			},
-		});
+		openDrawer();
 	};
 
 	const handleLogout = () => {
@@ -233,11 +228,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 													>
 														My Profile
 													</MenuItem>
-													<MenuItem
-														ref={drawerButtonRef}
-														onClick={drawerOnOpen}
-														icon={<FiSearch />}
-													>
+													<MenuItem ref={drawerButtonRef} onClick={openDrawer} icon={<FiSearch />}>
 														Search
 													</MenuItem>
 													<MenuDivider />
@@ -283,7 +274,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 				</Container>
 			</DarkMode>
 
-			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
+			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
 		</Box>
 	);
 });

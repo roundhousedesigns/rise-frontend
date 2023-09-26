@@ -6,11 +6,14 @@ import { SearchContext } from '../context/SearchContext';
 
 export default function SearchResultsView() {
 	const {
-		search: { results },
+		search: {
+			// filters: { filterSet },
+			results,
+		},
 	} = useContext(SearchContext);
 
 	// Set the results string based on the number of results.
-	const resultsString = useMemo(() => {
+	const resultsCountString = useMemo(() => {
 		if (results.length === 0) {
 			return 'No results.';
 		} else if (results.length === 1) {
@@ -25,7 +28,8 @@ export default function SearchResultsView() {
 	return (
 		<Box>
 			<Text fontSize='sm' pb={2}>
-				{resultsString}
+				{resultsCountString}
+				{/* TODO add results string here w/ param details */}
 			</Text>
 			<CandidateList userIds={results} />
 		</Box>

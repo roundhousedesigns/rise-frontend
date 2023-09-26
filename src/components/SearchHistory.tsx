@@ -38,7 +38,7 @@ export default function SearchHistory() {
 				<List spacing={2}>
 					{searchTermIdSets.map((_ignored: any, index: number) => (
 						<ListItem key={index}>
-							<SavedSearchItem searchTerms={searchHistoryArr[index]} />
+							<SavedSearchItem searchTerms={searchHistoryArr[index]} withDelete={false} />
 						</ListItem>
 					))}
 				</List>

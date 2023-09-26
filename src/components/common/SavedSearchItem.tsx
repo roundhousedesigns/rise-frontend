@@ -13,34 +13,41 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	useDisclosure,
+	useToast,
+	Spacer,
+	Text,
+	Wrap,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiSearch, FiSave } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
+import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
 import { SearchContext } from '../../context/SearchContext';
-import useSaveSearch from '../../hooks/mutations/useSaveSearch';
+import SearchDrawerContext from '../../context/SearchDrawerContext';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
 import useViewer from '../../hooks/queries/useViewer';
 import TextInput from './inputs/TextInput';
-import SearchParamTags from '../SearchParamTags';
+import SearchParamTags from './SearchParamTags';
 import { SearchFilterSetRaw } from '../../lib/types';
+import useSaveSearch from '../../hooks/mutations/useSaveSearch';
 
 interface Props {
 	searchTerms: SearchFilterSetRaw;
+	withDelete?: boolean;
 }
 
-export default function SavedSearchItem({ searchTerms }: Props) {
+export default function SavedSearchItem({ searchTerms, withDelete = true }: Props) {
 	const { loggedInId } = useViewer();
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
 		searchTerms.searchName ? searchTerms.searchName : ''
 	);
-	const [getSearchResults, { data: { filteredCandidates } = [] }] = useCandidateSearch();
+	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
 		searchDispatch,
 	} = useContext(SearchContext);
+
+	const { openDrawer } = useContext(SearchDrawerContext);
 
 	const isNamedSearch = searchTerms.searchName && searchTerms.searchName !== '';
 
@@ -49,7 +56,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 
 	const { saveSearchFiltersMutation } = useSaveSearch();
 
-	const navigate = useNavigate();
+	const toast = useToast();
 
 	// Update SearchContext with the new results whenever the query returns.
 	useEffect(() => {
@@ -77,7 +84,11 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 			},
 		});
 
-		// OPEN THE SEARCH DRAWER HERE
+		openDrawer();
+	};
+
+	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		onOpen();
 	};
 
 	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -90,40 +101,88 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 			searchName: saveSearchFieldText,
 			filterSet,
 		}).then(() => {
-			alert('a success toast here, soon!');
+			toast({
+				title: 'Saved!',
+				position: 'top',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+
 			onClose();
 		});
 	};
 
-	const handleSaveSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setSaveSearchFieldText(event.target.value);
+	};
+
+	const handleDelete = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		console.log('delete');
 	};
 
 	return (
 		<>
-			<Flex alignItems='center' justifyContent='flex-start'>
-				<IconButton
-					icon={<FiSearch />}
-					onClick={handleSearchClick}
-					aria-label={`Rerun this search`}
-					title={`Rerun this search`}
-					size='sm'
-					mr={2}
-				/>
-				<IconButton
-					icon={isNamedSearch ? <FiEdit3 /> : <FiSave />}
-					onClick={() => onOpen()}
-					aria-label={isNamedSearch ? 'Rename this search' : 'Save this search'}
-					title={isNamedSearch ? 'Rename this search' : 'Save this search'}
-					size='sm'
-					mr={2}
-				/>
+			<Flex alignItems='center' justifyContent='flex-start' flexWrap='wrap'>
 				{isNamedSearch ? (
-					searchTerms.searchName
+					<>
+						<Text>{searchTerms.searchName}</Text>
+						<Spacer />
+						<Wrap>
+							{withDelete ? (
+								<>
+									<IconButton
+										icon={<FiSearch />}
+										onClick={handleSearchClick}
+										colorScheme='green'
+										aria-label={`Run this search`}
+										title={`Search`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiEdit3 />}
+										onClick={handleEditClick}
+										colorScheme='blue'
+										aria-label={`Rename this search`}
+										title={`Rename`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiDelete />}
+										onClick={handleDelete}
+										colorScheme='red'
+										aria-label={`Delete this search`}
+										title={`Delete`}
+										size='sm'
+									/>
+								</>
+							) : (
+								<>
+									<IconButton
+										icon={<FiSearch />}
+										onClick={handleSearchClick}
+										colorScheme='green'
+										aria-label={`Run this search`}
+										title={`Search`}
+										size='sm'
+									/>
+									<IconButton
+										icon={<FiSave />}
+										onClick={handleSaveSearchClick}
+										colorScheme='blue'
+										aria-label={`Save this search`}
+										title={`Save`}
+										size='sm'
+									/>
+								</>
+							)}
+						</Wrap>
+
+						<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
+					</>
 				) : (
-					<SearchParamTags termIds={termIds} allTerms={terms} />
+					<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
 				)}
-				{/* TODO Delete search */}
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>
@@ -137,7 +196,7 @@ export default function SavedSearchItem({ searchTerms }: Props) {
 							<TextInput
 								name='searchName'
 								placeholder='My search'
-								onChange={handleSaveSearchNameChange}
+								onChange={handleSavedSearchNameChange}
 								value={saveSearchFieldText}
 								ref={initialSaveModalRef}
 							/>

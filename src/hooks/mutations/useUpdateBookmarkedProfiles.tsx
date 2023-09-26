@@ -27,15 +27,6 @@ const MUTATE_TOGGLE_BOOKMARKED_PROFILE = gql`
 	}
 `;
 
-interface ViewerData {
-	viewer: {
-		id: string;
-		bookmarkedProfileConnections: {
-			nodes: { __typename: string; databaseId: number }[];
-		};
-	};
-}
-
 const useUpdateBookmarkedProfiles = () => {
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_BOOKMARKED_PROFILE);
 

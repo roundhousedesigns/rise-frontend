@@ -8,6 +8,7 @@ export interface WPItemParams {
 	name?: string;
 	slug?: string;
 	parentId?: number;
+	parent?: any;
 	[key: string]: any;
 }
 
@@ -153,14 +154,6 @@ export interface LoginInput {
 }
 
 /**
- * The data shape for lost password input.
- */
-export interface LostPasswordInput {
-	username: string;
-	reCaptchaToken: string;
-}
-
-/**
  * The data shape for user registration input.
  */
 export interface RegisterUserInput {
@@ -189,12 +182,34 @@ export interface updateBookmarkedProfilesInput {
 /**
  * The data shape for a search query.
  */
-export interface SearchParams {
+export interface SearchFilterSet {
 	positions: {
 		departments?: string[];
 		jobs?: string[];
-		skills?: string[];
 	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
 }
 
 /**

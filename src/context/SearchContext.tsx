@@ -8,7 +8,6 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	searchDrawerClose: () => void;
 	results: number[];
 }
 
@@ -16,7 +15,7 @@ interface SearchAction {
 	type: string;
 	payload: {
 		name?: string;
-		department?: string;
+		departments?: string[];
 		jobs?: string[];
 		skills?: string[];
 		locations?: string[];
@@ -27,7 +26,6 @@ interface SearchAction {
 		filterSet?: SearchFilterSet;
 		results?: number[];
 		additionalFiltersActive?: number[];
-		searchDrawerClose?: () => void;
 	};
 }
 
@@ -50,7 +48,6 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
-	searchDrawerClose: () => {},
 	results: [],
 };
 
@@ -61,15 +58,6 @@ export const SearchContext = createContext({
 
 function searchContextReducer(state: SearchState, action: SearchAction): SearchState {
 	switch (action.type) {
-		case 'OPEN_SEARCH': {
-			if (!action.payload?.searchDrawerClose) return state;
-
-			return {
-				...state,
-				searchDrawerClose: action.payload.searchDrawerClose,
-			};
-		}
-
 		case 'SET_NAME':
 			return {
 				...state,
@@ -82,7 +70,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'SET_DEPARTMENT':
-			if (!action.payload?.department) return state;
+			if (!action.payload?.departments) return state;
 
 			return {
 				...state,
@@ -91,7 +79,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet: {
 						...state.filters.filterSet,
 						positions: {
-							departments: [action.payload.department],
+							departments: action.payload.departments,
 							// Clear jobs
 							jobs: [],
 						},
@@ -157,17 +145,33 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
 
-		case 'RESTORE_FILTER_SET':
-			if (!action.payload?.filterSet) return state;
+		case 'RESTORE_FILTER_SET': {
+			const {
+				payload: { filterSet },
+			} = action;
+
+			if (!filterSet) return state;
+
+			const activateFilters =
+				!!filterSet.unions ||
+				!!filterSet.locations ||
+				!!filterSet.experienceLevels ||
+				!!filterSet.genderIdentities ||
+				!!filterSet.racialIdentities ||
+				!!filterSet.personalIdentities
+					? true
+					: false;
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					filterSet: action.payload.filterSet,
+					filterSet,
 				},
 				searchActive: true,
+				additionalFiltersActive: activateFilters ? [] : [], // TODO FIX RESTORING ADDL FILTERS
 			};
+		}
 
 		case 'SET_RESULTS':
 			return {

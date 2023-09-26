@@ -231,6 +231,18 @@ export const toggleArrayItem = (array: any[], item: any): any[] => {
 };
 
 /**
+ * Extract the IDs of terms from a JSON string.
+ * @param json The JSON string to extract the IDs from.
+ * @returns The IDs of the terms.
+ */
+export function getUniqueTermIdsFromString(json: any): number[] {
+	const numericStrings = json.match(/\d+/g);
+	const ids = numericStrings?.map((id: string) => Number(id));
+
+	return ids ? [...new Set<number>(ids)] : [];
+}
+
+/**
  * Extract the IDs of terms from an object.
  * @param obj  The object to extract the IDs from.
  * @returns The IDs of the terms.
@@ -293,8 +305,24 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
 	return {
 		...searchObj,
 		positions: {
-			department: departmentId.toString(),
+			departments: [departmentId.toString()],
 			jobs: searchObj.positions,
 		},
 	};
+}
+
+/**
+ * Prepare a search object for saving to the database. Flattens the `positions` object to a single `positions` property
+ * containing an array of job IDs.
+ *
+ * @param searchObj
+ * @returns
+ */
+export function prepareSearchFiltersForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
+	const preparedSearchObj: SearchFilterSetRaw = {
+		...searchObj,
+		positions: searchObj.positions.jobs,
+	};
+
+	return preparedSearchObj;
 }

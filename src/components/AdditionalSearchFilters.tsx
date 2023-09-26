@@ -8,7 +8,11 @@ import { isEmpty } from 'lodash';
 
 export default function AdditionalSearchFilters() {
 	const {
-		search: { filters, searchActive, additionalFiltersActive },
+		search: {
+			filters: { filterSet },
+			searchActive,
+			additionalFiltersActive,
+		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -20,10 +24,10 @@ export default function AdditionalSearchFilters() {
 		genderIdentities,
 		personalIdentities,
 		racialIdentities,
-	} = filters;
+	} = filterSet;
 
 	// Filter keys
-	const keys: (keyof typeof filters)[] = [
+	const keys: (keyof typeof filterSet)[] = [
 		'locations',
 		'unions',
 		'experienceLevels',
@@ -63,7 +67,7 @@ export default function AdditionalSearchFilters() {
 	// Get the index of each filter that has a value
 	useEffect(() => {
 		const newActiveFilters = keys.reduce((acc: number[], key, index) => {
-			if (!isEmpty(filters[key])) return [...acc, index];
+			if (!isEmpty(filterSet[key])) return [...acc, index];
 			return acc.filter((item) => item !== index);
 		}, []);
 
@@ -73,7 +77,7 @@ export default function AdditionalSearchFilters() {
 				additionalFiltersActive: newActiveFilters,
 			},
 		});
-	}, [filters]);
+	}, [filterSet]);
 
 	return (
 		<Fade in={searchActive} id='filterAdditional'>
@@ -90,7 +94,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='locations'
 								items={locationTerms}
-								checked={locations}
+								checked={locations as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -98,7 +102,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='unions'
 								items={unionTerms}
-								checked={unions}
+								checked={unions as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -106,7 +110,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='experienceLevels'
 								items={experienceLevelTerms}
-								checked={experienceLevels}
+								checked={experienceLevels as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -114,7 +118,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='genderIdentities'
 								items={genderIdentityTerms}
-								checked={genderIdentities}
+								checked={genderIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -122,7 +126,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='personalIdentities'
 								items={personalIdentityTerms}
-								checked={personalIdentities}
+								checked={personalIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -130,7 +134,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='racialIdentities'
 								items={racialIdentityTerms}
-								checked={racialIdentities}
+								checked={racialIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
