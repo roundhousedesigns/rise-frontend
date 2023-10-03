@@ -25,13 +25,25 @@ export default function SearchResultsView() {
 		}
 	}, [results]);
 
+	const orderedResults = useMemo(() => {
+		if (!results.length) return [];
+
+		// Sort the results by score.
+		const sortedResults = [...results].sort((a, b) => {
+			return b.score - a.score;
+		});
+
+		// Return just the user IDs in the new order.
+		return sortedResults.map((item) => Number(item.id));
+	}, [results]);
+
 	return (
 		<Box>
 			<Text fontSize='sm' pb={2}>
 				{resultsCountString}
 				{/* TODO add results string here w/ param details */}
 			</Text>
-			<CandidateList userIds={results} />
+			<CandidateList userIds={orderedResults} />
 		</Box>
 	);
 }

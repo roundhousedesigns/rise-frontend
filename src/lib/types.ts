@@ -246,3 +246,11 @@ export interface SearchFilterSetRaw {
 	searchName?: string;
 	[key: string]: any;
 }
+
+/**
+ * The data shape for a search result item (id and search score).
+ */
+export interface SearchResultCandidate {
+	id: number;
+	score: number;
+}

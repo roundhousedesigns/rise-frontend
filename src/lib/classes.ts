@@ -250,6 +250,7 @@ export class UserProfile extends User {
  */
 export class Candidate extends User implements CandidateData, UserProfileParams {
 	slug: string = '';
+	searchScore?: number;
 	selfTitle?: string;
 	image?: string;
 

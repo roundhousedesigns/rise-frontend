@@ -31,7 +31,10 @@ const QUERY_CANDIDATES = gql`
 			racialIdentities: $racialIdentities
 			personalIdentities: $personalIdentities
 			searchUserId: $searchUserId
-		)
+		) {
+			id: user_id
+			score
+		}
 	}
 `;
 

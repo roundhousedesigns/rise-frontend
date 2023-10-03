@@ -1,5 +1,5 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
-import { SearchFilterSet } from '../lib/types';
+import { SearchFilterSet, SearchResultCandidate } from '../lib/types';
 
 interface SearchState {
 	filters: {
@@ -8,7 +8,7 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	results: number[];
+	results: SearchResultCandidate[];
 }
 
 interface SearchAction {
@@ -24,7 +24,7 @@ interface SearchAction {
 			value: string | string[] | Key[];
 		};
 		filterSet?: SearchFilterSet;
-		results?: number[];
+		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
 	};
 }
