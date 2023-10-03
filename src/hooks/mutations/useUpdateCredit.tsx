@@ -21,6 +21,8 @@ const MUTATE_UPDATE_CREDIT = gql`
 				workStart
 				workEnd
 				workCurrent
+				intern
+				fellow
 				departments
 				jobs
 				skills
