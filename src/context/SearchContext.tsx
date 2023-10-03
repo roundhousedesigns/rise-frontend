@@ -83,6 +83,8 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 							// Clear jobs
 							jobs: [],
 						},
+						// Clear skills
+						skills: [],
 					},
 				},
 				searchActive: true,
@@ -96,12 +98,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				filters: {
 					...state.filters,
 					filterSet: {
+						...state.filters.filterSet,
 						positions: {
 							...state.filters.filterSet.positions,
 							jobs: action.payload.jobs,
 						},
-						// Clear skills
-						skills: [],
 					},
 				},
 				searchActive: true,

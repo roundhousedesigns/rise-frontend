@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1] - Unreleased
+
+- Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
+- Feature: Search results shows currently active search filters
+- Improve: Internship/Fellowship credit and profile tags
+- Fix: Search: Additional filters no longer reset when changing jobs or departments
+
 ## \[1.0.9.3] - 2023-09-22
 
 - Improve: Admins barred from frontend login

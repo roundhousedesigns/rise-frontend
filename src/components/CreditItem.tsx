@@ -19,6 +19,7 @@ import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
 import WrapWithIcon from './common/WrapWithIcon';
 import { FiStar, FiMapPin, FiBriefcase } from 'react-icons/fi';
+import WPItemBadgeList from './common/WPItemBadgeList';
 
 interface Props {
 	id?: string;
@@ -161,35 +162,47 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 								)}
 								<Flex my={0} alignItems='center' flexWrap='wrap' gap={2}>
 									{jobTitle && <WrapWithIcon icon={FiBriefcase}>{jobTitle}</WrapWithIcon>}
-									{intern ? (
-										<Badge
-											flex='0 0 auto'
-											fontSize='sm'
-											fontWeight='bold'
-											textTransform='none'
-											px={2}
-											py={1}
-											colorScheme='yellow'
-										>
-											Internship
-										</Badge>
+									{intern || fellow ? (
+										<Flex color='brand.yellow' gap={1} ml={2}>
+											{intern ? (
+												<Text
+													flex='0 0 auto'
+													fontSize='sm'
+													fontWeight='bold'
+													textTransform='none'
+													py={1}
+												>
+													Internship
+												</Text>
+											) : (
+												''
+											)}
+
+											{intern && fellow ? (
+												<Text fontSize='2xl' mx={0} my={1}>
+													&middot;
+												</Text>
+											) : (
+												''
+											)}
+
+											{fellow ? (
+												<Text
+													flex='0 0 auto'
+													fontSize='sm'
+													fontWeight='bold'
+													textTransform='none'
+													py={1}
+													colorScheme='yellow'
+												>
+													Fellowship
+												</Text>
+											) : (
+												''
+											)}
+										</Flex>
 									) : (
-										''
-									)}
-									{fellow ? (
-										<Badge
-											flex='0 0 auto'
-											fontSize='sm'
-											fontWeight='bold'
-											textTransform='none'
-											px={2}
-											py={1}
-											colorScheme='yellow'
-										>
-											Fellowship
-										</Badge>
-									) : (
-										''
+										false
 									)}
 								</Flex>
 							</Flex>
@@ -198,29 +211,11 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
 							<Stack direction='column' mt={{ base: 4, md: 0 }}>
 								{departmentIds?.length || jobs?.length || skills?.length ? (
-									<>
-										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-											{departments?.map((department: WPItem) => (
-												<Tag key={department.id} colorScheme='orange'>
-													<TagLabel>{decodeString(department.name)}</TagLabel>
-												</Tag>
-											))}
-										</Wrap>
-										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-											{jobs?.map((job: WPItem) => (
-												<Tag key={job.id} colorScheme='blue'>
-													<TagLabel>{decodeString(job.name)}</TagLabel>
-												</Tag>
-											))}
-										</Wrap>
-										<Wrap spacing={2} justify={{ base: 'left', md: 'right' }}>
-											{skills?.map((skill: WPItem) => (
-												<Tag key={skill.id} colorScheme='green'>
-													<TagLabel>{decodeString(skill.name)}</TagLabel>
-												</Tag>
-											))}
-										</Wrap>
-									</>
+									<Stack direction='column'>
+										<WPItemBadgeList items={departments} colorScheme='orange' />
+										<WPItemBadgeList items={jobs} colorScheme='blue' />
+										<WPItemBadgeList items={skills} colorScheme='green' />
+									</Stack>
 								) : isEditable ? (
 									<Wrap justify='right'>
 										<Text
@@ -229,8 +224,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 											fontSize='sm'
 											lineHeight='short'
 										>
-											This credit won't be searchable until you add at least one department and a
-											job.
+											This credit won't be active and searchable until you add at least one
+											department and a job.
 										</Text>
 									</Wrap>
 								) : (
