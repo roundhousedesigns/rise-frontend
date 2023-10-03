@@ -25,7 +25,7 @@ export default function SearchResultsView() {
 		}
 	}, [results]);
 
-	const orderedResults = useMemo(() => {
+	const orderedResults: number[] = useMemo(() => {
 		if (!results.length) return [];
 
 		// Sort the results by score.
@@ -33,7 +33,6 @@ export default function SearchResultsView() {
 			return b.score - a.score;
 		});
 
-		// Return just the user IDs in the new order.
 		return sortedResults.map((item) => Number(item.id));
 	}, [results]);
 
@@ -43,7 +42,7 @@ export default function SearchResultsView() {
 				{resultsCountString}
 				{/* TODO add results string here w/ param details */}
 			</Text>
-			<CandidateList userIds={orderedResults} />
+			<CandidateList userIds={orderedResults} inOrder={true} />
 		</Box>
 	);
 }

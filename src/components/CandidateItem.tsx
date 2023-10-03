@@ -70,7 +70,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						mb={{ base: 1, lg: 0 }}
 					>
 						{candidate.fullName() ? candidate.fullName() : 'No name'}
-					</Heading>asdf
+					</Heading>
 					<Text
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
