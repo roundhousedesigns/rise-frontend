@@ -20,7 +20,7 @@ export default function ShareButton({ url, ...props }: Props) {
 					url: url,
 				})
 				.catch((error) => {
-					console.error('Error sharing', error);
+					console.error(error);
 				});
 		} else {
 			setValue(url);

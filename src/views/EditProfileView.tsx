@@ -1087,7 +1087,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 								/>
 								<Stack
 									as={isLargerThanMd ? ButtonGroup : undefined}
-									isAttached={true}
 									gap={{ base: 2, md: 0 }}
 									direction={{ base: 'column', md: 'row' }}
 								>

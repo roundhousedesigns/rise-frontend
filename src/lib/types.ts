@@ -8,6 +8,7 @@ export interface WPItemParams {
 	name?: string;
 	slug?: string;
 	parentId?: number;
+	parent?: any;
 	[key: string]: any;
 }
 
@@ -109,6 +110,8 @@ export interface CreditParams {
 	workStart?: string;
 	workEnd?: string;
 	workCurrent?: boolean;
+	intern?: boolean;
+	fellow?: boolean;
 	departments?: number[];
 	jobs?: number[];
 	positions?: {
@@ -133,6 +136,8 @@ export interface CreditOutput {
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
+	intern: boolean;
+	fellow: boolean;
 	departments: number[];
 	jobs: number[];
 	skills: number[];
@@ -145,14 +150,6 @@ export interface CreditOutput {
 export interface LoginInput {
 	login: string;
 	password: string;
-	reCaptchaToken: string;
-}
-
-/**
- * The data shape for lost password input.
- */
-export interface LostPasswordInput {
-	username: string;
 	reCaptchaToken: string;
 }
 
@@ -185,10 +182,67 @@ export interface updateBookmarkedProfilesInput {
 /**
  * The data shape for a search query.
  */
-export interface SearchParams {
+export interface SearchFilterSet {
 	positions: {
 		departments?: string[];
 		jobs?: string[];
-		skills?: string[];
 	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+}
+
+/**
+ * The data shape for a search query.
+ */
+export interface SearchFilterSet {
+	positions: {
+		departments?: string[];
+		jobs?: string[];
+	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
 }

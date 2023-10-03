@@ -9,6 +9,7 @@ interface Props {
 		label: string;
 		value: string;
 	}[];
+	groupButtons?: boolean;
 	defaultValue: string;
 	handleChange: (name: string) => (value: string) => void;
 	[prop: string]: any;
@@ -18,6 +19,7 @@ export default function ProfileRadioGroup({
 	name,
 	label,
 	items,
+	groupButtons,
 	defaultValue,
 	handleChange,
 	...props
@@ -29,7 +31,7 @@ export default function ProfileRadioGroup({
 	return items ? (
 		<Box {...props}>
 			<RadioGroup value={defaultValue} onChange={handleToggleItem}>
-				<Wrap>
+				<Wrap spacing={1}>
 					{items.map((item: { label: string; value: string }, index: Key) => {
 						return (
 							<RadioButton key={index} value={item.value}>
