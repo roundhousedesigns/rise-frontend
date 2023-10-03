@@ -17,7 +17,8 @@ import { Credit, WPItem } from '../lib/classes';
 import { decodeString, sortAndCompareArrays } from '../lib/utils';
 import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
-import SpecialChar from './common/chars/SpecialChar';
+import WrapWithIcon from './common/WrapWithIcon';
+import { FiStar, FiMapPin, FiBriefcase } from 'react-icons/fi';
 
 interface Props {
 	id?: string;
@@ -37,6 +38,8 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 		workStart,
 		workEnd,
 		workCurrent,
+		intern,
+		fellow,
 	} = credit || {};
 
 	// Get jobs and skills terms from their IDs
@@ -141,24 +144,55 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 									{` ${yearString()}`}
 								</Badge>
 							</Flex>
-							<Flex my={0} alignItems='center' flexWrap='wrap' gap={0}>
-								<Text fontWeight='medium' my={0}>
-									{decodeString(venue)}
-								</Text>
-								{isLargerThanMd && (
-									<Text my={0} px={1} flex='0 0 auto'>
-										<SpecialChar char='starburst' />
-									</Text>
+							<Flex my={0} alignItems='center' flexWrap='wrap' gap={2}>
+								{venue ? (
+									<WrapWithIcon icon={FiStar} mr={1}>
+										{decodeString(venue)}
+									</WrapWithIcon>
+								) : (
+									false
 								)}
-								<Text my={0} flex={{ base: '0 0 100%', md: '1' }}>
-									{jobLocation ? decodeString(`${jobLocation}`) : ''}
-								</Text>
+								{jobLocation ? (
+									<WrapWithIcon icon={FiMapPin} mr={1}>
+										{decodeString(`${jobLocation}`)}
+									</WrapWithIcon>
+								) : (
+									false
+								)}
+								<Flex my={0} alignItems='center' flexWrap='wrap' gap={2}>
+									{jobTitle && <WrapWithIcon icon={FiBriefcase}>{jobTitle}</WrapWithIcon>}
+									{intern ? (
+										<Badge
+											flex='0 0 auto'
+											fontSize='sm'
+											fontWeight='bold'
+											textTransform='none'
+											px={2}
+											py={1}
+											colorScheme='yellow'
+										>
+											Internship
+										</Badge>
+									) : (
+										''
+									)}
+									{fellow ? (
+										<Badge
+											flex='0 0 auto'
+											fontSize='sm'
+											fontWeight='bold'
+											textTransform='none'
+											px={2}
+											py={1}
+											colorScheme='yellow'
+										>
+											Fellowship
+										</Badge>
+									) : (
+										''
+									)}
+								</Flex>
 							</Flex>
-							{jobTitle && (
-								<Text fontSize='md' lineHeight='short' my={0}>
-									{jobTitle}
-								</Text>
-							)}
 						</Box>
 
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>

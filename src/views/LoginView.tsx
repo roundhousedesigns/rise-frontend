@@ -31,9 +31,10 @@ export default function LoginView({ alert, alertStatus }: Props) {
 		reCaptchaToken: '',
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
+
 	const {
 		loginMutation,
-		results: { loading: submitLoading },
+		results: { loading: submitLoading, error: loginError },
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const navigate = useNavigate();
@@ -63,7 +64,9 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							navigate('/');
 						}
 					})
-					.catch((errors: { message: string }) => setErrorCode(errors.message));
+					.catch((errors: { message: string }) => {
+						setErrorCode(errors.message);
+					});
 			})
 			.catch(() => {
 				setErrorCode('recaptcha_error');
@@ -92,7 +95,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
-							error={['invalid_username', 'invalid_email'].includes(errorCode) ? errorMessage : ''}
+							error={['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode) ? errorMessage : ''}
 							inputProps={{
 								autoComplete: 'username',
 								fontSize: 'lg',

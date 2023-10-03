@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.0.9.3] - 2023-09-22
+
+- Improve: Admins barred from frontend login
+- Improve: Login and lost/reset password error handling
+
 ## \[1.0.9.2] - 2023-09-06
 
 - Feature: Hidden profile checkbox. Enable or disable visibility on your public profile.
@@ -17,6 +22,8 @@ All notable changes to this project will be documented in this file, starting wi
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
+- Added: Saved searches and search history
+- Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox container.
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 

@@ -287,6 +287,8 @@ export class Credit implements CreditParams {
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
+	intern: boolean;
+	fellow: boolean;
 	positions: {
 		departments: number[];
 		jobs: number[];
@@ -305,6 +307,8 @@ export class Credit implements CreditParams {
 		this.workStart = params.workStart ? params.workStart : '';
 		this.workEnd = params.workEnd ? params.workEnd : '';
 		this.workCurrent = params.workCurrent || false;
+		this.intern = params.intern || false;
+		this.fellow = params.fellow || false;
 		this.skills = params.skills ? params.skills : [];
 		this.positions = this.getPositions(params) || { departments: [], jobs: [] };
 		this.isNew = Boolean(params.isNew) || false;
@@ -359,6 +363,8 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
+	parent?: any;
+	taxonomyName?: string;
 	externalUrl?: string;
 
 	constructor(params: WPItemParams) {
@@ -366,6 +372,8 @@ export class WPItem implements WPItemParams {
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : undefined;
 		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
+		this.parent = params.parent ? new WPItem(params.parent.node) : undefined;
+		this.taxonomyName = params.taxonomyName ? params.taxonomyName : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
 	}
 }
