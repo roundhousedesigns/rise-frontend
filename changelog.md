@@ -22,6 +22,8 @@ All notable changes to this project will be documented in this file, starting wi
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
+- Added: Saved searches and search history
+- Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox container.
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 

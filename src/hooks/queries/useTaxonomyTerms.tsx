@@ -18,6 +18,17 @@ export const QUERY_TAXONOMY_TERMS = gql`
 				id: databaseId
 				name
 				slug
+				taxonomyName
+				... on Position {
+					name
+					id: databaseId
+					parent {
+						node {
+							id: databaseId
+							name
+						}
+					}
+				}
 			}
 		}
 	}

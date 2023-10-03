@@ -18,6 +18,7 @@ import {
 import { isEqual } from 'lodash';
 import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '../../context/SearchContext';
+import useViewer from '../../hooks/queries/useViewer';
 import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
 import SearchWizardView from '../../views/SearchWizardView';
 
@@ -27,24 +28,29 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
+	const { loggedInId } = useViewer();
+
 	const {
 		search: {
 			filters: {
 				name,
-				positions: { jobs, department },
-				skills,
-				unions,
-				locations,
-				experienceLevels,
-				genderIdentities,
-				racialIdentities,
-				personalIdentities,
+				filterSet: {
+					positions: { jobs, departments },
+					skills,
+					unions,
+					locations,
+					experienceLevels,
+					genderIdentities,
+					racialIdentities,
+					personalIdentities,
+				},
 			},
 			results,
 			searchActive,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
+
 	const navigate = useNavigate();
 
 	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
@@ -66,8 +72,8 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		// set the positions array to the jobs array if it's not empty, otherwise use the department array
-		const positions = jobs.length > 0 ? jobs : department;
+		// set the positions array to the jobs array if it's not empty, otherwise use the departments array
+		const positions = jobs && jobs.length > 0 ? jobs : departments;
 
 		getSearchResults({
 			variables: {
@@ -80,6 +86,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 				personalIdentities:
 					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
+				searchUserId: loggedInId,
 			},
 		})
 			.then(() => {
