@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Feature: Search results shows currently active search filters
 - Improve: Internship/Fellowship credit and profile tags
 - Fix: Search: Additional filters no longer reset when changing jobs or departments
+- Deprecate: `year` Credit field (never used, in favor of `workStart` and `workEnd`)
 
 ## \[1.0.9.3] - 2023-09-22
 

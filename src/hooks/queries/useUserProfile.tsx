@@ -66,7 +66,6 @@ export const QUERY_PROFILE = gql`
 				jobTitle(format: RENDERED)
 				jobLocation(format: RENDERED)
 				venue(format: RENDERED)
-				year(format: RENDERED)
 				workStart(format: RENDERED)
 				workEnd(format: RENDERED)
 				workCurrent
@@ -132,7 +131,6 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			jobTitle: credit.jobTitle,
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
-			year: credit.year,
 			workStart: credit.workStart,
 			workEnd: credit.workEnd,
 			workCurrent: credit.workCurrent,
