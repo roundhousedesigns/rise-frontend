@@ -58,8 +58,10 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
 			mx={2}
-			py={1}
+			py={2}
 			px={2}
+			bg='transparent'
+			colorScheme='gray'
 			{...props}
 		/>
 	);
