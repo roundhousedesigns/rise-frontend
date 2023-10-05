@@ -1,10 +1,10 @@
 import { useContext, useMemo } from 'react';
 import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
-import usePositions from '../hooks/queries/usePositions';
+import usePositions from '@hooks/queries/usePositions';
 
-import { SearchContext } from '../context/SearchContext';
-import RadioButton from './common/inputs/RadioButton';
+import { SearchContext } from '@context/SearchContext';
+import RadioButton from '@common/inputs/RadioButton';
 
 export default function SearchFilterDepartment() {
 	const [data, { loading, error }] = usePositions();

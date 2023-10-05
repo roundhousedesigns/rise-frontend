@@ -15,9 +15,9 @@ import {
 
 import { handleReCaptchaVerify } from '../lib/utils';
 import { LoginInput } from '../lib/types';
-import TextInput from '../components/common/inputs/TextInput';
-import useLogin from '../hooks/mutations/useLogin';
-import { useErrorMessage } from '../hooks/hooks';
+import TextInput from '@common/inputs/TextInput';
+import useLogin from '@hooks/mutations/useLogin';
+import { useErrorMessage } from '@hooks/hooks';
 
 interface Props {
 	alert?: string;

@@ -1,5 +1,5 @@
 import { Tag, TagLabel, Wrap } from '@chakra-ui/react';
-import WPItemBadgeListItem from './common/WPItemBadgeListItem';
+import WPItemBadgeListItem from '@common/WPItemBadgeListItem';
 
 interface Props {
 	[prop: string]: any;

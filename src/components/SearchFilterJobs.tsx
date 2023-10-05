@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { Heading, Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
-import usePositions from '../hooks/queries/usePositions';
-import CheckboxButton from './common/inputs/CheckboxButton';
+import usePositions from '@hooks/queries/usePositions';
+import CheckboxButton from '@common/inputs/CheckboxButton';
 
-import { SearchContext } from '../context/SearchContext';
+import { SearchContext } from '@context/SearchContext';
 
 export default function SearchFilterJobs() {
 	const {

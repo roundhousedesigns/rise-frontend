@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
-import { SearchContext } from '../../context/SearchContext';
-import useViewer from '../../hooks/queries/useViewer';
-import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
-import SearchWizardView from '../../views/SearchWizardView';
+import { SearchContext } from '@context/SearchContext';
+import useViewer from '@hooks/queries/useViewer';
+import useCandidateSearch from '@hooks/queries/useCandidateSearch';
+import SearchWizardView from '@views/SearchWizardView';
 
 interface Props {
 	isOpen: boolean;

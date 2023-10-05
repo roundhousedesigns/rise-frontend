@@ -1,11 +1,11 @@
 import { useContext, useMemo } from 'react';
 import { Box, Flex, Icon, Text, Wrap } from '@chakra-ui/react';
 import { FiSearch } from 'react-icons/fi';
-import CandidateList from '../components/CandidateList';
-import { SearchContext } from '../context/SearchContext';
-import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
-import WPItemBadgeListItem from '../components/common/WPItemBadgeListItem';
-import TextCenterline from '../components/common/TextCenterline';
+import CandidateList from '@components/CandidateList';
+import { SearchContext } from '@context/SearchContext';
+import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
+import WPItemBadgeListItem from '@common/WPItemBadgeListItem';
+import TextCenterline from '@common/TextCenterline';
 
 export default function SearchResultsView() {
 	const {

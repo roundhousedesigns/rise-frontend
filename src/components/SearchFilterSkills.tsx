@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '../lib/classes';
-import useRelatedSkills from '../hooks/queries/useRelatedSkills';
+import useRelatedSkills from '@hooks/queries/useRelatedSkills';
 
-import ErrorAlert from './common/ErrorAlert';
-import CheckboxButton from './common/inputs/CheckboxButton';
-import { SearchContext } from '../context/SearchContext';
+import ErrorAlert from '@common/ErrorAlert';
+import CheckboxButton from '@common/inputs/CheckboxButton';
+import { SearchContext } from '@context/SearchContext';
 
 export default function SearchFilterSkills() {
 	const {

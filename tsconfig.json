@@ -24,6 +24,9 @@
       "@/*": [
         "./src/*"
       ],
+      "@theme/*": [
+        "./src/theme/*"
+      ],
       "@assets/*": [
         "./src/assets/*"
       ],
@@ -47,7 +50,7 @@
       ],
       "@views/*": [
         "./src/views/*"
-      ],
+      ]
     }
   },
   "include": [

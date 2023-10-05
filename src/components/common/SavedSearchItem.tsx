@@ -21,15 +21,15 @@ import {
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '../../lib/utils';
-import { SearchContext } from '../../context/SearchContext';
-import SearchDrawerContext from '../../context/SearchDrawerContext';
-import useCandidateSearch from '../../hooks/queries/useCandidateSearch';
-import useTaxonomyTerms from '../../hooks/queries/useTaxonomyTerms';
-import useViewer from '../../hooks/queries/useViewer';
+import { SearchContext } from '@context/SearchContext';
+import SearchDrawerContext from '@context/SearchDrawerContext';
+import useCandidateSearch from '@hooks/queries/useCandidateSearch';
+import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
+import useViewer from '@hooks/queries/useViewer';
 import TextInput from './inputs/TextInput';
 import SearchParamTags from './SearchParamTags';
 import { SearchFilterSetRaw } from '../../lib/types';
-import useSaveSearch from '../../hooks/mutations/useSaveSearch';
+import useSaveSearch from '@hooks/mutations/useSaveSearch';
 
 interface Props {
 	searchTerms: SearchFilterSetRaw;

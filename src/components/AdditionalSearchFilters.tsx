@@ -1,9 +1,9 @@
 import { Key, useContext, useEffect } from 'react';
 import { Accordion, Fade } from '@chakra-ui/react';
-import { SearchContext } from '../context/SearchContext';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-import SearchFilterAccordionItem from './common/SearchFilterAccordionItem';
+import { SearchContext } from '@context/SearchContext';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
+import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import { isEmpty } from 'lodash';
 
 export default function AdditionalSearchFilters() {

@@ -1,8 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import { FiFacebook, FiInstagram, FiLinkedin } from 'react-icons/fi';
 import { PersonalLinks } from '../lib/classes';
-import SocialIcon from './common/SocialIcon';
-import XIcon from './common/icons/X';
+import SocialIcon from '@common/SocialIcon';
+import XIcon from '@common/icons/X';
 
 interface Props {
 	socials: PersonalLinks;

@@ -1,15 +1,15 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react';
 import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
-import { EditProfileContext } from '../context/EditProfileContext';
-import usePositions from '../hooks/queries/usePositions';
-import useLazyPositions from '../hooks/queries/useLazyPositions';
-import useLazyRelatedSkills from '../hooks/queries/useLazyRelatedSkills';
-import useUpdateCredit from '../hooks/mutations/useUpdateCredit';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import TextInput from '../components/common/inputs/TextInput';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import EditCreditButtons from '../components/EditCreditButtons';
+import { EditProfileContext } from '@context/EditProfileContext';
+import usePositions from '@hooks/queries/usePositions';
+import useLazyPositions from '@hooks/queries/useLazyPositions';
+import useLazyRelatedSkills from '@hooks/queries/useLazyRelatedSkills';
+import useUpdateCredit from '@hooks/mutations/useUpdateCredit';
+import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
+import TextInput from '@common/inputs/TextInput';
+import ProfileRadioGroup from '@common/ProfileRadioGroup';
+import EditCreditButtons from '@components/EditCreditButtons';
 import { sortWPItemsByName } from '../lib/utils';
 import { CreditParams } from '../lib/types';
 

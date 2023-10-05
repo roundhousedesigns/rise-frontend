@@ -2,11 +2,11 @@ import { useEffect, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { chakra, List, ListItem } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import useCandidates from '../hooks/queries/useCandidates';
-import useViewer from '../hooks/queries/useViewer';
-import CandidateItem from '../components/CandidateItem';
-import ErrorAlert from '../components/common/ErrorAlert';
-import useUpdateBookmarkedProfiles from '../hooks/mutations/useUpdateBookmarkedProfiles';
+import useCandidates from '@hooks/queries/useCandidates';
+import useViewer from '@hooks/queries/useViewer';
+import CandidateItem from '@components/CandidateItem';
+import ErrorAlert from '@common/ErrorAlert';
+import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
 import { Candidate } from '../lib/classes';
 import { toggleArrayItem } from '../lib/utils';
 

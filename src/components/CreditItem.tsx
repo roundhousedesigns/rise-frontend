@@ -15,11 +15,11 @@ import {
 } from '@chakra-ui/react';
 import { Credit, WPItem } from '../lib/classes';
 import { decodeString, sortAndCompareArrays } from '../lib/utils';
-import useLazyTaxonomyTerms from '../hooks/queries/useLazyTaxonomyTerms';
-import useTaxonomyTerms from '../hooks/queries/useTaxonomyTerms';
-import WrapWithIcon from './common/WrapWithIcon';
+import useLazyTaxonomyTerms from '@hooks/queries/useLazyTaxonomyTerms';
+import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
+import WrapWithIcon from '@common/WrapWithIcon';
 import { FiStar, FiMapPin, FiBriefcase } from 'react-icons/fi';
-import WPItemBadgeList from './common/WPItemBadgeList';
+import WPItemBadgeList from '@common/WPItemBadgeList';
 
 interface Props {
 	id?: string;

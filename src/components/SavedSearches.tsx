@@ -1,8 +1,8 @@
 import { List, ListItem, Heading, Text, Box } from '@chakra-ui/react';
 import { extractSearchTermIds } from '../lib/utils';
 import { SearchFilterSetRaw } from '../lib/types';
-import useViewer from '../hooks/queries/useViewer';
-import SavedSearchItem from './common/SavedSearchItem';
+import useViewer from '@hooks/queries/useViewer';
+import SavedSearchItem from '@common/SavedSearchItem';
 
 export default function SavedSearchItemes() {
 	const { savedSearches } = useViewer();

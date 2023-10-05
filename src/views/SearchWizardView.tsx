@@ -1,13 +1,13 @@
 import { FormEvent, useContext } from 'react';
 import { Box, Fade, Spacer } from '@chakra-ui/react';
 
-import SearchFilterDepartment from '../components/SearchFilterDepartment';
-import SearchFilterJobs from '../components/SearchFilterJobs';
-import SearchFilterSkills from '../components/SearchFilterSkills';
+import SearchFilterDepartment from '@components/SearchFilterDepartment';
+import SearchFilterJobs from '@components/SearchFilterJobs';
+import SearchFilterSkills from '@components/SearchFilterSkills';
 
-import { SearchContext } from '../context/SearchContext';
-import SearchFilterName from '../components/SearchFilterName';
-import AdditionalSearchFilters from '../components/AdditionalSearchFilters';
+import { SearchContext } from '@context/SearchContext';
+import SearchFilterName from '@components/SearchFilterName';
+import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 
 interface Props {
 	showButtons?: boolean;

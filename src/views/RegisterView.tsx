@@ -20,12 +20,12 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { FiHelpCircle } from 'react-icons/fi';
 import { handleReCaptchaVerify } from '../lib/utils';
-import TextInput from '../components/common/inputs/TextInput';
-import useRegisterUser from '../hooks/mutations/useRegisterUser';
-import { useErrorMessage, useValidatePassword } from '../hooks/hooks';
+import TextInput from '@common/inputs/TextInput';
+import useRegisterUser from '@hooks/mutations/useRegisterUser';
+import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { RegisterUserInput } from '../lib/types';
-import usePostContent from '../hooks/queries/usePostContent';
-import BackToLoginButton from '../components/common/BackToLoginButton';
+import usePostContent from '@hooks/queries/usePostContent';
+import BackToLoginButton from '@common/BackToLoginButton';
 
 export default function RegisterView() {
 	const [userFields, setUserFields] = useState<RegisterUserInput>({

@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
 - Feature: Search results shows currently active search filters
 - Improve: Internship/Fellowship credit and profile tags
+- Improve: Vite + TS import aliases. Hello, pretty imports!
 - Improve with Sadness: Fix Menu shudder by removing MenuButton transform :(
 - Fix: Search: Additional filters no longer reset when changing jobs or departments
 - Deprecate: `year` Credit field (never used, in favor of `workStart` and `workEnd`)
