@@ -1,4 +1,5 @@
 import { useContext, useRef } from 'react';
+import { chakra } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
@@ -56,7 +57,6 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 	const {
 		search: { searchActive, results },
-		searchDispatch,
 	} = useContext(SearchContext);
 
 	const isLargerThanMd = useBreakpointValue(
@@ -213,13 +213,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												colorScheme='yellow'
 												icon={<FiMenu />}
 												size='md'
-												_active={{
-													transform: 'rotate(90deg)',
-												}}
 											/>
 										</DarkMode>
 										<MenuList color='text.dark' zIndex='100'>
-											{isLargerThanMd ? null : (
+											{!isLargerThanMd ? (
 												<MenuOptionGroup>
 													<MenuItem
 														as={RouterLink}
@@ -233,6 +230,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 													</MenuItem>
 													<MenuDivider />
 												</MenuOptionGroup>
+											) : (
+												false
 											)}
 											<MenuOptionGroup>
 												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
