@@ -15,10 +15,10 @@ The front end portion of RISE is built using:
 
 ### Node Setup
 
-1.  Make sure Node is installed. It can be downloaded here: [NodeJS](https://nodejs.org/en/download).
-2.  Node v19.4.0 or above is required. We recommend using `nvm` to manage node versioning control.\
+1. Make sure Node is installed. It can be downloaded here: [NodeJS](https://nodejs.org/en/download).
+2. Node v19.4.0 or above is required. We recommend using `nvm` to manage node versioning control.\
     For help installing and using nvm, see this [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)
-3.  Install v19.4.0 of node with the command:
+3. Install v19.4.0 of node with the command:
 
          nvm install 19.4.0
 
@@ -32,11 +32,11 @@ The front end portion of RISE is built using:
 
 ### Dev Setup
 
-1.  Clone the dev branch with the command:
+1. Clone the dev branch with the command:
 
         git clone -b dev git@github.com:roundhousedesigns/rise-frontend.git
 
-2.  At the root of the project directory, run:
+2. At the root of the project directory, run:
 
          yarn install
 
@@ -46,8 +46,8 @@ The front end portion of RISE is built using:
 
 _Note:_ `.env` already included in `.gitignore`
 
-1.  Create a `.env` file in the root project directory:
-2.  Add the following information:
+1. Create a `.env` file in the root project directory:
+2. Add the following information:
 
         VITE_FRONTEND_URL = http://localhost:3000
         VITE_BACKEND_URL = (backend server URL)
@@ -59,11 +59,11 @@ _Note:_ `.env` already included in `.gitignore`
 
 _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `michael/add-readme-steps`
 
-1.  From the dev branch, create a new feature branch:
+1. From the dev branch, create a new feature branch:
 
          git checkout -b <your-branch-name>
 
-2.  To start local development, run:
+2. To start local development, run:
 
          yarn dev
 
@@ -71,17 +71,17 @@ _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `mic
 
 ### How to make pull request
 
-1.  From your feature branch, run `git pull origin dev` and resolve any merge conflicts
+1. From your feature branch, run `git pull origin dev` and resolve any merge conflicts
 
-2.  After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a <u>draft</u> pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
+2. After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a draft pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
 
-_Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+  _Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
 
 - In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
 - Double check the diff
 - Make further changes locally, if any mistakes are found and commit again
 
-3.  When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
+3. When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
 
 ## Production Builds
 
