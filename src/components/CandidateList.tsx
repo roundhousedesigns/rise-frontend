@@ -13,12 +13,12 @@ interface Props {
 const CandidateList = ({ userIds, inOrder }: Props): JSX.Element => {
 	const [preparedCandidates, { loading, error }] = useCandidates(userIds);
 
-	// Sort the array of Candidate objects by the order of the IDs in the userIds array.
 	const memoizedCandidates = useMemo(() => {
 		if (!userIds.length) return [];
 		if (!preparedCandidates || !preparedCandidates.length) return [];
 		if (!inOrder) return preparedCandidates;
 
+		// Sort the array of Candidate objects by the order of the IDs in the userIds array.
 		return userIds.map((id): Candidate[] =>
 			preparedCandidates.find((candidate: Candidate) => candidate.id === id)
 		);
