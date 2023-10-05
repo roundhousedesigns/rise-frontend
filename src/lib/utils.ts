@@ -34,21 +34,6 @@ export function socialLink(network: string, value: string): string {
 }
 
 /**
- * Parse a string to an integer if it is a string.
- *
- * @param value
- * @returns
- */
-// TODO decide if we can just cast things as Numbers without this.
-export function maybeParseInt(value: string | number): number {
-	if (typeof value === 'string') {
-		return parseInt(value, 10);
-	}
-
-	return value;
-}
-
-/**
  * Check if two numbers or strings are equal.
  *
  * @param {string|number} a The first value

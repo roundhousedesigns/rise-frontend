@@ -9,7 +9,7 @@ import {
 	CreditOutput,
 	WPPostParams,
 } from './types';
-import { decodeString, maybeParseInt } from './utils';
+import { decodeString } from './utils';
 
 /**
  * A basic user.
@@ -24,7 +24,7 @@ export class User implements UserParams {
 	constructor(params?: UserParams) {
 		if (params) {
 			Object.assign(this, params, {
-				id: params.id ? maybeParseInt(params.id) : null,
+				id: params.id ? Number(params.id) : null,
 			});
 		}
 	}
@@ -367,10 +367,10 @@ export class WPItem implements WPItemParams {
 	externalUrl?: string;
 
 	constructor(params: WPItemParams) {
-		this.id = params.id ? maybeParseInt(params.id) : 0;
+		this.id = params.id ? Number(params.id) : 0;
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : undefined;
-		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
+		this.parentId = params.parentId ? Number(params.parentId) : undefined;
 		this.parent = params.parent ? new WPItem(params.parent.node) : undefined;
 		this.taxonomyName = params.taxonomyName ? params.taxonomyName : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;

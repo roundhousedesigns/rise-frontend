@@ -28,10 +28,10 @@ export default function SearchResultsView() {
 	} = useContext(SearchContext);
 
 	const [departments] = useTaxonomyTerms(
-		departmentIds ? departmentIds.map((id) => parseInt(id)) : []
+		departmentIds ? departmentIds.map((id) => Number(id)) : []
 	);
-	const [jobs] = useTaxonomyTerms(jobIds ? jobIds.map((id) => parseInt(id)) : []);
-	const [skills] = useTaxonomyTerms(skillIds ? skillIds.map((id) => parseInt(id)) : []);
+	const [jobs] = useTaxonomyTerms(jobIds ? jobIds.map((id) => Number(id)) : []);
+	const [skills] = useTaxonomyTerms(skillIds ? skillIds.map((id) => Number(id)) : []);
 
 	/**
 	 * Set the results string based on the number of results.

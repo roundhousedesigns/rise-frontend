@@ -17,7 +17,7 @@ export default function SearchFilterJobs() {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-	const [jobItems, { loading, error }] = usePositions([parseInt(departments[0])]);
+	const [jobItems, { loading, error }] = usePositions([Number(departments[0])]);
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({

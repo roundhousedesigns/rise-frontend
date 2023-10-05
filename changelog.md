@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file, starting wi
 
 - Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
 - Feature: Search results shows currently active search filters
+- Feature: Footer notice field moved to the backend (un-hardcoded)
 - Improve: Internship/Fellowship credit and profile tags
 - Improve: Vite + TS import aliases. Hello, pretty imports!
 - Improve with Sadness: Fix Menu shudder by removing MenuButton transform :(

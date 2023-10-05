@@ -13,7 +13,7 @@ interface Props {
 export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const [positionItems, { loading, error }] = usePositions([
-		parseInt(
+		Number(
 			search.filters.filterSet.positions.departments
 				? search.filters.filterSet.positions.departments[0]
 				: '0'

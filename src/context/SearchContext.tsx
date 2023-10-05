@@ -170,7 +170,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet,
 				},
 				searchActive: true,
-				additionalFiltersActive: activateFilters ? [] : [], // TODO FIX RESTORING ADDL FILTERS
+				additionalFiltersActive: activateFilters ? [] : [],
 			};
 		}
 
