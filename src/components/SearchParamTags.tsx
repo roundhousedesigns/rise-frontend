@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Box, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
+import { WPItem } from '@lib/classes';
 
 interface Props {
 	termIds: number[];
@@ -39,7 +39,7 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 
 	return (
 		<Box {...props}>
-			{departments ? (
+			{departments.length ? (
 				<Wrap>
 					{departments.map((department: WPItem, index: number) => (
 						<Tag key={index} colorScheme='orange'>

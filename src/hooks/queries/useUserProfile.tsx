@@ -4,7 +4,7 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { Credit, UserProfile, WPItem } from '../../lib/classes';
+import { Credit, UserProfile, WPItem } from '@lib/classes';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {

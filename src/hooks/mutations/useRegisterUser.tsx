@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { RegisterUserInput } from '../../lib/types';
+import { RegisterUserInput } from '@lib/types';
 
 const MUTATE_REGISTER_USER = gql`
 	mutation RegisterUserMutation(

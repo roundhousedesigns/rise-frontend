@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
-import { Candidate } from '../lib/classes';
+import { Candidate } from '@lib/classes';
 import useCandidates from '@hooks/queries/useCandidates';
 import CandidateItem from './CandidateItem';
 import ErrorAlert from '@common/ErrorAlert';

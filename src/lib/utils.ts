@@ -7,6 +7,18 @@ import { PersonalLinks, UserProfile, WPItem } from './classes';
 import { SearchFilterSet, SearchFilterSetRaw } from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
+/**
+ * Additional filter keys. Affects display order.
+ */
+export const additionalFilterKeys: string[] = [
+	'locations',
+	'unions',
+	'experienceLevels',
+	'genderIdentities',
+	'racialIdentities',
+	'personalIdentities',
+];
+
 /** Generate a link to a social media profile.
  *
  * @param {string} network The social media network name.

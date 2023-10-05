@@ -34,8 +34,8 @@ import {
 	FiMap,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
-import { getWPItemsFromIds } from '../lib/utils';
-import { Credit, UserProfile, WPItem } from '../lib/classes';
+import { getWPItemsFromIds } from '@lib/utils';
+import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';

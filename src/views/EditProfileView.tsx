@@ -54,7 +54,7 @@ import {
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 
-import { Credit, UserProfile } from '../lib/classes';
+import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';

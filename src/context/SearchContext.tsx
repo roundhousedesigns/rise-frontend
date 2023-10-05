@@ -1,5 +1,6 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
-import { SearchFilterSet, SearchResultCandidate } from '../lib/types';
+import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
+import { additionalFilterKeys } from '@/lib/utils';
 
 interface SearchState {
 	filters: {
@@ -153,15 +154,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 
 			if (!filterSet) return state;
 
-			const activateFilters =
-				!!filterSet.unions ||
-				!!filterSet.locations ||
-				!!filterSet.experienceLevels ||
-				!!filterSet.genderIdentities ||
-				!!filterSet.racialIdentities ||
-				!!filterSet.personalIdentities
-					? true
-					: false;
+			const filterIndexes: number[] = [];
+
+			additionalFilterKeys.forEach((key: string, index: number) => {
+				if (!!filterSet[key] && filterSet[key].length) filterIndexes.push(index);
+			});
 
 			return {
 				...state,
@@ -170,7 +167,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet,
 				},
 				searchActive: true,
-				additionalFiltersActive: activateFilters ? [] : [],
+				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
 			};
 		}
 

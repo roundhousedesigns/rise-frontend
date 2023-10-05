@@ -7,8 +7,8 @@ import useViewer from '@hooks/queries/useViewer';
 import CandidateItem from '@components/CandidateItem';
 import ErrorAlert from '@common/ErrorAlert';
 import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
-import { Candidate } from '../lib/classes';
-import { toggleArrayItem } from '../lib/utils';
+import { Candidate } from '@lib/classes';
+import { toggleArrayItem } from '@lib/utils';
 
 const MotionBox = motion(chakra.div);
 

@@ -1,5 +1,5 @@
 import { Flex, Tag, TagLabel, Wrap } from '@chakra-ui/react';
-import { WPItem } from '../../lib/classes';
+import { WPItem } from '@lib/classes';
 
 interface Props {
 	termIds: number[];

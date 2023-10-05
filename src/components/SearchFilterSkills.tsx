@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
+import { WPItem } from '@lib/classes';
 import useRelatedSkills from '@hooks/queries/useRelatedSkills';
 
 import ErrorAlert from '@common/ErrorAlert';

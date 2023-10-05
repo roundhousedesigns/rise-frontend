@@ -7,9 +7,9 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { WPItemParams } from '../../lib/types';
-import { WPItem } from '../../lib/classes';
-import { sortWPItemsByName } from '../../lib/utils';
+import { WPItemParams } from '@lib/types';
+import { WPItem } from '@lib/classes';
+import { sortWPItemsByName } from '@lib/utils';
 
 const QUERY_USER_TAXONOMIES = gql`
 	query UserTaxonomies {

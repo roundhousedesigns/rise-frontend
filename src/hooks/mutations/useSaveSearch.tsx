@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { SearchFilterSetRaw } from '../../lib/types';
+import { SearchFilterSetRaw } from '@lib/types';
 import { QUERY_VIEWER } from '../queries/useViewer';
 
 const MUTATE_SAVE_SEARCH = gql`

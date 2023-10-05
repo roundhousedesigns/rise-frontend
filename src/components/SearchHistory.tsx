@@ -1,6 +1,6 @@
 import { List, ListItem, Heading, Text, Box, Spinner } from '@chakra-ui/react';
-import { SearchFilterSetRaw } from '../lib/types';
-import { extractSearchTermIds } from '../lib/utils';
+import { SearchFilterSetRaw } from '@lib/types';
+import { extractSearchTermIds } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import SavedSearchItem from '@common/SavedSearchItem';
 

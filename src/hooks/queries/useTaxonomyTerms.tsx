@@ -8,8 +8,8 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { WPItem } from '../../lib/classes';
-import { WPItemParams } from '../../lib/types';
+import { WPItem } from '@lib/classes';
+import { WPItemParams } from '@lib/types';
 
 export const QUERY_TAXONOMY_TERMS = gql`
 	query TaxonomyTerms($include: [ID] = []) {

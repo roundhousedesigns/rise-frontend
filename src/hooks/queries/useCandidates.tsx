@@ -4,8 +4,8 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { Candidate } from '../../lib/classes';
-import { CandidateData } from '../../lib/types';
+import { Candidate } from '@lib/classes';
+import { CandidateData } from '@lib/types';
 
 export const QUERY_CANDIDATES = gql`
 	query QueryCandidates($include: [Int!]!) {

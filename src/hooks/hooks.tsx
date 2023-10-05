@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { isEqual, omit } from 'lodash';
-import { UserProfile } from '../lib/classes';
-import { getProfilePrefix, validateProfileSlug } from '../lib/utils';
+import { UserProfile } from '@lib/classes';
+import { getProfilePrefix, validateProfileSlug } from '@lib/utils';
 import { passwordStrength } from 'check-password-strength';
 
 /**

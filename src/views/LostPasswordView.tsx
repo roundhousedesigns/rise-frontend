@@ -6,7 +6,7 @@ import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-u
 import TextInput from '@common/inputs/TextInput';
 import useSendPasswordResetEmail from '@hooks/mutations/useSendPasswordResetEmail';
 import { useErrorMessage } from '@hooks/hooks';
-import { handleReCaptchaVerify } from '../lib/utils';
+import { handleReCaptchaVerify } from '@lib/utils';
 
 export default function LoginView() {
 	const [username, setUsername] = useState<string>('');

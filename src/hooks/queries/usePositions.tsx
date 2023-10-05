@@ -6,9 +6,9 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { WPItemParams } from '../../lib/types';
-import { WPItem } from '../../lib/classes';
-import { sortWPItemsByName } from '../../lib/utils';
+import { WPItemParams } from '@lib/types';
+import { WPItem } from '@lib/classes';
+import { sortWPItemsByName } from '@lib/utils';
 
 export const QUERY_POSITION_TERMS = gql`
 	query JobsQuery($departments: [ID] = "") {

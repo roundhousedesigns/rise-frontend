@@ -13,8 +13,8 @@ import {
 	Alert,
 } from '@chakra-ui/react';
 
-import { handleReCaptchaVerify } from '../lib/utils';
-import { LoginInput } from '../lib/types';
+import { handleReCaptchaVerify } from '@lib/utils';
+import { LoginInput } from '@lib/types';
 import TextInput from '@common/inputs/TextInput';
 import useLogin from '@hooks/mutations/useLogin';
 import { useErrorMessage } from '@hooks/hooks';

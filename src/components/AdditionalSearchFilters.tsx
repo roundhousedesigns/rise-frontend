@@ -1,10 +1,11 @@
 import { Key, useContext, useEffect } from 'react';
 import { Accordion, Fade } from '@chakra-ui/react';
+import { isEmpty } from 'lodash';
+import { additionalFilterKeys } from '@/lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
-import { isEmpty } from 'lodash';
 
 export default function AdditionalSearchFilters() {
 	const {
@@ -25,16 +26,6 @@ export default function AdditionalSearchFilters() {
 		personalIdentities,
 		racialIdentities,
 	} = filterSet;
-
-	// Filter keys
-	const keys: (keyof typeof filterSet)[] = [
-		'locations',
-		'unions',
-		'experienceLevels',
-		'genderIdentities',
-		'personalIdentities',
-		'racialIdentities',
-	];
 
 	const [
 		{
@@ -66,7 +57,7 @@ export default function AdditionalSearchFilters() {
 
 	// Get the index of each filter that has a value
 	useEffect(() => {
-		const newActiveFilters = keys.reduce((acc: number[], key, index) => {
+		const newActiveFilters = additionalFilterKeys.reduce((acc: number[], key, index) => {
 			if (!isEmpty(filterSet[key])) return [...acc, index];
 			return acc.filter((item) => item !== index);
 		}, []);
@@ -79,6 +70,8 @@ export default function AdditionalSearchFilters() {
 		});
 	}, [filterSet]);
 
+	console.info(additionalFiltersActive, additionalFiltersActive.length);
+
 	return (
 		<Fade in={searchActive} id='filterAdditional'>
 			<Accordion w='full' allowMultiple defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
@@ -89,7 +82,11 @@ export default function AdditionalSearchFilters() {
 					}}
 				>
 					{/* The order of these items must match the order of filters in the useEffect. */}
-					<Accordion allowMultiple={true} w='full' defaultIndex={additionalFiltersActive}>
+					<Accordion
+						allowMultiple={true}
+						w='full'
+						defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
+					>
 						<SearchFilterAccordionItem heading='Locations'>
 							<ProfileCheckboxGroup
 								name='locations'

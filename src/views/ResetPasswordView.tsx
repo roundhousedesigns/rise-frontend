@@ -15,7 +15,7 @@ import {
 import { FiHelpCircle } from 'react-icons/fi';
 import TextInput from '@common/inputs/TextInput';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
-import { ChangePasswordInput } from '../lib/types';
+import { ChangePasswordInput } from '@lib/types';
 import useResetUserPassword from '@hooks/mutations/useResetUserPassword';
 
 interface Props {

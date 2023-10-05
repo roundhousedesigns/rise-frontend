@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { Credit, UserProfile } from '../lib/classes';
-import { generateRandomString, sanitizeBoolean } from '../lib/utils';
+import { Credit, UserProfile } from '@lib/classes';
+import { generateRandomString, sanitizeBoolean } from '@lib/utils';
 
 interface EditProfileAction {
 	type: string;

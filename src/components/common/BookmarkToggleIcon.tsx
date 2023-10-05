@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IconButton, useColorMode, useToken } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
-import { toggleArrayItem } from '../../lib/utils';
+import { toggleArrayItem } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
 

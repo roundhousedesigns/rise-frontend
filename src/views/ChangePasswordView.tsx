@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { chakra, Button, Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
 import { FiHelpCircle } from 'react-icons/fi';
-import { ChangePasswordInput } from '../lib/types';
+import { ChangePasswordInput } from '@lib/types';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useChangeUserPassword from '@hooks/mutations/useChangeUserPassword';

@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { LoginInput } from '../../lib/types';
+import { LoginInput } from '@lib/types';
 import { QUERY_VIEWER } from '../queries/useViewer';
 
 const MUTATE_LOGIN = gql`

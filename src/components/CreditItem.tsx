@@ -13,8 +13,8 @@ import {
 	Skeleton,
 	Badge,
 } from '@chakra-ui/react';
-import { Credit, WPItem } from '../lib/classes';
-import { decodeString, sortAndCompareArrays } from '../lib/utils';
+import { Credit, WPItem } from '@lib/classes';
+import { decodeString, sortAndCompareArrays } from '@lib/utils';
 import useLazyTaxonomyTerms from '@hooks/queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import WrapWithIcon from '@common/WrapWithIcon';
