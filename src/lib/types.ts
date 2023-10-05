@@ -113,7 +113,7 @@ export interface CreditParams {
 	fellow?: boolean;
 	departments?: number[];
 	jobs?: number[];
-	positions?: {
+	positions: {
 		departments: number[];
 		jobs: number[];
 	};

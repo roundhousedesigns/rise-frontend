@@ -40,7 +40,7 @@ const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Ele
 				<ErrorAlert message={error.message} />
 			) : preparedCandidates ? (
 				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
-					{/* TODO move this into <CandidateList /> to reuse more code */}
+					{/* TODO move this into <CandidateList /> to DRY yourself off */}
 					<AnimatePresence>
 						{preparedCandidateIds.current?.map((id) => {
 							const candidate = preparedCandidates.find(

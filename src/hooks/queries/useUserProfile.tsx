@@ -123,7 +123,6 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			});
 		}
 
-		// TODO Clean this up (destructuring?)
 		const newCredit = new Credit({
 			id: credit.id,
 			index: credit.index,
@@ -136,8 +135,10 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			workCurrent: credit.workCurrent,
 			intern: credit.intern,
 			fellow: credit.fellow,
-			departments: departments?.map((department: WPItem) => department.id),
-			jobs: jobs?.map((job: WPItem) => job.id),
+			positions: {
+				departments: departments?.map((department: WPItem) => department.id),
+				jobs: jobs?.map((job: WPItem) => job.id),
+			},
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
 

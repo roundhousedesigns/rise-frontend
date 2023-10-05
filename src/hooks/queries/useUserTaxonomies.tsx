@@ -75,31 +75,22 @@ const QUERY_USER_TAXONOMIES = gql`
  */
 const useUserTaxonomies = (): [{ [key: string]: WPItem[] }, any] => {
 	const result = useQuery(QUERY_USER_TAXONOMIES);
+	const dataKeys = [
+		'locations',
+		'unions',
+		'partnerDirectories',
+		'experienceLevels',
+		'genderIdentities',
+		'personalIdentities',
+		'racialIdentities',
+	];
 
-	// TODO probably make this a little more elegant since it's the same op on all `result.data` props
-	const preparedResult = {
-		locations: result.data?.locations.nodes
+	const preparedResult: { [key: string]: WPItem[] } = dataKeys.reduce((acc: any, key: string) => {
+		acc[key] = result.data?.[key].nodes
 			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		unions: result.data?.unions.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		partnerDirectories: result.data?.partnerDirectories.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		experienceLevels: result.data?.experienceLevels.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		genderIdentities: result.data?.genderIdentities.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		personalIdentities: result.data?.personalIdentities.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-		racialIdentities: result.data?.racialIdentities.nodes
-			.map((term: WPItemParams) => new WPItem(term))
-			?.sort(sortWPItemsByName),
-	};
+			?.sort(sortWPItemsByName);
+		return acc;
+	}, {});
 
 	return [preparedResult, omit(result, ['data'])];
 };

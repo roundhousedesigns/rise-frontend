@@ -484,7 +484,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 								<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 									{mediaImages.map((image: string | undefined, index: Key) => (
-										// TODO add image captions/alt
 										<Image
 											key={index}
 											src={image}

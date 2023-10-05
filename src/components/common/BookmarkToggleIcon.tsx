@@ -32,7 +32,6 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 		// Update the bookmarked profiles list
 		const updatedBookmarkedProfiles = toggleArrayItem(bookmarkedProfiles, id);
 
-		// TODO maybe debounce the mutation?
 		// Fire the mutation
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};

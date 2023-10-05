@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import useViewer from '../hooks/queries/useViewer';
+import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '../hooks/queries/useUserNotices';
 import ShortPost from '../components/common/ShortPost';
 import SearchHistory from '../components/SearchHistory';

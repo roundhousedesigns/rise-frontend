@@ -11,9 +11,9 @@ import TextInput from '../components/common/inputs/TextInput';
 import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
 import EditCreditButtons from '../components/EditCreditButtons';
 import { sortWPItemsByName } from '../lib/utils';
+import { CreditParams } from '../lib/types';
 
-// TODO type this reducer
-function editCreditReducer(state: Credit, action: { type: string; payload: any }) {
+function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
 		case 'UPDATE_INPUT':
 			return {

@@ -24,7 +24,6 @@ const useRegisterUser = () => {
 	const registerUserMutation = (user: RegisterUserInput) => {
 		const { email, firstName, lastName, password, confirmPassword, reCaptchaToken } = user;
 
-		// TODO: Verify if this additional check is necessary
 		if (password !== confirmPassword) {
 			throw new Error('Passwords do not match');
 		}
