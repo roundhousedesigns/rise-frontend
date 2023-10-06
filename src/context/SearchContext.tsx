@@ -136,6 +136,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 						[action.payload.filter.name]: action.payload.filter.value,
 					},
 				},
+					filterSet: {
+						...state.filters.filterSet,
+						[action.payload.filter.name]: action.payload.filter.value,
+					},
+				},
 				searchActive: true,
 			};
 
