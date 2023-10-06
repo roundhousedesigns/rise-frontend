@@ -75,11 +75,11 @@ _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `mic
 
 2. After commiting and pushing your branch, click on a Pull requests tab on GitHub and create a draft pull request. Make sure to select "base:" as `dev`and "compare:" as `<your-branch-name>`
 
-  _Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
+   _Note:_ Your first commit message should describe the main objective (don’t get too specific). i.e. - `fix button border overlapping in mobile view`
 
-- In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
-- Double check the diff
-- Make further changes locally, if any mistakes are found and commit again
+   - In the comment section, document exactly what you did and why you did it. Include screen capture and testing steps if applicable
+   - Double check the diff
+   - Make further changes locally, if any mistakes are found and commit again
 
 3. When the pull request is ready for a review, click on "Pull requests" tab. In the merge box, click "Ready for review" button
 

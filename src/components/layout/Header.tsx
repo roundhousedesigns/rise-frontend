@@ -1,12 +1,10 @@
 import { useContext, useRef } from 'react';
-import { chakra } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
 	IconButton,
 	Image,
 	Container,
-	useDisclosure,
 	DarkMode,
 	Link,
 	Menu,

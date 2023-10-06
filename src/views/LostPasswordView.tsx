@@ -15,7 +15,7 @@ export default function LoginView() {
 
 	const {
 		sendPasswordResetEmailMutation,
-		results: { loading: submitLoading, error: resetError },
+		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

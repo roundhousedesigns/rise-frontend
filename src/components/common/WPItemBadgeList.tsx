@@ -1,4 +1,4 @@
-import { Wrap, Tag, TagLabel } from '@chakra-ui/react';
+import { Wrap } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import { decodeString } from '@lib/utils';
 import WPItemBadgeListItem from './WPItemBadgeListItem';

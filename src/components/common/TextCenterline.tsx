@@ -1,4 +1,4 @@
-import { Box, Divider, AbsoluteCenter } from '@chakra-ui/react';
+import { Box, Divider } from '@chakra-ui/react';
 
 interface Props {
 	children: React.ReactNode;

@@ -75,7 +75,12 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				...state,
 				credits: [
 					...state.credits,
-					new Credit({ id: generateRandomString(8), isNew: true, index: state.credits.length }),
+					new Credit({
+						id: generateRandomString(8),
+						isNew: true,
+						index: state.credits.length,
+						positions: { departments: [], jobs: [] },
+					}),
 				],
 			};
 		}
