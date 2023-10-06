@@ -70,8 +70,6 @@ export default function AdditionalSearchFilters() {
 		});
 	}, [filterSet]);
 
-	console.info(additionalFiltersActive, additionalFiltersActive.length);
-
 	return (
 		<Fade in={searchActive} id='filterAdditional'>
 			<Accordion w='full' allowMultiple defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
