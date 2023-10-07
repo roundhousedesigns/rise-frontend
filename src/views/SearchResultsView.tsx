@@ -16,7 +16,7 @@ export default function SearchResultsView() {
 		} else if (results.length === 1) {
 			return '1 result.';
 		} else if (results.length > 100) {
-			return 'More than 100 results.';
+			return 'Over 100 results. Try refining your search.';
 		} else {
 			return `${results.length} results.`;
 		}
