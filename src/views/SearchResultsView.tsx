@@ -9,16 +9,18 @@ export default function SearchResultsView() {
 		search: { results },
 	} = useContext(SearchContext);
 
+	const resultsCount = results.length;
+
 	// Set the results string based on the number of results.
 	const resultsString = useMemo(() => {
-		if (results.length === 0) {
+		if (resultsCount === 0) {
 			return 'No results.';
-		} else if (results.length === 1) {
+		} else if (resultsCount === 1) {
 			return '1 result.';
-		} else if (results.length > 100) {
-			return 'Over 100 results. Try refining your search.';
+		} else if (resultsCount > 100) {
+			return 'Over 100 results';
 		} else {
-			return `${results.length} results.`;
+			return `${resultsCount} results.`;
 		}
 	}, [results]);
 
@@ -28,6 +30,10 @@ export default function SearchResultsView() {
 				{resultsString}
 			</Text>
 			<CandidateList userIds={results} />
+
+			{resultsCount > 100 ? (
+				<Text>Showing the first 100 results. Try refining your search!</Text>
+			) : null}
 		</Box>
 	);
 }
