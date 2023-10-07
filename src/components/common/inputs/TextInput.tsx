@@ -95,6 +95,7 @@ const TextInput = forwardRef(
 						isDisabled={isDisabled}
 						value={value}
 						name={name}
+						ref={forwardedRef}
 						onChange={onChange}
 						_dark={{
 							color: 'text.dark',
