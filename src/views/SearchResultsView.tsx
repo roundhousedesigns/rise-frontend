@@ -27,6 +27,8 @@ export default function SearchResultsView() {
 		},
 	} = useContext(SearchContext);
 
+	const resultsCount = results.length;
+
 	const [departments] = useTaxonomyTerms(
 		departmentIds ? departmentIds.map((id) => Number(id)) : []
 	);
@@ -37,15 +39,13 @@ export default function SearchResultsView() {
 	 * Set the results string based on the number of results.
 	 */
 	const resultsString = () => {
-		const len = results.length;
-
-		return len === 0
+		return resultsCount === 0
 			? 'No results'
-			: len === 1
+			: resultsCount === 1
 			? '1 result'
-			: len > 100
-			? 'First 100 results'
-			: `${len} results`;
+			: resultsCount > 100
+			? '100+ results'
+			: `${resultsCount} results`;
 	};
 
 	/**
@@ -71,7 +71,7 @@ export default function SearchResultsView() {
 	};
 
 	const orderedResults: number[] = useMemo(() => {
-		if (!results.length) return [];
+		if (!resultsCount) return [];
 
 		// Sort the results by score.
 		const sortedResults = [...results].sort((a, b) => {
@@ -155,6 +155,10 @@ export default function SearchResultsView() {
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>
 			)}
 			<CandidateList userIds={orderedResults} inOrder={true} />
+
+			{resultsCount > 100 ? (
+				<Text>Showing the first 100 results. Try refining your search!</Text>
+			) : null}
 		</Box>
 	);
 }
