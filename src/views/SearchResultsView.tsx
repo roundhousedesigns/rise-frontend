@@ -157,7 +157,9 @@ export default function SearchResultsView() {
 			<CandidateList userIds={orderedResults} inOrder={true} />
 
 			{resultsCount > 100 ? (
-				<Text>Showing the first 100 results. Try refining your search!</Text>
+				<Text fontSize='sm' mt={6} ml={16} pl={2} color='gray.500'>
+					Only showing the first 100 results. Try refining your search!
+				</Text>
 			) : null}
 		</Box>
 	);
