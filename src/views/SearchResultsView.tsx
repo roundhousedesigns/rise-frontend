@@ -154,7 +154,8 @@ export default function SearchResultsView() {
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>
 			)}
-			<CandidateList userIds={orderedResults} inOrder={true} />
+
+      <CandidateList userIds={orderedResults} inOrder={true} />
 
 			{resultsCount > 100 ? (
 				<Text fontSize='sm' mt={6} ml={16} pl={2} color='gray.500'>
