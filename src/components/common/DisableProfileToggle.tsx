@@ -1,6 +1,6 @@
 import { FiEyeOff, FiEye } from 'react-icons/fi';
-import useViewer from '../../hooks/queries/useViewer';
-import useToggleDisableProfile from '../../hooks/mutations/useToggleDisableProfile';
+import useViewer from '@hooks/queries/useViewer';
+import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from './ToggleOptionSwitch';
 import { Box, Text } from '@chakra-ui/react';
 

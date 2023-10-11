@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.0] - Unreleased
+
+- Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
+- Feature: Search results shows currently active search filters
+- Feature: Footer notice field moved to the backend (un-hardcoded)
+- Improve: Internship/Fellowship credit and profile tags
+- Improve: Vite + TS import aliases. Hello, pretty imports!
+- Improve: Restore Additional Filters' accordion state on search restore
+- Improve with Sadness: Fix Menu shudder by removing MenuButton transform :(
+- Fix: Search: Additional filters no longer reset when changing jobs or departments
+- Deprecate: `year` Credit field (never used, in favor of `workStart` and `workEnd`)
+
 ## \[1.0.9.3] - 2023-09-22
 
 - Improve: Admins barred from frontend login
@@ -22,6 +34,8 @@ All notable changes to this project will be documented in this file, starting wi
 - Fixed: Additional Filter state not resetting visually after clicking "Reset"
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
+- Added: Saved searches and search history
+- Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox container.
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 

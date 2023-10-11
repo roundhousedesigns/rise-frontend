@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { Credit, UserProfile } from '../lib/classes';
-import { generateRandomString, sanitizeBoolean } from '../lib/utils';
+import { Credit, UserProfile } from '@lib/classes';
+import { generateRandomString, sanitizeBoolean } from '@lib/utils';
 
 interface EditProfileAction {
 	type: string;
@@ -75,7 +75,12 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 				...state,
 				credits: [
 					...state.credits,
-					new Credit({ id: generateRandomString(8), isNew: true, index: state.credits.length }),
+					new Credit({
+						id: generateRandomString(8),
+						isNew: true,
+						index: state.credits.length,
+						positions: { departments: [], jobs: [] },
+					}),
 				],
 			};
 		}

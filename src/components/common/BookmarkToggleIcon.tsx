@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { IconButton, useColorMode, useToken } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
-import { toggleArrayItem } from '../../lib/utils';
-import useViewer from '../../hooks/queries/useViewer';
-import useUpdateBookmarkedProfiles from '../../hooks/mutations/useUpdateBookmarkedProfiles';
+import { toggleArrayItem } from '@lib/utils';
+import useViewer from '@hooks/queries/useViewer';
+import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
 
 interface Props {
 	id: number;
@@ -32,7 +32,6 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 		// Update the bookmarked profiles list
 		const updatedBookmarkedProfiles = toggleArrayItem(bookmarkedProfiles, id);
 
-		// TODO maybe debounce the mutation?
 		// Fire the mutation
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
@@ -58,8 +57,10 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
 			mx={2}
-			py={1}
+			py={2}
 			px={2}
+			bg='transparent'
+			colorScheme='gray'
 			{...props}
 		/>
 	);

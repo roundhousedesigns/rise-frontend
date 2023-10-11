@@ -1,4 +1,4 @@
-import usePostContent from '../hooks/queries/usePostContent';
+import usePostContent from '@hooks/queries/usePostContent';
 import { Box, SkeletonText } from '@chakra-ui/react';
 
 interface Props {

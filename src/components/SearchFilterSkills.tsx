@@ -1,16 +1,18 @@
 import { useContext } from 'react';
 import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
-import useRelatedSkills from '../hooks/queries/useRelatedSkills';
+import { WPItem } from '@lib/classes';
+import useRelatedSkills from '@hooks/queries/useRelatedSkills';
 
-import ErrorAlert from './common/ErrorAlert';
-import CheckboxButton from './common/inputs/CheckboxButton';
-import { SearchContext } from '../context/SearchContext';
+import ErrorAlert from '@common/ErrorAlert';
+import CheckboxButton from '@common/inputs/CheckboxButton';
+import { SearchContext } from '@context/SearchContext';
 
 export default function SearchFilterSkills() {
 	const {
 		search: {
-			filters: { positions, skills },
+			filters: {
+				filterSet: { positions, skills },
+			},
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
@@ -45,8 +47,6 @@ export default function SearchFilterSkills() {
 	) : error ? (
 		<ErrorAlert message={error.message} />
 	) : (
-		// TODO implement "All Skills" button, which will append remaining Skills (excluding those already present) to the list.
-		// Same as "More Skills", but without "exclude" parameter.
-		<Alert status='info'>No job-specific skills found.</Alert>
+		<Alert status='info'>No job-specific skills found, or no job selected.</Alert>
 	);
 }

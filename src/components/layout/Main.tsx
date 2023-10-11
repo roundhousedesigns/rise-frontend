@@ -1,17 +1,17 @@
 import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
-import Dashboard from '../../routes/Dashboard';
-import Login from '../../routes/Login';
-import LostPassword from '../../routes/LostPassword';
-import ResetPassword from '../../routes/ResetPassword';
-import Register from '../../routes/Register';
-import Profile from '../../routes/Profile';
-import EditProfile from '../../routes/EditProfile';
-import Results from '../../routes/Results';
-import BookmarkedProfiles from '../../routes/BookmarkedProfiles';
-import Settings from '../../routes/Settings';
-import Help from '../../routes/Help';
-import NotFound from '../../routes/NotFound';
+import Dashboard from '@routes/Dashboard';
+import Login from '@routes/Login';
+import LostPassword from '@routes/LostPassword';
+import ResetPassword from '@routes/ResetPassword';
+import Register from '@routes/Register';
+import Profile from '@routes/Profile';
+import EditProfile from '@routes/EditProfile';
+import Results from '@routes/Results';
+import BookmarkedProfiles from '@routes/BookmarkedProfiles';
+import Settings from '@routes/Settings';
+import Help from '@routes/Help';
+import NotFound from '@routes/NotFound';
 import LoggedIn from '../LoggedIn';
 
 const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (

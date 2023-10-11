@@ -1,6 +1,6 @@
 import { ButtonGroup } from '@chakra-ui/react';
 import { FiCheck, FiX } from 'react-icons/fi';
-import ResponsiveButton from './common/inputs/ResponsiveButton';
+import ResponsiveButton from '@common/inputs/ResponsiveButton';
 
 interface Props {
 	isLoading?: boolean;

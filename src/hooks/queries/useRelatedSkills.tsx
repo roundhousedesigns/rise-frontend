@@ -10,9 +10,9 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { WPItemParams } from '../../lib/types';
-import { WPItem } from '../../lib/classes';
-import { sortWPItemsByName } from '../../lib/utils';
+import { WPItemParams } from '@lib/types';
+import { WPItem } from '@lib/classes';
+import { sortWPItemsByName } from '@lib/utils';
 
 export const QUERY_RELATED_SKILLS = gql`
 	query RelatedSkillsQuery($jobs: [ID!]) {

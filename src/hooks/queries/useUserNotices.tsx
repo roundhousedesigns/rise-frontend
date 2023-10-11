@@ -6,7 +6,7 @@ import { omit } from 'lodash';
 
 // WordPress block styles
 import '../../assets/css/wordpress.css';
-import { WPPost } from '../../lib/classes';
+import { WPPost } from '@lib/classes';
 
 export const QUERY_GLOBAL_NOTICES = gql`
 	query LatestUserNoticeQuery($last: Int = 4) {
