@@ -1,15 +1,14 @@
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
+import useFrontendSetting from '@/hooks/queries/useFrontendSetting';
 
 export default function Footer() {
+	const { value: footerNotice } = useFrontendSetting('footer_notice');
+
 	return (
 		<LightMode>
 			<Box w='full' minH='20vh' py={8} alignItems='center' bgColor='brand.orange'>
 				<Container maxW='6xl' textAlign='center'>
-					<Text align='center'>
-						{/* TODO make this a backend field */}
-						RISE Theatre is a program of Maestra Music Inc, a 501c3 non-profit charitable
-						organization (EIN: 83-3439518)
-					</Text>
+					<Text align='center'>{footerNotice}</Text>
 					<Text>
 						©2023{' '}
 						<Link href='https://maestramusic.org' isExternal>

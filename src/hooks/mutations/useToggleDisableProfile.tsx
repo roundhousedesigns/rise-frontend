@@ -5,7 +5,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_VIEWER } from '../queries/useViewer';
 
-// MAYBE get more user data from this mutation
 const MUTATE_TOGGLE_SEARCH_ONLY = gql`
 	mutation ToggleDisableProfile($userId: Int!) {
 		toggleDisableProfile(input: { userId: $userId }) {

@@ -10,10 +10,10 @@ import {
 	useMediaQuery,
 	Wrap,
 } from '@chakra-ui/react';
-import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
-import useChangeProfileSlug from '../hooks/mutations/useChangeProfileSlug';
-import TextInput from '../components/common/inputs/TextInput';
+import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
+import useViewer from '@hooks/queries/useViewer';
+import useChangeProfileSlug from '@hooks/mutations/useChangeProfileSlug';
+import TextInput from '@common/inputs/TextInput';
 import { FiCheck, FiClipboard } from 'react-icons/fi';
 
 export default function ChangeProfileUrlView() {

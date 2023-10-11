@@ -1,6 +1,6 @@
 import { Box, chakra, Heading, useColorMode } from '@chakra-ui/react';
 import parse from 'html-react-parser';
-import { WPPost } from '../../lib/classes';
+import { WPPost } from '@lib/classes';
 
 interface Props {
 	post: WPPost;

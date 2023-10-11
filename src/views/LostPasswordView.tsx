@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
 
-import TextInput from '../components/common/inputs/TextInput';
-import useSendPasswordResetEmail from '../hooks/mutations/useSendPasswordResetEmail';
-import { useErrorMessage } from '../hooks/hooks';
-import { handleReCaptchaVerify } from '../lib/utils';
+import TextInput from '@common/inputs/TextInput';
+import useSendPasswordResetEmail from '@hooks/mutations/useSendPasswordResetEmail';
+import { useErrorMessage } from '@hooks/hooks';
+import { handleReCaptchaVerify } from '@lib/utils';
 
 export default function LoginView() {
 	const [username, setUsername] = useState<string>('');
@@ -15,7 +15,7 @@ export default function LoginView() {
 
 	const {
 		sendPasswordResetEmailMutation,
-		results: { loading: submitLoading, error: resetError },
+		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +71,6 @@ export default function LoginView() {
 							value={username}
 							name='username'
 							label='Email'
-							labelHidden
-							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
 							inputProps={{

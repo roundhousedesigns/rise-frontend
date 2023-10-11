@@ -1,6 +1,6 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react';
 import { FiTrash } from 'react-icons/fi';
-import ConfirmActionDialog from './common/ConfirmActionDialog';
+import ConfirmActionDialog from '@common/ConfirmActionDialog';
 
 interface Props {
 	id: string;

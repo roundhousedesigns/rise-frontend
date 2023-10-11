@@ -4,7 +4,7 @@
 
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { Credit, UserProfile, WPItem } from '../../lib/classes';
+import { Credit, UserProfile, WPItem } from '@lib/classes';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($lastCredits: Int = 5, $id: ID!, $author: Int!) {
@@ -66,7 +66,6 @@ export const QUERY_PROFILE = gql`
 				jobTitle(format: RENDERED)
 				jobLocation(format: RENDERED)
 				venue(format: RENDERED)
-				year(format: RENDERED)
 				workStart(format: RENDERED)
 				workEnd(format: RENDERED)
 				workCurrent
@@ -124,7 +123,6 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			});
 		}
 
-		// TODO Clean this up (destructuring?)
 		const newCredit = new Credit({
 			id: credit.id,
 			index: credit.index,
@@ -132,14 +130,15 @@ const useUserProfile = (id: number): [UserProfile | null, any] => {
 			jobTitle: credit.jobTitle,
 			jobLocation: credit.jobLocation,
 			venue: credit.venue,
-			year: credit.year,
 			workStart: credit.workStart,
 			workEnd: credit.workEnd,
 			workCurrent: credit.workCurrent,
 			intern: credit.intern,
 			fellow: credit.fellow,
-			departments: departments?.map((department: WPItem) => department.id),
-			jobs: jobs?.map((job: WPItem) => job.id),
+			positions: {
+				departments: departments?.map((department: WPItem) => department.id),
+				jobs: jobs?.map((job: WPItem) => job.id),
+			},
 			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
 		});
 

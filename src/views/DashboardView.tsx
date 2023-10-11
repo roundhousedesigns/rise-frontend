@@ -12,9 +12,11 @@ import {
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import useViewer from '../hooks/queries/useViewer';
-import useUserNotices from '../hooks/queries/useUserNotices';
-import ShortPost from '../components/common/ShortPost';
+import useViewer from '@hooks/queries/useViewer';
+import useUserNotices from '@hooks/queries/useUserNotices';
+import ShortPost from '@common/ShortPost';
+import SearchHistory from '@components/SearchHistory';
+import SavedSearches from '@components/SavedSearches';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
@@ -22,8 +24,8 @@ export default function DashboardView() {
 
 	return (
 		<Box>
-			<Card mb={8}>
-				<Flex justifyContent='space-between' flexWrap='wrap'>
+			<Card mb={0}>
+				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
 						{
@@ -56,7 +58,17 @@ export default function DashboardView() {
 					</Flex>
 				</Flex>
 			</Card>
-			{notices && notices.length > 0 && (
+
+			<Flex flexWrap='wrap' mb={2} gap={4}>
+				<Card flex='0 1 400px'>
+					<SavedSearches />
+				</Card>
+				<Card flex='0 1 400px'>
+					<SearchHistory />
+				</Card>
+			</Flex>
+
+			{notices.length > 0 ? (
 				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates
@@ -69,7 +81,7 @@ export default function DashboardView() {
 						))}
 					</List>
 				</Box>
-			)}
+			) : null}
 		</Box>
 	);
 }

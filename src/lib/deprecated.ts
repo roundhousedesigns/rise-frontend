@@ -111,8 +111,6 @@ export const useResetPasswordError = (errorCode?: string): string => {
 
 	var message = '';
 
-	// TODO implement these errors, they are still copies of the login errors
-
 	switch (errorCode) {
 		case 'invalid_username':
 		case 'invalid_email':

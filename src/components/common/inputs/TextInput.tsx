@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, ReactNode } from 'react';
 import {
 	Flex,
 	FormControl,
@@ -15,6 +15,7 @@ import {
 interface Props {
 	name: string;
 	label?: string | JSX.Element;
+	labelHidden?: boolean;
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
@@ -24,115 +25,123 @@ interface Props {
 	error?: string;
 	leftElement?: ReactNode;
 	maxLength?: number;
-	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	inputProps?: {
 		[prop: string]: any;
 	};
+	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 }
 
-export default function TextInput({
-	label,
-	labelHidden,
-	helperText,
-	placeholder,
-	value,
-	variant,
-	name,
-	isDisabled,
-	isRequired,
-	error,
-	onChange,
-	leftElement,
-	maxLength,
-	inputProps,
-	...props
-}: Props) {
-	const inputVariant = variant ? variant : 'filled';
+const TextInput = forwardRef(
+	(
+		{
+			label,
+			labelHidden,
+			helperText,
+			placeholder,
+			value,
+			variant,
+			name,
+			isDisabled,
+			isRequired,
+			error,
+			leftElement,
+			maxLength,
+			inputProps,
+			onChange,
+			...props
+		}: Props,
+		forwardedRef: ForwardedRef<HTMLInputElement>
+	) => {
+		const inputVariant = variant ? variant : 'filled';
 
-	const HelperTextFormatted = () => {
-		let lengthText = '';
+		const HelperTextFormatted = () => {
+			let lengthText = '';
 
-		if (maxLength) {
-			const length = value ? value.length : 0;
-			lengthText = `${length}/${maxLength}`;
-		}
+			if (maxLength) {
+				const length = value ? value.length : 0;
+				lengthText = `${length}/${maxLength}`;
+			}
+
+			return (
+				<Flex
+					w='full'
+					justifyContent='space-between'
+					alignItems='center'
+					lineHeight='normal'
+					fontSize='xs'
+				>
+					<Text m={0}>{helperText}</Text>
+					<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
+						{lengthText}
+					</Text>
+				</Flex>
+			);
+		};
 
 		return (
-			<Flex
-				w='full'
-				justifyContent='space-between'
-				alignItems='center'
-				lineHeight='normal'
-				fontSize='xs'
-			>
-				<Text m={0}>{helperText}</Text>
-				<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
-					{lengthText}
-				</Text>
-			</Flex>
-		);
-	};
-
-	return (
-		<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
-			<InputGroup>
-				{leftElement && (
-					<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
-						{leftElement}
-					</InputLeftElement>
-				)}
-				<Input
-					variant={inputVariant}
-					focusBorderColor='brand.blue'
-					placeholder={placeholder}
-					fontSize='md'
-					isDisabled={isDisabled}
-					value={value}
-					name={name}
-					onChange={onChange}
-					_dark={{
-						color: 'text.dark',
-					}}
-					maxLength={maxLength ? maxLength : undefined}
-					{...inputProps}
-				/>
-			</InputGroup>
-			<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
-				{label ? (
-					<FormLabel
-						ml={2}
-						w='full'
-						mr={0}
-						my={0}
-						lineHeight='normal'
-						fontSize='sm'
-						flexGrow='0'
-						sx={{
-							visibility: labelHidden ? 'hidden' : 'visible',
-							position: labelHidden ? 'absolute' : 'initial',
+			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
+				<InputGroup>
+					{leftElement && (
+						<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+							{leftElement}
+						</InputLeftElement>
+					)}
+					<Input
+						variant={inputVariant}
+						focusBorderColor='brand.blue'
+						placeholder={placeholder}
+						fontSize='md'
+						isDisabled={isDisabled}
+						value={value}
+						name={name}
+						ref={forwardedRef}
+						onChange={onChange}
+						_dark={{
+							color: 'text.dark',
 						}}
-					>
-						{label}
-					</FormLabel>
-				) : (
-					false
-				)}
-				<Wrap w='full' alignItems='flex-start'>
-					{helperText ? (
-						<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
-							<HelperTextFormatted />
-						</FormHelperText>
+						maxLength={maxLength ? maxLength : undefined}
+						{...inputProps}
+					/>
+				</InputGroup>
+				<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
+					{label ? (
+						<FormLabel
+							ml={2}
+							w='full'
+							mr={0}
+							my={0}
+							lineHeight='normal'
+							fontSize='sm'
+							flexGrow='0'
+							sx={{
+								visibility: labelHidden ? 'hidden' : 'visible',
+								position: labelHidden ? 'absolute' : 'initial',
+							}}
+						>
+							{label}
+						</FormLabel>
 					) : (
 						false
 					)}
-					{error && (
-						<FormErrorMessage fontWeight='bold' mt={0}>
-							{error}
-						</FormErrorMessage>
-					)}
-				</Wrap>
-			</Flex>
-		</FormControl>
-	);
-}
+					<Wrap w='full' alignItems='flex-start'>
+						{helperText ? (
+							<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+								<HelperTextFormatted />
+							</FormHelperText>
+						) : (
+							false
+						)}
+						{error && (
+							<FormErrorMessage fontWeight='bold' mt={0}>
+								{error}
+							</FormErrorMessage>
+						)}
+					</Wrap>
+				</Flex>
+			</FormControl>
+		);
+	}
+);
+
+export default TextInput;

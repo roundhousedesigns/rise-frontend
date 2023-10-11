@@ -9,7 +9,7 @@ import {
 	CreditOutput,
 	WPPostParams,
 } from './types';
-import { decodeString, maybeParseInt } from './utils';
+import { decodeString } from './utils';
 
 /**
  * A basic user.
@@ -24,7 +24,7 @@ export class User implements UserParams {
 	constructor(params?: UserParams) {
 		if (params) {
 			Object.assign(this, params, {
-				id: params.id ? maybeParseInt(params.id) : null,
+				id: params.id ? Number(params.id) : null,
 			});
 		}
 	}
@@ -250,6 +250,7 @@ export class UserProfile extends User {
  */
 export class Candidate extends User implements CandidateData, UserProfileParams {
 	slug: string = '';
+	searchScore?: number;
 	selfTitle?: string;
 	image?: string;
 
@@ -283,7 +284,6 @@ export class Credit implements CreditParams {
 	jobTitle: string;
 	jobLocation: string;
 	venue: string;
-	year: string; // TODO deprecate year
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
@@ -303,7 +303,6 @@ export class Credit implements CreditParams {
 		this.jobTitle = params.jobTitle ? params.jobTitle : '';
 		this.jobLocation = params.jobLocation ? params.jobLocation : '';
 		this.venue = params.venue ? params.venue : '';
-		this.year = params.year ? params.year : '';
 		this.workStart = params.workStart ? params.workStart : '';
 		this.workEnd = params.workEnd ? params.workEnd : '';
 		this.workCurrent = params.workCurrent || false;
@@ -363,13 +362,17 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
+	parent?: any;
+	taxonomyName?: string;
 	externalUrl?: string;
 
 	constructor(params: WPItemParams) {
-		this.id = params.id ? maybeParseInt(params.id) : 0;
+		this.id = params.id ? Number(params.id) : 0;
 		this.name = params.name ? unescape(params.name) : '';
 		this.slug = params.slug ? params.slug : undefined;
-		this.parentId = params.parentId ? maybeParseInt(params.parentId) : undefined;
+		this.parentId = params.parentId ? Number(params.parentId) : undefined;
+		this.parent = params.parent ? new WPItem(params.parent.node) : undefined;
+		this.taxonomyName = params.taxonomyName ? params.taxonomyName : undefined;
 		this.externalUrl = params.externalUrl ? params.externalUrl : undefined;
 	}
 }

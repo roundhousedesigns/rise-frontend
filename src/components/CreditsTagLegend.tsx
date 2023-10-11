@@ -1,4 +1,5 @@
-import { Tag, TagLabel, Wrap } from '@chakra-ui/react';
+import { Wrap } from '@chakra-ui/react';
+import WPItemBadgeListItem from '@common/WPItemBadgeListItem';
 
 interface Props {
 	[prop: string]: any;
@@ -7,15 +8,15 @@ interface Props {
 export default function CreditsTagLegend({ ...props }: Props) {
 	return (
 		<Wrap {...props}>
-			<Tag colorScheme='orange' size='sm'>
-				<TagLabel>Departments</TagLabel>
-			</Tag>
-			<Tag colorScheme='blue' size='sm'>
-				<TagLabel>Jobs</TagLabel>
-			</Tag>
-			<Tag colorScheme='green' size='sm'>
-				<TagLabel>Skills</TagLabel>
-			</Tag>
+			<WPItemBadgeListItem colorScheme='orange' fontSize='xs'>
+				Departments
+			</WPItemBadgeListItem>
+			<WPItemBadgeListItem colorScheme='blue' fontSize='xs'>
+				Jobs
+			</WPItemBadgeListItem>
+			<WPItemBadgeListItem colorScheme='green' fontSize='xs'>
+				Skills
+			</WPItemBadgeListItem>
 		</Wrap>
 	);
 }
