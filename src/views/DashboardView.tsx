@@ -9,6 +9,8 @@ import {
 	List,
 	ListItem,
 	IconButton,
+	Stack,
+	StackItem,
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -23,8 +25,8 @@ export default function DashboardView() {
 	const [notices] = useUserNotices();
 
 	return (
-		<Box>
-			<Card mb={0}>
+		<Stack direction='column' spacing={4}>
+			<StackItem as={Card}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
@@ -57,19 +59,20 @@ export default function DashboardView() {
 						</Button>
 					</Flex>
 				</Flex>
-			</Card>
+			</StackItem>
 
-			<Flex flexWrap='wrap' mb={2} gap={4}>
+			{/* SAVED SEARCHES are not ready for primetime */}
+			{/* <Flex flexWrap='wrap' gap={4}>
 				<Card flex='0 1 400px'>
 					<SavedSearches />
 				</Card>
 				<Card flex='0 1 400px'>
 					<SearchHistory />
 				</Card>
-			</Flex>
+			</Flex> */}
 
 			{notices.length > 0 ? (
-				<Box>
+				<StackItem>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates
 					</Heading>
@@ -80,8 +83,8 @@ export default function DashboardView() {
 							</ListItem>
 						))}
 					</List>
-				</Box>
+				</StackItem>
 			) : null}
-		</Box>
+		</Stack>
 	);
 }
