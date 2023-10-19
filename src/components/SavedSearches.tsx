@@ -24,7 +24,11 @@ export default function SavedSearchItemes() {
 				<List spacing={2}>
 					{searchTermIdSets.map((_ignored: any, index: number) => (
 						<ListItem key={index}>
-							<SavedSearchItem searchTerms={savedSearchesArr[index]} />
+							<SavedSearchItem
+								searchTerms={savedSearchesArr[index]}
+								deleteButton={true}
+								rerunButton={true}
+							/>
 						</ListItem>
 					))}
 				</List>

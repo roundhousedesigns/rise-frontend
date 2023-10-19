@@ -20,7 +20,14 @@ const ResponsiveButton = forwardRef<Props, 'div'>(
 		);
 
 		return isFullSize ? (
-			<Button aria-label={label} variant={variant} title={label} leftIcon={icon} {...props}>
+			<Button
+				aria-label={label}
+				variant={variant}
+				title={label}
+				leftIcon={icon}
+				ref={ref}
+				{...props}
+			>
 				{children}
 			</Button>
 		) : (

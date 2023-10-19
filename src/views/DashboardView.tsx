@@ -62,14 +62,14 @@ export default function DashboardView() {
 			</StackItem>
 
 			{/* SAVED SEARCHES are not ready for primetime */}
-			{/* <Flex flexWrap='wrap' gap={4}>
-				<Card flex='0 1 400px'>
+			<Flex flexWrap='wrap' gap={4}>
+				<Card flex='1'>
 					<SavedSearches />
 				</Card>
-				<Card flex='0 1 400px'>
+				<Card flex='1'>
 					<SearchHistory />
 				</Card>
-			</Flex> */}
+			</Flex>
 
 			{notices.length > 0 ? (
 				<StackItem>

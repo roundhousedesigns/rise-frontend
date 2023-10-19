@@ -309,13 +309,13 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
 }
 
 /**
- * Prepare a search object for saving to the database. Flattens the `positions` object to a single `positions` property
+ * Flattens the `positions` object to a single `positions` property
  * containing an array of job IDs.
  *
  * @param searchObj
  * @returns
  */
-export function prepareSearchFiltersForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
+export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFilterSetRaw {
 	const preparedSearchObj: SearchFilterSetRaw = {
 		...searchObj,
 		positions: searchObj.positions.jobs,

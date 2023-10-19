@@ -14,13 +14,14 @@ import {
 	ModalOverlay,
 	useDisclosure,
 	useToast,
-	Spacer,
 	Text,
 	Wrap,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
+import { SearchFilterSetRaw } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
@@ -28,28 +29,29 @@ import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import TextInput from '@components/common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
-import { SearchFilterSetRaw } from '@lib/types';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
+import ResponsiveButton from './inputs/ResponsiveButton';
 
 interface Props {
 	searchTerms: SearchFilterSetRaw;
-	withDelete?: boolean;
+	deleteButton?: boolean;
+	rerunButton?: boolean;
 }
 
-export default function SavedSearchItem({ searchTerms, withDelete = true }: Props) {
+export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton }: Props) {
 	const { loggedInId } = useViewer();
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
 		searchTerms.searchName ? searchTerms.searchName : ''
 	);
 	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
-		search: { results },
+		search: { results, searchActive },
 		searchDispatch,
 	} = useContext(SearchContext);
 
 	const { openDrawer } = useContext(SearchDrawerContext);
 
-	const isNamedSearch = searchTerms.searchName && searchTerms.searchName !== '';
+	const isNamed = searchTerms.searchName && searchTerms.searchName !== '';
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialSaveModalRef = useRef(null);
@@ -91,7 +93,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 		onOpen();
 	};
 
-	const handleSaveSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		// Omit the searchName property from the searchTerms object.
 		const { searchName, ...filterSet } = searchTerms;
 
@@ -121,76 +123,62 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 		console.log('delete');
 	};
 
-	return (
+	return searchActive ? (
 		<>
 			<Flex alignItems='center' justifyContent='flex-start' flexWrap='wrap'>
-				{isNamedSearch ? (
-					<>
-						<Text>{searchTerms.searchName}</Text>
-						<Spacer />
-						<Wrap>
-							{withDelete ? (
-								<>
-									<IconButton
-										icon={<FiSearch />}
-										onClick={handleSearchClick}
-										colorScheme='green'
-										aria-label={`Run this search`}
-										title={`Search`}
-										size='sm'
-									/>
-									<IconButton
-										icon={<FiEdit3 />}
-										onClick={handleEditClick}
-										colorScheme='blue'
-										aria-label={`Rename this search`}
-										title={`Rename`}
-										size='sm'
-									/>
-									<IconButton
-										icon={<FiDelete />}
-										onClick={handleDelete}
-										colorScheme='red'
-										aria-label={`Delete this search`}
-										title={`Delete`}
-										size='sm'
-									/>
-								</>
-							) : (
-								<>
-									<IconButton
-										icon={<FiSearch />}
-										onClick={handleSearchClick}
-										colorScheme='green'
-										aria-label={`Run this search`}
-										title={`Search`}
-										size='sm'
-									/>
-									<IconButton
-										icon={<FiSave />}
-										onClick={handleSaveSearchClick}
-										colorScheme='blue'
-										aria-label={`Save this search`}
-										title={`Save`}
-										size='sm'
-									/>
-								</>
-							)}
-						</Wrap>
-
-						<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
-					</>
-				) : (
-					<SearchParamTags termIds={termIds} allTerms={terms} flex='0 0 100%' />
-				)}
+				<Text>{searchTerms.searchName}</Text>
+				<ButtonGroup size='sm' isAttached variant='outline'>
+					{isNamed ? (
+						<IconButton
+							icon={<FiEdit3 />}
+							aria-label='Rename this search'
+							title='Rename'
+							onClick={handleEditClick}
+						>
+							Rename
+						</IconButton>
+					) : (
+						<IconButton icon={<FiSave />} aria-label='Save this search' onClick={handleEditClick}>
+							Save
+						</IconButton>
+					)}
+					{rerunButton ? (
+						<IconButton
+							icon={<FiSearch />}
+							aria-label='Rerun this search'
+							title='Rerun'
+							onClick={handleSearchClick}
+						>
+							Rerun
+						</IconButton>
+					) : (
+						false
+					)}
+					{deleteButton ? (
+						<IconButton
+							icon={<FiDelete />}
+							aria-label='Delete this search'
+							title='Delete'
+							onClick={handleDelete}
+						>
+							Delete
+						</IconButton>
+					) : (
+						false
+					)}
+				</ButtonGroup>
+				<SearchParamTags termIds={termIds} allTerms={terms} flex='1' />
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>{isNamedSearch ? 'Rename this search' : 'Save this search'}</ModalHeader>
+					<ModalHeader>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
 					<ModalBody pb={6}>
+						<Text>
+							Give this set of parameters a descriptive name to easily re-run this search.
+						</Text>
 						<FormControl>
 							<FormLabel>Name</FormLabel>
 							<TextInput
@@ -204,7 +192,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 					</ModalBody>
 
 					<ModalFooter>
-						<Button colorScheme='blue' mr={3} onClick={handleSaveSearchClick}>
+						<Button colorScheme='blue' mr={3} onClick={handleSaveClick}>
 							Save
 						</Button>
 						<Button onClick={onClose}>Cancel</Button>
@@ -212,5 +200,7 @@ export default function SavedSearchItem({ searchTerms, withDelete = true }: Prop
 				</ModalContent>
 			</Modal>
 		</>
+	) : (
+		false
 	);
 }
