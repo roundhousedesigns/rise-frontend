@@ -15,7 +15,6 @@ import {
 	useDisclosure,
 	useToast,
 	Text,
-	Wrap,
 	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
@@ -30,7 +29,6 @@ import useViewer from '@hooks/queries/useViewer';
 import TextInput from '@components/common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import ResponsiveButton from './inputs/ResponsiveButton';
 
 interface Props {
 	searchTerms: SearchFilterSetRaw;
@@ -45,7 +43,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 	);
 	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
-		search: { results, searchActive },
+		search: { results },
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -123,7 +121,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 		console.log('delete');
 	};
 
-	return searchActive ? (
+	return termIds && termIds.length > 0 ? (
 		<>
 			<Flex alignItems='center' justifyContent='flex-start' flexWrap='wrap'>
 				<Text>{searchTerms.searchName}</Text>
@@ -138,9 +136,9 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 							Rename
 						</IconButton>
 					) : (
-						<IconButton icon={<FiSave />} aria-label='Save this search' onClick={handleEditClick}>
+						<Button leftIcon={<FiSave />} colorScheme='green' aria-label='Save this search' variant='inline' onClick={handleEditClick} mr={1}>
 							Save
-						</IconButton>
+						</Button>
 					)}
 					{rerunButton ? (
 						<IconButton

@@ -1,6 +1,5 @@
 import {
 	Card,
-	Box,
 	Heading,
 	Button,
 	Flex,
@@ -17,7 +16,6 @@ import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
 import ShortPost from '@common/ShortPost';
-import SearchHistory from '@components/SearchHistory';
 import SavedSearches from '@components/SavedSearches';
 
 export default function DashboardView() {
@@ -61,15 +59,9 @@ export default function DashboardView() {
 				</Flex>
 			</StackItem>
 
-			{/* SAVED SEARCHES are not ready for primetime */}
-			<Flex flexWrap='wrap' gap={4}>
-				<Card flex='1'>
-					<SavedSearches />
-				</Card>
-				<Card flex='1'>
-					<SearchHistory />
-				</Card>
-			</Flex>
+			<Card flex='1'>
+				<SavedSearches />
+			</Card>
 
 			{notices.length > 0 ? (
 				<StackItem>

@@ -18,7 +18,6 @@ export default function SavedSearchItemes() {
 			<Heading as='h2' variant='pageSubtitle' color='white'>
 				Saved Searches
 			</Heading>
-			<Text>Save your most common searches here:</Text>
 
 			{searchTermIdSets.length > 0 ? (
 				<List spacing={2}>
