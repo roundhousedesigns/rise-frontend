@@ -34,20 +34,20 @@ import {
 	FiMap,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
-import { getWPItemsFromIds } from '../lib/utils';
-import { Credit, UserProfile, WPItem } from '../lib/classes';
-import { useProfileUrl } from '../hooks/hooks';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import BookmarkToggleIcon from '../components/common/BookmarkToggleIcon';
-import CreditsTagLegend from '../components/CreditsTagLegend';
-import PersonalIconLinks from '../components/PersonalIconLinks';
-import CreditItem from '../components/CreditItem';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import LinkWithIcon from '../components/common/LinkWithIcon';
-import ShareButton from '../components/common/ShareButton';
-import WrapWithIcon from '../components/common/WrapWithIcon';
-import useViewer from '../hooks/queries/useViewer';
-import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
+import { getWPItemsFromIds } from '@lib/utils';
+import { Credit, UserProfile, WPItem } from '@lib/classes';
+import { useProfileUrl } from '@hooks/hooks';
+import useViewer from '@hooks/queries/useViewer';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
+import LinkWithIcon from '@common/LinkWithIcon';
+import ShareButton from '@common/ShareButton';
+import WrapWithIcon from '@common/WrapWithIcon';
+import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
+import CreditsTagLegend from '@components/CreditsTagLegend';
+import PersonalIconLinks from '@components/PersonalIconLinks';
+import CreditItem from '@components/CreditItem';
+import HeadingCenterline from '@common/HeadingCenterline';
 
 interface Props {
 	profile: UserProfile;
@@ -484,7 +484,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 								<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 									{mediaImages.map((image: string | undefined, index: Key) => (
-										// TODO add image captions/alt
 										<Image
 											key={index}
 											src={image}

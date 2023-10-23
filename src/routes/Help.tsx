@@ -1,6 +1,6 @@
 import { Link } from '@chakra-ui/layout';
-import Page from '../components/Page';
-import ContentView from '../views/ContentView';
+import Page from '@components/Page';
+import ContentView from '@views/ContentView';
 import { Button } from '@chakra-ui/button';
 import { FiFlag } from 'react-icons/fi';
 

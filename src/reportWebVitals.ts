@@ -1,4 +1,4 @@
-// TODO check deprecated ReportHandler
+// TODO Modernize reportWebVitals
 import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: ReportHandler) => {

@@ -13,11 +13,11 @@ import {
 	Alert,
 } from '@chakra-ui/react';
 
-import { handleReCaptchaVerify } from '../lib/utils';
-import { LoginInput } from '../lib/types';
-import TextInput from '../components/common/inputs/TextInput';
-import useLogin from '../hooks/mutations/useLogin';
-import { useErrorMessage } from '../hooks/hooks';
+import { handleReCaptchaVerify } from '@lib/utils';
+import { LoginInput } from '@lib/types';
+import TextInput from '@common/inputs/TextInput';
+import useLogin from '@hooks/mutations/useLogin';
+import { useErrorMessage } from '@hooks/hooks';
 
 interface Props {
 	alert?: string;
@@ -34,7 +34,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 	const {
 		loginMutation,
-		results: { loading: submitLoading, error: loginError },
+		results: { loading: submitLoading },
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 	const navigate = useNavigate();
@@ -95,7 +95,11 @@ export default function LoginView({ alert, alertStatus }: Props) {
 							autoComplete='username'
 							isRequired
 							onChange={handleInputChange}
-							error={['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode) ? errorMessage : ''}
+							error={
+								['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
+									? errorMessage
+									: ''
+							}
 							inputProps={{
 								autoComplete: 'username',
 								fontSize: 'lg',

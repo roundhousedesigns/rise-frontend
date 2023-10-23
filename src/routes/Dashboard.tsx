@@ -1,7 +1,7 @@
-import Page from '../components/Page';
+import Page from '@components/Page';
 
-import useViewer from '../hooks/queries/useViewer';
-import DashboardView from '../views/DashboardView';
+import useViewer from '@hooks/queries/useViewer';
+import DashboardView from '@views/DashboardView';
 
 export default function Dashboard() {
 	const { firstName } = useViewer();

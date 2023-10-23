@@ -1,11 +1,11 @@
 import { Box, Flex, Link, Text, useColorMode } from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
-import Page from '../components/Page';
-import ChangePasswordView from '../views/ChangePasswordView';
-import ChangeProfileSlugView from '../views/ChangeProfileSlugView';
-import SettingsSection from '../components/common/SettingsSection';
-import ToggleOptionSwitch from '../components/common/ToggleOptionSwitch';
-import DisableProfileToggle from '../components/common/DisableProfileToggle';
+import Page from '@components/Page';
+import ChangePasswordView from '@views/ChangePasswordView';
+import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
+import SettingsSection from '@common/SettingsSection';
+import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
+import DisableProfileToggle from '@common/DisableProfileToggle';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();

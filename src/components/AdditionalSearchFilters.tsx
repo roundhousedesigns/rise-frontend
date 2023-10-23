@@ -1,14 +1,19 @@
 import { Key, useContext, useEffect } from 'react';
 import { Accordion, Fade } from '@chakra-ui/react';
-import { SearchContext } from '../context/SearchContext';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import ProfileCheckboxGroup from './common/ProfileCheckboxGroup';
-import SearchFilterAccordionItem from './common/SearchFilterAccordionItem';
 import { isEmpty } from 'lodash';
+import { additionalFilterKeys } from '@/lib/utils';
+import { SearchContext } from '@context/SearchContext';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
+import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 
 export default function AdditionalSearchFilters() {
 	const {
-		search: { filters, searchActive, additionalFiltersActive },
+		search: {
+			filters: { filterSet },
+			searchActive,
+			additionalFiltersActive,
+		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -20,17 +25,7 @@ export default function AdditionalSearchFilters() {
 		genderIdentities,
 		personalIdentities,
 		racialIdentities,
-	} = filters;
-
-	// Filter keys
-	const keys: (keyof typeof filters)[] = [
-		'locations',
-		'unions',
-		'experienceLevels',
-		'genderIdentities',
-		'personalIdentities',
-		'racialIdentities',
-	];
+	} = filterSet;
 
 	const [
 		{
@@ -62,8 +57,8 @@ export default function AdditionalSearchFilters() {
 
 	// Get the index of each filter that has a value
 	useEffect(() => {
-		const newActiveFilters = keys.reduce((acc: number[], key, index) => {
-			if (!isEmpty(filters[key])) return [...acc, index];
+		const newActiveFilters = additionalFilterKeys.reduce((acc: number[], key, index) => {
+			if (!isEmpty(filterSet[key])) return [...acc, index];
 			return acc.filter((item) => item !== index);
 		}, []);
 
@@ -73,7 +68,7 @@ export default function AdditionalSearchFilters() {
 				additionalFiltersActive: newActiveFilters,
 			},
 		});
-	}, [filters]);
+	}, [filterSet]);
 
 	return (
 		<Fade in={searchActive} id='filterAdditional'>
@@ -85,12 +80,16 @@ export default function AdditionalSearchFilters() {
 					}}
 				>
 					{/* The order of these items must match the order of filters in the useEffect. */}
-					<Accordion allowMultiple={true} w='full' defaultIndex={additionalFiltersActive}>
+					<Accordion
+						allowMultiple={true}
+						w='full'
+						defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
+					>
 						<SearchFilterAccordionItem heading='Locations'>
 							<ProfileCheckboxGroup
 								name='locations'
 								items={locationTerms}
-								checked={locations}
+								checked={locations as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -98,7 +97,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='unions'
 								items={unionTerms}
-								checked={unions}
+								checked={unions as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -106,7 +105,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='experienceLevels'
 								items={experienceLevelTerms}
-								checked={experienceLevels}
+								checked={experienceLevels as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -114,7 +113,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='genderIdentities'
 								items={genderIdentityTerms}
-								checked={genderIdentities}
+								checked={genderIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -122,7 +121,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='personalIdentities'
 								items={personalIdentityTerms}
-								checked={personalIdentities}
+								checked={personalIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
@@ -130,7 +129,7 @@ export default function AdditionalSearchFilters() {
 							<ProfileCheckboxGroup
 								name='racialIdentities'
 								items={racialIdentityTerms}
-								checked={racialIdentities}
+								checked={racialIdentities as string[]}
 								handleChange={handleInputChange}
 							/>
 						</SearchFilterAccordionItem>
