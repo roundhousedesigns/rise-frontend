@@ -1,12 +1,12 @@
 import { ButtonGroup } from '@chakra-ui/react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { FiEdit3 } from 'react-icons/fi';
-import useViewer from '../hooks/queries/useViewer';
-import useUserId from '../hooks/queries/useUserId';
-import useUserProfile from '../hooks/queries/useUserProfile';
-import Page from '../components/Page';
-import ProfileView from '../views/ProfileView';
-import ResponsiveButton from '../components/common/inputs/ResponsiveButton';
+import useViewer from '@hooks/queries/useViewer';
+import useUserId from '@hooks/queries/useUserId';
+import useUserProfile from '@hooks/queries/useUserProfile';
+import Page from '@components/Page';
+import ProfileView from '@views/ProfileView';
+import ResponsiveButton from '@common/inputs/ResponsiveButton';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();

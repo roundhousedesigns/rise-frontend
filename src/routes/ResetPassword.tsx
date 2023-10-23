@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom';
 import { Text } from '@chakra-ui/react';
-import Page from '../components/Page';
-import ResetPasswordView from '../views/ResetPasswordView';
+import Page from '@components/Page';
+import ResetPasswordView from '@views/ResetPasswordView';
 
 export default function ResetPassword() {
 	// Get the token from the URL

@@ -1,20 +1,29 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
-import usePositions from '../hooks/queries/usePositions';
+import { WPItem } from '@lib/classes';
+import usePositions from '@hooks/queries/usePositions';
 
-import { SearchContext } from '../context/SearchContext';
-import RadioButton from './common/inputs/RadioButton';
+import { SearchContext } from '@context/SearchContext';
+import RadioButton from '@common/inputs/RadioButton';
 
 export default function SearchFilterDepartment() {
 	const [data, { loading, error }] = usePositions();
-	const { search, searchDispatch } = useContext(SearchContext);
+	const {
+		search: {
+			filters: {
+				filterSet: {
+					positions: { departments },
+				},
+			},
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
 			type: 'SET_DEPARTMENT',
 			payload: {
-				department: term,
+				departments: [term],
 			},
 		});
 
@@ -25,12 +34,16 @@ export default function SearchFilterDepartment() {
 		}
 	};
 
+	const departmentId = useMemo(() => {
+		return departments && departments.length > 0 ? departments[0] : '';
+	}, [departments]);
+
 	return !loading && !error ? (
 		<Box id='filterDepartment'>
 			<Heading as='h3' variant='searchFilterTitle'>
 				Which department are you hiring for?
 			</Heading>
-			<RadioGroup onChange={handleToggleTerm} value={search.filters.positions.department}>
+			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>
 					{data.map((term: WPItem) => {
 						return (

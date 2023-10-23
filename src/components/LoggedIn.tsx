@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { Container, Heading, Skeleton } from '@chakra-ui/react';
-import useViewer from '../hooks/queries/useViewer';
-import LoginView from '../views/LoginView';
+import useViewer from '@hooks/queries/useViewer';
+import LoginView from '@views/LoginView';
 
 interface Props {
 	hideOnly?: boolean; // Only hide the child element, don't show the login view.
