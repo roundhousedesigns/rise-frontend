@@ -1,9 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
-import { Candidate } from '../lib/classes';
-import useViewer from '../hooks/queries/useViewer';
-import BookmarkToggleIcon from './common/BookmarkToggleIcon';
-import RemoveBookmarkIcon from './common/RemoveBookmarkIcon';
+import { Candidate } from '@lib/classes';
+import useViewer from '@hooks/queries/useViewer';
+import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
+import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
 
 interface Props {
 	candidate: Candidate;

@@ -4,7 +4,7 @@ import {
 	ModalBody,
 	ModalContent,
 } from '@chakra-ui/react';
-import EditCreditView from '../views/EditCreditView';
+import EditCreditView from '@views/EditCreditView';
 
 interface Props {
 	isOpen: boolean;

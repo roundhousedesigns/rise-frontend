@@ -8,22 +8,22 @@ import { colors } from './foundations/colors';
 import { fonts } from './foundations/fonts';
 
 // Component style overrides
-import headingTheme from './components/Heading';
-import textTheme from './components/Text';
-import linkTheme from './components/Link';
-import cardTheme from './components/Card';
-import buttonTheme from './components/Button';
-import menuTheme from './components/Menu';
-import accordionTheme from './components/Accordion';
-import alertTheme from './components/Alert';
-import editableTheme from './components/Editable';
-import spinnerTheme from './components/Spinner';
-import inputTheme from './components/Input';
-import dividerTheme from './components/Divider';
-import avatarTheme from './components/Avatar';
-import badgeTheme from './components/Badge';
-import radioTheme from './components/Radio';
-import checkboxTheme from './components/Checkbox';
+import headingTheme from '@theme/components/Heading';
+import textTheme from '@theme/components/Text';
+import linkTheme from '@theme/components/Link';
+import cardTheme from '@theme/components/Card';
+import buttonTheme from '@theme/components/Button';
+import menuTheme from '@theme/components/Menu';
+import accordionTheme from '@theme/components/Accordion';
+import alertTheme from '@theme/components/Alert';
+import editableTheme from '@theme/components/Editable';
+import spinnerTheme from '@theme/components/Spinner';
+import inputTheme from '@theme/components/Input';
+import dividerTheme from '@theme/components/Divider';
+import avatarTheme from '@theme/components/Avatar';
+import badgeTheme from '@theme/components/Badge';
+import radioTheme from '@theme/components/Radio';
+import checkboxTheme from '@theme/components/Checkbox';
 
 // Config
 const config = {

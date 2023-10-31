@@ -1,13 +1,13 @@
 import { FormEvent, useContext } from 'react';
 import { Box, Fade, Spacer } from '@chakra-ui/react';
 
-import SearchFilterDepartment from '../components/SearchFilterDepartment';
-import SearchFilterJobs from '../components/SearchFilterJobs';
-import SearchFilterSkills from '../components/SearchFilterSkills';
+import SearchFilterDepartment from '@components/SearchFilterDepartment';
+import SearchFilterJobs from '@components/SearchFilterJobs';
+import SearchFilterSkills from '@components/SearchFilterSkills';
 
-import { SearchContext } from '../context/SearchContext';
-import SearchFilterName from '../components/SearchFilterName';
-import AdditionalSearchFilters from '../components/AdditionalSearchFilters';
+import { SearchContext } from '@context/SearchContext';
+import SearchFilterName from '@components/SearchFilterName';
+import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 
 interface Props {
 	showButtons?: boolean;
@@ -19,7 +19,9 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		search: {
 			filters: {
 				name,
-				positions: { department, jobs },
+				filterSet: {
+					positions: { departments = [], jobs = [] },
+				},
 			},
 		},
 	} = useContext(SearchContext);
@@ -32,8 +34,8 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<form id='search-candidates' onSubmit={onSubmit}>
 					<Box my={4} height={name ? 0 : 'auto'}>
 						<SearchFilterDepartment />
-						{department ? <SearchFilterJobs /> : null}
-						{department && jobs && jobs.length > 0 ? <SearchFilterSkills /> : null}
+						{departments.length ? <SearchFilterJobs /> : null}
+						{departments.length && jobs.length > 0 ? <SearchFilterSkills /> : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />
 					</Box>

@@ -2,12 +2,12 @@ import { forwardRef, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Spinner } from '@chakra-ui/react';
 import { FiArrowDown, FiXCircle } from 'react-icons/fi';
-import { EditProfileContextProvider } from '../context/EditProfileContext';
-import useViewer from '../hooks/queries/useViewer';
-import useUserProfile from '../hooks/queries/useUserProfile';
-import EditProfileView from '../views/EditProfileView';
-import Page from '../components/Page';
-import ErrorAlert from '../components/common/ErrorAlert';
+import { EditProfileContextProvider } from '@context/EditProfileContext';
+import useViewer from '@hooks/queries/useViewer';
+import useUserProfile from '@hooks/queries/useUserProfile';
+import EditProfileView from '@views/EditProfileView';
+import Page from '@components/Page';
+import ErrorAlert from '@common/ErrorAlert';
 
 const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 	const handleClick = () => {

@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { chakra, Button, Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
 import { FiHelpCircle } from 'react-icons/fi';
-import { ChangePasswordInput } from '../lib/types';
-import { useErrorMessage, useValidatePassword } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
-import useChangeUserPassword from '../hooks/mutations/useChangeUserPassword';
-import useLogout from '../hooks/mutations/useLogout';
-import TextInput from '../components/common/inputs/TextInput';
+import { ChangePasswordInput } from '@lib/types';
+import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
+import useViewer from '@hooks/queries/useViewer';
+import useChangeUserPassword from '@hooks/mutations/useChangeUserPassword';
+import useLogout from '@hooks/mutations/useLogout';
+import TextInput from '@common/inputs/TextInput';
 
 export default function ChangePasswordView() {
 	const { email: username } = useViewer();

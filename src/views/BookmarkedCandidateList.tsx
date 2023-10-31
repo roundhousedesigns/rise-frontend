@@ -2,13 +2,13 @@ import { useEffect, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { chakra, List, ListItem } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import useCandidates from '../hooks/queries/useCandidates';
-import useViewer from '../hooks/queries/useViewer';
-import CandidateItem from '../components/CandidateItem';
-import ErrorAlert from '../components/common/ErrorAlert';
-import useUpdateBookmarkedProfiles from '../hooks/mutations/useUpdateBookmarkedProfiles';
-import { Candidate } from '../lib/classes';
-import { toggleArrayItem } from '../lib/utils';
+import useCandidates from '@hooks/queries/useCandidates';
+import useViewer from '@hooks/queries/useViewer';
+import CandidateItem from '@components/CandidateItem';
+import ErrorAlert from '@common/ErrorAlert';
+import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
+import { Candidate } from '@lib/classes';
+import { toggleArrayItem } from '@lib/utils';
 
 const MotionBox = motion(chakra.div);
 
@@ -40,6 +40,7 @@ const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Ele
 				<ErrorAlert message={error.message} />
 			) : preparedCandidates ? (
 				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
+					{/* TODO move this into <CandidateList /> to DRY yourself off */}
 					<AnimatePresence>
 						{preparedCandidateIds.current?.map((id) => {
 							const candidate = preparedCandidates.find(
