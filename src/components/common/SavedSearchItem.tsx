@@ -16,9 +16,14 @@ import {
 	useToast,
 	Text,
 	ButtonGroup,
+	Popover,
+	PopoverArrow,
+	PopoverBody,
+	PopoverContent,
+	PopoverTrigger,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiSave, FiDelete, FiInfo } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { SearchFilterSetRaw } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
@@ -123,49 +128,72 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 
 	return termIds && termIds.length > 0 ? (
 		<>
-			<Flex alignItems='center' justifyContent='flex-start' flexWrap='wrap'>
-				<Text>{searchTerms.searchName}</Text>
-				<ButtonGroup size='sm' isAttached variant='outline'>
-					{isNamed ? (
+			<Flex gap={0} alignItems='center'>
+				<Text>{searchTerms.searchName} </Text>
+				<Popover placement='bottom'>
+					<PopoverTrigger>
 						<IconButton
-							icon={<FiEdit3 />}
+							m={0}
+							p={0}
+							aria-label='Saved search parameters'
+							icon={<FiInfo />}
+							variant='invisible'
+							title='Saved search parameters'
+						/>
+					</PopoverTrigger>
+					<PopoverContent>
+						<PopoverArrow />
+						<PopoverBody>
+							<SearchParamTags termIds={termIds} termItems={terms} />
+						</PopoverBody>
+					</PopoverContent>
+				</Popover>
+				<ButtonGroup size='xs' isAttached variant='outline'>
+					{isNamed ? (
+						<Button
+							leftIcon={<FiEdit3 />}
 							aria-label='Rename this search'
 							title='Rename'
 							onClick={handleEditClick}
 						>
 							Rename
-						</IconButton>
+						</Button>
 					) : (
-						<Button leftIcon={<FiSave />} colorScheme='green' aria-label='Save this search' variant='inline' onClick={handleEditClick} mr={1}>
+						<Button
+							colorScheme='green'
+							leftIcon={<FiSave />}
+							aria-label='Save this search'
+							onClick={handleEditClick}
+							mr={1}
+						>
 							Save
 						</Button>
 					)}
 					{rerunButton ? (
-						<IconButton
-							icon={<FiSearch />}
+						<Button
+							leftIcon={<FiSearch />}
 							aria-label='Rerun this search'
 							title='Rerun'
 							onClick={handleSearchClick}
 						>
 							Rerun
-						</IconButton>
+						</Button>
 					) : (
 						false
 					)}
 					{deleteButton ? (
-						<IconButton
-							icon={<FiDelete />}
+						<Button
+							leftIcon={<FiDelete />}
 							aria-label='Delete this search'
 							title='Delete'
 							onClick={handleDelete}
 						>
 							Delete
-						</IconButton>
+						</Button>
 					) : (
 						false
 					)}
 				</ButtonGroup>
-				<SearchParamTags termIds={termIds} allTerms={terms} flex='1' />
 			</Flex>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>

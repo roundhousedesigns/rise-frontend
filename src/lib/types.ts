@@ -246,6 +246,16 @@ export interface SearchFilterSetRaw {
 }
 
 /**
+ * The data shape for a search result item: departments, jobs, skills, filters (collected).
+ */
+export interface OrganizedSearchTerms {
+	departments: WPItem[];
+	jobs: WPItem[];
+	skills: WPItem[];
+	filters: WPItem[];
+}
+
+/**
  * The data shape for a search result item (id and search score).
  */
 export interface SearchResultCandidate {

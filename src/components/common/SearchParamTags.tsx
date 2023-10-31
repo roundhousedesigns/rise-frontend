@@ -3,15 +3,15 @@ import { WPItem } from '@lib/classes';
 
 interface Props {
 	termIds: number[];
-	allTerms: WPItem[];
+	termItems: WPItem[];
 	[prop: string]: any;
 }
 
-export default function SearchParamTags({ termIds, allTerms, ...props }: Props) {
-	if (!termIds || !allTerms) return null;
+export default function SearchParamTags({ termIds, termItems, ...props }: Props) {
+	if (!termIds || !termItems) return null;
 
 	const terms: WPItem[] = termIds.map(
-		(termId) => allTerms.find((term: WPItem) => term.id === termId) as WPItem
+		(termId) => termItems.find((term: WPItem) => term.id === termId) as WPItem
 	);
 
 	const departments: WPItem[] = [];
@@ -41,7 +41,7 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 			{departments.length ? (
 				<Wrap spacing={1}>
 					{departments.map((department: WPItem, index: number) => (
-						<Tag key={index} colorScheme='orange'>
+						<Tag key={index} colorScheme='orange' size='sm'>
 							<TagLabel>{department.name}</TagLabel>
 						</Tag>
 					))}
@@ -50,10 +50,10 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 				false
 			)}
 
-			{jobs ? (
+			{jobs.length ? (
 				<Wrap spacing={1}>
 					{jobs.map((job: WPItem, index: number) => (
-						<Tag key={index} colorScheme='blue'>
+						<Tag key={index} colorScheme='blue' size='sm'>
 							<TagLabel>{job.name}</TagLabel>
 						</Tag>
 					))}
@@ -62,10 +62,10 @@ export default function SearchParamTags({ termIds, allTerms, ...props }: Props) 
 				false
 			)}
 
-			{skills && skills.length > 0 ? (
+			{skills.length ? (
 				<Wrap spacing={1}>
 					{skills.map((skill: WPItem, index: number) => (
-						<Tag key={index} colorScheme='green'>
+						<Tag key={index} colorScheme='green' size='sm'>
 							<TagLabel>{skill.name}</TagLabel>
 						</Tag>
 					))}

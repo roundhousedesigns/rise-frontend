@@ -1,4 +1,4 @@
-import { List, ListItem, Heading, Text, Box } from '@chakra-ui/react';
+import { OrderedList, ListItem, Heading, Text, Box } from '@chakra-ui/react';
 import { extractSearchTermIds } from '@lib/utils';
 import { SearchFilterSetRaw } from '@lib/types';
 import useViewer from '@hooks/queries/useViewer';
@@ -20,7 +20,7 @@ export default function SavedSearchItemes() {
 			</Heading>
 
 			{searchTermIdSets.length > 0 ? (
-				<List spacing={2}>
+				<OrderedList spacing={2}>
 					{searchTermIdSets.map((_ignored: any, index: number) => (
 						<ListItem key={index}>
 							<SavedSearchItem
@@ -30,7 +30,7 @@ export default function SavedSearchItemes() {
 							/>
 						</ListItem>
 					))}
-				</List>
+				</OrderedList>
 			) : (
 				<Text fontSize='sm'>No saved searches.</Text>
 			)}
