@@ -4,10 +4,13 @@ import { WPItem } from '@lib/classes';
 interface Props {
 	termIds: number[];
 	termItems: WPItem[];
+	tagProps?: {
+		[prop: string]: any;
+	};
 	[prop: string]: any;
 }
 
-export default function SearchParamTags({ termIds, termItems, ...props }: Props) {
+export default function SearchParamTags({ termIds, termItems, tagProps, ...props }: Props) {
 	if (!termIds || !termItems) return null;
 
 	const terms: WPItem[] = termIds.map(
@@ -41,7 +44,7 @@ export default function SearchParamTags({ termIds, termItems, ...props }: Props)
 			{departments.length ? (
 				<Wrap spacing={1}>
 					{departments.map((department: WPItem, index: number) => (
-						<Tag key={index} colorScheme='orange' size='sm'>
+						<Tag key={index} colorScheme='orange' size='sm' {...tagProps}>
 							<TagLabel>{department.name}</TagLabel>
 						</Tag>
 					))}

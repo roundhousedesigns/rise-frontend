@@ -21,6 +21,12 @@ import {
 	PopoverBody,
 	PopoverContent,
 	PopoverTrigger,
+	Card,
+	Box,
+	Stack,
+	Wrap,
+	Spacer,
+	StackItem,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave, FiDelete, FiInfo } from 'react-icons/fi';
@@ -96,7 +102,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 		onOpen();
 	};
 
-	const handleSaveClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleRenameSubmit = () => {
 		// Omit the searchName property from the searchTerms object.
 		const { searchName, ...filterSet } = searchTerms;
 
@@ -128,101 +134,100 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 
 	return termIds && termIds.length > 0 ? (
 		<>
-			<Flex gap={0} alignItems='center'>
-				<Text>{searchTerms.searchName} </Text>
-				<Popover placement='bottom'>
-					<PopoverTrigger>
-						<IconButton
-							m={0}
-							p={0}
-							aria-label='Saved search parameters'
-							icon={<FiInfo />}
-							variant='invisible'
-							title='Saved search parameters'
-						/>
-					</PopoverTrigger>
-					<PopoverContent>
-						<PopoverArrow />
-						<PopoverBody>
-							<SearchParamTags termIds={termIds} termItems={terms} />
-						</PopoverBody>
-					</PopoverContent>
-				</Popover>
-				<ButtonGroup size='xs' isAttached variant='outline'>
+			<Stack>
+				<StackItem display='flex' alignItems='center' gap={2}>
+					<Text my={0}>{searchTerms.searchName}</Text>
 					{isNamed ? (
-						<Button
-							leftIcon={<FiEdit3 />}
+						<IconButton
+							icon={<FiEdit3 />}
 							aria-label='Rename this search'
 							title='Rename'
+							size='sm'
 							onClick={handleEditClick}
 						>
 							Rename
-						</Button>
+						</IconButton>
 					) : (
-						<Button
+						false
+					)}
+					<Spacer />
+					<Wrap>
+						{rerunButton ? (
+							<IconButton
+								icon={<FiSearch />}
+								aria-label='Rerun this search'
+								title='Rerun'
+								size='sm'
+								onClick={handleSearchClick}
+							>
+								Rerun
+							</IconButton>
+						) : (
+							false
+						)}
+						{deleteButton ? (
+							<IconButton
+								icon={<FiDelete />}
+								aria-label='Delete this search'
+								title='Delete'
+								size='sm'
+								onClick={handleDelete}
+							>
+								Delete
+							</IconButton>
+						) : (
+							false
+						)}
+					</Wrap>
+				</StackItem>
+				<Flex>
+					{!isNamed ? (
+						<IconButton
 							colorScheme='green'
-							leftIcon={<FiSave />}
+							icon={<FiSave />}
 							aria-label='Save this search'
+							title='Save'
 							onClick={handleEditClick}
 							mr={1}
+							size='sm'
 						>
 							Save
-						</Button>
-					)}
-					{rerunButton ? (
-						<Button
-							leftIcon={<FiSearch />}
-							aria-label='Rerun this search'
-							title='Rerun'
-							onClick={handleSearchClick}
-						>
-							Rerun
-						</Button>
+						</IconButton>
 					) : (
 						false
 					)}
-					{deleteButton ? (
-						<Button
-							leftIcon={<FiDelete />}
-							aria-label='Delete this search'
-							title='Delete'
-							onClick={handleDelete}
-						>
-							Delete
-						</Button>
-					) : (
-						false
-					)}
-				</ButtonGroup>
-			</Flex>
+					<SearchParamTags termIds={termIds} termItems={terms} tagProps={{ size: 'md' }} />
+				</Flex>
+			</Stack>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
+
 					<ModalBody pb={6}>
 						<Text>
 							Give this set of parameters a descriptive name to easily re-run this search.
 						</Text>
-						<FormControl>
-							<FormLabel>Name</FormLabel>
-							<TextInput
-								name='searchName'
-								placeholder='My search'
-								onChange={handleSavedSearchNameChange}
-								value={saveSearchFieldText}
-								ref={initialSaveModalRef}
-							/>
-						</FormControl>
-					</ModalBody>
 
-					<ModalFooter>
-						<Button colorScheme='blue' mr={3} onClick={handleSaveClick}>
-							Save
-						</Button>
-						<Button onClick={onClose}>Cancel</Button>
-					</ModalFooter>
+						<form id='rename-search' onSubmit={handleRenameSubmit}>
+							<FormControl>
+								<FormLabel>Name</FormLabel>
+								<TextInput
+									name='searchName'
+									placeholder='My search'
+									onChange={handleSavedSearchNameChange}
+									value={saveSearchFieldText}
+									ref={initialSaveModalRef}
+								/>
+							</FormControl>
+							<Button colorScheme='blue' mr={3} type='submit' form='rename-search'>
+								Save
+							</Button>
+							<Button onClick={onClose}>Cancel</Button>
+						</form>
+					</ModalBody>
 				</ModalContent>
 			</Modal>
 		</>

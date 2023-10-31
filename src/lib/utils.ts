@@ -313,7 +313,7 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
  * containing an array of job IDs.
  *
  * @param searchObj
- * @returns
+ * @returns The flattened search object.
  */
 export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFilterSetRaw {
 	const preparedSearchObj: SearchFilterSetRaw = {
