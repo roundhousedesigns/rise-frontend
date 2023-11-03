@@ -7,19 +7,10 @@ export interface WPItemParams {
 	id: number;
 	name?: string;
 	slug?: string;
+	author?: number;
 	parentId?: number;
 	parent?: any;
 	[key: string]: any;
-}
-
-/**
- * The data shape for a WordPress post item.
- */
-export interface WPPostParams extends WPItemParams {
-	postType: string;
-	title?: string;
-	excerpt?: string;
-	content?: string;
 }
 
 /**

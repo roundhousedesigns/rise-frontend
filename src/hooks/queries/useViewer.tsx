@@ -12,7 +12,6 @@ export const QUERY_VIEWER = gql`
 			firstName
 			lastName
 			email
-			savedSearches
 			searchHistory
 			disableProfile
 			bookmarkedProfileConnections(first: 50) {
@@ -32,7 +31,6 @@ interface Props {
 	email: string;
 	disableProfile: boolean;
 	result: QueryResult;
-	savedSearches: string;
 	searchHistory: string;
 	bookmarkedProfiles: number[];
 }
@@ -48,7 +46,6 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
-		savedSearches,
 		searchHistory,
 		disableProfile,
 		bookmarkedProfileConnections,
@@ -64,7 +61,6 @@ const useViewer = (): Props => {
 		firstName,
 		lastName,
 		email,
-		savedSearches,
 		searchHistory,
 		disableProfile,
 		bookmarkedProfiles,

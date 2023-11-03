@@ -7,7 +7,6 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
-	WPPostParams,
 } from './types';
 import { decodeString } from './utils';
 
@@ -382,13 +381,16 @@ export class WPItem implements WPItemParams {
  */
 export class WPPost extends WPItem {
 	postType: string;
+	author?: number;
 	title?: string;
 	excerpt?: string;
 	content?: string;
 
-	constructor(params: WPItemParams & WPPostParams) {
+	constructor(params: WPItemParams) {
 		super(params);
+
 		this.postType = params.postType;
+		this.author = params.author ? params.author : undefined;
 		this.title = params.title ? unescape(params.title) : undefined;
 		this.excerpt = params.excerpt ? unescape(params.excerpt) : undefined;
 		this.content = params.content ? unescape(params.content) : undefined;

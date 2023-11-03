@@ -1,17 +1,12 @@
-import { List, ListItem, Heading, Text, Box, Card } from '@chakra-ui/react';
-import { extractSearchTermIds } from '@lib/utils';
-import { SearchFilterSetRaw } from '@lib/types';
+import { List, ListItem, Heading, Text, Box, Card, Flex } from '@chakra-ui/react';
 import useViewer from '@hooks/queries/useViewer';
 import SavedSearchItem from '@common/SavedSearchItem';
+import useSavedSearches from '@/hooks/queries/useSavedSearches';
+import { WPPost } from '@/lib/classes';
 
-export default function SavedSearchItemes() {
-	const { savedSearches } = useViewer();
-
-	// Get the term IDs for each search.
-	const savedSearchesArr = savedSearches ? JSON.parse(savedSearches) : [];
-	const searchTermIdSets = savedSearchesArr
-		? savedSearchesArr.map((search: SearchFilterSetRaw) => extractSearchTermIds(search))
-		: [];
+export default function SavedSearchItems() {
+	const { loggedInId } = useViewer();
+	const [savedSearches] = useSavedSearches(loggedInId);
 
 	return (
 		<Box>
@@ -19,25 +14,38 @@ export default function SavedSearchItemes() {
 				Saved Searches
 			</Heading>
 
-			{searchTermIdSets.length > 0 ? (
-				<List spacing={2}>
-					{searchTermIdSets.map((_ignored: any, index: number) => (
-						<Card
-							_dark={{ bgColor: 'gray.800' }}
-							_light={{ bgColor: 'gray.50' }}
-							as={ListItem}
-							my={0}
-							py={2}
-							key={index}
-						>
-							<SavedSearchItem
-								searchTerms={savedSearchesArr[index]}
-								deleteButton={true}
-								rerunButton={true}
-							/>
-						</Card>
-					))}
-				</List>
+			{savedSearches && savedSearches.length > 0 ? (
+				<Flex as={List} gap={2} flexWrap='wrap'>
+					{savedSearches.map((savedSearch: WPPost) => {
+						const { id, content, title } = savedSearch;
+						if (!content) {
+							return;
+						}
+
+						const filters = JSON.parse(content);
+
+						return (
+							<Card
+								as={ListItem}
+								key={id}
+								my={0}
+								py={2}
+								flex='auto'
+								maxWidth='half'
+								_dark={{ bgColor: 'gray.800' }}
+								_light={{ bgColor: 'gray.50' }}
+							>
+								<SavedSearchItem
+									id={id}
+									searchTerms={filters}
+									title={title}
+									deleteButton={true}
+									rerunButton={true}
+								/>
+							</Card>
+						);
+					})}
+				</Flex>
 			) : (
 				<Text fontSize='sm'>No saved searches.</Text>
 			)}

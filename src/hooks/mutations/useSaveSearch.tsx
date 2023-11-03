@@ -4,41 +4,38 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { SearchFilterSetRaw } from '@lib/types';
-import { QUERY_VIEWER } from '../queries/useViewer';
+import { QUERY_SAVED_SEARCHES } from '../queries/useSavedSearches';
 
-const MUTATE_SAVE_SEARCH = gql`
-	mutation SaveSearchFilters($input: SaveSearchFiltersInput = {}) {
-		saveSearchFilters(input: $input) {
-			success
-			clientMutationId
+const MUTATE_UPDATE_SAVED_SEARCH = gql`
+	mutation SaveSearch($filterSet: SearchFilterSetRaw!, $id: ID!, $title: String!, $userId: ID!) {
+		saveSearch(input: { filterSet: $filterSet, id: $id, title: $title, userId: $userId }) {
+			id
 		}
 	}
 `;
 
 const useSaveSearch = () => {
-	const [mutation, results] = useMutation(MUTATE_SAVE_SEARCH, {
-		refetchQueries: [QUERY_VIEWER],
+	const [mutation, results] = useMutation(MUTATE_UPDATE_SAVED_SEARCH, {
+		refetchQueries: [QUERY_SAVED_SEARCHES],
 	});
 
 	const saveSearchFiltersMutation = ({
+		id,
+		title,
 		filterSet,
-		oldSearchName,
-		searchName,
-		searchUserId,
+		userId,
 	}: {
+		id: number;
+		title: string;
 		filterSet: SearchFilterSetRaw;
-		oldSearchName?: string;
-		searchName: string;
-		searchUserId: number;
+		userId: number;
 	}) => {
 		return mutation({
 			variables: {
-				input: {
-					filterSet,
-					oldSearchName,
-					searchName,
-					searchUserId,
-				},
+				id,
+				title,
+				filterSet,
+				userId,
 			},
 		});
 	};

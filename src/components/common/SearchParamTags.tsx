@@ -56,7 +56,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 			{jobs.length ? (
 				<Wrap spacing={1}>
 					{jobs.map((job: WPItem, index: number) => (
-						<Tag key={index} colorScheme='blue' size='sm'>
+						<Tag key={index} colorScheme='blue' size='sm' {...tagProps}>
 							<TagLabel>{job.name}</TagLabel>
 						</Tag>
 					))}
@@ -68,7 +68,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 			{skills.length ? (
 				<Wrap spacing={1}>
 					{skills.map((skill: WPItem, index: number) => (
-						<Tag key={index} colorScheme='green' size='sm'>
+						<Tag key={index} colorScheme='green' size='sm' {...tagProps}>
 							<TagLabel>{skill.name}</TagLabel>
 						</Tag>
 					))}

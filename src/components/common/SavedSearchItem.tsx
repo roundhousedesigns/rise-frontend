@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef, FormEvent } from 'react';
 import {
 	Flex,
 	IconButton,
@@ -9,27 +9,18 @@ import {
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
-	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
 	useDisclosure,
 	useToast,
 	Text,
-	ButtonGroup,
-	Popover,
-	PopoverArrow,
-	PopoverBody,
-	PopoverContent,
-	PopoverTrigger,
-	Card,
-	Box,
 	Stack,
 	Wrap,
 	Spacer,
 	StackItem,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiSearch, FiSave, FiDelete, FiInfo } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { SearchFilterSetRaw } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
@@ -42,17 +33,23 @@ import SearchParamTags from '@common/SearchParamTags';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
 
 interface Props {
+	id: number;
+	title?: string;
 	searchTerms: SearchFilterSetRaw;
 	deleteButton?: boolean;
 	rerunButton?: boolean;
 }
 
-export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton }: Props) {
+export default function SavedSearchItem({
+	id,
+	title,
+	searchTerms,
+	deleteButton,
+	rerunButton,
+}: Props) {
 	const { loggedInId } = useViewer();
-	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(
-		searchTerms.searchName ? searchTerms.searchName : ''
-	);
-	const [, { data: { filteredCandidates } = [] }] = useCandidateSearch();
+	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
+	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
 		searchDispatch,
@@ -60,7 +57,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 
 	const { openDrawer } = useContext(SearchDrawerContext);
 
-	const isNamed = searchTerms.searchName && searchTerms.searchName !== '';
+	const isNamed = title && title !== '';
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const initialSaveModalRef = useRef(null);
@@ -102,15 +99,17 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 		onOpen();
 	};
 
-	const handleRenameSubmit = () => {
+	const handleRenameSubmit = (e: FormEvent) => {
+		e.preventDefault();
+
 		// Omit the searchName property from the searchTerms object.
 		const { searchName, ...filterSet } = searchTerms;
 
 		saveSearchFiltersMutation({
-			searchUserId: loggedInId,
-			oldSearchName: searchTerms.searchName ? searchTerms.searchName : undefined,
-			searchName: saveSearchFieldText,
+			userId: loggedInId,
+			title: saveSearchFieldText,
 			filterSet,
+			id,
 		}).then(() => {
 			toast({
 				title: 'Saved!',
@@ -136,7 +135,9 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 		<>
 			<Stack>
 				<StackItem display='flex' alignItems='center' gap={2}>
-					<Text my={0}>{searchTerms.searchName}</Text>
+					<Text my={0} fontSize='lg'>
+						{title}
+					</Text>
 					{isNamed ? (
 						<IconButton
 							icon={<FiEdit3 />}
@@ -151,7 +152,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 						false
 					)}
 					<Spacer />
-					<Wrap>
+					<StackItem as={Wrap} alignItems='center'>
 						{rerunButton ? (
 							<IconButton
 								icon={<FiSearch />}
@@ -178,9 +179,9 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 						) : (
 							false
 						)}
-					</Wrap>
+					</StackItem>
 				</StackItem>
-				<Flex>
+				<StackItem as={Flex}>
 					{!isNamed ? (
 						<IconButton
 							colorScheme='green'
@@ -196,8 +197,8 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 					) : (
 						false
 					)}
-					<SearchParamTags termIds={termIds} termItems={terms} tagProps={{ size: 'md' }} />
-				</Flex>
+					<SearchParamTags termIds={termIds} termItems={terms} />
+				</StackItem>
 			</Stack>
 
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={onClose}>
@@ -222,7 +223,7 @@ export default function SavedSearchItem({ searchTerms, deleteButton, rerunButton
 									ref={initialSaveModalRef}
 								/>
 							</FormControl>
-							<Button colorScheme='blue' mr={3} type='submit' form='rename-search'>
+							<Button colorScheme='blue' mr={3} type='submit'>
 								Save
 							</Button>
 							<Button onClick={onClose}>Cancel</Button>
