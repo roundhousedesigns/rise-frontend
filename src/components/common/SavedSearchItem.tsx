@@ -245,7 +245,5 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 				Are you sure you want to delete this saved search?
 			</ConfirmActionDialog>
 		</>
-	) : (
-		false
-	);
+	) : null;
 }
