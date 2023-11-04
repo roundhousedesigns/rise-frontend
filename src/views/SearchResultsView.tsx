@@ -42,11 +42,7 @@ export default function SearchResultsView() {
 	return (
 		<Box mt={4}>
 			<Flex alignItems='center' mt={4} mb={3}>
-				<SavedSearchItem
-					searchTerms={flattenfilterSetPositions(filterSet)}
-					deleteButton={false}
-					rerunButton={false}
-				/>
+				<SavedSearchItem searchTerms={flattenfilterSetPositions(filterSet)} />
 			</Flex>
 			{searchActive ? (
 				<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>

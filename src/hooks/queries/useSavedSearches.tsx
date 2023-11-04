@@ -20,10 +20,10 @@ export const QUERY_SAVED_SEARCHES = gql`
 	}
 `;
 
-export default function useSavedSearches(user_id: number) {
+export default function useSavedSearches(userId: number) {
 	const result = useQuery(QUERY_SAVED_SEARCHES, {
 		variables: {
-			author: user_id,
+			author: userId,
 		},
 	});
 

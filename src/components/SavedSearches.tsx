@@ -10,7 +10,7 @@ export default function SavedSearchItems() {
 
 	return (
 		<Box>
-			<Heading as='h2' variant='pageSubtitle'>
+			<Heading variant='contentSubtitle'>
 				Saved Searches
 			</Heading>
 
@@ -39,8 +39,6 @@ export default function SavedSearchItems() {
 									id={id}
 									searchTerms={filters}
 									title={title}
-									deleteButton={true}
-									rerunButton={true}
 								/>
 							</Card>
 						);

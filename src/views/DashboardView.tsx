@@ -10,6 +10,7 @@ import {
 	IconButton,
 	Stack,
 	StackItem,
+	Box,
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -56,12 +57,12 @@ export default function DashboardView() {
 							Get Help
 						</Button>
 					</Flex>
+
+					<Box mt={4}>
+						<SavedSearches />
+					</Box>
 				</Flex>
 			</StackItem>
-
-			<Card flex='1'>
-				<SavedSearches />
-			</Card>
 
 			{notices.length > 0 ? (
 				<StackItem>

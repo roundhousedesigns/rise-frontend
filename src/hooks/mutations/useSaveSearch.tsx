@@ -8,39 +8,40 @@ import { QUERY_SAVED_SEARCHES } from '../queries/useSavedSearches';
 
 const MUTATE_UPDATE_SAVED_SEARCH = gql`
 	mutation SaveSearch($filterSet: SearchFilterSetRaw!, $id: ID!, $title: String!, $userId: ID!) {
-		saveSearch(input: { filterSet: $filterSet, id: $id, title: $title, userId: $userId }) {
+		updateOrCreateSavedSearch(
+			input: { filterSet: $filterSet, id: $id, title: $title, userId: $userId }
+		) {
 			id
 		}
 	}
 `;
 
 const useSaveSearch = () => {
-	const [mutation, results] = useMutation(MUTATE_UPDATE_SAVED_SEARCH, {
-		refetchQueries: [QUERY_SAVED_SEARCHES],
-	});
+	const [mutation, results] = useMutation(MUTATE_UPDATE_SAVED_SEARCH);
 
-	const saveSearchFiltersMutation = ({
+	const saveSearchMutation = ({
 		id,
 		title,
 		filterSet,
 		userId,
 	}: {
-		id: number;
+		id?: number;
 		title: string;
 		filterSet: SearchFilterSetRaw;
 		userId: number;
 	}) => {
 		return mutation({
 			variables: {
-				id,
+				id: id ? id : 0,
 				title,
 				filterSet,
 				userId,
 			},
+			refetchQueries: [{ query: QUERY_SAVED_SEARCHES, variables: { author: userId } }],
 		});
 	};
 
-	return { saveSearchFiltersMutation, results };
+	return { saveSearchMutation, results };
 };
 
 export default useSaveSearch;
