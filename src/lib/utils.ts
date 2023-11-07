@@ -4,7 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
-import { SearchFilterSet, SearchFilterSetRaw } from './types';
+import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**
@@ -322,4 +322,19 @@ export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFil
 	};
 
 	return preparedSearchObj;
+}
+
+/**
+ * Convert an array of user IDs to an array of SearchResultCandidate objects scored as '0'.
+ *
+ * @param userIds
+ * @returns
+ */
+export function convertUnscoredToScored(userIds: (number | string)[]): SearchResultCandidate[] {
+	return userIds.map((id) => {
+		return {
+			id: parseInt(id.toString()),
+			score: 0,
+		};
+	});
 }

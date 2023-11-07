@@ -9,6 +9,7 @@ import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import { SearchContext } from '@context/SearchContext';
 import useSearchByName from '@hooks/queries/useSearchByName';
 import SearchDrawerContext from '@context/SearchDrawerContext';
+import { convertUnscoredToScored } from '@/lib/utils';
 
 export default function SearchFilterName() {
 	const {
@@ -34,10 +35,12 @@ export default function SearchFilterName() {
 	useEffect(() => {
 		if (isEqual(usersByName, results) || !usersByName) return;
 
+		const searchByNameResults = convertUnscoredToScored(usersByName);
+
 		searchDispatch({
 			type: 'SET_RESULTS',
 			payload: {
-				results: usersByName,
+				results: searchByNameResults,
 			},
 		});
 	}, [usersByName]);

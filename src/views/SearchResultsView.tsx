@@ -1,10 +1,10 @@
 import { useContext, useMemo } from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { flattenfilterSetPositions } from '@/lib/utils';
-import CandidateList from '@components/CandidateList';
 import { SearchContext } from '@context/SearchContext';
 import TextCenterline from '@common/TextCenterline';
-import SavedSearchItem from '@/components/common/SavedSearchItem';
+import SavedSearchItem from '@common/SavedSearchItem';
+import CandidateList from '@components/CandidateList';
 
 export default function SearchResultsView() {
 	const {
