@@ -6,6 +6,7 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { WPPost } from '@lib/classes';
 import { WPItemParams } from '@/lib/types';
+import useViewer from './useViewer';
 
 export const QUERY_SAVED_SEARCHES = gql`
 	query QuerySavedSearches($author: Int!) {
@@ -20,10 +21,11 @@ export const QUERY_SAVED_SEARCHES = gql`
 	}
 `;
 
-export default function useSavedSearches(userId: number) {
+export default function useSavedSearches() {
+	const { loggedInId } = useViewer();
 	const result = useQuery(QUERY_SAVED_SEARCHES, {
 		variables: {
-			author: userId,
+			author: loggedInId,
 		},
 	});
 
