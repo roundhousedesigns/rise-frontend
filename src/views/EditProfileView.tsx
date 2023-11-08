@@ -81,15 +81,13 @@ import XIcon from '@common/icons/X';
 
 interface Props {
 	profile: UserProfile | null;
-	profileLoading: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
-// TODO kill profileLoading prop, just use it in the parent.
-export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
+export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const { colorMode } = useColorMode();
@@ -778,7 +776,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			{disableProfile ? <ProfileDisabledNotice /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
-					{profileLoading && <Spinner alignSelf='center' />}
 					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
 						{isLargerThanMd ? <ProfileImageUploader /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>

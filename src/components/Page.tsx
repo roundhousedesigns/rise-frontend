@@ -11,7 +11,6 @@ interface Props {
 
 export default function Page({ title, actions, loading, children, ...props }: Props) {
 	return loading ? (
-		// TODO style the Page spinner, and move data logic from Views to Pages
 		<Center>
 			<Spinner position='relative' top={12} />
 		</Center>

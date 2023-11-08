@@ -55,9 +55,9 @@ export default function EditProfile() {
 		<Page title={'Update Profile'} actions={!disableProfile ? <PageActions /> : undefined}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
-					<EditProfileView profile={profile} profileLoading={loading} />
+					<EditProfileView profile={profile} />
 				) : loading ? (
-					<Spinner />
+					<Spinner alignSelf='center' />
 				) : error ? (
 					<ErrorAlert message={error.message} />
 				) : (
