@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
+import LoggedIn from '@components/LoggedIn';
 import Dashboard from '@routes/Dashboard';
 import Login from '@routes/Login';
 import LostPassword from '@routes/LostPassword';
@@ -12,7 +13,6 @@ import BookmarkedProfiles from '@routes/BookmarkedProfiles';
 import Settings from '@routes/Settings';
 import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
-import LoggedIn from '../LoggedIn';
 import SavedSearches from '@/routes/SavedSearches';
 
 const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
