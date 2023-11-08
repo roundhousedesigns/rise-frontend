@@ -1,4 +1,4 @@
-import { Text, Card, Flex, chakra, Box, Stack, Container } from '@chakra-ui/react';
+import { chakra, Text, Card, Stack, Container } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { WPPost } from '@/lib/classes';
 import useSavedSearches from '@/hooks/queries/useSavedSearches';

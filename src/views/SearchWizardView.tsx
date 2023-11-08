@@ -7,7 +7,6 @@ import {
 	AccordionPanel,
 	Box,
 	Fade,
-	Text,
 	Spacer,
 	Stack,
 } from '@chakra-ui/react';
