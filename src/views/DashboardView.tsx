@@ -10,14 +10,12 @@ import {
 	IconButton,
 	Stack,
 	StackItem,
-	Box,
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
 import ShortPost from '@common/ShortPost';
-import SavedSearches from '@components/SavedSearches';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
@@ -57,10 +55,6 @@ export default function DashboardView() {
 							Get Help
 						</Button>
 					</Flex>
-
-					<Box mt={4}>
-						<SavedSearches />
-					</Box>
 				</Flex>
 			</StackItem>
 

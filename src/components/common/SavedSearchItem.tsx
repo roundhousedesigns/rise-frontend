@@ -17,6 +17,7 @@ import {
 	Wrap,
 	Spacer,
 	StackItem,
+	Flex,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
@@ -37,9 +38,10 @@ interface Props {
 	id?: number;
 	title?: string;
 	searchTerms: SearchFilterSetRaw;
+	[prop: string]: any;
 }
 
-export default function SavedSearchItem({ id, title, searchTerms }: Props) {
+export default function SavedSearchItem({ id, title, searchTerms, ...props }: Props) {
 	const { loggedInId } = useViewer();
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
@@ -137,7 +139,7 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 
 	return termIds && termIds.length > 0 ? (
 		<>
-			<Stack>
+			<Stack w='full' {...props}>
 				<StackItem display='flex' alignItems='center' gap={2}>
 					<Text my={0} fontSize='lg'>
 						{title}
@@ -145,9 +147,10 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 					{isNamed ? (
 						<IconButton
 							icon={<FiEdit3 />}
+							colorScheme='blue'
 							aria-label='Rename this search'
 							title='Rename'
-							size='sm'
+							size='xs'
 							onClick={handleEditClick}
 						>
 							Rename
@@ -160,6 +163,7 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 						{id ? (
 							<IconButton
 								icon={<FiSearch />}
+								colorScheme='green'
 								aria-label='Rerun this search'
 								title='Rerun'
 								size='sm'
@@ -173,6 +177,7 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 						{id ? (
 							<IconButton
 								icon={<FiDelete />}
+								colorScheme='orange'
 								aria-label='Delete this search'
 								title='Delete'
 								size='sm'
@@ -185,23 +190,26 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 						)}
 					</StackItem>
 				</StackItem>
-				<StackItem display='flex'>
-					{!isNamed ? (
-						<Button
-							colorScheme='blue'
-							leftIcon={<FiSave />}
-							aria-label='Save this search'
-							title='Save'
-							onClick={handleEditClick}
-							mr={1}
-							size='sm'
-						>
-							Save
-						</Button>
-					) : (
-						false
-					)}
-					<SearchParamTags termIds={termIds} termItems={terms} />
+				<StackItem>
+					<Flex w='full' justifyContent='space-between'>
+						<SearchParamTags termIds={termIds} termItems={terms} />
+						{!isNamed ? (
+							<IconButton
+								colorScheme='blue'
+								icon={<FiSave />}
+								aria-label='Save this search'
+								title='Save this search'
+								onClick={handleEditClick}
+								ml={2}
+								size='sm'
+								borderRadius='full'
+							>
+								Save
+							</IconButton>
+						) : (
+							false
+						)}
+					</Flex>
 				</StackItem>
 			</Stack>
 
@@ -212,9 +220,7 @@ export default function SavedSearchItem({ id, title, searchTerms }: Props) {
 					<ModalCloseButton />
 
 					<ModalBody pb={6}>
-						<Text>
-							Give this set of parameters a descriptive name to easily re-run this search.
-						</Text>
+						<Text>Give this search a descriptive name to easily re-run this search.</Text>
 
 						<form id='rename-search' onSubmit={handleRenameSubmit}>
 							<FormControl>

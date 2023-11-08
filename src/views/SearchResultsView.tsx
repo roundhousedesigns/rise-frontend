@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Container, Text } from '@chakra-ui/react';
 import { flattenfilterSetPositions } from '@/lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import TextCenterline from '@common/TextCenterline';
@@ -40,10 +40,8 @@ export default function SearchResultsView() {
 	}, [results]);
 
 	return (
-		<Box mt={4}>
-			<Flex alignItems='center' mt={4} mb={3}>
-				<SavedSearchItem searchTerms={flattenfilterSetPositions(filterSet)} />
-			</Flex>
+		<>
+			<SavedSearchItem searchTerms={flattenfilterSetPositions(filterSet)} />
 			{searchActive ? (
 				<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 			) : (
@@ -57,6 +55,6 @@ export default function SearchResultsView() {
 					Only showing the first 100 results. Try refining your search!
 				</Text>
 			) : null}
-		</Box>
+		</>
 	);
 }

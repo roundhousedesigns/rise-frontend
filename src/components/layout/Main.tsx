@@ -13,6 +13,7 @@ import Settings from '@routes/Settings';
 import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
 import LoggedIn from '../LoggedIn';
+import SavedSearches from '@/routes/SavedSearches';
 
 const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
 	<LoggedIn>{component}</LoggedIn>
@@ -37,7 +38,11 @@ export default function Main() {
 					<Route path='/profile/:slug' element={<LoggedInComponent component={<Profile />} />} />
 					<Route path='/profile/edit' element={<LoggedInComponent component={<EditProfile />} />} />
 					<Route path='/results' element={<LoggedInComponent component={<Results />} />} />
-					<Route path='/bookmarks' element={<LoggedInComponent component={<BookmarkedProfiles />} />} />
+					<Route
+						path='/bookmarks'
+						element={<LoggedInComponent component={<BookmarkedProfiles />} />}
+					/>
+					<Route path='/searches' element={<LoggedInComponent component={<SavedSearches />} />} />
 					<Route path='/settings' element={<LoggedInComponent component={<Settings />} />} />
 					<Route path='/help' element={<LoggedInComponent component={<Help />} />} />
 

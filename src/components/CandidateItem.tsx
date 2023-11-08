@@ -30,6 +30,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				as={RouterLink}
 				to={`/profile/${slug}`}
 				py={2}
+				mr={4}
 				my={0}
 				_dark={{
 					bg: 'gray.800',
