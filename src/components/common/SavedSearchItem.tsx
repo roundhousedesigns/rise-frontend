@@ -107,6 +107,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		}).then(() => {
 			toast({
 				title: 'Saved!',
+				description: 'Find your saved searches in the menu, or in the Search drawer.',
 				position: 'top',
 				status: 'success',
 				duration: 3000,
