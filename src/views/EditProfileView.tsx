@@ -1281,6 +1281,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					borderTopWidth: '1px',
 					borderTopColor: 'gray.100',
 					textAlign: 'right',
+					zIndex: 3,
 				}}
 			>
 				<Button
