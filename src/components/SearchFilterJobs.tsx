@@ -17,6 +17,7 @@ export default function SearchFilterJobs() {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
+
 	const [jobItems, { loading, error }] = usePositions([Number(departments[0])]);
 
 	const handleToggleTerm = (terms: string[]) => {
@@ -35,7 +36,7 @@ export default function SearchFilterJobs() {
 					<Heading as='h3' variant='searchFilterTitle'>
 						What job(s) are you looking to fill?
 					</Heading>
-					<CheckboxGroup defaultValue={jobs} onChange={handleToggleTerm}>
+					<CheckboxGroup value={jobs} onChange={handleToggleTerm}>
 						<Wrap>
 							{jobItems.map((term: WPItem) => (
 								<CheckboxButton key={term.id} value={term.id.toString()}>

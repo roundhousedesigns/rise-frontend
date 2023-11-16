@@ -72,7 +72,7 @@ export default function AdditionalSearchFilters() {
 
 	return (
 		<Fade in={searchActive} id='filterAdditional'>
-			<Accordion w='full' allowMultiple defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
+			<Accordion w='full' allowToggle defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
 				<SearchFilterAccordionItem
 					heading='Additional Filters'
 					headingProps={{
