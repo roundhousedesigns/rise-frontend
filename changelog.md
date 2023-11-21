@@ -2,9 +2,10 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.1.0] - Unreleased
+## \[1.1.0] - 2023-11-21
 
 - Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
+- Feature: Saved Searches (history removed) are active
 - Feature: Search results shows currently active search filters
 - Feature: Footer notice field moved to the backend (un-hardcoded)
 - Improve: Internship/Fellowship credit and profile tags
