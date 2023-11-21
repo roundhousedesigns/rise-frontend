@@ -1,5 +1,6 @@
 import { Flex, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
+import { isEqual } from 'lodash';
 
 interface Props {
 	termIds: number[];
@@ -17,17 +18,15 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 		(termId) => termItems.find((term: WPItem) => term.id === termId) as WPItem
 	);
 
-	const departments: WPItem[] = [];
-	terms.forEach((term) => {
-		const { taxonomyName } = term;
-		if (taxonomyName !== 'position') return;
-
-		if (term.parent) {
-			departments.push(term.parent);
-		} else {
-			departments.push(term);
-		}
-	});
+	const departments: WPItem[] = terms
+		.filter((term) => term.taxonomyName === 'position')
+		.reduce((acc: WPItem[], term: WPItem) => {
+			const termToAdd = term.parent || term;
+			if (!acc.find((department) => isEqual(department, termToAdd))) {
+				acc.push(termToAdd);
+			}
+			return acc;
+		}, []);
 
 	const jobs = terms.filter((term) => {
 		return term.taxonomyName === 'position' && term.parent;
@@ -41,9 +40,6 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 
 	return (
 		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
-			{/* <Text as='span' my={0} fontWeight='bold'>
-				&bull;
-			</Text> */}
 			{departments.length ? (
 				<Wrap spacing={1}>
 					{departments.map((department: WPItem, index: number) => (
