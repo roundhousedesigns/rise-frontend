@@ -20,9 +20,6 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	remove: defineStyle({
-		bg: 'transparent',
-	}),
 	inline: defineStyle({
 		cursor: 'default',
 		display: 'inline-flex',

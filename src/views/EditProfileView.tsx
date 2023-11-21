@@ -54,42 +54,40 @@ import {
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 
-import { Credit, UserProfile } from '../lib/classes';
-import { EditProfileContext } from '../context/EditProfileContext';
-import { useProfileEdited } from '../hooks/hooks';
-import useViewer from '../hooks/queries/useViewer';
-import useUpdateProfile from '../hooks/mutations/useUpdateProfile';
-import useDeleteCredit from '../hooks/mutations/useDeleteCredit';
-import useUserTaxonomies from '../hooks/queries/useUserTaxonomies';
-import useFileUpload from '../hooks/mutations/useFileUpload';
-import useClearProfileField from '../hooks/mutations/useClearProfileFileField';
-import useUpdateCreditOrder from '../hooks/mutations/useUpdateCreditOrder';
-import CreditItem from '../components/CreditItem';
-import EditCreditModal from '../components/EditCreditModal';
-import DeleteCreditButton from '../components/DeleteCreditButton';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import ProfileCheckboxGroup from '../components/common/ProfileCheckboxGroup';
-import ProfileRadioGroup from '../components/common/ProfileRadioGroup';
-import TextInput from '../components/common/inputs/TextInput';
-import TextareaInput from '../components/common/inputs/TextareaInput';
-import FileUploadButton from '../components/common/inputs/FileUploadButton';
-import ProfileDisabledNotice from '../components/common/ProfileDisabledNotice';
-import XIcon from '../components/common/icons/X';
+import { Credit, UserProfile } from '@lib/classes';
+import { EditProfileContext } from '@context/EditProfileContext';
+import { useProfileEdited } from '@hooks/hooks';
+import useViewer from '@hooks/queries/useViewer';
+import useUpdateProfile from '@hooks/mutations/useUpdateProfile';
+import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useFileUpload from '@hooks/mutations/useFileUpload';
+import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
+import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
+import CreditItem from '@components/CreditItem';
+import EditCreditModal from '@components/EditCreditModal';
+import DeleteCreditButton from '@components/DeleteCreditButton';
+import HeadingCenterline from '@common/HeadingCenterline';
+import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
+import ProfileRadioGroup from '@common/ProfileRadioGroup';
+import TextInput from '@common/inputs/TextInput';
+import TextareaInput from '@common/inputs/TextareaInput';
+import FileUploadButton from '@common/inputs/FileUploadButton';
+import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
+import XIcon from '@common/icons/X';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
 
 interface Props {
 	profile: UserProfile | null;
-	profileLoading: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The profile view.
  */
-// TODO kill profileLoading prop, just use it in the parent.
-export default function EditProfileView({ profile, profileLoading }: Props): JSX.Element | null {
+export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
 	const { colorMode } = useColorMode();
@@ -778,7 +776,6 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 			{disableProfile ? <ProfileDisabledNotice /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<StackItem py={2} mt={2}>
-					{profileLoading && <Spinner alignSelf='center' />}
 					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
 						{isLargerThanMd ? <ProfileImageUploader /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
@@ -1284,6 +1281,7 @@ export default function EditProfileView({ profile, profileLoading }: Props): JSX
 					borderTopWidth: '1px',
 					borderTopColor: 'gray.100',
 					textAlign: 'right',
+					zIndex: 3,
 				}}
 			>
 				<Button

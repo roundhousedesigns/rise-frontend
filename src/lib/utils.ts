@@ -4,7 +4,20 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
+import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
+
+/**
+ * Additional filter keys. Affects display order.
+ */
+export const additionalFilterKeys: string[] = [
+	'locations',
+	'unions',
+	'experienceLevels',
+	'genderIdentities',
+	'racialIdentities',
+	'personalIdentities',
+];
 
 /** Generate a link to a social media profile.
  *
@@ -30,21 +43,6 @@ export function socialLink(network: string, value: string): string {
 	}
 
 	return socialLinkBases[network as keyof PersonalLinks] + suffix;
-}
-
-/**
- * Parse a string to an integer if it is a string.
- *
- * @param value
- * @returns
- */
-// TODO decide if we can just cast things as Numbers without this.
-export function maybeParseInt(value: string | number): number {
-	if (typeof value === 'string') {
-		return parseInt(value, 10);
-	}
-
-	return value;
 }
 
 /**
@@ -228,3 +226,115 @@ export const toggleArrayItem = (array: any[], item: any): any[] => {
 
 	return [...array, item];
 };
+
+/**
+ * Extract the IDs of terms from a JSON string.
+ * @param json The JSON string to extract the IDs from.
+ * @returns The IDs of the terms.
+ */
+export function getUniqueTermIdsFromString(json: any): number[] {
+	const numericStrings = json.match(/\d+/g);
+	const ids = numericStrings?.map((id: string) => Number(id));
+
+	return ids ? [...new Set<number>(ids)] : [];
+}
+
+/**
+ * Extract the IDs of terms from an object.
+ * @param obj  The object to extract the IDs from.
+ * @returns The IDs of the terms.
+ */
+export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw): number[] {
+	if (!obj) return [];
+
+	const ignoreKeys = ['searchName'];
+
+	const numbersArray: number[] = [];
+
+	Object.keys(obj).forEach((key) => {
+		// Ignore the 'searchName' key
+		if (ignoreKeys.includes(key)) return;
+
+		const value = obj[key];
+
+		// If the value is an object, recurse.
+		if (typeof value === 'object' && value !== null) {
+			numbersArray.push(...extractSearchTermIds(value));
+		}
+
+		// If the value is a string, check if it's a number.
+		if (typeof value === 'string') {
+			const number = Number(value);
+
+			if (!isNaN(number)) {
+				numbersArray.push(number);
+			}
+		}
+	});
+
+	return numbersArray;
+}
+
+/**
+ * Prepare a search object for use in frontend searching.
+ *
+ * @param searchObj The search object to prepare.
+ * @param terms The terms to use for preparing the search object.
+ * @returns The prepared search object.
+ */
+export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchFilterSet {
+	let departmentId: number = 0;
+
+	// Get the term from `terms` that matches the first `position` in the search object.
+	// (There will only ever be one department, so we can bail after the first match.)
+	for (let term of terms) {
+		if (term.id === Number(searchObj.positions[0])) {
+			if (!term.parent) {
+				departmentId = term.id;
+			} else {
+				departmentId = term.parent.id;
+			}
+
+			break;
+		}
+	}
+
+	return {
+		...searchObj,
+		positions: {
+			departments: [departmentId.toString()],
+			jobs: searchObj.positions,
+		},
+	};
+}
+
+/**
+ * Flattens the `positions` object to a single `positions` property
+ * containing an array of job IDs.
+ *
+ * @param searchObj
+ * @returns The flattened search object.
+ */
+export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFilterSetRaw {
+	const preparedSearchObj: SearchFilterSetRaw = {
+		...searchObj,
+		positions: searchObj.positions.jobs,
+	};
+
+	return preparedSearchObj;
+}
+
+/**
+ * Convert an array of user IDs to an array of SearchResultCandidate objects scored as '0'.
+ *
+ * @param userIds
+ * @returns
+ */
+export function convertUnscoredToScored(userIds: (number | string)[]): SearchResultCandidate[] {
+	return userIds.map((id) => {
+		return {
+			id: parseInt(id.toString()),
+			score: 0,
+		};
+	});
+}

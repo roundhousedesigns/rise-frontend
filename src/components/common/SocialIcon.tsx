@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 import { IconButton, Link } from '@chakra-ui/react';
-import { socialLink } from '../../lib/utils';
+import { socialLink } from '@lib/utils';
 
 interface Props {
 	label: string;

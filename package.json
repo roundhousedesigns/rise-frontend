@@ -2,7 +2,7 @@
   "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "1.0.9.3",
+  "version": "1.1.0beta",
   "type": "module",
   "engines": {
     "node": ">=16.19.0"
@@ -13,15 +13,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.1",
-    "@chakra-ui/react": "^2.8.0",
+    "@apollo/client": "^3.8.6",
+    "@chakra-ui/react": "^2.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.10.5",
+    "@types/node": "^20.8.2",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
     "framer-motion": "^8.5.0",
-    "graphql": "^16.8.0",
+    "graphql": "^16.8.1",
     "html-react-parser": "^3.0.16",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
@@ -29,9 +30,9 @@
     "react-dropzone": "^14.2.3",
     "react-ga4": "^2.1.0",
     "react-google-recaptcha-v3": "^1.10.1",
-    "react-icons": "^4.7.1",
-    "react-player": "^2.11.1",
-    "react-router-dom": "^6.15.0",
+    "react-icons": "^4.11.0",
+    "react-player": "^2.13.0",
+    "react-router-dom": "^6.17.0",
     "semver": "^7.5.4",
     "web-vitals": "^3.5.0"
   },

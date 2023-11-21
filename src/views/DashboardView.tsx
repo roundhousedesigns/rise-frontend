@@ -1,6 +1,5 @@
 import {
 	Card,
-	Box,
 	Heading,
 	Button,
 	Flex,
@@ -9,21 +8,23 @@ import {
 	List,
 	ListItem,
 	IconButton,
+	Stack,
+	StackItem,
 } from '@chakra-ui/react';
 import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import useViewer from '../hooks/queries/useViewer';
-import useUserNotices from '../hooks/queries/useUserNotices';
-import ShortPost from '../components/common/ShortPost';
+import useViewer from '@hooks/queries/useViewer';
+import useUserNotices from '@hooks/queries/useUserNotices';
+import ShortPost from '@common/ShortPost';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();
 	const [notices] = useUserNotices();
 
 	return (
-		<Box>
-			<Card mb={8}>
-				<Flex justifyContent='space-between' flexWrap='wrap'>
+		<Stack direction='column' spacing={4}>
+			<StackItem as={Card}>
+				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 						To start a Search, use the{' '}
 						{
@@ -55,9 +56,10 @@ export default function DashboardView() {
 						</Button>
 					</Flex>
 				</Flex>
-			</Card>
-			{notices && notices.length > 0 && (
-				<Box>
+			</StackItem>
+
+			{notices.length > 0 ? (
+				<StackItem>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates
 					</Heading>
@@ -68,8 +70,8 @@ export default function DashboardView() {
 							</ListItem>
 						))}
 					</List>
-				</Box>
-			)}
-		</Box>
+				</StackItem>
+			) : null}
+		</Stack>
 	);
 }

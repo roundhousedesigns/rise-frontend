@@ -7,18 +7,10 @@ export interface WPItemParams {
 	id: number;
 	name?: string;
 	slug?: string;
+	author?: number;
 	parentId?: number;
+	parent?: any;
 	[key: string]: any;
-}
-
-/**
- * The data shape for a WordPress post item.
- */
-export interface WPPostParams extends WPItemParams {
-	postType: string;
-	title?: string;
-	excerpt?: string;
-	content?: string;
 }
 
 /**
@@ -105,7 +97,6 @@ export interface CreditParams {
 	jobTitle?: string;
 	jobLocation?: string;
 	venue?: string;
-	year?: string; // TODO deprecate year
 	workStart?: string;
 	workEnd?: string;
 	workCurrent?: boolean;
@@ -113,7 +104,7 @@ export interface CreditParams {
 	fellow?: boolean;
 	departments?: number[];
 	jobs?: number[];
-	positions?: {
+	positions: {
 		departments: number[];
 		jobs: number[];
 	};
@@ -131,7 +122,6 @@ export interface CreditOutput {
 	jobTitle: string;
 	jobLocation: string;
 	venue: string;
-	year: string;
 	workStart: string;
 	workEnd: string;
 	workCurrent: boolean;
@@ -149,14 +139,6 @@ export interface CreditOutput {
 export interface LoginInput {
 	login: string;
 	password: string;
-	reCaptchaToken: string;
-}
-
-/**
- * The data shape for lost password input.
- */
-export interface LostPasswordInput {
-	username: string;
 	reCaptchaToken: string;
 }
 
@@ -189,10 +171,85 @@ export interface updateBookmarkedProfilesInput {
 /**
  * The data shape for a search query.
  */
-export interface SearchParams {
+export interface SearchFilterSet {
 	positions: {
 		departments?: string[];
 		jobs?: string[];
-		skills?: string[];
 	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+}
+
+/**
+ * The data shape for a search query.
+ */
+export interface SearchFilterSet {
+	positions: {
+		departments?: string[];
+		jobs?: string[];
+	};
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}
+
+/**
+ * The data shape for a raw search query (flat `positions`).
+ */
+export interface SearchFilterSetRaw {
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+	searchName?: string;
+	[key: string]: any;
+}
+
+/**
+ * The data shape for a search result item: departments, jobs, skills, filters (collected).
+ */
+export interface OrganizedSearchTerms {
+	departments: WPItem[];
+	jobs: WPItem[];
+	skills: WPItem[];
+	filters: WPItem[];
+}
+
+/**
+ * The data shape for a search result item (id and search score).
+ */
+export interface SearchResultCandidate {
+	id: number;
+	score: number;
 }

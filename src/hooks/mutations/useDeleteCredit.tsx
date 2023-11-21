@@ -6,7 +6,7 @@ import { gql, useMutation } from '@apollo/client';
 import { QUERY_PROFILE } from '../queries/useUserProfile';
 
 const MUTATE_DELETE_CREDIT = gql`
-	mutation DeleteCredit($input: DeleteOwnCreditInput = {}) {
+	mutation DeleteCredit($input: DeleteOwnCreditInput!) {
 		deleteOwnCredit(input: $input) {
 			result
 			clientMutationId
@@ -23,6 +23,7 @@ const useDeleteCredit = () => {
 				input: {
 					clientMutationId: 'deleteCreditMutation',
 					id,
+					userId,
 				},
 			},
 			refetchQueries: [{ query: QUERY_PROFILE, variables: { id: userId } }],

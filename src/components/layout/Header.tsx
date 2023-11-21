@@ -5,7 +5,6 @@ import {
 	IconButton,
 	Image,
 	Container,
-	useDisclosure,
 	DarkMode,
 	Link,
 	Menu,
@@ -37,24 +36,25 @@ import {
 } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
-import logo from '../../assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
-import circleLogo from '../../assets/images/rise-blue-circle.png';
-import { SearchContext } from '../../context/SearchContext';
-import useViewer from '../../hooks/queries/useViewer';
-import useLogout from '../../hooks/mutations/useLogout';
-import ResponsiveButton from '../common/inputs/ResponsiveButton';
+import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
+import circleLogo from '@assets/images/rise-blue-circle.png';
+import { SearchContext } from '@context/SearchContext';
+import useViewer from '@hooks/queries/useViewer';
+import useLogout from '@hooks/mutations/useLogout';
+import ResponsiveButton from '@common/inputs/ResponsiveButton';
+import SearchDrawerContext from '@context/SearchDrawerContext';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
 	const { logoutMutation } = useLogout();
 	const [orange] = useToken('colors', ['brand.orange']);
 
-	const { isOpen: drawerIsOpen, onOpen: drawerOnOpen, onClose: drawerOnClose } = useDisclosure();
+	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
+
 	const drawerButtonRef = useRef(null);
 
 	const {
 		search: { searchActive, results },
-		searchDispatch,
 	} = useContext(SearchContext);
 
 	const isLargerThanMd = useBreakpointValue(
@@ -66,14 +66,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	);
 
 	const handleDrawerOpen = () => {
-		drawerOnOpen();
-
-		searchDispatch({
-			type: 'OPEN_SEARCH',
-			payload: {
-				searchDrawerClose: drawerOnClose,
-			},
-		});
+		openDrawer();
 	};
 
 	const handleLogout = () => {
@@ -218,13 +211,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												colorScheme='yellow'
 												icon={<FiMenu />}
 												size='md'
-												_active={{
-													transform: 'rotate(90deg)',
-												}}
 											/>
 										</DarkMode>
 										<MenuList color='text.dark' zIndex='100'>
-											{isLargerThanMd ? null : (
+											{!isLargerThanMd ? (
 												<MenuOptionGroup>
 													<MenuItem
 														as={RouterLink}
@@ -233,15 +223,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 													>
 														My Profile
 													</MenuItem>
-													<MenuItem
-														ref={drawerButtonRef}
-														onClick={drawerOnOpen}
-														icon={<FiSearch />}
-													>
+													<MenuItem ref={drawerButtonRef} onClick={openDrawer} icon={<FiSearch />}>
 														Search
 													</MenuItem>
 													<MenuDivider />
 												</MenuOptionGroup>
+											) : (
+												false
 											)}
 											<MenuOptionGroup>
 												<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
@@ -249,6 +237,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 												</MenuItem>
 												<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
 													Bookmarked Profiles
+												</MenuItem>
+												<MenuItem as={RouterLink} to='/searches' icon={<FiSearch />}>
+													Saved Searches
 												</MenuItem>
 											</MenuOptionGroup>
 											<MenuOptionGroup>
@@ -283,7 +274,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 				</Container>
 			</DarkMode>
 
-			<SearchDrawer isOpen={drawerIsOpen} onClose={drawerOnClose} />
+			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
 		</Box>
 	);
 });

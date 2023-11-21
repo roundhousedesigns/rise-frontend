@@ -1,10 +1,10 @@
 import { useContext, useEffect } from 'react';
 import { Heading, Wrap, Box, Spinner, useCheckboxGroup } from '@chakra-ui/react';
-import { WPItem } from '../lib/classes';
-import usePositions from '../hooks/queries/usePositions';
-import CheckboxButton from './common/inputs/CheckboxButton';
+import { WPItem } from '@lib/classes';
+import usePositions from '@hooks/queries/usePositions';
+import CheckboxButton from '@common/inputs/CheckboxButton';
 
-import { SearchContext } from '../context/SearchContext';
+import { SearchContext } from '@context/SearchContext';
 
 interface Props {
 	heading: string;
@@ -13,7 +13,11 @@ interface Props {
 export default function SearchFilterJobs({ heading }: Props) {
 	const { search, searchDispatch } = useContext(SearchContext);
 	const [positionItems, { loading, error }] = usePositions([
-		parseInt(search.filters.positions.department),
+		Number(
+			search.filters.filterSet.positions.departments
+				? search.filters.filterSet.positions.departments[0]
+				: '0'
+		),
 	]);
 
 	const handleToggleTerm = (terms: string[]) => {
@@ -32,15 +36,23 @@ export default function SearchFilterJobs({ heading }: Props) {
 
 	// Set the CheckboxGroup value on initial render
 	useEffect(() => {
-		setValue(search.filters.positions.jobs);
+		if (search.filters.filterSet.positions.jobs !== undefined) {
+			setValue(search.filters.filterSet.positions.jobs);
+			return;
+		}
+
+		setValue([]);
 	}, []);
 
 	// Subscribe to Reset events in the Search Context
 	useEffect(() => {
-		if (search.filters.positions.jobs.length === 0) {
+		if (
+			!search.filters.filterSet.positions.jobs ||
+			search.filters.filterSet.positions.jobs.length === 0
+		) {
 			setValue([]);
 		}
-	}, [search.filters.positions.jobs.length]);
+	}, [search.filters.filterSet.positions.jobs]);
 
 	return (
 		<Box>

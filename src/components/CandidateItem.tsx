@@ -1,9 +1,9 @@
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
-import { Candidate } from '../lib/classes';
-import useViewer from '../hooks/queries/useViewer';
-import BookmarkToggleIcon from './common/BookmarkToggleIcon';
-import RemoveBookmarkIcon from './common/RemoveBookmarkIcon';
+import { Candidate } from '@lib/classes';
+import useViewer from '@hooks/queries/useViewer';
+import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
+import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
 
 interface Props {
 	candidate: Candidate;
@@ -30,6 +30,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				as={RouterLink}
 				to={`/profile/${slug}`}
 				py={2}
+				mr={4}
 				my={0}
 				_dark={{
 					bg: 'gray.800',

@@ -1,8 +1,8 @@
+import { chakra, Text } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
-import useViewer from '../../hooks/queries/useViewer';
-import useToggleDisableProfile from '../../hooks/mutations/useToggleDisableProfile';
+import useViewer from '@hooks/queries/useViewer';
+import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from './ToggleOptionSwitch';
-import { Box, Text } from '@chakra-ui/react';
 
 interface Props {
 	[prop: string]: any;
@@ -20,7 +20,7 @@ export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 	};
 
 	return (
-		<Box {...props}>
+		<chakra.div {...props}>
 			<ToggleOptionSwitch
 				id='disableProfile'
 				checked={!disableProfile}
@@ -31,7 +31,7 @@ export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 			>
 				<Subtext disableProfile={disableProfile} />
 			</ToggleOptionSwitch>
-		</Box>
+		</chakra.div>
 	);
 }
 
