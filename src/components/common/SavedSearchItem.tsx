@@ -107,12 +107,15 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		}).then(() => {
 			toast({
 				title: 'Saved!',
-				description: 'Find your saved searches in the menu, or in the Search drawer.',
+				description:
+					'All of your saved searches are available in the Search Drawer and in the main menu.',
 				position: 'top',
 				status: 'success',
 				duration: 3000,
 				isClosable: true,
 			});
+
+			setSaveSearchFieldText('');
 
 			editOnClose();
 		});
@@ -130,6 +133,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 			toast({
 				title: 'Deleted!',
+				description: 'This saved search has been deleted.',
 				position: 'top',
 				status: 'success',
 				duration: 3000,

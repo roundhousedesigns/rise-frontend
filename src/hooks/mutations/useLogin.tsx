@@ -11,7 +11,6 @@ const MUTATE_LOGIN = gql`
 		loginWithCookiesAndReCaptcha(
 			input: { login: $login, password: $password, reCaptchaToken: $reCaptchaToken }
 		) {
-			clientMutationId
 			status
 		}
 	}
