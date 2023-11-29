@@ -15,7 +15,7 @@ export default function SavedSearchItems({ ...props }: Props) {
 	return (
 		<chakra.div {...props}>
 			{savedSearches && savedSearches.length > 0 ? (
-				<Container ml={0} pl={0} maxW='4xl'>
+				<Container ml={0} px={0} maxW='4xl'>
 					<Stack gap={4} justifyContent='space-between' position='relative'>
 						<AnimatePresence>
 							{savedSearches.map((savedSearch: WPPost) => {
