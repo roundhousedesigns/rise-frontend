@@ -38,6 +38,7 @@ export default function SavedSearchItems({ ...props }: Props) {
 										<Card
 											my={0}
 											py={2}
+											px={3}
 											maxWidth='half'
 											_dark={{ bgColor: 'gray.800' }}
 											_light={{ bgColor: 'gray.100' }}

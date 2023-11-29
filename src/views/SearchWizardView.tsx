@@ -45,7 +45,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<Accordion allowToggle mb={4}>
 					<AccordionItem>
 						<h3>
-							<AccordionButton fontWeight='normal'>
+							<AccordionButton fontSize='sm' fontWeight='normal'>
 								<Box as='span'>Saved Searches</Box>
 								<AccordionIcon />
 							</AccordionButton>
@@ -61,7 +61,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
-					<Box my={4} height={name ? 0 : 'auto'}>
+					<Box mb={4} height={name ? 0 : 'auto'}>
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
 						{departments.length && jobs.length > 0 ? <SearchFilterSkills /> : null}

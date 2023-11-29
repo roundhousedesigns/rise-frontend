@@ -144,11 +144,12 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 	return termIds && termIds.length > 0 ? (
 		<>
-			<Stack w='full' {...props}>
-				<StackItem display='flex' alignItems='center' gap={2}>
+			<Stack w='full' alignItems='space-between' {...props}>
+				<StackItem display='flex' alignItems='center' gap={1}>
 					<Text my={0} fontSize='lg'>
 						{title}
 					</Text>
+					<Spacer />
 					{isNamed ? (
 						<IconButton
 							icon={<FiEdit3 />}
@@ -163,15 +164,14 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 					) : (
 						false
 					)}
-					<Spacer />
-					<StackItem as={Wrap} alignItems='center'>
+					<StackItem as={Wrap} alignItems='center' spacing={1}>
 						{id ? (
 							<IconButton
 								icon={<FiSearch />}
 								colorScheme='green'
 								aria-label='Rerun this search'
 								title='Rerun'
-								size='sm'
+								size='xs'
 								onClick={handleSearchClick}
 							>
 								Rerun
@@ -185,7 +185,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								colorScheme='orange'
 								aria-label='Delete this search'
 								title='Delete'
-								size='sm'
+								size='xs'
 								onClick={deleteOnOpen}
 							>
 								Delete

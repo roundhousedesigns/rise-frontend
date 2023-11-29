@@ -39,7 +39,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 	);
 
 	return (
-		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
+		<Flex flexWrap='wrap' gap={1} mb={1} alignItems='center' {...props}>
 			{departments.length ? (
 				<Wrap spacing={1}>
 					{departments.map((department: WPItem, index: number) => (
@@ -77,7 +77,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 			)}
 
 			{filters && filters.length > 0 ? (
-				<Text fontSize='sm' color='gray.500' my={0} fontStyle='italic'>
+				<Text fontSize='xs' color='gray.500' my={0} fontStyle='italic'>
 					{filters.length === 1 ? '+1 additional filter' : `+${filters.length} additional filters`}
 				</Text>
 			) : (
