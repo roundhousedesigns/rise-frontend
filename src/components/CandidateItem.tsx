@@ -29,7 +29,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
-				py={2}
+				py={{ base: 1, md: 2 }}
 				mr={4}
 				my={0}
 				_dark={{
@@ -54,7 +54,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					gap={{ base: 'initial', md: 0 }}
 				>
 					<Avatar
-						size='md'
+						size='sm'
 						name={candidate.fullName()}
 						flex='0 0 auto'
 						mr={2}
