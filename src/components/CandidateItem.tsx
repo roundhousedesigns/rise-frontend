@@ -63,7 +63,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					/>
 					<Heading
 						as='h3'
-						fontSize='lg'
+						fontSize='md'
 						fontWeight='normal'
 						textAlign='left'
 						flex='1'
@@ -76,7 +76,8 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
 						flex='1'
-						noOfLines={1}
+						fontSize='xs'
+						noOfLines={2}
 					>
 						{selfTitle}
 					</Text>
