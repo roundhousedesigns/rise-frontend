@@ -1,5 +1,5 @@
 import { Box, Container, Text } from '@chakra-ui/react';
-import SavedSearchItems from '@/components/SavedSearchItems';
+import SavedSearchItemList from '@/components/SavedSearchItemList';
 
 export default function SavedSearchesView() {
 	return (
@@ -10,7 +10,7 @@ export default function SavedSearchesView() {
 					of the Search Results page.
 				</Text>
 			</Container>
-			<SavedSearchItems mt={4} />
+			<SavedSearchItemList mt={4} />
 		</Box>
 	);
 }

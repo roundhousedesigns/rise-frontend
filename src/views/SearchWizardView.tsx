@@ -17,7 +17,7 @@ import SearchFilterJobs from '@components/SearchFilterJobs';
 import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
-import SavedSearchItems from '@/components/SavedSearchItems';
+import SavedSearchItemList from '@/components/SavedSearchItemList';
 
 interface Props {
 	showButtons?: boolean;
@@ -51,7 +51,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 							</AccordionButton>
 						</h3>
 						<AccordionPanel px={0}>
-							<SavedSearchItems />
+							<SavedSearchItemList />
 						</AccordionPanel>
 					</AccordionItem>
 				</Accordion>
