@@ -802,7 +802,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										minW='200px'
 									/>
 									<TextInput
-										placeholder='pronouns'
 										value={pronouns}
 										name='pronouns'
 										label='Pronouns'
@@ -816,7 +815,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</Flex>
 								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
 									<TextInput
-										placeholder='homebase'
+										placeholder='Home base'
 										value={homebase}
 										name='homebase'
 										label='Where do you currently live?'
