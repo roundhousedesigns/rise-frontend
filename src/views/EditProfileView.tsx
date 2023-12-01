@@ -29,6 +29,13 @@ import {
 	Slide,
 	Input,
 	As,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalCloseButton,
+	ModalBody,
+	ModalFooter,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -75,6 +82,56 @@ import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import XIcon from '@common/icons/X';
+
+interface ModalProps {
+	resume?: string;
+	image?: string;
+}
+
+function ModalTest({ resume, image }: ModalProps) {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	return (
+		<>
+			<Image
+				src={image}
+				alt={`Profile picture`}
+				boxSize={180}
+				loading='eager'
+				fit='cover'
+				borderRadius='md'
+				onClick={onOpen}
+				cursor={'pointer'}
+			/>
+
+			<Modal isOpen={isOpen} onClose={onClose}>
+				<ModalOverlay />
+				<ModalContent>
+					<ModalHeader>Modal Title</ModalHeader>
+					<ModalCloseButton />
+					<ModalBody>
+						Modal Test
+						<Image
+							src={image}
+							alt={`Profile picture`}
+							loading='eager'
+							fit='cover'
+							borderRadius='md'
+							w='full'
+						/>
+					</ModalBody>
+
+					<ModalFooter>
+						<Button colorScheme='blue' mr={3} onClick={onClose}>
+							Close
+						</Button>
+						<Button variant='ghost'>Secondary Action</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
+		</>
+	);
+}
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -951,18 +1008,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
 									{resume ? (
-										<Button
-											leftIcon={<FiFileText />}
-											as={Link}
-											href={resume}
-											target='_blank'
-											download
-											aria-label='Preview Resume'
-											colorScheme='blue'
-											mt={0}
-										>
-											Preview Resume
-										</Button>
+										// <Button
+										// 	leftIcon={<FiFileText />}
+										// 	as={Link}
+										// 	href={resume}
+										// 	target='_blank'
+										// 	download
+										// 	aria-label='Preview Resume'
+										// 	colorScheme='blue'
+										// 	mt={0}
+										// >
+										// 	Preview Resume
+										// </Button>
+										<>
+											<ModalTest image={image} />
+										</>
 									) : (
 										false
 									)}
