@@ -56,9 +56,7 @@ import {
 	FiVideo,
 	FiUpload,
 	FiDownload,
-	FiFileText,
 	FiUser,
-	FiCheckCircle,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 
@@ -83,8 +81,8 @@ import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import XIcon from '@common/icons/X';
+import useResumePreview from '@/hooks/queries/useResumePreview';
 
-import useResume from '@/hooks/queries/useResume';
 interface ModalProps {
 	resumeUrl: string;
 	image?: string;
@@ -92,21 +90,23 @@ interface ModalProps {
 
 function ModalTest({ resumeUrl, image }: ModalProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const { value: resume } = useResume(resumeUrl);
-	console.log('ModalTest resumeUrl:', resumeUrl);
+	const {
+		mediaItem: { sourceUrl: resume },
+	} = useResumePreview(resumeUrl);
 
-	return (
+	console.info('image', resume);
+
+	return resume ? (
 		<>
 			<Image
-				// src={resume.sourceUrl}
-				src={image}
-				alt={`Profile picture`}
-				w={'116px'}
+				src={resume}
+				alt='Resume preview'
+				w='116px'
 				loading='eager'
 				fit='cover'
 				borderRadius='md'
 				onClick={onOpen}
-				cursor={'pointer'}
+				cursor='pointer'
 			/>
 
 			<Modal isOpen={isOpen} onClose={onClose}>
@@ -116,8 +116,7 @@ function ModalTest({ resumeUrl, image }: ModalProps) {
 					<ModalCloseButton />
 					<ModalBody bg={'gray'}>
 						<Image
-							// src={resume.sourceUrl}
-							src={image}
+							src={resume}
 							alt={`Profile picture`}
 							loading='eager'
 							fit='cover'
@@ -132,7 +131,6 @@ function ModalTest({ resumeUrl, image }: ModalProps) {
 								Close
 							</Button>
 							<Button
-								variant={'ghost'}
 								leftIcon={<FiDownload />}
 								as={Link}
 								href={resumeUrl}
@@ -148,6 +146,8 @@ function ModalTest({ resumeUrl, image }: ModalProps) {
 				</ModalContent>
 			</Modal>
 		</>
+	) : (
+		false
 	);
 }
 
@@ -1019,31 +1019,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										alignItems='center'
 										display='flex'
 									>
-										Resume{' '}
-										{/* {resume && (
-											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
-										)} */}
+										Resume
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-									{resume ? (
-										<>
-											<Button
-												leftIcon={<FiFileText />}
-												as={Link}
-												href={resume}
-												target='_blank'
-												download
-												aria-label='Preview Resume'
-												colorScheme='blue'
-												mt={0}
-											>
-												Preview Resume
-											</Button>
-											<ModalTest image={image} resumeUrl={resume} />
-										</>
-									) : (
-										false
-									)}
+									{resume ? <ModalTest image={image} resumeUrl={resume} /> : false}
 									<Flex gap={2}>
 										{resume ? (
 											<ClearFieldButton field='resume'>Remove Resume</ClearFieldButton>
