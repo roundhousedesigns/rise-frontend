@@ -55,6 +55,7 @@ import {
 	FiStar,
 	FiVideo,
 	FiUpload,
+	FiDownload,
 	FiFileText,
 	FiUser,
 	FiCheckCircle,
@@ -83,20 +84,24 @@ import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import XIcon from '@common/icons/X';
 
+import useResume from '@/hooks/queries/useResume';
 interface ModalProps {
-	resume?: string;
+	resumeUrl: string;
 	image?: string;
 }
 
-function ModalTest({ resume, image }: ModalProps) {
+function ModalTest({ resumeUrl, image }: ModalProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { value: resume } = useResume(resumeUrl);
+	console.log('ModalTest resumeUrl:', resumeUrl);
 
 	return (
 		<>
 			<Image
+				// src={resume.sourceUrl}
 				src={image}
 				alt={`Profile picture`}
-				boxSize={180}
+				w={'116px'}
 				loading='eager'
 				fit='cover'
 				borderRadius='md'
@@ -107,11 +112,11 @@ function ModalTest({ resume, image }: ModalProps) {
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>Modal Title</ModalHeader>
+					<ModalHeader>Resume Preview</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody>
-						Modal Test
+					<ModalBody bg={'gray'}>
 						<Image
+							// src={resume.sourceUrl}
 							src={image}
 							alt={`Profile picture`}
 							loading='eager'
@@ -122,10 +127,23 @@ function ModalTest({ resume, image }: ModalProps) {
 					</ModalBody>
 
 					<ModalFooter>
-						<Button colorScheme='blue' mr={3} onClick={onClose}>
-							Close
-						</Button>
-						<Button variant='ghost'>Secondary Action</Button>
+						<Flex>
+							<Button colorScheme='blue' mr={3} onClick={onClose}>
+								Close
+							</Button>
+							<Button
+								variant={'ghost'}
+								leftIcon={<FiDownload />}
+								as={Link}
+								href={resumeUrl}
+								target='_blank'
+								download
+								aria-label='Download Resume'
+								mt={0}
+							>
+								Download
+							</Button>
+						</Flex>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
@@ -1002,26 +1020,26 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										display='flex'
 									>
 										Resume{' '}
-										{resume && (
+										{/* {resume && (
 											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
-										)}
+										)} */}
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
 									{resume ? (
-										// <Button
-										// 	leftIcon={<FiFileText />}
-										// 	as={Link}
-										// 	href={resume}
-										// 	target='_blank'
-										// 	download
-										// 	aria-label='Preview Resume'
-										// 	colorScheme='blue'
-										// 	mt={0}
-										// >
-										// 	Preview Resume
-										// </Button>
 										<>
-											<ModalTest image={image} />
+											<Button
+												leftIcon={<FiFileText />}
+												as={Link}
+												href={resume}
+												target='_blank'
+												download
+												aria-label='Preview Resume'
+												colorScheme='blue'
+												mt={0}
+											>
+												Preview Resume
+											</Button>
+											<ModalTest image={image} resumeUrl={resume} />
 										</>
 									) : (
 										false
