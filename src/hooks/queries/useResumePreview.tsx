@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 
-const QUERY_RESUME = gql`
+export const QUERY_RESUME_PREVIEW = gql`
 	query MediaItemQuery($id: ID!) {
 		mediaItem(id: $id, idType: SOURCE_URL) {
 			sizes(size: THUMBNAIL)
@@ -22,7 +22,7 @@ const QUERY_RESUME = gql`
  */
 
 const useResumePreview = (resumeUrl: string) => {
-	const result = useQuery(QUERY_RESUME, {
+	const result = useQuery(QUERY_RESUME_PREVIEW, {
 		variables: {
 			id: resumeUrl,
 		},

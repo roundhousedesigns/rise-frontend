@@ -59,7 +59,7 @@ import {
 	FiUser,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
-
+import XIcon from '@common/icons/X';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
@@ -70,6 +70,7 @@ import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
+import useResumePreview from '@/hooks/queries/useResumePreview';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
@@ -80,26 +81,18 @@ import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
-import XIcon from '@common/icons/X';
-import useResumePreview from '@/hooks/queries/useResumePreview';
 
 interface ModalProps {
-	resumeUrl: string;
-	image?: string;
+	resumePreview: string;
 }
 
-function ModalTest({ resumeUrl, image }: ModalProps) {
+function ResumePreviewModal({ resumePreview }: ModalProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const {
-		mediaItem: { sourceUrl: resume },
-	} = useResumePreview(resumeUrl);
 
-	console.info('image', resume);
-
-	return resume ? (
+	return resumePreview ? (
 		<>
 			<Image
-				src={resume}
+				src={resumePreview}
 				alt='Resume preview'
 				w='116px'
 				loading='eager'
@@ -116,7 +109,7 @@ function ModalTest({ resumeUrl, image }: ModalProps) {
 					<ModalCloseButton />
 					<ModalBody bg={'gray'}>
 						<Image
-							src={resume}
+							src={resumePreview}
 							alt={`Profile picture`}
 							loading='eager'
 							fit='cover'
@@ -133,7 +126,7 @@ function ModalTest({ resumeUrl, image }: ModalProps) {
 							<Button
 								leftIcon={<FiDownload />}
 								as={Link}
-								href={resumeUrl}
+								href={resumePreview}
 								target='_blank'
 								download
 								aria-label='Download Resume'
@@ -207,6 +200,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
 
+	const [resumePreview, setResumePreview] = useState('');
+
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
 
@@ -239,6 +234,22 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		onOpen: creditModalOnOpen,
 		onClose: creditModalOnClose,
 	} = useDisclosure();
+
+	const { mediaItem } = useResumePreview(resume ? resume : '');
+	const { sourceUrl: retrievedResumePreview } = mediaItem || '';
+
+	useEffect(() => {
+		// Remove resumePreview from state when the resume is removed.
+		if (!resume) {
+			setResumePreview('');
+			return;
+		}
+
+		// Save the retrieved resumePreview to state when it is retrieved.
+		if (retrievedResumePreview) {
+			setResumePreview(retrievedResumePreview);
+		}
+	}, [resume, retrievedResumePreview]);
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
@@ -652,10 +663,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const ClearFieldButton = ({
 		field,
 		icon = <FiXCircle />,
+		label,
 		children,
 	}: {
 		field: string;
 		icon?: JSX.Element;
+		label: string;
 		children?: JSX.Element | string;
 	}) => {
 		if (!field) return null;
@@ -666,6 +679,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				size='md'
 				colorScheme='orange'
 				onClick={handleFileInputClear}
+				aria-label={label}
 				data-field={field}
 				py={0}
 			>
@@ -704,7 +718,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						borderRadius='md'
 						w='full'
 					/>
-					<ClearFieldButton field='image'>Remove Image</ClearFieldButton>
+					<ClearFieldButton field='image' label='Remove image'>
+						Remove Image
+					</ClearFieldButton>
 				</>
 			) : (
 				<FileDropzone
@@ -797,7 +813,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								onChange={handleFileInputChange}
 								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
 							/>
-							<ClearFieldButton field={fieldName} />
+							<ClearFieldButton field={fieldName} label='Delete image' />
 						</Flex>
 						<Image
 							src={currentImage}
@@ -1022,10 +1038,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										Resume
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-									{resume ? <ModalTest image={image} resumeUrl={resume} /> : false}
+									{resume && resumePreview ? (
+										<ResumePreviewModal resumePreview={resumePreview} />
+									) : (
+										false
+									)}
 									<Flex gap={2}>
 										{resume ? (
-											<ClearFieldButton field='resume'>Remove Resume</ClearFieldButton>
+											<ClearFieldButton field='resume' label='Delete resume' />
 										) : (
 											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
 										)}
