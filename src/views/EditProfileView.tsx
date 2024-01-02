@@ -57,6 +57,7 @@ import {
 	FiUpload,
 	FiDownload,
 	FiUser,
+	FiZoomIn,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
@@ -84,23 +85,43 @@ import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 
 interface ModalProps {
 	resumePreview: string;
+	resumeLink: string;
 }
 
-function ResumePreviewModal({ resumePreview }: ModalProps) {
+function ResumePreviewModal({ resumePreview, resumeLink }: ModalProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
-	return resumePreview ? (
+	return resumePreview && resumeLink ? (
 		<>
-			<Image
-				src={resumePreview}
-				alt='Resume preview'
-				w='116px'
-				loading='eager'
-				fit='cover'
-				borderRadius='md'
-				onClick={onOpen}
-				cursor='pointer'
-			/>
+			<Box pos='relative'>
+				<Flex
+					bg='blackAlpha.400'
+					pos='absolute'
+					w='full'
+					h='full'
+					alignItems='center'
+					justifyContent='center'
+					onClick={onOpen}
+					cursor='pointer'
+					transition='all 200ms ease'
+					color='whiteAlpha.800'
+					_hover={{
+						bg: 'blackAlpha.200',
+						color: 'blackAlpha.800',
+					}}
+				>
+					<Icon as={FiZoomIn} boxSize={10} />
+				</Flex>
+				<Image
+					src={resumePreview}
+					alt='Resume preview'
+					w='33vw'
+					maxW='200px'
+					loading='eager'
+					fit='cover'
+					borderRadius='md'
+				/>
+			</Box>
 
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
@@ -126,7 +147,7 @@ function ResumePreviewModal({ resumePreview }: ModalProps) {
 							<Button
 								leftIcon={<FiDownload />}
 								as={Link}
-								href={resumePreview}
+								href={resumeLink}
 								target='_blank'
 								download
 								aria-label='Download Resume'
@@ -212,7 +233,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const {
 		uploadFileMutation,
-		results: { loading: uploadFileMutationLoading },
+		results: {
+			data: { uploadFile: { fileUrl: uploadedResumePreview = '' as string } = {} } = {},
+			loading: uploadFileMutationLoading,
+		} = {},
 	} = useFileUpload();
 
 	const {
@@ -248,6 +272,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		// Save the retrieved resumePreview to state when it is retrieved.
 		if (retrievedResumePreview) {
 			setResumePreview(retrievedResumePreview);
+		} else if (uploadedResumePreview) {
+			setResumePreview(uploadedResumePreview);
 		}
 	}, [resume, retrievedResumePreview]);
 
@@ -362,12 +388,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	// Set context on load
+	// Set context on load, and update it when the profile changes.
 	useEffect(() => {
 		if (profile) {
 			editProfileDispatch({ type: 'INIT', payload: { profile } });
 		}
-	}, []);
+	}, [profile]);
 
 	const handleCheckboxInput = (name: string) => (newValue: any) => {
 		editProfileDispatch({
@@ -682,6 +708,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				aria-label={label}
 				data-field={field}
 				py={0}
+				mt={2}
 			>
 				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
 					<Spinner />
@@ -695,14 +722,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
-		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
+		<Box mb={2} width='30%' minWidth='300px' {...props}>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' fontSize='sm' mb={0}>
+			<Heading variant='contentSubtitle' fontSize='sm'>
 				Portrait orientation works best. Max 2MB.
 			</Heading>
-			{uploadFileMutationLoading ? (
+			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
 					<ProgressSpinner />
@@ -719,7 +746,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						w='full'
 					/>
 					<ClearFieldButton field='image' label='Remove image'>
-						Remove Image
+						Remove image
 					</ClearFieldButton>
 				</>
 			) : (
@@ -731,7 +758,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					iconProps={{ mb: 2, boxSize: '80px' }}
 				/>
 			)}
-		</Stack>
+		</Box>
 	);
 
 	interface FileDropzoneProps {
@@ -1039,13 +1066,15 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
 									{resume && resumePreview ? (
-										<ResumePreviewModal resumePreview={resumePreview} />
+										<ResumePreviewModal resumePreview={resumePreview} resumeLink={resume} />
 									) : (
 										false
 									)}
 									<Flex gap={2}>
 										{resume ? (
-											<ClearFieldButton field='resume' label='Delete resume' />
+											<ClearFieldButton field='resume' label='Delete resume'>
+												Clear
+											</ClearFieldButton>
 										) : (
 											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
 										)}

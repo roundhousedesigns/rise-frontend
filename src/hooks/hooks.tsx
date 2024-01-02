@@ -120,10 +120,11 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProfile | null) => {
 	if (origProfile === null) return;
 
-	const omitFields = [
+	const ignoreFields = [
 		'slug',
 		'credits',
 		'image',
+		'resume',
 		'mediaImage1',
 		'mediaImage2',
 		'mediaImage3',
@@ -133,12 +134,12 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 	];
 
 	const profile1 = new UserProfile({
-		...omit(origProfile, omitFields),
+		...omit(origProfile, ignoreFields),
 		id: 0,
 		slug: '',
 	});
 	const profile2 = new UserProfile({
-		...omit(editProfile, omitFields),
+		...omit(editProfile, ignoreFields),
 		id: 0,
 		slug: '',
 	});
