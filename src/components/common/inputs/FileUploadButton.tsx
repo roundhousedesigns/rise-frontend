@@ -3,18 +3,20 @@ import { Button, VisuallyHidden } from '@chakra-ui/react';
 
 export default function FileUploadButton({
 	fieldName,
-	content = 'Upload',
 	icon,
 	accept,
 	onChange,
 	loading,
+	children,
+	...props
 }: {
 	fieldName: string;
-	content?: string | number | JSX.Element;
 	icon?: JSX.Element;
 	accept?: string;
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	loading?: boolean;
+	children?: JSX.Element;
+	[prop: string]: any;
 }) {
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,8 +37,9 @@ export default function FileUploadButton({
 			cursor={loading ? 'progress' : 'pointer'}
 			isDisabled={loading}
 			onClick={handleButtonClick}
+			{...props}
 		>
-			{content}
+			{children}
 			<VisuallyHidden>
 				<input
 					ref={fileInputRef}

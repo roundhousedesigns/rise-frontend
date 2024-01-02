@@ -24,18 +24,10 @@ import {
 	useToast,
 	useDisclosure,
 	Icon,
-	Link,
 	SimpleGrid,
 	Slide,
 	Input,
 	As,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalCloseButton,
-	ModalBody,
-	ModalFooter,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -55,9 +47,9 @@ import {
 	FiStar,
 	FiVideo,
 	FiUpload,
-	FiDownload,
 	FiUser,
-	FiZoomIn,
+	FiImage,
+	FiTrash2,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
@@ -82,88 +74,7 @@ import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
-
-interface ModalProps {
-	resumePreview: string;
-	resumeLink: string;
-}
-
-function ResumePreviewModal({ resumePreview, resumeLink }: ModalProps) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
-
-	return resumePreview && resumeLink ? (
-		<>
-			<Box pos='relative'>
-				<Flex
-					bg='blackAlpha.400'
-					pos='absolute'
-					w='full'
-					h='full'
-					alignItems='center'
-					justifyContent='center'
-					onClick={onOpen}
-					cursor='pointer'
-					transition='all 200ms ease'
-					color='whiteAlpha.800'
-					_hover={{
-						bg: 'blackAlpha.200',
-						color: 'blackAlpha.800',
-					}}
-				>
-					<Icon as={FiZoomIn} boxSize={10} />
-				</Flex>
-				<Image
-					src={resumePreview}
-					alt='Resume preview'
-					w='33vw'
-					maxW='200px'
-					loading='eager'
-					fit='cover'
-					borderRadius='md'
-				/>
-			</Box>
-
-			<Modal isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>Resume Preview</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody bg={'gray'}>
-						<Image
-							src={resumePreview}
-							alt={`Profile picture`}
-							loading='eager'
-							fit='cover'
-							borderRadius='md'
-							w='full'
-						/>
-					</ModalBody>
-
-					<ModalFooter>
-						<Flex>
-							<Button colorScheme='blue' mr={3} onClick={onClose}>
-								Close
-							</Button>
-							<Button
-								leftIcon={<FiDownload />}
-								as={Link}
-								href={resumeLink}
-								target='_blank'
-								download
-								aria-label='Download Resume'
-								mt={0}
-							>
-								Download
-							</Button>
-						</Flex>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
-		</>
-	) : (
-		false
-	);
-}
+import ResumePreviewModal from '@common/ResumePreviewModal';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -688,14 +599,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const ClearFieldButton = ({
 		field,
-		icon = <FiXCircle />,
+		icon = <FiTrash2 />,
 		label,
 		children,
+		...props
 	}: {
 		field: string;
 		icon?: JSX.Element;
 		label: string;
 		children?: JSX.Element | string;
+		[prop: string]: any;
 	}) => {
 		if (!field) return null;
 
@@ -707,8 +620,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				onClick={handleFileInputClear}
 				aria-label={label}
 				data-field={field}
-				py={0}
-				mt={2}
+				{...props}
 			>
 				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
 					<Spinner />
@@ -745,7 +657,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						borderRadius='md'
 						w='full'
 					/>
-					<ClearFieldButton field='image' label='Remove image'>
+					<ClearFieldButton field='image' label='Remove image' mt={2}>
 						Remove image
 					</ClearFieldButton>
 				</>
@@ -831,26 +743,30 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
 				{currentImage ? (
 					<>
-						<Flex gap={2}>
-							<FileUploadButton
-								fieldName={fieldName}
-								content='Replace this image'
-								icon={<FiUpload />}
-								accept='image/jpeg,image/png,image/gif,image/webp'
-								onChange={handleFileInputChange}
-								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-							/>
-							<ClearFieldButton field={fieldName} label='Delete image' />
-						</Flex>
 						<Image
 							src={currentImage}
 							alt={text}
 							loading='eager'
 							fit='cover'
 							w='full'
-							mt={2}
 							borderRadius='md'
+							mb={1}
 						/>
+						<Flex gap={2} flexWrap={{ base: 'wrap', sm: 'nowrap' }} justifyContent='space-between'>
+							<FileUploadButton
+								fieldName={fieldName}
+								icon={<FiImage />}
+								accept='image/jpeg,image/png,image/gif,image/webp'
+								onChange={handleFileInputChange}
+								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+								flex='1 0 48%'
+							>
+								<Text>Replace</Text>
+							</FileUploadButton>
+							<ClearFieldButton field={fieldName} label='Delete image' flex='1 0 48%'>
+								Delete
+							</ClearFieldButton>
+						</Flex>
 					</>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
 					<Flex alignItems='center' justifyContent='center' padding={50}>
@@ -1070,7 +986,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									) : (
 										false
 									)}
-									<Flex gap={2}>
+									<Flex gap={2} mt={1}>
 										{resume ? (
 											<ClearFieldButton field='resume' label='Delete resume'>
 												Clear
