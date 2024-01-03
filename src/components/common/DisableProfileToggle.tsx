@@ -29,7 +29,12 @@ export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 				icon={disableProfile ? FiEyeOff : FiEye}
 				loading={loading}
 			>
-				<Subtext disableProfile={disableProfile} />
+				<Text as='span'>
+					Profile visibility
+					<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' pl={2}>
+						<Subtext disableProfile={disableProfile} />
+					</Text>
+				</Text>
 			</ToggleOptionSwitch>
 		</chakra.div>
 	);

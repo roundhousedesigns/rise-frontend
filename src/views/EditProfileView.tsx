@@ -1,12 +1,4 @@
-import React, {
-	useContext,
-	useState,
-	useEffect,
-	useRef,
-	ChangeEvent,
-	MouseEvent,
-	FormEvent,
-} from 'react';
+import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -24,7 +16,6 @@ import {
 	useToast,
 	useDisclosure,
 	Icon,
-	Link,
 	SimpleGrid,
 	Slide,
 	Input,
@@ -41,32 +32,29 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
-	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiHome,
 	FiStar,
 	FiVideo,
 	FiUpload,
-	FiFileText,
 	FiUser,
-	FiCheckCircle,
+	FiImage,
+	FiTrash2,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
-
+import XIcon from '@common/icons/X';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useResumePreview from '@hooks/queries/useResumePreview';
 import useUpdateProfile from '@hooks/mutations/useUpdateProfile';
 import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
-import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
-import CreditItem from '@components/CreditItem';
-import EditCreditModal from '@components/EditCreditModal';
-import DeleteCreditButton from '@components/DeleteCreditButton';
 import HeadingCenterline from '@common/HeadingCenterline';
 import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/ProfileRadioGroup';
@@ -74,7 +62,10 @@ import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
-import XIcon from '@common/icons/X';
+import ResumePreviewModal from '@common/ResumePreviewModal';
+import CreditItem from '@components/CreditItem';
+import EditCreditModal from '@components/EditCreditModal';
+import DeleteCreditButton from '@components/DeleteCreditButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -132,6 +123,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
 
+	const [resumePreview, setResumePreview] = useState('');
+
 	const [editCredit, setEditCredit] = useState<string>('');
 	const editCreditId = useRef<string>('');
 
@@ -142,7 +135,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const {
 		uploadFileMutation,
-		results: { loading: uploadFileMutationLoading },
+		results: {
+			data: { uploadFile: { fileUrl: uploadedResumePreview = '' as string } = {} } = {},
+			loading: uploadFileMutationLoading,
+		} = {},
 	} = useFileUpload();
 
 	const {
@@ -164,6 +160,24 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		onOpen: creditModalOnOpen,
 		onClose: creditModalOnClose,
 	} = useDisclosure();
+
+	const { mediaItem } = useResumePreview(resume ? resume : '');
+	const { sourceUrl: retrievedResumePreview } = mediaItem || '';
+
+	useEffect(() => {
+		// Remove resumePreview from state when the resume is removed.
+		if (!resume) {
+			setResumePreview('');
+			return;
+		}
+
+		// Save the retrieved resumePreview to state when it is retrieved.
+		if (retrievedResumePreview) {
+			setResumePreview(retrievedResumePreview);
+		} else if (uploadedResumePreview) {
+			setResumePreview(uploadedResumePreview);
+		}
+	}, [resume, retrievedResumePreview]);
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
@@ -276,12 +290,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	// Set context on load
+	// Set context on load, and update it when the profile changes.
 	useEffect(() => {
 		if (profile) {
 			editProfileDispatch({ type: 'INIT', payload: { profile } });
 		}
-	}, []);
+	}, [profile]);
 
 	const handleCheckboxInput = (name: string) => (newValue: any) => {
 		editProfileDispatch({
@@ -576,12 +590,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const ClearFieldButton = ({
 		field,
-		icon = <FiXCircle />,
+		icon = <FiTrash2 />,
+		label,
 		children,
+		...props
 	}: {
 		field: string;
 		icon?: JSX.Element;
+		label: string;
 		children?: JSX.Element | string;
+		[prop: string]: any;
 	}) => {
 		if (!field) return null;
 
@@ -591,8 +609,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				size='md'
 				colorScheme='orange'
 				onClick={handleFileInputClear}
+				aria-label={label}
 				data-field={field}
-				py={0}
+				{...props}
 			>
 				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
 					<Spinner />
@@ -606,14 +625,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
-		<Stack direction='column' alignSelf='stretch' mb={2} width='30%' minWidth='300px' {...props}>
+		<Box mb={2} width='30%' minWidth='300px' {...props}>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' fontSize='sm' mb={0}>
+			<Heading variant='contentSubtitle' fontSize='sm'>
 				Portrait orientation works best. Max 2MB.
 			</Heading>
-			{uploadFileMutationLoading ? (
+			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
 					<ProgressSpinner />
@@ -629,7 +648,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						borderRadius='md'
 						w='full'
 					/>
-					<ClearFieldButton field='image'>Remove Image</ClearFieldButton>
+					<ClearFieldButton field='image' label='Remove image' mt={2}>
+						Remove
+					</ClearFieldButton>
 				</>
 			) : (
 				<FileDropzone
@@ -640,7 +661,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					iconProps={{ mb: 2, boxSize: '80px' }}
 				/>
 			)}
-		</Stack>
+		</Box>
 	);
 
 	interface FileDropzoneProps {
@@ -713,26 +734,30 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
 				{currentImage ? (
 					<>
-						<Flex gap={2}>
-							<FileUploadButton
-								fieldName={fieldName}
-								content='Replace this image'
-								icon={<FiUpload />}
-								accept='image/jpeg,image/png,image/gif,image/webp'
-								onChange={handleFileInputChange}
-								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-							/>
-							<ClearFieldButton field={fieldName} />
-						</Flex>
 						<Image
 							src={currentImage}
 							alt={text}
 							loading='eager'
 							fit='cover'
 							w='full'
-							mt={2}
 							borderRadius='md'
+							mb={1}
 						/>
+						<Flex gap={2} flexWrap={{ base: 'wrap', sm: 'nowrap' }} justifyContent='space-between'>
+							<FileUploadButton
+								fieldName={fieldName}
+								icon={<FiImage />}
+								accept='image/jpeg,image/png,image/gif,image/webp'
+								onChange={handleFileInputChange}
+								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
+								flex='1 0 48%'
+							>
+								<Text>Replace</Text>
+							</FileUploadButton>
+							<ClearFieldButton field={fieldName} label='Delete image' flex='1 0 48%'>
+								Delete
+							</ClearFieldButton>
+						</Flex>
 					</>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
 					<Flex alignItems='center' justifyContent='center' padding={50}>
@@ -909,10 +934,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							/>
 						</StackItem>
 						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={10}>
+							<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
-									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
+									<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
 									<ProfileRadioGroup
 										defaultValue={willTravel ? 'true' : 'false'}
 										name='willTravel'
@@ -936,7 +961,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										handleChange={handleRadioInputChange}
 									/>
 								</Box>
-								<Box flex={{ base: '0 0 100%', md: '1' }}>
+								<Box>
 									<Heading
 										variant='contentTitle'
 										flex='0 0 100%'
@@ -944,35 +969,26 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										alignItems='center'
 										display='flex'
 									>
-										Resume{' '}
-										{resume && (
-											<Icon as={FiCheckCircle} color='brand.green' display='inline' ml={2} />
-										)}
+										Resume
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-									{resume ? (
-										<Button
-											leftIcon={<FiFileText />}
-											as={Link}
-											href={resume}
-											target='_blank'
-											download
-											aria-label='Preview Resume'
-											colorScheme='blue'
-											mt={0}
-										>
-											Preview Resume
-										</Button>
+									{resume && resumePreview ? (
+										<Flex flexWrap='wrap'>
+											<ResumePreviewModal
+												resumePreview={resumePreview}
+												resumeLink={resume}
+												w='100%'
+												maxW='300px'
+												mr={{ base: 0, sm: 1 }}
+												mb={{ base: 1, sm: 0 }}
+											/>
+											<ClearFieldButton field='resume' label='Delete resume'>
+												Clear
+											</ClearFieldButton>
+										</Flex>
 									) : (
-										false
+										<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
 									)}
-									<Flex gap={2}>
-										{resume ? (
-											<ClearFieldButton field='resume'>Remove Resume</ClearFieldButton>
-										) : (
-											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
-										)}
-									</Flex>
 								</Box>
 							</Flex>
 						</StackItem>

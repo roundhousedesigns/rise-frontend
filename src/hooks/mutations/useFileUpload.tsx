@@ -27,6 +27,7 @@ const useFileUpload = () => {
 				{
 					query: QUERY_PROFILE,
 					variables: { id: userId, author: userId },
+					fetchPolicy: 'network-only',
 				},
 			],
 		});

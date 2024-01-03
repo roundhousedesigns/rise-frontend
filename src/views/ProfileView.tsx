@@ -22,32 +22,24 @@ import {
 	useBreakpointValue,
 	Spacer,
 } from '@chakra-ui/react';
-import {
-	FiDownload,
-	FiGlobe,
-	FiMail,
-	FiMapPin,
-	FiPhone,
-	FiStar,
-	FiUser,
-	FiLink,
-	FiMap,
-} from 'react-icons/fi';
+import { FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser, FiLink, FiMap } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useResumePreview from '@hooks/queries/useResumePreview';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
+import HeadingCenterline from '@common/HeadingCenterline';
+import ResumePreviewModal from '@common/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
-import HeadingCenterline from '@common/HeadingCenterline';
 
 interface Props {
 	profile: UserProfile;
@@ -124,12 +116,12 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
 	] = useUserTaxonomies();
 
-	interface MyProps {
+	interface SelectedTermsProps {
 		ids: number[];
 		terms: WPItem[];
 	}
 
-	const SelectedTerms = ({ ids, terms }: MyProps) => {
+	const SelectedTerms = ({ ids, terms }: SelectedTermsProps) => {
 		const items = getWPItemsFromIds(ids, terms);
 
 		return items ? (
@@ -218,6 +210,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			</Heading>
 		);
 	};
+
+	const { sourceUrl: resumePreview } = useResumePreview(resume ? resume : '').mediaItem || {};
 
 	return profile ? (
 		<>
@@ -384,24 +378,18 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							</StackItem>
 
 							<StackItem>
+								<Heading as='h3' variant='contentTitle'>
+									Resume
+								</Heading>
 								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
-									{resume && (
-										<Button
-											href={resume}
-											as={Link}
-											flex='1 0 auto'
-											textDecoration='none'
-											colorScheme='green'
-											leftIcon={<FiDownload />}
-											download
-											isExternal
-											_hover={{
-												textDecoration: 'none',
-											}}
-											size={{ base: 'md', md: 'lg' }}
-										>
-											Resume
-										</Button>
+									{resume ? (
+										<ResumePreviewModal
+											resumePreview={resumePreview}
+											resumeLink={resume}
+											previewIcon={false}
+										/>
+									) : (
+										false
 									)}
 									{socials && !isEmpty(socials) && (
 										<PersonalIconLinks

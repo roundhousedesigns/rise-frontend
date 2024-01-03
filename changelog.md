@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.1] - 2023-01-03
+
+- Improve: Color Mode switch in Menu
+- Improve: Resume preview and download modal. Thanks @gacetta!
+- Improve: ESLint configuration
+
 ## \[1.1.0] - 2023-11-21
 
 - Feature: Scored search order. **Requires backend version 1.1** <https://github.com/roundhousedesigns/rise-backend/releases/tag/v1.1>
