@@ -1,8 +1,0 @@
-{
-	"parserOptions": {
-		"ecmaVersion": 2020
-	},
-	"extends": [
-		"plugin:react/jsx-runtime"
-	]
-}
