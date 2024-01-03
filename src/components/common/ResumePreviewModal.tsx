@@ -105,6 +105,6 @@ export default function ResumePreviewModal({
 			</Modal>
 		</>
 	) : (
-		false
+		null
 	);
 }
