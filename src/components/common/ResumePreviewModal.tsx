@@ -14,25 +14,29 @@ import {
 	Button,
 	Link,
 	Text,
+	useColorMode,
 } from '@chakra-ui/react';
-import { FiZoomIn, FiDownload, FiXCircle } from 'react-icons/fi';
+import { FiZoomIn, FiDownload } from 'react-icons/fi';
 
 interface ModalProps {
 	resumePreview: string;
 	resumeLink: string;
 	previewIcon?: boolean;
+	[prop: string]: any;
 }
 
 export default function ResumePreviewModal({
 	resumePreview,
 	resumeLink,
 	previewIcon = true,
+	...props
 }: ModalProps) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { colorMode } = useColorMode();
 
 	return resumePreview && resumeLink ? (
 		<>
-			<Box pos='relative'>
+			<Box pos='relative' {...props}>
 				{previewIcon ? (
 					<Flex
 						bg='blackAlpha.300'
@@ -58,8 +62,8 @@ export default function ResumePreviewModal({
 				<Image
 					src={resumePreview}
 					alt='Resume preview'
-					w='33vw'
-					maxW='200px'
+					w='full'
+					h='auto'
 					loading='eager'
 					fit='cover'
 					onClick={previewIcon ? undefined : onOpen}
@@ -73,7 +77,7 @@ export default function ResumePreviewModal({
 				<ModalContent>
 					<ModalHeader>Resume Preview</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody bg={'gray'}>
+					<ModalBody bgColor={colorMode === 'dark' ? 'gray' : 'blackAlpha.200'} pt={4}>
 						<Image
 							src={resumePreview}
 							alt={`Profile picture`}
@@ -82,27 +86,20 @@ export default function ResumePreviewModal({
 							borderRadius='md'
 							w='full'
 						/>
-						<Text fontSize='xs'>Download the file to see all pages.</Text>
+						<Text fontSize='sm'>Previewing the first page only.</Text>
 					</ModalBody>
 
 					<ModalFooter>
-						<Flex>
-							<Button colorScheme='blue' mr={3} onClick={onClose} leftIcon={<FiXCircle />}>
-								Close
-							</Button>
-							<Button
-								leftIcon={<FiDownload />}
-								colorScheme='green'
-								as={Link}
-								href={resumeLink}
-								target='_blank'
-								download
-								aria-label='Download Resume'
-								mt={0}
-							>
-								Download
-							</Button>
-						</Flex>
+						<Button
+							leftIcon={<FiDownload />}
+							colorScheme='green'
+							as={Link}
+							href={resumeLink}
+							my={0}
+							download
+						>
+							Save
+						</Button>
 					</ModalFooter>
 				</ModalContent>
 			</Modal>

@@ -1,12 +1,4 @@
-import React, {
-	useContext,
-	useState,
-	useEffect,
-	useRef,
-	ChangeEvent,
-	MouseEvent,
-	FormEvent,
-} from 'react';
+import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -40,7 +32,6 @@ import {
 	FiPhone,
 	FiPlus,
 	FiSave,
-	FiXCircle,
 	FiArrowUpCircle,
 	FiArrowDownCircle,
 	FiHome,
@@ -57,16 +48,13 @@ import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
+import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useResumePreview from '@hooks/queries/useResumePreview';
 import useUpdateProfile from '@hooks/mutations/useUpdateProfile';
 import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
-import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
-import useResumePreview from '@/hooks/queries/useResumePreview';
-import CreditItem from '@components/CreditItem';
-import EditCreditModal from '@components/EditCreditModal';
-import DeleteCreditButton from '@components/DeleteCreditButton';
 import HeadingCenterline from '@common/HeadingCenterline';
 import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/ProfileRadioGroup';
@@ -75,6 +63,9 @@ import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import ResumePreviewModal from '@common/ResumePreviewModal';
+import CreditItem from '@components/CreditItem';
+import EditCreditModal from '@components/EditCreditModal';
+import DeleteCreditButton from '@components/DeleteCreditButton';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -658,7 +649,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						w='full'
 					/>
 					<ClearFieldButton field='image' label='Remove image' mt={2}>
-						Remove image
+						Remove
 					</ClearFieldButton>
 				</>
 			) : (
@@ -982,19 +973,22 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Heading>
 									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
 									{resume && resumePreview ? (
-										<ResumePreviewModal resumePreview={resumePreview} resumeLink={resume} />
-									) : (
-										false
-									)}
-									<Flex gap={2} mt={1}>
-										{resume ? (
+										<Flex flexWrap='wrap'>
+											<ResumePreviewModal
+												resumePreview={resumePreview}
+												resumeLink={resume}
+												w='100%'
+												maxW='300px'
+												mr={{ base: 0, sm: 1 }}
+												mb={{ base: 1, sm: 0 }}
+											/>
 											<ClearFieldButton field='resume' label='Delete resume'>
 												Clear
 											</ClearFieldButton>
-										) : (
-											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
-										)}
-									</Flex>
+										</Flex>
+									) : (
+										<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+									)}
 								</Box>
 							</Flex>
 						</StackItem>
