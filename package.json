@@ -49,21 +49,6 @@
     "typescript": "^4.9.5",
     "vite": "^4.4.12"
   },
-  "eslintConfig": {
-    "parser": "@babel/eslint-parser",
-    "parserOptions": {
-      "ecmaVersion": 2020,
-      "requireConfigFile": false,
-      "babelOptions": {
-        "presets": [
-          "@babel/preset-react"
-        ]
-      }
-    },
-    "extends": [
-      "plugin:react/jsx-runtime"
-    ]
-  },
   "main": "index.js",
   "repository": "https://github.com/roundhousedesigns/rise-frontend",
   "license": "MIT"
