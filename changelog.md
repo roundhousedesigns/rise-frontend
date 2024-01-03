@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file, starting wi
 ## \[1.1.1] - Unreleased
 
 - Improve: Color Mode switch in Menu
+- Improve: Resume preview and download modal. Thanks @gacetta!
 
 ## \[1.1.0] - 2023-11-21
 
