@@ -7,6 +7,7 @@ interface Props {
 	colorScheme?: string;
 	label: string;
 	icon?: As;
+	size?: string;
 	loading?: boolean;
 	callback: () => void;
 	children?: string | JSX.Element;
@@ -18,6 +19,7 @@ export default function ToggleOptionSwitch({
 	colorScheme = 'green',
 	label,
 	icon,
+	size = 'lg',
 	loading,
 	callback,
 	children,
@@ -35,28 +37,29 @@ export default function ToggleOptionSwitch({
 		callback();
 	};
 
+	const sizeProps = {
+		fontSize: size,
+		iconBoxSize: size === 'lg' ? 8 : 'md' ? 6 : 'sm' ? 4 : 8,
+	};
+
 	return (
 		<FormControl display='flex' alignItems='center' py={1} {...props}>
-			{icon ? <Icon as={icon as As} mr={1} boxSize={8} p={1} color='inherit' /> : false}
+			{icon ? (
+				<Icon as={icon as As} mr={1} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
+			) : (
+				false
+			)}
 			<Switch
 				id={id}
 				onChange={handleChange}
 				isChecked={toggleState}
 				color='inherit'
-				mr={4}
-				ml={2}
+				mr={2}
 				colorScheme={colorScheme}
 				aria-label={label}
 			/>
-			<FormLabel htmlFor={id} m={0} fontSize='lg'>
-				{label}
-				{children ? (
-					<Text as='span' fontSize='xs' pl={2} fontStyle='italic' color='inherit'>
-						{children}
-					</Text>
-				) : (
-					''
-				)}
+			<FormLabel htmlFor={id} m={0} fontSize={sizeProps.fontSize}>
+				{children}
 			</FormLabel>
 			{loading && <Spinner />}
 		</FormControl>

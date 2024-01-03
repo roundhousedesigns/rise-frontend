@@ -1,4 +1,4 @@
-import { chakra, Text } from '@chakra-ui/react';
+import { chakra, Icon, Text } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
@@ -29,7 +29,12 @@ export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 				icon={disableProfile ? FiEyeOff : FiEye}
 				loading={loading}
 			>
-				<Subtext disableProfile={disableProfile} />
+				<Text as='span'>
+					Profile visibility
+					<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' pl={2}>
+						<Subtext disableProfile={disableProfile} />
+					</Text>
+				</Text>
 			</ToggleOptionSwitch>
 		</chakra.div>
 	);

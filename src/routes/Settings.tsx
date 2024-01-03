@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Text, useColorMode } from '@chakra-ui/react';
+import { Box, Flex, Icon, Link, Text, useColorMode } from '@chakra-ui/react';
 import { FiMoon, FiSun } from 'react-icons/fi';
 import Page from '@components/Page';
 import ChangePasswordView from '@views/ChangePasswordView';
@@ -31,9 +31,19 @@ export default function Settings() {
 						id='darkMode'
 						checked={colorMode === 'dark'}
 						callback={toggleColorMode}
-						label='Dark Mode'
-						icon={colorMode === 'dark' ? FiMoon : FiSun}
-					/>
+						label='Color mode'
+						icon={FiSun}
+					>
+						<>
+							<Icon as={FiMoon} boxSize={6} pos='relative' top='3px' />
+							<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' ml={2}>
+								<Text as='span' fontWeight='bold'>
+									{colorMode === 'dark' ? 'Dark' : 'Light'}
+								</Text>
+								{' mode'}
+							</Text>
+						</>
+					</ToggleOptionSwitch>
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}
