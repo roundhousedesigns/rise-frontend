@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
-
+import { SearchContextProvider } from '@context/SearchContext';
+import SearchDrawerContext from '@context/SearchDrawerContext';
+import useViewer from '@hooks/queries/useViewer';
 import Header from '@components/layout/Header';
 import Main from '@components/layout/Main';
 import Footer from '@components/layout/Footer';
-
-import { SearchContextProvider } from '@context/SearchContext';
-import useViewer from '@hooks/queries/useViewer';
-import SearchDrawerContext from '@context/SearchDrawerContext';
 
 export default function App() {
 	const {
