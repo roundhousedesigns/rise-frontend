@@ -934,10 +934,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							/>
 						</StackItem>
 						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={10}>
+							<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
 								<Box>
 									<Heading variant='contentTitle'>Travel</Heading>
-									<Heading variant='contentSubtitle'>Willing to work away from home?</Heading>
+									<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
 									<ProfileRadioGroup
 										defaultValue={willTravel ? 'true' : 'false'}
 										name='willTravel'
@@ -961,7 +961,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										handleChange={handleRadioInputChange}
 									/>
 								</Box>
-								<Box flex={{ base: '0 0 100%', md: '1' }}>
+								<Box>
 									<Heading
 										variant='contentTitle'
 										flex='0 0 100%'
