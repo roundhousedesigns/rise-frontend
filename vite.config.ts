@@ -49,6 +49,10 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/components/common', import.meta.url)),
 			},
 			{
+				find: '@layout',
+				replacement: fileURLToPath(new URL('./src/components/layout', import.meta.url)),
+			},
+			{
 				find: '@context',
 				replacement: fileURLToPath(new URL('./src/context', import.meta.url)),
 			},

@@ -2,7 +2,7 @@ import { chakra, Text } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
-import ToggleOptionSwitch from './ToggleOptionSwitch';
+import ToggleOptionSwitch from './common/ToggleOptionSwitch';
 
 interface Props {
 	[prop: string]: any;

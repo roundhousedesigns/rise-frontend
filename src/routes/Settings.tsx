@@ -5,7 +5,7 @@ import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@common/SettingsSection';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
-import DisableProfileToggle from '@common/DisableProfileToggle';
+import DisableProfileToggle from '@components/DisableProfileToggle';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();
