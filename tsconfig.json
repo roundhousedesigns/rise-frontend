@@ -53,7 +53,7 @@
       ],
       "@views/*": [
         "./src/views/*"
-      ],
+      ]
     }
   },
   "include": [
