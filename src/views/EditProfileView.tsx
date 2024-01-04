@@ -538,6 +538,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
+		// Manual required field validation
+		if (!Boolean(locations.length)) {
+			toast({
+				title: 'Missing required field.',
+				description: 'Please select at least one work location.',
+				status: 'error',
+				duration: 5000,
+				isClosable: true,
+				position: 'top',
+			});
+
+			return;
+		}
+
 		updateProfileMutation(editProfile)
 			.then(() => {
 				navigate(`/profile/${loggedInSlug}`);
@@ -920,7 +934,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</Flex>
 					<Stack mt={4}>
 						<StackItem fontSize='sm'>
-							{/* TODO make this required */}
 							<Heading variant='contentTitle'>Work Locations</Heading>
 							<Heading variant='contentSubtitle'>
 								Select any areas in which you're a local hire.
@@ -928,6 +941,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<ProfileCheckboxGroup
 								name='locations'
 								isRequired
+								requiredMessage='Please select at least one location.'
 								items={locationTerms}
 								checked={locations ? locations.map((item) => item.toString()) : []}
 								handleChange={handleCheckboxInput}
