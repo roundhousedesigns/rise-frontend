@@ -38,14 +38,14 @@ import {
 } from 'react-icons/fi';
 
 import SearchDrawer from './SearchDrawer';
-import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
-import circleLogo from '@assets/images/rise-blue-circle.png';
 import { SearchContext } from '@context/SearchContext';
+import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
 import ResponsiveButton from '@common/inputs/ResponsiveButton';
-import SearchDrawerContext from '@context/SearchDrawerContext';
-import ToggleOptionSwitch from '../common/ToggleOptionSwitch';
+import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
+import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
+import circleLogo from '@assets/images/rise-blue-circle.png';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();

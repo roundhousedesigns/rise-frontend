@@ -36,6 +36,9 @@
       "@common/*": [
         "./src/components/common/*"
       ],
+      "@layout/*": [
+        "./src/components/layout/*"
+      ],
       "@context/*": [
         "./src/context/*"
       ],
@@ -50,7 +53,7 @@
       ],
       "@views/*": [
         "./src/views/*"
-      ]
+      ],
     }
   },
   "include": [

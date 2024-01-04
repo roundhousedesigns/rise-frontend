@@ -3,7 +3,7 @@ import { Text } from '@chakra-ui/react';
 import { flattenfilterSetPositions } from '@/lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import TextCenterline from '@common/TextCenterline';
-import SavedSearchItem from '@common/SavedSearchItem';
+import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
 
 export default function SearchResultsView() {

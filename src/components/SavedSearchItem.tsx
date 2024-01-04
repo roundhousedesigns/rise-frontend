@@ -28,11 +28,11 @@ import SearchDrawerContext from '@context/SearchDrawerContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
-import TextInput from '@components/common/inputs/TextInput';
-import SearchParamTags from '@common/SearchParamTags';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import useDeleteSavedSearch from '@/hooks/mutations/useDeleteSavedSearch';
-import ConfirmActionDialog from './ConfirmActionDialog';
+import TextInput from '@common/inputs/TextInput';
+import SearchParamTags from '@common/SearchParamTags';
+import ConfirmActionDialog from '@common/ConfirmActionDialog';
 
 interface Props {
 	id?: number;
