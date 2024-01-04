@@ -22,23 +22,14 @@ import {
 	useBreakpointValue,
 	Spacer,
 } from '@chakra-ui/react';
-import {
-	FiDownload,
-	FiGlobe,
-	FiMail,
-	FiMapPin,
-	FiPhone,
-	FiStar,
-	FiUser,
-	FiLink,
-	FiMap,
-} from 'react-icons/fi';
+import { FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser, FiLink, FiMap } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useResumePreview from '@hooks/queries/useResumePreview';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
@@ -49,7 +40,6 @@ import ResumePreviewModal from '@common/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
-import useResumePreview from '@/hooks/queries/useResumePreview';
 
 interface Props {
 	profile: UserProfile;

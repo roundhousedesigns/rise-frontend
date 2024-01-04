@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormControl, Switch, FormLabel, Icon, Text, As, Spinner } from '@chakra-ui/react';
+import { FormControl, Switch, FormLabel, Icon, As, Spinner } from '@chakra-ui/react';
 
 interface Props {
 	checked: boolean;

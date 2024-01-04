@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.1.1] - Unreleased
+## \[1.1.1] - 2023-01-03
 
 - Improve: Color Mode switch in Menu
 - Improve: Resume preview and download modal. Thanks @gacetta!
+- Improve: ESLint configuration
 
 ## \[1.1.0] - 2023-11-21
 

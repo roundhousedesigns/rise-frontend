@@ -5,7 +5,6 @@ import {
 	IconButton,
 	Image,
 	Container,
-	DarkMode,
 	Link,
 	Menu,
 	MenuButton,
@@ -13,7 +12,6 @@ import {
 	MenuItem,
 	MenuDivider,
 	MenuOptionGroup,
-	LightMode,
 	Badge,
 	Spacer,
 	forwardRef,
@@ -206,9 +204,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}
 							</Flex>
-							{/* <LightMode> */}
 							<Menu>
-								{/* <DarkMode> */}
 								<MenuButton
 									aria-label='Menu'
 									as={IconButton}
@@ -217,7 +213,6 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									icon={<FiMenu />}
 									size='md'
 								/>
-								{/* </DarkMode> */}
 								<MenuList zIndex='100' color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
 									{!isLargerThanMd ? (
 										<MenuOptionGroup>
@@ -282,14 +277,12 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									</Flex>
 								</MenuList>
 							</Menu>
-							{/* </LightMode> */}
 						</>
 					) : (
 						false
 					)}
 				</Flex>
 			</Container>
-			{/* </DarkMode> */}
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
 		</Box>
