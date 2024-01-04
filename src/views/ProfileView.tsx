@@ -21,8 +21,19 @@ import {
 	Icon,
 	useBreakpointValue,
 	Spacer,
+	IconButton,
 } from '@chakra-ui/react';
-import { FiGlobe, FiMail, FiMapPin, FiPhone, FiStar, FiUser, FiLink, FiMap } from 'react-icons/fi';
+import {
+	FiGlobe,
+	FiMail,
+	FiMapPin,
+	FiPhone,
+	FiStar,
+	FiUser,
+	FiLink,
+	FiMap,
+	FiDownload,
+} from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
@@ -379,26 +390,36 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 							<StackItem>
 								<Heading as='h3' variant='contentTitle'>
+									Social
+								</Heading>
+								{socials && !isEmpty(socials) && <PersonalIconLinks socials={socials} />}
+							</StackItem>
+
+							<StackItem>
+								<Heading as='h3' variant='contentTitle'>
 									Resume
 								</Heading>
-								<Flex alignItems='center' justifyContent='space-between' flexWrap='wrap' gap={4}>
-									{resume ? (
+								{resume ? (
+									<Flex gap={2}>
 										<ResumePreviewModal
 											resumePreview={resumePreview}
 											resumeLink={resume}
 											previewIcon={false}
+											maxW='250px'
 										/>
-									) : (
-										false
-									)}
-									{socials && !isEmpty(socials) && (
-										<PersonalIconLinks
-											socials={socials}
-											flex='1 0 auto'
-											justifyContent={{ base: 'flex-start', md: 'flex-end' }}
+										<IconButton
+											icon={<FiDownload />}
+											as={Link}
+											aria-label='Download resume'
+											href={resume}
+											colorScheme='green'
+											my={0}
+											download
 										/>
-									)}
-								</Flex>
+									</Flex>
+								) : (
+									false
+								)}
 							</StackItem>
 						</Stack>
 					</Flex>
