@@ -395,11 +395,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								{socials && !isEmpty(socials) && <PersonalIconLinks socials={socials} />}
 							</StackItem>
 
-							<StackItem>
-								<Heading as='h3' variant='contentTitle'>
-									Resume
-								</Heading>
-								{resume ? (
+							{resume ? (
+								<StackItem>
+									<Heading as='h3' variant='contentTitle'>
+										Resume
+									</Heading>
 									<Flex gap={2}>
 										<ResumePreviewModal
 											resumePreview={resumePreview}
@@ -417,10 +417,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											download
 										/>
 									</Flex>
-								) : (
-									false
-								)}
-							</StackItem>
+								</StackItem>
+							) : (
+								false
+							)}
 						</Stack>
 					</Flex>
 				</StackItem>
