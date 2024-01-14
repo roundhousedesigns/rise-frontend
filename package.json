@@ -15,7 +15,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.8",
     "@chakra-ui/react": "^2.8.2",
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.10.5",
     "@types/node": "^20.10.5",
     "apollo-upload-client": "^17.0.0",
