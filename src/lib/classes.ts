@@ -263,6 +263,7 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
  * A collection of personal links and social media handles.
  */
 export class PersonalLinks implements PersonalLinksParams {
+	[key: string]: string | (() => boolean) | undefined;
 	twitter: string = '';
 	linkedin: string = '';
 	instagram: string = '';
@@ -277,7 +278,8 @@ export class PersonalLinks implements PersonalLinksParams {
 	 * @returns {boolean} True if all properties are empty.
 	 */
 	isEmpty(): boolean {
-		return !this.twitter && !this.linkedin && !this.instagram && !this.facebook;
+		// Loop through all keys in `this` and check if any are not empty.
+		return Object.keys(this).every((key: string) => !this[key] as any);
 	}
 }
 

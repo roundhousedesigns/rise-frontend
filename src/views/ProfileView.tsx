@@ -46,11 +46,11 @@ import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
-import HeadingCenterline from '@common/HeadingCenterline';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
+import ProfileStackItem from '@common/ProfileStackItem';
 
 interface Props {
 	profile: UserProfile;
@@ -223,38 +223,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					selfTitle || <HomeBase />
 				)}
 			</Heading>
-		);
-	};
-
-	// A StackItem with a title and optional centerline.
-	const ProfileStackItem = ({
-		title,
-		centerlineColor,
-		children,
-		...props
-	}: {
-		title?: string;
-		centerlineColor?: string;
-		children: JSX.Element;
-		[prop: string]: any;
-	}) => {
-		const SectionTitle = () => {
-			return centerlineColor ? (
-				<HeadingCenterline lineColor={centerlineColor} mb={1}>
-					{title}
-				</HeadingCenterline>
-			) : (
-				<Heading as='h3' variant='contentTitle'>
-					{title}
-				</Heading>
-			);
-		};
-
-		return (
-			<StackItem {...props}>
-				{title ? <SectionTitle /> : false}
-				{children}
-			</StackItem>
 		);
 	};
 

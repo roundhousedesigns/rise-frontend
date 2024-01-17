@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { Credit, UserProfile } from '@lib/classes';
+import { Credit, PersonalLinks, UserProfile } from '@lib/classes';
 import { generateRandomString, sanitizeBoolean } from '@lib/utils';
 
 interface EditProfileAction {
@@ -43,7 +43,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			if (!action.payload.name) return state;
 
 			const current = { ...state };
-			current.socials = { ...current.socials, [action.payload.name]: action.payload.value };
+			(current.socials as any)[action.payload.name] = action.payload.value;
 
 			return current;
 		}

@@ -22,15 +22,15 @@ export const additionalFilterKeys: string[] = [
 /** Generate a link to a social media profile.
  *
  * @param {string} network The social media network name.
- * @returns {string} The link to the social media profile.
+ * @returns {string} The link to the social media profile.yarn
  */
 export function socialLink(network: string, value: string): string {
-	const socialLinkBases: PersonalLinks = {
+	const socialLinkBases = new PersonalLinks({
 		twitter: 'https://twitter.com/',
 		instagram: 'https://www.instagram.com/',
 		linkedin: '',
 		facebook: '',
-	};
+	});
 
 	if (!(network in socialLinkBases)) {
 		return '';

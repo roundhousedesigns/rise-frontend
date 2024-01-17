@@ -63,6 +63,7 @@ import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import ResumePreviewModal from '@common/ResumePreviewModal';
+import ProfileStackItem from '@common/ProfileStackItem';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
@@ -814,87 +815,87 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			{disableProfile ? <ProfileDisabledNotice /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
-				<StackItem py={2} mt={2}>
-					<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <ProfileImageUploader /> : false}
-						<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
-							<StackItem>
-								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
-									<TextInput
-										placeholder='First'
-										value={firstName}
-										name='firstName'
-										isRequired
-										onChange={handleInputChange}
-										flex='1'
-										label='First name'
-										minW='200px'
-									/>
-									<TextInput
-										placeholder='Last'
-										value={lastName}
-										name='lastName'
-										isRequired
-										label='Last name'
-										onChange={handleInputChange}
-										flex='1'
-										minW='200px'
-									/>
-									<TextInput
-										value={pronouns}
-										name='pronouns'
-										label='Pronouns'
-										onChange={handleInputChange}
-										maxW='150px'
-										inputProps={{
-											size: 'md',
-											tabIndex: 0,
-										}}
-									/>
-								</Flex>
-								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
-									<TextInput
-										placeholder='Home base'
-										value={homebase}
-										name='homebase'
-										label='Where do you currently live?'
-										leftElement={<Icon as={FiHome} />}
-										onChange={handleInputChange}
-										maxLength={25}
-										flex='1 0 48%'
-										inputProps={{
-											tabIndex: 0,
-										}}
-									/>
-									<TextInput
-										value={selfTitle}
-										name='selfTitle'
-										placeholder='Title'
-										label='Title/Trade/Profession'
-										leftElement={<Icon as={FiStar} />}
-										onChange={handleInputChange}
-										maxLength={50}
-										flex='1 0 48%'
-										inputProps={{
-											tabIndex: 0,
-										}}
-									/>
-								</Flex>
-							</StackItem>
-							{!isLargerThanMd ? (
-								<StackItem display='flex' flexWrap='wrap' gap={4}>
-									<ProfileImageUploader />
-								</StackItem>
-							) : (
-								false
-							)}
-							<StackItem display='flex' flexWrap='wrap' gap={4}>
-								<Box flex='1'>
-									<Heading variant='contentTitle' mb={2}>
-										Contact
-									</Heading>
-									<Stack direction='column' spacing={0}>
+				<ProfileStackItem py={2} mt={2}>
+					<>
+						<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
+							{isLargerThanMd ? <ProfileImageUploader /> : false}
+							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
+								<ProfileStackItem title='Name'>
+									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
 										<TextInput
+											placeholder='First'
+											value={firstName}
+											name='firstName'
+											isRequired
+											onChange={handleInputChange}
+											flex='1'
+											label='First name'
+											minW='200px'
+										/>
+										<TextInput
+											placeholder='Last'
+											value={lastName}
+											name='lastName'
+											isRequired
+											label='Last name'
+											onChange={handleInputChange}
+											flex='1'
+											minW='200px'
+										/>
+										<TextInput
+											value={pronouns}
+											name='pronouns'
+											label='Pronouns'
+											onChange={handleInputChange}
+											maxW='150px'
+											inputProps={{
+												size: 'md',
+												tabIndex: 0,
+											}}
+										/>
+									</Flex>
+								</ProfileStackItem>
+								<ProfileStackItem title='Profession'>
+									<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+										<TextInput
+											value={selfTitle}
+											name='selfTitle'
+											placeholder='Title'
+											label='Title/Trade/Profession'
+											leftElement={<Icon as={FiStar} />}
+											onChange={handleInputChange}
+											maxLength={50}
+											flex='1 0 48%'
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+										<TextInput
+											placeholder='Home base'
+											value={homebase}
+											name='homebase'
+											label='Where do you currently live?'
+											leftElement={<Icon as={FiHome} />}
+											onChange={handleInputChange}
+											maxLength={25}
+											flex='1 0 48%'
+											inputProps={{
+												tabIndex: 0,
+											}}
+										/>
+									</Flex>
+								</ProfileStackItem>
+								{!isLargerThanMd ? (
+									<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
+										<ProfileImageUploader />
+									</ProfileStackItem>
+								) : (
+									false
+								)}
+								<ProfileStackItem title='Contact'>
+									<Stack direction='column' spacing={0}>
+										<StackItem
+											as={TextInput}
 											value={email}
 											leftElement={<Icon as={FiMail} />}
 											placeholder='me@somewhere.com'
@@ -906,7 +907,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											}}
 										/>
 										{/* TODO Add checkbox for "use account email address" */}
-										<TextInput
+										<StackItem
+											as={TextInput}
 											value={phone}
 											leftElement={<Icon as={FiPhone} />}
 											placeholder='(888) 888-8888'
@@ -917,7 +919,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 												tabIndex: 0,
 											}}
 										/>
-										<TextInput
+										<StackItem
+											as={TextInput}
 											value={website}
 											leftElement={<Icon as={FiGlobe} />}
 											label='Website'
@@ -928,234 +931,240 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											}}
 										/>
 									</Stack>
-								</Box>
-							</StackItem>
-						</Stack>
-					</Flex>
-					<Stack mt={4}>
-						<StackItem fontSize='sm'>
-							<Heading variant='contentTitle'>Work Locations</Heading>
-							<Heading variant='contentSubtitle'>
-								Select any areas in which you're a local hire.
-							</Heading>
-							<ProfileCheckboxGroup
-								name='locations'
-								isRequired
-								requiredMessage='Please select at least one location.'
-								items={locationTerms}
-								checked={locations ? locations.map((item) => item.toString()) : []}
-								handleChange={handleCheckboxInput}
-							/>
-						</StackItem>
-						<StackItem py={4} display='flex' gap={10}>
-							<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
-								<Box>
-									<Heading variant='contentTitle'>Travel</Heading>
-									<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
-									<ProfileRadioGroup
-										defaultValue={willTravel ? 'true' : 'false'}
-										name='willTravel'
-										items={[
-											{ label: 'Yes', value: 'true' },
-											{ label: 'No', value: 'false' },
-										]}
-										handleChange={handleRadioInputChange}
+								</ProfileStackItem>
+								<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
+								<SimpleGrid columns={[1, 2]} spacing={4}>
+									<TextInput
+										value={socials?.linkedin}
+										leftElement={<Icon as={FiLinkedin} />}
+										label='LinkedIn URL'
+										placeholder='https://linkedin/in/yourprofile'
+										name='socials.linkedin'
+										onChange={handleSocialInputChange}
 									/>
-								</Box>
-								<Box>
-									<Heading variant='contentTitle'>Tour</Heading>
-									<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
-									<ProfileRadioGroup
-										defaultValue={willTour ? 'true' : 'false'}
-										name='willTour'
-										items={[
-											{ label: 'Yes', value: 'true' },
-											{ label: 'No', value: 'false' },
-										]}
-										handleChange={handleRadioInputChange}
+									<TextInput
+										value={socials?.facebook}
+										leftElement={<Icon as={FiFacebook} />}
+										label='Facebook URL'
+										placeholder='https://facebook.com/yourname'
+										name='socials.facebook'
+										onChange={handleSocialInputChange}
 									/>
-								</Box>
-								<Box>
-									<Heading
-										variant='contentTitle'
-										flex='0 0 100%'
-										textAlign='left'
-										alignItems='center'
-										display='flex'
-									>
-										Resume
-									</Heading>
-									{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-									{resume && resumePreview ? (
-										<Flex flexWrap='wrap'>
-											<ResumePreviewModal
-												resumePreview={resumePreview}
-												resumeLink={resume}
-												w='100%'
-												maxW='300px'
-												mr={{ base: 0, sm: 1 }}
-												mb={{ base: 1, sm: 0 }}
-											/>
-											<ClearFieldButton field='resume' label='Delete resume'>
-												Clear
-											</ClearFieldButton>
-										</Flex>
-									) : (
-										<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
-									)}
-								</Box>
-							</Flex>
-						</StackItem>
-					</Stack>
-
-					<StackItem py={4}>
-						<Box mb={8}>
-							<Heading variant='contentTitle'>Unions/Guilds</Heading>
-							<Heading variant='contentSubtitle'>
-								What unions or guilds are you a member of?
-							</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='unions'
-									items={unionTerms}
-									checked={unions ? unions.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
-								/>
-							</Box>
-						</Box>
-						<Box mb={8}>
-							<Heading variant='contentTitle'>Experience Levels</Heading>
-							<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='experienceLevels'
-									items={experienceLevelTerms}
-									checked={experienceLevels ? experienceLevels.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
-								/>
-							</Box>
-						</Box>
-						<Box>
-							<Heading variant='contentTitle'>Partner Directories</Heading>
-							<Heading variant='contentSubtitle'>
-								Are you a member of one of our partner organizations?
-							</Heading>
-							<Box fontSize='sm'>
-								<ProfileCheckboxGroup
-									name='partnerDirectories'
-									items={partnerDirectoryTerms}
-									checked={
-										partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
-									}
-									handleChange={handleCheckboxInput}
-								/>
-							</Box>
-						</Box>
-					</StackItem>
-
-					<StackItem w='full' maxW='3xl'>
-						<Heading variant='contentTitle'>Social</Heading>
-
-						<SimpleGrid columns={[1, 2]} spacing={4}>
-							<TextInput
-								value={socials?.linkedin}
-								leftElement={<Icon as={FiLinkedin} />}
-								label='LinkedIn URL'
-								placeholder='https://linkedin/in/yourprofile'
-								name='socials.linkedin'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.facebook}
-								leftElement={<Icon as={FiFacebook} />}
-								label='Facebook URL'
-								placeholder='https://facebook.com/yourname'
-								name='socials.facebook'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.instagram}
-								leftElement={<Icon as={FiInstagram} />}
-								label='Instagram @handle'
-								placeholder='@handle'
-								name='socials.instagram'
-								onChange={handleSocialInputChange}
-							/>
-							<TextInput
-								value={socials?.twitter}
-								leftElement={<Icon as={XIcon} />}
-								label='X/Twitter @handle'
-								placeholder='@handle'
-								name='socials.twitter'
-								onChange={handleSocialInputChange}
-							/>
-						</SimpleGrid>
-					</StackItem>
-				</StackItem>
-
-				<StackItem pos='relative' id='credits'>
-					<HeadingCenterline lineColor='brand.blue'>Credits</HeadingCenterline>
-					<Text>Enter your 5 best credits.</Text>
-					{/* TODO better reorder and delete animations */}
-					{/* TODO "Success" (or error) toast after saving credit and modal closes */}
-
-					{deleteCreditLoading ? (
-						<Spinner size='sm' colorScheme='green' />
-					) : (
-						creditsSorted.map((credit: Credit, index: number) => (
-							<Stack key={credit.id} direction='row' alignItems='center'>
-								<CreditItem
-									credit={credit}
-									onClick={() => handleEditCredit(credit.id)}
-									isEditable
-									key={index}
-									width='full'
-								/>
-								<Stack
-									as={isLargerThanMd ? ButtonGroup : undefined}
-									gap={{ base: 2, md: 0 }}
-									direction={{ base: 'column', md: 'row' }}
-								>
-									<IconButton
-										colorScheme='gray'
-										icon={<FiArrowUpCircle />}
-										aria-label='Move up Credit'
-										isDisabled={index === 0}
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveUp(index);
-										}}
+									<TextInput
+										value={socials?.instagram}
+										leftElement={<Icon as={FiInstagram} />}
+										label='Instagram @handle'
+										placeholder='@handle'
+										name='socials.instagram'
+										onChange={handleSocialInputChange}
 									/>
-									<IconButton
-										colorScheme='gray'
-										icon={<FiArrowDownCircle />}
-										aria-label='Move down Credit'
-										isDisabled={index === creditsSorted.length - 1}
-										id={credit.id}
-										onClick={() => {
-											handleCreditMoveDown(index);
-										}}
+									<TextInput
+										value={socials?.twitter}
+										leftElement={<Icon as={XIcon} />}
+										label='X/Twitter @handle'
+										placeholder='@handle'
+										name='socials.twitter'
+										onChange={handleSocialInputChange}
 									/>
-									<DeleteCreditButton handleDeleteCredit={handleDeleteCredit} id={credit.id} />
-								</Stack>
+								</SimpleGrid>
+							</ProfileStackItem>
 							</Stack>
-						))
-					)}
-					{editProfile.credits?.length < 5 && (
-						<Button aria-label='Add a new credit' leftIcon={<FiPlus />} onClick={handleNewCredit}>
-							New Credit
-						</Button>
-					)}
-					<EditCreditModal
-						isOpen={creditModalIsOpen}
-						onClose={handleCloseEditCredit}
-						creditId={editCredit}
-					/>
-				</StackItem>
+						</Flex>
+						<Stack mt={4}>
+							<ProfileStackItem title='Work Locations' fontSize='sm'>
+								<>
+									<Heading variant='contentSubtitle'>
+										Select any areas in which you're a local hire.
+									</Heading>
+									<ProfileCheckboxGroup
+										name='locations'
+										isRequired
+										requiredMessage='Please select at least one location.'
+										items={locationTerms}
+										checked={locations ? locations.map((item) => item.toString()) : []}
+										handleChange={handleCheckboxInput}
+									/>
+								</>
+							</ProfileStackItem>
+							<ProfileStackItem py={4} display='flex' gap={10}>
+								<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
+									<Box>
+										<Heading variant='contentTitle'>Travel</Heading>
+										<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
+										<ProfileRadioGroup
+											defaultValue={willTravel ? 'true' : 'false'}
+											name='willTravel'
+											items={[
+												{ label: 'Yes', value: 'true' },
+												{ label: 'No', value: 'false' },
+											]}
+											handleChange={handleRadioInputChange}
+										/>
+									</Box>
+									<Box>
+										<Heading variant='contentTitle'>Tour</Heading>
+										<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+										<ProfileRadioGroup
+											defaultValue={willTour ? 'true' : 'false'}
+											name='willTour'
+											items={[
+												{ label: 'Yes', value: 'true' },
+												{ label: 'No', value: 'false' },
+											]}
+											handleChange={handleRadioInputChange}
+										/>
+									</Box>
+									<Box>
+										<Heading
+											variant='contentTitle'
+											flex='0 0 100%'
+											textAlign='left'
+											alignItems='center'
+											display='flex'
+										>
+											Resume
+										</Heading>
+										{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+										{resume && resumePreview ? (
+											<Flex flexWrap='wrap'>
+												<ResumePreviewModal
+													resumePreview={resumePreview}
+													resumeLink={resume}
+													w='100%'
+													maxW='300px'
+													mr={{ base: 0, sm: 1 }}
+													mb={{ base: 1, sm: 0 }}
+												/>
+												<ClearFieldButton field='resume' label='Delete resume'>
+													Clear
+												</ClearFieldButton>
+											</Flex>
+										) : (
+											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+										)}
+									</Box>
+								</Flex>
+							</ProfileStackItem>
+							<ProfileStackItem>
+								<Stack display='flex' gap={4}>
+									<ProfileStackItem title='Unions/Guilds'>
+										<>
+											<Heading variant='contentSubtitle'>
+												What unions or guilds are you a member of?
+											</Heading>
+											<Box fontSize='sm'>
+												<ProfileCheckboxGroup
+													name='unions'
+													items={unionTerms}
+													checked={unions ? unions.map((item) => item.toString()) : []}
+													handleChange={handleCheckboxInput}
+												/>
+											</Box>
+										</>
+									</ProfileStackItem>
+									<ProfileStackItem title='Experience Levels'>
+										<>
+											<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+											<Box fontSize='sm'>
+												<ProfileCheckboxGroup
+													name='experienceLevels'
+													items={experienceLevelTerms}
+													checked={
+														experienceLevels ? experienceLevels.map((item) => item.toString()) : []
+													}
+													handleChange={handleCheckboxInput}
+												/>
+											</Box>
+										</>
+									</ProfileStackItem>
+									<ProfileStackItem title='Partner Directories'>
+										<>
+											<Heading variant='contentSubtitle'>
+												Are you a member of one of our partner organizations?
+											</Heading>
+											<Box fontSize='sm'>
+												<ProfileCheckboxGroup
+													name='partnerDirectories'
+													items={partnerDirectoryTerms}
+													checked={
+														partnerDirectories
+															? partnerDirectories.map((item) => item.toString())
+															: []
+													}
+													handleChange={handleCheckboxInput}
+												/>
+											</Box>
+										</>
+									</ProfileStackItem>
+								</Stack>
+							</ProfileStackItem>
+						</Stack>
+					</>
+				</ProfileStackItem>
 
-				<StackItem>
-					<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
-					<Box>
+				<ProfileStackItem title='Credits' centerlineColor='brand.blue' pos='relative' id='credits'>
+					<>
+						<Text>Enter your 5 best credits.</Text>
+						{/* TODO better reorder and delete animations */}
+						{/* TODO "Success" (or error) toast after saving credit and modal closes */}
+
+						{deleteCreditLoading ? (
+							<Spinner size='sm' colorScheme='green' />
+						) : (
+							creditsSorted.map((credit: Credit, index: number) => (
+								<Stack key={credit.id} direction='row' alignItems='center'>
+									<CreditItem
+										credit={credit}
+										onClick={() => handleEditCredit(credit.id)}
+										isEditable
+										key={index}
+										width='full'
+									/>
+									<Stack
+										as={isLargerThanMd ? ButtonGroup : undefined}
+										gap={{ base: 2, md: 0 }}
+										direction={{ base: 'column', md: 'row' }}
+									>
+										<IconButton
+											colorScheme='gray'
+											icon={<FiArrowUpCircle />}
+											aria-label='Move up Credit'
+											isDisabled={index === 0}
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveUp(index);
+											}}
+										/>
+										<IconButton
+											colorScheme='gray'
+											icon={<FiArrowDownCircle />}
+											aria-label='Move down Credit'
+											isDisabled={index === creditsSorted.length - 1}
+											id={credit.id}
+											onClick={() => {
+												handleCreditMoveDown(index);
+											}}
+										/>
+										<DeleteCreditButton handleDeleteCredit={handleDeleteCredit} id={credit.id} />
+									</Stack>
+								</Stack>
+							))
+						)}
+						{editProfile.credits?.length < 5 && (
+							<Button aria-label='Add a new credit' leftIcon={<FiPlus />} onClick={handleNewCredit}>
+								New Credit
+							</Button>
+						)}
+						<EditCreditModal
+							isOpen={creditModalIsOpen}
+							onClose={handleCloseEditCredit}
+							creditId={editCredit}
+						/>
+					</>
+				</ProfileStackItem>
+
+				<ProfileStackItem title='About' centerlineColor='brand.orange'>
+					<>
 						<Heading variant='contentTitle'>Bio</Heading>
 						<Heading variant='contentSubtitle' my={2}>
 							Write a little. Write a lot. It's up to you!
@@ -1172,41 +1181,33 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								rows: 10,
 							}}
 						/>
-					</Box>
-				</StackItem>
+					</>
+				</ProfileStackItem>
 
-				<StackItem>
-					<HeadingCenterline lineColor='brand.yellow'>Identity</HeadingCenterline>
-					<Text>
-						The following optional fields will be <strong>searchable</strong>, but{' '}
-						<em>will not appear</em> on your public profile. Select any that apply.
-					</Text>
-					<Stack mt={4} gap={4}>
-						<StackItem flex='1 0 33%'>
-							<Heading variant='contentTitle'>Gender</Heading>
-							<Box fontSize='sm'>
+				<ProfileStackItem title='Identity' centerlineColor='brand.yellow'>
+					<>
+						<Text>
+							The following optional fields will be <strong>searchable</strong>, but{' '}
+							<em>will not appear</em> on your public profile. Select any that apply.
+						</Text>
+						<Stack direction='row' mt={4} gap={2} flexWrap='wrap'>
+							<ProfileStackItem title='Gender' flex='1 0 33%'>
 								<ProfileCheckboxGroup
 									name='genderIdentities'
 									items={genderIdentityTerms}
 									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxInput}
 								/>
-							</Box>
-						</StackItem>
-						<StackItem flex='1 0 33%'>
-							<Heading variant='contentTitle'>Race/Ethnicity</Heading>
-							<Box fontSize='sm'>
+							</ProfileStackItem>
+							<ProfileStackItem title='Race/Ethnicity' flex='1 0 33%'>
 								<ProfileCheckboxGroup
 									name='racialIdentities'
 									items={racialIdentityTerms}
 									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxInput}
 								/>
-							</Box>
-						</StackItem>
-						<StackItem flex='1 0 33%'>
-							<Heading variant='contentTitle'>Additional</Heading>
-							<Box fontSize='sm'>
+							</ProfileStackItem>
+							<ProfileStackItem title='Additional' flex='1 0 33%'>
 								<ProfileCheckboxGroup
 									name='personalIdentities'
 									items={personalIdentityTerms}
@@ -1215,13 +1216,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									}
 									handleChange={handleCheckboxInput}
 								/>
-							</Box>
-						</StackItem>
-					</Stack>
-				</StackItem>
+							</ProfileStackItem>
+						</Stack>
+					</>
+				</ProfileStackItem>
 
-				<StackItem>
-					<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
+				<ProfileStackItem title='Education + Training' centerlineColor='brand.green'>
 					<TextareaInput
 						value={education}
 						name='education'
@@ -1233,71 +1233,73 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							rows: 4,
 						}}
 					/>
-				</StackItem>
+				</ProfileStackItem>
 
-				<StackItem>
-					<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
-					<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
-					<Box>
-						<Heading variant='contentTitle'>Videos</Heading>
-						<SimpleGrid columns={[1, 2]} spacing={8}>
-							<Box>
-								<TextInput
-									value={mediaVideo1}
-									name='mediaVideo1'
-									label='Video embed 1'
-									placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
-									leftElement={<FiVideo />}
-									onChange={handleInputChange}
-								/>
-								{mediaVideo1 ? (
-									<Box position='relative' paddingBottom='56.25%' w='full'>
-										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-											<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+				<ProfileStackItem title='Media' centerlineColor='brand.blue'>
+					<>
+						<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
+						<Box>
+							<Heading variant='contentTitle'>Videos</Heading>
+							<SimpleGrid columns={[1, 2]} spacing={8}>
+								<Box>
+									<TextInput
+										value={mediaVideo1}
+										name='mediaVideo1'
+										label='Video embed 1'
+										placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
+										leftElement={<FiVideo />}
+										onChange={handleInputChange}
+									/>
+									{mediaVideo1 ? (
+										<Box position='relative' paddingBottom='56.25%' w='full'>
+											<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+												<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+											</Box>
 										</Box>
-									</Box>
-								) : (
-									false
-								)}
-							</Box>
-							<Box>
-								<TextInput
-									value={mediaVideo2}
-									name='mediaVideo2'
-									label='Video embed 2'
-									placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
-									leftElement={<FiVideo />}
-									onChange={handleInputChange}
-								/>
-								{mediaVideo2 ? (
-									<Box position='relative' paddingBottom='56.25%' w='full'>
-										<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-											<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+									) : (
+										false
+									)}
+								</Box>
+								<Box>
+									<TextInput
+										value={mediaVideo2}
+										name='mediaVideo2'
+										label='Video embed 2'
+										placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
+										leftElement={<FiVideo />}
+										onChange={handleInputChange}
+									/>
+									{mediaVideo2 ? (
+										<Box position='relative' paddingBottom='56.25%' w='full'>
+											<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+												<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+											</Box>
 										</Box>
-									</Box>
-								) : (
-									false
-								)}
-							</Box>
-						</SimpleGrid>
-					</Box>
-					<Box mt={6}>
-						<Heading variant='contentTitle'>Images</Heading>
-						<Heading variant='contentSubtitle' fontSize='md'>
-							Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
-						</Heading>
-						<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-							{/* TODO show only the next available uploader, up to limit. */}
-							<FileDropzone fieldName='mediaImage1' text='Image 1' />
-							<FileDropzone fieldName='mediaImage2' text='Image 2' />
-							<FileDropzone fieldName='mediaImage3' text='Image 3' />
-							<FileDropzone fieldName='mediaImage4' text='Image 4' />
-							<FileDropzone fieldName='mediaImage5' text='Image 5' />
-							<FileDropzone fieldName='mediaImage6' text='Image 6' />
-						</SimpleGrid>
-					</Box>
-				</StackItem>
+									) : (
+										false
+									)}
+								</Box>
+							</SimpleGrid>
+						</Box>
+						<Box mt={6}>
+							<Heading variant='contentTitle'>Images</Heading>
+							<Heading variant='contentSubtitle' fontSize='md'>
+								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
+							</Heading>
+							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
+								{/* TODO show only the next available uploader, up to limit. */}
+								<FileDropzone fieldName='mediaImage1' text='Image 1' />
+								<FileDropzone fieldName='mediaImage2' text='Image 2' />
+								<FileDropzone fieldName='mediaImage3' text='Image 3' />
+								<FileDropzone fieldName='mediaImage4' text='Image 4' />
+								<FileDropzone fieldName='mediaImage5' text='Image 5' />
+								<FileDropzone fieldName='mediaImage6' text='Image 6' />
+							</SimpleGrid>
+						</Box>
+					</>
+				</ProfileStackItem>
 			</Stack>
+
 			<Slide
 				in={hasEditedProfile === true}
 				direction='bottom'
