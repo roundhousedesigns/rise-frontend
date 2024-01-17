@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { Credit, PersonalLinks, UserProfile } from '@lib/classes';
+import { Credit, UserProfile } from '@lib/classes';
 import { generateRandomString, sanitizeBoolean } from '@lib/utils';
 
 interface EditProfileAction {

@@ -1,6 +1,5 @@
 import { Key } from 'react';
 import { useParams } from 'react-router-dom';
-import { isEmpty } from 'lodash';
 import {
 	Box,
 	Heading,
@@ -47,10 +46,10 @@ import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import ResumePreviewModal from '@common/ResumePreviewModal';
+import ProfileStackItem from '@common/ProfileStackItem';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
-import ProfileStackItem from '@common/ProfileStackItem';
 
 interface Props {
 	profile: UserProfile;
