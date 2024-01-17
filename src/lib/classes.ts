@@ -271,6 +271,14 @@ export class PersonalLinks implements PersonalLinksParams {
 	constructor(params: PersonalLinksParams = {}) {
 		Object.assign(this, params);
 	}
+
+	/**
+	 * Check if all properties are empty.
+	 * @returns {boolean} True if all properties are empty.
+	 */
+	isEmpty(): boolean {
+		return !this.twitter && !this.linkedin && !this.instagram && !this.facebook;
+	}
 }
 
 /**
@@ -314,6 +322,7 @@ export class Credit implements CreditParams {
 
 	/**
 	 * Get the positions of the credit.
+	 *
 	 * @param {CreditParams} params - Credit parameters
 	 * @returns {Object} An object containing departments and jobs
 	 */
@@ -339,6 +348,7 @@ export class Credit implements CreditParams {
 
 	/**
 	 * Sanitize properties for GraphQL mutation.
+	 *
 	 * @returns {CreditOutput} A sanitized credit object.
 	 */
 	prepareCreditForGraphQL(): CreditOutput {

@@ -127,11 +127,14 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		{ locations: locationTerms, unions: unionTerms, partnerDirectories: partnerDirectoryTerms },
 	] = useUserTaxonomies();
 
+	const { sourceUrl: resumePreview } = useResumePreview(resume ? resume : '').mediaItem || {};
+
 	interface SelectedTermsProps {
 		ids: number[];
 		terms: WPItem[];
 	}
 
+	// Selected term items.
 	const SelectedTerms = ({ ids, terms }: SelectedTermsProps) => {
 		const items = getWPItemsFromIds(ids, terms);
 
@@ -173,6 +176,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		});
 	}
 
+	// Share and Bookmark buttons.
 	const ShareBookmarkButtons = ({ ...props }: { [prop: string]: any }) => (
 		<Flex
 			bg={{ base: 'transparent !important' }}
@@ -222,292 +226,317 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		);
 	};
 
-	const { sourceUrl: resumePreview } = useResumePreview(resume ? resume : '').mediaItem || {};
+	// A StackItem with a title and optional centerline.
+	const ProfileStackItem = ({
+		title,
+		centerlineColor,
+		children,
+		...props
+	}: {
+		title?: string;
+		centerlineColor?: string;
+		children: JSX.Element;
+		[prop: string]: any;
+	}) => {
+		const SectionTitle = () => {
+			return centerlineColor ? (
+				<HeadingCenterline lineColor={centerlineColor} mb={1}>
+					{title}
+				</HeadingCenterline>
+			) : (
+				<Heading as='h3' variant='contentTitle'>
+					{title}
+				</Heading>
+			);
+		};
+
+		return (
+			<StackItem {...props}>
+				{title ? <SectionTitle /> : false}
+				{children}
+			</StackItem>
+		);
+	};
 
 	return profile ? (
 		<>
 			{profileIsLoggedInUser && disableProfile ? <ProfileDisabledNotice mb={0} /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
-				<StackItem as={Card} p={4}>
-					{!isLargerThanMd ? <ShareBookmarkButtons /> : false}
-					<Flex
-						gap={6}
-						flexWrap={{ base: 'wrap', md: 'nowrap' }}
-						justifyContent={{ base: 'center', md: 'flex-start' }}
-					>
-						{isLargerThanMd ? (
-							image ? (
-								<Box w='40%' minW='160px' maxW='400px'>
-									<Image
-										src={image}
-										alt={`${profile.fullName()}'s picture`}
-										borderRadius='md'
-										loading='eager'
-										fit='cover'
-										w='full'
-									/>
-								</Box>
-							) : (
-								<Avatar size='2xl' name={profile.fullName()} mx={2} />
-							)
-						) : (
-							<Avatar size='superLg' src={image} name={profile.fullName()} />
-						)}
-
-						<Stack
-							direction='column'
-							justifyContent='space-evenly'
-							gap={4}
-							width={'100%'}
-							lineHeight={1}
+				<ProfileStackItem as={Card} p={4}>
+					<>
+						{!isLargerThanMd ? <ShareBookmarkButtons /> : false}
+						<Flex
+							gap={6}
+							flexWrap={{ base: 'wrap', md: 'nowrap' }}
+							justifyContent={{ base: 'center', md: 'flex-start' }}
 						>
-							<StackItem display='flex' flexWrap='wrap'>
-								<Flex
-									justifyContent={{ base: 'center', md: 'space-between' }}
-									w='full'
-									flexWrap='wrap'
-									alignItems='center'
-								>
-									<Heading
-										as='h1'
-										size='xl'
-										mr={2}
-										mt={0}
-										mb={1}
-										fontWeight='bold'
-										lineHeight='none'
+							{isLargerThanMd ? (
+								image ? (
+									<Box w='40%' minW='160px' maxW='400px'>
+										<Image
+											src={image}
+											alt={`${profile.fullName()}'s picture`}
+											borderRadius='md'
+											loading='eager'
+											fit='cover'
+											w='full'
+										/>
+									</Box>
+								) : (
+									<Avatar size='2xl' name={profile.fullName()} mx={2} />
+								)
+							) : (
+								<Avatar size='superLg' src={image} name={profile.fullName()} />
+							)}
+
+							<Stack
+								direction='column'
+								justifyContent='space-evenly'
+								gap={4}
+								width={'100%'}
+								lineHeight={1}
+							>
+								<StackItem display='flex' flexWrap='wrap'>
+									<Flex
+										justifyContent={{ base: 'center', md: 'space-between' }}
+										w='full'
+										flexWrap='wrap'
+										alignItems='center'
 									>
-										{profile.fullName()}
-									</Heading>
-									{pronouns ? (
-										<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
-											{pronouns}
-										</Tag>
-									) : (
-										false
-									)}
-									<Spacer flex={1} />
-									{isLargerThanMd ? <ShareBookmarkButtons p={0} /> : false}
-								</Flex>
-								<ProfileSubtitle flex='0 0 100%' w='full' />
-							</StackItem>
-
-							{locations && locations.length > 0 ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										Works In
-									</Heading>
-									<WrapWithIcon icon={FiMapPin} mr={2}>
-										{locationTerms
-											? SelectedTerms({ ids: locations, terms: locationTerms })
-											: false}
-									</WrapWithIcon>
-									<WrapWithIcon icon={FiMap} mr={2}>
-										<Wrap>
-											{willTravel !== undefined && (
-												<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
-													{willTravel ? 'Will Travel' : 'Local Only'}
-												</Tag>
-											)}
-											{willTour !== undefined && (
-												<Tag size='md' colorScheme={willTour ? 'green' : 'orange'}>
-													{willTour ? 'Will Tour' : 'No Tours'}
-												</Tag>
-											)}
-										</Wrap>
-									</WrapWithIcon>
-								</StackItem>
-							) : (
-								false
-							)}
-
-							{unions && unions.length > 0 && unionTerms ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										Unions/Guilds
-									</Heading>
-									<WrapWithIcon icon={FiUser}>
-										{SelectedTerms({ ids: unions, terms: unionTerms })}
-									</WrapWithIcon>
-								</StackItem>
-							) : (
-								false
-							)}
-
-							{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										RISE Network Partner Directories
-									</Heading>
-									<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
-										<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
-										<Wrap flex='1' pl={2} spacing={2}>
-											{selectedLinkableTerms({
-												ids: partnerDirectories,
-												terms: partnerDirectoryTerms,
-											})}
-										</Wrap>
+										<Heading
+											as='h1'
+											size='xl'
+											mr={2}
+											mt={0}
+											mb={1}
+											fontWeight='bold'
+											lineHeight='none'
+										>
+											{profile.fullName()}
+										</Heading>
+										{pronouns ? (
+											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+												{pronouns}
+											</Tag>
+										) : (
+											false
+										)}
+										<Spacer flex={1} />
+										{isLargerThanMd ? <ShareBookmarkButtons p={0} /> : false}
 									</Flex>
+									<ProfileSubtitle flex='0 0 100%' w='full' />
 								</StackItem>
-							) : (
-								false
-							)}
 
-							<StackItem>
-								<Heading as='h3' variant='contentTitle'>
-									Contact
-								</Heading>
-								<List m={0} spacing={1}>
-									{email ? (
-										<ListItem>
-											<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
-												{email}
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
-									)}
-									{phone ? (
-										<ListItem>
-											<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
-												{phone}
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
-									)}
-									{website ? (
-										<ListItem>
-											<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
-												Visit Website
-											</LinkWithIcon>
-										</ListItem>
-									) : (
-										false
-									)}
-								</List>
-							</StackItem>
+								{locations && locations.length > 0 ? (
+									<ProfileStackItem title='Works In'>
+										<>
+											<WrapWithIcon icon={FiMapPin} mr={2}>
+												{locationTerms
+													? SelectedTerms({ ids: locations, terms: locationTerms })
+													: false}
+											</WrapWithIcon>
+											<WrapWithIcon icon={FiMap} mr={2}>
+												<Wrap>
+													{willTravel !== undefined && (
+														<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
+															{willTravel ? 'Will Travel' : 'Local Only'}
+														</Tag>
+													)}
+													{willTour !== undefined && (
+														<Tag size='md' colorScheme={willTour ? 'green' : 'orange'}>
+															{willTour ? 'Will Tour' : 'No Tours'}
+														</Tag>
+													)}
+												</Wrap>
+											</WrapWithIcon>
+										</>
+									</ProfileStackItem>
+								) : (
+									false
+								)}
 
-							<StackItem>
-								<Heading as='h3' variant='contentTitle'>
-									Social
-								</Heading>
-								{socials && !isEmpty(socials) && <PersonalIconLinks socials={socials} />}
-							</StackItem>
+								{unions && unions.length > 0 && unionTerms ? (
+									<ProfileStackItem title='Unions/Guilds'>
+										<WrapWithIcon icon={FiUser}>
+											{SelectedTerms({ ids: unions, terms: unionTerms })}
+										</WrapWithIcon>
+									</ProfileStackItem>
+								) : (
+									false
+								)}
 
-							{resume ? (
-								<StackItem>
-									<Heading as='h3' variant='contentTitle'>
-										Resume
-									</Heading>
-									<Flex gap={2}>
-										<ResumePreviewModal
-											resumePreview={resumePreview}
-											resumeLink={resume}
-											previewIcon={false}
-											maxW='250px'
-										/>
-										<IconButton
-											icon={<FiDownload />}
-											as={Link}
-											aria-label='Download resume'
-											href={resume}
-											colorScheme='green'
-											my={0}
-											download
-										/>
-									</Flex>
-								</StackItem>
-							) : (
-								false
-							)}
-						</Stack>
-					</Flex>
-				</StackItem>
+								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
+									<ProfileStackItem title='RISE Network Partner Directories'>
+										<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
+											<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
+											<Wrap flex='1' pl={2} spacing={2}>
+												{selectedLinkableTerms({
+													ids: partnerDirectories,
+													terms: partnerDirectoryTerms,
+												})}
+											</Wrap>
+										</Flex>
+									</ProfileStackItem>
+								) : (
+									false
+								)}
+
+								{email || phone || website ? (
+									<StackItem>
+										<Heading as='h3' variant='contentTitle'>
+											Contact
+										</Heading>
+										<List m={0} spacing={1}>
+											{email ? (
+												<ListItem>
+													<LinkWithIcon href={`mailto:${email}`} icon={FiMail}>
+														{email}
+													</LinkWithIcon>
+												</ListItem>
+											) : (
+												false
+											)}
+											{phone ? (
+												<ListItem>
+													<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
+														{phone}
+													</LinkWithIcon>
+												</ListItem>
+											) : (
+												false
+											)}
+											{website ? (
+												<ListItem>
+													<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
+														Visit Website
+													</LinkWithIcon>
+												</ListItem>
+											) : (
+												false
+											)}
+										</List>
+									</StackItem>
+								) : (
+									false
+								)}
+
+								{!socials.isEmpty() ? (
+									<ProfileStackItem title='Social'>
+										<PersonalIconLinks socials={socials} />
+									</ProfileStackItem>
+								) : (
+									false
+								)}
+
+								{resume ? (
+									<ProfileStackItem title='Resume'>
+										<Flex gap={2}>
+											<ResumePreviewModal
+												resumePreview={resumePreview}
+												resumeLink={resume}
+												previewIcon={false}
+												maxW='250px'
+											/>
+											<IconButton
+												icon={<FiDownload />}
+												as={Link}
+												aria-label='Download resume'
+												href={resume}
+												colorScheme='green'
+												my={0}
+												download
+											/>
+										</Flex>
+									</ProfileStackItem>
+								) : (
+									false
+								)}
+							</Stack>
+						</Flex>
+					</>
+				</ProfileStackItem>
 
 				{credits && credits.length > 0 && (
-					<StackItem>
-						<HeadingCenterline lineColor='brand.blue' mb={1}>
-							Credits
-						</HeadingCenterline>
-						<Flex justifyContent='flex-end'>
-							<CreditsTagLegend mr={4} />
-						</Flex>
-						<List m={0}>
-							{creditsSorted.map((credit: Credit) => (
-								<ListItem key={credit.id}>
-									<CreditItem credit={credit} />
-								</ListItem>
-							))}
-						</List>
-					</StackItem>
+					<ProfileStackItem centerlineColor='brand.blue' title='Credits'>
+						<>
+							<Flex justifyContent='flex-end'>
+								<CreditsTagLegend mr={4} />
+							</Flex>
+							<List m={0}>
+								{creditsSorted.map((credit: Credit) => (
+									<ListItem key={credit.id}>
+										<CreditItem credit={credit} />
+									</ListItem>
+								))}
+							</List>
+						</>
+					</ProfileStackItem>
 				)}
 
 				{description && (
-					<StackItem>
-						<HeadingCenterline lineColor='brand.orange'>About</HeadingCenterline>
+					<ProfileStackItem centerlineColor='brand.orange' title='About'>
 						<Text whiteSpace='pre-wrap' borderRadius='md'>
 							{description.trim()}
 						</Text>
-					</StackItem>
+					</ProfileStackItem>
 				)}
 
 				{education && (
-					<StackItem>
-						<HeadingCenterline lineColor='brand.green'>Education + Training</HeadingCenterline>
+					<ProfileStackItem centerlineColor='brand.green' title='Education + Training'>
 						<Text whiteSpace='pre-wrap' borderRadius='md'>
 							{education.trim()}
 						</Text>
-					</StackItem>
+					</ProfileStackItem>
 				)}
 
 				{mediaVideos.length > 0 || mediaImages.length > 0 ? (
-					<StackItem>
-						<HeadingCenterline lineColor='brand.blue'>Media</HeadingCenterline>
-						{mediaVideos.length > 0 ? (
-							<>
-								<Heading as='h3' variant='contentTitle' size='md'>
-									Video
-								</Heading>
-								<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
-									{mediaVideos.map((video: string | undefined, index: Key) => {
-										if (!video) return false;
-										return (
-											<Box key={index} position='relative' paddingBottom='56.25%'>
-												<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-													<ReactPlayer url={video} controls width='100%' height='100%' />
+					<ProfileStackItem centerlineColor='brand.blue' title='Media'>
+						<>
+							{mediaVideos.length > 0 ? (
+								<>
+									<Heading as='h3' variant='contentTitle' size='md'>
+										Video
+									</Heading>
+									<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
+										{mediaVideos.map((video: string | undefined, index: Key) => {
+											if (!video) return false;
+											return (
+												<Box key={index} position='relative' paddingBottom='56.25%'>
+													<Box position='absolute' top={0} left={0} width='100%' height='100%'>
+														<ReactPlayer url={video} controls width='100%' height='100%' />
+													</Box>
 												</Box>
-											</Box>
-										);
-									})}
-								</SimpleGrid>
-							</>
-						) : (
-							false
-						)}
-						{mediaImages.length > 0 ? (
-							<Box mt={6}>
-								<Heading as='h3' variant='contentTitle' size='md'>
-									Images
-								</Heading>
+											);
+										})}
+									</SimpleGrid>
+								</>
+							) : (
+								false
+							)}
+							{mediaImages.length > 0 ? (
+								<Box mt={6}>
+									<Heading as='h3' variant='contentTitle' size='md'>
+										Images
+									</Heading>
 
-								<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
-									{mediaImages.map((image: string | undefined, index: Key) => (
-										<Image
-											key={index}
-											src={image}
-											borderRadius='md'
-											fit='cover'
-											mb={2}
-											alt={`${profile.fullName()}'s image`}
-										/>
-									))}
+									<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+										{mediaImages.map((image: string | undefined, index: Key) => (
+											<Image
+												key={index}
+												src={image}
+												borderRadius='md'
+												fit='cover'
+												mb={2}
+												alt={`${profile.fullName()}'s image`}
+											/>
+										))}
+									</Box>
 								</Box>
-							</Box>
-						) : (
-							false
-						)}
-					</StackItem>
+							) : (
+								false
+							)}
+						</>
+					</ProfileStackItem>
 				) : (
 					false
 				)}
