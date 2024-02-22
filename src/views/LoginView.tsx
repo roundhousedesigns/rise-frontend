@@ -12,12 +12,12 @@ import {
 	Divider,
 	Alert,
 } from '@chakra-ui/react';
-
 import { handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
-import TextInput from '@common/inputs/TextInput';
 import useLogin from '@hooks/mutations/useLogin';
 import { useErrorMessage } from '@hooks/hooks';
+import TextInput from '@common/inputs/TextInput';
+import ContentView from './ContentView';
 
 interface Props {
 	alert?: string;
@@ -148,6 +148,8 @@ export default function LoginView({ alert, alertStatus }: Props) {
 					</Button>
 				</Box>
 			</Flex>
+
+			<ContentView postId='12160' />
 		</Container>
 	);
 }

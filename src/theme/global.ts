@@ -14,10 +14,18 @@ export const styles = {
 			listStylePosition: 'inside',
 		},
 
-		// WordPress content classes.
-		'.has-text-align-center': { textAlign: 'center' },
-		'.has-text-align-left': { textAlign: 'left' },
-		'.has-text-align-right': { textAlign: 'right' },
+		// WordPress Block Editor content
+		'.wp-post-content': {
+			p: {
+				marginTop: '1em',
+				marginBottom: '1em',
+			},
+			h2: {
+				fontSize: '2em',
+				marginTop: '0.5em',
+				marginBottom: '0.5em',
+			},
+		},
 	},
 };
 
