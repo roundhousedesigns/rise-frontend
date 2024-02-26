@@ -1,11 +1,11 @@
-import React from 'react';
+import { ReactNode } from 'react';
 import { Icon, Link } from '@chakra-ui/react';
 
 interface Props {
 	href: string;
 	icon: any;
 	isExternal?: boolean;
-	children: React.ReactNode;
+	children: ReactNode;
 	[prop: string]: any;
 }
 

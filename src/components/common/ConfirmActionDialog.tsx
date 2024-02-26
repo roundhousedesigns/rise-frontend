@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import {
 	AlertDialog,
 	AlertDialogOverlay,
@@ -19,7 +19,7 @@ interface Props {
 		cancel?: string;
 	};
 	confirmButtonColorScheme?: string;
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export default function ConfirmActionDialog({
