@@ -9,10 +9,8 @@ import {
 	Text,
 	Divider,
 	Alert,
-	Stack,
 	Box,
 	Spacer,
-	Container,
 } from '@chakra-ui/react';
 import { handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';

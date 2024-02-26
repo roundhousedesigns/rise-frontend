@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Box, Heading, Skeleton } from '@chakra-ui/react';
+import { Box, Skeleton } from '@chakra-ui/react';
 import LoginView from '@views/LoginView';
 import useViewer from '@hooks/queries/useViewer';
 
