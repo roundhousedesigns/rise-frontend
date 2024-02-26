@@ -22,9 +22,10 @@ import ContentView from './ContentView';
 interface Props {
 	alert?: string;
 	alertStatus?: string;
+	hideContent?: boolean;
 }
 
-export default function LoginView({ alert, alertStatus }: Props) {
+export default function LoginView({ alert, alertStatus, hideContent }: Props) {
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
@@ -77,16 +78,16 @@ export default function LoginView({ alert, alertStatus }: Props) {
 
 	return (
 		<>
-			<Container maxW='2xl' py={4}>
+			<Container maxW='2xl' py={4} px={0}>
 				<Text fontSize='lg'>
 					You'll need an account to create a profile or to search for candidates.
 				</Text>
 				<Divider my={4} />
 				<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
 					<Box flex='1 1 auto'>
-						<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
+						{/* <Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 							Please sign in.
-						</Heading>
+						</Heading> */}
 						{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
 						<form onSubmit={handleLoginSubmit}>
 							<TextInput
@@ -129,7 +130,7 @@ export default function LoginView({ alert, alertStatus }: Props) {
 								<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
 									Submit
 								</Button>
-								<Link as={RouterLink} to='/lost-password' fontSize='md'>
+								<Link as={RouterLink} to='/lost-password' fontSize='sm'>
 									Lost your password?
 								</Link>
 								<Box id='recaptcha-badge' />
@@ -137,27 +138,43 @@ export default function LoginView({ alert, alertStatus }: Props) {
 						</form>
 					</Box>
 					<Box textAlign='center' flex='1'>
-						<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
+						<Heading variant='pageSubtitle' fontSize='xl'>
 							Don't have an account?
 						</Heading>
 						<Button
 							as={RouterLink}
 							to='/register'
 							borderRadius={{ base: 'md', md: 'lg' }}
-							bgColor='brand.orange'
-							_hover={{
-								bgColor: 'orange.300',
-							}}
+							colorScheme='green'
 							color='text.dark'
 							size='lg'
 						>
-							Sign Up Here
+							Sign Up
 						</Button>
 					</Box>
 				</Flex>
 			</Container>
-			<Divider />
-			<ContentView postId='12160' />
+
+			{!hideContent ? (
+				<>
+					<Divider />
+					<Box textAlign='center' mt={0}>
+						<ContentView postId='12238' />
+						<Button
+							as={Link}
+							href='https://risetheatre.org'
+							isExternal
+							size='xl'
+							colorScheme='yellow'
+							mt={2}
+						>
+							Learn about RISE
+						</Button>
+					</Box>
+				</>
+			) : (
+				false
+			)}
 		</>
 	);
 }

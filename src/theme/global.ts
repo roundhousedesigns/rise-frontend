@@ -41,6 +41,9 @@ export const styles = {
 				marginTop: '1em',
 				marginBottom: '1em',
 			},
+			a: {
+				textDecoration: 'underline',
+			},
 		},
 	},
 };
