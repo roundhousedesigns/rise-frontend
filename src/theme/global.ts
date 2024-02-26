@@ -15,15 +15,31 @@ export const styles = {
 		},
 
 		// WordPress Block Editor content
+		'.has-medium-font-size': {
+			fontSize: '1rem',
+		},
+		'.has-large-font-size': {
+			fontSize: '1.125rem',
+		},
+		'.has-x-large-font-size': {
+			fontSize: '1.25rem',
+		},
+		'.has-2-x-large-font-size': {
+			fontSize: '1.5rem',
+		},
+		'.has-3-x-large-font-size': {
+			fontSize: '1.875rem',
+		},
+		'.has-4-x-large-font-size': {
+			fontSize: '2.25rem',
+		},
+		'.has-5-x-large-font-size': {
+			fontSize: '3rem',
+		},
 		'.wp-post-content': {
 			p: {
 				marginTop: '1em',
 				marginBottom: '1em',
-			},
-			h2: {
-				fontSize: '2em',
-				marginTop: '0.5em',
-				marginBottom: '0.5em',
 			},
 		},
 	},

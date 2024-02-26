@@ -76,80 +76,88 @@ export default function LoginView({ alert, alertStatus }: Props) {
 	const sanitizedAlertStatus = alertStatus === 'error' ? 'error' : 'success';
 
 	return (
-		<Container maxW='2xl' py={4}>
-			<Text fontSize='lg'>
-				You'll need an account to create a profile or to search for candidates.
-			</Text>
-			<Divider my={4} />
-			<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
-				<Box flex='1 1 auto'>
-					<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
-						Please sign in.
-					</Heading>
-					{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
-					<form onSubmit={handleLoginSubmit}>
-						<TextInput
-							value={credentials.login}
-							name='login'
-							label='Email'
-							autoComplete='username'
-							isRequired
-							onChange={handleInputChange}
-							error={
-								['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
-									? errorMessage
-									: ''
-							}
-							inputProps={{
-								autoComplete: 'username',
-								fontSize: 'lg',
+		<>
+			<Container maxW='2xl' py={4}>
+				<Text fontSize='lg'>
+					You'll need an account to create a profile or to search for candidates.
+				</Text>
+				<Divider my={4} />
+				<Flex my={4} gap={14} alignItems='flex-start' flexWrap='wrap'>
+					<Box flex='1 1 auto'>
+						<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
+							Please sign in.
+						</Heading>
+						{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
+						<form onSubmit={handleLoginSubmit}>
+							<TextInput
+								value={credentials.login}
+								name='login'
+								label='Email'
+								autoComplete='username'
+								isRequired
+								onChange={handleInputChange}
+								error={
+									['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
+										? errorMessage
+										: ''
+								}
+								inputProps={{
+									autoComplete: 'username',
+									fontSize: 'lg',
+								}}
+							/>
+							<TextInput
+								value={credentials.password}
+								name='password'
+								label='Password'
+								isRequired
+								onChange={handleInputChange}
+								error={errorCode === 'incorrect_password' ? errorMessage : ''}
+								inputProps={{
+									type: 'password',
+									autoComplete: 'current-password',
+									fontSize: 'lg',
+								}}
+							/>
+							<Flex
+								gap={4}
+								alignItems='center'
+								justifyContent='space-between'
+								mt={4}
+								flexWrap='wrap'
+							>
+								<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+									Submit
+								</Button>
+								<Link as={RouterLink} to='/lost-password' fontSize='md'>
+									Lost your password?
+								</Link>
+								<Box id='recaptcha-badge' />
+							</Flex>
+						</form>
+					</Box>
+					<Box textAlign='center' flex='1'>
+						<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
+							Don't have an account?
+						</Heading>
+						<Button
+							as={RouterLink}
+							to='/register'
+							borderRadius={{ base: 'md', md: 'lg' }}
+							bgColor='brand.orange'
+							_hover={{
+								bgColor: 'orange.300',
 							}}
-						/>
-						<TextInput
-							value={credentials.password}
-							name='password'
-							label='Password'
-							isRequired
-							onChange={handleInputChange}
-							error={errorCode === 'incorrect_password' ? errorMessage : ''}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'current-password',
-								fontSize: 'lg',
-							}}
-						/>
-						<Flex gap={4} alignItems='center' justifyContent='space-between' mt={4} flexWrap='wrap'>
-							<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
-								Submit
-							</Button>
-							<Link as={RouterLink} to='/lost-password' fontSize='md'>
-								Lost your password?
-							</Link>
-							<Box id='recaptcha-badge' />
-						</Flex>
-					</form>
-				</Box>
-				<Box textAlign='center' flex='1'>
-					<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
-						Don't have an account?
-					</Heading>
-					<Button
-						as={RouterLink}
-						to='/register'
-						borderRadius={{ base: 'md', md: 'lg' }}
-						bgColor='brand.orange'
-						_hover={{
-							bgColor: 'orange.300',
-						}}
-						color='text.dark'
-						size='lg'
-					>
-						Sign Up Here
-					</Button>
-				</Box>
-			</Flex>
-
+							color='text.dark'
+							size='lg'
+						>
+							Sign Up Here
+						</Button>
+					</Box>
+				</Flex>
+			</Container>
+			<Divider />
 			<ContentView postId='12160' />
-		</Container>
+		</>
 	);
 }
