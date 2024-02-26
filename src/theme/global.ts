@@ -40,6 +40,15 @@ export const styles = {
 			p: {
 				marginTop: '1em',
 				marginBottom: '1em',
+				paddingBottom: '1em',
+
+				'&:first-child': {
+					marginTop: 0,
+				},
+
+				'&:last-child': {
+					marginBottom: 0,
+				},
 			},
 			a: {
 				textDecoration: 'underline',

@@ -27,9 +27,6 @@ export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 		<>{children}</>
 	) : (
 		<Box p={0} mt={8}>
-			<Heading as='h2' variant='pageTitle' mb={0} px={4}>
-				Please sign in
-			</Heading>
 			<LoginView />
 		</Box>
 	);
