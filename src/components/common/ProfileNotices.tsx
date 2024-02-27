@@ -3,17 +3,10 @@ import {
 	AlertDescription,
 	AlertIcon,
 	AlertTitle,
-	Box,
-	Card,
-	CloseButton,
-	Flex,
-	Icon,
+	Button,
 	Link,
 	Spacer,
-	Text,
-	useDisclosure,
 } from '@chakra-ui/react';
-import { FiAlertTriangle } from 'react-icons/fi';
 import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
@@ -27,53 +20,34 @@ export default function ProfileNotices({
 	numberCredits,
 	...props
 }: Props): JSX.Element | false {
-	const { isOpen: isVisible, onClose, onOpen } = useDisclosure({ defaultIsOpen: true });
+	if (!profileDisabled && numberCredits >= 1) {
+		return false;
+	}
 
 	const primary = profileDisabled
 		? 'Your profile is currently hidden.'
-		: numberCredits < 1
-		? "You haven't added any professional credits."
-		: '';
+		: "You haven't added any professional credits.";
+	const secondary = profileDisabled
+		? 'to make your profile public, turn on your Visibility.'
+		: 'Add some to allow people to find you in the Directory!';
+	const link = profileDisabled ? '/settings' : '/profile/edit';
 
-	const secondary = (
-		<>
-			{profileDisabled ? (
-				<>
-					You may still search, but to appear in the directory, turn on your profile's visibility
-					in{' '}
-					<Link as={RouterLink} to='/settings'>
-						Settings
-					</Link>
-				</>
-			) : numberCredits < 1 ? (
-				<>
-					<Link as={RouterLink} to='/profile/edit'>
-						Edit your profile
-					</Link>{' '}
-					and add some to allow people to look find you in the Directory!
-				</>
-			) : (
-				''
-			)}
-		</>
-	);
-
-	return isVisible && (profileDisabled || numberCredits < 1) ? (
+	return (
 		<Alert
 			status='warning'
 			colorScheme='yellow'
-			variant='solid'
-			justifyContent='space-between'
+			variant='subtle'
 			fontSize='lg'
+			justifyContent='space-between'
 			{...props}
 		>
 			<AlertIcon />
 			<AlertTitle>{primary}</AlertTitle>
-			<AlertDescription>{secondary}</AlertDescription>
+			<AlertDescription>{secondary} </AlertDescription>
 			<Spacer />
-			<CloseButton onClick={onClose} />
+			<Button as={RouterLink} to={link} colorScheme='yellow'>
+				{profileDisabled ? 'Settings' : 'Edit your profile'}
+			</Button>
 		</Alert>
-	) : (
-		false
 	);
 }
