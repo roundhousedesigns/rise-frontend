@@ -53,7 +53,7 @@ export default function App() {
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
 					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between'>
 						<Header ref={headerRef} />
-						<Box minH='66vh' w='full' paddingTop={`${headerHeight}px`}>
+						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
 							{loading ? <Spinner /> : <Main />}
 						</Box>
 						<Spacer />

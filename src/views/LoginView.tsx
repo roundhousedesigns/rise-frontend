@@ -18,17 +18,18 @@ import {
 	IconButton,
 	ButtonGroup,
 	Icon,
-	DrawerHeader,
+	DrawerFooter,
 	Highlight,
 	Stack,
 } from '@chakra-ui/react';
+import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
 import ContentView from '@views/ContentView';
 import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@hooks/mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
-import { FiTarget, FiExternalLink, FiX } from 'react-icons/fi';
+import TargetIcon from '@common/icons/TargetIcon';
 
 interface Props {
 	alert?: string;
@@ -176,7 +177,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 					</Box>
 					<Box textAlign='center' flex='1'>
 						<Stack alignItems='center' gap={6}>
-							<Heading as='h2' my={0}>
+							<Heading as='h2' my={0} fontSize='3xl'>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									{`Find your next project, `}
 								</Highlight>
@@ -186,7 +187,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								</Highlight>
 								.
 							</Heading>
-							<Icon as={FiTarget} aria-label='visual separator' boxSize={6} />
+							<TargetIcon />
 							<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
 								{`What is RISE? ${decodeString('&raquo;')}`}
 							</Button>
@@ -198,13 +199,25 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				placement='right'
 				size={{ base: 'full', md: 'md' }}
 				onClose={onClose}
+				onEsc={onClose}
 				isOpen={isOpen}
-				autoFocus={false}
-				blockScrollOnMount={false}
 			>
 				<DrawerOverlay />
 				<DrawerContent>
-					<DrawerHeader>
+					<DrawerBody>
+						<Box py={4} textAlign='center'>
+							<ContentView postId='12238' mt={0} pt={0} />
+						</Box>
+					</DrawerBody>
+					<DrawerFooter
+						borderTopWidth='2px'
+						_light={{
+							borderTopColor: 'text.dark',
+						}}
+						_dark={{
+							borderTopColor: 'text.light',
+						}}
+					>
 						<ButtonGroup
 							size='lg'
 							textAlign='center'
@@ -224,10 +237,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								<Icon as={FiExternalLink} aria-label='external link' pl={1} />
 							</Button>
 						</ButtonGroup>
-					</DrawerHeader>
-					<DrawerBody>
-						<ContentView postId='12238' mt={0} pt={0} />
-					</DrawerBody>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</>
