@@ -1,7 +1,6 @@
 import { forwardRef, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Button, Spinner } from '@chakra-ui/react';
-import { FiArrowDown, FiXCircle } from 'react-icons/fi';
+import { FiArrowDown } from 'react-icons/fi';
 import { EditProfileContextProvider } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
@@ -32,15 +31,9 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 });
 
 export default function EditProfile() {
-	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
+	const { loggedInId, disableProfile } = useViewer();
 	const [profile, { loading, error }] = useUserProfile(loggedInId);
 	const ref = useRef<HTMLButtonElement>(null);
-
-	const navigate = useNavigate();
-
-	const handleCancel = () => {
-		navigate(`/profile/${loggedInSlug}`);
-	};
 
 	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
