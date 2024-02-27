@@ -60,7 +60,7 @@ import ProfileRadioGroup from '@common/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
-import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
+import ProfileNotices from '@common/ProfileNotices';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import CreditItem from '@components/CreditItem';
@@ -812,7 +812,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			{disableProfile ? <ProfileDisabledNotice /> : false}
+			<ProfileNotices
+				profileDisabled={disableProfile}
+				numberCredits={credits ? credits.length : 0}
+			/>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<ProfileStackItem py={2} mt={2}>
 					<>
@@ -932,41 +935,41 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Stack>
 								</ProfileStackItem>
 								<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
-								<SimpleGrid columns={[1, 2]} spacing={4}>
-									<TextInput
-										value={socials?.linkedin}
-										leftElement={<Icon as={FiLinkedin} />}
-										label='LinkedIn URL'
-										placeholder='https://linkedin/in/yourprofile'
-										name='socials.linkedin'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.facebook}
-										leftElement={<Icon as={FiFacebook} />}
-										label='Facebook URL'
-										placeholder='https://facebook.com/yourname'
-										name='socials.facebook'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.instagram}
-										leftElement={<Icon as={FiInstagram} />}
-										label='Instagram @handle'
-										placeholder='@handle'
-										name='socials.instagram'
-										onChange={handleSocialInputChange}
-									/>
-									<TextInput
-										value={socials?.twitter}
-										leftElement={<Icon as={XIcon} />}
-										label='X/Twitter @handle'
-										placeholder='@handle'
-										name='socials.twitter'
-										onChange={handleSocialInputChange}
-									/>
-								</SimpleGrid>
-							</ProfileStackItem>
+									<SimpleGrid columns={[1, 2]} spacing={4}>
+										<TextInput
+											value={socials?.linkedin}
+											leftElement={<Icon as={FiLinkedin} />}
+											label='LinkedIn URL'
+											placeholder='https://linkedin/in/yourprofile'
+											name='socials.linkedin'
+											onChange={handleSocialInputChange}
+										/>
+										<TextInput
+											value={socials?.facebook}
+											leftElement={<Icon as={FiFacebook} />}
+											label='Facebook URL'
+											placeholder='https://facebook.com/yourname'
+											name='socials.facebook'
+											onChange={handleSocialInputChange}
+										/>
+										<TextInput
+											value={socials?.instagram}
+											leftElement={<Icon as={FiInstagram} />}
+											label='Instagram @handle'
+											placeholder='@handle'
+											name='socials.instagram'
+											onChange={handleSocialInputChange}
+										/>
+										<TextInput
+											value={socials?.twitter}
+											leftElement={<Icon as={XIcon} />}
+											label='X/Twitter @handle'
+											placeholder='@handle'
+											name='socials.twitter'
+											onChange={handleSocialInputChange}
+										/>
+									</SimpleGrid>
+								</ProfileStackItem>
 							</Stack>
 						</Flex>
 						<Stack mt={4}>

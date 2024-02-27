@@ -44,7 +44,7 @@ import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
-import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
+import ProfileNotices from '@common/ProfileNotices';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import CreditsTagLegend from '@components/CreditsTagLegend';
@@ -227,7 +227,15 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 	return profile ? (
 		<>
-			{profileIsLoggedInUser && disableProfile ? <ProfileDisabledNotice mb={0} /> : false}
+			{profileIsLoggedInUser ? (
+				<ProfileNotices
+					mb={0}
+					profileDisabled={disableProfile}
+					numberCredits={credits ? credits.length : 0}
+				/>
+			) : (
+				false
+			)}
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>
