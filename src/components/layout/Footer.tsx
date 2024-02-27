@@ -26,7 +26,7 @@ export default function Footer() {
 
 	return (
 		<LightMode>
-			<Box w='full' py={8} alignItems='center' bgColor='brand.orange' fontSize='sm'>
+			<Box w='full' py={4} alignItems='center' bgColor='brand.orange' fontSize='sm'>
 				<Container maxW='6xl' textAlign='center'>
 					<Text align='center'>{footerNotice}</Text>
 					<Text>

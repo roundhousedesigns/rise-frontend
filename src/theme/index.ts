@@ -24,6 +24,7 @@ import avatarTheme from '@theme/components/Avatar';
 import badgeTheme from '@theme/components/Badge';
 import radioTheme from '@theme/components/Radio';
 import checkboxTheme from '@theme/components/Checkbox';
+import markTheme from '@theme/components/Mark';
 
 // Config
 const config = {
@@ -53,6 +54,7 @@ const overrides = {
 		Badge: badgeTheme,
 		Radio: radioTheme,
 		Checkbox: checkboxTheme,
+		Mark: markTheme,
 	},
 };
 
