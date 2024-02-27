@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.2] - 2024-02-27
+
+- Add: Page content to Login screen
+
 ## \[1.1.1] - 2023-01-03
 
 - Improve: Color Mode switch in Menu
