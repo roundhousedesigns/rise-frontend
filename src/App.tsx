@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Spacer, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
@@ -51,11 +51,14 @@ export default function App() {
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Header ref={headerRef} />
-					<Box minH='66vh' w='full' paddingTop={`${headerHeight}px`}>
-						{loading ? <Spinner /> : <Main />}
-					</Box>
-					<Footer />
+					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between'>
+						<Header ref={headerRef} />
+						<Box minH='66vh' w='full' paddingTop={`${headerHeight}px`}>
+							{loading ? <Spinner /> : <Main />}
+						</Box>
+						<Spacer />
+						<Footer />
+					</Stack>
 				</SearchDrawerContext.Provider>
 			</Stack>
 		</SearchContextProvider>

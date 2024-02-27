@@ -19,6 +19,8 @@ import {
 	ButtonGroup,
 	Icon,
 	DrawerHeader,
+	Highlight,
+	Stack,
 } from '@chakra-ui/react';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
@@ -26,7 +28,7 @@ import ContentView from '@views/ContentView';
 import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@hooks/mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
-import { FiExternalLink, FiX } from 'react-icons/fi';
+import { FiTarget, FiExternalLink, FiX } from 'react-icons/fi';
 
 interface Props {
 	alert?: string;
@@ -173,9 +175,22 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						</Box>
 					</Box>
 					<Box textAlign='center' flex='1'>
-						<Button onClick={onOpen} size='xxxl' colorScheme='yellow'>
-							{`What is RISE? ${decodeString('&raquo;')}`}
-						</Button>
+						<Stack alignItems='center' gap={6}>
+							<Heading as='h2' my={0}>
+								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
+									{`Find your next project, `}
+								</Highlight>
+								<br />
+								<Highlight query={['team']} styles={{ bg: 'green.200' }}>
+									{`discover your next team`}
+								</Highlight>
+								.
+							</Heading>
+							<Icon as={FiTarget} aria-label='visual separator' boxSize={6} />
+							<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
+								{`What is RISE? ${decodeString('&raquo;')}`}
+							</Button>
+						</Stack>
 					</Box>
 				</Flex>
 			</Box>
