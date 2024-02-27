@@ -175,7 +175,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						</Box>
 					</Box>
 					<Box textAlign='center' flex='1'>
-						<Stack alignItems='center' gap={6}>
+						<Stack textAlign='right' gap={6}>
 							<Heading as='h2' my={0} fontSize='3xl'>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									Find your next project
@@ -185,9 +185,11 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 									Discover your next team
 								</Highlight>
 							</Heading>
-							<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
-								{`What is RISE? ${decodeString('&raquo;')}`}
-							</Button>
+							<Box>
+								<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
+									{`What is RISE? ${decodeString('&raquo;')}`}
+								</Button>
+							</Box>
 						</Stack>
 					</Box>
 				</Flex>
