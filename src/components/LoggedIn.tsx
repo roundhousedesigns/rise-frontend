@@ -27,7 +27,7 @@ export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 		<>{children}</>
 	) : (
 		<Box p={0} mt={8}>
-			<LoginView />
+			<LoginView signInTitle={true} />
 		</Box>
 	);
 }

@@ -1,17 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import {
-	Button,
-	Flex,
-	Heading,
-	Link,
-	Text,
-	Divider,
-	Alert,
-	Box,
-	Spacer,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Link, Text, Divider, Alert, Box, Spacer } from '@chakra-ui/react';
 import { handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
 import ContentView from '@views/ContentView';
@@ -23,9 +13,10 @@ interface Props {
 	alert?: string;
 	alertStatus?: string;
 	hideContent?: boolean;
+	signInTitle?: boolean;
 }
 
-export default function LoginView({ alert, alertStatus, hideContent }: Props) {
+export default function LoginView({ alert, alertStatus, signInTitle, hideContent }: Props) {
 	const [credentials, setCredentials] = useState<LoginInput>({
 		login: '',
 		password: '',
@@ -78,7 +69,31 @@ export default function LoginView({ alert, alertStatus, hideContent }: Props) {
 
 	return (
 		<Flex alignItems='flex-start' gap={12} flexWrap='wrap'>
+			{!hideContent ? (
+				<Box flex={{ base: '0 0 100%', md: '1' }} mt={0} pt={0} textAlign='center'>
+					<ContentView postId='12238' mt={0} pt={0} />
+					<Button
+						as={Link}
+						href='https://risetheatre.org'
+						isExternal
+						size='xl'
+						colorScheme='yellow'
+						mt={2}
+					>
+						Learn about RISE Theatre
+					</Button>
+				</Box>
+			) : (
+				false
+			)}
 			<Box flex='1'>
+				{signInTitle ? (
+					<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
+						Sign in to RISE
+					</Heading>
+				) : (
+					false
+				)}
 				<Text fontSize='lg'>
 					You'll need an account to create a profile or to search for candidates.
 				</Text>
@@ -145,24 +160,6 @@ export default function LoginView({ alert, alertStatus, hideContent }: Props) {
 				</Box>
 				<Spacer h={20} />
 			</Box>
-
-			{!hideContent ? (
-				<Box flex={{ base: '0 0 100%', md: '1' }} mt={0} pt={0} textAlign='center'>
-					<ContentView postId='12238' mt={0} pt={0} />
-					<Button
-						as={Link}
-						href='https://risetheatre.org'
-						isExternal
-						size='xl'
-						colorScheme='yellow'
-						mt={2}
-					>
-						Learn about RISE Theatre
-					</Button>
-				</Box>
-			) : (
-				false
-			)}
 		</Flex>
 	);
 }

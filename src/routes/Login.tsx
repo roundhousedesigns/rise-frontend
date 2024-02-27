@@ -20,8 +20,12 @@ export default function Login() {
 	});
 
 	return (
-		<Page title='Sign in to RISE'>
-			<LoginView alert={alert ? alert : ''} alertStatus={alertStatus ? alertStatus : ''} />
+		<Page>
+			<LoginView
+				signInTitle={true}
+				alert={alert ? alert : ''}
+				alertStatus={alertStatus ? alertStatus : ''}
+			/>
 		</Page>
 	);
 }
