@@ -29,7 +29,6 @@ import ContentView from '@views/ContentView';
 import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@hooks/mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
-import TargetIcon from '@common/icons/TargetIcon';
 
 interface Props {
 	alert?: string;
@@ -179,15 +178,13 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						<Stack alignItems='center' gap={6}>
 							<Heading as='h2' my={0} fontSize='3xl'>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
-									{`Find your next project, `}
+									Find your next project
 								</Highlight>
 								<br />
 								<Highlight query={['team']} styles={{ bg: 'green.200' }}>
-									{`discover your next team`}
+									discover your next team
 								</Highlight>
-								.
 							</Heading>
-							<TargetIcon />
 							<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
 								{`What is RISE? ${decodeString('&raquo;')}`}
 							</Button>
