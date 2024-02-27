@@ -1,7 +1,8 @@
+import { ReactNode } from 'react';
 import { Box, Divider } from '@chakra-ui/react';
 
 interface Props {
-	children: React.ReactNode;
+	children: ReactNode;
 	[props: string]: any;
 }
 

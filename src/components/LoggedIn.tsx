@@ -1,11 +1,12 @@
+import { ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Container, Heading, Skeleton } from '@chakra-ui/react';
-import useViewer from '@hooks/queries/useViewer';
+import { Box, Skeleton } from '@chakra-ui/react';
 import LoginView from '@views/LoginView';
+import useViewer from '@hooks/queries/useViewer';
 
 interface Props {
 	hideOnly?: boolean; // Only hide the child element, don't show the login view.
-	children: React.ReactNode;
+	children: ReactNode;
 }
 
 export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
@@ -25,11 +26,8 @@ export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 	) : (!hideOnly && !loggedInId && publicEndpoints.includes(pathname)) || loggedInId ? (
 		<>{children}</>
 	) : (
-		<Container maxW='2xl' p={0} mt={8}>
-			<Heading as='h2' variant='pageTitle' mb={0} px={4}>
-				Please sign in
-			</Heading>
-			<LoginView />
-		</Container>
+		<Box p={0} mt={8}>
+			<LoginView signInTitle={true} />
+		</Box>
 	);
 }
