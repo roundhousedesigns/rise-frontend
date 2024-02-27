@@ -26,7 +26,7 @@ export default function ProfileStackItem({
 	};
 
 	return (
-		<StackItem my={2} {...props}>
+		<StackItem mb={2} {...props}>
 			{title ? <SectionTitle /> : false}
 			{children}
 		</StackItem>

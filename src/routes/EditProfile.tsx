@@ -42,14 +42,7 @@ export default function EditProfile() {
 		navigate(`/profile/${loggedInSlug}`);
 	};
 
-	const PageActions = () => (
-		<>
-			<JumpToCreditsButton ref={ref} />
-			<Button onClick={handleCancel} leftIcon={<FiXCircle />} title='Cancel' colorScheme='orange'>
-				Cancel
-			</Button>
-		</>
-	);
+	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
 	return (
 		<Page title={'Update Profile'} actions={!disableProfile ? <PageActions /> : undefined}>
