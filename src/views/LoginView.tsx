@@ -182,7 +182,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								</Highlight>
 								<br />
 								<Highlight query={['team']} styles={{ bg: 'green.200' }}>
-									discover your next team
+									Discover your next team
 								</Highlight>
 							</Heading>
 							<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
