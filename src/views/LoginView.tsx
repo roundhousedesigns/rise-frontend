@@ -175,7 +175,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						</Box>
 					</Box>
 					<Box textAlign='center' flex='1'>
-						<Stack textAlign='right' gap={6}>
+						<Stack textAlign='center' gap={6}>
 							<Heading as='h2' my={0} fontSize='3xl'>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									Find your next project
