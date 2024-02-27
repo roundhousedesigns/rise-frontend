@@ -147,7 +147,7 @@ export default function LoginView({ alert, alertStatus, hideContent }: Props) {
 			</Box>
 
 			{!hideContent ? (
-				<Box flex={{ base: '0 0 100%', md: '1' }} mt={0} pt={0}>
+				<Box flex={{ base: '0 0 100%', md: '1' }} mt={0} pt={0} textAlign='center'>
 					<ContentView postId='12238' mt={0} pt={0} />
 					<Button
 						as={Link}
