@@ -2,7 +2,7 @@ import { Tag, TagLabel } from '@chakra-ui/react';
 
 interface Props {
 	colorScheme?: string;
-	[props: string]: any;
+	[prop: string]: any;
 }
 
 export default function WPItemBadgeListItem({

@@ -20,7 +20,6 @@ import {
 	useBreakpointValue,
 	useToken,
 	useColorMode,
-	Icon,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -33,19 +32,17 @@ import {
 	FiCompass,
 	FiBookmark,
 	FiFileText,
-	FiMoon,
-	FiSun,
 } from 'react-icons/fi';
 
-import SearchDrawer from './SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
-import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
+import SearchDrawer from '@layout/SearchDrawer';
+import ResponsiveButton from '@common/inputs/ResponsiveButton';
+import DarkModeToggle from '@components/DarkModeToggle';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
@@ -256,17 +253,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										Help
 									</MenuItem>
 									<MenuDivider />
-									<Flex mx={2}>
-										<ToggleOptionSwitch
-											id='darkMode'
-											checked={colorMode === 'dark'}
-											callback={toggleColorMode}
-											label='Color mode'
-											size='sm'
-											icon={FiSun}
-										>
-											<Icon as={FiMoon} boxSize={4} pos='relative' top='3px' />
-										</ToggleOptionSwitch>
+									<Flex mx={2} justifyContent='space-between'>
+										<DarkModeToggle />
 										<IconButton
 											aria-label='Logout'
 											icon={<FiLogOut />}

@@ -3,7 +3,7 @@ import { Box, Divider } from '@chakra-ui/react';
 
 interface Props {
 	children: ReactNode;
-	[props: string]: any;
+	[prop: string]: any;
 }
 
 export default function TextCenterline({ children, ...props }: Props) {

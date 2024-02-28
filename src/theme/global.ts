@@ -42,11 +42,11 @@ export const styles = {
 				marginBottom: '1em',
 				paddingBottom: '1em',
 
-				'&:first-child': {
+				'&:first-of-type': {
 					marginTop: 0,
 				},
 
-				'&:last-child': {
+				'&:last-of-type': {
 					marginBottom: 0,
 				},
 			},

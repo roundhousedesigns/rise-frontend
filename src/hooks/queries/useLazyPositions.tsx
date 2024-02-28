@@ -5,7 +5,7 @@
  */
 
 import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
-import { QUERY_POSITION_TERMS } from './usePositions';
+import { QUERY_POSITION_TERMS } from '@hooks/queries/usePositions';
 
 /**
  * usePositions hook.

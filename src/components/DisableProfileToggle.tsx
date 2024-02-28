@@ -1,14 +1,15 @@
-import { chakra, Text } from '@chakra-ui/react';
+import { Box, Highlight, Icon, Text } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
-import ToggleOptionSwitch from './common/ToggleOptionSwitch';
+import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 
 interface Props {
+	showLabel?: boolean;
 	[prop: string]: any;
 }
 
-export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
+export default function DisableProfileToggle({ showLabel, ...props }: Props): JSX.Element {
 	const { loggedInId, disableProfile } = useViewer();
 	const {
 		toggleDisableProfileMutation,
@@ -20,34 +21,35 @@ export default function DisableProfileToggle({ ...props }: Props): JSX.Element {
 	};
 
 	return (
-		<chakra.div {...props}>
+		<Box {...props}>
 			<ToggleOptionSwitch
 				id='disableProfile'
 				checked={!disableProfile}
 				callback={handleToggleDisableProfile}
 				label='Visibility'
-				icon={disableProfile ? FiEyeOff : FiEye}
+				icon={FiEyeOff}
+				iconRight={FiEye}
+				size='lg'
 				loading={loading}
 			>
-				<Text as='span'>
-					Profile visibility
-					<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' pl={2}>
-						<Subtext disableProfile={disableProfile} />
-					</Text>
-				</Text>
+				{showLabel ? <Subtext disableProfile={disableProfile} /> : <></>}
 			</ToggleOptionSwitch>
-		</chakra.div>
+		</Box>
 	);
 }
 
 const Subtext = ({ disableProfile }: { disableProfile: boolean }) => {
 	return disableProfile ? (
 		<Text as='span'>
-			You're <strong>hidden</strong>, but you can still search.
+			<Highlight query={['private']} styles={{ bg: 'blue.200', px: 1, mx: 1 }}>
+				Your profile is private.
+			</Highlight>
 		</Text>
 	) : (
 		<Text as='span'>
-			You're <strong>visible</strong> in the directory.
+			<Highlight query={['public']} styles={{ bg: 'blue.200', px: 1, mx: 1 }}>
+				Your profile is public.
+			</Highlight>
 		</Text>
 	);
 };

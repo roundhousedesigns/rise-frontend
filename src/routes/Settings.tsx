@@ -6,6 +6,7 @@ import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@common/SettingsSection';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import DisableProfileToggle from '@components/DisableProfileToggle';
+import DarkModeToggle from '@/components/DarkModeToggle';
 
 export default function Settings() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -26,24 +27,8 @@ export default function Settings() {
 				</SettingsSection>
 
 				<SettingsSection title='Options'>
-					<DisableProfileToggle />
-					<ToggleOptionSwitch
-						id='darkMode'
-						checked={colorMode === 'dark'}
-						callback={toggleColorMode}
-						label='Color mode'
-						icon={FiSun}
-					>
-						<>
-							<Icon as={FiMoon} boxSize={6} pos='relative' top='3px' />
-							<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' ml={2}>
-								<Text as='span' fontWeight='bold'>
-									{colorMode === 'dark' ? 'Dark' : 'Light'}
-								</Text>
-								{' mode'}
-							</Text>
-						</>
-					</ToggleOptionSwitch>
+					<DisableProfileToggle showLabel={true} />
+					<DarkModeToggle showLabel={true} />
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}
