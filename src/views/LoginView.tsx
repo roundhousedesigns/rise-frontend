@@ -200,11 +200,12 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				placement='right'
 				size={{ base: 'full', md: 'md' }}
 				onClose={onClose}
-				onEsc={onClose}
+				closeOnEsc={true}
 				isOpen={isOpen}
+				isFullHeight={true}
 			>
 				<DrawerOverlay />
-				<DrawerContent>
+				<DrawerContent display='flex' flexDirection='column' height='100%'>
 					<DrawerHeader pt={2} pb={1} px={2} textAlign='right'>
 						<IconButton
 							onClick={onClose}
@@ -218,6 +219,18 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						<Box textAlign='center'>
 							<ContentView postId='12238' mt={0} pt={0} />
 						</Box>
+					</DrawerBody>
+					<DrawerFooter
+						py={3}
+						borderTopWidth='2px'
+						justifyContent='center'
+						_light={{
+							borderTopColor: 'blackAlpha.600',
+						}}
+						_dark={{
+							borderTopColor: 'whiteAlpha.600',
+						}}
+					>
 						<Button
 							as={Link}
 							href='https://risetheatre.org'
@@ -228,7 +241,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							Learn about RISE Theatre{' '}
 							<Icon as={FiExternalLink} aria-label='external link' pl={1} />
 						</Button>
-					</DrawerBody>
+					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</>
