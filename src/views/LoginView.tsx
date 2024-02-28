@@ -16,12 +16,12 @@ import {
 	DrawerOverlay,
 	useDisclosure,
 	IconButton,
-	ButtonGroup,
 	Icon,
 	DrawerFooter,
 	Highlight,
 	Stack,
 	useMediaQuery,
+	DrawerHeader,
 } from '@chakra-ui/react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
@@ -175,8 +175,8 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							</Box>
 						</Box>
 					</Box>
-					{!isLargerThanMd ? <Divider mt={0} /> : false}
-					<Box textAlign='center' flex='1'>
+					{!isLargerThanMd ? <Divider my={0} /> : false}
+					<Box textAlign='center' flex='1' pb={2}>
 						<Stack textAlign='center' gap={6}>
 							<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
@@ -205,39 +205,41 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 			>
 				<DrawerOverlay />
 				<DrawerContent>
-					<DrawerBody>
-						<Box py={4} textAlign='center'>
+					<DrawerHeader pt={2} pb={1} px={2} textAlign='right'>
+						<IconButton
+							onClick={onClose}
+							borderRadius='full'
+							fontSize='xl'
+							icon={<FiX />}
+							aria-label='Close'
+						/>
+					</DrawerHeader>
+					<DrawerBody py={0} pb={2}>
+						<Box textAlign='center'>
 							<ContentView postId='12238' mt={0} pt={0} />
 						</Box>
 					</DrawerBody>
 					<DrawerFooter
+						py={3}
 						borderTopWidth='2px'
+						justifyContent='center'
 						_light={{
-							borderTopColor: 'text.dark',
+							borderTopColor: 'blackAlpha.600',
 						}}
 						_dark={{
-							borderTopColor: 'text.light',
+							borderTopColor: 'whiteAlpha.600',
 						}}
 					>
-						<ButtonGroup
+						<Button
+							as={Link}
+							href='https://risetheatre.org'
+							isExternal
+							colorScheme='yellow'
 							size='lg'
-							textAlign='center'
-							justifyContent='space-between'
-							alignItems='center'
-							w='full'
 						>
-							<IconButton onClick={onClose} icon={<FiX />} aria-label='Close'></IconButton>
-							<Button
-								as={Link}
-								href='https://risetheatre.org'
-								isExternal
-								colorScheme='yellow'
-								mt={2}
-							>
-								Learn about RISE Theatre{' '}
-								<Icon as={FiExternalLink} aria-label='external link' pl={1} />
-							</Button>
-						</ButtonGroup>
+							Learn about RISE Theatre{' '}
+							<Icon as={FiExternalLink} aria-label='external link' pl={1} />
+						</Button>
 					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
