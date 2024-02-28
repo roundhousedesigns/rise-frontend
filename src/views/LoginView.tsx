@@ -204,7 +204,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				isOpen={isOpen}
 			>
 				<DrawerOverlay />
-				<DrawerContent>
+				<DrawerContent display='flex' flexDirection='column' height='100%'>
 					<DrawerHeader pt={2} pb={1} px={2} textAlign='right'>
 						<IconButton
 							onClick={onClose}
