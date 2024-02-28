@@ -21,6 +21,7 @@ import {
 	DrawerFooter,
 	Highlight,
 	Stack,
+	useMediaQuery,
 } from '@chakra-ui/react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
@@ -43,7 +44,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 		reCaptchaToken: '',
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
-
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const {
@@ -91,7 +92,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 
 	return (
 		<>
-			<Box px={0}>
+			<Box>
 				<Flex alignItems='center' gap={8} flexWrap='wrap'>
 					<Box flex='1'>
 						<Box maxWidth='md'>
@@ -174,9 +175,10 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							</Box>
 						</Box>
 					</Box>
+					{!isLargerThanMd ? <Divider mt={0} /> : false}
 					<Box textAlign='center' flex='1'>
 						<Stack textAlign='center' gap={6}>
-							<Heading as='h2' my={0} fontSize='3xl'>
+							<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									Find your next project
 								</Highlight>
@@ -186,7 +188,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								</Highlight>
 							</Heading>
 							<Box>
-								<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
+								<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
 									{`What is RISE? ${decodeString('&raquo;')}`}
 								</Button>
 							</Box>

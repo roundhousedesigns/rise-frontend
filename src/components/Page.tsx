@@ -15,7 +15,7 @@ export default function Page({ title, actions, loading, children, ...props }: Pr
 			<Spinner position='relative' top={12} />
 		</Center>
 	) : (
-		<Box mt={3} {...props} px={2}>
+		<Box mt={3} {...props}>
 			<Flex justifyContent='space-between' alignItems='flex-end' gap={2} flexWrap='wrap'>
 				{title ? (
 					<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
