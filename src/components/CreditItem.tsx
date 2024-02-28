@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
 import {
-	useMediaQuery,
 	Card,
 	Heading,
 	Text,
