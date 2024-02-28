@@ -218,30 +218,18 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 					<DrawerBody py={0} pb={2}>
 						<Box textAlign='center'>
 							<ContentView postId='12238' mt={0} pt={0} />
+							<Button
+								as={Link}
+								href='https://risetheatre.org'
+								isExternal
+								colorScheme='yellow'
+								size='lg'
+							>
+								Learn about RISE Theatre{' '}
+								<Icon as={FiExternalLink} aria-label='external link' pl={1} />
+							</Button>
 						</Box>
 					</DrawerBody>
-					<DrawerFooter
-						py={3}
-						borderTopWidth='2px'
-						justifyContent='center'
-						_light={{
-							borderTopColor: 'blackAlpha.600',
-						}}
-						_dark={{
-							borderTopColor: 'whiteAlpha.600',
-						}}
-					>
-						<Button
-							as={Link}
-							href='https://risetheatre.org'
-							isExternal
-							colorScheme='yellow'
-							size='lg'
-						>
-							Learn about RISE Theatre{' '}
-							<Icon as={FiExternalLink} aria-label='external link' pl={1} />
-						</Button>
-					</DrawerFooter>
 				</DrawerContent>
 			</Drawer>
 		</>
