@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
-## \[1.1.2] - unreleased
+## \[1.1.2] - 2024-02-27
 
 - Add: Page content to Login screen
 - Improve: Remove edit profile 'cancel' button, useless really
+- Fix: "Bookmarked! Your profile has been updated." text on Profile Saved alert.
 
 ## \[1.1.1] - 2023-01-03
 
