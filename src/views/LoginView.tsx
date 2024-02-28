@@ -147,7 +147,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 										flexWrap='wrap'
 									>
 										<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
-											Submit
+											Sign In
 										</Button>
 										<Link as={RouterLink} to='/lost-password' fontSize='sm'>
 											Lost your password?
@@ -167,7 +167,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 											color='text.dark'
 											size='lg'
 										>
-											Sign Up
+											Join Now
 										</Button>
 									</Box>
 								</form>
