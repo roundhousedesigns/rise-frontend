@@ -17,7 +17,6 @@ import {
 	useDisclosure,
 	IconButton,
 	Icon,
-	DrawerFooter,
 	Highlight,
 	Stack,
 	useMediaQuery,
