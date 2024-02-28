@@ -16,11 +16,12 @@ import {
 	DrawerOverlay,
 	useDisclosure,
 	IconButton,
-	ButtonGroup,
 	Icon,
 	DrawerFooter,
 	Highlight,
 	Stack,
+	useMediaQuery,
+	DrawerHeader,
 } from '@chakra-ui/react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
@@ -43,7 +44,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 		reCaptchaToken: '',
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
-
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const {
@@ -91,7 +92,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 
 	return (
 		<>
-			<Box px={0}>
+			<Box>
 				<Flex alignItems='center' gap={8} flexWrap='wrap'>
 					<Box flex='1'>
 						<Box maxWidth='md'>
@@ -174,9 +175,10 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							</Box>
 						</Box>
 					</Box>
-					<Box textAlign='center' flex='1'>
+					{!isLargerThanMd ? <Divider my={0} /> : false}
+					<Box textAlign='center' flex='1' pb={2}>
 						<Stack textAlign='center' gap={6}>
-							<Heading as='h2' my={0} fontSize='3xl'>
+							<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									Find your next project
 								</Highlight>
@@ -186,7 +188,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								</Highlight>
 							</Heading>
 							<Box>
-								<Button onClick={onOpen} size='xxl' colorScheme='yellow' mt={4}>
+								<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
 									{`What is RISE? ${decodeString('&raquo;')}`}
 								</Button>
 							</Box>
@@ -198,45 +200,38 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				placement='right'
 				size={{ base: 'full', md: 'md' }}
 				onClose={onClose}
-				onEsc={onClose}
+				closeOnEsc={true}
 				isOpen={isOpen}
+				isFullHeight={false}
 			>
 				<DrawerOverlay />
-				<DrawerContent>
-					<DrawerBody>
-						<Box py={4} textAlign='center'>
+				<DrawerContent display='flex' flexDirection='column' height='100%'>
+					<DrawerHeader pt={2} pb={1} px={2} textAlign='right'>
+						<IconButton
+							onClick={onClose}
+							borderRadius='full'
+							fontSize='xl'
+							icon={<FiX />}
+							aria-label='Close'
+						/>
+					</DrawerHeader>
+					<DrawerBody py={0} pb={2}>
+						<Box textAlign='center'>
 							<ContentView postId='12238' mt={0} pt={0} />
-						</Box>
-					</DrawerBody>
-					<DrawerFooter
-						borderTopWidth='2px'
-						_light={{
-							borderTopColor: 'text.dark',
-						}}
-						_dark={{
-							borderTopColor: 'text.light',
-						}}
-					>
-						<ButtonGroup
-							size='lg'
-							textAlign='center'
-							justifyContent='space-between'
-							alignItems='center'
-							w='full'
-						>
-							<IconButton onClick={onClose} icon={<FiX />} aria-label='Close'></IconButton>
 							<Button
 								as={Link}
 								href='https://risetheatre.org'
 								isExternal
 								colorScheme='yellow'
-								mt={2}
+								size='lg'
+								mt={6}
+								mb={24}
 							>
 								Learn about RISE Theatre{' '}
 								<Icon as={FiExternalLink} aria-label='external link' pl={1} />
 							</Button>
-						</ButtonGroup>
-					</DrawerFooter>
+						</Box>
+					</DrawerBody>
 				</DrawerContent>
 			</Drawer>
 		</>
