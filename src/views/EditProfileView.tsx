@@ -558,7 +558,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			})
 			.then(() => {
 				toast({
-					title: 'Bookmarked!',
+					title: 'Saved!',
 					description: 'Your profile has been updated.',
 					status: 'success',
 					duration: 5000,
@@ -639,7 +639,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
 	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
-		<Box mb={2} width='30%' minWidth='300px' {...props}>
+		<Stack mb={2} width='30%' minWidth='300px' {...props}>
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
@@ -675,7 +675,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					iconProps={{ mb: 2, boxSize: '80px' }}
 				/>
 			)}
-		</Box>
+		</Stack>
 	);
 
 	interface FileDropzoneProps {
@@ -817,11 +817,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				numberCredits={credits ? credits.length : 0}
 			/>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
-				<ProfileStackItem py={2} mt={2}>
-					<>
-						<Flex alignItems='stretch' flexWrap='wrap' mt={2}>
+				<Stack>
+					<ProfileStackItem>
+						<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 							{isLargerThanMd ? <ProfileImageUploader /> : false}
-							<Stack flex='1' px={{ base: 0, md: 4 }} spacing={4} w='full'>
+							<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 								<ProfileStackItem title='Name'>
 									<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
 										<TextInput
@@ -972,137 +972,133 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</ProfileStackItem>
 							</Stack>
 						</Flex>
-						<Stack mt={4}>
-							<ProfileStackItem title='Work Locations' fontSize='sm'>
+					</ProfileStackItem>
+					<ProfileStackItem title='Work Locations' fontSize='sm'>
+						<>
+							<Heading variant='contentSubtitle'>
+								Select any areas in which you're a local hire.
+							</Heading>
+							<ProfileCheckboxGroup
+								name='locations'
+								isRequired
+								requiredMessage='Please select at least one location.'
+								items={locationTerms}
+								checked={locations ? locations.map((item) => item.toString()) : []}
+								handleChange={handleCheckboxInput}
+							/>
+						</>
+					</ProfileStackItem>
+					<ProfileStackItem py={4} display='flex' gap={10}>
+						<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
+							<Box>
+								<Heading variant='contentTitle'>Travel</Heading>
+								<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
+								<ProfileRadioGroup
+									defaultValue={willTravel ? 'true' : 'false'}
+									name='willTravel'
+									items={[
+										{ label: 'Yes', value: 'true' },
+										{ label: 'No', value: 'false' },
+									]}
+									handleChange={handleRadioInputChange}
+								/>
+							</Box>
+							<Box>
+								<Heading variant='contentTitle'>Tour</Heading>
+								<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+								<ProfileRadioGroup
+									defaultValue={willTour ? 'true' : 'false'}
+									name='willTour'
+									items={[
+										{ label: 'Yes', value: 'true' },
+										{ label: 'No', value: 'false' },
+									]}
+									handleChange={handleRadioInputChange}
+								/>
+							</Box>
+							<Box>
+								<Heading
+									variant='contentTitle'
+									flex='0 0 100%'
+									textAlign='left'
+									alignItems='center'
+									display='flex'
+								>
+									Resume
+								</Heading>
+								{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+								{resume && resumePreview ? (
+									<Flex flexWrap='wrap'>
+										<ResumePreviewModal
+											resumePreview={resumePreview}
+											resumeLink={resume}
+											w='100%'
+											maxW='300px'
+											mr={{ base: 0, sm: 1 }}
+											mb={{ base: 1, sm: 0 }}
+										/>
+										<ClearFieldButton field='resume' label='Delete resume'>
+											Clear
+										</ClearFieldButton>
+									</Flex>
+								) : (
+									<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+								)}
+							</Box>
+						</Flex>
+					</ProfileStackItem>
+					<ProfileStackItem>
+						<Stack display='flex' gap={4}>
+							<ProfileStackItem title='Unions/Guilds'>
 								<>
 									<Heading variant='contentSubtitle'>
-										Select any areas in which you're a local hire.
+										What unions or guilds are you a member of?
 									</Heading>
-									<ProfileCheckboxGroup
-										name='locations'
-										isRequired
-										requiredMessage='Please select at least one location.'
-										items={locationTerms}
-										checked={locations ? locations.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxInput}
-									/>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='unions'
+											items={unionTerms}
+											checked={unions ? unions.map((item) => item.toString()) : []}
+											handleChange={handleCheckboxInput}
+										/>
+									</Box>
 								</>
 							</ProfileStackItem>
-							<ProfileStackItem py={4} display='flex' gap={10}>
-								<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
-									<Box>
-										<Heading variant='contentTitle'>Travel</Heading>
-										<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
-										<ProfileRadioGroup
-											defaultValue={willTravel ? 'true' : 'false'}
-											name='willTravel'
-											items={[
-												{ label: 'Yes', value: 'true' },
-												{ label: 'No', value: 'false' },
-											]}
-											handleChange={handleRadioInputChange}
+							<ProfileStackItem title='Experience Levels'>
+								<>
+									<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='experienceLevels'
+											items={experienceLevelTerms}
+											checked={
+												experienceLevels ? experienceLevels.map((item) => item.toString()) : []
+											}
+											handleChange={handleCheckboxInput}
 										/>
 									</Box>
-									<Box>
-										<Heading variant='contentTitle'>Tour</Heading>
-										<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
-										<ProfileRadioGroup
-											defaultValue={willTour ? 'true' : 'false'}
-											name='willTour'
-											items={[
-												{ label: 'Yes', value: 'true' },
-												{ label: 'No', value: 'false' },
-											]}
-											handleChange={handleRadioInputChange}
-										/>
-									</Box>
-									<Box>
-										<Heading
-											variant='contentTitle'
-											flex='0 0 100%'
-											textAlign='left'
-											alignItems='center'
-											display='flex'
-										>
-											Resume
-										</Heading>
-										{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-										{resume && resumePreview ? (
-											<Flex flexWrap='wrap'>
-												<ResumePreviewModal
-													resumePreview={resumePreview}
-													resumeLink={resume}
-													w='100%'
-													maxW='300px'
-													mr={{ base: 0, sm: 1 }}
-													mb={{ base: 1, sm: 0 }}
-												/>
-												<ClearFieldButton field='resume' label='Delete resume'>
-													Clear
-												</ClearFieldButton>
-											</Flex>
-										) : (
-											<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
-										)}
-									</Box>
-								</Flex>
+								</>
 							</ProfileStackItem>
-							<ProfileStackItem>
-								<Stack display='flex' gap={4}>
-									<ProfileStackItem title='Unions/Guilds'>
-										<>
-											<Heading variant='contentSubtitle'>
-												What unions or guilds are you a member of?
-											</Heading>
-											<Box fontSize='sm'>
-												<ProfileCheckboxGroup
-													name='unions'
-													items={unionTerms}
-													checked={unions ? unions.map((item) => item.toString()) : []}
-													handleChange={handleCheckboxInput}
-												/>
-											</Box>
-										</>
-									</ProfileStackItem>
-									<ProfileStackItem title='Experience Levels'>
-										<>
-											<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-											<Box fontSize='sm'>
-												<ProfileCheckboxGroup
-													name='experienceLevels'
-													items={experienceLevelTerms}
-													checked={
-														experienceLevels ? experienceLevels.map((item) => item.toString()) : []
-													}
-													handleChange={handleCheckboxInput}
-												/>
-											</Box>
-										</>
-									</ProfileStackItem>
-									<ProfileStackItem title='Partner Directories'>
-										<>
-											<Heading variant='contentSubtitle'>
-												Are you a member of one of our partner organizations?
-											</Heading>
-											<Box fontSize='sm'>
-												<ProfileCheckboxGroup
-													name='partnerDirectories'
-													items={partnerDirectoryTerms}
-													checked={
-														partnerDirectories
-															? partnerDirectories.map((item) => item.toString())
-															: []
-													}
-													handleChange={handleCheckboxInput}
-												/>
-											</Box>
-										</>
-									</ProfileStackItem>
-								</Stack>
+							<ProfileStackItem title='Partner Directories'>
+								<>
+									<Heading variant='contentSubtitle'>
+										Are you a member of one of our partner organizations?
+									</Heading>
+									<Box fontSize='sm'>
+										<ProfileCheckboxGroup
+											name='partnerDirectories'
+											items={partnerDirectoryTerms}
+											checked={
+												partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
+											}
+											handleChange={handleCheckboxInput}
+										/>
+									</Box>
+								</>
 							</ProfileStackItem>
 						</Stack>
-					</>
-				</ProfileStackItem>
+					</ProfileStackItem>
+				</Stack>
 
 				<ProfileStackItem title='Credits' centerlineColor='brand.blue' pos='relative' id='credits'>
 					<>
