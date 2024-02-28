@@ -225,7 +225,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								colorScheme='yellow'
 								size='lg'
 								mt={6}
-								mb={20}
+								mb={24}
 							>
 								Learn about RISE Theatre{' '}
 								<Icon as={FiExternalLink} aria-label='external link' pl={1} />
