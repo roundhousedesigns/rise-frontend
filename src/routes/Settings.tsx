@@ -1,16 +1,12 @@
-import { Box, Flex, Icon, Link, Text, useColorMode } from '@chakra-ui/react';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import Page from '@components/Page';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@common/SettingsSection';
-import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@/components/DarkModeToggle';
 
 export default function Settings() {
-	const { colorMode, toggleColorMode } = useColorMode();
-
 	return (
 		<Page title='Account Settings'>
 			<Flex gap={6} mt={2} flexWrap='wrap'>
@@ -28,7 +24,7 @@ export default function Settings() {
 
 				<SettingsSection title='Options'>
 					<DisableProfileToggle showLabel={true} />
-					<DarkModeToggle showLabel={true} />
+					<DarkModeToggle showLabel={true} size='lg' />
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}

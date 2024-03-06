@@ -66,6 +66,8 @@ export default function ProfileNotice({ code, status = 'info', ...props }: Props
 			colorScheme='yellow'
 			variant='subtle'
 			fontSize='lg'
+			borderWidth={2}
+			borderColor='brand.yellow'
 			my={0}
 			justifyContent='space-between'
 			{...props}
