@@ -1,17 +1,18 @@
-import { Icon, Wrap, Text, useColorMode, Flex, Highlight } from '@chakra-ui/react';
+import { Text, useColorMode, Highlight, Box } from '@chakra-ui/react';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 interface Props {
 	size?: string;
 	showLabel?: boolean;
+	[prop: string]: any;
 }
 
-export default function DarkModeToggle({ size = 'md', showLabel }: Props) {
+export default function DarkModeToggle({ size = 'md', showLabel, ...props }: Props): JSX.Element {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<Flex alignItems='center' justifyContent='flex-start'>
+		<Box {...props}>
 			<ToggleOptionSwitch
 				id='darkMode'
 				checked={colorMode === 'dark'}
@@ -23,7 +24,7 @@ export default function DarkModeToggle({ size = 'md', showLabel }: Props) {
 			>
 				{showLabel ? <Subtext colorMode={colorMode} /> : <></>}
 			</ToggleOptionSwitch>
-		</Flex>
+		</Box>
 	);
 }
 

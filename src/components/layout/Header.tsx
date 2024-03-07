@@ -51,7 +51,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
 	const drawerButtonRef = useRef(null);
-	const { colorMode, toggleColorMode } = useColorMode();
+	const { colorMode } = useColorMode();
 
 	const {
 		search: { searchActive, results },

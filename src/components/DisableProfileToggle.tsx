@@ -5,11 +5,16 @@ import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 
 interface Props {
+	size?: string;
 	showLabel?: boolean;
 	[prop: string]: any;
 }
 
-export default function DisableProfileToggle({ showLabel, ...props }: Props): JSX.Element {
+export default function DisableProfileToggle({
+	size = 'md',
+	showLabel,
+	...props
+}: Props): JSX.Element {
 	const { loggedInId, disableProfile } = useViewer();
 	const {
 		toggleDisableProfileMutation,
@@ -29,7 +34,7 @@ export default function DisableProfileToggle({ showLabel, ...props }: Props): JS
 				label='Visibility'
 				icon={FiEyeOff}
 				iconRight={FiEye}
-				size='lg'
+				size={size}
 				loading={loading}
 			>
 				{showLabel ? <Subtext disableProfile={disableProfile} /> : <></>}

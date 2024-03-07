@@ -23,7 +23,7 @@ export default function Settings() {
 				</SettingsSection>
 
 				<SettingsSection title='Options'>
-					<DisableProfileToggle showLabel={true} />
+					<DisableProfileToggle showLabel={true} size='lg' />
 					<DarkModeToggle showLabel={true} size='lg' />
 				</SettingsSection>
 
