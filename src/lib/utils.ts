@@ -4,7 +4,12 @@
 
 import { isEqual } from 'lodash';
 import { PersonalLinks, UserProfile, WPItem } from './classes';
-import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from './types';
+import {
+	ProfileNoticeAlert,
+	SearchFilterSet,
+	SearchFilterSetRaw,
+	SearchResultCandidate,
+} from './types';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**

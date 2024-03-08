@@ -1,3 +1,4 @@
+import React, { ReactNode } from 'react';
 import { WPItem } from './classes';
 
 /**
@@ -252,4 +253,19 @@ export interface OrganizedSearchTerms {
 export interface SearchResultCandidate {
 	id: number;
 	score: number;
+}
+
+/**
+ * The data shape for a Profile Notice Alert.
+ */
+export interface ProfileNoticeAlert {
+	title: string;
+	description?: string;
+	cta?: {
+		button?: {
+			to: string;
+			text: string;
+		};
+		element?: JSX.Element;
+	};
 }
