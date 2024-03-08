@@ -7,8 +7,8 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
-} from './types';
-import { decodeString } from './utils';
+} from '@lib/types';
+import { decodeString } from '@lib/utils';
 
 /**
  * A basic user.

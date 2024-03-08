@@ -1,11 +1,11 @@
 import { extendTheme } from '@chakra-ui/react';
 
 // Global overrides
-import { styles } from './global';
+import { styles } from '@theme/global';
 
 // Foundational style overrides
-import { colors } from './foundations/colors';
-import { fonts } from './foundations/fonts';
+import { colors } from '@theme/foundations/colors';
+import { fonts } from '@theme/foundations/fonts';
 
 // Component style overrides
 import headingTheme from '@theme/components/Heading';

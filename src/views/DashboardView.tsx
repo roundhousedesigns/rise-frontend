@@ -16,15 +16,10 @@ import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
 import ShortPost from '@common/ShortPost';
-import useUserProfile from '@/hooks/queries/useUserProfile';
-import ProfileNotice from '@/components/common/ProfileNotice';
-import ProfileNotices from '@/components/common/ProfileNotices';
 
 export default function DashboardView() {
-	const { loggedInSlug, loggedInId, disableProfile } = useViewer();
+	const { loggedInSlug } = useViewer();
 	const [notices] = useUserNotices();
-
-	const [profile, { loading: profileLoading }] = useUserProfile(loggedInId);
 
 	return (
 		<Stack direction='column'>
@@ -62,14 +57,6 @@ export default function DashboardView() {
 					</Flex>
 				</Flex>
 			</StackItem>
-
-			{profile ? (
-				<StackItem>
-					<ProfileNotices profile={profile} />
-				</StackItem>
-			) : (
-				false
-			)}
 
 			{notices.length > 0 ? (
 				<StackItem>

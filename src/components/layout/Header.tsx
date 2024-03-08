@@ -38,16 +38,20 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
+import useUserProfile from '@/hooks/queries/useUserProfile';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
 import ResponsiveButton from '@common/inputs/ResponsiveButton';
 import DarkModeToggle from '@components/DarkModeToggle';
+import ProfileNotices from '@common/ProfileNotices';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
 	const { logoutMutation } = useLogout();
 	const [orange] = useToken('colors', ['brand.orange']);
+
+	const [profile] = useUserProfile(loggedInId);
 
 	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
 	const drawerButtonRef = useRef(null);
@@ -150,7 +154,6 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			borderBottomColor='text.light'
 			zIndex={1000}
 		>
-			{/* <DarkMode> */}
 			<Container centerContent w='full' maxW='9xl' px={{ base: 4, md: 8 }} py={4}>
 				<Flex w='full' justifyContent='space-between' align='center'>
 					<Link
@@ -272,6 +275,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 				</Flex>
 			</Container>
 
+			{profile ? <ProfileNotices profile={profile} /> : false}
 			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
 		</Box>
 	);

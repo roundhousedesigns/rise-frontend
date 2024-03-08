@@ -1,5 +1,4 @@
-import React, { ReactNode } from 'react';
-import { WPItem } from './classes';
+import { WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -260,7 +259,7 @@ export interface SearchResultCandidate {
  */
 export interface ProfileNoticeAlert {
 	title: string;
-	description?: string;
+	description?: string | JSX.Element;
 	cta?: {
 		button?: {
 			to: string;

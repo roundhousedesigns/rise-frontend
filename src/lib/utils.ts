@@ -3,13 +3,9 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks, UserProfile, WPItem } from './classes';
-import {
-	ProfileNoticeAlert,
-	SearchFilterSet,
-	SearchFilterSetRaw,
-	SearchResultCandidate,
-} from './types';
+import { PersonalLinks, UserProfile, WPItem } from '@lib/classes';
+import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
+import Cookies from 'js-cookie';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**
@@ -333,7 +329,7 @@ export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFil
  * Convert an array of user IDs to an array of SearchResultCandidate objects scored as '0'.
  *
  * @param userIds
- * @returns
+ * @returns An array of SearchResultCandidates with a score of zero.
  */
 export function convertUnscoredToScored(userIds: (number | string)[]): SearchResultCandidate[] {
 	return userIds.map((id) => {
@@ -342,4 +338,36 @@ export function convertUnscoredToScored(userIds: (number | string)[]): SearchRes
 			score: 0,
 		};
 	});
+}
+
+/**
+ * Set a cookie.
+ *
+ * @param name The name of the cookie.
+ * @param value The cookie's value.
+ * @param days The number of days until expiration (default: 7).
+ * @returns void
+ */
+export function setCookie(name: string, value: string | number | boolean, days: number = 7): void {
+	Cookies.set(name, String(value), { expires: days });
+}
+
+/**
+ * Retrieve a cookie.
+ *
+ * @param name The name of the cookie to retrieve.
+ * @returns The cookie's value or undefined if the cookie doesn't exist.
+ */
+export function getCookie(name: string): string | undefined {
+	return Cookies.get(name);
+}
+
+/**
+ * Remove a cookie.
+ *
+ * @param name The name of the cookie to delete.
+ * @returns void
+ */
+export function removeCookie(name: string): void {
+	Cookies.remove(name);
 }

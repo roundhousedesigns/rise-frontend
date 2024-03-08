@@ -60,13 +60,11 @@ import ProfileRadioGroup from '@common/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
-import ProfileNotice from '@common/ProfileNotice';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
-import ProfileNotices from '@/components/common/ProfileNotices';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -81,7 +79,7 @@ interface Props {
  */
 export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug, disableProfile } = useViewer();
+	const { loggedInId, loggedInSlug } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -813,7 +811,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
-			{profile ? <ProfileNotices profile={profile} mt={4} mb={2} /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<Stack>
 					<ProfileStackItem>

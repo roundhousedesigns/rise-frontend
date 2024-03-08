@@ -45,7 +45,6 @@ import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
-import ProfileNotices from '@common/ProfileNotices';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
@@ -222,7 +221,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 	return profile ? (
 		<>
-			<ProfileNotices profile={profile} mt={4} />
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>
