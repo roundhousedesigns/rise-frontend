@@ -1,6 +1,6 @@
 import { Key } from 'react';
 import { chakra, FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
-import RadioButton from './inputs/RadioButton';
+import RadioButton from '@common/inputs/RadioButton';
 
 interface Props {
 	name: string;
