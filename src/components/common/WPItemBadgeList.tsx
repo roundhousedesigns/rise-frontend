@@ -1,12 +1,12 @@
 import { Wrap } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import { decodeString } from '@lib/utils';
-import WPItemBadgeListItem from './WPItemBadgeListItem';
+import WPItemBadgeListItem from '@common/WPItemBadgeListItem';
 
 interface Props {
 	items: WPItem[];
 	colorScheme?: string;
-	[props: string]: any;
+	[prop: string]: any;
 }
 
 export default function WPItemBadgeList({ items, colorScheme, ...props }: Props): JSX.Element {

@@ -3,7 +3,7 @@ import { Box, SkeletonText } from '@chakra-ui/react';
 
 interface Props {
 	postId: string | number;
-	[props: string]: any;
+	[prop: string]: any;
 }
 
 export default function ContentView({ postId, ...props }: Props) {
