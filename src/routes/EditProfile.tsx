@@ -31,14 +31,14 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 });
 
 export default function EditProfile() {
-	const { loggedInId, disableProfile } = useViewer();
+	const { loggedInId } = useViewer();
 	const [profile, { loading, error }] = useUserProfile(loggedInId);
 	const ref = useRef<HTMLButtonElement>(null);
 
 	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
 	return (
-		<Page title={'Update Profile'} actions={!disableProfile ? <PageActions /> : undefined}>
+		<Page title={'Update Profile'} actions={<PageActions />}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} />

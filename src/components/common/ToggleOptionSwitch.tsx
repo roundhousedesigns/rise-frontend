@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormControl, Switch, FormLabel, Icon, As, Spinner } from '@chakra-ui/react';
+import { FormControl, Switch, FormLabel, Icon, As, Text, Spinner } from '@chakra-ui/react';
 
 interface Props {
 	checked: boolean;
@@ -7,6 +7,7 @@ interface Props {
 	colorScheme?: string;
 	label: string;
 	icon?: As;
+	iconRight?: As;
 	size?: string;
 	loading?: boolean;
 	callback: () => void;
@@ -19,6 +20,7 @@ export default function ToggleOptionSwitch({
 	colorScheme = 'green',
 	label,
 	icon,
+	iconRight,
 	size = 'lg',
 	loading,
 	callback,
@@ -43,9 +45,9 @@ export default function ToggleOptionSwitch({
 	};
 
 	return (
-		<FormControl display='flex' alignItems='center' py={1} {...props}>
+		<FormControl display='flex' alignItems='center' {...props}>
 			{icon ? (
-				<Icon as={icon as As} mr={1} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
+				<Icon as={icon as As} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
 			) : (
 				false
 			)}
@@ -54,12 +56,15 @@ export default function ToggleOptionSwitch({
 				onChange={handleChange}
 				isChecked={toggleState}
 				color='inherit'
-				mr={2}
+				mx={1}
 				colorScheme={colorScheme}
 				aria-label={label}
 			/>
+			{iconRight ? <Icon as={iconRight as As} boxSize={sizeProps.iconBoxSize} p={1} /> : false}
 			<FormLabel htmlFor={id} m={0} fontSize={sizeProps.fontSize}>
-				{children}
+				<Text as='span' fontSize='md' fontStyle='italic' color='inherit' pl={2}>
+					{children}
+				</Text>
 			</FormLabel>
 			{loading && <Spinner />}
 		</FormControl>
