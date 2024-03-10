@@ -8,11 +8,11 @@ import { createUploadLink } from 'apollo-upload-client';
 
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 
-import theme from './theme/index';
-import Fonts from './theme/Fonts';
-import App from './App';
+import theme from '@theme/index';
+import Fonts from '@theme/Fonts';
+import App from '@/App';
 
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from '@/reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

@@ -23,7 +23,7 @@ interface Props {
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
-	[props: string]: any;
+	[prop: string]: any;
 }
 export default function CreditItem({ credit, isEditable, onClick, ...props }: Props): JSX.Element {
 	const {

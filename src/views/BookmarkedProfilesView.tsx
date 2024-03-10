@@ -1,6 +1,6 @@
 import { Text, IconButton, Box } from '@chakra-ui/react';
 import { FiBookmark } from 'react-icons/fi';
-import BookmarkedCandidateList from './BookmarkedCandidateList';
+import BookmarkedCandidateList from '@views/BookmarkedCandidateList';
 
 export default function BookmarkedProfilesView() {
 	return (
