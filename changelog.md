@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.3] - unreleased
+
+- Change: Hide "Get Help" button on dashboard.
+
 ## \[1.1.2] - 2024-02-27
 
 - Add: Page content to Login screen
