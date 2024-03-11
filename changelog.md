@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file, starting wi
 
 ## \[1.1.3] - unreleased
 
+- Change: Hide "Get Help" button on dashboard.
 - Add: Alerts for "no credits" and "profile hidden" messages.
 
 ## \[1.1.2] - 2024-02-27
