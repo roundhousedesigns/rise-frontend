@@ -46,14 +46,14 @@ export default function DisableProfileToggle({
 const Subtext = ({ disableProfile }: { disableProfile: boolean }) => {
 	return disableProfile ? (
 		<Text as='span'>
-			<Highlight query={['private']} styles={{ bg: 'blue.200', px: 1, mx: 1 }}>
-				Your profile is private.
+			<Highlight query={['private', 'hidden']} styles={{ bg: 'blue.200', px: 1, mx: 0 }}>
+				Your profile is private and you won't appear in searches.
 			</Highlight>
 		</Text>
 	) : (
 		<Text as='span'>
-			<Highlight query={['public']} styles={{ bg: 'blue.200', px: 1, mx: 1 }}>
-				Your profile is public.
+			<Highlight query={['public']} styles={{ bg: 'blue.200', px: 1, mx: 0 }}>
+				Your profile is public and you'll appear in searches.
 			</Highlight>
 		</Text>
 	);

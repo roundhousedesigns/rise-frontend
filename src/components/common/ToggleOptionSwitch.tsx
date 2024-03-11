@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormControl, Switch, FormLabel, Icon, As, Text, Spinner } from '@chakra-ui/react';
+import { FormControl, Switch, FormLabel, Icon, As, Text } from '@chakra-ui/react';
 
 interface Props {
 	checked: boolean;
@@ -45,7 +45,7 @@ export default function ToggleOptionSwitch({
 	};
 
 	return (
-		<FormControl display='flex' alignItems='center' {...props}>
+		<FormControl display='flex' alignItems='center' position='relative' {...props}>
 			{icon ? (
 				<Icon as={icon as As} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
 			) : (
@@ -59,14 +59,14 @@ export default function ToggleOptionSwitch({
 				mx={1}
 				colorScheme={colorScheme}
 				aria-label={label}
+				isDisabled={loading}
 			/>
 			{iconRight ? <Icon as={iconRight as As} boxSize={sizeProps.iconBoxSize} p={1} /> : false}
 			<FormLabel htmlFor={id} m={0} fontSize={sizeProps.fontSize}>
-				<Text as='span' fontSize='md' fontStyle='italic' color='inherit' pl={2}>
+				<Text as='span' fontSize='md' color='inherit' pl={2}>
 					{children}
 				</Text>
 			</FormLabel>
-			{loading && <Spinner />}
 		</FormControl>
 	);
 }

@@ -7,50 +7,13 @@ import {
 	CloseButton,
 	Container,
 	Link,
-	ScaleFade,
+	Collapse,
 	Spacer,
 	useDisclosure,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProfileNoticeAlert } from '@/lib/types';
 import { getCookie, setCookie } from '@/lib/utils';
-
-const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
-	no_credits: {
-		title: "You haven't added any professional credits.",
-		description: (
-			<>
-				<Link as={RouterLink} to='/profile/edit'>
-					Add some credits
-				</Link>{' '}
-				to allow people to find you in the Directory!
-			</>
-		),
-		// cta: {
-		// 	button: {
-		// 		to: '/profile/edit',
-		// 		text: 'Edit your profile',
-		// 	},
-		// },
-	},
-	profile_disabled: {
-		title: 'Your profile is currently hidden.',
-		description: (
-			<>
-				<Link as={RouterLink} to='/settings'>
-					Set your profile to public
-				</Link>{' '}
-				to appear in searches.
-			</>
-		),
-		// cta: {
-		// 	button: {
-		// 		to: '/settings',
-		// 		text: 'Settings',
-		// 	},
-		// },
-	},
-};
 
 interface Props {
 	code: string;
@@ -100,7 +63,7 @@ export default function ProfileNotice({
 	};
 
 	return (
-		<ScaleFade in={isVisible} unmountOnExit>
+		<Collapse in={isVisible} unmountOnExit>
 			<Alert
 				status='warning'
 				colorScheme={colorScheme}
@@ -123,6 +86,31 @@ export default function ProfileNotice({
 					<CloseButton onClick={handleCloseAlert} />
 				</Container>
 			</Alert>
-		</ScaleFade>
+		</Collapse>
 	);
 }
+
+const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
+	no_credits: {
+		title: "You haven't added any professional credits.",
+		description: (
+			<>
+				<Link as={RouterLink} to='/profile/edit'>
+					Add some credits
+				</Link>{' '}
+				to allow people to find you in the Directory!
+			</>
+		),
+	},
+	profile_disabled: {
+		title: 'Your profile is currently hidden.',
+		description: (
+			<>
+				<Link as={RouterLink} to='/settings'>
+					Set your profile to public
+				</Link>{' '}
+				to appear in searches.
+			</>
+		),
+	},
+};

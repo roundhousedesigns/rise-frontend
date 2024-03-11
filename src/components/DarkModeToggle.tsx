@@ -31,13 +31,13 @@ export default function DarkModeToggle({ size = 'md', showLabel, ...props }: Pro
 const Subtext = ({ colorMode }: { colorMode: string }) => {
 	return colorMode === 'dark' ? (
 		<Text as='span'>
-			<Highlight query={['dark']} styles={{ bg: 'yellow.200', px: 1, mx: 1 }}>
+			<Highlight query={['dark']} styles={{ bg: 'yellow.200', px: 1 }}>
 				Dark mode
 			</Highlight>
 		</Text>
 	) : (
 		<Text as='span'>
-			<Highlight query={['light']} styles={{ bg: 'yellow.200', px: 1, mx: 1 }}>
+			<Highlight query={['light']} styles={{ bg: 'yellow.200', px: 1 }}>
 				Light mode
 			</Highlight>
 		</Text>
