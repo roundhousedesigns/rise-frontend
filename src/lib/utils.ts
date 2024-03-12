@@ -368,6 +368,6 @@ export function getCookie(name: string): string | undefined {
  * @param name The name of the cookie to delete.
  * @returns void
  */
-export function removeCookie(name: string): void {
+export function deleteCookie(name: string): void {
 	Cookies.remove(name);
 }

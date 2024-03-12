@@ -256,8 +256,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										Help
 									</MenuItem>
 									<MenuDivider />
-									<Flex mx={2} justifyContent='space-between'>
-										<DarkModeToggle />
+									<Flex mx={2} justifyContent='space-between' alignItems='center'>
+										<DarkModeToggle showLabel={false} showHelperText={false} />
 										<IconButton
 											aria-label='Logout'
 											icon={<FiLogOut />}

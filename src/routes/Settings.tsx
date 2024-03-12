@@ -18,13 +18,13 @@ export default function Settings() {
 
 				{/* TODO Setting: Change your email */}
 
-				<SettingsSection title='Profile Tag'>
+				<SettingsSection title='Profile link'>
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
 				<SettingsSection title='Options'>
-					<DisableProfileToggle showLabel={true} size='lg' />
-					<DarkModeToggle showLabel={true} size='lg' />
+					<DisableProfileToggle showHelperText={true} size='lg' />
+					<DarkModeToggle showHelperText={true} size='lg' />
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}

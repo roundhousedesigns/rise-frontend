@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { FormControl, Switch, FormLabel, Icon, As, Text } from '@chakra-ui/react';
+import { FormControl, Switch, FormLabel, Icon, As, FormHelperText, Box } from '@chakra-ui/react';
 
 interface Props {
 	checked: boolean;
 	id: string;
 	colorScheme?: string;
 	label: string;
+	showLabel?: boolean;
 	icon?: As;
 	iconRight?: As;
 	size?: string;
@@ -19,6 +20,7 @@ export default function ToggleOptionSwitch({
 	id,
 	colorScheme = 'green',
 	label,
+	showLabel = true,
 	icon,
 	iconRight,
 	size = 'lg',
@@ -62,11 +64,23 @@ export default function ToggleOptionSwitch({
 				isDisabled={loading}
 			/>
 			{iconRight ? <Icon as={iconRight as As} boxSize={sizeProps.iconBoxSize} p={1} /> : false}
-			<FormLabel htmlFor={id} m={0} fontSize={sizeProps.fontSize}>
-				<Text as='span' fontSize='md' color='inherit' pl={2}>
-					{children}
-				</Text>
-			</FormLabel>
+			<Box ml={4}>
+				<FormLabel
+					htmlFor={id}
+					visibility={showLabel ? 'visible' : 'hidden'}
+					my={0}
+					fontWeight='bold'
+				>
+					{label}
+				</FormLabel>
+				{children ? (
+					<FormHelperText my={0} fontStyle='italic'>
+						{children}
+					</FormHelperText>
+				) : (
+					false
+				)}
+			</Box>
 		</FormControl>
 	);
 }

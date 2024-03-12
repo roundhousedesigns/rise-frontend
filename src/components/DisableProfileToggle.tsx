@@ -3,16 +3,19 @@ import { FiEyeOff, FiEye } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
+import { deleteCookie, setCookie } from '@/lib/utils';
 
 interface Props {
 	size?: string;
 	showLabel?: boolean;
+	showHelperText?: boolean;
 	[prop: string]: any;
 }
 
 export default function DisableProfileToggle({
 	size = 'md',
 	showLabel,
+	showHelperText,
 	...props
 }: Props): JSX.Element {
 	const { loggedInId, disableProfile } = useViewer();
@@ -21,8 +24,13 @@ export default function DisableProfileToggle({
 		result: { loading },
 	} = useToggleDisableProfile();
 
+	const noticeLabel = 'profile_notice_profile_disabled_dismissed';
+
 	const handleToggleDisableProfile = () => {
 		toggleDisableProfileMutation(loggedInId);
+
+		if (disableProfile === true) setCookie(noticeLabel, 1, 30);
+		else deleteCookie(noticeLabel);
 	};
 
 	return (
@@ -31,19 +39,20 @@ export default function DisableProfileToggle({
 				id='disableProfile'
 				checked={!disableProfile}
 				callback={handleToggleDisableProfile}
-				label='Visibility'
+				label='Privacy'
 				icon={FiEyeOff}
 				iconRight={FiEye}
 				size={size}
 				loading={loading}
+				showLabel={showLabel}
 			>
-				{showLabel ? <Subtext disableProfile={disableProfile} /> : <></>}
+				<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
 			</ToggleOptionSwitch>
 		</Box>
 	);
 }
 
-const Subtext = ({ disableProfile }: { disableProfile: boolean }) => {
+const Description = ({ disableProfile }: { disableProfile: boolean }) => {
 	return disableProfile ? (
 		<Text as='span'>
 			<Highlight query={['private', 'hidden']} styles={{ bg: 'blue.200', px: 1, mx: 0 }}>

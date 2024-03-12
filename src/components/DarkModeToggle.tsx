@@ -5,10 +5,16 @@ import { FiMoon, FiSun } from 'react-icons/fi';
 interface Props {
 	size?: string;
 	showLabel?: boolean;
+	showHelper?: boolean;
 	[prop: string]: any;
 }
 
-export default function DarkModeToggle({ size = 'md', showLabel, ...props }: Props): JSX.Element {
+export default function DarkModeToggle({
+	size = 'md',
+	showLabel = true,
+	showHelperText = true,
+	...props
+}: Props): JSX.Element {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
@@ -17,12 +23,13 @@ export default function DarkModeToggle({ size = 'md', showLabel, ...props }: Pro
 				id='darkMode'
 				checked={colorMode === 'dark'}
 				callback={toggleColorMode}
-				label='Color mode'
+				label='Theme'
 				icon={FiSun}
 				iconRight={FiMoon}
 				size={size}
+				showLabel={showLabel}
 			>
-				{showLabel ? <Subtext colorMode={colorMode} /> : <></>}
+				{showHelperText ? <Subtext colorMode={colorMode} /> : <></>}
 			</ToggleOptionSwitch>
 		</Box>
 	);

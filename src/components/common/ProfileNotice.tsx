@@ -107,7 +107,7 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		description: (
 			<>
 				<Link as={RouterLink} to='/settings'>
-					Set your profile to public
+					Take your profile to public
 				</Link>{' '}
 				to appear in searches.
 			</>
