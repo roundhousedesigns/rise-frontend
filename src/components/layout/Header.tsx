@@ -96,15 +96,16 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			as={RouterLink}
 			to='/bookmarks'
 			icon={
-				isLargerThanMd ? (
+				isLargerThanMd && bookmarkedProfiles.length ? (
 					<Badge py={1} px={2} ml={0} borderRadius='full' colorScheme='orange'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
-					<Icon as={FiBookmark} fill='brand.orange' />
+					<Icon as={FiBookmark} fill={bookmarkedProfiles.length ? 'brand.orange' : ''} />
 				)
 			}
-			label='Bookmarked candidates'
+			label='Saved candidates'
+			isDisabled={!bookmarkedProfiles.length}
 		>
 			Saved
 		</ResponsiveButton>
@@ -200,7 +201,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								align='center'
 								fontSize='lg'
 							>
-								{bookmarkedProfiles.length ? <BookmarkedProfilesButton /> : false}
+								<BookmarkedProfilesButton />
 								{searchActive && results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}

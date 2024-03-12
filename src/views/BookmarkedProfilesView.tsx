@@ -6,7 +6,7 @@ export default function BookmarkedProfilesView() {
 	return (
 		<Box>
 			<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
-				To save someone's profile, click the{' '}
+				To save a candidate, click the
 				<IconButton
 					icon={<FiBookmark />}
 					variant='inline'
@@ -14,7 +14,7 @@ export default function BookmarkedProfilesView() {
 					aria-label='Sample bookmark icon'
 					title='Bookmark'
 				/>{' '}
-				icon on a person's profile, or next to a name in search results.
+				icon on a profile page, or next to a name in search results.
 			</Text>
 
 			<BookmarkedCandidateList my={0} />
