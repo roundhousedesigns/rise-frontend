@@ -17,7 +17,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.10.5",
-    "@types/node": "^20.10.5",
+    "@types/node": "^20.11.19",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
