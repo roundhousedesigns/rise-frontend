@@ -20,6 +20,7 @@ import {
 	useBreakpointValue,
 	useToken,
 	useColorMode,
+	Icon,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -92,16 +93,16 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			to='/bookmarks'
 			icon={
 				isLargerThanMd ? (
-					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
+					<Badge py={1} px={2} ml={0} borderRadius='full' colorScheme='orange'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
-					<FiBookmark fill={orange} />
+					<Icon as={FiBookmark} fill='brand.orange' />
 				)
 			}
 			label='Bookmarked candidates'
 		>
-			Bookmarked
+			Saved
 		</ResponsiveButton>
 	);
 
