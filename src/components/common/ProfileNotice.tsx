@@ -10,6 +10,7 @@ import {
 	Collapse,
 	Spacer,
 	useDisclosure,
+	LightMode,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProfileNoticeAlert } from '@/lib/types';
@@ -64,28 +65,30 @@ export default function ProfileNotice({
 
 	return (
 		<Collapse in={isVisible} unmountOnExit>
-			<Alert
-				status='warning'
-				colorScheme={colorScheme}
-				color={color}
-				variant='subtle'
-				fontSize='md'
-				borderRadius={0}
-				py={1}
-				mb={0}
-				justifyContent='space-between'
-				{...props}
-			>
-				<Container maxW='90vw' display='flex' alignItems='center'>
-					<AlertIcon />
-					<AlertTitle>{title}</AlertTitle>
-					{description ? <AlertDescription>{description} </AlertDescription> : false}
+			<LightMode>
+				<Alert
+					status='warning'
+					colorScheme={colorScheme}
+					color={color}
+					variant='subtle'
+					fontSize='md'
+					borderRadius={0}
+					py={1}
+					mb={0}
+					justifyContent='space-between'
+					{...props}
+				>
+					<Container maxW='90vw' display='flex' alignItems='center'>
+						<AlertIcon />
+						<AlertTitle>{title}</AlertTitle>
+						{description ? <AlertDescription>{description} </AlertDescription> : false}
 
-					{cta ? <CTA /> : <Spacer />}
+						{cta ? <CTA /> : <Spacer />}
 
-					<CloseButton onClick={handleCloseAlert} />
-				</Container>
-			</Alert>
+						<CloseButton onClick={handleCloseAlert} />
+					</Container>
+				</Alert>
+			</LightMode>
 		</Collapse>
 	);
 }
