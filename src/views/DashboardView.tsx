@@ -11,7 +11,7 @@ import {
 	Stack,
 	StackItem,
 } from '@chakra-ui/react';
-import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
@@ -51,9 +51,6 @@ export default function DashboardView() {
 							Edit your profile
 						</Button>
 						<Spacer />
-						{/* <Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
-							Get Help
-						</Button> */}
 					</Flex>
 				</Flex>
 			</StackItem>
