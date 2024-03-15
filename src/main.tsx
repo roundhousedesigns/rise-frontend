@@ -5,7 +5,6 @@ import ReactGA from 'react-ga4';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { createUploadLink } from 'apollo-upload-client';
-
 import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 
 import theme from '@theme/index';
