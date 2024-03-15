@@ -1,4 +1,4 @@
-import { WPItem } from './classes';
+import { WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -252,4 +252,19 @@ export interface OrganizedSearchTerms {
 export interface SearchResultCandidate {
 	id: number;
 	score: number;
+}
+
+/**
+ * The data shape for a Profile Notice Alert.
+ */
+export interface ProfileNoticeAlert {
+	title: string;
+	description?: string | JSX.Element;
+	cta?: {
+		button?: {
+			to: string;
+			text: string;
+		};
+		element?: JSX.Element;
+	};
 }

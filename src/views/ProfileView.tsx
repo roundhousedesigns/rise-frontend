@@ -37,14 +37,12 @@ import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
-import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
-import ProfileDisabledNotice from '@common/ProfileDisabledNotice';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import CreditsTagLegend from '@components/CreditsTagLegend';
@@ -62,8 +60,6 @@ interface Props {
  */
 export default function ProfileView({ profile, allowBookmark = true }: Props): JSX.Element | null {
 	const params = useParams();
-
-	const { disableProfile, loggedInId } = useViewer();
 
 	const slug = params.slug ? params.slug : '';
 
@@ -105,8 +101,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		mediaImage6,
 		education,
 	} = profile || {};
-
-	const profileIsLoggedInUser = loggedInId === id;
 
 	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
 	const mediaImages = [
@@ -227,7 +221,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 
 	return profile ? (
 		<>
-			{profileIsLoggedInUser && disableProfile ? <ProfileDisabledNotice mb={0} /> : false}
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>

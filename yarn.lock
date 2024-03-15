@@ -10,7 +10,7 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@apollo/client@^3.7.0", "@apollo/client@^3.8.8":
+"@apollo/client@^3.7.0":
   version "3.9.4"
   resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.9.4.tgz#a0230ce42a4d0c26c9f75f2a10c0f330f3ef135c"
   integrity sha512-Ip6dxjshDT2Dp6foLASTnKBW45Fytew/5JZutZwgc78hVrrGpO9UtZA9xteHXYdap0wIgCxCfeIQwbSu1ZdQpw==
@@ -24,6 +24,26 @@
     optimism "^0.18.0"
     prop-types "^15.7.2"
     rehackt "0.0.4"
+    response-iterator "^0.2.6"
+    symbol-observable "^4.0.0"
+    ts-invariant "^0.10.3"
+    tslib "^2.3.0"
+    zen-observable-ts "^1.2.5"
+
+"@apollo/client@^3.9.5":
+  version "3.9.6"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.9.6.tgz#4292448d9b0a48244a60307b74d2fea7e83dfe70"
+  integrity sha512-+zpddcnZ4G2VZ0xIEnvIHFsLqeopNOnWuE2ZVbRuetLLpj/biLPNN719B/iofdd1/iHRclKfv0XaAmX6PBhYKA==
+  dependencies:
+    "@graphql-typed-document-node/core" "^3.1.1"
+    "@wry/caches" "^1.0.0"
+    "@wry/equality" "^0.5.6"
+    "@wry/trie" "^0.5.0"
+    graphql-tag "^2.12.6"
+    hoist-non-react-statics "^3.3.2"
+    optimism "^0.18.0"
+    prop-types "^15.7.2"
+    rehackt "0.0.6"
     response-iterator "^0.2.6"
     symbol-observable "^4.0.0"
     ts-invariant "^0.10.3"
@@ -1434,6 +1454,11 @@
   resolved "https://registry.yarnpkg.com/@types/extract-files/-/extract-files-13.0.1.tgz#3ec057a3fa25f778245a76a17271d23b71ee31d7"
   integrity sha512-/fRbzc2lAd7jDJSSnxWiUyXWjdUZZ4HbISLJzVgt1AvrdOa7U49YRPcvuCUywkmURZ7uwJOheDjx19itbQ5KvA==
 
+"@types/js-cookie@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-3.0.6.tgz#a04ca19e877687bd449f5ad37d33b104b71fdf95"
+  integrity sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==
+
 "@types/lodash.mergewith@4.6.7":
   version "4.6.7"
   resolved "https://registry.yarnpkg.com/@types/lodash.mergewith/-/lodash.mergewith-4.6.7.tgz#eaa65aa5872abdd282f271eae447b115b2757212"
@@ -1458,10 +1483,10 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.34.tgz#10964ba0dee6ac4cd462e2795b6bebd407303433"
   integrity sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==
 
-"@types/node@^20.10.5":
-  version "20.11.17"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.17.tgz#cdd642d0e62ef3a861f88ddbc2b61e32578a9292"
-  integrity sha512-QmgQZGWu1Yw9TDyAP9ZzpFJKynYNeOvwMJmaxABfieQoVoiVOS6MN1WSpqpRcbeA5+RW82kraAVxCCJg+780Qw==
+"@types/node@^20.11.19":
+  version "20.11.25"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.11.25.tgz#0f50d62f274e54dd7a49f7704cc16bfbcccaf49f"
+  integrity sha512-TBHyJxk2b7HceLVGFcpAUjsa5zIdsPWlR6XHfyGzd0SFu+/NFgQgMAl96MSDZgQDvJAvV6BKsFOrt6zIL09JDw==
   dependencies:
     undici-types "~5.26.4"
 
@@ -2017,6 +2042,11 @@ is-plain-obj@^4.0.0:
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-4.1.0.tgz#d65025edec3657ce032fd7db63c97883eaed71f0"
   integrity sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==
 
+js-cookie@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
+  integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -2562,6 +2592,11 @@ rehackt@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/rehackt/-/rehackt-0.0.4.tgz#dca5498e1f6c81d3d610ff2abfb3c3feec6afce8"
   integrity sha512-xFroSGCbMEK/cTJVhq+c8l/AzIeMeojVyLqtZmr2jmIAFvePjapkCSGg9MnrcNk68HPaMxGf+Ndqozotu78ITw==
+
+rehackt@0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/rehackt/-/rehackt-0.0.6.tgz#7a0a2247f2295e7548915417e44fbbf03bf004f4"
+  integrity sha512-l3WEzkt4ntlEc/IB3/mF6SRgNHA6zfQR7BlGOgBTOmx7IJJXojDASav+NsgXHFjHn+6RmwqsGPFgZpabWpeOdw==
 
 remark-parse@^10.0.0:
   version "10.0.2"

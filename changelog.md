@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.3] - 2024-03-15
+
+- Fix: refetchQuery on QUERY_PROFILE now using same variables and fires properly. Allowed removal of EditProfileContext credit update/delete actions.
+- Change: Hide "Get Help" button on dashboard.
+- Add: Alerts for "no credits" and "profile hidden" messages.
+
 ## \[1.1.2] - 2024-02-27
 
 - Add: Page content to Login screen

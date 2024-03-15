@@ -11,7 +11,7 @@ import {
 	Stack,
 	StackItem,
 } from '@chakra-ui/react';
-import { FiEdit3, FiLifeBuoy, FiSearch, FiUser } from 'react-icons/fi';
+import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
@@ -22,7 +22,7 @@ export default function DashboardView() {
 	const [notices] = useUserNotices();
 
 	return (
-		<Stack direction='column' spacing={4}>
+		<Stack direction='column'>
 			<StackItem as={Card}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
@@ -51,9 +51,6 @@ export default function DashboardView() {
 							Edit your profile
 						</Button>
 						<Spacer />
-						<Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
-							Get Help
-						</Button>
 					</Flex>
 				</Flex>
 			</StackItem>
