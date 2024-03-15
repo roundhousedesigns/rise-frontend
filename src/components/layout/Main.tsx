@@ -15,10 +15,6 @@ import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
 import SavedSearches from '@/routes/SavedSearches';
 
-const LoggedInComponent = ({ component }: { component: JSX.Element }): JSX.Element => (
-	<LoggedIn>{component}</LoggedIn>
-);
-
 export default function Main() {
 	return (
 		<Box
@@ -32,19 +28,74 @@ export default function Main() {
 			flex='1 1 auto'
 		>
 			<Container w='full' maxW='6xl' px={4} pb={4}>
+				{/* DEBUG */}
+
 				<Routes>
-					<Route path='/' element={<LoggedInComponent component={<Dashboard />} />} />
+					<Route
+						path='/'
+						element={
+							<LoggedIn>
+								<Dashboard />
+							</LoggedIn>
+						}
+					/>
 					<Route path='/reset-password' element={<ResetPassword />} />
-					<Route path='/profile/:slug' element={<LoggedInComponent component={<Profile />} />} />
-					<Route path='/profile/edit' element={<LoggedInComponent component={<EditProfile />} />} />
-					<Route path='/results' element={<LoggedInComponent component={<Results />} />} />
+					<Route
+						path='/profile/:slug'
+						element={
+							<LoggedIn>
+								<Profile />
+							</LoggedIn>
+						}
+					/>
+					<Route
+						path='/profile/edit'
+						element={
+							<LoggedIn>
+								<EditProfile />
+							</LoggedIn>
+						}
+					/>
+					<Route
+						path='/results'
+						element={
+							<LoggedIn>
+								<Results />
+							</LoggedIn>
+						}
+					/>
 					<Route
 						path='/bookmarks'
-						element={<LoggedInComponent component={<BookmarkedProfiles />} />}
+						element={
+							<LoggedIn>
+								<BookmarkedProfiles />
+							</LoggedIn>
+						}
 					/>
-					<Route path='/searches' element={<LoggedInComponent component={<SavedSearches />} />} />
-					<Route path='/settings' element={<LoggedInComponent component={<Settings />} />} />
-					<Route path='/help' element={<LoggedInComponent component={<Help />} />} />
+					<Route
+						path='/searches'
+						element={
+							<LoggedIn>
+								<SavedSearches />
+							</LoggedIn>
+						}
+					/>
+					<Route
+						path='/settings'
+						element={
+							<LoggedIn>
+								<Settings />
+							</LoggedIn>
+						}
+					/>
+					<Route
+						path='/help'
+						element={
+							<LoggedIn>
+								<Help />
+							</LoggedIn>
+						}
+					/>
 
 					{/* Pages with Google ReCaptcha */}
 					<Route path='/login' element={<Login />} />

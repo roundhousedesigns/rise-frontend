@@ -48,29 +48,7 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			return current;
 		}
 
-		case 'UPDATE_CREDIT': {
-			if (action.payload.credit === undefined) return state;
-
-			const { credits: currentCredits } = state;
-			const {
-				payload: { credit: updatedCredit, newCreditTempId },
-			} = action;
-
-			const updatedCredits = currentCredits.map((credit) => {
-				if (credit.id.toString() === updatedCredit.id || newCreditTempId === credit.id) {
-					return new Credit(updatedCredit);
-				}
-
-				return credit;
-			});
-
-			return {
-				...state,
-				credits: updatedCredits,
-			};
-		}
-
-		case 'ADD_CREDIT': {
+		case 'ADD_NEW_CREDIT': {
 			return {
 				...state,
 				credits: [
@@ -85,18 +63,6 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			};
 		}
 
-		case 'DELETE_CREDIT': {
-			if (!action.payload.creditId) return state;
-
-			const trimmedCredits = state.credits.filter(
-				(credit) => credit.id.toString() !== action.payload.creditId?.toString()
-			);
-
-			return {
-				...state,
-				credits: trimmedCredits,
-			};
-		}
 		case 'INIT':
 		case 'RESET': {
 			return action.payload.profile;

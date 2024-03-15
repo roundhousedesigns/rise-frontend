@@ -67,20 +67,6 @@ export default function ChangeProfileUrlView() {
 		setCopyValue(profileUrl);
 	}, [profileUrl]);
 
-	// Pop up the toast when the user copies the URL
-	useEffect(() => {
-		if (hasCopied) {
-			toast({
-				title: 'Copied!',
-				position: 'top',
-				description: 'Your profile link has been copied to your clipboard.',
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
-		}
-	}, [hasCopied]);
-
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setSlug(e.target.value);
 	};
@@ -110,7 +96,7 @@ export default function ChangeProfileUrlView() {
 
 	return (
 		<Box borderRadius='lg' w='full'>
-			<Heading variant='contentSubtitle'>Customize your profile's URL for easy sharing.</Heading>
+			<Heading variant='contentSubtitle'>Your handle</Heading>
 			<Flex mt={6} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
 				<Box flex='1 1 auto'>
 					<form onSubmit={handleSubmit}>

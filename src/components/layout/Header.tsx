@@ -33,28 +33,30 @@ import {
 	FiCompass,
 	FiBookmark,
 	FiFileText,
-	FiMoon,
-	FiSun,
 } from 'react-icons/fi';
 
-import SearchDrawer from './SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
-import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
+import useUserProfile from '@/hooks/queries/useUserProfile';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
+import SearchDrawer from '@layout/SearchDrawer';
+import ResponsiveButton from '@common/inputs/ResponsiveButton';
+import DarkModeToggle from '@components/DarkModeToggle';
+import ProfileNotices from '@common/ProfileNotices';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
 	const { logoutMutation } = useLogout();
 	const [orange] = useToken('colors', ['brand.orange']);
 
+	const [profile] = useUserProfile(loggedInId);
+
 	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
 	const drawerButtonRef = useRef(null);
-	const { colorMode, toggleColorMode } = useColorMode();
+	const { colorMode } = useColorMode();
 
 	const {
 		search: { searchActive, results },
@@ -94,17 +96,18 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			as={RouterLink}
 			to='/bookmarks'
 			icon={
-				isLargerThanMd ? (
-					<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
+				isLargerThanMd && bookmarkedProfiles.length ? (
+					<Badge py={1} px={2} ml={0} borderRadius='full' colorScheme='orange'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
-					<FiBookmark fill={orange} />
+					<Icon as={FiBookmark} fill={bookmarkedProfiles.length ? 'brand.orange' : ''} />
 				)
 			}
-			label='Bookmarked candidates'
+			label='Saved candidates'
+			isDisabled={!bookmarkedProfiles.length}
 		>
-			Bookmarked
+			Saved
 		</ResponsiveButton>
 	);
 
@@ -153,7 +156,6 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			borderBottomColor='text.light'
 			zIndex={1000}
 		>
-			{/* <DarkMode> */}
 			<Container centerContent w='full' maxW='9xl' px={{ base: 4, md: 8 }} py={4}>
 				<Flex w='full' justifyContent='space-between' align='center'>
 					<Link
@@ -199,7 +201,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								align='center'
 								fontSize='lg'
 							>
-								{bookmarkedProfiles.length ? <BookmarkedProfilesButton /> : false}
+								<BookmarkedProfilesButton />
 								{searchActive && results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}
@@ -256,17 +258,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										Help
 									</MenuItem>
 									<MenuDivider />
-									<Flex mx={2}>
-										<ToggleOptionSwitch
-											id='darkMode'
-											checked={colorMode === 'dark'}
-											callback={toggleColorMode}
-											label='Color mode'
-											size='sm'
-											icon={FiSun}
-										>
-											<Icon as={FiMoon} boxSize={4} pos='relative' top='3px' />
-										</ToggleOptionSwitch>
+									<Flex mx={2} justifyContent='space-between' alignItems='center'>
+										<DarkModeToggle showLabel={false} showHelperText={false} />
 										<IconButton
 											aria-label='Logout'
 											icon={<FiLogOut />}
@@ -285,6 +278,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			</Container>
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
+
+			{profile ? <ProfileNotices /> : false}
 		</Box>
 	);
 });

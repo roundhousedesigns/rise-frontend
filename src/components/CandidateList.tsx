@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
 import { Candidate } from '@lib/classes';
 import useCandidates from '@hooks/queries/useCandidates';
-import CandidateItem from './CandidateItem';
+import CandidateItem from '@components/CandidateItem';
 import ErrorAlert from '@common/ErrorAlert';
 
 interface Props {

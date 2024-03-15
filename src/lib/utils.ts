@@ -3,8 +3,9 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks, UserProfile, WPItem } from './classes';
-import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from './types';
+import { Credit, PersonalLinks, UserProfile, WPItem } from '@lib/classes';
+import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
+import Cookies from 'js-cookie';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**
@@ -328,7 +329,7 @@ export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFil
  * Convert an array of user IDs to an array of SearchResultCandidate objects scored as '0'.
  *
  * @param userIds
- * @returns
+ * @returns An array of SearchResultCandidates with a score of zero.
  */
 export function convertUnscoredToScored(userIds: (number | string)[]): SearchResultCandidate[] {
 	return userIds.map((id) => {
@@ -337,4 +338,103 @@ export function convertUnscoredToScored(userIds: (number | string)[]): SearchRes
 			score: 0,
 		};
 	});
+}
+
+/**
+ * Set a cookie.
+ *
+ * @param name The name of the cookie.
+ * @param value The cookie's value.
+ * @param days The number of days until expiration (default: 7).
+ * @returns void
+ */
+export function setCookie(name: string, value: string | number | boolean, days: number = 7): void {
+	Cookies.set(name, String(value), { expires: days });
+}
+
+/**
+ * Retrieve a cookie.
+ *
+ * @param name The name of the cookie to retrieve.
+ * @returns The cookie's value or undefined if the cookie doesn't exist.
+ */
+export function getCookie(name: string): string | undefined {
+	return Cookies.get(name);
+}
+
+/**
+ * Remove a cookie.
+ *
+ * @param name The name of the cookie to delete.
+ * @returns void
+ */
+export function deleteCookie(name: string): void {
+	Cookies.remove(name);
+}
+
+/**
+ * Prepare a collection of Credit objects from as raw array of GQL nodes.
+ *
+ * @param nodes The raw array of GQL nodes to prepare.
+ * @returns An array of Credit objects.
+ */
+export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
+	const credits: Credit[] = [];
+
+	nodes.forEach((credit: { [key: string]: any }) => {
+		// If credit at least has an id and a title, return a new Credit object
+		if (!credit.id || !credit.title) return null;
+
+		const jobs = credit.positions.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId !== null
+		);
+		const departments = credit.positions.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId === null
+		);
+
+		// Backwards compatibility for old credits
+		if ((!departments || !departments.length) && jobs) {
+			jobs.forEach((job: WPItem) => {
+				if (job.parentId) {
+					departments.push(new WPItem({ id: job.parentId }));
+				}
+			});
+		}
+
+		const newCredit = new Credit({
+			id: credit.id,
+			index: credit.index,
+			title: credit.title,
+			jobTitle: credit.jobTitle,
+			jobLocation: credit.jobLocation,
+			venue: credit.venue,
+			workStart: credit.workStart,
+			workEnd: credit.workEnd,
+			workCurrent: credit.workCurrent,
+			intern: credit.intern,
+			fellow: credit.fellow,
+			positions: {
+				departments: departments?.map((department: WPItem) => department.id),
+				jobs: jobs?.map((job: WPItem) => job.id),
+			},
+			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
+		});
+
+		credits.push(newCredit);
+	});
+
+	return credits;
+}
+
+/**
+ * Sort a collection of Credits by their index property.
+ *
+ * @param credits The collection to sort.
+ * @returns A sorted array of Credits.
+ */
+export function sortCreditsByIndex(credits: Credit[]): Credit[] {
+	const sorted = [...credits];
+	sorted.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
+
+	return sorted;
 }

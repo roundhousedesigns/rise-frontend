@@ -22,7 +22,7 @@ export default function DashboardView() {
 	const [notices] = useUserNotices();
 
 	return (
-		<Stack direction='column' spacing={4}>
+		<Stack direction='column'>
 			<StackItem as={Card}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
@@ -51,9 +51,9 @@ export default function DashboardView() {
 							Edit your profile
 						</Button>
 						<Spacer />
-						<Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
+						{/* <Button leftIcon={<FiLifeBuoy />} as={Link} to='/help' colorScheme='orange'>
 							Get Help
-						</Button>
+						</Button> */}
 					</Flex>
 				</Flex>
 			</StackItem>

@@ -26,7 +26,7 @@ const useDeleteCredit = () => {
 					userId,
 				},
 			},
-			refetchQueries: [{ query: QUERY_PROFILE, variables: { id: userId } }],
+			refetchQueries: [{ query: QUERY_PROFILE, variables: { id: userId, author: userId } }],
 		});
 	};
 

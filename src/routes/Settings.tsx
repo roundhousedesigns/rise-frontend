@@ -1,15 +1,12 @@
-import { Box, Flex, Icon, Link, Text, useColorMode } from '@chakra-ui/react';
-import { FiMoon, FiSun } from 'react-icons/fi';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import Page from '@components/Page';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@common/SettingsSection';
-import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import DisableProfileToggle from '@components/DisableProfileToggle';
+import DarkModeToggle from '@/components/DarkModeToggle';
 
 export default function Settings() {
-	const { colorMode, toggleColorMode } = useColorMode();
-
 	return (
 		<Page title='Account Settings'>
 			<Flex gap={6} mt={2} flexWrap='wrap'>
@@ -21,29 +18,13 @@ export default function Settings() {
 
 				{/* TODO Setting: Change your email */}
 
-				<SettingsSection title='Profile Tag'>
+				<SettingsSection title='Profile link'>
 					<ChangeProfileSlugView />
 				</SettingsSection>
 
 				<SettingsSection title='Options'>
-					<DisableProfileToggle />
-					<ToggleOptionSwitch
-						id='darkMode'
-						checked={colorMode === 'dark'}
-						callback={toggleColorMode}
-						label='Color mode'
-						icon={FiSun}
-					>
-						<>
-							<Icon as={FiMoon} boxSize={6} pos='relative' top='3px' />
-							<Text as='span' fontSize='xs' fontStyle='italic' color='inherit' ml={2}>
-								<Text as='span' fontWeight='bold'>
-									{colorMode === 'dark' ? 'Dark' : 'Light'}
-								</Text>
-								{' mode'}
-							</Text>
-						</>
-					</ToggleOptionSwitch>
+					<DisableProfileToggle showHelperText={true} size='lg' />
+					<DarkModeToggle showHelperText={true} size='lg' />
 				</SettingsSection>
 
 				{/* TODO Setting: Delete your account */}

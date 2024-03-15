@@ -1,5 +1,5 @@
 import { Heading, StackItem } from '@chakra-ui/react';
-import HeadingCenterline from './HeadingCenterline';
+import HeadingCenterline from '@common/HeadingCenterline';
 
 // A StackItem with a title and optional centerline.
 export default function ProfileStackItem({
