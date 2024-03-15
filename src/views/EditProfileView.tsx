@@ -65,6 +65,7 @@ import ProfileStackItem from '@common/ProfileStackItem';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
+import { sortCreditsByIndex } from '@/lib/utils';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -232,9 +233,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			// Remove credits with the isNew property set to true.
 			const existingCredits = credits.filter((credit) => !credit.isNew);
 
-			setCreditsSorted(
-				existingCredits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
-			);
+			setCreditsSorted(sortCreditsByIndex(existingCredits));
 		} else if (credits.length === 0) {
 			setCreditsSorted([]);
 		}
@@ -504,7 +503,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const handleNewCredit = () => {
 		editProfileDispatch({
-			type: 'ADD_CREDIT',
+			type: 'ADD_NEW_CREDIT',
 			payload: {},
 		});
 	};
@@ -514,18 +513,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			deleteCreditMutation(creditId, loggedInId)
 				.then(() => {
 					toast({
-						// title: 'Credit deleted.',
-						description: 'Your credit has been deleted.',
+						title: 'Credit deleted.',
+						// description: 'Your credit has been deleted.',
 						status: 'success',
 						duration: 5000,
 						isClosable: true,
 						position: 'top',
-					});
-					editProfileDispatch({
-						type: 'DELETE_CREDIT',
-						payload: {
-							creditId: creditId,
-						},
 					});
 				})
 				.catch((err) => {
@@ -642,9 +635,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			<Heading variant='contentTitle' my={0}>
 				Profile image
 			</Heading>
-			<Heading variant='contentSubtitle' fontSize='sm'>
+			<Text fontSize='sm' m={0}>
 				Portrait orientation works best. Max 2MB.
-			</Heading>
+			</Text>
 			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
 				// Uploading
 				<Flex alignItems='center' justifyContent='center' h='200px'>
@@ -806,6 +799,24 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</Flex>
 				)}
 			</Box>
+		);
+	};
+
+	const NewCreditButton = (): JSX.Element | null => {
+		// Check if there's a new credit, and don't count it toward the limit.
+		const newCredit = credits.find((credit) => credit.isNew);
+		const max = 5;
+		const limit = newCredit ? max + 1 : max;
+
+		return (
+			<Button
+				aria-label='Add a new credit'
+				leftIcon={<FiPlus />}
+				onClick={handleNewCredit}
+				isDisabled={editProfile.credits?.length === limit}
+			>
+				New Credit
+			</Button>
 		);
 	};
 
@@ -1097,7 +1108,15 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 				<ProfileStackItem title='Credits' centerlineColor='brand.blue' pos='relative' id='credits'>
 					<>
-						<Text>Enter your 5 best credits.</Text>
+						<Text fontSize='lg'>
+							Add your 5 best credits here.{' '}
+							<Text as='span' fontStyle='italic'>
+								You must have at least one credit to be listed in searches!
+							</Text>
+						</Text>
+
+						<NewCreditButton />
+
 						{/* TODO better reorder and delete animations */}
 						{/* TODO "Success" (or error) toast after saving credit and modal closes */}
 
@@ -1143,11 +1162,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</Stack>
 							))
 						)}
-						{editProfile.credits?.length < 5 && (
-							<Button aria-label='Add a new credit' leftIcon={<FiPlus />} onClick={handleNewCredit}>
-								New Credit
-							</Button>
-						)}
+
 						<EditCreditModal
 							isOpen={creditModalIsOpen}
 							onClose={handleCloseEditCredit}
@@ -1159,9 +1174,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				<ProfileStackItem title='About' centerlineColor='brand.orange'>
 					<>
 						<Heading variant='contentTitle'>Bio</Heading>
-						<Heading variant='contentSubtitle' my={2}>
+						<Text my={2} fontSize='lg'>
 							Write a little. Write a lot. It's up to you!
-						</Heading>
+						</Text>
 						<TextareaInput
 							value={description}
 							name='description'
@@ -1179,7 +1194,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 				<ProfileStackItem title='Identity' centerlineColor='brand.yellow'>
 					<>
-						<Text>
+						<Text fontSize='lg'>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
 							<em>will not appear</em> on your public profile. Select any that apply.
 						</Text>
@@ -1276,9 +1291,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</Box>
 						<Box mt={6}>
 							<Heading variant='contentTitle'>Images</Heading>
-							<Heading variant='contentSubtitle' fontSize='md'>
+							<Text fontSize='lg'>
 								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
-							</Heading>
+							</Text>
 							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 								{/* TODO show only the next available uploader, up to limit. */}
 								<FileDropzone fieldName='mediaImage1' text='Image 1' />

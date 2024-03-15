@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { PersonalLinks, UserProfile, WPItem } from '@lib/classes';
+import { Credit, PersonalLinks, UserProfile, WPItem } from '@lib/classes';
 import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
 const { VITE_FRONTEND_URL } = import.meta.env;
@@ -370,4 +370,71 @@ export function getCookie(name: string): string | undefined {
  */
 export function deleteCookie(name: string): void {
 	Cookies.remove(name);
+}
+
+/**
+ * Prepare a collection of Credit objects from as raw array of GQL nodes.
+ *
+ * @param nodes The raw array of GQL nodes to prepare.
+ * @returns An array of Credit objects.
+ */
+export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
+	const credits: Credit[] = [];
+
+	nodes.forEach((credit: { [key: string]: any }) => {
+		// If credit at least has an id and a title, return a new Credit object
+		if (!credit.id || !credit.title) return null;
+
+		const jobs = credit.positions.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId !== null
+		);
+		const departments = credit.positions.nodes.filter(
+			(position: { __typename: string; id: number; parentId: number }) => position.parentId === null
+		);
+
+		// Backwards compatibility for old credits
+		if ((!departments || !departments.length) && jobs) {
+			jobs.forEach((job: WPItem) => {
+				if (job.parentId) {
+					departments.push(new WPItem({ id: job.parentId }));
+				}
+			});
+		}
+
+		const newCredit = new Credit({
+			id: credit.id,
+			index: credit.index,
+			title: credit.title,
+			jobTitle: credit.jobTitle,
+			jobLocation: credit.jobLocation,
+			venue: credit.venue,
+			workStart: credit.workStart,
+			workEnd: credit.workEnd,
+			workCurrent: credit.workCurrent,
+			intern: credit.intern,
+			fellow: credit.fellow,
+			positions: {
+				departments: departments?.map((department: WPItem) => department.id),
+				jobs: jobs?.map((job: WPItem) => job.id),
+			},
+			skills: credit.skills?.nodes.map((skill: WPItem) => skill.id),
+		});
+
+		credits.push(newCredit);
+	});
+
+	return credits;
+}
+
+/**
+ * Sort a collection of Credits by their index property.
+ *
+ * @param credits The collection to sort.
+ * @returns A sorted array of Credits.
+ */
+export function sortCreditsByIndex(credits: Credit[]): Credit[] {
+	const sorted = [...credits];
+	sorted.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
+
+	return sorted;
 }

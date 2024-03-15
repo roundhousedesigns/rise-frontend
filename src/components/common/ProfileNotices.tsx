@@ -1,25 +1,25 @@
+import useUserProfile from '@/hooks/queries/useUserProfile';
 import useViewer from '@/hooks/queries/useViewer';
-import { UserProfile } from '@/lib/classes';
 import ProfileNotice from '@common/ProfileNotice';
 
 interface Props {
-	profile: UserProfile;
+	userId: number;
 }
 
-export default function ProfileNotices({ profile }: Props): JSX.Element {
+export default function ProfileNotices(): JSX.Element {
 	const { disableProfile, loggedInId } = useViewer();
-	const { id, credits } = profile;
+	const [profile] = useUserProfile(loggedInId);
 
-	const profileIsLoggedInUser = loggedInId === id;
+	if (!profile) {
+		return <></>;
+	}
 
-	return profileIsLoggedInUser ? (
-		disableProfile ? (
-			<ProfileNotice code='profile_disabled' status='warning' />
-		) : credits.length < 1 ? (
-			<ProfileNotice code='no_credits' status='warning' />
-		) : (
-			<></>
-		)
+	const { credits } = profile;
+
+	return disableProfile ? (
+		<ProfileNotice code='profile_disabled' status='warning' />
+	) : credits && credits.length < 1 ? (
+		<ProfileNotice code='no_credits' status='warning' />
 	) : (
 		<></>
 	);

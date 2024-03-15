@@ -1,6 +1,7 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
 import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra-ui/react';
 import { Credit, WPItem } from '@lib/classes';
+import { CreditParams } from '@lib/types';
 import { EditProfileContext } from '@context/EditProfileContext';
 import usePositions from '@hooks/queries/usePositions';
 import useLazyPositions from '@hooks/queries/useLazyPositions';
@@ -11,7 +12,7 @@ import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/ProfileRadioGroup';
 import EditCreditButtons from '@components/EditCreditButtons';
 import { sortWPItemsByName } from '@lib/utils';
-import { CreditParams } from '@lib/types';
+import useViewer from '@/hooks/queries/useViewer';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -60,7 +61,8 @@ interface Props {
 }
 
 export default function EditCreditView({ creditId, onClose: closeModal }: Props) {
-	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
+	const { loggedInId } = useViewer();
+	const { editProfile } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 
@@ -224,22 +226,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		e.stopPropagation();
-
+	const handleSubmit = () => {
 		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
 
-		updateCreditMutation(creditToUpdate, editCredit.id)
-			.then((results) => {
-				editProfileDispatch({
-					type: 'UPDATE_CREDIT',
-					payload: {
-						credit: results.data.updateOrCreateCredit.updatedCredit,
-						newCreditTempId: editCredit.isNew ? editCredit.id : null,
-					},
-				});
-
+		updateCreditMutation(creditToUpdate, loggedInId)
+			.then(() => {
 				closeModal();
 			})
 			.catch((err: any) => {
@@ -256,12 +247,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	return (
-		<form id='edit-credit' onSubmit={handleSubmit}>
+		<>
 			<Flex flex='1' justifyContent='space-between' py={2} mb={2}>
 				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
-				<EditCreditButtons handleCancel={handleCancel} isLoading={updateCreditLoading} />
+				<EditCreditButtons
+					handleSubmit={handleSubmit}
+					handleCancel={handleCancel}
+					isLoading={updateCreditLoading}
+				/>
 			</Flex>
 
 			<Flex gap={4}>
@@ -421,8 +416,12 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
-				<EditCreditButtons handleCancel={handleCancel} isLoading={updateCreditLoading} />
+				<EditCreditButtons
+					handleSubmit={handleSubmit}
+					handleCancel={handleCancel}
+					isLoading={updateCreditLoading}
+				/>
 			</Flex>
-		</form>
+		</>
 	);
 }

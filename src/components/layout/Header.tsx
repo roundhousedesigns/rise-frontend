@@ -279,7 +279,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 			<SearchDrawer isOpen={drawerIsOpen} onClose={closeDrawer} />
 
-			{profile ? <ProfileNotices profile={profile} /> : false}
+			{profile ? <ProfileNotices /> : false}
 		</Box>
 	);
 });
