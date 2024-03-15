@@ -316,7 +316,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								)}
 
 								{unions && unions.length > 0 && unionTerms ? (
-									<ProfileStackItem title='Unions/Guilds'>
+									<ProfileStackItem title='Unions/Guilds/Memberships'>
 										<WrapWithIcon icon={FiUser}>
 											{SelectedTerms({ ids: unions, terms: unionTerms })}
 										</WrapWithIcon>

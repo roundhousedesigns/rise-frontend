@@ -1055,7 +1055,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</ProfileStackItem>
 					<ProfileStackItem>
 						<Stack display='flex' gap={4}>
-							<ProfileStackItem title='Unions/Guilds'>
+							<ProfileStackItem title='Unions/Guilds/Memberships'>
 								<>
 									<Heading variant='contentSubtitle'>
 										What unions or guilds are you a member of?
