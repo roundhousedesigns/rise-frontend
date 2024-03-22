@@ -46,7 +46,9 @@ const QUERY_CANDIDATES = gql`
  * @returns {Array} The useLazyQuery return tuple.
  */
 const useCandidateSearch = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
-	return useLazyQuery(QUERY_CANDIDATES);
+	return useLazyQuery(QUERY_CANDIDATES, {
+		fetchPolicy: 'cache-and-network',
+	});
 };
 
 export default useCandidateSearch;

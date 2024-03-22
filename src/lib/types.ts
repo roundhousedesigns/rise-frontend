@@ -42,6 +42,13 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	willTour?: boolean | string | number | null;
 	education?: string;
+	socials?: PersonalLinksParams;
+	twitter?: string;
+	linkedin?: string;
+	instagram?: string;
+	facebook?: string;
+	website?: string;
+	unavailable?: boolean;
 	mediaVideo1?: string;
 	mediaVideo2?: string;
 	mediaImage1?: string;
@@ -57,12 +64,6 @@ export interface UserProfileParams {
 	genderIdentities?: number[] | WPItem[];
 	racialIdentities?: number[] | WPItem[];
 	personalIdentities?: number[] | WPItem[];
-	socials?: PersonalLinksParams;
-	twitter?: string;
-	linkedin?: string;
-	instagram?: string;
-	facebook?: string;
-	website?: string;
 }
 
 /**
@@ -75,6 +76,7 @@ export interface CandidateData {
 	lastName?: string;
 	selfTitle?: string;
 	image?: string;
+	unavailable?: boolean;
 }
 
 /**

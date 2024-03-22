@@ -14,7 +14,7 @@ interface Props {
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { loggedInId } = useViewer();
 
-	const { id, image, slug, selfTitle } = candidate || {};
+	const { id, image, slug, selfTitle, unavailable } = candidate || {};
 
 	if (!id) return null;
 
@@ -32,16 +32,19 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				py={{ base: 1, md: 2 }}
 				mr={4}
 				my={0}
+				borderWidth={2}
 				_dark={{
 					bg: 'gray.800',
+					borderColor: unavailable ? 'brand.yellow' : 'gray.700',
 					_hover: {
-						bg: 'gray.900',
+						bg: 'gray.700',
 					},
 				}}
 				_light={{
 					bg: 'gray.100',
+					borderColor: 'gray.200',
 					_hover: {
-						bg: 'gray.50',
+						bg: 'gray.200',
 					},
 				}}
 				{...props}

@@ -109,6 +109,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 		slug,
 		image,
 		resume,
+		unavailable,
 		mediaImage1,
 		mediaImage2,
 		mediaImage3,

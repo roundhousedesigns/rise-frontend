@@ -59,7 +59,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { colorMode } = useColorMode();
 
 	const {
-		search: { searchActive, results },
+		search: { results },
 	} = useContext(SearchContext);
 
 	const isLargerThanMd = useBreakpointValue(
@@ -202,7 +202,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								fontSize='lg'
 							>
 								<BookmarkedProfilesButton />
-								{searchActive && results.length ? <SearchResultsButton /> : false}
+								{results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}
 							</Flex>

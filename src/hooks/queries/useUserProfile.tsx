@@ -24,11 +24,12 @@ export const QUERY_PROFILE = gql`
 			willTravel
 			willTour
 			education
-			website: websiteUrl
 			twitter
 			instagram
 			linkedin
 			facebook
+			website: websiteUrl
+			unavailable
 			locations {
 				id: databaseId
 			}
