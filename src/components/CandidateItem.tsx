@@ -1,5 +1,5 @@
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Tooltip } from '@chakra-ui/react';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
@@ -35,7 +35,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				borderWidth={2}
 				_dark={{
 					bg: 'gray.800',
-					borderColor: unavailable ? 'brand.yellow' : 'gray.700',
+					borderColor: 'gray.700',
 					_hover: {
 						bg: 'gray.700',
 					},
@@ -57,16 +57,24 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					gap={{ base: 'initial', md: 0 }}
 				>
 					<Avatar
-						size='sm'
+						size='md'
 						name={candidate.fullName()}
 						flex='0 0 auto'
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
-					/>
+					>
+						{!!unavailable ? (
+							<Tooltip hasArrow openDelay={500} label='Hirable now'>
+								<AvatarBadge boxSize={4} bgColor='green.400' />
+							</Tooltip>
+						) : (
+							false
+						)}
+					</Avatar>
 					<Heading
 						as='h3'
-						fontSize='md'
+						fontSize='lg'
 						fontWeight='normal'
 						textAlign='left'
 						flex='1'
@@ -79,7 +87,6 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
 						flex='1'
-						fontSize='xs'
 						noOfLines={2}
 					>
 						{selfTitle}

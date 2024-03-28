@@ -157,7 +157,7 @@ export class UserProfile extends User {
 		this.image = image;
 		this.phone = phone;
 		this.website = website;
-		this.unavailable = unavailable;
+		this.unavailable = unavailable || undefined;
 		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
 		this.education = education ? decodeString(education) : education;
@@ -260,6 +260,8 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
+
+		this.unavailable = this.unavailable || undefined;
 	}
 }
 

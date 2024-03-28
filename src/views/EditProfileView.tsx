@@ -831,6 +831,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<ProfileStackItem mt={4} mb={0}>
+					{/* TODO convert Accordion to Drawer */}
 					<Accordion allowToggle>
 						<AccordionItem>
 							<Heading as='h3' m={0}>

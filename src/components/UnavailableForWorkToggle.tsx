@@ -1,5 +1,5 @@
 import { Box, Highlight, Text } from '@chakra-ui/react';
-import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi';
+import { FiUserCheck, FiUserMinus } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleUnavailableForWork from '@hooks/mutations/useToggleLookingForWork';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
@@ -34,8 +34,8 @@ export default function UnavailableForWorkToggle({
 				checked={unavailable}
 				callback={handleToggleUnavailableForWork}
 				label='Availability'
-				icon={FiThumbsDown}
-				iconRight={FiThumbsUp}
+				icon={FiUserMinus}
+				iconRight={FiUserCheck}
 				size={size}
 				loading={loading}
 				showLabel={showLabel}

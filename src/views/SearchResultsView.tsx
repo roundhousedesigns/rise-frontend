@@ -9,7 +9,6 @@ import CandidateList from '@components/CandidateList';
 export default function SearchResultsView() {
 	const {
 		search: {
-			searchActive,
 			filters: { filterSet },
 			results,
 		},
@@ -42,7 +41,7 @@ export default function SearchResultsView() {
 	return (
 		<>
 			<SavedSearchItem searchTerms={flattenfilterSetPositions(filterSet)} />
-			{searchActive ? (
+			{resultsCount ? (
 				<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>

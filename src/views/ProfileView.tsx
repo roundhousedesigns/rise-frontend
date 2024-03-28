@@ -21,6 +21,8 @@ import {
 	useBreakpointValue,
 	Spacer,
 	IconButton,
+	AvatarBadge,
+	Tooltip,
 } from '@chakra-ui/react';
 import {
 	FiGlobe,
@@ -81,6 +83,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
+		unavailable,
 		socials,
 		unions,
 		partnerDirectories,
@@ -243,7 +246,15 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										/>
 									</Box>
 								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2} />
+									<Avatar size='2xl' name={profile.fullName()} mx={2}>
+										{!!unavailable ? (
+											<Tooltip hasArrow openDelay={500} label='Hirable now'>
+												<AvatarBadge boxSize={8} bgColor='green.400' />
+											</Tooltip>
+										) : (
+											false
+										)}
+									</Avatar>
 								)
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />

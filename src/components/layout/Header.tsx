@@ -97,11 +97,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			to='/bookmarks'
 			icon={
 				isLargerThanMd && bookmarkedProfiles.length ? (
-					<Badge py={1} px={2} ml={0} borderRadius='full' colorScheme='orange'>
+					<Badge py={1} px={2} ml={0} borderRadius='full'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
-					<Icon as={FiBookmark} fill={bookmarkedProfiles.length ? 'brand.orange' : ''} />
+					<Icon as={FiBookmark} />
 				)
 			}
 			label='Saved candidates'
