@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file, starting with 1.0.0beta.
 
+## \[1.1.4] - Unreleased
+
+- Add: Upload authorization message.
+- Add: Quick Actions to Edit Profile screen.
+- Add: Open to Work (Avail/Busy) badges and options.
+- Improve: Simplified (removed) color on "Saved" button.
+- Improve: ToggleOptionSwitch `icon` prop renamed to `iconLeft`.
+- Improve: "Uploaded"/"Saved" words swapped in successful upload toast.
+
 ## \[1.1.3] - 2024-03-15
 
 - Fix: refetchQuery on QUERY_PROFILE now using same variables and fires properly. Allowed removal of EditProfileContext credit update/delete actions.
