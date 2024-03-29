@@ -15,13 +15,13 @@ The front end portion of RISE is built using:
 
 ### Node Setup
 
-1. Node v19.4.0 or above is required. We recommend using `nvm` to manage node\
+1. Node v19.4.0 or above is required. We recommend using `nvm` to manage node
 versioning control. For help installing and using nvm, see [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)
 2. Install v19.4.0 of node with the command:
 
          nvm install 19.4.0
 
-    Confim that v19.4.0 or above is running (an arrow will point to current version)\
+    Confim that v19.4.0 or above is running (an arrow will point to current version)
     with the command:
 
          nvm ls
