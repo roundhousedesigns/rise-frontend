@@ -87,6 +87,7 @@ export class UserProfile extends User {
 	education?: string;
 	website?: string;
 	lookingForWork?: boolean;
+	isOrg?: boolean;
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
@@ -129,6 +130,7 @@ export class UserProfile extends User {
 			facebook,
 			website,
 			lookingForWork,
+			isOrg,
 			locations,
 			unions,
 			partnerDirectories,
@@ -158,6 +160,7 @@ export class UserProfile extends User {
 		this.phone = phone;
 		this.website = website;
 		this.lookingForWork = lookingForWork || undefined;
+		this.isOrg = isOrg || undefined;
 		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
 		this.education = education ? decodeString(education) : education;
@@ -255,13 +258,10 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	searchScore?: number;
 	selfTitle?: string;
 	image?: string;
-	lookingForWork?: boolean;
 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
-
-		this.lookingForWork = this.lookingForWork || undefined;
 	}
 }
 

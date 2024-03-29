@@ -51,6 +51,7 @@ import ProfileStackItem from '@common/ProfileStackItem';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
+import { getLabels } from '@/lib/profileLabelMappings';
 
 interface Props {
 	profile: UserProfile;
@@ -85,6 +86,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		locations,
 		website,
 		lookingForWork,
+		isOrg,
 		socials,
 		unions,
 		partnerDirectories,
@@ -115,6 +117,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		mediaImage5,
 		mediaImage6,
 	].filter((image) => !!image);
+
+	const labels = getLabels(!!isOrg);
 
 	const creditsSorted = credits
 		? credits.sort((a: Credit, b: Credit) => (a.index > b.index ? 1 : -1))
@@ -292,7 +296,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										>
 											{profile.fullName()}
 										</Heading>
-										{pronouns ? (
+										{pronouns && !isOrg ? (
 											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
 												{pronouns}
 											</Tag>
@@ -306,7 +310,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								</StackItem>
 
 								{locations && locations.length > 0 ? (
-									<ProfileStackItem title='Works In'>
+									<ProfileStackItem title={labels.worksIn}>
 										<>
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms
@@ -333,7 +337,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									false
 								)}
 
-								{unions && unions.length > 0 && unionTerms ? (
+								{unions && unions.length > 0 && unionTerms && !isOrg ? (
 									<ProfileStackItem title='Unions/Guilds/Memberships'>
 										<WrapWithIcon icon={FiUser}>
 											{SelectedTerms({ ids: unions, terms: unionTerms })}
@@ -343,7 +347,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									false
 								)}
 
-								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
+								{partnerDirectories &&
+								partnerDirectories.length > 0 &&
+								partnerDirectoryTerms &&
+								!isOrg ? (
 									<ProfileStackItem title='RISE Network Partner Directories'>
 										<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
 											<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
@@ -434,7 +441,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					</>
 				</ProfileStackItem>
 
-				{credits && credits.length > 0 && (
+				{credits && credits.length > 0 && !isOrg ? (
 					<ProfileStackItem centerlineColor='brand.blue' title='Credits'>
 						<>
 							<Flex justifyContent='flex-end'>
@@ -449,6 +456,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							</List>
 						</>
 					</ProfileStackItem>
+				) : (
+					false
 				)}
 
 				{description && (
@@ -459,12 +468,14 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 					</ProfileStackItem>
 				)}
 
-				{education && (
+				{education && !isOrg ? (
 					<ProfileStackItem centerlineColor='brand.green' title='Education + Training'>
 						<Text whiteSpace='pre-wrap' borderRadius='md'>
 							{education.trim()}
 						</Text>
 					</ProfileStackItem>
+				) : (
+					false
 				)}
 
 				{mediaVideos.length > 0 || mediaImages.length > 0 ? (

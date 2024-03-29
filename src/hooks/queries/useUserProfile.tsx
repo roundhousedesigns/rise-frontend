@@ -30,6 +30,7 @@ export const QUERY_PROFILE = gql`
 			facebook
 			website: websiteUrl
 			lookingForWork
+			isOrg
 			locations {
 				id: databaseId
 			}

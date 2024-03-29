@@ -75,6 +75,7 @@ import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import LookingForWorkToggle from '@components/LookingForWorkToggle';
 import IsOrgToggle from '@components/IsOrgToggle';
+import { getLabels } from '@/lib/profileLabelMappings';
 
 // TODO Add cancel/navigation-away confirmation when exiting with edits
 
@@ -88,7 +89,7 @@ interface Props {
  */
 export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug } = useViewer();
+	const { loggedInId, loggedInSlug, isOrg } = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -140,6 +141,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<boolean>(false);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
+	const labels = getLabels(isOrg);
 
 	const {
 		uploadFileMutation,
@@ -858,52 +861,61 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</AccordionItem>
 					</Accordion>
 				</ProfileStackItem>
+
 				<ProfileStackItem>
 					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
 						{isLargerThanMd ? <ProfileImageUploader /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+									{isOrg ? (
+										false
+									) : (
+										<TextInput
+											placeholder='First'
+											value={firstName}
+											name='firstName'
+											isRequired
+											onChange={handleInputChange}
+											flex='1'
+											label='First name'
+											minW='200px'
+										/>
+									)}
 									<TextInput
-										placeholder='First'
-										value={firstName}
-										name='firstName'
-										isRequired
-										onChange={handleInputChange}
-										flex='1'
-										label='First name'
-										minW='200px'
-									/>
-									<TextInput
-										placeholder='Last'
+										placeholder={labels.lastNamePlaceholder}
 										value={lastName}
 										name='lastName'
 										isRequired
-										label='Last name'
+										label={labels.lastName}
 										onChange={handleInputChange}
 										flex='1'
 										minW='200px'
 									/>
-									<TextInput
-										value={pronouns}
-										name='pronouns'
-										label='Pronouns'
-										onChange={handleInputChange}
-										maxW='150px'
-										inputProps={{
-											size: 'md',
-											tabIndex: 0,
-										}}
-									/>
+									{isOrg ? (
+										false
+									) : (
+										<TextInput
+											value={pronouns}
+											name='pronouns'
+											label='Pronouns'
+											onChange={handleInputChange}
+											maxW='150px'
+											inputProps={{
+												size: 'md',
+												tabIndex: 0,
+											}}
+										/>
+									)}
 								</Flex>
 							</ProfileStackItem>
-							<ProfileStackItem title='Profession'>
+							<ProfileStackItem title={labels.profession}>
 								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
 									<TextInput
 										value={selfTitle}
 										name='selfTitle'
 										placeholder='Title'
-										label='Title/Trade/Profession'
+										label={labels.titleTradeProfession}
 										leftElement={<Icon as={FiStar} />}
 										onChange={handleInputChange}
 										maxLength={50}
@@ -916,7 +928,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder='Home base'
 										value={homebase}
 										name='homebase'
-										label='Where do you currently live?'
+										label={labels.homebase}
 										leftElement={<Icon as={FiHome} />}
 										onChange={handleInputChange}
 										maxLength={25}
@@ -1013,7 +1025,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</Stack>
 					</Flex>
 				</ProfileStackItem>
-				<ProfileStackItem title='Work Locations' fontSize='sm'>
+
+				<ProfileStackItem title='Work Locations' fontSize='sm' visible={!isOrg}>
 					<>
 						<Heading variant='contentSubtitle'>
 							Select any areas in which you're a local hire.
@@ -1028,7 +1041,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						/>
 					</>
 				</ProfileStackItem>
-				<ProfileStackItem py={4} display='flex' gap={10}>
+
+				<ProfileStackItem py={4} display='flex' gap={10} visible={!isOrg}>
 					<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
 						<Box>
 							<Heading variant='contentTitle'>Travel</Heading>
@@ -1087,7 +1101,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</Box>
 					</Flex>
 				</ProfileStackItem>
-				<ProfileStackItem>
+
+				<ProfileStackItem visible={!isOrg}>
 					<Stack display='flex' gap={4}>
 						<ProfileStackItem title='Unions/Guilds/Memberships'>
 							<>
@@ -1138,7 +1153,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</ProfileStackItem>
 					</Stack>
 				</ProfileStackItem>
-				<ProfileStackItem title='Credits' centerlineColor='brand.blue' pos='relative' id='credits'>
+
+				<ProfileStackItem
+					title='Credits'
+					centerlineColor='brand.blue'
+					pos='relative'
+					id='credits'
+					visible={!isOrg}
+				>
 					<>
 						<Text fontSize='lg'>
 							Add your 5 best credits here.{' '}
@@ -1224,7 +1246,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='Identity' centerlineColor='brand.yellow'>
+				<ProfileStackItem title='Identity' centerlineColor='brand.yellow' visible={!isOrg}>
 					<>
 						<Text fontSize='lg'>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
@@ -1261,7 +1283,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='Education + Training' centerlineColor='brand.green'>
+				<ProfileStackItem
+					title='Education + Training'
+					centerlineColor='brand.green'
+					visible={!isOrg}
+				>
 					<TextareaInput
 						value={education}
 						name='education'
