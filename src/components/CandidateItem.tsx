@@ -1,5 +1,6 @@
+import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Tooltip, Icon } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Tooltip } from '@chakra-ui/react';
+import { FiThumbsUp } from 'react-icons/fi';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
@@ -14,7 +15,7 @@ interface Props {
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { loggedInId } = useViewer();
 
-	const { id, image, slug, selfTitle, unavailable } = candidate || {};
+	const { id, image, slug, selfTitle, lookingForWork } = candidate || {};
 
 	if (!id) return null;
 
@@ -64,9 +65,11 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						src={image}
 						ignoreFallback={image ? true : false}
 					>
-						{!!unavailable ? (
-							<Tooltip hasArrow openDelay={500} label='Hirable now'>
-								<AvatarBadge boxSize={4} bgColor='green.400' />
+						{lookingForWork ? (
+							<Tooltip hasArrow openDelay={500} label='Looking for work'>
+								<AvatarBadge boxSize={7} bgColor='green.400'>
+									<Icon as={FiThumbsUp} boxSize={3} />
+								</AvatarBadge>
 							</Tooltip>
 						) : (
 							false

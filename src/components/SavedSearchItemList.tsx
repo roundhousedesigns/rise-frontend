@@ -1,7 +1,7 @@
 import { chakra, Text, Card, Stack, Container } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { WPPost } from '@/lib/classes';
-import useSavedSearches from '@/hooks/queries/useSavedSearches';
+import { WPPost } from '@lib/classes';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import SavedSearchItem from '@components/SavedSearchItem';
 
 interface Props {

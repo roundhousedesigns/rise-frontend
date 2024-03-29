@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react';
 import { Text } from '@chakra-ui/react';
-import { flattenfilterSetPositions } from '@/lib/utils';
+import { flattenfilterSetPositions } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';

@@ -1,6 +1,6 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
 import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
-import { additionalFilterKeys } from '@/lib/utils';
+import { additionalFilterKeys } from '@lib/utils';
 
 interface SearchState {
 	filters: {

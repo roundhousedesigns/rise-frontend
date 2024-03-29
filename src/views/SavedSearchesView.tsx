@@ -1,5 +1,5 @@
 import { Box, Container, Text } from '@chakra-ui/react';
-import SavedSearchItemList from '@/components/SavedSearchItemList';
+import SavedSearchItemList from '@components/SavedSearchItemList';
 
 export default function SavedSearchesView() {
 	return (

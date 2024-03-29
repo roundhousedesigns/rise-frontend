@@ -34,6 +34,7 @@ import {
 	FiLink,
 	FiMap,
 	FiDownload,
+	FiThumbsUp,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
@@ -83,7 +84,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
-		unavailable,
+		lookingForWork,
 		socials,
 		unions,
 		partnerDirectories,
@@ -247,9 +248,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									</Box>
 								) : (
 									<Avatar size='2xl' name={profile.fullName()} mx={2}>
-										{!!unavailable ? (
-											<Tooltip hasArrow openDelay={500} label='Hirable now'>
-												<AvatarBadge boxSize={8} bgColor='green.400' />
+										{lookingForWork ? (
+											<Tooltip hasArrow openDelay={500} label='Looking for work'>
+												<AvatarBadge boxSize={12} bgColor='green.400'>
+													<Icon as={FiThumbsUp} boxSize={4} />
+												</AvatarBadge>
 											</Tooltip>
 										) : (
 											false

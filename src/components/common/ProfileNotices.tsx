@@ -1,5 +1,5 @@
-import useUserProfile from '@/hooks/queries/useUserProfile';
-import useViewer from '@/hooks/queries/useViewer';
+import useUserProfile from '@hooks/queries/useUserProfile';
+import useViewer from '@hooks/queries/useViewer';
 import ProfileNotice from '@common/ProfileNotice';
 
 interface Props {

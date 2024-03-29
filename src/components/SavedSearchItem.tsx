@@ -29,7 +29,7 @@ import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useDeleteSavedSearch from '@/hooks/mutations/useDeleteSavedSearch';
+import useDeleteSavedSearch from '@hooks/mutations/useDeleteSavedSearch';
 import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';

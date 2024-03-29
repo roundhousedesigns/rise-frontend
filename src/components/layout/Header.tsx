@@ -39,7 +39,7 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
-import useUserProfile from '@/hooks/queries/useUserProfile';
+import useUserProfile from '@hooks/queries/useUserProfile';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';

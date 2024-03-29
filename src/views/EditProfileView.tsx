@@ -25,6 +25,7 @@ import {
 	AccordionButton,
 	AccordionIcon,
 	AccordionPanel,
+	Card,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -72,7 +73,7 @@ import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
-import UnavailableForWorkToggle from '@components/UnavailableForWorkToggle';
+import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -401,9 +402,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 				// success toast
 				toast({
-					title: 'Image saved!',
+					title: 'Image uploaded!',
 					position: 'top',
-					description: 'Your image has been uploaded.',
+					description: 'Your image has been saved.',
 					status: 'success',
 					duration: 5000,
 					isClosable: true,
@@ -449,9 +450,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 				// success toast
 				toast({
-					title: 'Image saved!',
+					title: 'Image uploaded!',
 					position: 'top',
-					description: 'Your image has been uploaded.',
+					description: 'Your image has been saved.',
 					status: 'success',
 					duration: 5000,
 					isClosable: true,
@@ -831,8 +832,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<ProfileStackItem mt={4} mb={0}>
-					{/* TODO convert Accordion to Drawer */}
-					<Accordion allowToggle>
+					<Accordion allowToggle defaultIndex={0}>
 						<AccordionItem>
 							<Heading as='h3' m={0}>
 								<AccordionButton>
@@ -843,9 +843,13 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</AccordionButton>
 							</Heading>
 							<AccordionPanel>
-								<Flex justifyContent='space-between'>
-									<DisableProfileToggle showHelperText showLabel />
-									<UnavailableForWorkToggle showHelperText showLabel />
+								<Flex justifyContent='flex-start' gap={4}>
+									<Card py={2} my={0}>
+										<DisableProfileToggle showHelperText showLabel />
+									</Card>
+									<Card py={2} my={0}>
+										<LookingForWorkToggle showHelperText showLabel />
+									</Card>
 								</Flex>
 							</AccordionPanel>
 						</AccordionItem>

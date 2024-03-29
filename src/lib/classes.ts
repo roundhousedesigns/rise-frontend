@@ -86,7 +86,7 @@ export class UserProfile extends User {
 	willTour = false;
 	education?: string;
 	website?: string;
-	unavailable?: boolean;
+	lookingForWork?: boolean;
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
@@ -128,7 +128,7 @@ export class UserProfile extends User {
 			instagram,
 			facebook,
 			website,
-			unavailable,
+			lookingForWork,
 			locations,
 			unions,
 			partnerDirectories,
@@ -157,7 +157,7 @@ export class UserProfile extends User {
 		this.image = image;
 		this.phone = phone;
 		this.website = website;
-		this.unavailable = unavailable || undefined;
+		this.lookingForWork = lookingForWork || undefined;
 		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
 		this.education = education ? decodeString(education) : education;
@@ -255,13 +255,13 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	searchScore?: number;
 	selfTitle?: string;
 	image?: string;
-	unavailable?: boolean;
+	lookingForWork?: boolean;
 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
 
-		this.unavailable = this.unavailable || undefined;
+		this.lookingForWork = this.lookingForWork || undefined;
 	}
 }
 

@@ -13,7 +13,7 @@ export const QUERY_VIEWER = gql`
 			lastName
 			email
 			disableProfile
-			unavailable
+			lookingForWork
 			bookmarkedProfileConnections(first: 50) {
 				nodes {
 					databaseId
@@ -30,7 +30,7 @@ interface Props {
 	lastName: string;
 	email: string;
 	disableProfile: boolean;
-	unavailable: boolean;
+	lookingForWork: boolean;
 	result: QueryResult;
 	bookmarkedProfiles: number[];
 }
@@ -47,7 +47,7 @@ const useViewer = (): Props => {
 		lastName,
 		email,
 		disableProfile,
-		unavailable,
+		lookingForWork,
 		bookmarkedProfileConnections,
 	} = result?.data?.viewer || {};
 
@@ -62,7 +62,7 @@ const useViewer = (): Props => {
 		lastName,
 		email,
 		disableProfile,
-		unavailable,
+		lookingForWork,
 		bookmarkedProfiles,
 		result,
 	};
