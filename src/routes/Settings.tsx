@@ -6,6 +6,7 @@ import SettingsSection from '@common/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
 import LookingForWorkToggle from '@components/LookingForWorkToggle';
+import IsOrgToggle from '@/components/IsOrgToggle';
 
 export default function Settings() {
 	return (
@@ -26,6 +27,7 @@ export default function Settings() {
 				<SettingsSection title='Options'>
 					<DisableProfileToggle showHelperText={true} size='lg' />
 					<LookingForWorkToggle showHelperText={true} size='lg' />
+					<IsOrgToggle showHelperText={true} size='lg' />
 					<Divider />
 					<DarkModeToggle showHelperText={true} size='lg' />
 				</SettingsSection>

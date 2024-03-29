@@ -74,8 +74,8 @@ import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import LookingForWorkToggle from '@components/LookingForWorkToggle';
+import IsOrgToggle from '@components/IsOrgToggle';
 
-// TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
 
 interface Props {
@@ -849,6 +849,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Card>
 									<Card py={2} my={0}>
 										<LookingForWorkToggle showHelperText showLabel />
+									</Card>
+									<Card py={2} my={0}>
+										<IsOrgToggle showHelperText showLabel />
 									</Card>
 								</Flex>
 							</AccordionPanel>
