@@ -187,8 +187,12 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			gap={{ base: 0, md: 2 }}
 			{...props}
 		>
-			<ShareButton url={profileUrl} />
-			{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' mx={{ base: 0 }} /> : false}
+			<ShareButton url={profileUrl} borderRadius='full' />
+			{id && allowBookmark ? (
+				<BookmarkToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
+			) : (
+				false
+			)}
 		</Flex>
 	);
 

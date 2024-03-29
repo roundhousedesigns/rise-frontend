@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file, starting wi
 - Improve: Simplified (removed) color on "Saved" button.
 - Improve: ToggleOptionSwitch `icon` prop renamed to `iconLeft`.
 - Improve: "Uploaded"/"Saved" words swapped in successful upload toast.
+- Improve: Make IconButton styles and sizes more consistent.
 
 ## \[1.1.3] - 2024-03-15
 

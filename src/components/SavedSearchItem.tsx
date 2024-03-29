@@ -206,7 +206,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								title='Save this search'
 								onClick={handleEditClick}
 								ml={2}
-								size='sm'
+								size='md'
 								borderRadius='full'
 							>
 								Save
