@@ -126,6 +126,7 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 		'image',
 		'resume',
 		'lookingForWork',
+		'isOrg',
 		'mediaImage1',
 		'mediaImage2',
 		'mediaImage3',

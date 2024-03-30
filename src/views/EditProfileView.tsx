@@ -914,7 +914,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<TextInput
 										value={selfTitle}
 										name='selfTitle'
-										placeholder='Title'
+										placeholder={labels.titleTradeProfessionPlaceholder}
 										label={labels.titleTradeProfession}
 										leftElement={<Icon as={FiStar} />}
 										onChange={handleInputChange}

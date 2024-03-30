@@ -17,11 +17,15 @@ const labelMappings = {
 	},
 	titleTradeProfession: {
 		individual: 'Title/Trade/Profession',
-		employer: 'Business type',
+		employer: 'Organization type',
+	},
+	titleTradeProfessionPlaceholder: {
+		individual: 'Title',
+		employer: 'Theater, producer, contractor, etc',
 	},
 	homebase: {
 		individual: 'Home base',
-		employer: 'Main business location',
+		employer: 'Main location',
 	},
 	worksIn: {
 		individual: 'Works In',
