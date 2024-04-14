@@ -25,11 +25,11 @@ export default function Settings() {
 				</SettingsSection>
 
 				<SettingsSection title='Options'>
-					<DisableProfileToggle showHelperText={true} size='lg' />
-					<LookingForWorkToggle showHelperText={true} size='lg' />
-					<IsOrgToggle showHelperText={true} size='lg' />
+					<DisableProfileToggle showHelperText size='lg' />
+					<LookingForWorkToggle showHelperText size='lg' />
+					<IsOrgToggle showHelperText size='lg' />
 					<Divider />
-					<DarkModeToggle showHelperText={true} size='lg' />
+					<DarkModeToggle showHelperText size='lg' />
 				</SettingsSection>
 
 				{/* TODO Setting: Close your account */}

@@ -846,14 +846,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</AccordionButton>
 							</Heading>
 							<AccordionPanel>
-								<Flex justifyContent='flex-start' gap={4}>
-									<Card py={2} my={0}>
+								<Flex justifyContent='flex-start' alignItems='center' gap={4}>
+									<Card variant='optionToggle'>
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
-									<Card py={2} my={0}>
+									<Card variant='optionToggle'>
 										<LookingForWorkToggle showHelperText showLabel />
 									</Card>
-									<Card py={2} my={0}>
+									<Card variant='optionToggle'>
 										<IsOrgToggle showHelperText showLabel />
 									</Card>
 								</Flex>

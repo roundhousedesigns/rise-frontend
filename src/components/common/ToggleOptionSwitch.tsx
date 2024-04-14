@@ -12,7 +12,7 @@ interface Props {
 	size?: string;
 	loading?: boolean;
 	callback: () => void;
-	children?: string | JSX.Element;
+	helperText?: string | JSX.Element;
 	[prop: string]: any;
 }
 export default function ToggleOptionSwitch({
@@ -26,7 +26,7 @@ export default function ToggleOptionSwitch({
 	size = 'lg',
 	loading,
 	callback,
-	children,
+	helperText,
 	...props
 }: Props): JSX.Element {
 	const [toggleState, setToggleState] = useState<boolean>(checked);
@@ -73,9 +73,9 @@ export default function ToggleOptionSwitch({
 				>
 					{label}
 				</FormLabel>
-				{children ? (
-					<FormHelperText my={0} fontStyle='italic'>
-						{children}
+				{helperText ? (
+					<FormHelperText my={0} lineHeight='1'>
+						{helperText}
 					</FormHelperText>
 				) : (
 					false

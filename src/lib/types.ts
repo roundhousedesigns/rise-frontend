@@ -21,6 +21,8 @@ export interface UserParams {
 	slug: string | null;
 	firstName?: string;
 	lastName?: string;
+	companyName?: string;
+	isOrg?: boolean;
 }
 
 /**
@@ -31,6 +33,7 @@ export interface UserProfileParams {
 	slug: string | null;
 	firstName?: string;
 	lastName?: string;
+	companyName?: string;
 	email?: string;
 	selfTitle?: string;
 	homebase?: string;
@@ -75,6 +78,7 @@ export interface CandidateData {
 	slug: string;
 	firstName?: string;
 	lastName?: string;
+	companyName?: string;
 	selfTitle?: string;
 	image?: string;
 }

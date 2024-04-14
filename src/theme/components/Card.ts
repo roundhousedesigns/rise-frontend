@@ -19,4 +19,14 @@ const baseStyle = definePartsStyle({
 	},
 });
 
-export default defineMultiStyleConfig({ baseStyle });
+const variants = {
+	optionToggle: definePartsStyle({
+		container: {
+			my: 0,
+			py: 4,
+			flex: 1,
+		},
+	}),
+};
+
+export default defineMultiStyleConfig({ baseStyle, variants });

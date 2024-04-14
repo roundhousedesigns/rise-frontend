@@ -1,4 +1,4 @@
-import { Box, Highlight, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
@@ -33,6 +33,13 @@ export default function DisableProfileToggle({
 		else deleteCookie(noticeLabel);
 	};
 
+	const helperText =
+		showHelperText && disableProfile
+			? "Your profile is private and you won't appear in searches."
+			: showHelperText && !disableProfile
+			? "Your profile is public  and you'll appear in searches."
+			: '';
+
 	return (
 		<Box {...props}>
 			<ToggleOptionSwitch
@@ -44,26 +51,9 @@ export default function DisableProfileToggle({
 				iconRight={FiEye}
 				size={size}
 				loading={loading}
+				helperText={helperText}
 				showLabel={showLabel}
-			>
-				<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
-			</ToggleOptionSwitch>
+			/>
 		</Box>
 	);
 }
-
-const Description = ({ disableProfile }: { disableProfile: boolean }) => {
-	return disableProfile ? (
-		<Text as='span'>
-			<Highlight query={['private', 'hidden']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				Your profile is private and you won't appear in searches.
-			</Highlight>
-		</Text>
-	) : (
-		<Text as='span'>
-			<Highlight query={['public']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				Your profile is public and you'll appear in searches.
-			</Highlight>
-		</Text>
-	);
-};

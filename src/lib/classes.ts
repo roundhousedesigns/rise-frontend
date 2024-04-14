@@ -18,6 +18,7 @@ export class User implements UserParams {
 	slug: string | null = null;
 	firstName?: string;
 	lastName?: string;
+	companyName?: string;
 	[prop: string]: any;
 
 	constructor(params?: UserParams) {
@@ -26,45 +27,6 @@ export class User implements UserParams {
 				id: params.id ? Number(params.id) : null,
 			});
 		}
-	}
-
-	/**
-	 * Generate a full name from a first and last name.
-	 */
-	fullName(): string {
-		const { firstName, lastName } = this;
-		return [firstName, lastName].filter(Boolean).join(' ');
-	}
-}
-
-/**
- * The logged in user.
- */
-export class CurrentUser extends User {
-	email: string;
-	bookmarkedProfiles: number[];
-
-	constructor(params?: UserParams & { email: string; bookmarkedProfiles: number[] }) {
-		const { id, firstName, lastName, slug, email, bookmarkedProfiles } = params || {};
-
-		super({
-			id: id ? id : null,
-			firstName: firstName ? firstName : '',
-			lastName: lastName ? lastName : '',
-			slug: slug ? slug : null,
-		});
-
-		this.email = email ? email : '';
-		this.bookmarkedProfiles = bookmarkedProfiles ? bookmarkedProfiles : [];
-	}
-
-	/**
-	 * Get the user's full name.
-	 *
-	 * @returns The user's full name.
-	 */
-	fullName() {
-		return super.fullName();
 	}
 }
 
@@ -235,8 +197,10 @@ export class UserProfile extends User {
 	 *
 	 * @returns The user's full name.
 	 */
-	fullName() {
-		return super.fullName();
+	displayName(): string {
+		const { firstName, lastName, companyName, isOrg } = this;
+		const name = isOrg ? companyName : [firstName, lastName].filter(Boolean).join(' ');
+		return name || '';
 	}
 
 	/**
@@ -253,15 +217,24 @@ export class UserProfile extends User {
 /**
  * A candidate.
  */
-export class Candidate extends User implements CandidateData, UserProfileParams {
+export class Candidate extends UserProfile implements CandidateData, UserProfileParams {
 	slug: string = '';
 	searchScore?: number;
-	selfTitle?: string;
-	image?: string;
+	// selfTitle?: string;
+	// image?: string;
 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
+	}
+
+	/**
+	 * Get the user's full name.
+	 *
+	 * @returns The user's full name.
+	 */
+	displayName() {
+		return super.displayName();
 	}
 }
 

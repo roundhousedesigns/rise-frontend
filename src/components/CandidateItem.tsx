@@ -59,7 +59,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				>
 					<Avatar
 						size='md'
-						name={candidate.fullName()}
+						name={candidate.displayName()}
 						flex='0 0 auto'
 						mr={2}
 						src={image}
@@ -84,7 +84,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						mt={0}
 						mb={{ base: 1, lg: 0 }}
 					>
-						{candidate.fullName() ? candidate.fullName() : 'No name'}
+						{candidate.displayName() ? candidate.displayName() : 'No name'}
 					</Heading>
 					<Text
 						textAlign='right'

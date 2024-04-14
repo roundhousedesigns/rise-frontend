@@ -247,7 +247,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									<Box w='40%' minW='160px' maxW='400px'>
 										<Image
 											src={image}
-											alt={`${profile.fullName()}'s picture`}
+											alt={`${profile.displayName()}'s picture`}
 											borderRadius='md'
 											loading='eager'
 											fit='cover'
@@ -255,7 +255,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										/>
 									</Box>
 								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2}>
+									<Avatar size='2xl' name={profile.displayName()} mx={2}>
 										{lookingForWork ? (
 											<Tooltip hasArrow openDelay={500} label='Looking for work'>
 												<AvatarBadge boxSize={12} bgColor='green.400'>
@@ -268,7 +268,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									</Avatar>
 								)
 							) : (
-								<Avatar size='superLg' src={image} name={profile.fullName()} />
+								<Avatar size='superLg' src={image} name={profile.displayName()} />
 							)}
 
 							<Stack
@@ -294,7 +294,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											fontWeight='bold'
 											lineHeight='none'
 										>
-											{profile.fullName()}
+											{profile.displayName()}
 										</Heading>
 										{pronouns && !isOrg ? (
 											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
@@ -516,7 +516,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 												borderRadius='md'
 												fit='cover'
 												mb={2}
-												alt={`${profile.fullName()}'s image`}
+												alt={`${profile.displayName()}'s image`}
 											/>
 										))}
 									</Box>

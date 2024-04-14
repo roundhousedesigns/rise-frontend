@@ -1,4 +1,4 @@
-import { Box, Highlight, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { FiThumbsUp, FiThumbsDown } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleLookingForWork from '@hooks/mutations/useToggleLookingForWork';
@@ -27,6 +27,13 @@ export default function LookingForWorkToggle({
 		toggleLookingForWorkMutation(loggedInId);
 	};
 
+	const helperText =
+		showHelperText && lookingForWork
+			? "You're looking for work right now."
+			: showHelperText && !lookingForWork
+			? "You're not looking for work right now."
+			: '';
+
 	return (
 		<Box {...props}>
 			<ToggleOptionSwitch
@@ -39,25 +46,8 @@ export default function LookingForWorkToggle({
 				size={size}
 				loading={loading}
 				showLabel={showLabel}
-			>
-				<>{showHelperText ? <Description lookingForWork={lookingForWork} /> : <></>}</>
-			</ToggleOptionSwitch>
+				helperText={helperText}
+			/>
 		</Box>
 	);
 }
-
-const Description = ({ lookingForWork }: { lookingForWork: boolean }) => {
-	return lookingForWork ? (
-		<Text as='span'>
-			<Highlight query={['looking for work']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				You're looking for work right now.
-			</Highlight>
-		</Text>
-	) : (
-		<Text as='span'>
-			<Highlight query={['not']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				You're not looking for work right now.
-			</Highlight>
-		</Text>
-	);
-};

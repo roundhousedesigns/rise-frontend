@@ -1,4 +1,4 @@
-import { Box, Highlight, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { FiUser, FiUsers } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleIsOrg from '@hooks/mutations/useToggleIsOrg';
@@ -27,37 +27,27 @@ export default function IsOrgToggle({
 		toggleIsOrgMutation(loggedInId);
 	};
 
+	const helperText =
+		showHelperText && isOrg
+			? 'This profile is for an organization. You won\'t appear in searches.'
+			: showHelperText && !isOrg
+			? 'This profile is for a person.'
+			: '';
+
 	return (
 		<Box {...props}>
 			<ToggleOptionSwitch
 				id='isOrg'
 				checked={isOrg}
 				callback={handleToggleIsOrganization}
-				label='Company profile'
+				label={isOrg ? 'Company profile' : 'Individual profile'}
 				iconLeft={FiUser}
 				iconRight={FiUsers}
 				size={size}
 				loading={loading}
 				showLabel={showLabel}
-			>
-				<>{showHelperText ? <Description isOrg={isOrg} /> : <></>}</>
-			</ToggleOptionSwitch>
+				helperText={helperText}
+			/>
 		</Box>
 	);
 }
-
-const Description = ({ isOrg }: { isOrg: boolean }) => {
-	return isOrg ? (
-		<Text as='span'>
-			<Highlight query={['organization']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				This profile is for an organization.
-			</Highlight>
-		</Text>
-	) : (
-		<Text as='span'>
-			<Highlight query={['individual']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
-				This profile is for an individual.
-			</Highlight>
-		</Text>
-	);
-};
