@@ -17,7 +17,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.10.5",
-    "@types/node": "^20.11.26",
+    "@types/node": "^20.11.30",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
@@ -51,7 +51,7 @@
     "eslint": "^8.57.0",
     "remark": "^14.0.3",
     "typescript": "^4.9.5",
-    "vite": "^4.5.2"
+    "vite": "^4.5.3"
   },
   "main": "index.js",
   "repository": "https://github.com/roundhousedesigns/rise-frontend",
