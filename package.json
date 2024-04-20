@@ -16,7 +16,7 @@
     "@apollo/client": "^3.9.5",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/styled": "^11.11.5",
     "@types/node": "^20.11.30",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
