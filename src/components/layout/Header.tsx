@@ -233,10 +233,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										Dashboard
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
-										Bookmarked Profiles
+										Saved Profiles
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/searches' icon={<FiSearch />}>
-										Saved Searches
+										Your Searches
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
 										Settings

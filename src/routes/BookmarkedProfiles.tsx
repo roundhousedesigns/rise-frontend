@@ -3,7 +3,7 @@ import BookmarkedProfilesView from '@views/BookmarkedProfilesView';
 
 export default function BookmarkedProfiles() {
 	return (
-		<Page title='Bookmarked Profiles'>
+		<Page title='Saved Profiles'>
 			<BookmarkedProfilesView />
 		</Page>
 	);

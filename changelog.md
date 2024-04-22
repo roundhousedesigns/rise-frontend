@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.4] - Unreleased
+## \[1.1.4] - 2024-04-14
 
 - Add: Upload authorization message.
 - Add: Quick Actions to Edit Profile screen.
