@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.5] - 2024-04-22
+
+- Improve: Saved Searches minor UI improvements.
+
 ## \[1.1.4] - 2024-04-14
 
 - Add: Upload authorization message.
