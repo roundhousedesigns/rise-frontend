@@ -24,7 +24,7 @@ export default function DarkModeToggle({
 				checked={colorMode === 'dark'}
 				callback={toggleColorMode}
 				label='Theme'
-				icon={FiSun}
+				iconLeft={FiSun}
 				iconRight={FiMoon}
 				size={size}
 				showLabel={showLabel}

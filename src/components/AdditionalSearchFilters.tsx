@@ -1,7 +1,7 @@
 import { Key, useContext, useEffect } from 'react';
 import { Accordion, Fade } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import { additionalFilterKeys } from '@/lib/utils';
+import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';

@@ -21,6 +21,8 @@ import {
 	useBreakpointValue,
 	Spacer,
 	IconButton,
+	AvatarBadge,
+	Tooltip,
 } from '@chakra-ui/react';
 import {
 	FiGlobe,
@@ -32,6 +34,7 @@ import {
 	FiLink,
 	FiMap,
 	FiDownload,
+	FiThumbsUp,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
@@ -81,6 +84,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
+		lookingForWork,
 		socials,
 		unions,
 		partnerDirectories,
@@ -183,8 +187,12 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			gap={{ base: 0, md: 2 }}
 			{...props}
 		>
-			<ShareButton url={profileUrl} />
-			{id && allowBookmark ? <BookmarkToggleIcon id={id} size='xxxl' mx={{ base: 0 }} /> : false}
+			<ShareButton url={profileUrl} borderRadius='full' />
+			{id && allowBookmark ? (
+				<BookmarkToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
+			) : (
+				false
+			)}
 		</Flex>
 	);
 
@@ -243,7 +251,17 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										/>
 									</Box>
 								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2} />
+									<Avatar size='2xl' name={profile.fullName()} mx={2}>
+										{lookingForWork ? (
+											<Tooltip hasArrow openDelay={500} label='Looking for work'>
+												<AvatarBadge boxSize={12} bgColor='green.400'>
+													<Icon as={FiThumbsUp} boxSize={4} />
+												</AvatarBadge>
+											</Tooltip>
+										) : (
+											false
+										)}
+									</Avatar>
 								)
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />

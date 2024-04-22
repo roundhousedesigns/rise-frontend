@@ -1,5 +1,6 @@
+import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Tooltip, Icon } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
+import { FiThumbsUp } from 'react-icons/fi';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
@@ -14,7 +15,7 @@ interface Props {
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { loggedInId } = useViewer();
 
-	const { id, image, slug, selfTitle } = candidate || {};
+	const { id, image, slug, selfTitle, lookingForWork } = candidate || {};
 
 	if (!id) return null;
 
@@ -32,16 +33,19 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				py={{ base: 1, md: 2 }}
 				mr={4}
 				my={0}
+				borderWidth={2}
 				_dark={{
 					bg: 'gray.800',
+					borderColor: 'gray.700',
 					_hover: {
-						bg: 'gray.900',
+						bg: 'gray.700',
 					},
 				}}
 				_light={{
 					bg: 'gray.100',
+					borderColor: 'gray.200',
 					_hover: {
-						bg: 'gray.50',
+						bg: 'gray.200',
 					},
 				}}
 				{...props}
@@ -54,16 +58,26 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					gap={{ base: 'initial', md: 0 }}
 				>
 					<Avatar
-						size='sm'
+						size='md'
 						name={candidate.fullName()}
 						flex='0 0 auto'
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
-					/>
+					>
+						{lookingForWork ? (
+							<Tooltip hasArrow openDelay={500} label='Looking for work'>
+								<AvatarBadge boxSize={7} bgColor='green.400'>
+									<Icon as={FiThumbsUp} boxSize={3} />
+								</AvatarBadge>
+							</Tooltip>
+						) : (
+							false
+						)}
+					</Avatar>
 					<Heading
 						as='h3'
-						fontSize='md'
+						fontSize='lg'
 						fontWeight='normal'
 						textAlign='left'
 						flex='1'
@@ -76,7 +90,6 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
 						flex='1'
-						fontSize='xs'
 						noOfLines={2}
 					>
 						{selfTitle}

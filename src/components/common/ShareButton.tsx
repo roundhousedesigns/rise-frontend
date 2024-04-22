@@ -49,8 +49,8 @@ export default function ShareButton({ url, ...props }: Props) {
 
 	return (
 		<IconButton
-			aria-label='Share profile'
-			title='Share profile'
+			aria-label='Share'
+			title='Share'
 			icon={<FiShare2 />}
 			onClick={handleShareClick}
 			{...props}

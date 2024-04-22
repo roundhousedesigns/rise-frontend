@@ -7,7 +7,7 @@ interface Props {
 	colorScheme?: string;
 	label: string;
 	showLabel?: boolean;
-	icon?: As;
+	iconLeft?: As;
 	iconRight?: As;
 	size?: string;
 	loading?: boolean;
@@ -21,7 +21,7 @@ export default function ToggleOptionSwitch({
 	colorScheme = 'green',
 	label,
 	showLabel = true,
-	icon,
+	iconLeft,
 	iconRight,
 	size = 'lg',
 	loading,
@@ -48,8 +48,8 @@ export default function ToggleOptionSwitch({
 
 	return (
 		<FormControl display='flex' alignItems='center' position='relative' {...props}>
-			{icon ? (
-				<Icon as={icon as As} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
+			{iconLeft ? (
+				<Icon as={iconLeft as As} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
 			) : (
 				false
 			)}

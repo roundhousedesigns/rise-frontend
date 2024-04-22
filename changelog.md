@@ -1,10 +1,27 @@
 # Changelog
 
-All notable changes to this project will be documented in this file, starting with 1.0.0beta.
+All notable changes to this project will be documented in this file, starting
+with 1.0.0beta.
+
+## \[1.1.5] - 2024-04-22
+
+- Improve: Saved Searches minor UI improvements.
+
+## \[1.1.4] - 2024-04-14
+
+- Add: Upload authorization message.
+- Add: Quick Actions to Edit Profile screen.
+- Add: Open to Work (Avail/Busy) badges and options.
+- Improve: Simplified (removed) color on "Saved" button.
+- Improve: ToggleOptionSwitch `icon` prop renamed to `iconLeft`.
+- Improve: "Uploaded"/"Saved" words swapped in successful upload toast.
+- Improve: Make IconButton styles and sizes more consistent.
+- Improve: Upgrade Node to v20.12.0.
 
 ## \[1.1.3] - 2024-03-15
 
-- Fix: refetchQuery on QUERY_PROFILE now using same variables and fires properly. Allowed removal of EditProfileContext credit update/delete actions.
+- Fix: refetchQuery on QUERY_PROFILE now using same variables and fires properly.
+Allowed removal of EditProfileContext credit update/delete actions.
 - Change: Hide "Get Help" button on dashboard.
 - Add: Alerts for "no credits" and "profile hidden" messages.
 
@@ -54,11 +71,13 @@ All notable changes to this project will be documented in this file, starting wi
 - Fixed: Search submit button bar bg color
 - Improve: Settings page layout
 - Added: Saved searches and search history
-- Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox container.
+- Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox
+container.
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 
-- Fixed/Improved: Credits not updating. Fix involved more overt use of departments and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
+- Fixed/Improved: Credits not updating. Fix involved more overt use of departments
+and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
 - Fixed: LinkedIn social links now reference full URL instead of handle
 
 ## \[1.0.8] - 2023-08-09
@@ -66,7 +85,9 @@ All notable changes to this project will be documented in this file, starting wi
 - Feature: Saved Profiles (bookmarked profiles)
 - Feature: Dashboard updates/notices feed
 - Feature: Basic password complexity enforcement
-- Fixed: Deselection of a department also unselects any tied jobs and skills that are no longer tied to a selected department. Same applies to deselection of a job with tied skills. (Thanks @ari-denary)
+- Fixed: Deselection of a department also unselects any tied jobs and skills that
+are no longer tied to a selected department. Same applies to deselection of a job
+with tied skills. (Thanks @ari-denary)
 - Improved: Added common `ConfirmActionDialog` component for confirmation dialogs
 - Improved: Profile Share icon moved into Card component.
 - Improved: Menu icon standout color
@@ -79,16 +100,19 @@ All notable changes to this project will be documented in this file, starting wi
 - Added: Back to Login button on Register page
 - Added: Jump to Credits button (Edit Profile)
 - Improved: Cache policy on related skills
-- Improved: Changed website URL display to "View Website" to handle for overlong layout-breaking links
+- Improved: Changed website URL display to "View Website" to handle for overlong
+layout-breaking links
 - Improved: Minor styling tweaks
 - Improved: Credit Save/Cancel buttons no longer re-rendering unncessarily (flashing)
-- Improved: Credits saved without `position` terms now show a reminder to add on the Edit screen
+- Improved: Credits saved without `position` terms now show a reminder to add on
+the Edit screen
 - Improved: Combined error handler hooks into one `useErrorMessage` hook
 - Improved: deprecated.ts file to track deprecated code
 
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
-- Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate user should continue to scroll
+- Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate
+user should continue to scroll
 - Improved: Unified style of React event, element, and type imports
 - Added: Profile slug editing
 - Fixed: Clear resume button restored
@@ -99,7 +123,8 @@ All notable changes to this project will be documented in this file, starting wi
 ## \[1.0.5] - 2023-06-06
 
 - Official Launcherino!
-- Improved: Accessibility - Refactored CheckboxButton and RadioButton and respective groups to be simpler and more accessible
+- Improved: Accessibility - Refactored CheckboxButton and RadioButton and respective
+groups to be simpler and more accessible
 - Improved: Styling
 - Improved: Mobile layouts and responsiveness
 
@@ -133,7 +158,8 @@ All notable changes to this project will be documented in this file, starting wi
 
 - Added: Search by Name
 - Added: ContentView component for displaying WP content
-- Fixed: Search results now return a much longer list of results (pre-pagination support)
+- Fixed: Search results now return a much longer list of results (pre-pagination
+support)
 - Changed: Support email added to footer
 
 ## \[1.0.1beta] - 2023-05-16

@@ -1,15 +1,14 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { Accordion, Flex, IconButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { Accordion, Flex, IconButton } from '@chakra-ui/react';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
-
+import { convertUnscoredToScored } from '@lib/utils';
+import { SearchContext } from '@context/SearchContext';
+import SearchDrawerContext from '@context/SearchDrawerContext';
+import useSearchByName from '@hooks/queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
-import { SearchContext } from '@context/SearchContext';
-import useSearchByName from '@hooks/queries/useSearchByName';
-import SearchDrawerContext from '@context/SearchDrawerContext';
-import { convertUnscoredToScored } from '@/lib/utils';
 
 export default function SearchFilterName() {
 	const {

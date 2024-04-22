@@ -39,7 +39,7 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useLogout from '@hooks/mutations/useLogout';
-import useUserProfile from '@/hooks/queries/useUserProfile';
+import useUserProfile from '@hooks/queries/useUserProfile';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
@@ -59,7 +59,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { colorMode } = useColorMode();
 
 	const {
-		search: { searchActive, results },
+		search: { results },
 	} = useContext(SearchContext);
 
 	const isLargerThanMd = useBreakpointValue(
@@ -97,11 +97,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			to='/bookmarks'
 			icon={
 				isLargerThanMd && bookmarkedProfiles.length ? (
-					<Badge py={1} px={2} ml={0} borderRadius='full' colorScheme='orange'>
+					<Badge py={1} px={2} ml={0} borderRadius='full'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
-					<Icon as={FiBookmark} fill={bookmarkedProfiles.length ? 'brand.orange' : ''} />
+					<Icon as={FiBookmark} />
 				)
 			}
 			label='Saved candidates'
@@ -202,7 +202,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								fontSize='lg'
 							>
 								<BookmarkedProfilesButton />
-								{searchActive && results.length ? <SearchResultsButton /> : false}
+								{results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}
 							</Flex>
@@ -233,10 +233,10 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										Dashboard
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
-										Bookmarked Profiles
+										Saved Profiles
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/searches' icon={<FiSearch />}>
-										Saved Searches
+										Your Searches
 									</MenuItem>
 									<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
 										Settings

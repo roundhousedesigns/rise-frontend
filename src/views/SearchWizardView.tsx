@@ -11,13 +11,13 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
-import useSavedSearches from '@/hooks/queries/useSavedSearches';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
 import SearchFilterJobs from '@components/SearchFilterJobs';
 import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
-import SavedSearchItemList from '@/components/SavedSearchItemList';
+import SavedSearchItemList from '@components/SavedSearchItemList';
 
 interface Props {
 	showButtons?: boolean;
@@ -45,8 +45,8 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<Accordion allowToggle mb={4}>
 					<AccordionItem>
 						<h3>
-							<AccordionButton fontSize='sm' fontWeight='normal'>
-								<Box as='span'>Saved Searches</Box>
+							<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
+								<Box as='span'>Your Searches</Box>
 								<AccordionIcon />
 							</AccordionButton>
 						</h3>

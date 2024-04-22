@@ -1,10 +1,11 @@
-import { Box, Flex, Link, Text } from '@chakra-ui/react';
+import { Box, Divider, Flex, Link, Text } from '@chakra-ui/react';
 import Page from '@components/Page';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@common/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
-import DarkModeToggle from '@/components/DarkModeToggle';
+import DarkModeToggle from '@components/DarkModeToggle';
+import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 export default function Settings() {
 	return (
@@ -24,13 +25,15 @@ export default function Settings() {
 
 				<SettingsSection title='Options'>
 					<DisableProfileToggle showHelperText={true} size='lg' />
+					<LookingForWorkToggle showHelperText={true} size='lg' />
+					<Divider />
 					<DarkModeToggle showHelperText={true} size='lg' />
 				</SettingsSection>
 
-				{/* TODO Setting: Delete your account */}
-				<SettingsSection title='Delete your account'>
+				{/* TODO Setting: Close your account */}
+				<SettingsSection title='Close your account'>
 					<Text>
-						If you'd like to delete your account entirely, please email us at{' '}
+						If you'd like to remove your account entirely, please email us at{' '}
 						<Link href='mailto:support@risetheatre.org' display='inline'>
 							support@risetheatre.org
 						</Link>{' '}

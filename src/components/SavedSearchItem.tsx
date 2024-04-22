@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect, useRef, FormEvent } from 'react';
 import {
-	IconButton,
 	Modal,
 	Button,
 	FormControl,
@@ -20,19 +19,19 @@ import {
 	Flex,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiEdit3, FiSearch, FiSave, FiDelete } from 'react-icons/fi';
+import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { SearchFilterSetRaw } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
-import SearchDrawerContext from '@context/SearchDrawerContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useDeleteSavedSearch from '@/hooks/mutations/useDeleteSavedSearch';
+import useDeleteSavedSearch from '@hooks/mutations/useDeleteSavedSearch';
 import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
+import LinkWithIcon from './common/LinkWithIcon';
 
 interface Props {
 	id?: number;
@@ -50,7 +49,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const { openDrawer } = useContext(SearchDrawerContext);
+	// const { openDrawer } = useContext(SearchDrawerContext);
 
 	const isNamed = title && title !== '';
 
@@ -83,13 +82,13 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		const filterSet = prepareSearchFilterSet(searchTerms, terms);
 
 		searchDispatch({
-			type: 'RESTORE_FILTER_SET',
+			type: 'RESTORE_AND_SEARCH',
 			payload: {
 				filterSet,
 			},
 		});
 
-		openDrawer();
+		// openDrawer();
 	};
 
 	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -144,52 +143,49 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 	return termIds && termIds.length > 0 ? (
 		<>
-			<Stack w='full' alignItems='space-between' {...props}>
+			<Stack w='auto' alignItems='space-between' {...props}>
 				<StackItem display='flex' alignItems='center' gap={1}>
 					<Text my={0} fontSize='lg'>
-						{title}
+						{isNamed ? (
+							<LinkWithIcon
+								onClick={handleEditClick}
+								icon={FiEdit2}
+								iconSide='right'
+								iconProps={{ boxSize: 3, mb: '2px', ml: 1 }}
+							>
+								{title}
+							</LinkWithIcon>
+						) : (
+							false
+						)}
 					</Text>
 					<Spacer />
-					{isNamed ? (
-						<IconButton
-							icon={<FiEdit3 />}
-							colorScheme='blue'
-							aria-label='Rename this search'
-							title='Rename'
-							size='xs'
-							onClick={handleEditClick}
-						>
-							Rename
-						</IconButton>
-					) : (
-						false
-					)}
 					<StackItem as={Wrap} alignItems='center' spacing={1}>
 						{id ? (
-							<IconButton
-								icon={<FiSearch />}
+							<Button
+								leftIcon={<FiSearch />}
 								colorScheme='green'
 								aria-label='Rerun this search'
 								title='Rerun'
-								size='xs'
+								size='sm'
 								onClick={handleSearchClick}
 							>
-								Rerun
-							</IconButton>
+								Search
+							</Button>
 						) : (
 							false
 						)}
 						{id ? (
-							<IconButton
-								icon={<FiDelete />}
+							<Button
+								leftIcon={<FiDelete />}
 								colorScheme='orange'
 								aria-label='Delete this search'
 								title='Delete'
-								size='xs'
+								size='sm'
 								onClick={deleteOnOpen}
 							>
 								Delete
-							</IconButton>
+							</Button>
 						) : (
 							false
 						)}
@@ -199,18 +195,17 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 					<Flex w='full' justifyContent='space-between'>
 						<SearchParamTags termIds={termIds} termItems={terms} />
 						{!isNamed ? (
-							<IconButton
+							<Button
 								colorScheme='blue'
-								icon={<FiSave />}
-								aria-label='Save this search'
-								title='Save this search'
+								leftIcon={<FiSave />}
+								aria-label='Save search'
+								title='Save search'
 								onClick={handleEditClick}
 								ml={2}
 								size='sm'
-								borderRadius='full'
 							>
-								Save
-							</IconButton>
+								Save search
+							</Button>
 						) : (
 							false
 						)}

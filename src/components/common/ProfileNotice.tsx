@@ -13,8 +13,8 @@ import {
 	LightMode,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ProfileNoticeAlert } from '@/lib/types';
-import { getCookie, setCookie } from '@/lib/utils';
+import { ProfileNoticeAlert } from '@lib/types';
+import { getCookie, setCookie } from '@lib/utils';
 
 interface Props {
 	code: string;

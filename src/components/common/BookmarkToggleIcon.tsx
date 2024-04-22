@@ -36,9 +36,7 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
 
-	const iconLabel = isBookmarked
-		? 'Remove this candidate from your saved candidates'
-		: 'Save this candidate';
+	const iconLabel = isBookmarked ? 'Remove from Saved list' : 'Add to Saved list';
 
 	return (
 		<IconButton
@@ -48,19 +46,15 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 					fill={isBookmarked ? orange : 'transparent'}
 					stroke={colorMode === 'dark' ? lightGray : darkGray}
 					strokeWidth={1}
-					size={32}
+					size={24}
 				/>
 			}
-			size='xl'
 			cursor='pointer'
+			borderRadius='full'
 			aria-label={iconLabel}
 			title={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
 			mx={2}
-			py={2}
-			px={2}
-			bg='transparent'
-			colorScheme='gray'
 			{...props}
 		/>
 	);

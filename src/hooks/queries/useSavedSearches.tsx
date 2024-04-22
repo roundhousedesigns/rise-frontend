@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { WPPost } from '@lib/classes';
-import { WPItemParams } from '@/lib/types';
+import { WPItemParams } from '@lib/types';
 import useViewer from '@hooks/queries/useViewer';
 
 export const QUERY_SAVED_SEARCHES = gql`

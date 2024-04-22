@@ -23,7 +23,9 @@ const QUERY_USERS_BY_NAME = gql`
  * @returns {Array} The useLazyQuery return tuple.
  */
 const useSearchByName = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
-	return useLazyQuery(QUERY_USERS_BY_NAME);
+	return useLazyQuery(QUERY_USERS_BY_NAME, {
+		fetchPolicy: 'cache-and-network',
+	});
 };
 
 export default useSearchByName;

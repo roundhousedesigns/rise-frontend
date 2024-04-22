@@ -13,7 +13,7 @@ import BookmarkedProfiles from '@routes/BookmarkedProfiles';
 import Settings from '@routes/Settings';
 import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
-import SavedSearches from '@/routes/SavedSearches';
+import SavedSearches from '@routes/SavedSearches';
 
 export default function Main() {
 	return (
