@@ -73,7 +73,7 @@ import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
-import LookingForWorkToggle from '@components/LookingForWorkToggle';
+// import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -847,9 +847,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
-									<Card py={2} my={0}>
+									{/* <Card py={2} my={0}>
 										<LookingForWorkToggle showHelperText showLabel />
-									</Card>
+									</Card> */}
 								</Flex>
 							</AccordionPanel>
 						</AccordionItem>
