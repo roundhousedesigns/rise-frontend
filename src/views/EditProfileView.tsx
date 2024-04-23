@@ -1323,16 +1323,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<Text fontSize='lg' mb={0}>
 								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
 							</Text>
-							<Text
-								fontSize='md'
-								fontStyle='italic'
-								_dark={{ color: 'brand.yellow' }}
-								_light={{ color: 'brand.blue' }}
-								mb={4}
-							>
-								* By uploading images to your RISE profile, you acknowledge that you own the rights
-								or are authorized to use these images as work samples.
-							</Text>
 							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
 								{/* TODO show only the next available uploader, up to limit. */}
 								<FileDropzone fieldName='mediaImage1' text='Image 1' />
