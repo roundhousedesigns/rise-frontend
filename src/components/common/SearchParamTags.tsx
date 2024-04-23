@@ -39,7 +39,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 	);
 
 	return (
-		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
+		<Flex flexWrap='wrap' gap={1} mb={1} alignItems='center' {...props}>
 			{departments.length ? (
 				<Wrap spacing={1}>
 					{departments.map((department: WPItem, index: number) => (

@@ -47,7 +47,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			},
 			results,
 			searchActive,
-			triggerSearch,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
@@ -69,16 +68,10 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		});
 	}, [filteredCandidates]);
 
-	// Trigger a search if a saved filter set is restored.
-	useEffect(() => {
-		if (!triggerSearch) {
-			return;
-		}
+	// Handle form submission
+	const handleSubmit = (e: FormEvent) => {
+		e.preventDefault();
 
-		runSearch();
-	}, [triggerSearch]);
-
-	const runSearch = () => {
 		// set the positions array to the jobs array if it's not empty, otherwise use the departments array
 		const positions = jobs && jobs.length > 0 ? jobs : departments;
 
@@ -103,12 +96,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			.catch((err) => {
 				console.error(err);
 			});
-	};
-
-	// Handle form submission
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		runSearch();
 	};
 
 	const handleSearchReset = () => {

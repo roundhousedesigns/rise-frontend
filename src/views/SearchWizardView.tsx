@@ -45,8 +45,8 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<Accordion allowToggle mb={4}>
 					<AccordionItem>
 						<h3>
-							<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
-								<Box as='span'>Your Searches</Box>
+							<AccordionButton fontSize='sm' fontWeight='normal'>
+								<Box as='span'>Saved Searches</Box>
 								<AccordionIcon />
 							</AccordionButton>
 						</h3>

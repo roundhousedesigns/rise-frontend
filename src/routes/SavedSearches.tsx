@@ -3,7 +3,7 @@ import SavedSearchesView from '@views/SavedSearchesView';
 
 export default function SavedSearches() {
 	return (
-		<Page title='Your Searches'>
+		<Page title='Saved Searches'>
 			<SavedSearchesView />
 		</Page>
 	);
