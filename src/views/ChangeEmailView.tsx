@@ -6,7 +6,7 @@ import TextInput from '@common/inputs/TextInput';
 import useViewer from '@hooks/queries/useViewer';
 
 export default function ChangeEmailView() {
-	const { username } = useViewer();
+	const { username, email: userEmail } = useViewer();
 
 	const [newEmail, setNewEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -17,10 +17,37 @@ export default function ChangeEmailView() {
 
 	const toast = useToast();
 
+	/**
+	 * Email validation.
+	 *
+	 * @param email
+	 * @returns
+	 */
+	const validateEmail = (email: string) => {
+		// Don't set an identical email address.
+		const errorCode = [];
+
+		if (email.toLocaleLowerCase() === userEmail.toLocaleLowerCase()) {
+			errorCode.push('This is your current email address.');
+		}
+
+		const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (re.test(String(email).toLowerCase()) === false) {
+			errorCode.push('Please enter a valid email address.');
+		}
+
+		setErrorCode(errorCode.join('; '));
+
+		// If any errors were set, the email isn't valid.
+		return errorCode.length === 0 ? true : false;
+	};
+
 	const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const email = e.target.value;
 		setNewEmail(email);
-		setEmailIsValid(!!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)); // Basic email validation
+
+		setEmailIsValid(validateEmail(email));
 	};
 
 	const handlePasswordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +65,8 @@ export default function ChangeEmailView() {
 				setNewEmail('');
 				setErrorCode('');
 
+				// HACK Figure out how to close the modal, when that's how this
+				// 			component is called.
 				window.location.reload();
 
 				toast({
@@ -79,7 +108,7 @@ export default function ChangeEmailView() {
 						isRequired
 						flex='1'
 						onChange={handleEmailInputChange}
-						error={errorCode ? `Error: ${errorCode}` : ''}
+						error={errorCode ? errorCode : ''}
 						inputProps={{
 							type: 'email',
 							autoComplete: 'email',
@@ -94,7 +123,6 @@ export default function ChangeEmailView() {
 						isRequired
 						flex='1'
 						onChange={handlePasswordInputChange}
-						error={errorCode ? `Error: ${errorCode}` : ''}
 						inputProps={{
 							type: 'password',
 						}}

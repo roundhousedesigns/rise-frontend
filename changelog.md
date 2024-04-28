@@ -5,7 +5,7 @@ with 1.0.0beta.
 
 ## \[1.1.6] - Unreleased
 
-- Add: Change email address
+- Add: Change email address. **Requires backend version 1.1.3** (no tag yet)
 
 ## \[1.1.5] - 2024-04-22
 

@@ -25,6 +25,10 @@ export default function SettingsView() {
 		onOpenEmail();
 	};
 
+	const handleEmailClose = () => {
+		onCloseEmail();
+	};
+
 	return (
 		<Container maxW='4xl' pl={0} mx={0}>
 			<SettingsSection title='Account'>
@@ -36,7 +40,7 @@ export default function SettingsView() {
 						<SettingsModal
 							title='Change your account email'
 							isOpen={isOpenEmail}
-							onClose={onCloseEmail}
+							onClose={handleEmailClose}
 						>
 							<ChangeEmailView />
 						</SettingsModal>
