@@ -6,6 +6,7 @@ import { isEqual } from 'lodash';
 import { Credit, PersonalLinks, UserProfile, WPItem } from '@lib/classes';
 import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
+import { passwordStrength } from 'check-password-strength';
 const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**
@@ -438,4 +439,49 @@ export function sortCreditsByIndex(credits: Credit[]): Credit[] {
 	sorted.sort((a: Credit, b: Credit) => Number(a.index) - Number(b.index));
 
 	return sorted;
+}
+
+/**
+ * Validate a password to meet requirements
+ *
+ * @param password The password to validate
+ * @return string|undefined 'weak' or 'strong'
+ *
+ * TODO: figuring out typing to allow (in index.d.ts):
+ * const passwordRequirements = [{id?: number, value?: string, minDiversity?: number, minLength?: number}, {...}]
+ * passwordStrength(password, passwordRequirements);
+ */
+export function validatePassword(password: string): string | undefined {
+	if (!password) return;
+
+	const { value } = passwordStrength(password, [
+		{
+			id: 0,
+			value: 'weak',
+			minDiversity: 0,
+			minLength: 0,
+		},
+		{
+			id: 1,
+			value: 'strong',
+			minDiversity: 4,
+			minLength: 8,
+		},
+	]);
+
+	return value;
+}
+
+/**
+ * Validate an email address.
+ *
+ * @param email The email address to validate.
+ * @returns True if the email address is valid, false otherwise.
+ */
+export function validateEmail(email: string): boolean {
+	// Define a regex pattern for validating an email
+	const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+	// Test the email against the regex pattern and return the result
+	return regex.test(email);
 }

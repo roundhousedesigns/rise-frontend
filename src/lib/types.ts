@@ -165,6 +165,15 @@ export interface ChangePasswordInput {
 	confirmPassword: string;
 }
 
+/**
+ * The data shape for updating a user's email.
+ */
+export interface ChangeEmailInput {
+	currentPassword?: string;
+	newEmail: string;
+	confirmEmail: string;
+}
+
 export interface updateBookmarkedProfilesInput {
 	userId: number;
 	toggledUserId: number;

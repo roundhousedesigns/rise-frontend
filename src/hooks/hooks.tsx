@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '@lib/classes';
-import { getProfilePrefix, validateProfileSlug } from '@lib/utils';
-import { passwordStrength } from 'check-password-strength';
+import { getProfilePrefix, validateEmail, validatePassword, validateProfileSlug } from '@lib/utils';
 
 /**
  * Custom hooks.
@@ -172,28 +171,14 @@ export const useValidateProfileSlug = (slug: string): boolean => validateProfile
  *
  * @param password The password to validate
  * @return string|undefined 'weak' or 'strong'
- *
- * TODO: figuring out typing to allow (in index.d.ts):
- * const passwordRequirements = [{id?: number, value?: string, minDiversity?: number, minLength?: number}, {...}]
- * passwordStrength(password, passwordRequirements);
  */
-export const useValidatePassword = (password: string): string | undefined => {
-	if (!password) return;
+export const useValidatePassword = (password: string): string | undefined =>
+	validatePassword(password);
 
-	const { value } = passwordStrength(password, [
-		{
-			id: 0,
-			value: 'weak',
-			minDiversity: 0,
-			minLength: 0,
-		},
-		{
-			id: 1,
-			value: 'strong',
-			minDiversity: 4,
-			minLength: 8,
-		},
-	]);
-
-	return value;
-};
+/**
+ * Validate an email address.
+ *
+ * @param email The email address.
+ * @return True if the email address is valid.
+ */
+export const useValidateEmail = (email: string): boolean => validateEmail(email);

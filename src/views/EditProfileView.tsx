@@ -1323,13 +1323,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<Text fontSize='lg' mb={0}>
 								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
 							</Text>
-							<Text
-								fontSize='md'
-								fontStyle='italic'
-								_dark={{ color: 'brand.yellow' }}
-								_light={{ color: 'brand.blue' }}
-								mb={4}
-							>
+							<Text variant='notice' fontSize='sm' fontStyle='italic' mb={4}>
 								* By uploading images to your RISE profile, you acknowledge that you own the rights
 								or are authorized to use these images as work samples.
 							</Text>

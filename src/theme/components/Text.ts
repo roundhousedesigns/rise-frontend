@@ -7,6 +7,31 @@ const baseStyle = defineStyle({
 	fontWeight: 'medium',
 });
 
+const variants = {
+	notice: defineStyle({
+		lineHeight: 'normal',
+		_dark: {
+			color: 'brand.yellow',
+		},
+		_light: {
+			color: 'brand.blue',
+		},
+	}),
+	helperText: defineStyle({
+		lineHeight: 'normal',
+		fontSize: '2xs',
+		fontStyle: 'italic',
+		opacity: 0.5,
+		_dark: {
+			color: 'text.light',
+		},
+		_light: {
+			color: 'text.dark',
+		},
+	}),
+};
+
 export default defineStyleConfig({
 	baseStyle,
+	variants,
 });

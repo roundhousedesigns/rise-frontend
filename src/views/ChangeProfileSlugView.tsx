@@ -4,6 +4,7 @@ import {
 	Box,
 	Spinner,
 	Flex,
+	Text,
 	useClipboard,
 	useToast,
 	Heading,
@@ -96,10 +97,10 @@ export default function ChangeProfileUrlView() {
 
 	return (
 		<Box borderRadius='lg' w='full'>
-			<Heading variant='contentSubtitle'>Your handle</Heading>
-			<Flex mt={6} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
+			<Flex mt={2} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
 				<Box flex='1 1 auto'>
 					<form onSubmit={handleSubmit}>
+						<Heading variant='contentSubtitle'>Handle</Heading>
 						<Wrap>
 							<TextInput
 								value={slug}
@@ -123,7 +124,7 @@ export default function ChangeProfileUrlView() {
 								{submitLoading ? <Spinner size='sm' /> : 'Save'}
 							</Button>
 							<Button
-								colorScheme='orange'
+								colorScheme='red'
 								isDisabled={!hasEditedSlug}
 								onClick={() => setSlug(loggedInSlug)}
 							>
@@ -149,6 +150,7 @@ export default function ChangeProfileUrlView() {
 					>
 						{isLargerThanMd ? profileUrl : 'Copy'}
 					</Button>
+					<Text variant='helperText'>Click to copy</Text>
 				</Box>
 			</Flex>
 		</Box>

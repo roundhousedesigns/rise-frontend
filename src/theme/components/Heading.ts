@@ -19,7 +19,7 @@ const variants = {
 		pb: 0,
 	}),
 	contentSubtitle: defineStyle({
-		fontSize: 'xl',
+		fontSize: 'lg',
 		fontWeight: 'bold',
 		mt: 0,
 		pb: 0,

@@ -9,7 +9,7 @@ interface Props {
 
 export default function SettingsSection({ title, children, ...props }: Props): JSX.Element {
 	return (
-		<Box mt={2} mx={0} flex={{ base: '0 0 100%', md: '0 0 48%' }} {...props}>
+		<Box mt={4} mb={8} mx={0} flex={{ base: '0 0 100%', md: '0 0 48%' }} {...props}>
 			{title ? (
 				<Heading as='h3' variant='pageSubtitle' fontSize='2xl'>
 					{title}

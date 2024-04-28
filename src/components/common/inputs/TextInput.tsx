@@ -71,8 +71,10 @@ const TextInput = forwardRef(
 					lineHeight='normal'
 					fontSize='xs'
 				>
-					<Text m={0}>{helperText}</Text>
-					<Text m={0} opacity={0.8} fontStyle='italic' lineHeight='normal' fontSize='2xs'>
+					<Text m={0} variant='helperText'>
+						{helperText}
+					</Text>
+					<Text m={0} variant='helperText'>
 						{lengthText}
 					</Text>
 				</Flex>
