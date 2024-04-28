@@ -65,17 +65,18 @@ export default function ChangeEmailView() {
 				setNewEmail('');
 				setErrorCode('');
 
-				// HACK Figure out how to close the modal, when that's how this
-				// 			component is called.
-				window.location.reload();
-
 				toast({
 					title: 'Updated!',
 					position: 'top',
 					description: 'Your new email address has been set.',
 					status: 'success',
-					duration: 3000,
+					duration: 1500,
 					isClosable: true,
+					onCloseComplete: () => {
+						// HACK Figure out how to close the modal, when that's how this
+						// 			component is called.
+						window.location.reload();
+					},
 				});
 			})
 			.catch((error: { message: string }) => {
