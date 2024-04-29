@@ -4,8 +4,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import useChangeUserEmail from '@hooks/mutations/useChangeUserEmail';
 import TextInput from '@common/inputs/TextInput';
 import useViewer from '@hooks/queries/useViewer';
+import { obscureEmail } from '@/lib/utils';
 
-export default function ChangeEmailView() {
+export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback?: () => void }) {
 	const { username, email: userEmail } = useViewer();
 
 	const [newEmail, setNewEmail] = useState<string>('');
@@ -72,12 +73,12 @@ export default function ChangeEmailView() {
 					status: 'success',
 					duration: 1500,
 					isClosable: true,
-					onCloseComplete: () => {
-						// HACK Figure out how to close the modal, when that's how this
-						// 			component is called.
-						window.location.reload();
-					},
 				});
+			})
+			.then(() => {
+				if (onSubmitCallback !== undefined) {
+					onSubmitCallback();
+				}
 			})
 			.catch((error: { message: string }) => {
 				setErrorCode(error.message);
@@ -89,13 +90,13 @@ export default function ChangeEmailView() {
 
 	return (
 		<>
-			<Text variant='notice' fontStyle='italic' mb={4} fontSize='sm'>
-				Your account email is the address we use to communicate with you. If you'd like, you may use
-				a different email publicly by{' '}
-				<Link as={RouterLink} to='/profile/edit'>
-					editing your profile
-				</Link>
-				.
+			<Text mb={4} fontSize='md' lineHeight='normal'>
+				Your account email is <em>not</em> your profile's contact email. You can use a different
+				email address to show on your Profile page without changing your account email.{' '}
+				<Link as={RouterLink} to='/profile/edit' color='brand.blue'>
+					Edit your profile{' '}
+				</Link>{' '}
+				to set a new contact email.
 			</Text>
 			<Divider />
 			<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
@@ -106,6 +107,7 @@ export default function ChangeEmailView() {
 						id='newEmail'
 						variant='filled'
 						label='New email address'
+						placeholder={obscureEmail(userEmail)}
 						isRequired
 						flex='1'
 						onChange={handleEmailInputChange}

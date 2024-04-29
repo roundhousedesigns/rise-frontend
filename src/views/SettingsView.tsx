@@ -1,4 +1,4 @@
-import { Button, Link, Stack, StackItem, Text, useDisclosure, Container } from '@chakra-ui/react';
+import { Button, Link, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import SettingsSection from '@/components/common/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
@@ -32,8 +32,8 @@ export default function SettingsView() {
 	return (
 		<Container maxW='4xl' pl={0} mx={0}>
 			<SettingsSection title='Account'>
-				<Stack>
-					<StackItem>
+				<Flex gap={4}>
+					<Box>
 						<Button onClick={handleEmailClick} colorScheme='blue'>
 							Change your email address
 						</Button>
@@ -42,13 +42,13 @@ export default function SettingsView() {
 							isOpen={isOpenEmail}
 							onClose={handleEmailClose}
 						>
-							<ChangeEmailView />
+							<ChangeEmailView onSubmitCallback={handleEmailClose} />
 						</SettingsModal>
-					</StackItem>
+					</Box>
 
-					<StackItem>
-						<Button onClick={handlePasswordClick} colorScheme='red'>
-							Update your password
+					<Box>
+						<Button onClick={handlePasswordClick} colorScheme='blue'>
+							Change your password
 						</Button>
 						<SettingsModal
 							title='Change your password'
@@ -57,8 +57,8 @@ export default function SettingsView() {
 						>
 							<ChangePasswordView />
 						</SettingsModal>
-					</StackItem>
-				</Stack>
+					</Box>
+				</Flex>
 			</SettingsSection>
 
 			<SettingsSection title='Your profile link'>
@@ -78,7 +78,7 @@ export default function SettingsView() {
 					<Link href='mailto:support@risetheatre.org' display='inline'>
 						support@risetheatre.org
 					</Link>{' '}
-					to request your removal.
+					to let us know, and we'll delete your profile permanently.
 				</Text>
 			</SettingsSection>
 		</Container>

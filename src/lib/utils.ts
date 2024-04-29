@@ -485,3 +485,21 @@ export function validateEmail(email: string): boolean {
 	// Test the email against the regex pattern and return the result
 	return regex.test(email);
 }
+
+/**
+ * Obscure an email address with asterisks, showing only the first few characters of the username.
+ *
+ * @param emailString The email address to obscure.
+ * @returns The obscured email address, or an error message if the input is not a valid email.
+ */
+export function obscureEmail(emailString: string): string {
+	if (!emailString.includes('@')) {
+		throw new Error('Invalid email format');
+	}
+
+	const [username, domain] = emailString.split('@');
+	const visibleCount = Math.min(3, username.length);
+	const obscuredPart = '*'.repeat(username.length - visibleCount);
+
+	return `${username.substring(0, visibleCount)}${obscuredPart}@${domain}`;
+}

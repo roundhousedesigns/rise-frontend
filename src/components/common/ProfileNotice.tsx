@@ -109,8 +109,8 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		title: 'Your profile is currently hidden.',
 		description: (
 			<>
-				<Link as={RouterLink} to='/settings'>
-					Take your profile to public
+				<Link as={RouterLink} to='/settings' color='text.dark' textDecorationColor='initial'>
+					Take your profile public
 				</Link>{' '}
 				to appear in searches.
 			</>

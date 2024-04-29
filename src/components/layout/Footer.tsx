@@ -12,9 +12,8 @@ function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX
 	return (
 		<Link
 			href={href}
+			color='inherit'
 			isExternal={isExternal}
-			textDecoration='none'
-			_hover={{ textDecoration: 'underline' }}
 		>
 			{children}
 		</Link>

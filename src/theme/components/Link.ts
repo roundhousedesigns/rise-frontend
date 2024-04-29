@@ -2,8 +2,16 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
 
 const baseStyle = defineStyle({
 	my: 2,
-	textUnderlineOffset: '0.2em',
+	color: 'brand.blue',
 	textDecoration: 'underline',
+	transition: 'all 100ms ease-out',
+	textDecorationColor: 'transparent',
+	_focus: {
+		outline: 'none',
+	},
+	_hover: {
+		textDecorationColor: 'initial',
+	},
 });
 
 const variants = {

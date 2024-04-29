@@ -109,11 +109,14 @@ export default function ChangeProfileUrlView() {
 								maxW='300px'
 								label='New profile tag'
 								labelHidden
-								helperText='Letters, numbers, - and _ only.'
+								helperText='Letters, numbers, dashes, and underscores only.'
 								error={errorMessage}
 								isRequired
 								maxLength={20}
 								onChange={handleInputChange}
+								inputProps={{
+									pl: 2,
+								}}
 								flex='1'
 							/>
 							<Button

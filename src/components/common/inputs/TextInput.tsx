@@ -95,6 +95,7 @@ const TextInput = forwardRef(
 						placeholder={placeholder}
 						fontSize='md'
 						isDisabled={isDisabled}
+						px={3}
 						value={value}
 						name={name}
 						ref={forwardedRef}

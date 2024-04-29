@@ -111,6 +111,8 @@ export default function ChangePasswordView() {
 					id='newPassword'
 					variant='filled'
 					label='New password'
+					helperText='Passwords must have at least one lowercase letter, one uppercase letter, one number, and
+					one special character.'
 					isRequired
 					onChange={handleInputChange}
 					error={
