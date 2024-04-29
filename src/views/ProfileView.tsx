@@ -25,7 +25,6 @@ import {
 	Tooltip,
 } from '@chakra-ui/react';
 import {
-	FiGlobe,
 	FiMail,
 	FiMapPin,
 	FiPhone,
@@ -35,6 +34,7 @@ import {
 	FiMap,
 	FiDownload,
 	FiThumbsUp,
+	FiExternalLink,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
@@ -385,7 +385,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											)}
 											{website ? (
 												<ListItem>
-													<LinkWithIcon href={website} icon={FiGlobe} target='_blank'>
+													<LinkWithIcon href={website} icon={FiExternalLink} target='_blank'>
 														Visit Website
 													</LinkWithIcon>
 												</ListItem>
