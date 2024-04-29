@@ -1,6 +1,6 @@
 // useUpdateBookmarkedProfiles.ts
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_VIEWER } from '../queries/useViewer';
+import { QUERY_VIEWER } from '@hooks/queries/useViewer';
 
 const MUTATE_TOGGLE_BOOKMARKED_PROFILE = gql`
 	mutation updateBookmarkedProfilesMutation(

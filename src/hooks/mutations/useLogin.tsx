@@ -4,7 +4,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { LoginInput } from '@lib/types';
-import { QUERY_VIEWER } from '../queries/useViewer';
+import { QUERY_VIEWER } from '@hooks/queries/useViewer';
 
 const MUTATE_LOGIN = gql`
 	mutation Login($login: String!, $password: String!, $reCaptchaToken: String!) {

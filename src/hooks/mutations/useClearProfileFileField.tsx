@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_PROFILE } from '../queries/useUserProfile';
+import { QUERY_PROFILE } from '@hooks/queries/useUserProfile';
 
 const MUTATE_CLEAR_FIELD = gql`
 	mutation clearProfileFieldMutation($fieldName: String!, $userId: Int!) {

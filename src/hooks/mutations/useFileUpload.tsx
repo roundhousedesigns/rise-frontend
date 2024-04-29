@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_PROFILE } from '../queries/useUserProfile';
+import { QUERY_PROFILE } from '@hooks/queries/useUserProfile';
 
 const UPLOAD_FILE_MUTATION = gql`
 	mutation UploadFileMutation($file: Upload!, $name: String!, $userId: ID!) {

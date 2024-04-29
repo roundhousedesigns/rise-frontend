@@ -1,11 +1,11 @@
 import { Button, Link, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
-import SettingsSection from '@/components/common/SettingsSection';
+import ChangePasswordView from '@views/ChangePasswordView';
+import ChangeEmailView from '@views/ChangeEmailView';
+import SettingsSection from '@components/common/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
-import { SettingsModal } from '@/components/common/SettingsModal';
-import ChangePasswordView from './ChangePasswordView';
-import ChangeEmailView from './ChangeEmailView';
+import { SettingsModal } from '@components/common/SettingsModal';
 // import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 export default function SettingsView() {

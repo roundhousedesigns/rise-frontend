@@ -31,7 +31,7 @@ import useDeleteSavedSearch from '@hooks/mutations/useDeleteSavedSearch';
 import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
-import LinkWithIcon from './common/LinkWithIcon';
+import LinkWithIcon from '@common/LinkWithIcon';
 
 interface Props {
 	id?: number;
