@@ -10,12 +10,13 @@ import {
 	Heading,
 	useMediaQuery,
 	Wrap,
+	Skeleton,
 } from '@chakra-ui/react';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useChangeProfileSlug from '@hooks/mutations/useChangeProfileSlug';
 import TextInput from '@common/inputs/TextInput';
-import { FiCheck, FiClipboard } from 'react-icons/fi';
+import { FiCheck, FiCopy } from 'react-icons/fi';
 
 export default function ChangeProfileUrlView() {
 	const { loggedInId: userId, loggedInSlug } = useViewer();
@@ -84,7 +85,7 @@ export default function ChangeProfileUrlView() {
 				toast({
 					title: 'Bookmarked!',
 					position: 'top',
-					description: 'Your profile link has been updated.',
+					description: 'Your handle has been updated.',
 					status: 'success',
 					duration: 3000,
 					isClosable: true,
@@ -97,10 +98,11 @@ export default function ChangeProfileUrlView() {
 
 	return (
 		<Box borderRadius='lg' w='full'>
-			<Flex mt={2} gap={4} alignItems='flex-start' flexWrap='wrap' justifyContent='space-between'>
-				<Box flex='1 1 auto'>
+			<Flex mt={2} gap={8} alignItems='center' flexWrap='wrap' justifyContent='space-between'>
+				<Box flex='1 0 auto'>
 					<form onSubmit={handleSubmit}>
 						<Heading variant='contentSubtitle'>Handle</Heading>
+						<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
 						<Wrap>
 							<TextInput
 								value={slug}
@@ -137,23 +139,24 @@ export default function ChangeProfileUrlView() {
 					</form>
 				</Box>
 
-				<Box opacity={hasEditedSlug ? 0.5 : 1} transition='opacity 300ms ease' flex='1 1 auto'>
-					<Heading variant='contentSubtitle' mt={0}>
-						Your profile link:
-					</Heading>
-					<Button
-						mt={0}
-						isDisabled={!!hasEditedSlug}
-						title='Copy profile URL'
-						colorScheme='yellow'
-						leftIcon={hasCopied ? <FiCheck /> : <FiClipboard />}
-						onClick={onCopy}
-						maxW='100%'
-						overflow='hidden'
-					>
-						{isLargerThanMd ? profileUrl : 'Copy'}
-					</Button>
-					<Text variant='helperText'>Click to copy</Text>
+				<Box flex='auto'>
+					<Text fontSize='sm'>
+						{hasEditedSlug
+							? 'Save your changes to update your profile URL.'
+							: 'Your current profile URL is:'}
+					</Text>
+					<Skeleton isLoaded={!hasEditedSlug}>
+						<Button
+							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
+							title='Copy profile URL'
+							onClick={onCopy}
+							maxW='100%'
+							colorScheme='yellow'
+							overflow='hidden'
+						>
+							{profileUrl}
+						</Button>
+					</Skeleton>
 				</Box>
 			</Flex>
 		</Box>

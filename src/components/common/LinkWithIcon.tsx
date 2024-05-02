@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon as ChakraIcon, Link } from '@chakra-ui/react';
+import { Icon, Flex, Link, Text } from '@chakra-ui/react';
 
 interface Props {
 	href?: string;
@@ -25,8 +25,6 @@ export default function LinkWithIcon({
 	iconProps,
 	...props
 }: Props): JSX.Element {
-	const Icon = () => <ChakraIcon as={icon} mr={2} pos='relative' top='3px' {...iconProps} />;
-
 	return (
 		<Link
 			href={href ? href : undefined}
@@ -36,9 +34,10 @@ export default function LinkWithIcon({
 			isExternal={!!isExternal}
 			{...props}
 		>
-			{iconSide === 'left' ? <Icon /> : false}
-			{children}
-			{iconSide === 'right' ? <Icon /> : false}
+			<Flex alignItems='center' flexDirection={iconSide === 'left' ? 'row' : 'row-reverse'} gap={2}>
+				<Icon as={icon} pos='relative' {...iconProps} />
+				<Text m={0}>{children}</Text>
+			</Flex>
 		</Link>
 	);
 }

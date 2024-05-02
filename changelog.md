@@ -9,6 +9,7 @@ with 1.0.0beta.
 - Improve: Default link color is now the brand blue.
 - Improve: Link underline hover transition.
 - Improve: Clean up imports.
+- Improve: Profile URL/handle interface and messaging.
 
 ## \[1.1.5] - 2024-04-22
 

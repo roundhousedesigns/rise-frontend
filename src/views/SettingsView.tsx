@@ -61,7 +61,7 @@ export default function SettingsView() {
 				</Flex>
 			</SettingsSection>
 
-			<SettingsSection title='Your profile link'>
+			<SettingsSection title='Profile'>
 				<ChangeProfileSlugView />
 			</SettingsSection>
 
