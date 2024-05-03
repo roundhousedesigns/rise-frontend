@@ -10,6 +10,7 @@ with 1.0.0beta.
 - Improve: Link underline hover transition.
 - Improve: Clean up imports.
 - Improve: Profile URL/handle interface and messaging.
+- Improve: Minor UI improvements and nudges
 
 ## \[1.1.5] - 2024-04-22
 

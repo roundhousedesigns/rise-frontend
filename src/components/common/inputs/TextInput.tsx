@@ -32,6 +32,14 @@ interface Props {
 	[prop: string]: any;
 }
 
+function CharCount({ length, maxLength }: { length: number; maxLength: number }): JSX.Element {
+	return (
+		<Text m={0} variant='helperText' _dark={{ color: 'text.dark', opacity: 0.8 }}>
+			{`${length}/${maxLength}`}
+		</Text>
+	);
+}
+
 const TextInput = forwardRef(
 	(
 		{
@@ -56,13 +64,6 @@ const TextInput = forwardRef(
 		const inputVariant = variant ? variant : 'filled';
 
 		const HelperTextFormatted = () => {
-			let lengthText = '';
-
-			if (maxLength) {
-				const length = value ? value.length : 0;
-				lengthText = `${length}/${maxLength}`;
-			}
-
 			return (
 				<Flex
 					w='full'
@@ -74,16 +75,16 @@ const TextInput = forwardRef(
 					<Text m={0} variant='helperText'>
 						{helperText}
 					</Text>
-					<Text m={0} variant='helperText'>
+					{/* <Text m={0} variant='helperText'>
 						{lengthText}
-					</Text>
+					</Text> */}
 				</Flex>
 			);
 		};
 
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
-				<InputGroup>
+				<InputGroup position='relative'>
 					{leftElement && (
 						<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
 							{leftElement}
@@ -106,6 +107,13 @@ const TextInput = forwardRef(
 						maxLength={maxLength ? maxLength : undefined}
 						{...inputProps}
 					/>
+					{maxLength ? (
+						<Text position='absolute' right={2} top={2}>
+							<CharCount length={value ? value.length : 0} maxLength={maxLength} />
+						</Text>
+					) : (
+						false
+					)}
 				</InputGroup>
 				<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
 					{label ? (

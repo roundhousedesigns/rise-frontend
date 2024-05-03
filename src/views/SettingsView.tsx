@@ -78,7 +78,7 @@ export default function SettingsView() {
 					<Link href='mailto:support@risetheatre.org' display='inline'>
 						support@risetheatre.org
 					</Link>{' '}
-					to let us know, and we'll delete your profile permanently.
+					and let us know.
 				</Text>
 			</SettingsSection>
 		</Container>

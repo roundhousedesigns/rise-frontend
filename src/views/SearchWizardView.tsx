@@ -41,23 +41,23 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 	return (
 		<Stack direction='column' justifyContent='space-between' height='full'>
-			{savedSearches && savedSearches.length > 0 ? (
-				<Accordion allowToggle mb={4}>
-					<AccordionItem>
-						<h3>
-							<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
-								<Box as='span'>Your Searches</Box>
-								<AccordionIcon />
-							</AccordionButton>
-						</h3>
-						<AccordionPanel px={0}>
-							<SavedSearchItemList />
-						</AccordionPanel>
-					</AccordionItem>
-				</Accordion>
-			) : (
-				false
-			)}
+			<Accordion
+				allowToggle
+				mb={4}
+				defaultIndex={savedSearches && savedSearches.length > 0 ? 0 : undefined}
+			>
+				<AccordionItem>
+					<h3>
+						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
+							<Box as='span'>Your Saved Searches</Box>
+							<AccordionIcon />
+						</AccordionButton>
+					</h3>
+					<AccordionPanel px={0}>
+						<SavedSearchItemList />
+					</AccordionPanel>
+				</AccordionItem>
+			</Accordion>
 
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>

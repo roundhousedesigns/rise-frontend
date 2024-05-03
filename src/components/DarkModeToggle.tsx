@@ -36,16 +36,12 @@ export default function DarkModeToggle({
 }
 
 const Subtext = ({ colorMode }: { colorMode: string }) => {
-	return colorMode === 'dark' ? (
+	const text = colorMode === 'dark' ? 'Dark mode' : 'Light mode';
+
+	return (
 		<Text as='span'>
-			<Highlight query={['dark']} styles={{ bg: 'yellow.200', px: 1 }}>
-				Dark mode
-			</Highlight>
-		</Text>
-	) : (
-		<Text as='span'>
-			<Highlight query={['light']} styles={{ bg: 'yellow.200', px: 1 }}>
-				Light mode
+			<Highlight query={[colorMode]} styles={{ bg: 'brand.yellow', px: 1 }}>
+				{text}
 			</Highlight>
 		</Text>
 	);

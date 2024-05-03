@@ -8,15 +8,13 @@ import {
 	useClipboard,
 	useToast,
 	Heading,
-	useMediaQuery,
 	Wrap,
-	Skeleton,
 } from '@chakra-ui/react';
+import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useChangeProfileSlug from '@hooks/mutations/useChangeProfileSlug';
 import TextInput from '@common/inputs/TextInput';
-import { FiCheck, FiCopy } from 'react-icons/fi';
 
 export default function ChangeProfileUrlView() {
 	const { loggedInId: userId, loggedInSlug } = useViewer();
@@ -33,8 +31,6 @@ export default function ChangeProfileUrlView() {
 		changeProfileSlugMutation,
 		results: { loading: submitLoading },
 	} = useChangeProfileSlug();
-
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 
 	const newSlugIsClean = useValidateProfileSlug(slug);
 	const errorMessage = useErrorMessage(errorCode);
@@ -145,18 +141,19 @@ export default function ChangeProfileUrlView() {
 							? 'Save your changes to update your profile URL.'
 							: 'Your current profile URL is:'}
 					</Text>
-					<Skeleton isLoaded={!hasEditedSlug}>
+					<Box opacity={hasEditedSlug ? 0.8 : 1}>
 						<Button
 							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
 							title='Copy profile URL'
 							onClick={onCopy}
+							isDisabled={!!hasEditedSlug}
 							maxW='100%'
 							colorScheme='yellow'
 							overflow='hidden'
 						>
 							{profileUrl}
 						</Button>
-					</Skeleton>
+					</Box>
 				</Box>
 			</Flex>
 		</Box>

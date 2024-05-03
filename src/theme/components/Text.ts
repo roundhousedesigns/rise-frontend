@@ -20,8 +20,8 @@ const variants = {
 	helperText: defineStyle({
 		lineHeight: 'normal',
 		fontSize: '2xs',
-		letterSpacing: '0.5px',
-		opacity: 0.5,
+		letterSpacing: '0.8px',
+		opacity: 0.74,
 		_dark: {
 			color: 'text.light',
 		},
