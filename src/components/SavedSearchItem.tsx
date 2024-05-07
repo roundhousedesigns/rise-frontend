@@ -17,6 +17,7 @@ import {
 	Spacer,
 	StackItem,
 	Flex,
+	Box,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
@@ -145,20 +146,27 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		<>
 			<Stack w='auto' alignItems='space-between' {...props}>
 				<StackItem display='flex' alignItems='center' gap={1}>
-					<Text my={0} fontSize='lg'>
-						{isNamed ? (
-							<LinkWithIcon
-								onClick={handleEditClick}
-								icon={FiEdit2}
-								iconSide='right'
-								iconProps={{ boxSize: 3, mb: '2px', ml: 1 }}
-							>
-								{title}
-							</LinkWithIcon>
-						) : (
-							false
-						)}
-					</Text>
+					{isNamed ? (
+						<LinkWithIcon
+							onClick={handleEditClick}
+							icon={FiEdit2}
+							fontSize='lg'
+							my={0}
+							iconSide='left'
+							color='inherit'
+							borderBottomWidth='2px'
+							borderBottomStyle='dotted'
+							_light={{ borderBottomColor: 'gray.300' }}
+							_dark={{ borderBottomColor: 'gray.600' }}
+							textDecoration='none !important'
+							_hover={{ borderBottom: '1px  dotted brand.blue' }}
+							iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
+						>
+							{title}
+						</LinkWithIcon>
+					) : (
+						false
+					)}
 					<Spacer />
 					<StackItem as={Wrap} alignItems='center' spacing={1}>
 						{id ? (
@@ -170,7 +178,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								size='sm'
 								onClick={handleSearchClick}
 							>
-								Search
+								Search again
 							</Button>
 						) : (
 							false
@@ -193,7 +201,12 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
-						<SearchParamTags termIds={termIds} termItems={terms} />
+						<Box>
+							<Text variant='helperText' fontSize='xs'>
+								You searched for:
+							</Text>
+							<SearchParamTags termIds={termIds} termItems={terms} />
+						</Box>
 						{!isNamed ? (
 							<Button
 								colorScheme='blue'

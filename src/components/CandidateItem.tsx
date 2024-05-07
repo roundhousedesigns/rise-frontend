@@ -1,6 +1,5 @@
-import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Tooltip, Icon } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading} from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { FiThumbsUp } from 'react-icons/fi';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
