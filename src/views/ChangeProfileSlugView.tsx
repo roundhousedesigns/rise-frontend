@@ -107,7 +107,7 @@ export default function ChangeProfileUrlView() {
 								maxW='300px'
 								label='New profile tag'
 								labelHidden
-								helperText='Letters, numbers, dashes, and underscores only.'
+								helperText='Letters, numbers, dashes, and underscores.'
 								error={errorMessage}
 								isRequired
 								maxLength={20}

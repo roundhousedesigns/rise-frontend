@@ -15,7 +15,7 @@ import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '@hooks/queries/useViewer';
 import useUserNotices from '@hooks/queries/useUserNotices';
-import ShortPost from '@common/ShortPost';
+import ShortPost from '@components/ShortPost';
 
 export default function DashboardView() {
 	const { loggedInSlug } = useViewer();

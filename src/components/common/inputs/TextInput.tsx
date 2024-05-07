@@ -1,6 +1,5 @@
 import { ChangeEvent, ForwardedRef, forwardRef, ReactNode } from 'react';
 import {
-	Box,
 	Flex,
 	FormControl,
 	FormErrorMessage,
@@ -33,14 +32,6 @@ interface Props {
 	[prop: string]: any;
 }
 
-function CharCount({ length, maxLength }: { length: number; maxLength: number }): JSX.Element {
-	return (
-		<Text m={0} variant='helperText' _dark={{ color: 'text.dark', opacity: 0.8 }}>
-			{`${length}/${maxLength}`}
-		</Text>
-	);
-}
-
 const TextInput = forwardRef(
 	(
 		{
@@ -63,22 +54,6 @@ const TextInput = forwardRef(
 		forwardedRef: ForwardedRef<HTMLInputElement>
 	) => {
 		const inputVariant = variant ? variant : 'filled';
-
-		const HelperTextFormatted = () => {
-			return (
-				<Flex
-					w='full'
-					justifyContent='space-between'
-					alignItems='center'
-					lineHeight='normal'
-					fontSize='xs'
-				>
-					<Text m={0} variant='helperText'>
-						{helperText}
-					</Text>
-				</Flex>
-			);
-		};
 
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
@@ -106,9 +81,11 @@ const TextInput = forwardRef(
 						{...inputProps}
 					/>
 					{maxLength ? (
-						<Box position='absolute' right={2} top={2}>
-							<CharCount length={value ? value.length : 0} maxLength={maxLength} />
-						</Box>
+						<Flex position='absolute' right={1} top={0} height='full' alignItems='flex-end'>
+							<Text m={0} variant='helperText' _dark={{ color: 'text.dark', opacity: 0.8 }}>
+								{`${value ? value.length : 0}/${maxLength}`}
+							</Text>
+						</Flex>
 					) : (
 						false
 					)}
@@ -136,7 +113,17 @@ const TextInput = forwardRef(
 					<Wrap w='full' alignItems='flex-start'>
 						{helperText ? (
 							<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
-								<HelperTextFormatted />
+								<Flex
+									w='full'
+									justifyContent='space-between'
+									alignItems='center'
+									lineHeight='normal'
+									fontSize='xs'
+								>
+									<Text m={0} variant='helperText'>
+										{helperText}
+									</Text>
+								</Flex>
 							</FormHelperText>
 						) : (
 							false

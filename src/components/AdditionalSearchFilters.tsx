@@ -4,8 +4,8 @@ import { isEmpty } from 'lodash';
 import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
-import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
+import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 
 export default function AdditionalSearchFilters() {
 	const {

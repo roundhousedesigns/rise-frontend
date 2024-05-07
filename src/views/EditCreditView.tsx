@@ -9,9 +9,9 @@ import useLazyPositions from '@hooks/queries/useLazyPositions';
 import useLazyRelatedSkills from '@hooks/queries/useLazyRelatedSkills';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateCredit from '@hooks/mutations/useUpdateCredit';
-import ProfileCheckboxGroup from '@common/ProfileCheckboxGroup';
+import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
-import ProfileRadioGroup from '@common/ProfileRadioGroup';
+import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import EditCreditButtons from '@components/EditCreditButtons';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
