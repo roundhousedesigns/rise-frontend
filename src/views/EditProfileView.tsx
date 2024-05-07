@@ -26,6 +26,8 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
+	OrderedList,
+	ListItem,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -845,6 +847,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								<Flex justifyContent='flex-start' gap={4}>
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
+									</Card>
+									<Card py={2} my={0}>
+										<Text>Availability interface</Text>
+										<OrderedList>
+											<ListItem>
+												Add new range
+												<OrderedList>
+													<ListItem>Select dates (popover)</ListItem>
+													<ListItem>Save</ListItem>
+												</OrderedList>
+												<ListItem>Edit range</ListItem>
+												<ListItem>Delete range</ListItem>
+											</ListItem>
+										</OrderedList>
 									</Card>
 								</Flex>
 							</AccordionPanel>
