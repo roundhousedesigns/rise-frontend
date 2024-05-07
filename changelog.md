@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.6] - Unreleased
+## \[1.1.6] - 2024-05-07
 
 - Add: Change email address. **Requires backend version 1.1.3** (no tag yet)
 - Improve: Default link color is now the brand blue.
