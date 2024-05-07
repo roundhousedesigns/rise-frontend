@@ -26,6 +26,8 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
+	OrderedList,
+	ListItem,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -64,7 +66,6 @@ import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
 import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
-import DateRangePicker from '@common/inputs/DateRangePicker';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
@@ -848,7 +849,18 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
 									<Card py={2} my={0}>
-										<DateRangePicker />
+										<Text>Availability interface</Text>
+										<OrderedList>
+											<ListItem>
+												Add new range
+												<OrderedList>
+													<ListItem>Select dates (popover)</ListItem>
+													<ListItem>Save</ListItem>
+												</OrderedList>
+												<ListItem>Edit range</ListItem>
+												<ListItem>Delete range</ListItem>
+											</ListItem>
+										</OrderedList>
 									</Card>
 								</Flex>
 							</AccordionPanel>
