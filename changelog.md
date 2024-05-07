@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.7] - Unreleased
+
+- Improve: @common component file organization
+
 ## \[1.1.6] - 2024-05-07
 
 - Add: Change email address. **Requires backend version 1.1.3** (no tag yet)
