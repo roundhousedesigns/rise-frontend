@@ -17,6 +17,7 @@ export const QUERY_CANDIDATES = gql`
 				selfTitle
 				image
 				slug
+				lookingForWork
 			}
 		}
 	}

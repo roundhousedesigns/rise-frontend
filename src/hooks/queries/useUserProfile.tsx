@@ -29,6 +29,7 @@ export const QUERY_PROFILE = gql`
 			linkedin
 			facebook
 			website: websiteUrl
+			lookingForWork
 			locations {
 				id: databaseId
 			}

@@ -48,6 +48,7 @@ export interface UserProfileParams {
 	instagram?: string;
 	facebook?: string;
 	website?: string;
+	lookingForWork?: boolean;
 	mediaVideo1?: string;
 	mediaVideo2?: string;
 	mediaImage1?: string;
@@ -75,6 +76,7 @@ export interface CandidateData {
 	lastName?: string;
 	selfTitle?: string;
 	image?: string;
+	lookingForWork?: boolean;
 }
 
 /**

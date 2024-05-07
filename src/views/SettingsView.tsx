@@ -6,6 +6,7 @@ import SettingsSection from '@components/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
 import { SettingsModal } from '@components/SettingsModal';
+// import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 export default function SettingsView() {
 	const {
