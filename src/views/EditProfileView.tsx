@@ -847,9 +847,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
-									{/* <Card py={2} my={0}>
-										<LookingForWorkToggle showHelperText showLabel />
-									</Card> */}
 								</Flex>
 							</AccordionPanel>
 						</AccordionItem>

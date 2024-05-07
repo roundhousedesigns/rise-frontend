@@ -67,7 +67,6 @@ export default function SettingsView() {
 
 			<SettingsSection title='Options'>
 				<DisableProfileToggle showHelperText={true} size='lg' />
-				{/* <LookingForWorkToggle showHelperText={true} size='lg' /> */}
 				<DarkModeToggle showHelperText={true} size='lg' />
 			</SettingsSection>
 
