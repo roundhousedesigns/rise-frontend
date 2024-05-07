@@ -62,18 +62,18 @@ import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
+import ResumePreviewModal from '@common/ResumePreviewModal';
+import ProfileStackItem from '@common/ProfileStackItem';
+import DateRangePicker from '@common/inputs/DateRangePicker';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
-import ResumePreviewModal from '@common/ResumePreviewModal';
-import ProfileStackItem from '@common/ProfileStackItem';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
-// import LookingForWorkToggle from '@components/LookingForWorkToggle';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -846,6 +846,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								<Flex justifyContent='flex-start' gap={4}>
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
+									</Card>
+									<Card py={2} my={0}>
+										<DateRangePicker />
 									</Card>
 								</Flex>
 							</AccordionPanel>
