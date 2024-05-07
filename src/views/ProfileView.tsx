@@ -21,8 +21,6 @@ import {
 	useBreakpointValue,
 	Spacer,
 	IconButton,
-	AvatarBadge,
-	Tooltip,
 } from '@chakra-ui/react';
 import {
 	FiMail,
@@ -33,7 +31,6 @@ import {
 	FiLink,
 	FiMap,
 	FiDownload,
-	FiThumbsUp,
 	FiExternalLink,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
@@ -84,7 +81,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
-		lookingForWork,
 		socials,
 		unions,
 		partnerDirectories,
@@ -251,17 +247,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										/>
 									</Box>
 								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2}>
-										{lookingForWork ? (
-											<Tooltip hasArrow openDelay={500} label='Looking for work'>
-												<AvatarBadge boxSize={12} bgColor='green.400'>
-													<Icon as={FiThumbsUp} boxSize={4} />
-												</AvatarBadge>
-											</Tooltip>
-										) : (
-											false
-										)}
-									</Avatar>
+									<Avatar size='2xl' name={profile.fullName()} mx={2} />
 								)
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
