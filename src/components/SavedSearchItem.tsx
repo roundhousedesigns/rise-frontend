@@ -50,8 +50,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	// const { openDrawer } = useContext(SearchDrawerContext);
-
 	const isNamed = title && title !== '';
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
@@ -94,6 +92,11 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		editOnOpen();
+	};
+
+	const handleEditOnClose = () => {
+		setSaveSearchFieldText(title ? title : '');
+		editOnClose();
 	};
 
 	const handleRenameSubmit = (e: FormEvent) => {
@@ -156,10 +159,11 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 							color='inherit'
 							borderBottomWidth='2px'
 							borderBottomStyle='dotted'
-							_light={{ borderBottomColor: 'gray.300' }}
-							_dark={{ borderBottomColor: 'gray.600' }}
 							textDecoration='none !important'
+							w='full'
 							_hover={{ borderBottom: '1px  dotted brand.blue' }}
+							_light={{ borderBottomColor: 'gray.300', _hover: { borderBottomColor: 'gray.400' } }}
+							_dark={{ borderBottomColor: 'gray.600', _hover: { borderBottomColor: 'gray.400' } }}
 							iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 						>
 							{title}
@@ -226,18 +230,22 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 			</Stack>
 
-			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={editOnClose}>
+			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
+					<ModalHeader pb={2}>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
 
 					<ModalBody pb={6}>
-						<Text>Give this search a descriptive name to easily re-run this search.</Text>
+						<Text fontSize='sm' mt={0}>
+							Give this search a short, descriptive name to easily run it again.
+						</Text>
 
 						<form id='rename-search' onSubmit={handleRenameSubmit}>
 							<FormControl>
-								<FormLabel>Name</FormLabel>
+								<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
+									Name
+								</FormLabel>
 								<TextInput
 									name='title'
 									placeholder='My search'
@@ -246,10 +254,10 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									ref={initialSaveModalRef}
 								/>
 							</FormControl>
-							<Button colorScheme='blue' mr={3} type='submit'>
+							<Button colorScheme='blue' mr={3} type='submit' isDisabled={saveSearchFieldText === title}>
 								Save
 							</Button>
-							<Button onClick={editOnClose}>Cancel</Button>
+							<Button onClick={handleEditOnClose} colorScheme='red'>Cancel</Button>
 						</form>
 					</ModalBody>
 				</ModalContent>

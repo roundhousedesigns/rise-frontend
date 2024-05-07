@@ -14,7 +14,7 @@ interface Props {
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { loggedInId } = useViewer();
 
-	const { id, image, slug, selfTitle, lookingForWork } = candidate || {};
+	const { id, image, slug, selfTitle } = candidate || {};
 
 	if (!id) return null;
 
@@ -63,17 +63,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
-					>
-						{lookingForWork ? (
-							<Tooltip hasArrow openDelay={500} label='Looking for work'>
-								<AvatarBadge boxSize={7} bgColor='green.400'>
-									<Icon as={FiThumbsUp} boxSize={3} />
-								</AvatarBadge>
-							</Tooltip>
-						) : (
-							false
-						)}
-					</Avatar>
+					/>
 					<Heading
 						as='h3'
 						fontSize='lg'
