@@ -2,7 +2,7 @@ import { Button, Link, Text, useDisclosure, Container, Flex, Box } from '@chakra
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeEmailView from '@views/ChangeEmailView';
-import SettingsSection from '@components/common/SettingsSection';
+import SettingsSection from '@/components/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
 import { SettingsModal } from '@components/common/SettingsModal';

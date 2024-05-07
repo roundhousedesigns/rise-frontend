@@ -1,5 +1,6 @@
 import { ChangeEvent, ForwardedRef, forwardRef, ReactNode } from 'react';
 import {
+	Box,
 	Flex,
 	FormControl,
 	FormErrorMessage,
@@ -75,9 +76,6 @@ const TextInput = forwardRef(
 					<Text m={0} variant='helperText'>
 						{helperText}
 					</Text>
-					{/* <Text m={0} variant='helperText'>
-						{lengthText}
-					</Text> */}
 				</Flex>
 			);
 		};
@@ -108,9 +106,9 @@ const TextInput = forwardRef(
 						{...inputProps}
 					/>
 					{maxLength ? (
-						<Text position='absolute' right={2} top={2}>
+						<Box position='absolute' right={2} top={2}>
 							<CharCount length={value ? value.length : 0} maxLength={maxLength} />
-						</Text>
+						</Box>
 					) : (
 						false
 					)}
