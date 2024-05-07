@@ -6,6 +6,7 @@ with 1.0.0beta.
 ## \[1.1.7] - Unreleased
 
 - Improve: @common component file organization
+- Improve: Minor UI fixes and improvements
 
 ## \[1.1.6] - 2024-05-07
 

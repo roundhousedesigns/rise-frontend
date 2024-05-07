@@ -7,6 +7,8 @@ export interface WPItemParams {
 	id: number;
 	name?: string;
 	slug?: string;
+	title?: string;
+	content?: string;
 	author?: number;
 	parentId?: number;
 	parent?: any;
