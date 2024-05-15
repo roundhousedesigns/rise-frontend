@@ -40,6 +40,7 @@ export interface UserProfileParams {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
+	blockedDates?: DateRange[];
 	resume?: string;
 	willTravel?: boolean | string | number | null;
 	willTour?: boolean | string | number | null;
@@ -278,4 +279,12 @@ export interface ProfileNoticeAlert {
 		};
 		element?: JSX.Element;
 	};
+}
+
+/**
+ * The data shape for a blocked date range.
+ */
+export interface DateRange {
+	start: Date;
+	end: Date;
 }

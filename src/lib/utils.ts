@@ -4,7 +4,7 @@
 
 import { isEqual } from 'lodash';
 import { Credit, PersonalLinks, UserProfile, WPItem } from '@lib/classes';
-import { SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
+import { DateRange, SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
 import { passwordStrength } from 'check-password-strength';
 const { VITE_FRONTEND_URL } = import.meta.env;
@@ -104,7 +104,7 @@ export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
  * @param {UserProfile} profile The user profile to preprae.
  * @returns {Object} The prepared user profile.
  */
-export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
+export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 	// Strip unwanted fields from the payload
 	const {
 		slug,
@@ -121,7 +121,7 @@ export const prepareUserProfileForGraphQL = (profile: UserProfile): object => {
 	} = profile;
 
 	return sanitized;
-};
+}
 
 /**
  * Sort two arrays and compare them.
@@ -221,13 +221,13 @@ export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
  * @param item The item to toggle.
  * @returns The new array.
  */
-export const toggleArrayItem = (array: any[], item: any): any[] => {
+export function toggleArrayItem(array: any[], item: any): any[] {
 	if (array.includes(item)) {
 		return array.filter((i) => i !== item);
 	}
 
 	return [...array, item];
-};
+}
 
 /**
  * Extract the IDs of terms from a JSON string.
@@ -374,7 +374,7 @@ export function deleteCookie(name: string): void {
 }
 
 /**
- * Prepare a collection of Credit objects from as raw array of GQL nodes.
+ * Prepare a collection of Credit objects from a raw array of GQL nodes.
  *
  * @param nodes The raw array of GQL nodes to prepare.
  * @returns An array of Credit objects.
@@ -425,6 +425,16 @@ export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
 	});
 
 	return credits;
+}
+
+/**
+ * Generates an array of DateRange objects from the provided array of GraphQL nodes.
+ *
+ * @param {object[]} nodes - An array of GraphQL nodes to process.
+ * @return {DateRange[]} An array of DateRange objects prepared from the GraphQL nodes.
+ */
+export function prepareBlockedDatesFromGQLNodes(nodes: object[]): DateRange[] {
+	// TODO implement
 }
 
 /**

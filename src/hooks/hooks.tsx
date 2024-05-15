@@ -124,6 +124,7 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 		'credits',
 		'image',
 		'resume',
+		'blockedDates',
 		'mediaImage1',
 		'mediaImage2',
 		'mediaImage3',

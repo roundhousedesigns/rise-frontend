@@ -26,8 +26,8 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
-	OrderedList,
 	ListItem,
+	List,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -49,10 +49,12 @@ import {
 	FiUser,
 	FiImage,
 	FiTrash2,
+	FiDelete,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
 import { sortCreditsByIndex } from '@lib/utils';
+import { DateRange } from '@lib/types';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
@@ -64,7 +66,6 @@ import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
-import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
@@ -75,6 +76,8 @@ import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
+import ResumePreviewModal from '@components/ResumePreviewModal';
+import AddBlockedDateRangeModal from '@/components/AddBlockedDateRangeModal';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -97,7 +100,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		lastName,
 		pronouns,
 		selfTitle,
+		email,
+		resume,
 		image,
+		description,
+		blockedDates,
 		homebase,
 		website,
 		socials,
@@ -105,10 +112,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		education,
 		willTravel,
 		willTour,
-		description,
 		credits,
-		email,
-		resume,
 		phone,
 		unions,
 		partnerDirectories,
@@ -164,6 +168,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
+	/**
+	 * Modals
+	 */
+	const {
+		isOpen: blockedDateModalIsOpen,
+		onOpen: blockedDateModalOnOpen,
+		onClose: blockedDateModalOnClose,
+	} = useDisclosure();
 	const {
 		isOpen: creditModalIsOpen,
 		onOpen: creditModalOnOpen,
@@ -251,6 +263,46 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			setCreditsSorted([]);
 		};
 	}, [credits]);
+
+	/**
+	 * Adds a new date range to the blocked dates list.
+	 *
+	 * @return {void} This function does not return anything.
+	 */
+	// const addBlockedDateRange = () => {
+	// 	// DUMMY
+	// 	const newRange: DateRange = {
+	// 		start: new Date(
+	// 			new Date().getFullYear(),
+	// 			new Date().getMonth(),
+	// 			new Date().getDate() + Math.floor(Math.random() * (365 - 1) + 1)
+	// 		),
+	// 		end: new Date(
+	// 			new Date().getFullYear(),
+	// 			new Date().getMonth(),
+	// 			new Date().getDate() + Math.floor(Math.random() * (365 - 1) + 1)
+	// 		),
+	// 	};
+
+	// 	// Add the new range to the front of the list.
+	// 	const newRanges = [...blockedDates];
+	// 	newRanges.push(newRange);
+
+	// 	// Update the state.
+	// 	setBlockedDates(newRanges);
+	// };
+
+	/**
+	 * Removes a date range from the blocked dates list at the specified index.
+	 *
+	 * @param {number} index - The index of the date range to remove.
+	 * @return {void} This function does not return anything.
+	 */
+	const handleRemoveDateRange = (index: number) => {
+		// const newRanges = [...blockedDates];
+		// newRanges.splice(index, 1);
+		// setBlockedDates(newRanges);
+	};
 
 	// Moves a credit index up by one
 	const handleCreditMoveUp = (index: number) => {
@@ -829,6 +881,15 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		);
 	};
 
+	/**
+	 * Converts a Date object to a string with the format "YYYY-MM-DD".
+	 */
+	const dateRangeString = (date: DateRange): string => {
+		const startDate = date.start.toISOString().slice(0, 10);
+		const endDate = date.end ? date.end.toISOString().slice(0, 10) : null;
+		return endDate ? `${startDate} - ${endDate}` : startDate;
+	};
+
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
@@ -849,18 +910,33 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
 									<Card py={2} my={0}>
-										<Text>Availability interface</Text>
-										<OrderedList>
-											<ListItem>
-												Add new range
-												<OrderedList>
-													<ListItem>Select dates (popover)</ListItem>
-													<ListItem>Save</ListItem>
-												</OrderedList>
-												<ListItem>Edit range</ListItem>
-												<ListItem>Delete range</ListItem>
-											</ListItem>
-										</OrderedList>
+										<List flexDirection='column' gap={2}>
+											{blockedDates && blockedDates.length
+												? blockedDates.map((dates, index) => {
+														return (
+															<ListItem key={index}>
+																<Flex alignItems='center' justifyContent='space-between' gap={2}>
+																	<Text>{dateRangeString(dates)}</Text>
+																	<IconButton
+																		onClick={() => handleRemoveDateRange(index)}
+																		icon={<FiDelete />}
+																		size='sm'
+																		aria-label='Remove date range'
+																		colorScheme='red'
+																	/>
+																</Flex>
+															</ListItem>
+														);
+												  })
+												: false}
+											<Button onClick={blockedDateModalOnOpen} leftIcon={<FiPlus />} size='sm'>
+												Add New Range
+											</Button>
+											<AddBlockedDateRangeModal
+												isOpen={blockedDateModalIsOpen}
+												onClose={blockedDateModalOnClose}
+											/>
+										</List>
 									</Card>
 								</Flex>
 							</AccordionPanel>

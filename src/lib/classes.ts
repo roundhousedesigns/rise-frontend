@@ -7,8 +7,9 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
+	DateRange,
 } from '@lib/types';
-import { decodeString } from '@lib/utils';
+import { decodeString, prepareBlockedDatesFromGQLNodes } from '@lib/utils';
 
 /**
  * A basic user.
@@ -81,6 +82,7 @@ export class UserProfile extends User {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
+	blockedDates?: DateRange[];
 	resume?: string;
 	willTravel = false;
 	willTour = false;
@@ -117,6 +119,7 @@ export class UserProfile extends User {
 			pronouns,
 			phone,
 			description,
+			blockedDates,
 			resume,
 			willTravel,
 			willTour,
@@ -166,6 +169,10 @@ export class UserProfile extends User {
 		this.mediaImage4 = mediaImage4;
 		this.mediaImage5 = mediaImage5;
 		this.mediaImage6 = mediaImage6;
+
+		if (blockedDates && blockedDates.length > 0) {
+			this.blockedDates = prepareBlockedDatesFromGQLNodes(blockedDates);
+		}
 
 		if (willTravel) {
 			this.willTravel = true;
@@ -239,7 +246,7 @@ export class UserProfile extends User {
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
 		const ids = nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
 
-		// return the IDs sorted in ascending order (aids in profile edited/united comparison)
+		// return the IDs sorted in ascending order (aids in profile edited/unedited comparison)
 		return ids.sort((a, b) => a - b);
 	}
 }
