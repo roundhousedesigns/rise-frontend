@@ -120,11 +120,11 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 	if (origProfile === null) return;
 
 	const ignoreFields = [
-		'slug',
 		'credits',
+		'unavailableDateRanges',
+		'slug',
 		'image',
 		'resume',
-		'blockedDates',
 		'mediaImage1',
 		'mediaImage2',
 		'mediaImage3',

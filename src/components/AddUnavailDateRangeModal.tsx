@@ -10,7 +10,7 @@ interface Props {
 	onClose: () => void;
 }
 
-export default function AddBlockedDateRangeModal({ isOpen, onClose }: Props): JSX.Element {
+export default function AddUnavailDateRangeModal({ isOpen, onClose }: Props): JSX.Element {
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside' size='4xl'>
 			<ModalOverlay />

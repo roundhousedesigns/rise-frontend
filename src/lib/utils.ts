@@ -3,8 +3,13 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, UserProfile, WPItem } from '@lib/classes';
-import { DateRange, SearchFilterSet, SearchFilterSetRaw, SearchResultCandidate } from '@lib/types';
+import { Credit, PersonalLinks, UnavailableDateRange, UserProfile, WPItem } from '@lib/classes';
+import {
+	DateRangeParams,
+	SearchFilterSet,
+	SearchFilterSetRaw,
+	SearchResultCandidate,
+} from '@lib/types';
 import Cookies from 'js-cookie';
 import { passwordStrength } from 'check-password-strength';
 const { VITE_FRONTEND_URL } = import.meta.env;
@@ -428,13 +433,13 @@ export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
 }
 
 /**
- * Generates an array of DateRange objects from the provided array of GraphQL nodes.
+ * Generates an array of UnavailableDateRange objects from the provided array of GraphQL nodes.
  *
  * @param {object[]} nodes - An array of GraphQL nodes to process.
- * @return {DateRange[]} An array of DateRange objects prepared from the GraphQL nodes.
+ * @return {UnavailableDateRange[]} An array of UnavailableDateRange objects prepared from the GraphQL nodes.
  */
-export function prepareBlockedDatesFromGQLNodes(nodes: object[]): DateRange[] {
-	// TODO implement
+export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): UnavailableDateRange[] {
+	return nodes.map((node: DateRangeParams) => new UnavailableDateRange(node));
 }
 
 /**

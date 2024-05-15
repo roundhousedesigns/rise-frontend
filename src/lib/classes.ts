@@ -7,9 +7,9 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
-	DateRange,
+	DateRangeParams,
 } from '@lib/types';
-import { decodeString, prepareBlockedDatesFromGQLNodes } from '@lib/utils';
+import { decodeString } from '@lib/utils';
 
 /**
  * A basic user.
@@ -82,7 +82,6 @@ export class UserProfile extends User {
 	pronouns?: string;
 	phone?: string;
 	description?: string;
-	blockedDates?: DateRange[];
 	resume?: string;
 	willTravel = false;
 	willTour = false;
@@ -104,9 +103,14 @@ export class UserProfile extends User {
 	mediaImage4?: string;
 	mediaImage5?: string;
 	mediaImage6?: string;
+	unavailableDateRanges: UnavailableDateRange[] = [];
 	credits: Credit[] = [];
 
-	constructor(userParams?: UserProfileParams, credits?: CreditParams[]) {
+	constructor(
+		userParams?: UserProfileParams,
+		unavailableDateRanges?: DateRangeParams[],
+		credits?: CreditParams[]
+	) {
 		const {
 			id,
 			slug,
@@ -119,7 +123,6 @@ export class UserProfile extends User {
 			pronouns,
 			phone,
 			description,
-			blockedDates,
 			resume,
 			willTravel,
 			willTour,
@@ -169,10 +172,6 @@ export class UserProfile extends User {
 		this.mediaImage4 = mediaImage4;
 		this.mediaImage5 = mediaImage5;
 		this.mediaImage6 = mediaImage6;
-
-		if (blockedDates && blockedDates.length > 0) {
-			this.blockedDates = prepareBlockedDatesFromGQLNodes(blockedDates);
-		}
 
 		if (willTravel) {
 			this.willTravel = true;
@@ -228,6 +227,12 @@ export class UserProfile extends User {
 
 		if (credits && credits.length > 0) {
 			this.credits = credits.map((credit) => new Credit(credit));
+		}
+
+		if (unavailableDateRanges && unavailableDateRanges.length > 0) {
+			this.unavailableDateRanges = unavailableDateRanges.map((dates) => {
+				return new UnavailableDateRange(dates);
+			});
 		}
 	}
 
@@ -369,6 +374,25 @@ export class Credit implements CreditParams {
 			departments: positions.departments,
 			jobs: positions.jobs,
 		};
+	}
+}
+
+/**
+ * A range of dates that the Candidate is unavailable for work.
+ */
+export class UnavailableDateRange {
+	id: number;
+	start: Date;
+	end: Date | undefined;
+
+	constructor(params: DateRangeParams) {
+		this.id = params.id ? Number(params.id) : 0;
+		this.start = typeof params.start === 'string' ? new Date(params.start) : params.start;
+		this.end = params.end
+			? typeof params.end === 'string'
+				? new Date(params.end)
+				: params.end
+			: undefined;
 	}
 }
 

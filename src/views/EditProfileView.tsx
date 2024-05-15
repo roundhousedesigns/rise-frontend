@@ -54,8 +54,7 @@ import {
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
 import { sortCreditsByIndex } from '@lib/utils';
-import { DateRange } from '@lib/types';
-import { Credit, UserProfile } from '@lib/classes';
+import { Credit, UnavailableDateRange, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
@@ -77,7 +76,7 @@ import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
-import AddBlockedDateRangeModal from '@/components/AddBlockedDateRangeModal';
+import AddUnavailDateRangeModal from '@components/AddUnavailDateRangeModal';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -104,7 +103,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		resume,
 		image,
 		description,
-		blockedDates,
 		homebase,
 		website,
 		socials,
@@ -112,7 +110,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		education,
 		willTravel,
 		willTour,
-		credits,
 		phone,
 		unions,
 		partnerDirectories,
@@ -128,6 +125,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
+		credits,
+		unavailableDateRanges,
 	} = editProfile || {};
 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
@@ -172,9 +171,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	 * Modals
 	 */
 	const {
-		isOpen: blockedDateModalIsOpen,
-		onOpen: blockedDateModalOnOpen,
-		onClose: blockedDateModalOnClose,
+		isOpen: unavailDateModalIsOpen,
+		onOpen: unavailDateModalOnOpen,
+		onClose: unavailDateModalOnClose,
 	} = useDisclosure();
 	const {
 		isOpen: creditModalIsOpen,
@@ -269,7 +268,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	 *
 	 * @return {void} This function does not return anything.
 	 */
-	// const addBlockedDateRange = () => {
+	// const addUnavailDateRange = () => {
 	// 	// DUMMY
 	// 	const newRange: DateRange = {
 	// 		start: new Date(
@@ -285,11 +284,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	// 	};
 
 	// 	// Add the new range to the front of the list.
-	// 	const newRanges = [...blockedDates];
+	// 	const newRanges = [...unavailableDateRanges];
 	// 	newRanges.push(newRange);
 
 	// 	// Update the state.
-	// 	setBlockedDates(newRanges);
+	// 	setUnavailableDateRanges(newRanges);
 	// };
 
 	/**
@@ -299,9 +298,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	 * @return {void} This function does not return anything.
 	 */
 	const handleRemoveDateRange = (index: number) => {
-		// const newRanges = [...blockedDates];
+		// const newRanges = [...unavailableDateRanges];
 		// newRanges.splice(index, 1);
-		// setBlockedDates(newRanges);
+		// setUnavailableDateRanges(newRanges);
 	};
 
 	// Moves a credit index up by one
@@ -884,7 +883,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	/**
 	 * Converts a Date object to a string with the format "YYYY-MM-DD".
 	 */
-	const dateRangeString = (date: DateRange): string => {
+	const dateRangeString = (date: UnavailableDateRange): string => {
 		const startDate = date.start.toISOString().slice(0, 10);
 		const endDate = date.end ? date.end.toISOString().slice(0, 10) : null;
 		return endDate ? `${startDate} - ${endDate}` : startDate;
@@ -911,8 +910,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Card>
 									<Card py={2} my={0}>
 										<List flexDirection='column' gap={2}>
-											{blockedDates && blockedDates.length
-												? blockedDates.map((dates, index) => {
+											{unavailableDateRanges && unavailableDateRanges.length
+												? unavailableDateRanges.map((dates, index) => {
 														return (
 															<ListItem key={index}>
 																<Flex alignItems='center' justifyContent='space-between' gap={2}>
@@ -929,12 +928,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														);
 												  })
 												: false}
-											<Button onClick={blockedDateModalOnOpen} leftIcon={<FiPlus />} size='sm'>
+											<Button onClick={unavailDateModalOnOpen} leftIcon={<FiPlus />} size='sm'>
 												Add New Range
 											</Button>
-											<AddBlockedDateRangeModal
-												isOpen={blockedDateModalIsOpen}
-												onClose={blockedDateModalOnClose}
+											<AddUnavailDateRangeModal
+												isOpen={unavailDateModalIsOpen}
+												onClose={unavailDateModalOnClose}
 											/>
 										</List>
 									</Card>

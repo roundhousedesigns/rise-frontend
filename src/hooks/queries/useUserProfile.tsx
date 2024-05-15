@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { UserProfile } from '@lib/classes';
-import { prepareCreditsFromGQLNodes, sortCreditsByIndex } from '@lib/utils';
+import { prepareCreditsFromGQLNodes, prepareUnavailDatesFromGQLNodes } from '@lib/utils';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($id: ID!, $author: Int!, $lastCredits: Int = 5) {
@@ -85,6 +85,13 @@ export const QUERY_PROFILE = gql`
 				}
 			}
 		}
+		unavailableDateRanges(where: { author: $author }) {
+			nodes {
+				id: databaseId
+				start
+				end
+			}
+		}
 	}
 `;
 
@@ -104,15 +111,20 @@ const useUserProfile = (id: number, count?: number): [UserProfile | null, any] =
 		fetchPolicy: 'cache-and-network',
 	});
 
+	// Prepare the credits
 	const credits = result.data?.credits.nodes
 		? prepareCreditsFromGQLNodes(result.data.credits.nodes)
 		: [];
 
-	// Reorder the credits
-	if (credits) sortCreditsByIndex(credits);
+	// Prepare the unavailable dates
+	const unavailableDateRanges = result.data?.unavailableDateRanges.nodes
+		? prepareUnavailDatesFromGQLNodes(result.data.unavailableDateRanges.nodes)
+		: [];
 
 	// Prepare the profile data object.
-	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
+	const preparedProfile = result.data
+		? new UserProfile(result.data.user, unavailableDateRanges, credits)
+		: null;
 
 	return [preparedProfile, omit(result, ['data'])];
 };

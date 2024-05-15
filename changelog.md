@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.7-blockedDates] - Unreleased
+
+- Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
+
 ## \[1.1.7] - Unreleased
 
 - Improve: @common component file organization
