@@ -12,6 +12,8 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	const [savedSearches] = useSavedSearches();
 	const MotionBox = motion(chakra.div);
 
+	// TODO Maintain indexes when editing a saved search's name.
+
 	return (
 		<chakra.div {...props}>
 			{savedSearches && savedSearches.length > 0 ? (
