@@ -13,11 +13,11 @@ import {
 	useToast,
 	Text,
 	Stack,
-	Wrap,
-	Spacer,
 	StackItem,
 	Flex,
 	Box,
+	IconButton,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
@@ -50,7 +50,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const isNamed = title && title !== '';
+	const hasName = title && title !== '';
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
@@ -148,60 +148,62 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	return termIds && termIds.length > 0 ? (
 		<>
 			<Stack w='auto' alignItems='space-between' {...props}>
-				<StackItem display='flex' alignItems='center' gap={1}>
-					{isNamed ? (
-						<LinkWithIcon
-							onClick={handleEditClick}
-							icon={FiEdit2}
-							fontSize='lg'
-							my={0}
-							iconSide='left'
-							color='inherit'
-							borderBottomWidth='2px'
-							borderBottomStyle='dotted'
-							textDecoration='none !important'
-							w='full'
-							_hover={{ borderBottom: '1px  dotted brand.blue' }}
-							_light={{ borderBottomColor: 'gray.300', _hover: { borderBottomColor: 'gray.400' } }}
-							_dark={{ borderBottomColor: 'gray.600', _hover: { borderBottomColor: 'gray.400' } }}
-							iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
-						>
-							{title}
-						</LinkWithIcon>
-					) : (
-						false
-					)}
-					<Spacer />
-					<StackItem as={Wrap} alignItems='center' spacing={1}>
-						{id ? (
-							<Button
-								leftIcon={<FiSearch />}
-								colorScheme='green'
-								aria-label='Rerun this search'
-								title='Rerun'
-								size='sm'
-								onClick={handleSearchClick}
+				<StackItem>
+					<Flex>
+						{hasName ? (
+							<LinkWithIcon
+								onClick={handleEditClick}
+								icon={FiEdit2}
+								fontSize='lg'
+								my={0}
+								mr={4}
+								flex={1}
+								iconSide='left'
+								color='inherit'
+								borderBottomWidth='2px'
+								borderBottomStyle='dotted'
+								textDecoration='none !important'
+								_hover={{ borderBottom: '1px  dotted brand.blue' }}
+								_light={{
+									borderBottomColor: 'gray.300',
+									_hover: { borderBottomColor: 'gray.400' },
+								}}
+								_dark={{ borderBottomColor: 'gray.600', _hover: { borderBottomColor: 'gray.400' } }}
+								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 							>
-								Search again
-							</Button>
+								{title}
+							</LinkWithIcon>
 						) : (
 							false
 						)}
 						{id ? (
-							<Button
-								leftIcon={<FiDelete />}
-								colorScheme='orange'
-								aria-label='Delete this search'
-								title='Delete'
-								size='sm'
-								onClick={deleteOnOpen}
+							<ButtonGroup
+								alignItems='center'
+								justifyContent='space-between'
+								flex='0 0 auto'
+								spacing={1}
 							>
-								Delete
-							</Button>
+								<IconButton
+									icon={<FiSearch />}
+									colorScheme='green'
+									aria-label='Rerun this search'
+									title='Rerun'
+									size='sm'
+									onClick={handleSearchClick}
+								/>
+								<IconButton
+									icon={<FiDelete />}
+									colorScheme='orange'
+									aria-label='Delete this search'
+									title='Delete'
+									size='sm'
+									onClick={deleteOnOpen}
+								/>
+							</ButtonGroup>
 						) : (
 							false
 						)}
-					</StackItem>
+					</Flex>
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
@@ -211,7 +213,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 							</Text>
 							<SearchParamTags termIds={termIds} termItems={terms} />
 						</Box>
-						{!isNamed ? (
+						{!hasName ? (
 							<Button
 								colorScheme='blue'
 								leftIcon={<FiSave />}
@@ -233,7 +235,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader pb={2}>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
+					<ModalHeader pb={2}>{hasName ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
 
 					<ModalBody pb={6}>
@@ -254,10 +256,17 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									ref={initialSaveModalRef}
 								/>
 							</FormControl>
-							<Button colorScheme='blue' mr={3} type='submit' isDisabled={saveSearchFieldText === title}>
+							<Button
+								colorScheme='blue'
+								mr={3}
+								type='submit'
+								isDisabled={saveSearchFieldText === title}
+							>
 								Save
 							</Button>
-							<Button onClick={handleEditOnClose} colorScheme='red'>Cancel</Button>
+							<Button onClick={handleEditOnClose} colorScheme='red'>
+								Cancel
+							</Button>
 						</form>
 					</ModalBody>
 				</ModalContent>
