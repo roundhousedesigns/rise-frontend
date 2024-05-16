@@ -50,17 +50,19 @@ import {
 	FiImage,
 	FiTrash2,
 	FiDelete,
+	FiEdit,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
 import { sortCreditsByIndex } from '@lib/utils';
-import { Credit, UnavailableDateRange, UserProfile } from '@lib/classes';
+import { Credit, UnavailRange, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
 import useUpdateProfile from '@hooks/mutations/useUpdateProfile';
+import useDeleteOwnUnavailRange from '@hooks/mutations/useDeleteOwnUnavailRange';
 import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
@@ -71,12 +73,12 @@ import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
+import EditUnavailDateRangeModal from '@components/EditUnavailDateRangeModal';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
-import AddUnavailDateRangeModal from '@components/AddUnavailDateRangeModal';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -126,7 +128,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		mediaImage5,
 		mediaImage6,
 		credits,
-		unavailableDateRanges,
+		unavailRanges,
 	} = editProfile || {};
 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
@@ -160,6 +162,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const { updateCreditOrderMutation } = useUpdateCreditOrder();
 
+	const { deleteOwnUnavailRangeMutation } = useDeleteOwnUnavailRange();
+
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
@@ -168,13 +172,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
 	/**
-	 * Modals
+	 * UnavailRange Modal
 	 */
-	const {
-		isOpen: unavailDateModalIsOpen,
-		onOpen: unavailDateModalOnOpen,
-		onClose: unavailDateModalOnClose,
-	} = useDisclosure();
+	const [unavailRangeModalIsOpen, setUnavailRangeModalIsOpen] = useState<boolean>(false);
+	const [unavailRange, setUnavailRange] = useState<UnavailRange>(new UnavailRange());
+
+	/**
+	 * EditCredit Modal
+	 */
 	const {
 		isOpen: creditModalIsOpen,
 		onOpen: creditModalOnOpen,
@@ -233,7 +238,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	useEffect(() => {
 		if (!credits || !credits.length) return;
 
-		// look for a credit in credits that has a the isNew property set to true
+		// look for a credit in credits that has the isNew property set to true
 		const newCredit = credits.find((credit) => credit.isNew);
 		if (newCredit && newCredit.id !== editCreditId.current) {
 			setEditCredit(newCredit.id);
@@ -263,44 +268,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		};
 	}, [credits]);
 
-	/**
-	 * Adds a new date range to the blocked dates list.
-	 *
-	 * @return {void} This function does not return anything.
-	 */
-	// const addUnavailDateRange = () => {
-	// 	// DUMMY
-	// 	const newRange: DateRange = {
-	// 		start: new Date(
-	// 			new Date().getFullYear(),
-	// 			new Date().getMonth(),
-	// 			new Date().getDate() + Math.floor(Math.random() * (365 - 1) + 1)
-	// 		),
-	// 		end: new Date(
-	// 			new Date().getFullYear(),
-	// 			new Date().getMonth(),
-	// 			new Date().getDate() + Math.floor(Math.random() * (365 - 1) + 1)
-	// 		),
-	// 	};
+	const handleEditUnavailRange = (unavailRange?: UnavailRange) => {
+		setUnavailRangeModalIsOpen(true);
+		setUnavailRange(unavailRange || new UnavailRange());
+	};
 
-	// 	// Add the new range to the front of the list.
-	// 	const newRanges = [...unavailableDateRanges];
-	// 	newRanges.push(newRange);
+	const handleCloseEditUnavailRangeModal = () => {
+		setUnavailRangeModalIsOpen(false);
+	};
 
-	// 	// Update the state.
-	// 	setUnavailableDateRanges(newRanges);
-	// };
+	const handleDeleteDateRange = (unavailRange: UnavailRange) => {
+		const { id } = unavailRange;
 
-	/**
-	 * Removes a date range from the blocked dates list at the specified index.
-	 *
-	 * @param {number} index - The index of the date range to remove.
-	 * @return {void} This function does not return anything.
-	 */
-	const handleRemoveDateRange = (index: number) => {
-		// const newRanges = [...unavailableDateRanges];
-		// newRanges.splice(index, 1);
-		// setUnavailableDateRanges(newRanges);
+		if (!id) return;
+
+		deleteOwnUnavailRangeMutation(id, loggedInId);
 	};
 
 	// Moves a credit index up by one
@@ -883,10 +865,13 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	/**
 	 * Converts a Date object to a string with the format "YYYY-MM-DD".
 	 */
-	const dateRangeString = (date: UnavailableDateRange): string => {
-		const startDate = date.start.toISOString().slice(0, 10);
-		const endDate = date.end ? date.end.toISOString().slice(0, 10) : null;
-		return endDate ? `${startDate} - ${endDate}` : startDate;
+	const dateRangeString = (unavailRange: UnavailRange): string => {
+		const { startDate, endDate } = unavailRange;
+
+		const startDateFormatted = startDate.toLocaleDateString();
+		const endDateFormatted = endDate ? ` - ${endDate.toLocaleDateString()}` : '';
+
+		return `${startDateFormatted}${endDateFormatted}`;
 	};
 
 	return editProfile ? (
@@ -910,30 +895,48 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Card>
 									<Card py={2} my={0}>
 										<List flexDirection='column' gap={2}>
-											{unavailableDateRanges && unavailableDateRanges.length
-												? unavailableDateRanges.map((dates, index) => {
+											{unavailRanges && unavailRanges.length
+												? unavailRanges.map((unavailRange, index) => {
 														return (
 															<ListItem key={index}>
 																<Flex alignItems='center' justifyContent='space-between' gap={2}>
-																	<Text>{dateRangeString(dates)}</Text>
-																	<IconButton
-																		onClick={() => handleRemoveDateRange(index)}
-																		icon={<FiDelete />}
-																		size='sm'
-																		aria-label='Remove date range'
-																		colorScheme='red'
-																	/>
+																	{unavailRange ? (
+																		<Text>{dateRangeString(unavailRange)}</Text>
+																	) : (
+																		false
+																	)}
+																	<ButtonGroup>
+																		<IconButton
+																			onClick={() => handleEditUnavailRange(unavailRange)}
+																			icon={<FiEdit />}
+																			size='sm'
+																			aria-label='Edit date range'
+																			colorScheme='blue'
+																		/>
+																		<IconButton
+																			onClick={() => handleDeleteDateRange(unavailRange)}
+																			icon={<FiDelete />}
+																			size='sm'
+																			aria-label='Remove date range'
+																			colorScheme='red'
+																		/>
+																	</ButtonGroup>
 																</Flex>
 															</ListItem>
 														);
 												  })
 												: false}
-											<Button onClick={unavailDateModalOnOpen} leftIcon={<FiPlus />} size='sm'>
-												Add New Range
+											<Button
+												onClick={() => handleEditUnavailRange()}
+												leftIcon={<FiPlus />}
+												size='sm'
+											>
+												Add New Dates
 											</Button>
-											<AddUnavailDateRangeModal
-												isOpen={unavailDateModalIsOpen}
-												onClose={unavailDateModalOnClose}
+											<EditUnavailDateRangeModal
+												unavailRange={unavailRange}
+												isOpen={unavailRangeModalIsOpen}
+												onClose={handleCloseEditUnavailRangeModal}
 											/>
 										</List>
 									</Card>

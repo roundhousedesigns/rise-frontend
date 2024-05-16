@@ -118,9 +118,9 @@ export interface CreditParams {
  * The data shape for DateRange input.
  */
 export interface DateRangeParams {
-	id: number;
-	start: string | Date;
-	end?: string | Date;
+	id?: number;
+	startDate: string | Date;
+	endDate: string | Date;
 }
 
 /**

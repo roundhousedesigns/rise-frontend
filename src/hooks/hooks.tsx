@@ -121,7 +121,7 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 
 	const ignoreFields = [
 		'credits',
-		'unavailableDateRanges',
+		'unavailRanges',
 		'slug',
 		'image',
 		'resume',

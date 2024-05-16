@@ -103,12 +103,12 @@ export class UserProfile extends User {
 	mediaImage4?: string;
 	mediaImage5?: string;
 	mediaImage6?: string;
-	unavailableDateRanges: UnavailableDateRange[] = [];
+	unavailRanges: UnavailRange[] = [];
 	credits: Credit[] = [];
 
 	constructor(
 		userParams?: UserProfileParams,
-		unavailableDateRanges?: DateRangeParams[],
+		unavailRanges?: DateRangeParams[],
 		credits?: CreditParams[]
 	) {
 		const {
@@ -229,9 +229,9 @@ export class UserProfile extends User {
 			this.credits = credits.map((credit) => new Credit(credit));
 		}
 
-		if (unavailableDateRanges && unavailableDateRanges.length > 0) {
-			this.unavailableDateRanges = unavailableDateRanges.map((dates) => {
-				return new UnavailableDateRange(dates);
+		if (unavailRanges && unavailRanges.length > 0) {
+			this.unavailRanges = unavailRanges.map((dates) => {
+				return new UnavailRange(dates);
 			});
 		}
 	}
@@ -380,19 +380,24 @@ export class Credit implements CreditParams {
 /**
  * A range of dates that the Candidate is unavailable for work.
  */
-export class UnavailableDateRange {
-	id: number;
-	start: Date;
-	end: Date | undefined;
+export class UnavailRange implements DateRangeParams {
+	id?: number;
+	startDate: Date;
+	endDate: Date;
 
-	constructor(params: DateRangeParams) {
+	constructor(params?: DateRangeParams) {
+		if (!params) {
+			this.id = 0;
+			this.startDate = new Date();
+			this.endDate = new Date();
+
+			return;
+		}
+
 		this.id = params.id ? Number(params.id) : 0;
-		this.start = typeof params.start === 'string' ? new Date(params.start) : params.start;
-		this.end = params.end
-			? typeof params.end === 'string'
-				? new Date(params.end)
-				: params.end
-			: undefined;
+		this.startDate =
+			typeof params.startDate === 'string' ? new Date(params.startDate) : params.startDate;
+		this.endDate = typeof params.endDate === 'string' ? new Date(params.endDate) : params.endDate;
 	}
 }
 

@@ -85,11 +85,11 @@ export const QUERY_PROFILE = gql`
 				}
 			}
 		}
-		unavailableDateRanges(where: { author: $author }) {
+		unavailRanges(where: { author: $author }) {
 			nodes {
 				id: databaseId
-				start
-				end
+				startDate
+				endDate
 			}
 		}
 	}
@@ -117,13 +117,13 @@ const useUserProfile = (id: number, count?: number): [UserProfile | null, any] =
 		: [];
 
 	// Prepare the unavailable dates
-	const unavailableDateRanges = result.data?.unavailableDateRanges.nodes
-		? prepareUnavailDatesFromGQLNodes(result.data.unavailableDateRanges.nodes)
+	const unavailRanges = result.data?.unavailRanges.nodes
+		? prepareUnavailDatesFromGQLNodes(result.data.unavailRanges.nodes)
 		: [];
 
 	// Prepare the profile data object.
 	const preparedProfile = result.data
-		? new UserProfile(result.data.user, unavailableDateRanges, credits)
+		? new UserProfile(result.data.user, unavailRanges, credits)
 		: null;
 
 	return [preparedProfile, omit(result, ['data'])];

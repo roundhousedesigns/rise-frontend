@@ -99,11 +99,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		mediaImage5,
 		mediaImage6,
 		education,
-		unavailableDateRanges,
+		unavailRanges,
 		credits,
 	} = profile || {};
-
-	console.info(unavailableDateRanges);
 
 	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
 	const mediaImages = [

@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, UnavailableDateRange, UserProfile, WPItem } from '@lib/classes';
+import { Credit, PersonalLinks, UnavailRange, UserProfile, WPItem } from '@lib/classes';
 import {
 	DateRangeParams,
 	SearchFilterSet,
@@ -433,13 +433,13 @@ export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
 }
 
 /**
- * Generates an array of UnavailableDateRange objects from the provided array of GraphQL nodes.
+ * Generates an array of UnavailRange objects from the provided array of GraphQL nodes.
  *
  * @param {object[]} nodes - An array of GraphQL nodes to process.
- * @return {UnavailableDateRange[]} An array of UnavailableDateRange objects prepared from the GraphQL nodes.
+ * @return {UnavailRange[]} An array of UnavailRange objects prepared from the GraphQL nodes.
  */
-export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): UnavailableDateRange[] {
-	return nodes.map((node: DateRangeParams) => new UnavailableDateRange(node));
+export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): UnavailRange[] {
+	return nodes.map((node: DateRangeParams) => new UnavailRange(node));
 }
 
 /**
