@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, Flex, Link, Text } from '@chakra-ui/react';
+import { Icon, Flex, Link, Text, Spacer } from '@chakra-ui/react';
 
 interface Props {
 	href?: string;
@@ -29,14 +29,25 @@ export default function LinkWithIcon({
 		<Link
 			href={href ? href : undefined}
 			onClick={onClick ? onClick : undefined}
-			variant='dotted'
 			fontWeight='medium'
+			display='inline-block'
+			variant='dotted'
 			isExternal={!!isExternal}
+			my={0}
 			{...props}
 		>
-			<Flex alignItems='center' flexDirection={iconSide === 'left' ? 'row' : 'row-reverse'} gap={2}>
-				<Icon as={icon} pos='relative' {...iconProps} />
-				<Text m={0}>{children}</Text>
+			<Flex
+				alignItems='center'
+				flexDirection={iconSide === 'left' ? 'row' : 'row-reverse'}
+				justifyContent='flex-start'
+				gap={0}
+				w='auto'
+			>
+				<Icon as={icon} pos='relative' mr={2} {...iconProps} />
+				<Text as='span' m={0} lineHeight='normal' display='block'>
+					{children}
+				</Text>
+				<Spacer />
 			</Flex>
 		</Link>
 	);

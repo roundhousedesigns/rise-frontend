@@ -107,7 +107,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			label='Saved candidates'
 			isDisabled={!bookmarkedProfiles.length}
 		>
-			Saved
+			Bookmarked
 		</ResponsiveButton>
 	);
 
