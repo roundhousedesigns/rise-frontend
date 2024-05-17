@@ -1,12 +1,12 @@
 /**
- * useDeleteSavedSearch hook. Mutation to update a User.
+ * useDeleteOwnSavedSearch hook. Mutation to update a User.
  */
 
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_SAVED_SEARCHES } from '@hooks/queries/useSavedSearches';
 
 const MUTATE_DELETE_CREDIT = gql`
-	mutation DeleteSavedSearch($input: DeleteOwnSavedSearchInput!) {
+	mutation DeleteOwnSavedSearch($input: DeleteOwnSavedSearchInput!) {
 		deleteOwnSavedSearch(input: $input) {
 			result
 			clientMutationId
@@ -14,14 +14,14 @@ const MUTATE_DELETE_CREDIT = gql`
 	}
 `;
 
-const useDeleteSavedSearch = () => {
+const useDeleteOwnSavedSearch = () => {
 	const [mutation, results] = useMutation(MUTATE_DELETE_CREDIT);
 
-	const deleteSavedSearchMutation = (id: string, userId: number) => {
+	const deleteOwnSavedSearchMutation = (id: string, userId: number) => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'deleteSavedSearchMutation',
+					clientMutationId: 'deleteOwnSavedSearchMutation',
 					id,
 					userId,
 				},
@@ -30,7 +30,7 @@ const useDeleteSavedSearch = () => {
 		});
 	};
 
-	return { deleteSavedSearchMutation, results };
+	return { deleteOwnSavedSearchMutation, results };
 };
 
-export default useDeleteSavedSearch;
+export default useDeleteOwnSavedSearch;

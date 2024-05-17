@@ -28,7 +28,7 @@ import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useDeleteSavedSearch from '@hooks/mutations/useDeleteSavedSearch';
+import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
 import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
@@ -57,7 +57,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	const initialSaveModalRef = useRef(null);
 
 	const { saveSearchMutation } = useSaveSearch();
-	const { deleteSavedSearchMutation } = useDeleteSavedSearch();
+	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
 
 	const toast = useToast();
 
@@ -131,7 +131,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	const handleDelete = () => {
 		if (!id) return;
 
-		deleteSavedSearchMutation(id.toString(), loggedInId).then(() => {
+		deleteOwnSavedSearchMutation(id.toString(), loggedInId).then(() => {
 			deleteOnClose();
 
 			toast({
@@ -181,6 +181,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								alignItems='center'
 								justifyContent='space-between'
 								flex='0 0 auto'
+								size='sm'
 								spacing={1}
 							>
 								<IconButton
@@ -188,7 +189,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									colorScheme='green'
 									aria-label='Rerun this search'
 									title='Rerun'
-									size='sm'
 									onClick={handleSearchClick}
 								/>
 								<IconButton
@@ -196,7 +196,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									colorScheme='orange'
 									aria-label='Delete this search'
 									title='Delete'
-									size='sm'
 									onClick={deleteOnOpen}
 								/>
 							</ButtonGroup>

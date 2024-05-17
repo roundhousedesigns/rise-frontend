@@ -381,23 +381,43 @@ export class Credit implements CreditParams {
  * A range of dates that the Candidate is unavailable for work.
  */
 export class UnavailRange implements DateRangeParams {
-	id?: number;
-	startDate: Date;
-	endDate: Date;
+	id: number;
+	startDate?: Date;
+	endDate?: Date;
 
 	constructor(params?: DateRangeParams) {
-		if (!params) {
-			this.id = 0;
-			this.startDate = new Date();
-			this.endDate = new Date();
+		this.id = params?.id ? Number(params.id) : 0;
+		this.startDate = params?.startDate ? new Date(params.startDate) : undefined;
+		this.endDate = params?.endDate ? new Date(params.endDate) : undefined;
+	}
 
-			return;
+	/**
+	 * Set the startDate for the UnavailRange.
+	 *
+	 * @param {Date|string} date The new start date.
+	 */
+	setStartDate(date: Date | string) {
+		this.startDate = date instanceof Date ? date : new Date(date);
+	}
+
+	/**
+	 * Set the endDate for the UnavailRange.
+	 *
+	 * @param {Date|string} date The new end date.
+	 */
+	setEndDate(date: Date | string) {
+		this.endDate = date instanceof Date ? date : new Date(date);
+	}
+
+	/**
+	 * Converts a Date object to a string.
+	 */
+	toString(): string {
+		if (!this.startDate || !this.endDate) {
+			return '';
 		}
 
-		this.id = params.id ? Number(params.id) : 0;
-		this.startDate =
-			typeof params.startDate === 'string' ? new Date(params.startDate) : params.startDate;
-		this.endDate = typeof params.endDate === 'string' ? new Date(params.endDate) : params.endDate;
+		return `${this.startDate.toLocaleDateString()} - ${this.endDate.toLocaleDateString()}`;
 	}
 }
 

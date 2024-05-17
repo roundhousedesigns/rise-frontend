@@ -24,26 +24,33 @@ export default function EditUnavailDateRangeModal({
 
 	const { id, startDate, endDate } = unavailRange;
 
+	// Close modal if update is successful
 	useEffect(() => {
 		if (data?.updateOrCreateUnavailRange?.id && !loading) {
 			onClose();
 		}
 	}, [data, loading]);
 
+	/**
+	 * Updates the unavailability range with the provided start and end dates.
+	 *
+	 * @param {Date} startDate - The start date for the unavailability range.
+	 * @param {Date} endDate - The end date for the unavailability range.
+	 * @return {void} No return value.
+	 */
 	const saveUnavailRangeCallback = (startDate: Date, endDate: Date) => {
-		console.info('Unavail Range', startDate, endDate);
 		updateUnavailRangeMutation(id, loggedInId, startDate, endDate);
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside' size='4xl'>
+		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside'>
 			<ModalOverlay />
 			<ModalContent>
 				<ModalBody px={4} pb={4}>
 					<DateRangePicker
 						startDate={startDate}
-						endDate={endDate}
-						callback={saveUnavailRangeCallback}
+						endDate={endDate ? endDate : undefined}
+						saveCallback={saveUnavailRangeCallback}
 					/>
 				</ModalBody>
 			</ModalContent>

@@ -119,8 +119,8 @@ export interface CreditParams {
  */
 export interface DateRangeParams {
 	id?: number;
-	startDate: string | Date;
-	endDate: string | Date;
+	startDate?: string | Date | undefined;
+	endDate?: string | Date | undefined;
 }
 
 /**

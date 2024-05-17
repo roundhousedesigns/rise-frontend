@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Box, Button, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { UnavailRange } from '@/lib/classes';
 
 interface Props {
-	startDate: Date;
-	endDate: Date;
-	callback: (startDate: Date, endDate: Date) => void;
+	startDate?: Date;
+	endDate?: Date;
+	saveCallback?: (startDate: Date, endDate: Date) => void;
 }
 
-export default function DateRangePicker({ startDate, endDate, callback }: Props) {
-	const [newStartDate, setNewStartDate] = useState<Date>(startDate);
-	const [newEndDate, setNewEndDate] = useState<Date>(endDate);
+export default function DateRangePicker({ startDate, endDate, saveCallback }: Props) {
+	const [newStartDate, setNewStartDate] = useState<Date | undefined>(startDate || undefined);
+	const [newEndDate, setNewEndDate] = useState<Date | undefined>(endDate || undefined);
 
 	/**
 	 * Updates the start and end dates based on the provided dates array.
@@ -27,20 +28,30 @@ export default function DateRangePicker({ startDate, endDate, callback }: Props)
 	};
 
 	/**
-	 * Checks if both start date and end date are defined, then calls the callback function with a new UnavailRange object.
+	 * Checks if both start date and end date are defined, then calls the saveCallback function with a new UnavailRange object.
 	 *
 	 * @return {void}
 	 */
 	const handleSave = () => {
-		if (!newStartDate || !newEndDate) {
+		if (!newStartDate || !newEndDate || saveCallback === undefined) {
 			return;
 		}
 
-		callback(newStartDate, newEndDate);
+		saveCallback(newStartDate, newEndDate);
+	};
+
+	/**
+	 * Creates a date range string based on the new start and end dates.
+	 *
+	 * @return {string} The formatted date range string.
+	 */
+	const dateRangeString = () => {
+		const newRange = new UnavailRange({ startDate: newStartDate, endDate: newEndDate });
+		return newRange.toString();
 	};
 
 	return (
-		<>
+		<Flex gap={2}>
 			<DatePicker
 				onChange={onChange}
 				selected={newStartDate}
@@ -49,7 +60,33 @@ export default function DateRangePicker({ startDate, endDate, callback }: Props)
 				selectsRange
 				inline
 			/>
-			<Button onClick={handleSave}>Save</Button>
-		</>
+			<Stack direction='column'>
+				{newStartDate && newEndDate ? (
+					<>
+						<Spacer />
+						<Box>
+							<Text fontSize='sm'>Dates selected:</Text>{' '}
+							<Text fontSize='lg'>{dateRangeString()}</Text>
+						</Box>
+					</>
+				) : (
+					false
+				)}
+				{saveCallback ? (
+					<>
+						<Spacer />
+						<Button
+							onClick={handleSave}
+							colorScheme='blue'
+							isDisabled={!newStartDate || !newEndDate}
+						>
+							Save
+						</Button>
+					</>
+				) : (
+					false
+				)}
+			</Stack>
+		</Flex>
 	);
 }

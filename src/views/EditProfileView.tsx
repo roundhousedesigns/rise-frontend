@@ -26,8 +26,6 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
-	ListItem,
-	List,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -49,20 +47,17 @@ import {
 	FiUser,
 	FiImage,
 	FiTrash2,
-	FiDelete,
-	FiEdit,
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
 import { sortCreditsByIndex } from '@lib/utils';
-import { Credit, UnavailRange, UserProfile } from '@lib/classes';
+import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import { useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
 import useUpdateProfile from '@hooks/mutations/useUpdateProfile';
-import useDeleteOwnUnavailRange from '@hooks/mutations/useDeleteOwnUnavailRange';
 import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
@@ -73,12 +68,12 @@ import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
-import EditUnavailDateRangeModal from '@components/EditUnavailDateRangeModal';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
+import UnavailableDateRanges from '@/components/UnavailableDateRanges';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -128,7 +123,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		mediaImage5,
 		mediaImage6,
 		credits,
-		unavailRanges,
 	} = editProfile || {};
 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
@@ -162,20 +156,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const { updateCreditOrderMutation } = useUpdateCreditOrder();
 
-	const { deleteOwnUnavailRangeMutation } = useDeleteOwnUnavailRange();
-
 	const {
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
-
-	/**
-	 * UnavailRange Modal
-	 */
-	const [unavailRangeModalIsOpen, setUnavailRangeModalIsOpen] = useState<boolean>(false);
-	const [unavailRange, setUnavailRange] = useState<UnavailRange>(new UnavailRange());
 
 	/**
 	 * EditCredit Modal
@@ -267,23 +253,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			setCreditsSorted([]);
 		};
 	}, [credits]);
-
-	const handleEditUnavailRange = (unavailRange?: UnavailRange) => {
-		setUnavailRangeModalIsOpen(true);
-		setUnavailRange(unavailRange || new UnavailRange());
-	};
-
-	const handleCloseEditUnavailRangeModal = () => {
-		setUnavailRangeModalIsOpen(false);
-	};
-
-	const handleDeleteDateRange = (unavailRange: UnavailRange) => {
-		const { id } = unavailRange;
-
-		if (!id) return;
-
-		deleteOwnUnavailRangeMutation(id, loggedInId);
-	};
 
 	// Moves a credit index up by one
 	const handleCreditMoveUp = (index: number) => {
@@ -862,18 +831,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		);
 	};
 
-	/**
-	 * Converts a Date object to a string with the format "YYYY-MM-DD".
-	 */
-	const dateRangeString = (unavailRange: UnavailRange): string => {
-		const { startDate, endDate } = unavailRange;
-
-		const startDateFormatted = startDate.toLocaleDateString();
-		const endDateFormatted = endDate ? ` - ${endDate.toLocaleDateString()}` : '';
-
-		return `${startDateFormatted}${endDateFormatted}`;
-	};
-
 	return editProfile ? (
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
@@ -894,51 +851,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
 									<Card py={2} my={0}>
-										<List flexDirection='column' gap={2}>
-											{unavailRanges && unavailRanges.length
-												? unavailRanges.map((unavailRange, index) => {
-														return (
-															<ListItem key={index}>
-																<Flex alignItems='center' justifyContent='space-between' gap={2}>
-																	{unavailRange ? (
-																		<Text>{dateRangeString(unavailRange)}</Text>
-																	) : (
-																		false
-																	)}
-																	<ButtonGroup>
-																		<IconButton
-																			onClick={() => handleEditUnavailRange(unavailRange)}
-																			icon={<FiEdit />}
-																			size='sm'
-																			aria-label='Edit date range'
-																			colorScheme='blue'
-																		/>
-																		<IconButton
-																			onClick={() => handleDeleteDateRange(unavailRange)}
-																			icon={<FiDelete />}
-																			size='sm'
-																			aria-label='Remove date range'
-																			colorScheme='red'
-																		/>
-																	</ButtonGroup>
-																</Flex>
-															</ListItem>
-														);
-												  })
-												: false}
-											<Button
-												onClick={() => handleEditUnavailRange()}
-												leftIcon={<FiPlus />}
-												size='sm'
-											>
-												Add New Dates
-											</Button>
-											<EditUnavailDateRangeModal
-												unavailRange={unavailRange}
-												isOpen={unavailRangeModalIsOpen}
-												onClose={handleCloseEditUnavailRangeModal}
-											/>
-										</List>
+										<UnavailableDateRanges />
 									</Card>
 								</Flex>
 							</AccordionPanel>

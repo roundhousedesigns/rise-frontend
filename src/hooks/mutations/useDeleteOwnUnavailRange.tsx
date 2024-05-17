@@ -6,7 +6,7 @@ import { gql, useMutation } from '@apollo/client';
 import { QUERY_PROFILE } from '../queries/useUserProfile';
 
 const MUTATE_DELETE_UNAVAIL_RANGE = gql`
-	mutation DeleteSavedSearch($input: DeleteOwnUnavailRangeInput!) {
+	mutation DeleteOwnSavedSearch($input: DeleteOwnUnavailRangeInput!) {
 		deleteOwnUnavailRange(input: $input) {
 			result
 			clientMutationId
