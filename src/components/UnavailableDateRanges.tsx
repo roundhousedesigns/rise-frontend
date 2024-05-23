@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import {
 	List,
 	ListItem,
@@ -24,11 +24,13 @@ export default function UnavailableDateRanges() {
 
 	const { deleteOwnUnavailRangeMutation } = useDeleteOwnUnavailRange();
 
-	const sortedUnavailRanges = unavailRanges
-		.slice()
-		.sort((a, b) =>
-			a.startDate && b.startDate ? a.startDate.getTime() - b.startDate.getTime() : 0
-		);
+	const sortedUnavailRanges: UnavailRange[] = useMemo(() => {
+		return unavailRanges
+			.slice()
+			.sort((a, b) =>
+				a.startDate && b.startDate ? a.startDate.getTime() - b.startDate.getTime() : 0
+			);
+	}, [unavailRanges]);
 
 	const [unavailRangeModalIsOpen, setUnavailRangeModalIsOpen] = useState<boolean>(false);
 	const [unavailRange, setUnavailRange] = useState<UnavailRange>(new UnavailRange());
@@ -82,6 +84,7 @@ export default function UnavailableDateRanges() {
 						</ListItem>
 				  ))
 				: false}
+			{/* TODO: Make this a handler */}
 			<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm'>
 				Add New Dates
 			</Button>

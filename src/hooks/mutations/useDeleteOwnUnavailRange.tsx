@@ -26,9 +26,11 @@ const useDeleteOwnUnavailRange = () => {
 					userId,
 				},
 			},
-			refetchQueries: [{ query: QUERY_PROFILE, variables: { author: userId } }],
+			refetchQueries: [{ query: QUERY_PROFILE, variables: { id: userId, author: userId } }],
 		});
 	};
+
+	console.debug('RESULTS', results);
 
 	return { deleteOwnUnavailRangeMutation, results };
 };
