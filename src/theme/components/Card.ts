@@ -19,4 +19,19 @@ const baseStyle = definePartsStyle({
 	},
 });
 
-export default defineMultiStyleConfig({ baseStyle });
+const variants = {
+	gray: definePartsStyle({
+		container: {
+			_dark: {
+				bgColor: 'gray.800',
+				borderColor: 'gray.700',
+			},
+			_light: {
+				bgColor: 'gray.100',
+				borderColor: 'gray.200',
+			},
+		},
+	}),
+};
+
+export default defineMultiStyleConfig({ baseStyle, variants });

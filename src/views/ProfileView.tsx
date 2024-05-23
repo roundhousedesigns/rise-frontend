@@ -48,6 +48,7 @@ import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
+import UnavailableDateRanges from '@/components/UnavailableDateRanges';
 
 interface Props {
 	profile: UserProfile;
@@ -236,20 +237,25 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							justifyContent={{ base: 'center', md: 'flex-start' }}
 						>
 							{isLargerThanMd ? (
-								image ? (
-									<Box w='40%' minW='160px' maxW='400px'>
-										<Image
-											src={image}
-											alt={`${profile.fullName()}'s picture`}
-											borderRadius='md'
-											loading='eager'
-											fit='cover'
-											w='full'
-										/>
-									</Box>
-								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2} />
-								)
+								<Stack direction='column' w='40%' minW='160px' maxW='400px'>
+									{image ? (
+										<Box>
+											<Image
+												src={image}
+												alt={`${profile.fullName()}'s picture`}
+												borderRadius='md'
+												loading='eager'
+												fit='cover'
+												w='full'
+											/>
+										</Box>
+									) : (
+										<Avatar size='2xl' name={profile.fullName()} mx={2} />
+									)}
+									<Card variant='gray' py={0}>
+										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
+									</Card>
+								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
 							)}
@@ -293,7 +299,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								</StackItem>
 
 								{locations && locations.length > 0 ? (
-									<ProfileStackItem title='Works In'>
+									<ProfileStackItem title='Works in'>
 										<>
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms

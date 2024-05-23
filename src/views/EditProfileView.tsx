@@ -73,7 +73,7 @@ import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
-import UnavailableDateRanges from '@components/UnavailableDateRanges';
+import EditUnavailableDateRanges from '@components/EditUnavailableDateRanges';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -641,48 +641,52 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
-	const Sidebar = ({ ...props }: { [prop: string]: string }) => (
-		<Stack mb={2} width='30%' minWidth='300px' {...props}>
-			<StackItem as={Heading} variant='contentTitle' my={0}>
-				Profile image
-			</StackItem>
-			<StackItem as={Text} fontSize='sm' m={0}>
-				Portrait orientation works best. Max 2MB.
-			</StackItem>
-			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
-				// Uploading
-				<StackItem as={Flex} alignItems='center' justifyContent='center' h='200px'>
-					<ProgressSpinner />
-				</StackItem>
-			) : image ? (
-				// Image set
-				<StackItem>
-					<Image
-						src={image}
-						alt={`Profile picture`}
-						loading='eager'
-						fit='cover'
-						borderRadius='md'
-						w='full'
-					/>
-					<ClearFieldButton field='image' label='Remove image' mt={2}>
-						Remove
-					</ClearFieldButton>
-				</StackItem>
-			) : (
-				<StackItem
-					as={FileDropzone}
-					fieldName='image'
-					text='Profile image'
-					icon={FiUser}
-					h='full'
-					iconProps={{ mb: 2, boxSize: '80px' }}
-				/>
-			)}
-			<StackItem as={Card}>
-				<UnavailableDateRanges />
-			</StackItem>
-		</Stack>
+	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
+		<Box {...props}>
+			<Box>
+				<Heading variant='contentTitle' my={0}>
+					Profile image
+				</Heading>
+				<Text fontSize='sm' m={0}>
+					Portrait orientation works best. Max 2MB.
+				</Text>
+				<Box maxW='300px'>
+					{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
+						// Uploading
+						<Flex alignItems='center' justifyContent='center' h='200px'>
+							<ProgressSpinner />
+						</Flex>
+					) : image ? (
+						// Image set
+						<>
+							<Image
+								src={image}
+								alt={`Profile picture`}
+								loading='eager'
+								fit='cover'
+								borderRadius='md'
+							/>
+							<ClearFieldButton field='image' label='Remove image' mt={2}>
+								Remove
+							</ClearFieldButton>
+						</>
+					) : (
+						<FileDropzone
+							fieldName='image'
+							text='Profile image'
+							icon={FiUser}
+							h='full'
+							iconProps={{ mb: 2, boxSize: '80px' }}
+						/>
+					)}
+				</Box>
+			</Box>
+			<Card>
+				<Box>
+					<EditUnavailableDateRanges />
+				</Box>
+			</Card>
+		</Box>
 	);
 
 	interface FileDropzoneProps {
@@ -861,7 +865,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				</ProfileStackItem>
 				<ProfileStackItem>
 					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <Sidebar /> : false}
+						{isLargerThanMd ? <Sidebar mb={2} width='30%' minWidth='300px' mr={4} /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>

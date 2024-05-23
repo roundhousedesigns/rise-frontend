@@ -1,4 +1,4 @@
-import { Card, Avatar, Text, Flex, Heading} from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
@@ -33,16 +33,13 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				mr={4}
 				my={0}
 				borderWidth={2}
+				variant='gray'
 				_dark={{
-					bg: 'gray.800',
-					borderColor: 'gray.700',
 					_hover: {
 						bg: 'gray.700',
 					},
 				}}
 				_light={{
-					bg: 'gray.100',
-					borderColor: 'gray.200',
 					_hover: {
 						bg: 'gray.200',
 					},
