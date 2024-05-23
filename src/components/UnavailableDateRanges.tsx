@@ -1,5 +1,6 @@
 import { useContext, useMemo, useState } from 'react';
 import {
+	chakra,
 	List,
 	ListItem,
 	Flex,
@@ -9,6 +10,7 @@ import {
 	Button,
 	Text,
 } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { FiEdit, FiDelete, FiPlus } from 'react-icons/fi';
 import { UnavailRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
@@ -21,6 +23,8 @@ export default function UnavailableDateRanges() {
 	const {
 		editProfile: { unavailRanges },
 	} = useContext(EditProfileContext);
+
+	const MotionBox = motion(chakra.div);
 
 	const { deleteOwnUnavailRangeMutation } = useDeleteOwnUnavailRange();
 
@@ -52,38 +56,49 @@ export default function UnavailableDateRanges() {
 
 	return (
 		<List flexDirection='column' gap={2}>
-			{sortedUnavailRanges && sortedUnavailRanges.length
-				? sortedUnavailRanges.map((unavailRange, index) => (
-						<ListItem key={index}>
-							<Flex alignItems='center' justifyContent='space-between' gap={2}>
-								<Text>{unavailRange.toString()}</Text>
-								<Spacer />
-								<ButtonGroup
-									alignItems='center'
-									justifyContent='space-between'
-									flex='0 0 auto'
-									size='sm'
-									spacing={1}
-								>
-									<IconButton
-										onClick={() => handleEditUnavailRange(unavailRange)}
-										icon={<FiEdit />}
+			{sortedUnavailRanges && sortedUnavailRanges.length ? (
+				<AnimatePresence>
+					{sortedUnavailRanges.map((unavailRange, index) => (
+						<MotionBox
+							key={index}
+							initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
+							animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
+							exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
+						>
+							<ListItem>
+								<Flex alignItems='center' justifyContent='space-between' gap={2}>
+									<Text>{unavailRange.toString()}</Text>
+									<Spacer />
+									<ButtonGroup
+										alignItems='center'
+										justifyContent='space-between'
+										flex='0 0 auto'
 										size='sm'
-										aria-label='Edit date range'
-										colorScheme='blue'
-									/>
-									<IconButton
-										onClick={() => handleDeleteDateRange(unavailRange)}
-										icon={<FiDelete />}
-										size='sm'
-										aria-label='Remove date range'
-										colorScheme='red'
-									/>
-								</ButtonGroup>
-							</Flex>
-						</ListItem>
-				  ))
-				: false}
+										spacing={1}
+									>
+										<IconButton
+											onClick={() => handleEditUnavailRange(unavailRange)}
+											icon={<FiEdit />}
+											size='sm'
+											aria-label='Edit date range'
+											colorScheme='blue'
+										/>
+										<IconButton
+											onClick={() => handleDeleteDateRange(unavailRange)}
+											icon={<FiDelete />}
+											size='sm'
+											aria-label='Remove date range'
+											colorScheme='red'
+										/>
+									</ButtonGroup>
+								</Flex>
+							</ListItem>
+						</MotionBox>
+					))}
+				</AnimatePresence>
+			) : (
+				false
+			)}
 			{/* TODO: Make this a handler */}
 			<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm'>
 				Add New Dates
