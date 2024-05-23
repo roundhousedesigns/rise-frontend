@@ -9,9 +9,17 @@ interface Props {
 	startDate?: Date;
 	endDate?: Date;
 	saveCallback?: (startDate: Date, endDate: Date) => void;
+	handleSelect?: () => void;
+	error?: string;
 }
 
-export default function DateRangePicker({ startDate, endDate, saveCallback }: Props) {
+export default function DateRangePicker({
+	startDate,
+	endDate,
+	saveCallback,
+	handleSelect,
+	error,
+}: Props) {
 	const [newStartDate, setNewStartDate] = useState<Date | undefined>(startDate || undefined);
 	const [newEndDate, setNewEndDate] = useState<Date | undefined>(endDate || undefined);
 
@@ -54,6 +62,7 @@ export default function DateRangePicker({ startDate, endDate, saveCallback }: Pr
 		<Flex gap={2}>
 			<DatePicker
 				onChange={onChange}
+				onSelect={handleSelect}
 				selected={newStartDate}
 				startDate={newStartDate}
 				endDate={newEndDate}
@@ -67,6 +76,13 @@ export default function DateRangePicker({ startDate, endDate, saveCallback }: Pr
 						<Box>
 							<Text fontSize='sm'>Selected:</Text>
 							<Text fontSize='lg'>{dateRangeString()}</Text>
+							{error ? (
+								<Text variant='notice' fontSize='sm'>
+									{error}
+								</Text>
+							) : (
+								false
+							)}
 						</Box>
 						<Spacer />
 					</>

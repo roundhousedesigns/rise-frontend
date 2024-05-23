@@ -105,6 +105,10 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'user_slug_invalid':
 			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
+		// Other errors
+		case 'unavail_range_overlap':
+			return 'This date range overlaps with an existing busy time. Please try again.';
+
 		default:
 			return defaultMessage + ': ' + errorCode;
 	}

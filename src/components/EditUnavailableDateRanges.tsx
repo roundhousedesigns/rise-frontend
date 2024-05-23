@@ -65,7 +65,7 @@ export default function EditUnavailableDateRanges() {
 			</Text>
 			<Divider />
 			<Spacer />
-			<List flexDirection='column' gap={2}>
+			<List flexDirection='column' spacing={0}>
 				{sortedUnavailRanges && sortedUnavailRanges.length ? (
 					<AnimatePresence>
 						{sortedUnavailRanges.map((unavailRange, index) => (
@@ -76,25 +76,26 @@ export default function EditUnavailableDateRanges() {
 								exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
 							>
 								<ListItem>
-									<Flex alignItems='center' justifyContent='space-between' gap={2}>
+									<Flex alignItems='center' justifyContent='flex-start' gap={2}>
 										<Link
-											as={Button}
+											href='#'
 											variant='dotted'
 											lineHeight='normal'
 											px={0}
-											flex='auto'
+											flex='0 0 auto'
 											bg='none'
 											height='auto'
 											borderRadius='none'
 											onClick={() => handleEditUnavailRange(unavailRange)}
 										>
-											{unavailRange.toString()}
+											{unavailRange.toString('long')}
 										</Link>
 										<Spacer />
 										<IconButton
 											onClick={() => handleDeleteDateRange(unavailRange)}
 											icon={<FiDelete />}
 											size='sm'
+											flex='0'
 											aria-label='Remove date range'
 											colorScheme='red'
 										/>
@@ -106,11 +107,12 @@ export default function EditUnavailableDateRanges() {
 				) : (
 					false
 				)}
-				<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm'>
+				<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
 					Add Dates
 				</Button>
 				<EditUnavailDateRangeModal
 					unavailRange={unavailRange}
+					allUnavailRanges={sortedUnavailRanges}
 					isOpen={unavailRangeModalIsOpen}
 					onClose={handleCloseEditUnavailRangeModal}
 				/>

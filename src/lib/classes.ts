@@ -392,24 +392,6 @@ export class UnavailRange implements DateRangeParams {
 	}
 
 	/**
-	 * Set the startDate for the UnavailRange.
-	 *
-	 * @param {Date|string} date The new start date.
-	 */
-	setStartDate(date: Date | string) {
-		this.startDate = date instanceof Date ? date : new Date(date);
-	}
-
-	/**
-	 * Set the endDate for the UnavailRange.
-	 *
-	 * @param {Date|string} date The new end date.
-	 */
-	setEndDate(date: Date | string) {
-		this.endDate = date instanceof Date ? date : new Date(date);
-	}
-
-	/**
 	 * Converts the UnavailRange to a string in the given format.
 	 *
 	 * @param {string} [format='default'] - The format to use for the string. Accepted values are:
