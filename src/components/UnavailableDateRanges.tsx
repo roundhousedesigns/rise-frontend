@@ -1,6 +1,8 @@
-import { Box, Heading, List, ListItem } from '@chakra-ui/react';
+import { List, ListItem } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { UnavailRange } from '@lib/classes';
+import WrapWithIcon from './common/WrapWithIcon';
+import { FiSlash } from 'react-icons/fi';
 
 interface Props {
 	unavailRanges: UnavailRange[];
@@ -13,22 +15,12 @@ export default function UnavailableDateRanges({ unavailRanges, ...props }: Props
 	}
 
 	return (
-		<Box {...props}>
-			<Heading variant='contentTitle'>Unavailable on</Heading>
-			<List
-				spacing={2}
-				lineHeight='taller'
-				pl={2}
-				mt={3}
-				ml={2}
-				borderLeftStyle='solid'
-				borderLeftWidth={4}
-				borderLeftColor='red.300'
-			>
-				{unavailRanges.map((unavailRange: UnavailRange, index: number) => (
-					<ListItem key={index}>{unavailRange.toString()}</ListItem>
-				))}
-			</List>
-		</Box>
+		<List spacing={2} {...props}>
+			{unavailRanges.map((unavailRange: UnavailRange, index: number) => (
+				<ListItem key={index}>
+					<WrapWithIcon icon={FiSlash}>{unavailRange.toString('long')}</WrapWithIcon>
+				</ListItem>
+			))}
+		</List>
 	);
 }

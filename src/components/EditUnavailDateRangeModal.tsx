@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Modal, ModalOverlay, ModalBody, ModalContent } from '@chakra-ui/react';
+import { Modal, ModalOverlay, ModalBody, ModalContent, ModalCloseButton } from '@chakra-ui/react';
 import { UnavailRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateUnavailRange from '@hooks/mutations/useUpdateUnavailRange';
@@ -46,6 +46,7 @@ export default function EditUnavailDateRangeModal({
 		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside'>
 			<ModalOverlay />
 			<ModalContent>
+				<ModalCloseButton />
 				<ModalBody px={4} pb={4}>
 					<DateRangePicker
 						startDate={startDate}

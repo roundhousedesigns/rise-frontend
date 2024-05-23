@@ -410,14 +410,37 @@ export class UnavailRange implements DateRangeParams {
 	}
 
 	/**
-	 * Converts a Date object to a string.
+	 * Converts the UnavailRange to a string in the given format.
+	 *
+	 * @param {string} [format='default'] - The format to use for the string. Accepted values are:
+	 *     - 'default': The default format, which is 'MM-DD-YYYY'.
+	 *     - 'iso': The ISO format, which is 'YYYY-MM-DD'.
+	 *     - 'long': The long format, which is a more human-readable format, like "May 20, 2004".
+	 * @return {string} The formatted date range string.
 	 */
-	toString(): string {
+	toString(format: 'default' | 'iso' | 'long' = 'default'): string {
 		if (!this.startDate || !this.endDate) {
 			return '';
 		}
 
-		return `${this.startDate.toLocaleDateString()} - ${this.endDate.toLocaleDateString()}`;
+		switch (format) {
+			case 'iso':
+				return `${this.startDate.toISOString().slice(0, 10)} - ${this.endDate
+					.toISOString()
+					.slice(0, 10)}`;
+			case 'long':
+				return `${new Intl.DateTimeFormat(undefined, {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				}).format(this.startDate)} - ${new Intl.DateTimeFormat(undefined, {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				}).format(this.endDate)}`;
+			default:
+				return `${this.startDate.toLocaleDateString()} - ${this.endDate.toLocaleDateString()}`;
+		}
 	}
 }
 

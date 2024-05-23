@@ -47,7 +47,7 @@ export default function DateRangePicker({ startDate, endDate, saveCallback }: Pr
 	 */
 	const dateRangeString = () => {
 		const newRange = new UnavailRange({ startDate: newStartDate, endDate: newEndDate });
-		return newRange.toString();
+		return newRange.toString('long');
 	};
 
 	return (
@@ -65,9 +65,10 @@ export default function DateRangePicker({ startDate, endDate, saveCallback }: Pr
 					<>
 						<Spacer />
 						<Box>
-							<Text fontSize='sm'>Dates selected:</Text>{' '}
+							<Text fontSize='sm'>Selected:</Text>
 							<Text fontSize='lg'>{dateRangeString()}</Text>
 						</Box>
+						<Spacer />
 					</>
 				) : (
 					false

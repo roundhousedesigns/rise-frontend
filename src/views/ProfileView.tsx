@@ -252,9 +252,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									) : (
 										<Avatar size='2xl' name={profile.fullName()} mx={2} />
 									)}
-									<Card variant='gray' py={0}>
-										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
-									</Card>
 								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
@@ -378,15 +375,25 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											)}
 											{website ? (
 												<ListItem>
-													<LinkWithIcon href={website} icon={FiExternalLink} target='_blank'>
-														Visit Website
-													</LinkWithIcon>
+													<WrapWithIcon icon={FiExternalLink}>
+														<Link href={website} target='_blank' variant='dotted'>
+															Visit Website
+														</Link>
+													</WrapWithIcon>
 												</ListItem>
 											) : (
 												false
 											)}
 										</List>
 									</StackItem>
+								) : (
+									false
+								)}
+
+								{unavailRanges.length ? (
+									<ProfileStackItem title='Unavailable on'>
+										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
+									</ProfileStackItem>
 								) : (
 									false
 								)}

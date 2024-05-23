@@ -5,15 +5,15 @@ import {
 	ListItem,
 	Flex,
 	Spacer,
-	ButtonGroup,
 	IconButton,
 	Button,
 	Text,
 	Heading,
 	Divider,
+	Link,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FiEdit, FiDelete, FiPlus } from 'react-icons/fi';
+import { FiDelete, FiPlus } from 'react-icons/fi';
 import { UnavailRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
@@ -77,30 +77,27 @@ export default function EditUnavailableDateRanges() {
 							>
 								<ListItem>
 									<Flex alignItems='center' justifyContent='space-between' gap={2}>
-										<Text>{unavailRange.toString()}</Text>
-										<Spacer />
-										<ButtonGroup
-											alignItems='center'
-											justifyContent='space-between'
-											flex='0 0 auto'
-											size='sm'
-											spacing={1}
+										<Link
+											as={Button}
+											variant='dotted'
+											lineHeight='normal'
+											px={0}
+											flex='auto'
+											bg='none'
+											height='auto'
+											borderRadius='none'
+											onClick={() => handleEditUnavailRange(unavailRange)}
 										>
-											<IconButton
-												onClick={() => handleEditUnavailRange(unavailRange)}
-												icon={<FiEdit />}
-												size='sm'
-												aria-label='Edit date range'
-												colorScheme='blue'
-											/>
-											<IconButton
-												onClick={() => handleDeleteDateRange(unavailRange)}
-												icon={<FiDelete />}
-												size='sm'
-												aria-label='Remove date range'
-												colorScheme='red'
-											/>
-										</ButtonGroup>
+											{unavailRange.toString()}
+										</Link>
+										<Spacer />
+										<IconButton
+											onClick={() => handleDeleteDateRange(unavailRange)}
+											icon={<FiDelete />}
+											size='sm'
+											aria-label='Remove date range'
+											colorScheme='red'
+										/>
 									</Flex>
 								</ListItem>
 							</MotionBox>
