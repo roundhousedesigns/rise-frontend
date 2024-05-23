@@ -9,6 +9,7 @@ import {
 	Fade,
 	Spacer,
 	Stack,
+	Text,
 } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
@@ -48,8 +49,10 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			>
 				<AccordionItem>
 					<h3>
-						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
-							<Box as='span'>Your Saved Searches</Box>
+						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pt={2}>
+							<Text as='span' m={0}>
+								Your Saved Searches
+							</Text>
 							<AccordionIcon />
 						</AccordionButton>
 					</h3>
