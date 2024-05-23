@@ -73,7 +73,7 @@ import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
-import UnavailableDateRanges from '@/components/UnavailableDateRanges';
+import UnavailableDateRanges from '@components/UnavailableDateRanges';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -641,22 +641,22 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
-	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
+	const Sidebar = ({ ...props }: { [prop: string]: string }) => (
 		<Stack mb={2} width='30%' minWidth='300px' {...props}>
-			<Heading variant='contentTitle' my={0}>
+			<StackItem as={Heading} variant='contentTitle' my={0}>
 				Profile image
-			</Heading>
-			<Text fontSize='sm' m={0}>
+			</StackItem>
+			<StackItem as={Text} fontSize='sm' m={0}>
 				Portrait orientation works best. Max 2MB.
-			</Text>
+			</StackItem>
 			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
 				// Uploading
-				<Flex alignItems='center' justifyContent='center' h='200px'>
+				<StackItem as={Flex} alignItems='center' justifyContent='center' h='200px'>
 					<ProgressSpinner />
-				</Flex>
+				</StackItem>
 			) : image ? (
 				// Image set
-				<>
+				<StackItem>
 					<Image
 						src={image}
 						alt={`Profile picture`}
@@ -668,9 +668,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					<ClearFieldButton field='image' label='Remove image' mt={2}>
 						Remove
 					</ClearFieldButton>
-				</>
+				</StackItem>
 			) : (
-				<FileDropzone
+				<StackItem
+					as={FileDropzone}
 					fieldName='image'
 					text='Profile image'
 					icon={FiUser}
@@ -678,6 +679,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					iconProps={{ mb: 2, boxSize: '80px' }}
 				/>
 			)}
+			<StackItem as={Card}>
+				<UnavailableDateRanges />
+			</StackItem>
 		</Stack>
 	);
 
@@ -840,7 +844,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<Heading as='h3' m={0}>
 								<AccordionButton>
 									<Box as='span' fontWeight='normal'>
-										Quick Actions
+										Options
 									</Box>
 									<AccordionIcon />
 								</AccordionButton>
@@ -850,9 +854,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
-									<Card py={2} my={0}>
-										<UnavailableDateRanges />
-									</Card>
 								</Flex>
 							</AccordionPanel>
 						</AccordionItem>
@@ -860,7 +861,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				</ProfileStackItem>
 				<ProfileStackItem>
 					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <ProfileImageUploader /> : false}
+						{isLargerThanMd ? <Sidebar /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
@@ -929,7 +930,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							</ProfileStackItem>
 							{!isLargerThanMd ? (
 								<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
-									<ProfileImageUploader />
+									<Sidebar />
 								</ProfileStackItem>
 							) : (
 								false

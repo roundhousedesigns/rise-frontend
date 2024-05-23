@@ -6,6 +6,7 @@ with 1.0.0beta.
 ## \[1.1.7-blockedDates] - Unreleased
 
 - Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
+- Change: "Quick Actions" --> "Options".
 
 ## \[1.1.7] - Unreleased
 

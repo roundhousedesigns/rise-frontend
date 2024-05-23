@@ -9,6 +9,8 @@ import {
 	IconButton,
 	Button,
 	Text,
+	Heading,
+	Divider,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiEdit, FiDelete, FiPlus } from 'react-icons/fi';
@@ -55,59 +57,67 @@ export default function UnavailableDateRanges() {
 	};
 
 	return (
-		<List flexDirection='column' gap={2}>
-			{sortedUnavailRanges && sortedUnavailRanges.length ? (
-				<AnimatePresence>
-					{sortedUnavailRanges.map((unavailRange, index) => (
-						<MotionBox
-							key={index}
-							initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
-							animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
-							exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
-						>
-							<ListItem>
-								<Flex alignItems='center' justifyContent='space-between' gap={2}>
-									<Text>{unavailRange.toString()}</Text>
-									<Spacer />
-									<ButtonGroup
-										alignItems='center'
-										justifyContent='space-between'
-										flex='0 0 auto'
-										size='sm'
-										spacing={1}
-									>
-										<IconButton
-											onClick={() => handleEditUnavailRange(unavailRange)}
-											icon={<FiEdit />}
+		<>
+			<Heading variant='contentTitle'>Busy</Heading>
+			<Text fontSize='sm' my={0}>
+				If you're unavaible for work during certain dates, you can add them here. They'll be
+				displayed on your profile, but won't affect searches.
+			</Text>
+			<Divider />
+			<Spacer />
+			<List flexDirection='column' gap={2}>
+				{sortedUnavailRanges && sortedUnavailRanges.length ? (
+					<AnimatePresence>
+						{sortedUnavailRanges.map((unavailRange, index) => (
+							<MotionBox
+								key={index}
+								initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
+								animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
+								exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
+							>
+								<ListItem>
+									<Flex alignItems='center' justifyContent='space-between' gap={2}>
+										<Text>{unavailRange.toString()}</Text>
+										<Spacer />
+										<ButtonGroup
+											alignItems='center'
+											justifyContent='space-between'
+											flex='0 0 auto'
 											size='sm'
-											aria-label='Edit date range'
-											colorScheme='blue'
-										/>
-										<IconButton
-											onClick={() => handleDeleteDateRange(unavailRange)}
-											icon={<FiDelete />}
-											size='sm'
-											aria-label='Remove date range'
-											colorScheme='red'
-										/>
-									</ButtonGroup>
-								</Flex>
-							</ListItem>
-						</MotionBox>
-					))}
-				</AnimatePresence>
-			) : (
-				false
-			)}
-			{/* TODO: Make this a handler */}
-			<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm'>
-				Add New Dates
-			</Button>
-			<EditUnavailDateRangeModal
-				unavailRange={unavailRange}
-				isOpen={unavailRangeModalIsOpen}
-				onClose={handleCloseEditUnavailRangeModal}
-			/>
-		</List>
+											spacing={1}
+										>
+											<IconButton
+												onClick={() => handleEditUnavailRange(unavailRange)}
+												icon={<FiEdit />}
+												size='sm'
+												aria-label='Edit date range'
+												colorScheme='blue'
+											/>
+											<IconButton
+												onClick={() => handleDeleteDateRange(unavailRange)}
+												icon={<FiDelete />}
+												size='sm'
+												aria-label='Remove date range'
+												colorScheme='red'
+											/>
+										</ButtonGroup>
+									</Flex>
+								</ListItem>
+							</MotionBox>
+						))}
+					</AnimatePresence>
+				) : (
+					false
+				)}
+				<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm'>
+					Add Dates
+				</Button>
+				<EditUnavailDateRangeModal
+					unavailRange={unavailRange}
+					isOpen={unavailRangeModalIsOpen}
+					onClose={handleCloseEditUnavailRangeModal}
+				/>
+			</List>
+		</>
 	);
 }
