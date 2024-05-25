@@ -97,7 +97,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			to='/bookmarks'
 			icon={
 				isLargerThanMd && bookmarkedProfiles.length ? (
-					<Badge py={1} px={2} ml={0} borderRadius='full'>
+					<Badge py={1} px={2} ml={0} borderRadius='full' bg='orange.100' color='gray.800'>
 						{bookmarkedProfiles.length}
 					</Badge>
 				) : (
@@ -107,7 +107,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			label='Saved candidates'
 			isDisabled={!bookmarkedProfiles.length}
 		>
-			Saved
+			Bookmarked
 		</ResponsiveButton>
 	);
 

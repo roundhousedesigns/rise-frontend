@@ -13,10 +13,11 @@ import {
 	useToast,
 	Text,
 	Stack,
-	Wrap,
-	Spacer,
 	StackItem,
 	Flex,
+	Box,
+	IconButton,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
@@ -49,9 +50,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	// const { openDrawer } = useContext(SearchDrawerContext);
-
-	const isNamed = title && title !== '';
+	const hasName = title && title !== '';
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
@@ -93,6 +92,11 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		editOnOpen();
+	};
+
+	const handleEditOnClose = () => {
+		setSaveSearchFieldText(title ? title : '');
+		editOnClose();
 	};
 
 	const handleRenameSubmit = (e: FormEvent) => {
@@ -144,57 +148,72 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	return termIds && termIds.length > 0 ? (
 		<>
 			<Stack w='auto' alignItems='space-between' {...props}>
-				<StackItem display='flex' alignItems='center' gap={1}>
-					<Text my={0} fontSize='lg'>
-						{isNamed ? (
+				<StackItem>
+					<Flex>
+						{hasName ? (
 							<LinkWithIcon
 								onClick={handleEditClick}
 								icon={FiEdit2}
-								iconSide='right'
-								iconProps={{ boxSize: 3, mb: '2px', ml: 1 }}
+								fontSize='lg'
+								my={0}
+								mr={4}
+								flex={1}
+								iconSide='left'
+								color='inherit'
+								borderBottomWidth='2px'
+								borderBottomStyle='dotted'
+								textDecoration='none !important'
+								_hover={{ borderBottom: '1px  dotted brand.blue' }}
+								_light={{
+									borderBottomColor: 'gray.300',
+									_hover: { borderBottomColor: 'gray.400' },
+								}}
+								_dark={{ borderBottomColor: 'gray.600', _hover: { borderBottomColor: 'gray.400' } }}
+								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 							>
 								{title}
 							</LinkWithIcon>
 						) : (
 							false
 						)}
-					</Text>
-					<Spacer />
-					<StackItem as={Wrap} alignItems='center' spacing={1}>
 						{id ? (
-							<Button
-								leftIcon={<FiSearch />}
-								colorScheme='green'
-								aria-label='Rerun this search'
-								title='Rerun'
-								size='sm'
-								onClick={handleSearchClick}
+							<ButtonGroup
+								alignItems='center'
+								justifyContent='space-between'
+								flex='0 0 auto'
+								spacing={1}
 							>
-								Search
-							</Button>
+								<IconButton
+									icon={<FiSearch />}
+									colorScheme='green'
+									aria-label='Rerun this search'
+									title='Rerun'
+									size='sm'
+									onClick={handleSearchClick}
+								/>
+								<IconButton
+									icon={<FiDelete />}
+									colorScheme='orange'
+									aria-label='Delete this search'
+									title='Delete'
+									size='sm'
+									onClick={deleteOnOpen}
+								/>
+							</ButtonGroup>
 						) : (
 							false
 						)}
-						{id ? (
-							<Button
-								leftIcon={<FiDelete />}
-								colorScheme='orange'
-								aria-label='Delete this search'
-								title='Delete'
-								size='sm'
-								onClick={deleteOnOpen}
-							>
-								Delete
-							</Button>
-						) : (
-							false
-						)}
-					</StackItem>
+					</Flex>
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
-						<SearchParamTags termIds={termIds} termItems={terms} />
-						{!isNamed ? (
+						<Box>
+							<Text variant='helperText' fontSize='xs'>
+								You searched for:
+							</Text>
+							<SearchParamTags termIds={termIds} termItems={terms} />
+						</Box>
+						{!hasName ? (
 							<Button
 								colorScheme='blue'
 								leftIcon={<FiSave />}
@@ -213,18 +232,22 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 			</Stack>
 
-			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={editOnClose}>
+			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
 				<ModalOverlay />
 				<ModalContent>
-					<ModalHeader>{isNamed ? 'Rename this search' : 'Save this search'}</ModalHeader>
+					<ModalHeader pb={2}>{hasName ? 'Rename this search' : 'Save this search'}</ModalHeader>
 					<ModalCloseButton />
 
 					<ModalBody pb={6}>
-						<Text>Give this search a descriptive name to easily re-run this search.</Text>
+						<Text fontSize='sm' mt={0}>
+							Give this search a short, descriptive name to easily run it again.
+						</Text>
 
 						<form id='rename-search' onSubmit={handleRenameSubmit}>
 							<FormControl>
-								<FormLabel>Name</FormLabel>
+								<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
+									Name
+								</FormLabel>
 								<TextInput
 									name='title'
 									placeholder='My search'
@@ -233,10 +256,17 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									ref={initialSaveModalRef}
 								/>
 							</FormControl>
-							<Button colorScheme='blue' mr={3} type='submit'>
+							<Button
+								colorScheme='blue'
+								mr={3}
+								type='submit'
+								isDisabled={saveSearchFieldText === title}
+							>
 								Save
 							</Button>
-							<Button onClick={editOnClose}>Cancel</Button>
+							<Button onClick={handleEditOnClose} colorScheme='red'>
+								Cancel
+							</Button>
 						</form>
 					</ModalBody>
 				</ModalContent>
