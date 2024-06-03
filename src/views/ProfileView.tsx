@@ -391,7 +391,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								)}
 
 								{unavailRanges.length ? (
-									<ProfileStackItem title='Unavailable on'>
+									<ProfileStackItem title='Booked or Busy'>
 										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
 									</ProfileStackItem>
 								) : (

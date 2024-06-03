@@ -121,6 +121,7 @@ export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
+		unavailRanges,
 		credits,
 		...sanitized
 	} = profile;

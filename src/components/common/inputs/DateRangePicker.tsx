@@ -8,7 +8,7 @@ import { UnavailRange } from '@/lib/classes';
 interface Props {
 	startDate?: Date;
 	endDate?: Date;
-	saveCallback?: (startDate: Date, endDate: Date) => void;
+	saveCallback: (startDate: Date, endDate: Date) => void;
 	handleSelect?: () => void;
 	error?: string;
 }
@@ -62,7 +62,7 @@ export default function DateRangePicker({
 		<Flex gap={2}>
 			<DatePicker
 				onChange={onChange}
-				onSelect={handleSelect}
+				onSelect={handleSelect ? handleSelect : undefined}
 				selected={newStartDate}
 				startDate={newStartDate}
 				endDate={newEndDate}
@@ -89,20 +89,12 @@ export default function DateRangePicker({
 				) : (
 					false
 				)}
-				{saveCallback ? (
-					<>
-						<Spacer />
-						<Button
-							onClick={handleSave}
-							colorScheme='blue'
-							isDisabled={!newStartDate || !newEndDate}
-						>
-							Save
-						</Button>
-					</>
-				) : (
-					false
-				)}
+				<>
+					<Spacer />
+					<Button onClick={handleSave} colorScheme='blue' isDisabled={!newStartDate || !newEndDate}>
+						Save
+					</Button>
+				</>
 			</Stack>
 		</Flex>
 	);
