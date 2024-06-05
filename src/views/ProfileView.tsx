@@ -252,6 +252,18 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									) : (
 										<Avatar size='2xl' name={profile.fullName()} mx={2} />
 									)}
+									{unavailRanges.length && isLargerThanMd ? (
+										<Card px={2} pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
+											<Box>
+												<Heading as='h3' variant='contentTitle'>
+													Conflicts
+												</Heading>
+												<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
+											</Box>
+										</Card>
+									) : (
+										false
+									)}
 								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
@@ -390,8 +402,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									false
 								)}
 
-								{unavailRanges.length ? (
-									<ProfileStackItem title='Booked or Busy'>
+								{unavailRanges.length && !isLargerThanMd ? (
+									<ProfileStackItem title='Conflicts'>
 										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
 									</ProfileStackItem>
 								) : (

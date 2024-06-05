@@ -58,10 +58,10 @@ export default function EditUnavailableDateRanges() {
 
 	return (
 		<>
-			<Heading variant='contentTitle'>Booked or Busy</Heading>
+			<Heading variant='contentTitle'>Conflicts</Heading>
 			<Text fontSize='sm' my={0}>
-				If you're unavaible for work during certain dates, you can add them here. They'll be
-				displayed on your profile, but won't affect searches.
+				Add your conflict dates here. These will appear on your profile, but will not affect your
+				appearance in search results.
 			</Text>
 			<Divider />
 			<Spacer />
