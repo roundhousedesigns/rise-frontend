@@ -85,7 +85,7 @@ export const QUERY_PROFILE = gql`
 				}
 			}
 		}
-		unavailRanges(where: { author: $author }) {
+		conflictRanges(where: { author: $author }) {
 			nodes {
 				id: databaseId
 				startDate
@@ -116,14 +116,14 @@ const useUserProfile = (id: number, count?: number): [UserProfile | null, any] =
 		? prepareCreditsFromGQLNodes(result.data.credits.nodes)
 		: [];
 
-	// Prepare the unavailable dates
-	const unavailRanges = result.data?.unavailRanges.nodes
-		? prepareUnavailDatesFromGQLNodes(result.data.unavailRanges.nodes)
+	// Prepare the conflict dates
+	const conflictRanges = result.data?.conflictRanges.nodes
+		? prepareUnavailDatesFromGQLNodes(result.data.conflictRanges.nodes)
 		: [];
 
 	// Prepare the profile data object.
 	const preparedProfile = result.data
-		? new UserProfile(result.data.user, unavailRanges, credits)
+		? new UserProfile(result.data.user, conflictRanges, credits)
 		: null;
 
 	return [preparedProfile, omit(result, ['data'])];

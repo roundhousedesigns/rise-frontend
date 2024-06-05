@@ -14,46 +14,46 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiDelete, FiPlus } from 'react-icons/fi';
-import { UnavailRange } from '@lib/classes';
+import { ConflictRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
-import useDeleteOwnUnavailRange from '@hooks/mutations/useDeleteOwnUnavailRange';
-import EditUnavailDateRangeModal from '@components/EditUnavailDateRangeModal';
+import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
+import EditUnavailDateRangeModal from '@/components/EditConflictDateRangeModal';
 
-export default function EditUnavailableDateRanges() {
+export default function EditConflictDateRanges() {
 	const { loggedInId } = useViewer();
 	const {
-		editProfile: { unavailRanges },
+		editProfile: { conflictRanges },
 	} = useContext(EditProfileContext);
 
 	const MotionBox = motion(chakra.div);
 
-	const { deleteOwnUnavailRangeMutation } = useDeleteOwnUnavailRange();
+	const { deleteOwnConflictRangeMutation } = useDeleteOwnConflictRange();
 
-	const sortedUnavailRanges: UnavailRange[] = useMemo(() => {
-		return unavailRanges
+	const sortedConflictRanges: ConflictRange[] = useMemo(() => {
+		return conflictRanges
 			.slice()
 			.sort((a, b) =>
 				a.startDate && b.startDate ? a.startDate.getTime() - b.startDate.getTime() : 0
 			);
-	}, [unavailRanges]);
+	}, [conflictRanges]);
 
-	const [unavailRangeModalIsOpen, setUnavailRangeModalIsOpen] = useState<boolean>(false);
-	const [unavailRange, setUnavailRange] = useState<UnavailRange>(new UnavailRange());
+	const [conflictRangeModalIsOpen, setConflictRangeModalIsOpen] = useState<boolean>(false);
+	const [conflictRange, setConflictRange] = useState<ConflictRange>(new ConflictRange());
 
-	const handleEditUnavailRange = (unavailRange?: UnavailRange) => {
-		setUnavailRangeModalIsOpen(true);
-		setUnavailRange(unavailRange || new UnavailRange());
+	const handleEditConflictRange = (conflictRange?: ConflictRange) => {
+		setConflictRangeModalIsOpen(true);
+		setConflictRange(conflictRange || new ConflictRange());
 	};
 
-	const handleCloseEditUnavailRangeModal = () => {
-		setUnavailRangeModalIsOpen(false);
+	const handleCloseEditConflictRangeModal = () => {
+		setConflictRangeModalIsOpen(false);
 	};
 
-	const handleDeleteDateRange = ({ id }: UnavailRange) => {
+	const handleDeleteDateRange = ({ id }: ConflictRange) => {
 		if (!id) return;
 
-		deleteOwnUnavailRangeMutation(id, loggedInId);
+		deleteOwnConflictRangeMutation(id, loggedInId);
 	};
 
 	return (
@@ -66,9 +66,9 @@ export default function EditUnavailableDateRanges() {
 			<Divider />
 			<Spacer />
 			<List flexDirection='column' spacing={0}>
-				{sortedUnavailRanges && sortedUnavailRanges.length ? (
+				{sortedConflictRanges && sortedConflictRanges.length ? (
 					<AnimatePresence>
-						{sortedUnavailRanges.map((unavailRange, index) => (
+						{sortedConflictRanges.map((conflictRange, index) => (
 							<MotionBox
 								key={index}
 								initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
@@ -86,13 +86,13 @@ export default function EditUnavailableDateRanges() {
 											bg='none'
 											height='auto'
 											borderRadius='none'
-											onClick={() => handleEditUnavailRange(unavailRange)}
+											onClick={() => handleEditConflictRange(conflictRange)}
 										>
-											{unavailRange.toString('long')}
+											{conflictRange.toString('long')}
 										</Link>
 										<Spacer />
 										<IconButton
-											onClick={() => handleDeleteDateRange(unavailRange)}
+											onClick={() => handleDeleteDateRange(conflictRange)}
 											icon={<FiDelete />}
 											size='sm'
 											flex='0'
@@ -107,14 +107,14 @@ export default function EditUnavailableDateRanges() {
 				) : (
 					false
 				)}
-				<Button onClick={() => handleEditUnavailRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
+				<Button onClick={() => handleEditConflictRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
 					Add Dates
 				</Button>
 				<EditUnavailDateRangeModal
-					unavailRange={unavailRange}
-					allUnavailRanges={sortedUnavailRanges}
-					isOpen={unavailRangeModalIsOpen}
-					onClose={handleCloseEditUnavailRangeModal}
+					conflictRange={conflictRange}
+					allConflictRanges={sortedConflictRanges}
+					isOpen={conflictRangeModalIsOpen}
+					onClose={handleCloseEditConflictRangeModal}
 				/>
 			</List>
 		</>

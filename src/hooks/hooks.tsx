@@ -106,7 +106,7 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
 		// Other errors
-		case 'unavail_range_overlap':
+		case 'conflict_range_overlap':
 			return 'This date range overlaps with an existing busy time. Please try again.';
 
 		default:
@@ -125,7 +125,7 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 
 	const ignoreFields = [
 		'credits',
-		'unavailRanges',
+		'conflictRanges',
 		'slug',
 		'image',
 		'resume',

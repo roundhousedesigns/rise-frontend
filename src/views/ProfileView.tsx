@@ -48,7 +48,7 @@ import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
-import UnavailableDateRanges from '@/components/UnavailableDateRanges';
+import ConflictDateRanges from '@/components/ConflictDateRanges';
 
 interface Props {
 	profile: UserProfile;
@@ -100,7 +100,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		mediaImage5,
 		mediaImage6,
 		education,
-		unavailRanges,
+		conflictRanges,
 		credits,
 	} = profile || {};
 
@@ -252,13 +252,13 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									) : (
 										<Avatar size='2xl' name={profile.fullName()} mx={2} />
 									)}
-									{unavailRanges.length && isLargerThanMd ? (
+									{conflictRanges.length && isLargerThanMd ? (
 										<Card px={2} pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
 											<Box>
 												<Heading as='h3' variant='contentTitle'>
 													Conflicts
 												</Heading>
-												<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
+												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 											</Box>
 										</Card>
 									) : (
@@ -402,9 +402,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									false
 								)}
 
-								{unavailRanges.length && !isLargerThanMd ? (
+								{conflictRanges.length && !isLargerThanMd ? (
 									<ProfileStackItem title='Conflicts'>
-										<UnavailableDateRanges my={4} unavailRanges={unavailRanges} />
+										<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 									</ProfileStackItem>
 								) : (
 									false

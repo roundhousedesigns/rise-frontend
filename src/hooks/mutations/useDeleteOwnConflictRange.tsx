@@ -1,27 +1,27 @@
 /**
- * useDeleteOwnUnavailRange hook. Mutation to update a User.
+ * useDeleteOwnConflictRange hook. Mutation to update a User.
  */
 
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_PROFILE } from '../queries/useUserProfile';
 
 const MUTATE_DELETE_UNAVAIL_RANGE = gql`
-	mutation DeleteOwnSavedSearch($input: DeleteOwnUnavailRangeInput!) {
-		deleteOwnUnavailRange(input: $input) {
+	mutation DeleteOwnSavedSearch($input: DeleteOwnConflictRangeInput!) {
+		deleteOwnConflictRange(input: $input) {
 			result
 			clientMutationId
 		}
 	}
 `;
 
-const useDeleteOwnUnavailRange = () => {
+const useDeleteOwnConflictRange = () => {
 	const [mutation, results] = useMutation(MUTATE_DELETE_UNAVAIL_RANGE);
 
-	const deleteOwnUnavailRangeMutation = (id: number, userId: number) => {
+	const deleteOwnConflictRangeMutation = (id: number, userId: number) => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'deleteOwnUnavailRangeMutation',
+					clientMutationId: 'deleteOwnConflictRangeMutation',
 					id: id.toString(),
 					userId,
 				},
@@ -32,7 +32,7 @@ const useDeleteOwnUnavailRange = () => {
 
 	console.debug('RESULTS', results);
 
-	return { deleteOwnUnavailRangeMutation, results };
+	return { deleteOwnConflictRangeMutation, results };
 };
 
-export default useDeleteOwnUnavailRange;
+export default useDeleteOwnConflictRange;

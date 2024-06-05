@@ -1,33 +1,33 @@
 import { List, ListItem } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import { UnavailRange } from '@lib/classes';
+import { ConflictRange } from '@lib/classes';
 import WrapWithIcon from './common/WrapWithIcon';
 import { FiSlash } from 'react-icons/fi';
 import { useMemo } from 'react';
 
 interface Props {
-	unavailRanges: UnavailRange[];
+	conflictRanges: ConflictRange[];
 	[prop: string]: any;
 }
 
-export default function UnavailableDateRanges({ unavailRanges, ...props }: Props): JSX.Element {
-	if (isEmpty(unavailRanges)) {
+export default function ConflictDateRanges({ conflictRanges, ...props }: Props): JSX.Element {
+	if (isEmpty(conflictRanges)) {
 		return <></>;
 	}
 
-	const sortedUnavailRanges: UnavailRange[] = useMemo(() => {
-		return unavailRanges
+	const sortedConflictRanges: ConflictRange[] = useMemo(() => {
+		return conflictRanges
 			.slice()
 			.sort((a, b) =>
 				a.startDate && b.startDate ? a.startDate.getTime() - b.startDate.getTime() : 0
 			);
-	}, [unavailRanges]);
+	}, [conflictRanges]);
 
 	return (
 		<List spacing={2} {...props}>
-			{sortedUnavailRanges.map((unavailRange: UnavailRange, index: number) => (
+			{sortedConflictRanges.map((conflictRange: ConflictRange, index: number) => (
 				<ListItem key={index}>
-					<WrapWithIcon icon={FiSlash}>{unavailRange.toString('long')}</WrapWithIcon>
+					<WrapWithIcon icon={FiSlash}>{conflictRange.toString('long')}</WrapWithIcon>
 				</ListItem>
 			))}
 		</List>

@@ -1,22 +1,22 @@
 /**
- * useUpdateUnavailRange hook. Mutation to create or update a Credit.
+ * useUpdateConflictRange hook. Mutation to create or update a Credit.
  */
 
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_PROFILE } from '@hooks/queries/useUserProfile';
 
 const MUTATE_UPDATE_UNAVAIL_RANGE = gql`
-	mutation updateUnavailRangeMutation($input: UpdateOrCreateUnavailRangeInput = {}) {
-		updateOrCreateUnavailRange(input: $input) {
+	mutation updateConflictRangeMutation($input: UpdateOrCreateConflictRangeInput = {}) {
+		updateOrCreateConflictRange(input: $input) {
 			id
 		}
 	}
 `;
 
-const useUpdateUnavailRange = () => {
+const useUpdateConflictRange = () => {
 	const [mutation, results] = useMutation(MUTATE_UPDATE_UNAVAIL_RANGE);
 
-	const updateUnavailRangeMutation = (
+	const updateConflictRangeMutation = (
 		id: number = 0,
 		userId: number,
 		startDate: Date,
@@ -40,7 +40,7 @@ const useUpdateUnavailRange = () => {
 		});
 	};
 
-	return { updateUnavailRangeMutation, results };
+	return { updateConflictRangeMutation, results };
 };
 
-export default useUpdateUnavailRange;
+export default useUpdateConflictRange;

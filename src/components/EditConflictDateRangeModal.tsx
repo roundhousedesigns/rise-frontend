@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalOverlay, ModalBody, ModalContent, ModalCloseButton } from '@chakra-ui/react';
-import { UnavailRange } from '@lib/classes';
+import { ConflictRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
-import useUpdateUnavailRange from '@hooks/mutations/useUpdateUnavailRange';
+import useUpdateConflictRange from '@hooks/mutations/useUpdateConflictRange';
 import { useErrorMessage } from '@hooks/hooks';
 import DateRangePicker from '@common/inputs/DateRangePicker';
 
 interface Props {
-	unavailRange?: UnavailRange;
-	allUnavailRanges?: UnavailRange[];
+	conflictRange?: ConflictRange;
+	allConflictRanges?: ConflictRange[];
 	isOpen: boolean;
 	onClose: () => void;
 }
 
 export default function EditUnavailDateRangeModal({
-	unavailRange = new UnavailRange(),
-	allUnavailRanges,
+	conflictRange = new ConflictRange(),
+	allConflictRanges,
 	isOpen,
 	onClose,
 }: Props): JSX.Element {
@@ -25,15 +25,15 @@ export default function EditUnavailDateRangeModal({
 	const errorMessage = useErrorMessage(errorCode);
 
 	const {
-		updateUnavailRangeMutation,
+		updateConflictRangeMutation,
 		results: { data, loading },
-	} = useUpdateUnavailRange();
+	} = useUpdateConflictRange();
 
-	const { id, startDate, endDate } = unavailRange;
+	const { id, startDate, endDate } = conflictRange;
 
 	// Close modal if update is successful
 	useEffect(() => {
-		if (data?.updateOrCreateUnavailRange?.id && !loading) {
+		if (data?.updateOrCreateConflictRange?.id && !loading) {
 			onClose();
 		}
 
@@ -47,10 +47,10 @@ export default function EditUnavailDateRangeModal({
 	};
 
 	/**
-	 * Updates the unavailability range with the provided start and end dates.
+	 * Updates the conflict range with the provided start and end dates.
 	 */
-	const saveUnavailRangeCallback = (newStartDate: Date, newEndDate: Date): void => {
-		const overlappingRange = allUnavailRanges?.find(
+	const saveConflictRangeCallback = (newStartDate: Date, newEndDate: Date): void => {
+		const overlappingRange = allConflictRanges?.find(
 			({ id: existingRangeId, startDate: existingStartDate, endDate: existingEndDate }) => {
 				return (
 					// Check if the new dates overlap with any other range
@@ -63,11 +63,11 @@ export default function EditUnavailDateRangeModal({
 		);
 
 		if (overlappingRange) {
-			setErrorCode('unavail_range_overlap');
+			setErrorCode('conflict_range_overlap');
 			return;
 		}
 
-		updateUnavailRangeMutation(id, loggedInId, newStartDate, newEndDate);
+		updateConflictRangeMutation(id, loggedInId, newStartDate, newEndDate);
 	};
 	return (
 		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside'>
@@ -80,7 +80,7 @@ export default function EditUnavailDateRangeModal({
 						endDate={endDate ? endDate : undefined}
 						error={errorCode ? errorMessage : ''}
 						handleSelect={handleSelect}
-						saveCallback={saveUnavailRangeCallback}
+						saveCallback={saveConflictRangeCallback}
 					/>
 				</ModalBody>
 			</ModalContent>
