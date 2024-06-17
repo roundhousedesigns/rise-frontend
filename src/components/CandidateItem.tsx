@@ -1,9 +1,10 @@
-import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Icon, Spacer } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
+import CandidateAvatarBadge from './CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
@@ -11,7 +12,10 @@ interface Props {
 	[prop: string]: any;
 }
 
+// TODO Get conflictDates search params
+
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
+	
 	const { loggedInId } = useViewer();
 
 	const { id, image, slug, selfTitle } = candidate || {};
@@ -29,7 +33,8 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
-				py={{ base: 1, md: 2 }}
+				py={{ base: 2, md: 3 }}
+				px={2}
 				mr={4}
 				my={0}
 				borderWidth={2}
@@ -60,7 +65,9 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
-					/>
+					>
+						<CandidateAvatarBadge reason='dateConflict' />
+					</Avatar>
 					<Heading
 						as='h3'
 						fontSize='lg'
@@ -75,8 +82,11 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					<Text
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
+						fontSize='sm'
 						flex='1'
 						noOfLines={2}
+						style={{ hyphens: 'auto' }}
+						wordBreak='break-word'
 					>
 						{selfTitle}
 					</Text>

@@ -1,5 +1,5 @@
-import { Key, useContext, useEffect } from 'react';
-import { Accordion, Fade } from '@chakra-ui/react';
+import { Key, useContext, useEffect, useState } from 'react';
+import { Accordion, Text, Fade, Wrap, Flex, Button } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
@@ -85,6 +85,27 @@ export default function AdditionalSearchFilters() {
 						w='full'
 						defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
 					>
+						{/* <SearchFilterAccordionItem heading='Job Dates'>
+							<Flex gap={4} px={4}>
+								<DatePicker
+									closeOnScroll={(e) => e.target === document}
+									selected={startDate}
+									customInput={<DatePickerButton defaultText='Start date' />}
+									onChange={(date: Date) => setStartDate(date)}
+								/>
+								{startDate ? (
+									<DatePicker
+										closeOnScroll={(e) => e.target === document}
+										selected={endDate}
+										customInput={<DatePickerButton defaultText='End date (optional)' />}
+										onChange={handleSetDate('endDate')}
+									/>
+								) : (
+									false
+								)}
+								{startDate ? <Button onClick={handleClearDates}>Clear</Button> : false}
+							</Flex>
+						</SearchFilterAccordionItem> */}
 						<SearchFilterAccordionItem heading='Locations'>
 							<ProfileCheckboxGroup
 								name='locations'

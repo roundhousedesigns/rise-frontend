@@ -204,6 +204,7 @@ export interface SearchFilterSet {
 	racialIdentities?: string[];
 	personalIdentities?: string[];
 	searchName?: string;
+	searchDates?: DateRangeParams;
 }
 
 /**

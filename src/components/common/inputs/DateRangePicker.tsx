@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Box, Button, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
-
 import 'react-datepicker/dist/react-datepicker.css';
 import { ConflictRange } from '@/lib/classes';
 

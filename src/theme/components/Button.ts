@@ -29,6 +29,26 @@ const variants = {
 		mx: 1,
 		bg: 'blackAlpha.300',
 	}),
+	searchFilter: defineStyle({
+		_dark: {
+			bg: 'gray.800',
+			_checked: {
+				bg: 'gray.300',
+			},
+			_hover: {
+				bg: 'gray.600',
+			},
+		},
+		_light: {
+			bg: 'gray.100',
+			_checked: {
+				bg: 'gray.600',
+			},
+			_hover: {
+				bg: 'gray.50',
+			},
+		},
+	}),
 };
 
 const sizes = {

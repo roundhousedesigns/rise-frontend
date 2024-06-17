@@ -9,6 +9,7 @@ import {
 	Fade,
 	Spacer,
 	Stack,
+	StackItem,
 	Text,
 } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
@@ -19,6 +20,7 @@ import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
+import SearchFilterDates from '@/components/SearchFilterDates';
 
 interface Props {
 	showButtons?: boolean;
@@ -33,6 +35,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				name,
 				filterSet: {
 					positions: { departments = [], jobs = [] },
+					skills,
 				},
 			},
 		},
@@ -67,7 +70,12 @@ export default function SearchWizardView({ onSubmit }: Props) {
 					<Box mb={4} height={name ? 0 : 'auto'}>
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
-						{departments.length && jobs.length > 0 ? <SearchFilterSkills /> : null}
+						{departments.length && jobs.length > 0 ? (
+							<>
+								<SearchFilterSkills />
+								<SearchFilterDates />
+							</>
+						) : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />
 					</Box>
