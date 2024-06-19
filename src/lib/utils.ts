@@ -318,7 +318,7 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
 
 /**
  * Flattens the `positions` object to a single `positions` property
- * containing an array of job IDs.
+ * containing an array of job IDs, and removes the `jobDates` property.
  *
  * @param searchObj
  * @returns The flattened search object.
@@ -329,6 +329,7 @@ export function prepareSearchFilterSetForSave(searchObj: SearchFilterSet): Searc
 		positions: searchObj.positions.jobs,
 	};
 
+	// Remove the `jobDates` property if it exists
 	delete preparedSearchObj.jobDates;
 
 	return preparedSearchObj;
