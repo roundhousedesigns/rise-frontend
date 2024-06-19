@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Button, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ConflictRange } from '@/lib/classes';
+import { DateRange } from '@/lib/classes';
 
 interface Props {
 	startDate?: Date;
@@ -35,7 +35,7 @@ export default function DateRangePicker({
 	};
 
 	/**
-	 * Checks if both start date and end date are defined, then calls the saveCallback function with a new ConflictRange object.
+	 * Checks if both start date and end date are defined, then calls the saveCallback function with a new DateRange object.
 	 *
 	 * @return {void}
 	 */
@@ -53,7 +53,7 @@ export default function DateRangePicker({
 	 * @return {string} The formatted date range string.
 	 */
 	const dateRangeString = () => {
-		const newRange = new ConflictRange({ startDate: newStartDate, endDate: newEndDate });
+		const newRange = new DateRange({ startDate: newStartDate, endDate: newEndDate });
 		return newRange.toString('long');
 	};
 

@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalOverlay, ModalBody, ModalContent, ModalCloseButton } from '@chakra-ui/react';
-import { ConflictRange } from '@lib/classes';
+import { DateRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateConflictRange from '@hooks/mutations/useUpdateConflictRange';
 import { useErrorMessage } from '@hooks/hooks';
 import DateRangePicker from '@common/inputs/DateRangePicker';
 
 interface Props {
-	conflictRange?: ConflictRange;
-	allConflictRanges?: ConflictRange[];
+	conflictRange?: DateRange;
+	allDateRanges?: DateRange[];
 	isOpen: boolean;
 	onClose: () => void;
 }
 
 export default function EditUnavailDateRangeModal({
-	conflictRange = new ConflictRange(),
-	allConflictRanges,
+	conflictRange = new DateRange(),
+	allDateRanges,
 	isOpen,
 	onClose,
 }: Props): JSX.Element {
@@ -49,8 +49,8 @@ export default function EditUnavailDateRangeModal({
 	/**
 	 * Updates the conflict range with the provided start and end dates.
 	 */
-	const saveConflictRangeCallback = (newStartDate: Date, newEndDate: Date): void => {
-		const overlappingRange = allConflictRanges?.find(
+	const saveDateRangeCallback = (newStartDate: Date, newEndDate: Date): void => {
+		const overlappingRange = allDateRanges?.find(
 			({ id: existingRangeId, startDate: existingStartDate, endDate: existingEndDate }) => {
 				return (
 					// Check if the new dates overlap with any other range
@@ -80,7 +80,7 @@ export default function EditUnavailDateRangeModal({
 						endDate={endDate ? endDate : undefined}
 						error={errorCode ? errorMessage : ''}
 						handleSelect={handleSelect}
-						saveCallback={saveConflictRangeCallback}
+						saveCallback={saveDateRangeCallback}
 					/>
 				</ModalBody>
 			</ModalContent>

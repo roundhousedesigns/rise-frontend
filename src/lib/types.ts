@@ -1,4 +1,4 @@
-import { WPItem } from '@lib/classes';
+import { DateRange, WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -197,6 +197,7 @@ export interface SearchFilterSet {
 		jobs?: string[];
 	};
 	skills?: string[];
+	jobDates?: DateRange;
 	unions?: string[];
 	locations?: string[];
 	experienceLevels?: string[];
@@ -208,7 +209,8 @@ export interface SearchFilterSet {
 }
 
 /**
- * The data shape for a raw search query (flat `positions`).
+ * The data shape for a raw search query.
+ * Flattens `positions` and omits `jobDates`.
  */
 export interface SearchFilterSetRaw {
 	positions?: string[];
@@ -231,6 +233,7 @@ export interface SearchFilterSet {
 		jobs?: string[];
 	};
 	skills?: string[];
+	jobDates?: DateRange;
 	unions?: string[];
 	locations?: string[];
 	experienceLevels?: string[];

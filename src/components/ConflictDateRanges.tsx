@@ -1,12 +1,12 @@
 import { List, ListItem } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import { ConflictRange } from '@lib/classes';
+import { DateRange } from '@lib/classes';
 import WrapWithIcon from './common/WrapWithIcon';
 import { FiSlash } from 'react-icons/fi';
 import { useMemo } from 'react';
 
 interface Props {
-	conflictRanges: ConflictRange[];
+	conflictRanges: DateRange[];
 	[prop: string]: any;
 }
 
@@ -15,7 +15,7 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 		return <></>;
 	}
 
-	const sortedConflictRanges: ConflictRange[] = useMemo(() => {
+	const sortedDateRanges: DateRange[] = useMemo(() => {
 		return conflictRanges
 			.slice()
 			.sort((a, b) =>
@@ -25,7 +25,7 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 
 	return (
 		<List spacing={2} {...props}>
-			{sortedConflictRanges.map((conflictRange: ConflictRange, index: number) => (
+			{sortedDateRanges.map((conflictRange: DateRange, index: number) => (
 				<ListItem key={index}>
 					<WrapWithIcon icon={FiSlash}>{conflictRange.toString('long')}</WrapWithIcon>
 				</ListItem>

@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiDelete, FiPlus } from 'react-icons/fi';
-import { ConflictRange } from '@lib/classes';
+import { DateRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
@@ -30,7 +30,7 @@ export default function EditConflictDateRanges() {
 
 	const { deleteOwnConflictRangeMutation } = useDeleteOwnConflictRange();
 
-	const sortedConflictRanges: ConflictRange[] = useMemo(() => {
+	const sortedDateRanges: DateRange[] = useMemo(() => {
 		return conflictRanges
 			.slice()
 			.sort((a, b) =>
@@ -38,19 +38,19 @@ export default function EditConflictDateRanges() {
 			);
 	}, [conflictRanges]);
 
-	const [conflictRangeModalIsOpen, setConflictRangeModalIsOpen] = useState<boolean>(false);
-	const [conflictRange, setConflictRange] = useState<ConflictRange>(new ConflictRange());
+	const [conflictRangeModalIsOpen, setDateRangeModalIsOpen] = useState<boolean>(false);
+	const [conflictRange, setDateRange] = useState<DateRange>(new DateRange());
 
-	const handleEditConflictRange = (conflictRange?: ConflictRange) => {
-		setConflictRangeModalIsOpen(true);
-		setConflictRange(conflictRange || new ConflictRange());
+	const handleEditDateRange = (conflictRange?: DateRange) => {
+		setDateRangeModalIsOpen(true);
+		setDateRange(conflictRange || new DateRange());
 	};
 
-	const handleCloseEditConflictRangeModal = () => {
-		setConflictRangeModalIsOpen(false);
+	const handleCloseEditDateRangeModal = () => {
+		setDateRangeModalIsOpen(false);
 	};
 
-	const handleDeleteDateRange = ({ id }: ConflictRange) => {
+	const handleDeleteDateRange = ({ id }: DateRange) => {
 		if (!id) return;
 
 		deleteOwnConflictRangeMutation(id, loggedInId);
@@ -66,9 +66,9 @@ export default function EditConflictDateRanges() {
 			<Divider />
 			<Spacer />
 			<List flexDirection='column' spacing={0}>
-				{sortedConflictRanges && sortedConflictRanges.length ? (
+				{sortedDateRanges && sortedDateRanges.length ? (
 					<AnimatePresence>
-						{sortedConflictRanges.map((conflictRange, index) => (
+						{sortedDateRanges.map((conflictRange, index) => (
 							<MotionBox
 								key={index}
 								initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
@@ -86,7 +86,7 @@ export default function EditConflictDateRanges() {
 											bg='none'
 											height='auto'
 											borderRadius='none'
-											onClick={() => handleEditConflictRange(conflictRange)}
+											onClick={() => handleEditDateRange(conflictRange)}
 										>
 											{conflictRange.toString('long')}
 										</Link>
@@ -107,14 +107,14 @@ export default function EditConflictDateRanges() {
 				) : (
 					false
 				)}
-				<Button onClick={() => handleEditConflictRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
+				<Button onClick={() => handleEditDateRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
 					Add Dates
 				</Button>
 				<EditUnavailDateRangeModal
 					conflictRange={conflictRange}
-					allConflictRanges={sortedConflictRanges}
+					allDateRanges={sortedDateRanges}
 					isOpen={conflictRangeModalIsOpen}
-					onClose={handleCloseEditConflictRangeModal}
+					onClose={handleCloseEditDateRangeModal}
 				/>
 			</List>
 		</>

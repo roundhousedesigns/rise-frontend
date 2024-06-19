@@ -1,10 +1,13 @@
 import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Icon, Spacer } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Candidate } from '@lib/classes';
+import { Candidate, DateRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
 import CandidateAvatarBadge from './CandidateAvatarBadge';
+import { useContext } from 'react';
+import { SearchContext } from '@/context/SearchContext';
+import useUserProfile from '@/hooks/queries/useUserProfile';
 
 interface Props {
 	candidate: Candidate;
@@ -12,13 +15,37 @@ interface Props {
 	[prop: string]: any;
 }
 
-// TODO Get conflictDates search params
-
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
-	
+	const { id, image, slug, selfTitle } = candidate || {};
+
+	const [profile] = useUserProfile(id ? id : 0);
+	const { conflictRanges } = profile || {};
 	const { loggedInId } = useViewer();
 
-	const { id, image, slug, selfTitle } = candidate || {};
+	const hasScheduleOverlap = () => {
+		const { startDate: jobStart, endDate: jobEnd } = jobDates || new DateRange();
+
+		if (!jobStart) return false;
+
+		return conflictRanges?.some((range) => {
+			const { startDate: rangeStart, endDate: rangeEnd } = range;
+
+			if (!rangeStart || !rangeEnd) return false;
+
+			return (
+				(jobStart <= rangeStart && (!jobEnd || rangeStart <= jobEnd)) ||
+				(jobStart <= rangeEnd && (!jobEnd || rangeEnd <= jobEnd))
+			);
+		});
+	};
+
+	const {
+		search: {
+			filters: {
+				filterSet: { jobDates },
+			},
+		},
+	} = useContext(SearchContext);
 
 	if (!id) return null;
 
@@ -66,7 +93,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						src={image}
 						ignoreFallback={image ? true : false}
 					>
-						<CandidateAvatarBadge reason='dateConflict' />
+						<CandidateAvatarBadge reason={hasScheduleOverlap() ? 'dateConflict' : undefined} />
 					</Avatar>
 					<Heading
 						as='h3'

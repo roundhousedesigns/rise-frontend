@@ -2,7 +2,7 @@ import { As, AvatarBadge, Icon } from '@chakra-ui/react';
 import { FiCalendar } from 'react-icons/fi';
 
 interface Props {
-	reason: string;
+	reason?: string;
 }
 
 export default function CandidateAvatarBadge({ reason }: Props): JSX.Element | null {

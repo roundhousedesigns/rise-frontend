@@ -99,7 +99,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		editOnClose();
 	};
 
-	const handleRenameSubmit = (e: FormEvent) => {
+	const handleSave = (e: FormEvent) => {
 		e.preventDefault();
 
 		saveSearchMutation({
@@ -119,7 +119,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 			});
 
 			setSaveSearchFieldText('');
-
 			editOnClose();
 		});
 	};
@@ -242,7 +241,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 							Give this search a short, descriptive name to easily run it again.
 						</Text>
 
-						<form id='rename-search' onSubmit={handleRenameSubmit}>
+						<form id='rename-search' onSubmit={handleSave}>
 							<FormControl>
 								<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
 									Name

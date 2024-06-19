@@ -1,4 +1,5 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
+import { DateRange } from '@lib/classes';
 import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
 import { additionalFilterKeys } from '@lib/utils';
 
@@ -25,6 +26,7 @@ interface SearchAction {
 			name: string;
 			value: string | string[] | Key[];
 		};
+		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
 		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
@@ -40,6 +42,10 @@ const initialSearchState: SearchState = {
 				jobs: [],
 			},
 			skills: [],
+			jobDates: {
+				startDate: undefined,
+				endDate: undefined,
+			},
 			unions: [],
 			locations: [],
 			experienceLevels: [],
@@ -136,6 +142,21 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					filterSet: {
 						...state.filters.filterSet,
 						[action.payload.filter.name]: action.payload.filter.value,
+					},
+				},
+				searchActive: true,
+			};
+
+		case 'SET_JOB_DATES':
+			if (!action.payload?.jobDates) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet: {
+						...state.filters.filterSet,
+						jobDates: action.payload.jobDates,
 					},
 				},
 				searchActive: true,

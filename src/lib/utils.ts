@@ -3,7 +3,7 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, ConflictRange, UserProfile, WPItem } from '@lib/classes';
+import { Credit, PersonalLinks, DateRange, UserProfile, WPItem } from '@lib/classes';
 import {
 	DateRangeParams,
 	SearchFilterSet,
@@ -121,7 +121,7 @@ export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
-		conflictRanges,
+		DateRanges,
 		credits,
 		...sanitized
 	} = profile;
@@ -323,11 +323,13 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
  * @param searchObj
  * @returns The flattened search object.
  */
-export function flattenfilterSetPositions(searchObj: SearchFilterSet): SearchFilterSetRaw {
+export function prepareSearchFilterSetForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
 	const preparedSearchObj: SearchFilterSetRaw = {
 		...searchObj,
 		positions: searchObj.positions.jobs,
 	};
+
+	delete preparedSearchObj.jobDates;
 
 	return preparedSearchObj;
 }
@@ -434,13 +436,13 @@ export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
 }
 
 /**
- * Generates an array of ConflictRange objects from the provided array of GraphQL nodes.
+ * Generates an array of DateRange objects from the provided array of GraphQL nodes.
  *
  * @param {object[]} nodes - An array of GraphQL nodes to process.
- * @return {ConflictRange[]} An array of ConflictRange objects prepared from the GraphQL nodes.
+ * @return {DateRange[]} An array of DateRange objects prepared from the GraphQL nodes.
  */
-export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): ConflictRange[] {
-	return nodes.map((node: DateRangeParams) => new ConflictRange(node));
+export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): DateRange[] {
+	return nodes.map((node: DateRangeParams) => new DateRange(node));
 }
 
 /**

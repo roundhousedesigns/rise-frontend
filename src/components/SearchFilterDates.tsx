@@ -1,29 +1,37 @@
-import { useState } from 'react';
-import { Flex, Button, Box, Heading, Text, Wrap, Spacer, IconButton } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Box, Button, Flex, Heading, IconButton, Spacer, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiXCircle } from 'react-icons/fi';
 import DatePickerButton from '@common/inputs/DatePickerButton';
+import { SearchContext } from '@/context/SearchContext';
+import { DateRange } from '@/lib/classes';
+import { useState } from 'react';
 
 export default function SearchFilterDates() {
-	const [startDate, setStartDate] = useState<Date | undefined>(undefined);
-	const [endDate, setEndDate] = useState<Date | undefined>(undefined);
+	const {
+		search: {
+			filters: {
+				filterSet: { jobDates },
+			},
+		},
+		searchDispatch,
+	} = useContext(SearchContext);
+	const [selectedDates, setSelectedDates] = useState<DateRange>(
+		jobDates ? jobDates : new DateRange()
+	);
 
-	const handleSetDate = (id: string) => (date: Date, event: React.SyntheticEvent<any, Event>) => {
-		switch (id) {
-			case 'startDate':
-				setStartDate(date);
-				break;
-
-			case 'endDate':
-				setEndDate(date);
-				break;
-		}
+	const handleDateChange = (targetId: string) => (date: Date) => {
+		setSelectedDates((prevDates) => ({ ...prevDates, [targetId]: date }));
+		searchDispatch({
+			type: 'SET_JOB_DATES',
+			payload: { jobDates: { ...selectedDates, [targetId]: date } },
+		});
 	};
 
 	const handleClearDates = () => {
-		setStartDate(undefined);
-		setEndDate(undefined);
+		setSelectedDates(new DateRange());
+		searchDispatch({ type: 'SET_JOB_DATES', payload: { jobDates: new DateRange() } });
 	};
 
 	return (
@@ -34,34 +42,30 @@ export default function SearchFilterDates() {
 			<Flex gap={4}>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}
-					selected={startDate}
+					selected={selectedDates.startDate}
 					customInput={<DatePickerButton defaultText='Start' ariaLabel='Start date' />}
-					onChange={(date: Date) => setStartDate(date)}
+					onChange={handleDateChange('startDate')}
 					minDate={new Date()}
 				/>
-				{startDate ? <Text fontSize='md'> to </Text> : false}
-				{startDate ? (
+				{selectedDates.startDate && <Text fontSize='md'> to </Text>}
+				{selectedDates.startDate && (
 					<DatePicker
 						closeOnScroll={(e) => e.target === document}
-						selected={endDate}
+						selected={selectedDates.endDate}
 						customInput={
 							<DatePickerButton defaultText='End (optional)' ariaLabel='End date (optional)' />
 						}
-						onChange={handleSetDate('endDate')}
-						minDate={startDate}
+						onChange={handleDateChange('endDate')}
+						minDate={selectedDates.startDate}
 					/>
-				) : (
-					false
 				)}
-				{startDate !== undefined ? (
+				{selectedDates.startDate && (
 					<IconButton
 						icon={<FiXCircle />}
 						aria-label='Clear dates'
 						onClick={handleClearDates}
 						colorScheme='red'
 					/>
-				) : (
-					false
 				)}
 			</Flex>
 		</Box>

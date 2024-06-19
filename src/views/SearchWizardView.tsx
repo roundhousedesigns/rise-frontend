@@ -35,7 +35,6 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				name,
 				filterSet: {
 					positions: { departments = [], jobs = [] },
-					skills,
 				},
 			},
 		},

@@ -9,8 +9,6 @@
 
 import { gql, LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
 
-// TODO add conflictDates to query
-
 const QUERY_CANDIDATES = gql`
 	query FilteredCandidates(
 		$positions: [ID] = []

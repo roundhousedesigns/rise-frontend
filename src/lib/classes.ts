@@ -103,7 +103,7 @@ export class UserProfile extends User {
 	mediaImage4?: string;
 	mediaImage5?: string;
 	mediaImage6?: string;
-	conflictRanges: ConflictRange[] = [];
+	conflictRanges: DateRange[] = [];
 	credits: Credit[] = [];
 
 	constructor(
@@ -231,7 +231,7 @@ export class UserProfile extends User {
 
 		if (conflictRanges && conflictRanges.length > 0) {
 			this.conflictRanges = conflictRanges.map((dates) => {
-				return new ConflictRange(dates);
+				return new DateRange(dates);
 			});
 		}
 	}
@@ -380,19 +380,19 @@ export class Credit implements CreditParams {
 /**
  * A range of dates that the Candidate is unavailable for work.
  */
-export class ConflictRange implements DateRangeParams {
-	id: number;
+export class DateRange implements DateRangeParams {
+	id?: number;
 	startDate?: Date;
 	endDate?: Date;
 
 	constructor(params?: DateRangeParams) {
-		this.id = params?.id ? Number(params.id) : 0;
+		this.id = params?.id ? Number(params.id) : undefined;
 		this.startDate = params?.startDate ? new Date(params.startDate) : undefined;
 		this.endDate = params?.endDate ? new Date(params.endDate) : undefined;
 	}
 
 	/**
-	 * Converts the ConflictRange to a string in the given format.
+	 * Converts the DateRange to a string in the given format.
 	 *
 	 * @param {string} [format='default'] - The format to use for the string. Accepted values are:
 	 *     - 'default': The default format, which is 'MM-DD-YYYY'.
