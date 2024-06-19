@@ -8,6 +8,7 @@ import CandidateAvatarBadge from './CandidateAvatarBadge';
 import { useContext } from 'react';
 import { SearchContext } from '@/context/SearchContext';
 import useUserProfile from '@/hooks/queries/useUserProfile';
+import { dateRangesOverlap } from '@/lib/utils';
 
 interface Props {
 	candidate: Candidate;
@@ -22,23 +23,6 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	const { conflictRanges } = profile || {};
 	const { loggedInId } = useViewer();
 
-	const hasScheduleOverlap = () => {
-		const { startDate: jobStart, endDate: jobEnd } = jobDates || new DateRange();
-
-		if (!jobStart) return false;
-
-		return conflictRanges?.some((range) => {
-			const { startDate: rangeStart, endDate: rangeEnd } = range;
-
-			if (!rangeStart || !rangeEnd) return false;
-
-			return (
-				(jobStart <= rangeStart && (!jobEnd || rangeStart <= jobEnd)) ||
-				(jobStart <= rangeEnd && (!jobEnd || rangeEnd <= jobEnd))
-			);
-		});
-	};
-
 	const {
 		search: {
 			filters: {
@@ -46,6 +30,12 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 			},
 		},
 	} = useContext(SearchContext);
+
+	const conflictDatesOverlap = conflictRanges?.some((conflictRange: DateRange) => {
+		if (!jobDates) return false;
+
+		return !!dateRangesOverlap(conflictRange, jobDates);
+	});
 
 	if (!id) return null;
 
@@ -93,7 +83,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						src={image}
 						ignoreFallback={image ? true : false}
 					>
-						<CandidateAvatarBadge reason={hasScheduleOverlap() ? 'dateConflict' : undefined} />
+						<CandidateAvatarBadge reason={conflictDatesOverlap ? 'dateConflict' : undefined} />
 					</Avatar>
 					<Heading
 						as='h3'

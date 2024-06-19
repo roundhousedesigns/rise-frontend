@@ -521,3 +521,22 @@ export function obscureEmail(emailString: string): string {
 
 	return `${username.substring(0, visibleCount)}${obscuredPart}@${domain}`;
 }
+
+/**
+ * Check if a job date search filter range overlaps with any of the given conflict ranges.
+ *
+ * @param jobDates - The job schedule to check.
+ * @param conflictRange - An array of conflict ranges to check against.
+ * @returns True if the job schedule overlaps with any of the conflict ranges, false otherwise.
+ */
+export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange) {
+	const { startDate: jobStart, endDate: jobEnd } = jobDates || new DateRange();
+	const { startDate: rangeStart, endDate: rangeEnd } = conflictRange;
+
+	if (!jobStart || !rangeStart || !rangeEnd) return false;
+
+	return (
+		(jobStart <= rangeStart && (!jobEnd || rangeStart <= jobEnd)) ||
+		(jobStart <= rangeEnd && (!jobEnd || rangeEnd <= jobEnd))
+	);
+}

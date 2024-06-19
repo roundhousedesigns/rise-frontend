@@ -1,9 +1,11 @@
+import { useContext, useMemo } from 'react';
 import { List, ListItem } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
+import { FiCalendar } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
-import WrapWithIcon from './common/WrapWithIcon';
-import { FiSlash } from 'react-icons/fi';
-import { useMemo } from 'react';
+import { dateRangesOverlap } from '@lib/utils';
+import { SearchContext } from '@context/SearchContext';
+import WrapWithIcon from '@common/WrapWithIcon';
 
 interface Props {
 	conflictRanges: DateRange[];
@@ -14,6 +16,14 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 	if (isEmpty(conflictRanges)) {
 		return <></>;
 	}
+
+	const {
+		search: {
+			filters: {
+				filterSet: { jobDates },
+			},
+		},
+	} = useContext(SearchContext);
 
 	// TODO If a search is active, and we're not on the logged in user's profile, highlight conflict ranges which overlap with the search results.
 
@@ -29,7 +39,12 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 		<List spacing={2} {...props}>
 			{sortedDateRanges.map((conflictRange: DateRange, index: number) => (
 				<ListItem key={index}>
-					<WrapWithIcon icon={FiSlash}>{conflictRange.toString('long')}</WrapWithIcon>
+					<WrapWithIcon
+						icon={FiCalendar}
+						color={jobDates && dateRangesOverlap(jobDates, conflictRange) ? 'brand.yellow' : ''}
+					>
+						{conflictRange.toString('long')}
+					</WrapWithIcon>
 				</ListItem>
 			))}
 		</List>
