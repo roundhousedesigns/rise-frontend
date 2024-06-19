@@ -15,6 +15,8 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 		return <></>;
 	}
 
+	// TODO If a search is active, and we're not on the logged in user's profile, highlight conflict ranges which overlap with the search results.
+
 	const sortedDateRanges: DateRange[] = useMemo(() => {
 		return conflictRanges
 			.slice()
