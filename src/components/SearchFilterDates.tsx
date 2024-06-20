@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Box, Button, Flex, Heading, IconButton, Spacer, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiXCircle } from 'react-icons/fi';

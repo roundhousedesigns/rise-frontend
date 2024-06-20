@@ -10,7 +10,6 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	triggerSearch: boolean;
 	results: SearchResultCandidate[];
 }
 
@@ -56,7 +55,6 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
-	triggerSearch: false,
 	results: [],
 };
 
@@ -191,7 +189,6 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				searchActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
-				triggerSearch: true,
 			};
 		}
 

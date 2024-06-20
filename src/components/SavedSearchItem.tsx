@@ -15,7 +15,6 @@ import {
 	Stack,
 	StackItem,
 	Flex,
-	Box,
 	IconButton,
 	ButtonGroup,
 } from '@chakra-ui/react';
@@ -153,7 +152,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								icon={FiEdit2}
 								fontSize='lg'
 								my={0}
-								mr={4}
+								mr={8}
 								flex={1}
 								iconSide='left'
 								color='inherit'
@@ -203,12 +202,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
-						<Box>
-							<Text variant='helperText' fontSize='xs'>
-								You searched for:
-							</Text>
-							<SearchParamTags termIds={termIds} termItems={terms} />
-						</Box>
+						<SearchParamTags termIds={termIds} termItems={terms} />
 						{!hasName ? (
 							<Button
 								colorScheme='blue'
