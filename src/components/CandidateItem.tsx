@@ -1,4 +1,4 @@
-import { Card, Avatar, Text, Flex, Heading, AvatarBadge, Icon, Spacer } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate, DateRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';

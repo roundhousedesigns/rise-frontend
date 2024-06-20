@@ -38,7 +38,7 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 			<WrapWithIcon icon={FiCheckCircle} iconProps={{ color: 'brand.blue' }} my={0}>
 				Available
 			</WrapWithIcon>
-			<WrapWithIcon icon={FiAlertCircle} iconProps={{ color: 'brand.yellow' }} my={0}>
+			<WrapWithIcon icon={FiAlertCircle} iconProps={{ color: 'red.300' }} my={0}>
 				Possible conflict
 			</WrapWithIcon>
 		</Flex>
@@ -67,7 +67,7 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 						!jobDates || !jobDates.startDate
 							? ''
 							: dateRangesOverlap(jobDates, conflictRange)
-							? 'brand.yellow'
+							? 'red.300'
 							: 'brand.blue';
 					const title =
 						!jobDates || !jobDates.startDate

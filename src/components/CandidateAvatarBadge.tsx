@@ -34,13 +34,13 @@ export default function CandidateAvatarBadge({ reason }: Props): JSX.Element | n
 
 	return (
 		<AvatarBadge
-			boxSize='1em'
+			boxSize={6}
 			borderWidth={2}
 			bg={badgeProps.bgColor}
 			color={badgeProps.color}
 			aria-label={badgeProps.label}
 		>
-			<Icon as={badgeProps.icon} boxSize='0.6em' />
+			<Icon as={badgeProps.icon} boxSize={3} />
 		</AvatarBadge>
 	);
 }

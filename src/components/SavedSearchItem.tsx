@@ -86,8 +86,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				filterSet,
 			},
 		});
-
-		// openDrawer();
 	};
 
 	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
