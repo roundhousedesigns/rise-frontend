@@ -68,6 +68,9 @@ export default function SearchFilterDates() {
 					/>
 				)}
 			</Flex>
+			<Text variant='helperText'>
+				Candidates with potential scheduling conflicts will be highlighted.
+			</Text>
 		</Box>
 	);
 }

@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
-import { List, ListItem } from '@chakra-ui/react';
+import { List, ListItem, Flex, Divider } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import { FiCalendar } from 'react-icons/fi';
+import { FiAlertCircle, FiCalendar, FiCheckCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
 import { dateRangesOverlap } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
@@ -25,8 +25,6 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 		},
 	} = useContext(SearchContext);
 
-	// TODO If a search is active, and we're not on the logged in user's profile, highlight conflict ranges which overlap with the search results.
-
 	const sortedDateRanges: DateRange[] = useMemo(() => {
 		return conflictRanges
 			.slice()
@@ -35,18 +33,64 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 			);
 	}, [conflictRanges]);
 
+	const Legend = () => (
+		<Flex fontSize='sm' flexWrap='wrap' gap={4}>
+			<WrapWithIcon icon={FiCheckCircle} iconProps={{ color: 'brand.blue' }} my={0}>
+				Available
+			</WrapWithIcon>
+			<WrapWithIcon icon={FiAlertCircle} iconProps={{ color: 'brand.yellow' }} my={0}>
+				Possible conflict
+			</WrapWithIcon>
+		</Flex>
+	);
+
 	return (
-		<List spacing={2} {...props}>
-			{sortedDateRanges.map((conflictRange: DateRange, index: number) => (
-				<ListItem key={index}>
-					<WrapWithIcon
-						icon={FiCalendar}
-						color={jobDates && dateRangesOverlap(jobDates, conflictRange) ? 'brand.yellow' : ''}
-					>
-						{conflictRange.toString('long')}
-					</WrapWithIcon>
-				</ListItem>
-			))}
-		</List>
+		<>
+			{jobDates && jobDates.startDate ? (
+				<>
+					<Legend />
+					<Divider />
+				</>
+			) : (
+				false
+			)}
+
+			<List spacing={2} {...props}>
+				{sortedDateRanges.map((conflictRange: DateRange, index: number) => {
+					const icon =
+						!jobDates || !jobDates.startDate
+							? FiCalendar
+							: dateRangesOverlap(jobDates, conflictRange)
+							? FiAlertCircle
+							: FiCheckCircle;
+					const color =
+						!jobDates || !jobDates.startDate
+							? ''
+							: dateRangesOverlap(jobDates, conflictRange)
+							? 'brand.yellow'
+							: 'brand.blue';
+					const title =
+						!jobDates || !jobDates.startDate
+							? ''
+							: dateRangesOverlap(jobDates, conflictRange)
+							? 'Possible scheduling conflict'
+							: 'Available';
+
+					return (
+						<ListItem key={index}>
+							<WrapWithIcon
+								icon={icon}
+								iconProps={{
+									color: color,
+									title: title,
+								}}
+							>
+								{conflictRange.toString('long')}
+							</WrapWithIcon>
+						</ListItem>
+					);
+				})}
+			</List>
+		</>
 	);
 }

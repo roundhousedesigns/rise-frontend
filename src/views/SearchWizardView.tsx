@@ -7,6 +7,7 @@ import {
 	AccordionPanel,
 	Box,
 	Fade,
+	Flex,
 	Spacer,
 	Stack,
 	StackItem,
@@ -70,10 +71,12 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
 						{departments.length && jobs.length > 0 ? (
-							<>
-								<SearchFilterSkills />
-								<SearchFilterDates />
-							</>
+							<Flex alignItems='flex-start' gap={8}>
+								<>
+									<SearchFilterSkills />
+									<SearchFilterDates />
+								</>
+							</Flex>
 						) : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />

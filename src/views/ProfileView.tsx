@@ -252,11 +252,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 									) : (
 										<Avatar size='2xl' name={profile.fullName()} mx={2} />
 									)}
-									{conflictRanges.length && isLargerThanMd ? (
-										<Card px={2} pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
+									{conflictRanges.length ? (
+										<Card pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
 											<Box>
 												<Heading as='h3' variant='contentTitle'>
-													Conflicts
+													Scheduling Conflicts
 												</Heading>
 												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 											</Box>

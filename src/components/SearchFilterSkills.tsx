@@ -46,7 +46,5 @@ export default function SearchFilterSkills() {
 		<Spinner />
 	) : error ? (
 		<ErrorAlert message={error.message} />
-	) : (
-		<Alert status='info'>No job-specific skills found, or no job selected.</Alert>
-	);
+	) : false;
 }
