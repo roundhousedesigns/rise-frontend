@@ -183,8 +183,8 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								<IconButton
 									icon={<FiSearch />}
 									colorScheme='green'
-									aria-label='Rerun this search'
-									title='Rerun'
+									aria-label='Reuse this search'
+									title='Reuse this search'
 									onClick={handleSearchClick}
 								/>
 								<IconButton
