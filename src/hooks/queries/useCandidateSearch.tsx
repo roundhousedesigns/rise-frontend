@@ -47,7 +47,7 @@ const QUERY_CANDIDATES = gql`
  */
 const useCandidateSearch = (): [LazyQueryExecFunction<any, any>, QueryResult] => {
 	return useLazyQuery(QUERY_CANDIDATES, {
-		fetchPolicy: 'network-only',
+		fetchPolicy: 'no-cache',
 	});
 };
 

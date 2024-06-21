@@ -9,7 +9,7 @@ import {
 	CreditOutput,
 	DateRangeParams,
 } from '@lib/types';
-import { decodeString } from '@lib/utils';
+import { dateRangesOverlap, decodeString } from '@lib/utils';
 
 /**
  * A basic user.
@@ -423,6 +423,10 @@ export class DateRange implements DateRangeParams {
 			default:
 				return `${this.startDate.toLocaleDateString()} - ${this.endDate.toLocaleDateString()}`;
 		}
+	}
+
+	hasConflict(conflictDateRanges: DateRange[]): boolean {
+		return conflictDateRanges.some((dateRange) => dateRangesOverlap(this, dateRange));
 	}
 }
 

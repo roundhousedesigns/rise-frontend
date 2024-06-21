@@ -41,10 +41,7 @@ const initialSearchState: SearchState = {
 				jobs: [],
 			},
 			skills: [],
-			jobDates: {
-				startDate: undefined,
-				endDate: undefined,
-			},
+			jobDates: new DateRange(),
 			unions: [],
 			locations: [],
 			experienceLevels: [],

@@ -1,6 +1,6 @@
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Candidate, DateRange } from '@lib/classes';
+import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
@@ -8,7 +8,6 @@ import CandidateAvatarBadge from './CandidateAvatarBadge';
 import { useContext } from 'react';
 import { SearchContext } from '@/context/SearchContext';
 import useUserProfile from '@/hooks/queries/useUserProfile';
-import { dateRangesOverlap } from '@/lib/utils';
 
 interface Props {
 	candidate: Candidate;
@@ -31,15 +30,12 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 		},
 	} = useContext(SearchContext);
 
-	const conflictDatesOverlap = conflictRanges?.some((conflictRange: DateRange) => {
-		if (!jobDates) return false;
+	const hasDateConflict =
+		conflictRanges && jobDates && jobDates.startDate
+			? jobDates.hasConflict(conflictRanges)
+			: false;
 
-		return !!dateRangesOverlap(conflictRange, jobDates);
-	});
-
-	if (!id) return null;
-
-	return (
+	return id ? (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
 				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
@@ -83,7 +79,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						src={image}
 						ignoreFallback={image ? true : false}
 					>
-						<CandidateAvatarBadge reason={conflictDatesOverlap ? 'dateConflict' : undefined} />
+						<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
 					</Avatar>
 					<Heading
 						as='h3'
@@ -110,7 +106,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				</Flex>
 			</Card>
 		</Flex>
-	);
+	) : null;
 };
 
 export default CandidateItem;

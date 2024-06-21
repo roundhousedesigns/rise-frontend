@@ -22,10 +22,11 @@ export default function SearchFilterDates() {
 	);
 
 	const handleDateChange = (targetId: string) => (date: Date) => {
-		setSelectedDates((prevDates) => ({ ...prevDates, [targetId]: date }));
+		setSelectedDates((prevDates) => new DateRange({ ...prevDates, [targetId]: date }));
+
 		searchDispatch({
 			type: 'SET_JOB_DATES',
-			payload: { jobDates: { ...selectedDates, [targetId]: date } },
+			payload: { jobDates: new DateRange({ ...selectedDates, [targetId]: date }) },
 		});
 	};
 

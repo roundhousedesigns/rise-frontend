@@ -529,14 +529,16 @@ export function obscureEmail(emailString: string): string {
  * @param conflictRange - An array of conflict ranges to check against.
  * @returns True if the job schedule overlaps with any of the conflict ranges, false otherwise.
  */
-export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange) {
-	const { startDate: jobStart, endDate: jobEnd } = jobDates || new DateRange();
+export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange): boolean {
+	const { startDate: jobStart, endDate: jobEnd } = jobDates || {};
 	const { startDate: rangeStart, endDate: rangeEnd } = conflictRange;
 
 	if (!jobStart || !rangeStart || !rangeEnd) return false;
 
-	return (
-		(jobStart <= rangeStart && (!jobEnd || rangeStart <= jobEnd)) ||
-		(jobStart <= rangeEnd && (!jobEnd || rangeEnd <= jobEnd))
-	);
+	// If the job does not have an endDate, we only return true if the conflict range overlaps with jobStart.
+	if (!jobEnd) {
+		return jobStart <= rangeEnd;
+	}
+
+	return rangeStart <= jobEnd && rangeEnd >= jobStart;
 }
