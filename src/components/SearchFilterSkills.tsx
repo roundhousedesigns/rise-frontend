@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Heading, Box, Alert, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
+import { Heading, Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import useRelatedSkills from '@hooks/queries/useRelatedSkills';
 
@@ -7,7 +7,7 @@ import ErrorAlert from '@common/ErrorAlert';
 import CheckboxButton from '@common/inputs/CheckboxButton';
 import { SearchContext } from '@context/SearchContext';
 
-export default function SearchFilterSkills() {
+export default function SearchFilterSkills(): JSX.Element {
 	const {
 		search: {
 			filters: {
@@ -46,5 +46,7 @@ export default function SearchFilterSkills() {
 		<Spinner />
 	) : error ? (
 		<ErrorAlert message={error.message} />
-	) : false;
+	) : (
+		<></>
+	);
 }

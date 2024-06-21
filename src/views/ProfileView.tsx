@@ -387,11 +387,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											)}
 											{website ? (
 												<ListItem>
-													<WrapWithIcon icon={FiExternalLink}>
-														<Link href={website} target='_blank' variant='dotted'>
-															Visit Website
-														</Link>
-													</WrapWithIcon>
+													<LinkWithIcon href={website} target='_blank' icon={FiExternalLink}>
+														Visit Website
+													</LinkWithIcon>
 												</ListItem>
 											) : (
 												false

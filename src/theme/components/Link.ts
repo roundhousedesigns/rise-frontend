@@ -25,7 +25,7 @@ const variants = {
 		_hover: {
 			textDecoration: 'none',
 			borderBottomStyle: 'solid',
-			borderBottomWidth: '1px',
+			borderBottomWidth: '1.5px',
 		},
 	}),
 };
