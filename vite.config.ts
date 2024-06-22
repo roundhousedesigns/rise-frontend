@@ -18,16 +18,9 @@ export default defineConfig({
 				},
 				interop: 'compat',
 				systemNullSetters: false,
-				manualChunks(id) {
-					if (id.includes('react-player')) {
-						return 'react-player';
-					}
-
-					return 'vendor';
-				},
 			},
 		},
-		chunkSizeWarningLimit: 1100,
+		chunkSizeWarningLimit: 1300,
 	},
 	resolve: {
 		alias: [

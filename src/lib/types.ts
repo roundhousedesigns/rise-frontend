@@ -1,4 +1,4 @@
-import { WPItem } from '@lib/classes';
+import { DateRange, WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -7,6 +7,8 @@ export interface WPItemParams {
 	id: number;
 	name?: string;
 	slug?: string;
+	title?: string;
+	content?: string;
 	author?: number;
 	parentId?: number;
 	parent?: any;
@@ -48,7 +50,6 @@ export interface UserProfileParams {
 	instagram?: string;
 	facebook?: string;
 	website?: string;
-	lookingForWork?: boolean;
 	mediaVideo1?: string;
 	mediaVideo2?: string;
 	mediaImage1?: string;
@@ -76,7 +77,6 @@ export interface CandidateData {
 	lastName?: string;
 	selfTitle?: string;
 	image?: string;
-	lookingForWork?: boolean;
 }
 
 /**
@@ -112,6 +112,15 @@ export interface CreditParams {
 	};
 	skills?: number[];
 	isNew?: boolean;
+}
+
+/**
+ * The data shape for DateRange input.
+ */
+export interface DateRangeParams {
+	id?: number;
+	startDate?: string | Date | undefined;
+	endDate?: string | Date | undefined;
 }
 
 /**
@@ -188,6 +197,7 @@ export interface SearchFilterSet {
 		jobs?: string[];
 	};
 	skills?: string[];
+	jobDates?: DateRange;
 	unions?: string[];
 	locations?: string[];
 	experienceLevels?: string[];
@@ -195,10 +205,12 @@ export interface SearchFilterSet {
 	racialIdentities?: string[];
 	personalIdentities?: string[];
 	searchName?: string;
+	searchDates?: DateRangeParams;
 }
 
 /**
- * The data shape for a raw search query (flat `positions`).
+ * The data shape for a raw search query.
+ * Flattens `positions` and omits `jobDates`.
  */
 export interface SearchFilterSetRaw {
 	positions?: string[];
@@ -221,6 +233,7 @@ export interface SearchFilterSet {
 		jobs?: string[];
 	};
 	skills?: string[];
+	jobDates?: DateRange;
 	unions?: string[];
 	locations?: string[];
 	experienceLevels?: string[];

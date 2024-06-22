@@ -21,8 +21,6 @@ import {
 	useBreakpointValue,
 	Spacer,
 	IconButton,
-	AvatarBadge,
-	Tooltip,
 } from '@chakra-ui/react';
 import {
 	FiMail,
@@ -33,7 +31,6 @@ import {
 	FiLink,
 	FiMap,
 	FiDownload,
-	FiThumbsUp,
 	FiExternalLink,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
@@ -46,11 +43,12 @@ import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
-import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
+import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
+import ConflictDateRanges from '@/components/ConflictDateRanges';
 
 interface Props {
 	profile: UserProfile;
@@ -84,7 +82,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
-		lookingForWork,
 		socials,
 		unions,
 		partnerDirectories,
@@ -93,7 +90,6 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		email,
 		phone,
 		resume,
-		credits,
 		description,
 		mediaVideo1,
 		mediaVideo2,
@@ -104,6 +100,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		mediaImage5,
 		mediaImage6,
 		education,
+		conflictRanges,
+		credits,
 	} = profile || {};
 
 	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
@@ -239,30 +237,34 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 							justifyContent={{ base: 'center', md: 'flex-start' }}
 						>
 							{isLargerThanMd ? (
-								image ? (
-									<Box w='40%' minW='160px' maxW='400px'>
-										<Image
-											src={image}
-											alt={`${profile.fullName()}'s picture`}
-											borderRadius='md'
-											loading='eager'
-											fit='cover'
-											w='full'
-										/>
-									</Box>
-								) : (
-									<Avatar size='2xl' name={profile.fullName()} mx={2}>
-										{lookingForWork ? (
-											<Tooltip hasArrow openDelay={500} label='Looking for work'>
-												<AvatarBadge boxSize={12} bgColor='green.400'>
-													<Icon as={FiThumbsUp} boxSize={4} />
-												</AvatarBadge>
-											</Tooltip>
-										) : (
-											false
-										)}
-									</Avatar>
-								)
+								<Stack direction='column' w='40%' minW='160px' maxW='400px'>
+									{image ? (
+										<Box>
+											<Image
+												src={image}
+												alt={`${profile.fullName()}'s picture`}
+												borderRadius='md'
+												loading='eager'
+												fit='cover'
+												w='full'
+											/>
+										</Box>
+									) : (
+										<Avatar size='2xl' name={profile.fullName()} mx={2} />
+									)}
+									{conflictRanges.length ? (
+										<Card pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
+											<Box>
+												<Heading as='h3' variant='contentTitle'>
+													Scheduling Conflicts
+												</Heading>
+												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
+											</Box>
+										</Card>
+									) : (
+										false
+									)}
+								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
 							)}
@@ -306,7 +308,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 								</StackItem>
 
 								{locations && locations.length > 0 ? (
-									<ProfileStackItem title='Works In'>
+									<ProfileStackItem title='Works in'>
 										<>
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms
@@ -385,7 +387,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											)}
 											{website ? (
 												<ListItem>
-													<LinkWithIcon href={website} icon={FiExternalLink} target='_blank'>
+													<LinkWithIcon href={website} target='_blank' icon={FiExternalLink}>
 														Visit Website
 													</LinkWithIcon>
 												</ListItem>
@@ -394,6 +396,14 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											)}
 										</List>
 									</StackItem>
+								) : (
+									false
+								)}
+
+								{conflictRanges.length && !isLargerThanMd ? (
+									<ProfileStackItem title='Conflicts'>
+										<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
+									</ProfileStackItem>
 								) : (
 									false
 								)}

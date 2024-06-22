@@ -62,7 +62,6 @@ import useDeleteCredit from '@hooks/mutations/useDeleteCredit';
 import useFileUpload from '@hooks/mutations/useFileUpload';
 import useClearProfileField from '@hooks/mutations/useClearProfileFileField';
 import useUpdateCreditOrder from '@hooks/mutations/useUpdateCreditOrder';
-import ResumePreviewModal from '@common/ResumePreviewModal';
 import ProfileStackItem from '@common/ProfileStackItem';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
@@ -73,6 +72,8 @@ import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
+import ResumePreviewModal from '@components/ResumePreviewModal';
+import EditConflictDateRanges from '@/components/EditConflictDateRanges';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -95,7 +96,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		lastName,
 		pronouns,
 		selfTitle,
+		email,
+		resume,
 		image,
+		description,
 		homebase,
 		website,
 		socials,
@@ -103,10 +107,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		education,
 		willTravel,
 		willTour,
-		description,
-		credits,
-		email,
-		resume,
 		phone,
 		unions,
 		partnerDirectories,
@@ -122,6 +122,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		mediaImage4,
 		mediaImage5,
 		mediaImage6,
+		credits,
 	} = editProfile || {};
 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
@@ -162,6 +163,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
+	/**
+	 * EditCredit Modal
+	 */
 	const {
 		isOpen: creditModalIsOpen,
 		onOpen: creditModalOnOpen,
@@ -220,7 +224,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	useEffect(() => {
 		if (!credits || !credits.length) return;
 
-		// look for a credit in credits that has a the isNew property set to true
+		// look for a credit in credits that has the isNew property set to true
 		const newCredit = credits.find((credit) => credit.isNew);
 		if (newCredit && newCredit.id !== editCreditId.current) {
 			setEditCredit(newCredit.id);
@@ -637,44 +641,52 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
 
-	const ProfileImageUploader = ({ ...props }: { [prop: string]: string }) => (
-		<Stack mb={2} width='30%' minWidth='300px' {...props}>
-			<Heading variant='contentTitle' my={0}>
-				Profile image
-			</Heading>
-			<Text fontSize='sm' m={0}>
-				Portrait orientation works best. Max 2MB.
-			</Text>
-			{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
-				// Uploading
-				<Flex alignItems='center' justifyContent='center' h='200px'>
-					<ProgressSpinner />
-				</Flex>
-			) : image ? (
-				// Image set
-				<>
-					<Image
-						src={image}
-						alt={`Profile picture`}
-						loading='eager'
-						fit='cover'
-						borderRadius='md'
-						w='full'
-					/>
-					<ClearFieldButton field='image' label='Remove image' mt={2}>
-						Remove
-					</ClearFieldButton>
-				</>
-			) : (
-				<FileDropzone
-					fieldName='image'
-					text='Profile image'
-					icon={FiUser}
-					h='full'
-					iconProps={{ mb: 2, boxSize: '80px' }}
-				/>
-			)}
-		</Stack>
+	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
+		<Box {...props}>
+			<Box>
+				<Heading variant='contentTitle' my={0}>
+					Profile image
+				</Heading>
+				<Text fontSize='sm' m={0}>
+					Portrait orientation works best. Max 2MB.
+				</Text>
+				<Box maxW='300px'>
+					{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
+						// Uploading
+						<Flex alignItems='center' justifyContent='center' h='200px'>
+							<ProgressSpinner />
+						</Flex>
+					) : image ? (
+						// Image set
+						<>
+							<Image
+								src={image}
+								alt={`Profile picture`}
+								loading='eager'
+								fit='cover'
+								borderRadius='md'
+							/>
+							<ClearFieldButton field='image' label='Remove image' mt={2}>
+								Remove
+							</ClearFieldButton>
+						</>
+					) : (
+						<FileDropzone
+							fieldName='image'
+							text='Profile image'
+							icon={FiUser}
+							h='full'
+							iconProps={{ mb: 2, boxSize: '80px' }}
+						/>
+					)}
+				</Box>
+			</Box>
+			<Card>
+				<Box>
+					<EditConflictDateRanges />
+				</Box>
+			</Card>
+		</Box>
 	);
 
 	interface FileDropzoneProps {
@@ -836,7 +848,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<Heading as='h3' m={0}>
 								<AccordionButton>
 									<Box as='span' fontWeight='normal'>
-										Quick Actions
+										Options
 									</Box>
 									<AccordionIcon />
 								</AccordionButton>
@@ -853,7 +865,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				</ProfileStackItem>
 				<ProfileStackItem>
 					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <ProfileImageUploader /> : false}
+						{isLargerThanMd ? <Sidebar mb={2} width='30%' minWidth='300px' mr={4} /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
@@ -922,7 +934,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							</ProfileStackItem>
 							{!isLargerThanMd ? (
 								<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
-									<ProfileImageUploader />
+									<Sidebar />
 								</ProfileStackItem>
 							) : (
 								false

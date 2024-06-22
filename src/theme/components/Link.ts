@@ -15,25 +15,17 @@ const baseStyle = defineStyle({
 });
 
 const variants = {
-	nav: defineStyle({
-		textDecoration: 'none',
-		_hover: {
-			textDecoration: 'none',
-		},
-	}),
 	dotted: defineStyle({
-		textDecoration: 'underline',
-		textDecorationStyle: 'dotted',
-		textDecorationThickness: '1px',
-		lineHeight: 'tall',
-		_hover: {
-			textDecorationStyle: 'solid',
-		},
-	}),
-	button: defineStyle({
 		textDecoration: 'none',
+		borderBottomColor: 'auto',
+		borderBottomStyle: 'dotted',
+		borderBottomWidth: '1.5px',
+		transition: 'borderBottomStyle 100ms ease-out',
+		lineHeight: 'none',
 		_hover: {
 			textDecoration: 'none',
+			borderBottomStyle: 'solid',
+			borderBottomWidth: '1.5px',
 		},
 	}),
 };

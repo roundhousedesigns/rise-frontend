@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { UserProfile } from '@lib/classes';
-import { prepareCreditsFromGQLNodes, sortCreditsByIndex } from '@lib/utils';
+import { prepareCreditsFromGQLNodes, prepareUnavailDatesFromGQLNodes } from '@lib/utils';
 
 export const QUERY_PROFILE = gql`
 	query UserQuery($id: ID!, $author: Int!, $lastCredits: Int = 5) {
@@ -29,7 +29,6 @@ export const QUERY_PROFILE = gql`
 			linkedin
 			facebook
 			website: websiteUrl
-			lookingForWork
 			locations {
 				id: databaseId
 			}
@@ -86,6 +85,13 @@ export const QUERY_PROFILE = gql`
 				}
 			}
 		}
+		conflictRanges(where: { author: $author }) {
+			nodes {
+				id: databaseId
+				startDate
+				endDate
+			}
+		}
 	}
 `;
 
@@ -105,15 +111,20 @@ const useUserProfile = (id: number, count?: number): [UserProfile | null, any] =
 		fetchPolicy: 'cache-and-network',
 	});
 
+	// Prepare the credits
 	const credits = result.data?.credits.nodes
 		? prepareCreditsFromGQLNodes(result.data.credits.nodes)
 		: [];
 
-	// Reorder the credits
-	if (credits) sortCreditsByIndex(credits);
+	// Prepare the conflict dates
+	const conflictRanges = result.data?.conflictRanges.nodes
+		? prepareUnavailDatesFromGQLNodes(result.data.conflictRanges.nodes)
+		: [];
 
 	// Prepare the profile data object.
-	const preparedProfile = result.data ? new UserProfile(result.data.user, credits) : null;
+	const preparedProfile = result.data
+		? new UserProfile(result.data.user, conflictRanges, credits)
+		: null;
 
 	return [preparedProfile, omit(result, ['data'])];
 };

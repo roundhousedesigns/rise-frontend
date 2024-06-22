@@ -105,6 +105,10 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'user_slug_invalid':
 			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
+		// Other errors
+		case 'conflict_range_overlap':
+			return 'This date range overlaps with an existing busy time. Please try again.';
+
 		default:
 			return defaultMessage + ': ' + errorCode;
 	}
@@ -120,11 +124,11 @@ export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProf
 	if (origProfile === null) return;
 
 	const ignoreFields = [
-		'slug',
 		'credits',
+		'conflictRanges',
+		'slug',
 		'image',
 		'resume',
-		'lookingForWork',
 		'mediaImage1',
 		'mediaImage2',
 		'mediaImage3',

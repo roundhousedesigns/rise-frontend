@@ -7,8 +7,10 @@ import {
 	AccordionPanel,
 	Box,
 	Fade,
+	Flex,
 	Spacer,
 	Stack,
+	Text,
 } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
@@ -18,6 +20,7 @@ import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
+import SearchFilterDates from '@/components/SearchFilterDates';
 
 interface Props {
 	showButtons?: boolean;
@@ -48,8 +51,10 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			>
 				<AccordionItem>
 					<h3>
-						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pb={0}>
-							<Box as='span'>Your Saved Searches</Box>
+						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pt={2}>
+							<Text as='span' m={0}>
+								Your Saved Searches
+							</Text>
 							<AccordionIcon />
 						</AccordionButton>
 					</h3>
@@ -64,7 +69,16 @@ export default function SearchWizardView({ onSubmit }: Props) {
 					<Box mb={4} height={name ? 0 : 'auto'}>
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
-						{departments.length && jobs.length > 0 ? <SearchFilterSkills /> : null}
+						{departments.length && jobs.length > 0 ? (
+							<Flex alignItems='flex-start' gap={12}>
+								<Box flex='auto'>
+									<SearchFilterSkills />
+								</Box>
+								<Box flex='1 0 540px'>
+									<SearchFilterDates />
+								</Box>
+							</Flex>
+						) : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />
 					</Box>

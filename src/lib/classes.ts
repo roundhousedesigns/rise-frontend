@@ -7,8 +7,9 @@ import {
 	PersonalLinksParams,
 	WPItemParams,
 	CreditOutput,
+	DateRangeParams,
 } from '@lib/types';
-import { decodeString } from '@lib/utils';
+import { dateRangesOverlap, decodeString } from '@lib/utils';
 
 /**
  * A basic user.
@@ -86,7 +87,6 @@ export class UserProfile extends User {
 	willTour = false;
 	education?: string;
 	website?: string;
-	lookingForWork?: boolean;
 	socials = new PersonalLinks();
 	locations: number[] = [];
 	unions: number[] = [];
@@ -103,9 +103,14 @@ export class UserProfile extends User {
 	mediaImage4?: string;
 	mediaImage5?: string;
 	mediaImage6?: string;
+	conflictRanges: DateRange[] = [];
 	credits: Credit[] = [];
 
-	constructor(userParams?: UserProfileParams, credits?: CreditParams[]) {
+	constructor(
+		userParams?: UserProfileParams,
+		conflictRanges?: DateRangeParams[],
+		credits?: CreditParams[]
+	) {
 		const {
 			id,
 			slug,
@@ -128,7 +133,6 @@ export class UserProfile extends User {
 			instagram,
 			facebook,
 			website,
-			lookingForWork,
 			locations,
 			unions,
 			partnerDirectories,
@@ -157,7 +161,6 @@ export class UserProfile extends User {
 		this.image = image;
 		this.phone = phone;
 		this.website = website;
-		this.lookingForWork = lookingForWork || undefined;
 		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
 		this.education = education ? decodeString(education) : education;
@@ -225,6 +228,12 @@ export class UserProfile extends User {
 		if (credits && credits.length > 0) {
 			this.credits = credits.map((credit) => new Credit(credit));
 		}
+
+		if (conflictRanges && conflictRanges.length > 0) {
+			this.conflictRanges = conflictRanges.map((dates) => {
+				return new DateRange(dates);
+			});
+		}
 	}
 
 	/**
@@ -242,7 +251,7 @@ export class UserProfile extends User {
 	extractIdsFromNodes(nodes: { [key: string]: any; id: number }[] | number[]): number[] {
 		const ids = nodes.map((node) => (typeof node === 'object' ? node.id : Number(node) || 0));
 
-		// return the IDs sorted in ascending order (aids in profile edited/united comparison)
+		// return the IDs sorted in ascending order (aids in profile edited/unedited comparison)
 		return ids.sort((a, b) => a - b);
 	}
 }
@@ -255,13 +264,10 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	searchScore?: number;
 	selfTitle?: string;
 	image?: string;
-	lookingForWork?: boolean;
 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
-
-		this.lookingForWork = this.lookingForWork || undefined;
 	}
 }
 
@@ -368,6 +374,59 @@ export class Credit implements CreditParams {
 			departments: positions.departments,
 			jobs: positions.jobs,
 		};
+	}
+}
+
+/**
+ * A range of dates that the Candidate is unavailable for work.
+ */
+export class DateRange implements DateRangeParams {
+	id?: number;
+	startDate?: Date;
+	endDate?: Date;
+
+	constructor(params?: DateRangeParams) {
+		this.id = params?.id ? Number(params.id) : undefined;
+		this.startDate = params?.startDate ? new Date(params.startDate) : undefined;
+		this.endDate = params?.endDate ? new Date(params.endDate) : undefined;
+	}
+
+	/**
+	 * Converts the DateRange to a string in the given format.
+	 *
+	 * @param {string} [format='default'] - The format to use for the string. Accepted values are:
+	 *     - 'default': The default format, which is 'MM-DD-YYYY'.
+	 *     - 'iso': The ISO format, which is 'YYYY-MM-DD'.
+	 *     - 'long': The long format, which is a more human-readable format, like "May 20, 2004".
+	 * @return {string} The formatted date range string.
+	 */
+	toString(format: 'default' | 'iso' | 'long' = 'default'): string {
+		if (!this.startDate || !this.endDate) {
+			return '';
+		}
+
+		switch (format) {
+			case 'iso':
+				return `${this.startDate.toISOString().slice(0, 10)} - ${this.endDate
+					.toISOString()
+					.slice(0, 10)}`;
+			case 'long':
+				return `${new Intl.DateTimeFormat(undefined, {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				}).format(this.startDate)} - ${new Intl.DateTimeFormat(undefined, {
+					month: 'long',
+					day: 'numeric',
+					year: 'numeric',
+				}).format(this.endDate)}`;
+			default:
+				return `${this.startDate.toLocaleDateString()} - ${this.endDate.toLocaleDateString()}`;
+		}
+	}
+
+	hasConflict(conflictDateRanges: DateRange[]): boolean {
+		return conflictDateRanges.some((dateRange) => dateRangesOverlap(this, dateRange));
 	}
 }
 

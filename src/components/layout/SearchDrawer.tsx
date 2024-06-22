@@ -47,7 +47,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			},
 			results,
 			searchActive,
-			triggerSearch,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
@@ -68,15 +67,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			},
 		});
 	}, [filteredCandidates]);
-
-	// Trigger a search if a saved filter set is restored.
-	useEffect(() => {
-		if (!triggerSearch) {
-			return;
-		}
-
-		runSearch();
-	}, [triggerSearch]);
 
 	const runSearch = () => {
 		// set the positions array to the jobs array if it's not empty, otherwise use the departments array
