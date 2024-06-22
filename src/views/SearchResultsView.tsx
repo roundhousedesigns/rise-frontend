@@ -58,7 +58,7 @@ export default function SearchResultsView() {
 				</Text>
 			</Flex>
 		) : (
-			false
+			<></>
 		);
 	};
 
