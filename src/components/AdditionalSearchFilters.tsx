@@ -1,5 +1,5 @@
-import { Key, useContext, useEffect, useState } from 'react';
-import { Accordion, Text, Fade, Wrap, Flex, Button } from '@chakra-ui/react';
+import { Key, useContext, useEffect } from 'react';
+import { Accordion, Fade } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
