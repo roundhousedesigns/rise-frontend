@@ -57,24 +57,26 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 
 			<List spacing={2} {...props}>
 				{sortedDateRanges.map((conflictRange: DateRange, index: number) => {
-					const icon =
-						!jobDates || !jobDates.startDate
-							? FiCalendar
-							: dateRangesOverlap(jobDates, conflictRange)
-							? FiAlertCircle
-							: FiCheckCircle;
-					const color =
-						!jobDates || !jobDates.startDate
-							? ''
-							: dateRangesOverlap(jobDates, conflictRange)
-							? 'red.300'
-							: 'brand.blue';
-					const title =
-						!jobDates || !jobDates.startDate
-							? ''
-							: dateRangesOverlap(jobDates, conflictRange)
-							? 'Possible scheduling conflict'
-							: 'Available';
+					let icon, color, title;
+
+					const _jobDates = jobDates ? jobDates : new DateRange();
+
+					switch (true) {
+						case !_jobDates.startDate:
+							icon = FiCalendar;
+							color = '';
+							title = '';
+							break;
+						case dateRangesOverlap(_jobDates, conflictRange):
+							icon = FiAlertCircle;
+							color = 'red.300';
+							title = 'Possible scheduling conflict';
+							break;
+						default:
+							icon = FiCheckCircle;
+							color = 'brand.blue';
+							title = 'Available';
+					}
 
 					return (
 						<ListItem key={index}>

@@ -65,6 +65,7 @@ export default function DateRangePicker({
 				selected={newStartDate}
 				startDate={newStartDate}
 				endDate={newEndDate}
+				minDate={new Date()}
 				selectsRange
 				inline
 			/>

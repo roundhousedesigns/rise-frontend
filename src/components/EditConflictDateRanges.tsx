@@ -38,16 +38,16 @@ export default function EditConflictDateRanges() {
 			);
 	}, [conflictRanges]);
 
-	const [conflictRangeModalIsOpen, setDateRangeModalIsOpen] = useState<boolean>(false);
+	const [conflictRangeModalIsOpen, setConflictRangeModalIsOpen] = useState<boolean>(false);
 	const [conflictRange, setDateRange] = useState<DateRange>(new DateRange());
 
 	const handleEditDateRange = (conflictRange?: DateRange) => {
-		setDateRangeModalIsOpen(true);
+		setConflictRangeModalIsOpen(true);
 		setDateRange(conflictRange || new DateRange());
 	};
 
 	const handleCloseEditDateRangeModal = () => {
-		setDateRangeModalIsOpen(false);
+		setConflictRangeModalIsOpen(false);
 	};
 
 	const handleDeleteDateRange = ({ id }: DateRange) => {
@@ -58,7 +58,7 @@ export default function EditConflictDateRanges() {
 
 	return (
 		<>
-			<Heading variant='contentTitle'>Conflicts</Heading>
+			<Heading variant='contentTitle'>Scheduling Conflicts</Heading>
 			<Text fontSize='sm' my={0}>
 				Add your conflict dates here. These will appear on your profile, but will not affect your
 				appearance in search results.
@@ -82,9 +82,11 @@ export default function EditConflictDateRanges() {
 											variant='dotted'
 											lineHeight='normal'
 											px={0}
-											flex='0 0 auto'
+											flex='auto'
+											maxW='full'
 											bg='none'
 											height='auto'
+											w='100%'
 											borderRadius='none'
 											onClick={() => handleEditDateRange(conflictRange)}
 										>
@@ -95,7 +97,6 @@ export default function EditConflictDateRanges() {
 											onClick={() => handleDeleteDateRange(conflictRange)}
 											icon={<FiDelete />}
 											size='sm'
-											flex='0'
 											aria-label='Remove date range'
 											colorScheme='red'
 										/>

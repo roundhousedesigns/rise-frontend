@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Box, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -21,6 +21,17 @@ export default function SearchFilterDates() {
 		jobDates ? jobDates : new DateRange()
 	);
 
+	// If startDate is after endDate (and endDate is set), clear endDate.
+	useEffect(() => {
+		if (
+			selectedDates.startDate &&
+			selectedDates.endDate &&
+			selectedDates.startDate > selectedDates.endDate
+		) {
+			setSelectedDates((prevDates) => new DateRange({ ...prevDates, endDate: undefined }));
+		}
+	}, [selectedDates.startDate]);
+
 	const handleDateChange = (targetId: string) => (date: Date) => {
 		setSelectedDates((prevDates) => new DateRange({ ...prevDates, [targetId]: date }));
 
@@ -35,6 +46,7 @@ export default function SearchFilterDates() {
 		searchDispatch({ type: 'SET_JOB_DATES', payload: { jobDates: new DateRange() } });
 	};
 
+	// TODO destructure selectedDates before using here
 	return (
 		<Box id='filterDates' mt={8}>
 			<Heading as='h3' variant='searchFilterTitle'>
