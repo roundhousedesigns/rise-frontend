@@ -3,16 +3,13 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.7-avail-calendar] - Unreleased
+## \[1.1.7] - 2024-06-22
 
 - Add: Conflict Dates calendar and job search dates.
-- Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
-- Improve: Saved Search styling
 - Change: Reusing a saved search no longer automatically searches, but rather populates filters for re-running when ready.
 - Change: "Quick Actions" --> "Options".
-
-## \[1.1.7] - Unreleased
-
+- Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
+- Improve: Saved Search styling
 - Improve: @common component file organization
 - Improve: Minor UI fixes and improvements
 
