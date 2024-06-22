@@ -15,7 +15,6 @@ import {
 	Stack,
 	StackItem,
 	Flex,
-	Box,
 	IconButton,
 	ButtonGroup,
 } from '@chakra-ui/react';
@@ -28,7 +27,7 @@ import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useDeleteSavedSearch from '@hooks/mutations/useDeleteSavedSearch';
+import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
 import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
@@ -57,7 +56,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	const initialSaveModalRef = useRef(null);
 
 	const { saveSearchMutation } = useSaveSearch();
-	const { deleteSavedSearchMutation } = useDeleteSavedSearch();
+	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
 
 	const toast = useToast();
 
@@ -86,8 +85,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				filterSet,
 			},
 		});
-
-		// openDrawer();
 	};
 
 	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -99,7 +96,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		editOnClose();
 	};
 
-	const handleRenameSubmit = (e: FormEvent) => {
+	const handleSave = (e: FormEvent) => {
 		e.preventDefault();
 
 		saveSearchMutation({
@@ -119,7 +116,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 			});
 
 			setSaveSearchFieldText('');
-
 			editOnClose();
 		});
 	};
@@ -131,7 +127,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 	const handleDelete = () => {
 		if (!id) return;
 
-		deleteSavedSearchMutation(id.toString(), loggedInId).then(() => {
+		deleteOwnSavedSearchMutation(id.toString(), loggedInId).then(() => {
 			deleteOnClose();
 
 			toast({
@@ -156,7 +152,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								icon={FiEdit2}
 								fontSize='lg'
 								my={0}
-								mr={4}
+								mr={8}
 								flex={1}
 								iconSide='left'
 								color='inherit'
@@ -181,14 +177,14 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								alignItems='center'
 								justifyContent='space-between'
 								flex='0 0 auto'
+								size='sm'
 								spacing={1}
 							>
 								<IconButton
 									icon={<FiSearch />}
 									colorScheme='green'
-									aria-label='Rerun this search'
-									title='Rerun'
-									size='sm'
+									aria-label='Reuse this search'
+									title='Reuse this search'
 									onClick={handleSearchClick}
 								/>
 								<IconButton
@@ -196,7 +192,6 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 									colorScheme='orange'
 									aria-label='Delete this search'
 									title='Delete'
-									size='sm'
 									onClick={deleteOnOpen}
 								/>
 							</ButtonGroup>
@@ -207,12 +202,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
-						<Box>
-							<Text variant='helperText' fontSize='xs'>
-								You searched for:
-							</Text>
-							<SearchParamTags termIds={termIds} termItems={terms} />
-						</Box>
+						<SearchParamTags termIds={termIds} termItems={terms} />
 						{!hasName ? (
 							<Button
 								colorScheme='blue'
@@ -243,7 +233,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 							Give this search a short, descriptive name to easily run it again.
 						</Text>
 
-						<form id='rename-search' onSubmit={handleRenameSubmit}>
+						<form id='rename-search' onSubmit={handleSave}>
 							<FormControl>
 								<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
 									Name

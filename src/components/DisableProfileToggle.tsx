@@ -1,4 +1,4 @@
-import { Box, Highlight, Text } from '@chakra-ui/react';
+import { Highlight, Text } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
@@ -34,21 +34,20 @@ export default function DisableProfileToggle({
 	};
 
 	return (
-		<Box {...props}>
-			<ToggleOptionSwitch
-				id='disableProfile'
-				checked={!disableProfile}
-				callback={handleToggleDisableProfile}
-				label='Privacy'
-				iconLeft={FiEyeOff}
-				iconRight={FiEye}
-				size={size}
-				loading={loading}
-				showLabel={showLabel}
-			>
-				<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
-			</ToggleOptionSwitch>
-		</Box>
+		<ToggleOptionSwitch
+			id='disableProfile'
+			checked={!disableProfile}
+			callback={handleToggleDisableProfile}
+			label='Privacy'
+			iconLeft={FiEyeOff}
+			iconRight={FiEye}
+			size={size}
+			loading={loading}
+			showLabel={showLabel}
+			{...props}
+		>
+			<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
+		</ToggleOptionSwitch>
 	);
 }
 

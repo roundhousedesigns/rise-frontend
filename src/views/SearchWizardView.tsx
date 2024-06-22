@@ -7,6 +7,7 @@ import {
 	AccordionPanel,
 	Box,
 	Fade,
+	Flex,
 	Spacer,
 	Stack,
 	Text,
@@ -19,6 +20,7 @@ import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
+import SearchFilterDates from '@/components/SearchFilterDates';
 
 interface Props {
 	showButtons?: boolean;
@@ -67,7 +69,16 @@ export default function SearchWizardView({ onSubmit }: Props) {
 					<Box mb={4} height={name ? 0 : 'auto'}>
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
-						{departments.length && jobs.length > 0 ? <SearchFilterSkills /> : null}
+						{departments.length && jobs.length > 0 ? (
+							<Flex alignItems='flex-start' gap={12}>
+								<Box flex='auto'>
+									<SearchFilterSkills />
+								</Box>
+								<Box flex='1 0 540px'>
+									<SearchFilterDates />
+								</Box>
+							</Flex>
+						) : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />
 					</Box>

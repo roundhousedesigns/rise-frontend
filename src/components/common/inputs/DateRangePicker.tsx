@@ -1,72 +1,101 @@
-import React, { useState } from 'react';
-import { DateRangePicker as ReactDateRangePicker, RangeKeyDict } from 'react-date-range';
-import { addDays } from 'date-fns';
-import {
-	Box,
-	Button,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalCloseButton,
-	ModalFooter,
-	useDisclosure,
-} from '@chakra-ui/react';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import { useState } from 'react';
+import { Box, Button, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { DateRange } from '@/lib/classes';
 
-interface DateRange {
-	startDate: Date;
-	endDate: Date;
-	key: string;
+interface Props {
+	startDate?: Date;
+	endDate?: Date;
+	saveCallback: (startDate: Date, endDate: Date) => void;
+	handleSelect?: () => void;
+	error?: string;
 }
 
-const DateRangePicker: React.FC = () => {
-	const [state, setState] = useState<DateRange[]>([
-		{
-			startDate: new Date(),
-			endDate: addDays(new Date(), 7),
-			key: 'selection',
-		},
-	]);
+export default function DateRangePicker({
+	startDate,
+	endDate,
+	saveCallback,
+	handleSelect,
+	error,
+}: Props) {
+	const [newStartDate, setNewStartDate] = useState<Date | undefined>(startDate || undefined);
+	const [newEndDate, setNewEndDate] = useState<Date | undefined>(endDate || undefined);
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	/**
+	 * Updates the start and end dates based on the provided dates array.
+	 *
+	 * @param {[Date, Date]} dates - The array containing the start and end dates.
+	 * @return {void} No return value.
+	 */
+	const onChange = (dates: [Date, Date]) => {
+		const [start, end] = dates;
+		setNewStartDate(start);
+		setNewEndDate(end);
+	};
 
-	const handleSelect = (ranges: RangeKeyDict) => {
-		const newRange = ranges['selection'] as DateRange;
-		setState([newRange]);
+	/**
+	 * Checks if both start date and end date are defined, then calls the saveCallback function with a new DateRange object.
+	 *
+	 * @return {void}
+	 */
+	const handleSave = () => {
+		if (!newStartDate || !newEndDate || saveCallback === undefined) {
+			return;
+		}
+
+		saveCallback(newStartDate, newEndDate);
+	};
+
+	/**
+	 * Creates a date range string based on the new start and end dates.
+	 *
+	 * @return {string} The formatted date range string.
+	 */
+	const dateRangeString = () => {
+		const newRange = new DateRange({ startDate: newStartDate, endDate: newEndDate });
+		return newRange.toString('long');
 	};
 
 	return (
-		<Box>
-			<Button onClick={onOpen} colorScheme='teal'>
-				Select Date Range
-			</Button>
-
-			<Modal isOpen={isOpen} onClose={onClose}>
-				<ModalOverlay />
-				<ModalContent w='auto' maxW='none'>
-					<ModalHeader>Select Date Range</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<ReactDateRangePicker
-							onChange={handleSelect}
-							moveRangeOnFirstSelection={false}
-							months={2}
-							ranges={state}
-							direction='vertical'
-						/>
-					</ModalBody>
-					<ModalFooter>
-						<Button colorScheme='blue' mr={3} onClick={onClose}>
-							Close
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
-		</Box>
+		<Flex gap={2}>
+			<DatePicker
+				onChange={onChange}
+				onSelect={handleSelect ? handleSelect : undefined}
+				selected={newStartDate}
+				startDate={newStartDate}
+				endDate={newEndDate}
+				minDate={new Date()}
+				selectsRange
+				inline
+			/>
+			<Stack direction='column'>
+				{newStartDate && newEndDate ? (
+					<>
+						<Spacer />
+						<Box>
+							<Text fontSize='sm'>Selected:</Text>
+							<Text fontSize='lg'>{dateRangeString()}</Text>
+							{error ? (
+								<Text variant='notice' fontSize='sm'>
+									{error}
+								</Text>
+							) : (
+								false
+							)}
+						</Box>
+						<Spacer />
+					</>
+				) : (
+					false
+				)}
+				<>
+					<Spacer />
+					<Button onClick={handleSave} colorScheme='blue' isDisabled={!newStartDate || !newEndDate}>
+						Save
+					</Button>
+				</>
+			</Stack>
+		</Flex>
 	);
-};
-
-export default DateRangePicker;
+}

@@ -1,9 +1,13 @@
-import { Card, Avatar, Text, Flex, Heading} from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
+import CandidateAvatarBadge from './CandidateAvatarBadge';
+import { useContext } from 'react';
+import { SearchContext } from '@/context/SearchContext';
+import useUserProfile from '@/hooks/queries/useUserProfile';
 
 interface Props {
 	candidate: Candidate;
@@ -12,13 +16,26 @@ interface Props {
 }
 
 const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
-	const { loggedInId } = useViewer();
-
 	const { id, image, slug, selfTitle } = candidate || {};
 
-	if (!id) return null;
+	const [profile] = useUserProfile(id ? id : 0);
+	const { conflictRanges } = profile || {};
+	const { loggedInId } = useViewer();
 
-	return (
+	const {
+		search: {
+			filters: {
+				filterSet: { jobDates },
+			},
+		},
+	} = useContext(SearchContext);
+
+	const hasDateConflict =
+		conflictRanges && jobDates && jobDates.startDate
+			? jobDates.hasConflict(conflictRanges)
+			: false;
+
+	return id ? (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
 				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
@@ -29,20 +46,18 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
-				py={{ base: 1, md: 2 }}
+				py={{ base: 2, md: 3 }}
+				px={2}
 				mr={4}
 				my={0}
 				borderWidth={2}
+				variant='gray'
 				_dark={{
-					bg: 'gray.800',
-					borderColor: 'gray.700',
 					_hover: {
 						bg: 'gray.700',
 					},
 				}}
 				_light={{
-					bg: 'gray.100',
-					borderColor: 'gray.200',
 					_hover: {
 						bg: 'gray.200',
 					},
@@ -63,7 +78,9 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
-					/>
+					>
+						<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
+					</Avatar>
 					<Heading
 						as='h3'
 						fontSize='lg'
@@ -78,15 +95,18 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 					<Text
 						textAlign='right'
 						ml={{ base: '0 !important', lg: 'initial' }}
+						fontSize='sm'
 						flex='1'
 						noOfLines={2}
+						style={{ hyphens: 'auto' }}
+						wordBreak='break-word'
 					>
 						{selfTitle}
 					</Text>
 				</Flex>
 			</Card>
 		</Flex>
-	);
+	) : null;
 };
 
 export default CandidateItem;

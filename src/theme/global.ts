@@ -73,11 +73,17 @@ export const radioCheckboxButtonStyleObject = {
 			_checked: {
 				bg: 'gray.300',
 			},
+			_hover: {
+				bg: 'gray.600',
+			},
 		},
 		_light: {
 			bg: 'gray.100',
 			_checked: {
 				bg: 'gray.600',
+			},
+			_hover: {
+				bg: 'gray.50',
 			},
 		},
 	},

@@ -1,4 +1,5 @@
 import { createContext, Key, ReactNode, useReducer } from 'react';
+import { DateRange } from '@lib/classes';
 import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
 import { additionalFilterKeys } from '@lib/utils';
 
@@ -9,7 +10,6 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	triggerSearch: boolean;
 	results: SearchResultCandidate[];
 }
 
@@ -25,6 +25,7 @@ interface SearchAction {
 			name: string;
 			value: string | string[] | Key[];
 		};
+		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
 		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
@@ -40,6 +41,7 @@ const initialSearchState: SearchState = {
 				jobs: [],
 			},
 			skills: [],
+			jobDates: new DateRange(),
 			unions: [],
 			locations: [],
 			experienceLevels: [],
@@ -50,7 +52,6 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
-	triggerSearch: false,
 	results: [],
 };
 
@@ -141,6 +142,21 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: true,
 			};
 
+		case 'SET_JOB_DATES':
+			if (!action.payload?.jobDates) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet: {
+						...state.filters.filterSet,
+						jobDates: action.payload.jobDates,
+					},
+				},
+				searchActive: true,
+			};
+
 		case 'SET_ADDITIONAL_FILTERS_ACTIVE':
 			if (!action.payload?.additionalFiltersActive) return state;
 
@@ -170,7 +186,6 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				searchActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
-				triggerSearch: true,
 			};
 		}
 

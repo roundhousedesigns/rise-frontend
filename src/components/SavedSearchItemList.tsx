@@ -41,9 +41,8 @@ export default function SavedSearchItemList({ ...props }: Props) {
 											my={0}
 											py={2}
 											px={3}
+											variant='gray'
 											w='auto'
-											_dark={{ bgColor: 'gray.800' }}
-											_light={{ bgColor: 'gray.100' }}
 										>
 											<SavedSearchItem searchTerms={filters} title={title} id={id} />
 										</Card>

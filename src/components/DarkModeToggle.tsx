@@ -1,4 +1,4 @@
-import { Text, useColorMode, Highlight, Box } from '@chakra-ui/react';
+import { Text, useColorMode, Highlight } from '@chakra-ui/react';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
@@ -18,20 +18,19 @@ export default function DarkModeToggle({
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (
-		<Box {...props}>
-			<ToggleOptionSwitch
-				id='darkMode'
-				checked={colorMode === 'dark'}
-				callback={toggleColorMode}
-				label='Theme'
-				iconLeft={FiSun}
-				iconRight={FiMoon}
-				size={size}
-				showLabel={showLabel}
-			>
-				{showHelperText ? <Subtext colorMode={colorMode} /> : <></>}
-			</ToggleOptionSwitch>
-		</Box>
+		<ToggleOptionSwitch
+			id='darkMode'
+			checked={colorMode === 'dark'}
+			callback={toggleColorMode}
+			label='Theme'
+			iconLeft={FiSun}
+			iconRight={FiMoon}
+			size={size}
+			showLabel={showLabel}
+			{...props}
+		>
+			{showHelperText ? <Subtext colorMode={colorMode} /> : <></>}
+		</ToggleOptionSwitch>
 	);
 }
 
