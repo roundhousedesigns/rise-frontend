@@ -1,9 +1,10 @@
-import { Highlight, Text } from '@chakra-ui/react';
+import { Highlight, Text, useToast } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
+import { useEffect } from 'react';
 
 interface Props {
 	size?: string;
@@ -21,10 +22,27 @@ export default function DisableProfileToggle({
 	const { loggedInId, disableProfile } = useViewer();
 	const {
 		toggleDisableProfileMutation,
-		result: { loading },
+		result: { data, loading },
 	} = useToggleDisableProfile();
 
 	const noticeLabel = 'profile_notice_profile_disabled_dismissed';
+	const toast = useToast();
+
+	useEffect(() => {
+		if (data?.toggleDisableProfile.updatedDisableProfile !== undefined && !loading) {
+			const {
+				toggleDisableProfile: { updatedDisableProfile },
+			} = data || {};
+
+			toast({
+				title: 'Updated!',
+				description: `Your profile is now ${updatedDisableProfile ? 'private' : 'public'}.`,
+				status: updatedDisableProfile ? 'warning' : 'info',
+				duration: 3000,
+				isClosable: true,
+			});
+		}
+	}, [data, loading]);
 
 	const handleToggleDisableProfile = () => {
 		toggleDisableProfileMutation(loggedInId);

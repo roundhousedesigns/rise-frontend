@@ -9,6 +9,7 @@ with 1.0.0beta.
 - Change: Reusing a saved search no longer automatically searches, but rather populates filters for re-running when ready.
 - Change: "Quick Actions" --> "Options".
 - Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
+- Improve: More toasts!
 - Improve: Saved Search styling
 - Improve: @common component file organization
 - Improve: Minor UI fixes and improvements
