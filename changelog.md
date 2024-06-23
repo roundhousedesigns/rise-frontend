@@ -5,7 +5,7 @@ with 1.0.0beta.
 
 ## \[1.1.7] - 2024-06-22
 
-- Add: Conflict Dates calendar and job search dates.
+- Add: Conflict Dates calendar and job search dates. **Backend version 1.1.4**
 - Change: Reusing a saved search no longer automatically searches, but rather populates filters for re-running when ready.
 - Change: "Quick Actions" --> "Options".
 - Improve: Remove redundant `sortCreditsByIndex()` from useUserProfile hook.
