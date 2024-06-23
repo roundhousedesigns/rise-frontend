@@ -42,9 +42,9 @@ export default function LoginView() {
 						title: 'Email sent',
 						description: 'Please check your inbox for reset instructions.',
 						status: 'success',
-						duration: 5000,
+						duration: 3000,
 						isClosable: true,
-						position: 'top',
+						position: 'bottom',
 					});
 				})
 				.then(() => {

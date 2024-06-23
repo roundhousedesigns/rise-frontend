@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Modal, ModalOverlay, ModalBody, ModalContent, ModalCloseButton } from '@chakra-ui/react';
+import {
+	Modal,
+	ModalOverlay,
+	ModalBody,
+	ModalContent,
+	ModalCloseButton,
+	useToast,
+} from '@chakra-ui/react';
 import { DateRange } from '@lib/classes';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateConflictRange from '@hooks/mutations/useUpdateConflictRange';
@@ -13,7 +20,7 @@ interface Props {
 	onClose: () => void;
 }
 
-export default function EditUnavailDateRangeModal({
+export default function EditConflictDateRangeModal({
 	conflictRange = new DateRange(),
 	allDateRanges,
 	isOpen,
@@ -31,10 +38,20 @@ export default function EditUnavailDateRangeModal({
 
 	const { id, startDate, endDate } = conflictRange;
 
+	const toast = useToast();
+
 	// Close modal if update is successful
 	useEffect(() => {
 		if (data?.updateOrCreateConflictRange?.id && !loading) {
 			onClose();
+
+			toast({
+				title: 'Success!',
+				description: 'Conflict range updated.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
 		}
 
 		return () => {

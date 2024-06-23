@@ -120,9 +120,9 @@ export default function RegisterView() {
 						title: 'Account created!',
 						description: 'Please check your inbox for confirmation.',
 						status: 'success',
-						duration: 5000,
+						duration: 3000,
 						isClosable: true,
-						position: 'top',
+						position: 'bottom',
 					});
 				})
 				.then(() => {

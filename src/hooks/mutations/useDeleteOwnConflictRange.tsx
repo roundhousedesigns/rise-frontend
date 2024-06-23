@@ -30,8 +30,6 @@ const useDeleteOwnConflictRange = () => {
 		});
 	};
 
-	console.debug('RESULTS', results);
-
 	return { deleteOwnConflictRangeMutation, results };
 };
 

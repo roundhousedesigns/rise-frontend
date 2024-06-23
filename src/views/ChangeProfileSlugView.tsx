@@ -80,7 +80,7 @@ export default function ChangeProfileUrlView() {
 				// toast success
 				toast({
 					title: 'Bookmarked!',
-					position: 'top',
+					position: 'bottom',
 					description: 'Your handle has been updated.',
 					status: 'success',
 					duration: 3000,

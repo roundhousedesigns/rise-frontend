@@ -80,9 +80,9 @@ export default function ResetPasswordView({ token, login }: Props) {
 					title: 'Success!',
 					description: 'Please login with your new password.',
 					status: 'success',
-					duration: 5000,
+					duration: 3000,
 					isClosable: true,
-					position: 'top',
+					position: 'bottom',
 				});
 			})
 			.then(() => {

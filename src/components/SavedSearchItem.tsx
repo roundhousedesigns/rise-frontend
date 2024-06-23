@@ -109,7 +109,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				title: 'Saved!',
 				description:
 					'All of your saved searches are available in the Search Drawer and in the main menu.',
-				position: 'top',
+				position: 'bottom',
 				status: 'success',
 				duration: 3000,
 				isClosable: true,
@@ -133,7 +133,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 			toast({
 				title: 'Deleted!',
 				description: 'This saved search has been deleted.',
-				position: 'top',
+				position: 'bottom',
 				status: 'success',
 				duration: 3000,
 				isClosable: true,

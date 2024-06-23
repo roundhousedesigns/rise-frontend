@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
 	chakra,
 	List,
@@ -11,6 +11,7 @@ import {
 	Heading,
 	Divider,
 	Link,
+	useToast,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiDelete, FiPlus } from 'react-icons/fi';
@@ -18,7 +19,7 @@ import { DateRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
-import EditUnavailDateRangeModal from '@/components/EditConflictDateRangeModal';
+import EditConflictDateRangeModal from '@/components/EditConflictDateRangeModal';
 
 export default function EditConflictDateRanges() {
 	const { loggedInId } = useViewer();
@@ -28,7 +29,10 @@ export default function EditConflictDateRanges() {
 
 	const MotionBox = motion(chakra.div);
 
-	const { deleteOwnConflictRangeMutation } = useDeleteOwnConflictRange();
+	const {
+		deleteOwnConflictRangeMutation,
+		results: { data: deleteData, loading: deleteLoading },
+	} = useDeleteOwnConflictRange();
 
 	const sortedDateRanges: DateRange[] = useMemo(() => {
 		return conflictRanges
@@ -40,6 +44,21 @@ export default function EditConflictDateRanges() {
 
 	const [conflictRangeModalIsOpen, setConflictRangeModalIsOpen] = useState<boolean>(false);
 	const [conflictRange, setDateRange] = useState<DateRange>(new DateRange());
+
+	const toast = useToast();
+
+	// Show a toast if the conflict range was successfully deleted.
+	useEffect(() => {
+		if (deleteData?.deleeOwnConflictRange?.result === true && !deleteLoading) {
+			toast({
+				title: 'Success!',
+				description: 'Dates deleted.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+		}
+	}, [deleteData, deleteLoading]);
 
 	const handleEditDateRange = (conflictRange?: DateRange) => {
 		setConflictRangeModalIsOpen(true);
@@ -111,7 +130,7 @@ export default function EditConflictDateRanges() {
 				<Button onClick={() => handleEditDateRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
 					Add Dates
 				</Button>
-				<EditUnavailDateRangeModal
+				<EditConflictDateRangeModal
 					conflictRange={conflictRange}
 					allDateRanges={sortedDateRanges}
 					isOpen={conflictRangeModalIsOpen}

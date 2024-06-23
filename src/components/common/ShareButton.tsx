@@ -38,7 +38,7 @@ export default function ShareButton({ url, ...props }: Props) {
 		if (hasCopied) {
 			toast({
 				title: 'Copied!',
-				position: 'top',
+				position: 'bottom',
 				description: 'The profile link has been copied to your clipboard.',
 				status: 'success',
 				duration: 3000,

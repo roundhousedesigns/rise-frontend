@@ -365,10 +365,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		if (accept && !accept.includes(file.type)) {
 			toast({
 				title: 'Invalid file type.',
-				position: 'top',
+				position: 'bottom',
 				description: 'Please upload a valid file type.',
 				status: 'error',
-				duration: 5000,
+				duration: 3000,
 				isClosable: true,
 			});
 
@@ -379,10 +379,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		if (maxSize < file.size) {
 			toast({
 				title: 'File too large.',
-				position: 'top',
+				position: 'bottom',
 				description: 'Please upload a file smaller than 2MB.',
 				status: 'error',
-				duration: 5000,
+				duration: 3000,
 				isClosable: true,
 			});
 
@@ -406,10 +406,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				// success toast
 				toast({
 					title: 'Image uploaded!',
-					position: 'top',
+					position: 'bottom',
 					description: 'Your image has been saved.',
 					status: 'success',
-					duration: 5000,
+					duration: 3000,
 					isClosable: true,
 				});
 			})
@@ -427,10 +427,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		if (maxSize < file.size) {
 			toast({
 				title: 'File too large.',
-				position: 'top',
+				position: 'bottom',
 				description: 'Please upload a file smaller than 2MB.',
 				status: 'error',
-				duration: 5000,
+				duration: 3000,
 				isClosable: true,
 			});
 
@@ -454,10 +454,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				// success toast
 				toast({
 					title: 'Image uploaded!',
-					position: 'top',
+					position: 'bottom',
 					description: 'Your image has been saved.',
 					status: 'success',
-					duration: 5000,
+					duration: 3000,
 					isClosable: true,
 				});
 			})
@@ -493,10 +493,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			// success toast
 			toast({
 				title: 'Success!',
-				position: 'top',
+				position: 'bottom',
 				description,
 				status: 'success',
-				duration: 5000,
+				duration: 3000,
 				isClosable: true,
 			});
 
@@ -527,9 +527,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						title: 'Credit deleted.',
 						// description: 'Your credit has been deleted.',
 						status: 'success',
-						duration: 5000,
+						duration: 3000,
 						isClosable: true,
-						position: 'top',
+						position: 'bottom',
 					});
 				})
 				.catch((err) => {
@@ -547,9 +547,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				title: 'Missing required field.',
 				description: 'Please select at least one work location.',
 				status: 'error',
-				duration: 5000,
+				duration: 3000,
 				isClosable: true,
-				position: 'top',
+				position: 'bottom',
 			});
 
 			return;
@@ -564,9 +564,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					title: 'Saved!',
 					description: 'Your profile has been updated.',
 					status: 'success',
-					duration: 5000,
+					duration: 3000,
 					isClosable: true,
-					position: 'top',
+					position: 'bottom',
 				});
 			})
 			.catch((err) => {
@@ -574,9 +574,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					title: 'Oops!',
 					description: 'There was an error saving your profile: ' + err,
 					status: 'error',
-					duration: 5000,
+					duration: 3000,
 					isClosable: true,
-					position: 'top',
+					position: 'bottom',
 				});
 			});
 	};

@@ -68,7 +68,7 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 
 				toast({
 					title: 'Updated!',
-					position: 'top',
+					position: 'bottom',
 					description: 'Your new email address has been set.',
 					status: 'success',
 					duration: 1500,
