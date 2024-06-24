@@ -92,10 +92,10 @@ export default function SearchFilterDepartment() {
 			<Heading as='h3' variant='searchFilterTitle'>
 				Which department are you hiring for?
 			</Heading>
-			<FormControl>
-				<FormLabel>Type a job title</FormLabel>
+			<FormControl mb={4}>
+				<FormLabel>Find a department</FormLabel>
 				<AutoComplete openOnFocus onSelectOption={handleAutocompleteSelect}>
-					<AutoCompleteInput variant='outline' />
+					<AutoCompleteInput />
 					<AutoCompleteList>
 						{Object.entries(allPositions).map(([departmentId, positions]) => {
 							const department = allDepartments.find(
@@ -122,7 +122,7 @@ export default function SearchFilterDepartment() {
 						})}
 					</AutoCompleteList>
 				</AutoComplete>
-				<FormHelperText>Find the department you're looking for.</FormHelperText>
+				<FormHelperText>Type the name of a job to select its department.</FormHelperText>
 			</FormControl>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>
