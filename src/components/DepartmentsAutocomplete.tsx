@@ -52,9 +52,9 @@ export default function DepartmentsAutocomplete() {
 	};
 
 	return (
-		<FormControl mb={4}>
+		<FormControl>
 			<Heading as={FormLabel} variant='searchFilterTitle' mb={4}>
-				Type a job name to begin.
+				Type a job title to begin.
 			</Heading>
 			<Flex gap={2} alignItems='center' flexWrap='wrap'>
 				<Box flex='1 0 400px'>
