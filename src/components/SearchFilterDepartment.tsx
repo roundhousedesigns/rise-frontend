@@ -43,7 +43,7 @@ export default function SearchFilterDepartment() {
 	const [allJobs] = usePositions(allDepartments?.map((job: WPItem) => job.id));
 	const allPositions: { [key: string]: WPItem[] } = {};
 	allDepartments?.forEach((d: WPItem) => {
-		allPositions[d.id.toString()] = allJobs.filter((job: WPItem) => job.parentId === d.id);
+		allPositions[d.id.toString()] = allJobs?.filter((job: WPItem) => job.parentId === d.id);
 	});
 
 	const handleToggleTerm = (term: string) => {
@@ -94,7 +94,7 @@ export default function SearchFilterDepartment() {
 			</Heading>
 			<FormControl mb={4}>
 				<FormLabel>Find a department</FormLabel>
-				<AutoComplete openOnFocus onSelectOption={handleAutocompleteSelect}>
+				<AutoComplete onSelectOption={handleAutocompleteSelect}>
 					<AutoCompleteInput />
 					<AutoCompleteList>
 						{Object.entries(allPositions).map(([departmentId, positions]) => {
