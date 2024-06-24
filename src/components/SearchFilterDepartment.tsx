@@ -1,8 +1,25 @@
 import { useContext, useMemo } from 'react';
-import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
+import {
+	Box,
+	Heading,
+	Wrap,
+	Spinner,
+	RadioGroup,
+	FormControl,
+	FormLabel,
+	FormHelperText,
+} from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import usePositions from '@hooks/queries/usePositions';
-
+import {
+	AutoComplete,
+	AutoCompleteGroup,
+	AutoCompleteGroupTitle,
+	AutoCompleteInput,
+	AutoCompleteItem,
+	AutoCompleteList,
+	Item,
+} from '@choc-ui/chakra-autocomplete';
 import { SearchContext } from '@context/SearchContext';
 import RadioButton from '@common/inputs/RadioButton';
 
@@ -19,6 +36,16 @@ export default function SearchFilterDepartment() {
 		searchDispatch,
 	} = useContext(SearchContext);
 
+	const [allDepartments] = usePositions([0]);
+	// const allDepartmentIds = useMemo(() => {
+	// 	return allDepartments.map((d: WPItem) => d.id);
+	// }, [allDepartments]);
+	const [allJobs] = usePositions(allDepartments?.map((job: WPItem) => job.id));
+	const allPositions: { [key: string]: WPItem[] } = {};
+	allDepartments?.forEach((d: WPItem) => {
+		allPositions[d.id.toString()] = allJobs.filter((job: WPItem) => job.parentId === d.id);
+	});
+
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
 			type: 'SET_DEPARTMENT',
@@ -34,6 +61,28 @@ export default function SearchFilterDepartment() {
 		}
 	};
 
+	const handleAutocompleteSelect = (params: { item: Item }) => {
+		const {
+			item: {
+				originalValue: { id, parentId },
+			},
+		} = params;
+
+		searchDispatch({
+			type: 'SET_DEPARTMENT',
+			payload: {
+				departments: [parentId.toString()],
+			},
+		});
+
+		searchDispatch({
+			type: 'SET_JOBS',
+			payload: {
+				jobs: [id.toString()],
+			},
+		});
+	};
+
 	const departmentId = useMemo(() => {
 		return departments && departments.length > 0 ? departments[0] : '';
 	}, [departments]);
@@ -43,6 +92,38 @@ export default function SearchFilterDepartment() {
 			<Heading as='h3' variant='searchFilterTitle'>
 				Which department are you hiring for?
 			</Heading>
+			<FormControl>
+				<FormLabel>Type a job title</FormLabel>
+				<AutoComplete openOnFocus onSelectOption={handleAutocompleteSelect}>
+					<AutoCompleteInput variant='outline' />
+					<AutoCompleteList>
+						{Object.entries(allPositions).map(([departmentId, positions]) => {
+							const department = allDepartments.find(
+								(d: WPItem) => d.id.toString() === departmentId
+							);
+
+							return (
+								<AutoCompleteGroup key={department?.id} showDivider>
+									<AutoCompleteGroupTitle textTransform='capitalize'>
+										{department?.name}
+									</AutoCompleteGroupTitle>
+									{positions?.map((job: WPItem) => (
+										<AutoCompleteItem
+											key={job.id}
+											value={job}
+											getValue={(job: WPItem) => job.name}
+											textTransform='capitalize'
+										>
+											{job.name}
+										</AutoCompleteItem>
+									))}
+								</AutoCompleteGroup>
+							);
+						})}
+					</AutoCompleteList>
+				</AutoComplete>
+				<FormHelperText>Find the department you're looking for.</FormHelperText>
+			</FormControl>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>
 					{data.map((term: WPItem) => {

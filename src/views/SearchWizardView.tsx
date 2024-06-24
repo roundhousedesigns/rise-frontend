@@ -70,11 +70,11 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
 						{departments.length && jobs.length > 0 ? (
-							<Flex alignItems='flex-start' gap={12}>
-								<Box flex='auto'>
+							<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
+								<Box flex='1 0 50%'>
 									<SearchFilterSkills />
 								</Box>
-								<Box flex='1 0 540px'>
+								<Box flex='1 0 300px'>
 									<SearchFilterDates />
 								</Box>
 							</Flex>
