@@ -13,6 +13,7 @@ with 1.0.0beta.
 - Improve: Saved Search styling
 - Improve: @common component file organization
 - Improve: Minor UI fixes and improvements
+- Fix: Toast label on updating user handle
 
 ## \[1.1.6] - 2024-05-07
 
