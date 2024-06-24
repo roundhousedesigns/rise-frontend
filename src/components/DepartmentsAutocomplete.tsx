@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FormControl, FormLabel, FormHelperText, Heading, Box, Flex } from '@chakra-ui/react';
+import { FormControl, FormLabel, FormHelperText, Heading, Text, Box, Flex } from '@chakra-ui/react';
 import {
 	AutoComplete,
 	AutoCompleteInput,
@@ -52,45 +52,50 @@ export default function DepartmentsAutocomplete() {
 	};
 
 	return (
-		<FormControl>
-			<Heading as={FormLabel} variant='searchFilterTitle' mb={4}>
-				Type a job title to begin.
-			</Heading>
-			<Flex gap={2} alignItems='center' flexWrap='wrap'>
-				<Box flex='1 0 400px'>
-					<AutoComplete onSelectOption={handleAutocompleteSelect}>
-						<AutoCompleteInput variant='filled' placeholder='Dialect Coach, Director, Copyist...' />
-						<AutoCompleteList>
-							{Object.entries(allPositions).map(([departmentId, positions]) => {
-								const department = allDepartments.find(
-									(d: WPItem) => d.id.toString() === departmentId
-								);
+		<Box id='autocompleteDepartment'>
+			<FormControl>
+				<Heading as={FormLabel} variant='searchFilterTitle' mb={4}>
+					Type a job title to begin.
+				</Heading>
+				<Flex gap={2} alignItems='center' flexWrap='wrap'>
+					<Box flex='1 0 400px'>
+						<AutoComplete onSelectOption={handleAutocompleteSelect}>
+							<AutoCompleteInput
+								variant='filled'
+								placeholder='Dialect Coach, Director, Copyist...'
+							/>
+							<AutoCompleteList>
+								{Object.entries(allPositions).map(([departmentId, positions]) => {
+									const department = allDepartments.find(
+										(d: WPItem) => d.id.toString() === departmentId
+									);
 
-								return (
-									<AutoCompleteGroup key={department?.id} showDivider>
-										<AutoCompleteGroupTitle textTransform='capitalize'>
-											{department?.name}
-										</AutoCompleteGroupTitle>
-										{positions?.map((job: WPItem) => (
-											<AutoCompleteItem
-												key={job.id}
-												value={job}
-												getValue={(job: WPItem) => job.name}
-												textTransform='capitalize'
-											>
-												{job.name}
-											</AutoCompleteItem>
-										))}
-									</AutoCompleteGroup>
-								);
-							})}
-						</AutoCompleteList>
-					</AutoComplete>
-				</Box>
-				<FormHelperText my={0} flex='1'>
-					Your department and first job will be selected automatically.
-				</FormHelperText>
-			</Flex>
-		</FormControl>
+									return (
+										<AutoCompleteGroup key={department?.id} showDivider>
+											<AutoCompleteGroupTitle textTransform='capitalize'>
+												{department?.name}
+											</AutoCompleteGroupTitle>
+											{positions?.map((job: WPItem) => (
+												<AutoCompleteItem
+													key={job.id}
+													value={job}
+													getValue={(job: WPItem) => job.name}
+													textTransform='capitalize'
+												>
+													{job.name}
+												</AutoCompleteItem>
+											))}
+										</AutoCompleteGroup>
+									);
+								})}
+							</AutoCompleteList>
+						</AutoComplete>
+					</Box>
+					<FormHelperText as={Text} fontSize='xs' variant='helperText' my={0} flex='1'>
+						Your department and first job will be selected automatically.
+					</FormHelperText>
+				</Flex>
+			</FormControl>
+		</Box>
 	);
 }

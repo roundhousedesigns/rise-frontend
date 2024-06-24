@@ -67,7 +67,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
-					<Box mb={4} height={name ? 0 : 'auto'}>
+					<Stack mb={4} gap={8} height={name ? 0 : 'auto'}>
 						<DepartmentsAutocomplete />
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
@@ -83,7 +83,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						) : null}
 						<Spacer h={8} />
 						<AdditionalSearchFilters />
-					</Box>
+					</Stack>
 				</form>
 			</Fade>
 

@@ -30,7 +30,7 @@ export default function SearchFilterJobs() {
 	};
 
 	return (
-		<Box id='filterJobs' mt={8}>
+		<Box id='filterJobs'>
 			{!loading && !error ? (
 				<>
 					<Heading as='h3' variant='searchFilterTitle'>

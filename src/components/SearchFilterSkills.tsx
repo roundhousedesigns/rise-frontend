@@ -28,7 +28,7 @@ export default function SearchFilterSkills(): JSX.Element {
 	};
 
 	return data?.length > 0 && !loading && !error ? (
-		<Box id='filterSkills' mt={8} style={{ scrollMarginTop: '83px' }}>
+		<Box id='filterSkills' style={{ scrollMarginTop: '83px' }}>
 			<Heading as='h3' variant='searchFilterTitle'>
 				What skills are you looking for?
 			</Heading>
