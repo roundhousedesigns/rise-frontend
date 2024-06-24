@@ -1,13 +1,13 @@
+import { useContext } from 'react';
 import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
+import { SearchContext } from '@context/SearchContext';
 import useViewer from '@hooks/queries/useViewer';
+import useUserProfile from '@hooks/queries/useUserProfile';
 import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
 import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
-import CandidateAvatarBadge from './CandidateAvatarBadge';
-import { useContext } from 'react';
-import { SearchContext } from '@/context/SearchContext';
-import useUserProfile from '@/hooks/queries/useUserProfile';
+import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
@@ -31,9 +31,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	} = useContext(SearchContext);
 
 	const hasDateConflict =
-		conflictRanges && jobDates && jobDates.startDate
-			? jobDates.hasConflict(conflictRanges)
-			: false;
+		conflictRanges && jobDates && jobDates.startDate ? jobDates.hasConflict(conflictRanges) : false;
 
 	return id ? (
 		<Flex alignItems='center'>

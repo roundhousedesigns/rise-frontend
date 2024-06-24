@@ -12,16 +12,16 @@ import {
 	Stack,
 	Text,
 } from '@chakra-ui/react';
-import { SearchContext } from '@context/SearchContext';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
+import { SearchContext } from '@context/SearchContext';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
 import SearchFilterJobs from '@components/SearchFilterJobs';
 import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
-import SearchFilterDates from '@/components/SearchFilterDates';
-import DepartmentsAutocomplete from '@/components/DepartmentsAutocomplete';
+import SearchFilterDates from '@components/SearchFilterDates';
+import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
 
 interface Props {
 	showButtons?: boolean;

@@ -9,9 +9,9 @@ import {
 	AutoCompleteItem,
 	Item,
 } from '@choc-ui/chakra-autocomplete';
-import { WPItem } from '@/lib/classes';
-import { SearchContext } from '@/context/SearchContext';
-import usePositions from '@/hooks/queries/usePositions';
+import { WPItem } from '@lib/classes';
+import { SearchContext } from '@context/SearchContext';
+import usePositions from '@hooks/queries/usePositions';
 
 export default function DepartmentsAutocomplete() {
 	const { searchDispatch } = useContext(SearchContext);

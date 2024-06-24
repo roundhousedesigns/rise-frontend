@@ -73,7 +73,7 @@ import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
-import EditConflictDateRanges from '@/components/EditConflictDateRanges';
+import EditConflictDateRanges from '@components/EditConflictDateRanges';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
