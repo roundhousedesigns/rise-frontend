@@ -77,9 +77,8 @@ export default function ChangeProfileUrlView() {
 			.then((res) => {
 				setSlug(res.data.changeProfileSlug.slug);
 
-				// toast success
 				toast({
-					title: 'Bookmarked!',
+					title: 'Updated!',
 					position: 'bottom',
 					description: 'Your handle has been updated.',
 					status: 'success',
