@@ -21,6 +21,7 @@ import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
 import SearchFilterDates from '@/components/SearchFilterDates';
+import DepartmentsAutocomplete from '@/components/DepartmentsAutocomplete';
 
 interface Props {
 	showButtons?: boolean;
@@ -67,6 +68,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
 					<Box mb={4} height={name ? 0 : 'auto'}>
+						<DepartmentsAutocomplete />
 						<SearchFilterDepartment />
 						{departments.length ? <SearchFilterJobs /> : null}
 						{departments.length && jobs.length > 0 ? (
