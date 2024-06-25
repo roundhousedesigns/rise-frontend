@@ -27,7 +27,6 @@ import SearchFilterDates from '@components/SearchFilterDates';
 import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
 
 interface Props {
-	showButtons?: boolean;
 	onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
@@ -84,7 +83,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<StackItem>
 							<DepartmentsAutocomplete />
 						</StackItem>
-						<StackItem as={Fade} in={!searchActive} unmountOnExit>
+						<StackItem>
 							<Flex m={0} p={0} gap={2} alignItems='center' fontSize='sm'>
 								<Text>Or, you can</Text>
 								<Button
@@ -104,8 +103,10 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<StackItem as={Fade} in={searchActive} unmountOnExit>
 							<Stack gap={8}>
 								<SearchFilterDepartment />
-								{departments.length ? <SearchFilterJobs /> : null}
-								{departments.length && jobs.length > 0 ? (
+								<Fade in={!!departments.length} unmountOnExit>
+									<SearchFilterJobs />
+								</Fade>
+								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
 									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
 										<Box flex='1 0 50%'>
 											<SearchFilterSkills />
@@ -114,11 +115,11 @@ export default function SearchWizardView({ onSubmit }: Props) {
 											<SearchFilterDates />
 										</Box>
 									</Flex>
-								) : (
-									false
-								)}
+								</Fade>
 								<Spacer h={8} />
-								<AdditionalSearchFilters />
+								<Fade in={searchActive} unmountOnExit>
+									<AdditionalSearchFilters />
+								</Fade>
 							</Stack>
 						</StackItem>
 					</Stack>
