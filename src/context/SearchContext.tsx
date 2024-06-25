@@ -25,6 +25,7 @@ interface SearchAction {
 			name: string;
 			value: string | string[] | Key[];
 		};
+		searchActive?: boolean;
 		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
 		results?: SearchResultCandidate[];
@@ -71,6 +72,14 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				// Clear all other filters and set the main search controls to inactive
 				searchActive: false,
+			};
+
+		case 'SET_SEARCH_ACTIVE':
+			if (action.payload?.searchActive === undefined) return state;
+
+			return {
+				...state,
+				searchActive: action.payload.searchActive,
 			};
 
 		case 'SET_DEPARTMENT':

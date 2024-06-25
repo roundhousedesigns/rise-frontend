@@ -6,12 +6,15 @@ import {
 	AccordionItem,
 	AccordionPanel,
 	Box,
+	Button,
 	Fade,
 	Flex,
 	Spacer,
 	Stack,
+	StackItem,
 	Text,
 } from '@chakra-ui/react';
+import { FiArrowDown } from 'react-icons/fi';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
@@ -39,9 +42,19 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				},
 			},
 		},
+		searchDispatch,
 	} = useContext(SearchContext);
 
 	const [savedSearches] = useSavedSearches();
+
+	const handleManualSearch = () => {
+		searchDispatch({
+			type: 'SET_SEARCH_ACTIVE',
+			payload: {
+				searchActive: true,
+			},
+		});
+	};
 
 	return (
 		<Stack direction='column' justifyContent='space-between' height='full'>
@@ -67,22 +80,47 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
-					<Stack mb={4} gap={8} height={name ? 0 : 'auto'}>
-						<DepartmentsAutocomplete />
-						<SearchFilterDepartment />
-						{departments.length ? <SearchFilterJobs /> : null}
-						{departments.length && jobs.length > 0 ? (
-							<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
-								<Box flex='1 0 50%'>
-									<SearchFilterSkills />
-								</Box>
-								<Box flex='1 0 300px'>
-									<SearchFilterDates />
-								</Box>
+					<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
+						<StackItem>
+							<DepartmentsAutocomplete />
+						</StackItem>
+						<StackItem as={Fade} in={!searchActive} unmountOnExit>
+							<Flex m={0} p={0} gap={2} alignItems='center' fontSize='sm'>
+								<Text>Or, you can</Text>
+								<Button
+									onClick={handleManualSearch}
+									variant='searchFilter'
+									m={0}
+									leftIcon={<FiArrowDown />}
+									isDisabled={searchActive}
+									size='sm'
+								>
+									Browse
+								</Button>{' '}
+								to manually choose your search criteria.
 							</Flex>
-						) : null}
-						<Spacer h={8} />
-						<AdditionalSearchFilters />
+						</StackItem>
+
+						<StackItem as={Fade} in={searchActive} unmountOnExit>
+							<Stack gap={8}>
+								<SearchFilterDepartment />
+								{departments.length ? <SearchFilterJobs /> : null}
+								{departments.length && jobs.length > 0 ? (
+									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
+										<Box flex='1 0 50%'>
+											<SearchFilterSkills />
+										</Box>
+										<Box flex='1 0 300px'>
+											<SearchFilterDates />
+										</Box>
+									</Flex>
+								) : (
+									false
+								)}
+								<Spacer h={8} />
+								<AdditionalSearchFilters />
+							</Stack>
+						</StackItem>
 					</Stack>
 				</form>
 			</Fade>

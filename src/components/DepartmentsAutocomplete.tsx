@@ -59,11 +59,8 @@ export default function DepartmentsAutocomplete() {
 				</Heading>
 				<Flex gap={2} alignItems='center' flexWrap='wrap'>
 					<Box flex='1 0 400px'>
-						<AutoComplete onSelectOption={handleAutocompleteSelect}>
-							<AutoCompleteInput
-								variant='filled'
-								placeholder='Dialect Coach, Director, Copyist...'
-							/>
+						<AutoComplete onSelectOption={handleAutocompleteSelect} openOnFocus>
+							<AutoCompleteInput variant='filled' placeholder='Start typing' />
 							<AutoCompleteList>
 								{Object.entries(allPositions).map(([departmentId, positions]) => {
 									const department = allDepartments.find(
@@ -92,7 +89,7 @@ export default function DepartmentsAutocomplete() {
 						</AutoComplete>
 					</Box>
 					<FormHelperText as={Text} fontSize='xs' variant='helperText' my={0} flex='1'>
-						Your department and first job will be selected automatically.
+						Your starting search filters will be selected automatically.
 					</FormHelperText>
 				</Flex>
 			</FormControl>
