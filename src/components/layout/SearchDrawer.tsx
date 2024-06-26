@@ -14,13 +14,17 @@ import {
 	ButtonGroup,
 	Collapse,
 	Spinner,
+	Spacer,
+	useDisclosure,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSave, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
 import useViewer from '@hooks/queries/useViewer';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import SearchWizardView from '@views/SearchWizardView';
+import EditSavedSearchModal from '../EditSavedSearchModal';
+import { prepareSearchFilterSetForSave } from '@/lib/utils';
 
 interface Props {
 	isOpen: boolean;
@@ -51,7 +55,28 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		searchDispatch,
 	} = useContext(SearchContext);
 
+	const filtersForSave = prepareSearchFilterSetForSave({
+		positions: {
+			jobs,
+			departments,
+		},
+		skills: skills && skills.length > 0 ? skills : [],
+		unions: unions && unions.length > 0 ? unions : [],
+		locations: locations && locations.length > 0 ? locations : [],
+		experienceLevels: experienceLevels && experienceLevels.length > 0 ? experienceLevels : [],
+		genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
+		racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
+		personalIdentities:
+			personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
+	});
+
 	const navigate = useNavigate();
+
+	const {
+		isOpen: isOpenEditSavedSearchModal,
+		onOpen: onOpenEditSavedSearchModal,
+		onClose: onCloseEditSavedSearchModal,
+	} = useDisclosure();
 
 	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
 		useCandidateSearch();
@@ -95,6 +120,9 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			});
 	};
 
+	// Handle saving search filters
+	const handleSaveSearch = () => onOpenEditSavedSearchModal();
+
 	// Handle form submission
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
@@ -109,68 +137,91 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 	};
 
 	return (
-		<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
-			<DrawerOverlay />
-			<DrawerContent display='flex' flexDirection='column' height='100%'>
-				<DrawerHeader
-					bg='text.dark'
-					color='text.light'
-					borderBottomWidth='2px'
-					_light={{
-						borderBottomColor: 'text.dark',
-					}}
-					_dark={{
-						borderBottomColor: 'text.light',
-					}}
-				>
-					<Stack direction='row' justifyContent='space-between' alignItems='center'>
-						<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
-							Search
-						</Heading>
-						<IconButton
-							icon={<FiX />}
-							aria-label='Close'
-							fontSize='3xl'
-							onClick={onClose}
-							variant='invisible'
-						/>
-					</Stack>
-				</DrawerHeader>
-				<DrawerBody py={8}>
-					<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
-				</DrawerBody>
-				<Collapse in={searchActive && !name} unmountOnExit={false}>
-					<DrawerFooter
-						mt={0}
-						py={2}
-						borderTop='1px'
-						borderTopColor='gray.300'
-						_light={{ bgColor: 'gray.300' }}
-						_dark={{ bgColor: 'gray.100' }}
+		<>
+			<Drawer
+				isOpen={isOpen}
+				onClose={onClose}
+				placement='top'
+				isFullHeight={name ? false : true}
+			>
+				<DrawerOverlay />
+				<DrawerContent display='flex' flexDirection='column' height='100%'>
+					<DrawerHeader
+						bg='text.dark'
+						color='text.light'
+						borderBottomWidth='2px'
+						_light={{
+							borderBottomColor: 'text.dark',
+						}}
+						_dark={{
+							borderBottomColor: 'text.light',
+						}}
 					>
-						<ButtonGroup>
-							<Button
-								colorScheme='green'
-								onClick={handleSubmit}
-								form='search-candidates'
-								isDisabled={!searchActive || searchResultsLoading}
-								leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
-								isLoading={!!searchResultsLoading}
-							>
+						<Stack direction='row' justifyContent='space-between' alignItems='center'>
+							<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
 								Search
-							</Button>
-							<Button
-								isDisabled={searchResultsLoading ? true : false}
-								colorScheme='orange'
-								onClick={handleSearchReset}
-								leftIcon={<FiRefreshCcw />}
-							>
-								Reset
-							</Button>
-						</ButtonGroup>
-					</DrawerFooter>
-				</Collapse>
-			</DrawerContent>
-		</Drawer>
+							</Heading>
+							<IconButton
+								icon={<FiX />}
+								aria-label='Close'
+								fontSize='3xl'
+								onClick={onClose}
+								variant='invisible'
+							/>
+						</Stack>
+					</DrawerHeader>
+					<DrawerBody py={8}>
+						<SearchWizardView showButtons={false} onSubmit={handleSubmit} />
+					</DrawerBody>
+					<Collapse in={searchActive && !name} unmountOnExit={false}>
+						<DrawerFooter
+							mt={0}
+							py={2}
+							borderTop='1px'
+							borderTopColor='gray.300'
+							_light={{ bgColor: 'gray.300' }}
+							_dark={{ bgColor: 'gray.100' }}
+						>
+							<ButtonGroup w='full'>
+								<Button
+									colorScheme='blue'
+									onClick={handleSaveSearch}
+									isDisabled={!searchActive || searchResultsLoading}
+									leftIcon={<FiSave />}
+								>
+									Save filters
+								</Button>
+								<Spacer />
+								<Button
+									colorScheme='green'
+									onClick={handleSubmit}
+									form='search-candidates'
+									isDisabled={!searchActive || searchResultsLoading}
+									leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
+									isLoading={!!searchResultsLoading}
+								>
+									Search
+								</Button>
+								<Button
+									isDisabled={searchResultsLoading ? true : false}
+									colorScheme='orange'
+									onClick={handleSearchReset}
+									leftIcon={<FiRefreshCcw />}
+								>
+									Reset
+								</Button>
+							</ButtonGroup>
+						</DrawerFooter>
+					</Collapse>
+				</DrawerContent>
+			</Drawer>
+			<EditSavedSearchModal
+				id={0}
+				title={''}
+				searchTerms={filtersForSave}
+				isOpen={isOpenEditSavedSearchModal}
+				onClose={onCloseEditSavedSearchModal}
+			/>
+		</>
 	);
 }

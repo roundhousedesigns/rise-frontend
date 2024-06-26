@@ -1,22 +1,14 @@
-import { useState, useContext, useEffect, useRef, FormEvent } from 'react';
+import { useContext, useEffect } from 'react';
 import {
-	Modal,
 	Button,
-	FormControl,
-	FormLabel,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalHeader,
-	ModalOverlay,
 	useDisclosure,
 	useToast,
-	Text,
 	Stack,
 	StackItem,
 	Flex,
 	IconButton,
 	ButtonGroup,
+	Spacer,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
@@ -26,23 +18,31 @@ import { SearchContext } from '@context/SearchContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
-import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
-import TextInput from '@common/inputs/TextInput';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
+import EditSavedSearchModal from './EditSavedSearchModal';
 
 interface Props {
 	id?: number;
 	title?: string;
 	searchTerms: SearchFilterSetRaw;
+	showControls?: boolean;
+	showSaveButton?: boolean;
 	[prop: string]: any;
 }
 
-export default function SavedSearchItem({ id, title, searchTerms, ...props }: Props) {
+export default function SavedSearchItem({
+	id,
+	title,
+	searchTerms,
+	showControls = true,
+	showSaveButton = false,
+	...props
+}: Props) {
 	const { loggedInId } = useViewer();
-	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
+	// const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
@@ -53,9 +53,9 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
-	const initialSaveModalRef = useRef(null);
+	// const initialSaveModalRef = useRef(null);
 
-	const { saveSearchMutation } = useSaveSearch();
+	// const { saveSearchMutation } = useSaveSearch();
 	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
 
 	const toast = useToast();
@@ -80,9 +80,10 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		const filterSet = prepareSearchFilterSet(searchTerms, terms);
 
 		searchDispatch({
-			type: 'RESTORE_AND_SEARCH',
+			type: 'RESTORE_SAVED_SEARCH',
 			payload: {
 				filterSet,
+				savedSearchId: id,
 			},
 		});
 	};
@@ -91,38 +92,38 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 		editOnOpen();
 	};
 
-	const handleEditOnClose = () => {
-		setSaveSearchFieldText(title ? title : '');
-		editOnClose();
-	};
+	// const handleEditOnClose = () => {
+	// 	setSaveSearchFieldText(title ? title : '');
+	// 	editOnClose();
+	// };
 
-	const handleSave = (e: FormEvent) => {
-		e.preventDefault();
+	// const handleSave = (e: FormEvent) => {
+	// 	e.preventDefault();
 
-		saveSearchMutation({
-			userId: loggedInId,
-			title: saveSearchFieldText,
-			filterSet: searchTerms,
-			id,
-		}).then(() => {
-			toast({
-				title: 'Saved!',
-				description:
-					'All of your saved searches are available in the Search Drawer and in the main menu.',
-				position: 'bottom',
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+	// 	saveSearchMutation({
+	// 		userId: loggedInId,
+	// 		title: saveSearchFieldText,
+	// 		filterSet: searchTerms,
+	// 		id,
+	// 	}).then(() => {
+	// 		toast({
+	// 			title: 'Saved!',
+	// 			description:
+	// 				'All of your saved searches are available in the Search Drawer and in the main menu.',
+	// 			position: 'bottom',
+	// 			status: 'success',
+	// 			duration: 3000,
+	// 			isClosable: true,
+	// 		});
 
-			setSaveSearchFieldText('');
-			editOnClose();
-		});
-	};
+	// 		setSaveSearchFieldText('');
+	// 		editOnClose();
+	// 	});
+	// };
 
-	const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSaveSearchFieldText(event.target.value);
-	};
+	// const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	// 	setSaveSearchFieldText(event.target.value);
+	// };
 
 	const handleDelete = () => {
 		if (!id) return;
@@ -172,7 +173,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 						) : (
 							false
 						)}
-						{id ? (
+						{id && showControls ? (
 							<ButtonGroup
 								alignItems='center'
 								justifyContent='space-between'
@@ -196,24 +197,24 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 								/>
 							</ButtonGroup>
 						) : (
-							false
+							<Spacer />
 						)}
 					</Flex>
 				</StackItem>
 				<StackItem>
 					<Flex w='full' justifyContent='space-between'>
 						<SearchParamTags termIds={termIds} termItems={terms} />
-						{!hasName ? (
+						{showSaveButton ? (
 							<Button
 								colorScheme='blue'
 								leftIcon={<FiSave />}
-								aria-label='Save search'
-								title='Save search'
+								aria-label={!!id ? `Update` : `Save` + `search`}
+								title={!!id ? `Update` : `Save` + `search`}
 								onClick={handleEditClick}
 								ml={2}
 								size='sm'
 							>
-								Save search
+								{!!id ? 'Update' : 'Save'} search
 							</Button>
 						) : (
 							false
@@ -222,7 +223,15 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 				</StackItem>
 			</Stack>
 
-			<Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
+			<EditSavedSearchModal
+				id={id ? id : 0}
+				title={title ? title : ''}
+				isOpen={editIsOpen}
+				onClose={editOnClose}
+				searchTerms={searchTerms}
+			/>
+
+			{/* <Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
 				<ModalOverlay />
 				<ModalContent>
 					<ModalHeader pb={2}>{hasName ? 'Rename this search' : 'Save this search'}</ModalHeader>
@@ -260,7 +269,7 @@ export default function SavedSearchItem({ id, title, searchTerms, ...props }: Pr
 						</form>
 					</ModalBody>
 				</ModalContent>
-			</Modal>
+			</Modal> */}
 
 			<ConfirmActionDialog
 				confirmAction={handleDelete}

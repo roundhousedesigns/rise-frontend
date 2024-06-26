@@ -1,23 +1,27 @@
 import { useContext, useMemo } from 'react';
-import { Flex, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import { prepareSearchFilterSetForSave } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import TextCenterline from '@common/TextCenterline';
-import SavedSearchItem from '@components/SavedSearchItem';
+import SavedSearchItem from '@/components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
 import { FiCalendar } from 'react-icons/fi';
+import useSavedSearches from '@/hooks/queries/useSavedSearches';
 
 export default function SearchResultsView() {
 	const {
 		search: {
 			filters: { filterSet },
 			results,
+			savedSearchId,
 		},
 	} = useContext(SearchContext);
 
 	const { jobDates } = filterSet;
-
 	const resultsCount = results.length;
+
+	const [savedSearches] = useSavedSearches();
+	const savedSearchTitle = savedSearches?.find((search) => search.id === savedSearchId)?.title;
 
 	/**
 	 * Set the results string based on the number of results.
@@ -64,7 +68,16 @@ export default function SearchResultsView() {
 
 	return (
 		<>
-			<SavedSearchItem searchTerms={prepareSearchFilterSetForSave(filterSet)} />
+			<Box>
+				<Text>Your search:</Text>
+				<SavedSearchItem
+					searchTerms={prepareSearchFilterSetForSave(filterSet)}
+					id={savedSearchId}
+					title={savedSearchTitle ? savedSearchTitle : undefined}
+					showControls={false}
+					showSaveButton
+				/>
+			</Box>
 			{resultsCount ? (
 				<>
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>

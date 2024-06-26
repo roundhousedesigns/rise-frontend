@@ -10,6 +10,7 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
+	savedSearchId: number;
 	results: SearchResultCandidate[];
 }
 
@@ -27,6 +28,11 @@ interface SearchAction {
 		};
 		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
+		savedSearch?: {
+			id: number;
+			title: string;
+		}
+		savedSearchId?: number;
 		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
 	};
@@ -52,6 +58,7 @@ const initialSearchState: SearchState = {
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
+	savedSearchId: 0,
 	results: [],
 };
 
@@ -165,12 +172,12 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
 
-		case 'RESTORE_AND_SEARCH': {
+		case 'RESTORE_SAVED_SEARCH': {
 			const {
-				payload: { filterSet },
+				payload: { filterSet, savedSearchId },
 			} = action;
 
-			if (!filterSet) return state;
+			if (!filterSet || !savedSearchId) return state;
 
 			const filterIndexes: number[] = [];
 
@@ -186,6 +193,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				searchActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
+				savedSearchId,
 			};
 		}
 
