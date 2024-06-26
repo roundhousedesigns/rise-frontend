@@ -16,20 +16,19 @@ export default function SearchFilterDates() {
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
+
 	const [selectedDates, setSelectedDates] = useState<DateRange>(
 		jobDates ? jobDates : new DateRange()
 	);
 
+	const { startDate, endDate } = selectedDates;
+
 	// If startDate is after endDate (and endDate is set), clear endDate.
 	useEffect(() => {
-		if (
-			selectedDates.startDate &&
-			selectedDates.endDate &&
-			selectedDates.startDate > selectedDates.endDate
-		) {
+		if (startDate && endDate && startDate > endDate) {
 			setSelectedDates((prevDates) => new DateRange({ ...prevDates, endDate: undefined }));
 		}
-	}, [selectedDates.startDate]);
+	}, [startDate]);
 
 	const handleDateChange = (targetId: string) => (date: Date) => {
 		setSelectedDates((prevDates) => new DateRange({ ...prevDates, [targetId]: date }));
@@ -45,33 +44,32 @@ export default function SearchFilterDates() {
 		searchDispatch({ type: 'SET_JOB_DATES', payload: { jobDates: new DateRange() } });
 	};
 
-	// TODO destructure selectedDates before using here
 	return (
-		<Box id='filterDates' mt={8}>
+		<Box id='filterDates'>
 			<Heading as='h3' variant='searchFilterTitle'>
 				Are you hiring for a particular date?
 			</Heading>
 			<Flex gap={4}>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}
-					selected={selectedDates.startDate}
+					selected={startDate}
 					customInput={<DatePickerButton defaultText='Start' ariaLabel='Start date' />}
 					onChange={handleDateChange('startDate')}
 					minDate={new Date()}
 				/>
-				{selectedDates.startDate && <Text fontSize='md'> to </Text>}
-				{selectedDates.startDate && (
+				{startDate && <Text fontSize='md'> to </Text>}
+				{startDate && (
 					<DatePicker
 						closeOnScroll={(e) => e.target === document}
-						selected={selectedDates.endDate}
+						selected={endDate}
 						customInput={
 							<DatePickerButton defaultText='End (optional)' ariaLabel='End date (optional)' />
 						}
 						onChange={handleDateChange('endDate')}
-						minDate={selectedDates.startDate}
+						minDate={startDate}
 					/>
 				)}
-				{selectedDates.startDate && (
+				{startDate && (
 					<IconButton
 						icon={<FiXCircle />}
 						aria-label='Clear dates'

@@ -72,7 +72,7 @@ export default function AdditionalSearchFilters() {
 	return (
 		<Box id='filterAdditional'>
 			<Heading variant='searchFilterTitle' mb={0}>
-				Additional Filters
+				And some additional filters to refine your search:
 			</Heading>
 			{/* The order of these items must match the order of filters in the useEffect. */}
 			<Accordion

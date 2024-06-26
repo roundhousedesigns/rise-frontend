@@ -89,8 +89,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 										</Box>
 									</Flex>
 								</Fade>
-								<Spacer h={8} />
-								<Fade in={searchActive} unmountOnExit>
+								<Fade in={searchActive && jobs && !!jobs.length} unmountOnExit>
 									<AdditionalSearchFilters />
 								</Fade>
 							</Stack>

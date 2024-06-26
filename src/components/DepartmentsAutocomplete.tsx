@@ -46,6 +46,7 @@ export default function DepartmentsAutocomplete() {
 
 		// Scroll to Skills section on selection
 		const filterSkills = document.getElementById('filterSkills');
+
 		if (filterSkills) {
 			filterSkills.scrollIntoView({ behavior: 'smooth' });
 		}
