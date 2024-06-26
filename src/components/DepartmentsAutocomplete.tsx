@@ -57,41 +57,41 @@ export default function DepartmentsAutocomplete() {
 				<Heading as={FormLabel} variant='searchFilterTitle' mb={4}>
 					Type a job title to begin.
 				</Heading>
-				<Flex gap={2} alignItems='center' flexWrap='wrap'>
-					<Box flex='1 0 400px'>
-						<AutoComplete onSelectOption={handleAutocompleteSelect} openOnFocus>
-							<AutoCompleteInput variant='filled' placeholder='Start typing' />
-							<AutoCompleteList>
-								{Object.entries(allPositions).map(([departmentId, positions]) => {
-									const department = allDepartments.find(
-										(d: WPItem) => d.id.toString() === departmentId
-									);
+				{/* <Flex gap={2} alignItems='center' flexWrap='wrap'> */}
+				<Box flex='1 0 400px'>
+					<AutoComplete onSelectOption={handleAutocompleteSelect} openOnFocus>
+						<AutoCompleteInput variant='filled' placeholder='Start typing' />
+						<AutoCompleteList>
+							{Object.entries(allPositions).map(([departmentId, positions]) => {
+								const department = allDepartments.find(
+									(d: WPItem) => d.id.toString() === departmentId
+								);
 
-									return (
-										<AutoCompleteGroup key={department?.id} showDivider>
-											<AutoCompleteGroupTitle textTransform='capitalize'>
-												{department?.name}
-											</AutoCompleteGroupTitle>
-											{positions?.map((job: WPItem) => (
-												<AutoCompleteItem
-													key={job.id}
-													value={job}
-													getValue={(job: WPItem) => job.name}
-													textTransform='capitalize'
-												>
-													{job.name}
-												</AutoCompleteItem>
-											))}
-										</AutoCompleteGroup>
-									);
-								})}
-							</AutoCompleteList>
-						</AutoComplete>
-					</Box>
-					<FormHelperText as={Text} fontSize='xs' variant='helperText' my={0} flex='1'>
-						Your starting search filters will be selected automatically.
-					</FormHelperText>
-				</Flex>
+								return (
+									<AutoCompleteGroup key={department?.id} showDivider>
+										<AutoCompleteGroupTitle textTransform='capitalize'>
+											{department?.name}
+										</AutoCompleteGroupTitle>
+										{positions?.map((job: WPItem) => (
+											<AutoCompleteItem
+												key={job.id}
+												value={job}
+												getValue={(job: WPItem) => job.name}
+												textTransform='capitalize'
+											>
+												{job.name}
+											</AutoCompleteItem>
+										))}
+									</AutoCompleteGroup>
+								);
+							})}
+						</AutoCompleteList>
+					</AutoComplete>
+				</Box>
+				<FormHelperText fontSize='xs' maxW='75%'>
+					Your starting filters will be selected automatically, and you can adjust them as you like.
+				</FormHelperText>
+				{/* </Flex> */}
 			</FormControl>
 		</Box>
 	);

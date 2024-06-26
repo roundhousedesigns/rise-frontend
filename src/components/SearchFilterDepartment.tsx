@@ -40,7 +40,7 @@ export default function SearchFilterDepartment() {
 	return !loading && !error ? (
 		<Box id='filterDepartment'>
 			<Heading as='h3' variant='searchFilterTitle' mb={4}>
-				Which department are you hiring for?
+				Or, choose the department you're hiring for.
 			</Heading>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>

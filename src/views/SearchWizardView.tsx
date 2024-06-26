@@ -9,6 +9,7 @@ import {
 	Button,
 	Fade,
 	Flex,
+	Heading,
 	Spacer,
 	Stack,
 	StackItem,
@@ -81,26 +82,11 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<form id='search-candidates' onSubmit={onSubmit}>
 					<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
 						<StackItem>
-							<DepartmentsAutocomplete />
+							<Box maxW='lg'>
+								<DepartmentsAutocomplete />
+							</Box>
 						</StackItem>
 						<StackItem>
-							<Flex m={0} p={0} gap={2} alignItems='center' fontSize='sm'>
-								<Text>Or, you can</Text>
-								<Button
-									onClick={handleManualSearch}
-									variant='searchFilter'
-									m={0}
-									leftIcon={<FiArrowDown />}
-									isDisabled={searchActive}
-									size='sm'
-								>
-									Browse
-								</Button>{' '}
-								to manually choose your search criteria.
-							</Flex>
-						</StackItem>
-
-						<StackItem as={Fade} in={searchActive} unmountOnExit>
 							<Stack gap={8}>
 								<SearchFilterDepartment />
 								<Fade in={!!departments.length} unmountOnExit>
