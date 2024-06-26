@@ -6,16 +6,13 @@ import {
 	AccordionItem,
 	AccordionPanel,
 	Box,
-	Button,
 	Fade,
 	Flex,
-	Heading,
 	Spacer,
 	Stack,
 	StackItem,
 	Text,
 } from '@chakra-ui/react';
-import { FiArrowDown } from 'react-icons/fi';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
@@ -42,19 +39,9 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				},
 			},
 		},
-		searchDispatch,
 	} = useContext(SearchContext);
 
 	const [savedSearches] = useSavedSearches();
-
-	const handleManualSearch = () => {
-		searchDispatch({
-			type: 'SET_SEARCH_ACTIVE',
-			payload: {
-				searchActive: true,
-			},
-		});
-	};
 
 	return (
 		<Stack direction='column' justifyContent='space-between' height='full'>

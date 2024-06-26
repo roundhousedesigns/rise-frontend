@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FormControl, FormLabel, FormHelperText, Heading, Text, Box, Flex } from '@chakra-ui/react';
+import { FormControl, FormLabel, FormHelperText, Heading, Box } from '@chakra-ui/react';
 import {
 	AutoComplete,
 	AutoCompleteInput,
