@@ -6,6 +6,7 @@ with 1.0.0beta.
 ## \[1.1.7.1] - Unreleased
 
 - Fix: Add display case for workStart === workEnd for Credit display.
+- Improve: Saved Search UI/UX -> updating, saving, editing.
 
 ## \[1.1.7] - 2024-06-22
 
