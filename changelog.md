@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.7.1] - Unreleased
+
+- Fix: Add display case for workStart === workEnd for Credit display.
+
 ## \[1.1.7] - 2024-06-22
 
 - Add: Conflict Dates calendar and job search dates. **Backend version 1.1.4**
