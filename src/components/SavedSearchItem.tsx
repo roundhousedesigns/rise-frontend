@@ -1,19 +1,18 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import {
-	Button,
 	useDisclosure,
 	useToast,
+	Button,
 	Stack,
 	StackItem,
 	Flex,
 	IconButton,
 	ButtonGroup,
-	Spacer,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch, FiSave, FiDelete, FiEdit2 } from 'react-icons/fi';
-import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
-import { SearchFilterSetRaw } from '@lib/types';
+import { FiSearch, FiSave, FiDelete, FiEdit2, FiAlertTriangle } from 'react-icons/fi';
+import { compareSearchFilterSets, extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
+import { SearchFilterSet } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
@@ -27,7 +26,7 @@ import EditSavedSearchModal from './EditSavedSearchModal';
 interface Props {
 	id?: number;
 	title?: string;
-	searchTerms: SearchFilterSetRaw;
+	searchTerms: SearchFilterSet;
 	showControls?: boolean;
 	showSaveButton?: boolean;
 	[prop: string]: any;
@@ -42,10 +41,13 @@ export default function SavedSearchItem({
 	...props
 }: Props) {
 	const { loggedInId } = useViewer();
-	// const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
-		search: { results },
+		search: {
+			results,
+			filters: { filterSet: currentFilterSet },
+			savedSearch: { filterSet: savedSearchFilterSet },
+		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
@@ -53,10 +55,19 @@ export default function SavedSearchItem({
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
-	// const initialSaveModalRef = useRef(null);
-
-	// const { saveSearchMutation } = useSaveSearch();
 	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
+	const savedSearchFiltersUntouched = useRef<boolean>(true);
+
+	useEffect(() => {
+		savedSearchFiltersUntouched.current = compareSearchFilterSets(
+			savedSearchFilterSet,
+			currentFilterSet
+		);
+
+		return () => {
+			savedSearchFiltersUntouched.current = true;
+		};
+	}, [currentFilterSet, savedSearchFilterSet]);
 
 	const toast = useToast();
 
@@ -82,8 +93,8 @@ export default function SavedSearchItem({
 		searchDispatch({
 			type: 'RESTORE_SAVED_SEARCH',
 			payload: {
-				filterSet,
 				savedSearchId: id,
+				filterSet,
 			},
 		});
 	};
@@ -92,38 +103,9 @@ export default function SavedSearchItem({
 		editOnOpen();
 	};
 
-	// const handleEditOnClose = () => {
-	// 	setSaveSearchFieldText(title ? title : '');
-	// 	editOnClose();
-	// };
-
-	// const handleSave = (e: FormEvent) => {
-	// 	e.preventDefault();
-
-	// 	saveSearchMutation({
-	// 		userId: loggedInId,
-	// 		title: saveSearchFieldText,
-	// 		filterSet: searchTerms,
-	// 		id,
-	// 	}).then(() => {
-	// 		toast({
-	// 			title: 'Saved!',
-	// 			description:
-	// 				'All of your saved searches are available in the Search Drawer and in the main menu.',
-	// 			position: 'bottom',
-	// 			status: 'success',
-	// 			duration: 3000,
-	// 			isClosable: true,
-	// 		});
-
-	// 		setSaveSearchFieldText('');
-	// 		editOnClose();
-	// 	});
-	// };
-
-	// const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-	// 	setSaveSearchFieldText(event.target.value);
-	// };
+	const handleUpdateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		editOnClose();
+	};
 
 	const handleDelete = () => {
 		if (!id) return;
@@ -142,6 +124,10 @@ export default function SavedSearchItem({
 		});
 	};
 
+	const handleEditClose = () => {
+		editOnClose();
+	};
+
 	return termIds && termIds.length > 0 ? (
 		<>
 			<Stack w='auto' alignItems='space-between' {...props}>
@@ -153,7 +139,6 @@ export default function SavedSearchItem({
 								icon={FiEdit2}
 								fontSize='lg'
 								my={0}
-								mr={8}
 								flex={1}
 								iconSide='left'
 								color='inherit'
@@ -180,6 +165,7 @@ export default function SavedSearchItem({
 								flex='0 0 auto'
 								size='sm'
 								spacing={1}
+								ml={4}
 							>
 								<IconButton
 									icon={<FiSearch />}
@@ -197,25 +183,40 @@ export default function SavedSearchItem({
 								/>
 							</ButtonGroup>
 						) : (
-							<Spacer />
+							false
 						)}
 					</Flex>
 				</StackItem>
 				<StackItem>
-					<Flex w='full' justifyContent='space-between'>
-						<SearchParamTags termIds={termIds} termItems={terms} />
+					<Flex w='full' justifyContent='space-between' flexWrap='wrap' gap={2}>
+						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
 						{showSaveButton ? (
-							<Button
-								colorScheme='blue'
-								leftIcon={<FiSave />}
-								aria-label={!!id ? `Update` : `Save` + `search`}
-								title={!!id ? `Update` : `Save` + `search`}
-								onClick={handleEditClick}
-								ml={2}
-								size='sm'
-							>
-								{!!id ? 'Update' : 'Save'} search
-							</Button>
+							!!id ? (
+								<Button
+									colorScheme={savedSearchFiltersUntouched.current ? 'blue' : 'yellow'}
+									leftIcon={savedSearchFiltersUntouched.current ? <FiSave /> : <FiAlertTriangle />}
+									aria-label='Update saved filters'
+									title='Update saved filters'
+									onClick={
+										savedSearchFiltersUntouched.current ? handleUpdateClick : handleEditClick
+									}
+									isDisabled={savedSearchFiltersUntouched.current}
+									size='sm'
+								>
+									Update
+								</Button>
+							) : (
+								<Button
+									colorScheme='blue'
+									leftIcon={<FiSave />}
+									aria-label='Save Search'
+									title='Save search'
+									onClick={handleEditClick}
+									size='sm'
+								>
+									Save search
+								</Button>
+							)
 						) : (
 							false
 						)}
@@ -227,49 +228,9 @@ export default function SavedSearchItem({
 				id={id ? id : 0}
 				title={title ? title : ''}
 				isOpen={editIsOpen}
-				onClose={editOnClose}
+				onClose={handleEditClose}
 				searchTerms={searchTerms}
 			/>
-
-			{/* <Modal initialFocusRef={initialSaveModalRef} isOpen={editIsOpen} onClose={handleEditOnClose}>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader pb={2}>{hasName ? 'Rename this search' : 'Save this search'}</ModalHeader>
-					<ModalCloseButton />
-
-					<ModalBody pb={6}>
-						<Text fontSize='sm' mt={0}>
-							Give this search a short, descriptive name to easily run it again.
-						</Text>
-
-						<form id='rename-search' onSubmit={handleSave}>
-							<FormControl>
-								<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
-									Name
-								</FormLabel>
-								<TextInput
-									name='title'
-									placeholder='My search'
-									onChange={handleSavedSearchNameChange}
-									value={saveSearchFieldText}
-									ref={initialSaveModalRef}
-								/>
-							</FormControl>
-							<Button
-								colorScheme='blue'
-								mr={3}
-								type='submit'
-								isDisabled={saveSearchFieldText === title}
-							>
-								Save
-							</Button>
-							<Button onClick={handleEditOnClose} colorScheme='red'>
-								Cancel
-							</Button>
-						</form>
-					</ModalBody>
-				</ModalContent>
-			</Modal> */}
 
 			<ConfirmActionDialog
 				confirmAction={handleDelete}

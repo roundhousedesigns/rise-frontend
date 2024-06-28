@@ -24,7 +24,6 @@ import useViewer from '@hooks/queries/useViewer';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import SearchWizardView from '@views/SearchWizardView';
 import EditSavedSearchModal from '../EditSavedSearchModal';
-import { prepareSearchFilterSetForSave } from '@/lib/utils';
 
 interface Props {
 	isOpen: boolean;
@@ -55,7 +54,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const filtersForSave = prepareSearchFilterSetForSave({
+	const filtersForSave = {
 		positions: {
 			jobs,
 			departments,
@@ -68,7 +67,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
 		personalIdentities:
 			personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
-	});
+	};
 
 	const navigate = useNavigate();
 
@@ -138,12 +137,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<>
-			<Drawer
-				isOpen={isOpen}
-				onClose={onClose}
-				placement='top'
-				isFullHeight={name ? false : true}
-			>
+			<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
 				<DrawerOverlay />
 				<DrawerContent display='flex' flexDirection='column' height='100%'>
 					<DrawerHeader

@@ -10,35 +10,39 @@ import {
 	Button,
 	Text,
 	useToast,
+	Spinner,
 } from '@chakra-ui/react';
 import TextInput from './common/inputs/TextInput';
-import { FormEvent, useRef, useState } from 'react';
-import useSaveSearch from '@/hooks/mutations/useSaveSearch';
-import useViewer from '@/hooks/queries/useViewer';
-import { SearchFilterSetRaw } from '@/lib/types';
+import { FormEvent, useContext, useRef, useState } from 'react';
+import { SearchFilterSet } from '@lib/types';
+import { prepareSearchFilterSetRaw } from '@lib/utils';
+import useSaveSearch from '@hooks/mutations/useSaveSearch';
+import useViewer from '@hooks/queries/useViewer';
+import { SearchContext } from '@/context/SearchContext';
 
 interface Props {
 	id: number;
 	title: string;
-	searchTerms: SearchFilterSetRaw;
+	searchTerms: SearchFilterSet;
 	isOpen: boolean;
 	onClose: () => void;
 }
 
 export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, onClose }: Props) {
 	const { loggedInId } = useViewer();
-
-	const toast = useToast();
-
+	const { searchDispatch } = useContext(SearchContext);
 	const initialSaveModalRef = useRef(null);
-
-	const { saveSearchMutation } = useSaveSearch();
+	const {
+		saveSearchMutation,
+		results: { loading: saveLoading },
+	} = useSaveSearch();
 
 	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
 
-	const handleEditOnClose = () => {
-		setSaveSearchFieldText(title ? title : '');
+	const toast = useToast();
 
+	const handleEditOnClose = () => {
+		// setSaveSearchFieldText(title ? title : '');
 		onClose();
 	};
 
@@ -52,22 +56,36 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 		saveSearchMutation({
 			userId: loggedInId,
 			title: saveSearchFieldText,
-			filterSet: searchTerms,
+			filterSet: prepareSearchFilterSetRaw(searchTerms),
 			id,
-		}).then(() => {
-			toast({
-				title: 'Saved!',
-				description:
-					'All of your saved searches are available in the Search Drawer and in the main menu.',
-				position: 'bottom',
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+		})
+			.then((results) => {
+				const {
+					data: {
+						updateOrCreateSavedSearch: { id },
+					},
+				} = results;
 
-			setSaveSearchFieldText('');
-			onClose();
-		});
+				searchDispatch({
+					type: 'SET_SAVED_SEARCH_FILTERS',
+					payload: {
+						filterSet: searchTerms,
+						savedSearchId: id,
+					},
+				});
+			})
+			.then(() => {
+				onClose();
+
+				toast({
+					title: 'Saved!',
+					description: 'You can recall your saved searches later from the Search drawer.',
+					position: 'bottom',
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
+			});
 	};
 
 	return (
@@ -95,15 +113,10 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 								ref={initialSaveModalRef}
 							/>
 						</FormControl>
-						<Button
-							colorScheme='blue'
-							mr={3}
-							type='submit'
-							isDisabled={saveSearchFieldText === title}
-						>
-							Save
+						<Button colorScheme='blue' mr={3} type='submit' isDisabled={saveLoading}>
+							{saveLoading ? <Spinner /> : 'Save'}
 						</Button>
-						<Button onClick={handleEditOnClose} colorScheme='red'>
+						<Button onClick={handleEditOnClose} colorScheme='red' isDisabled={saveLoading}>
 							Cancel
 						</Button>
 					</form>

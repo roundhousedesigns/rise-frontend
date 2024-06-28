@@ -3,6 +3,21 @@ import { DateRange } from '@lib/classes';
 import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
 import { additionalFilterKeys } from '@lib/utils';
 
+const emptyFilterSet: SearchFilterSet = {
+	positions: {
+		departments: [],
+		jobs: [],
+	},
+	skills: [],
+	jobDates: new DateRange(),
+	unions: [],
+	locations: [],
+	experienceLevels: [],
+	genderIdentities: [],
+	racialIdentities: [],
+	personalIdentities: [],
+};
+
 interface SearchState {
 	filters: {
 		name: string;
@@ -10,7 +25,10 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
-	savedSearchId: number;
+	savedSearch: {
+		id?: number;
+		filterSet: SearchFilterSet;
+	};
 	results: SearchResultCandidate[];
 }
 
@@ -28,10 +46,6 @@ interface SearchAction {
 		};
 		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
-		savedSearch?: {
-			id: number;
-			title: string;
-		}
 		savedSearchId?: number;
 		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
@@ -41,24 +55,14 @@ interface SearchAction {
 const initialSearchState: SearchState = {
 	filters: {
 		name: '',
-		filterSet: {
-			positions: {
-				departments: [],
-				jobs: [],
-			},
-			skills: [],
-			jobDates: new DateRange(),
-			unions: [],
-			locations: [],
-			experienceLevels: [],
-			genderIdentities: [],
-			racialIdentities: [],
-			personalIdentities: [],
-		},
+		filterSet: emptyFilterSet,
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
-	savedSearchId: 0,
+	savedSearch: {
+		id: 0,
+		filterSet: emptyFilterSet,
+	},
 	results: [],
 };
 
@@ -172,6 +176,27 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
 
+		case 'SET_SAVED_SEARCH_FILTERS': {
+			const {
+				payload: { filterSet, savedSearchId },
+			} = action;
+
+			if (!filterSet) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet,
+				},
+				searchActive: true,
+				savedSearch: {
+					id: savedSearchId ? savedSearchId : 0,
+					filterSet,
+				},
+			};
+		}
+
 		case 'RESTORE_SAVED_SEARCH': {
 			const {
 				payload: { filterSet, savedSearchId },
@@ -193,7 +218,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				searchActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
-				savedSearchId,
+				savedSearch: {
+					id: savedSearchId,
+					filterSet,
+				},
 			};
 		}
 

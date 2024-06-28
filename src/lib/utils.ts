@@ -53,17 +53,6 @@ export function socialLink(network: string, value: string): string {
 }
 
 /**
- * Check if two numbers or strings are equal.
- *
- * @param {string|number} a The first value
- * @param {string|number} b The second value
- * @returns {boolean} Whether the numbers are equal.
- */
-export function isEqualNumberlike(a: number | string, b: number | string): boolean {
-	return isEqual(Number(a), Number(b));
-}
-
-/**
  *
  * @param {string} str The string to decode.
  * @returns {string} The decoded string.
@@ -323,7 +312,7 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
  * @param searchObj
  * @returns The flattened search object.
  */
-export function prepareSearchFilterSetForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
+export function prepareSearchFilterSetRaw(searchObj: SearchFilterSet): SearchFilterSetRaw {
 	const preparedSearchObj: SearchFilterSetRaw = {
 		...searchObj,
 		positions: searchObj.positions.jobs,
@@ -333,6 +322,21 @@ export function prepareSearchFilterSetForSave(searchObj: SearchFilterSet): Searc
 	delete preparedSearchObj.jobDates;
 
 	return preparedSearchObj;
+}
+
+/**
+ * Compares two search filter sets and returns a boolean indicating whether they are equal.
+ *
+ * @param {SearchFilterSet} a - The first search filter set to compare.
+ * @param {SearchFilterSet} b - The second search filter set to compare.
+ * @return {boolean} True if the filter sets are equal, false otherwise.
+ */
+export function compareSearchFilterSets(a: SearchFilterSet, b: SearchFilterSet): boolean {
+	// Prep the filter sets first.
+	const filtersA = prepareSearchFilterSetRaw(a);
+	const filtersB = prepareSearchFilterSetRaw(b);
+
+	return isEqual(filtersA, filtersB);
 }
 
 /**

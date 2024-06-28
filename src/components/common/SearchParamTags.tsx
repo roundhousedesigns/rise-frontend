@@ -1,6 +1,6 @@
-import { Flex, Tag, TagLabel, Text, Wrap } from '@chakra-ui/react';
+import { Flex, Tag, TagLabel } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
-import { isEqual } from 'lodash';
+import { ReactNode } from 'react';
 
 interface Props {
 	termIds: number[];
@@ -20,12 +20,12 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 
 	const departments: WPItem[] = terms
 		.filter((term) => term.taxonomyName === 'position')
-		.reduce((acc: WPItem[], term: WPItem) => {
+		.reduce((positions: WPItem[], term: WPItem) => {
 			const termToAdd = term.parent || term;
-			if (!acc.find((department) => isEqual(department, termToAdd))) {
-				acc.push(termToAdd);
+			if (!positions.find((item) => item.id === termToAdd.id)) {
+				positions.push(termToAdd);
 			}
-			return acc;
+			return positions;
 		}, []);
 
 	const jobs = terms.filter((term) => {
@@ -38,51 +38,64 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 		(term) => term.taxonomyName !== 'position' && term.taxonomyName !== 'skill'
 	);
 
-	return (
-		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
-			{departments.length ? (
-				<Wrap spacing={1}>
-					{departments.map((department: WPItem, index: number) => (
+	// Collect term badges.
+	const TermTags = () => {
+		const tags: ReactNode[] = [];
+
+		if (departments && departments.length) {
+			tags.push(
+				departments.map(
+					(department: WPItem, index: number): ReactNode => (
 						<Tag key={index} colorScheme='orange' size='sm' {...tagProps}>
 							<TagLabel>{department.name}</TagLabel>
 						</Tag>
-					))}
-				</Wrap>
-			) : (
-				false
-			)}
+					)
+				)
+			);
+		}
 
-			{jobs.length ? (
-				<Wrap spacing={1}>
-					{jobs.map((job: WPItem, index: number) => (
+		if (jobs && jobs.length) {
+			tags.push(
+				jobs.map(
+					(job: WPItem, index: number): ReactNode => (
 						<Tag key={index} colorScheme='blue' size='sm' {...tagProps}>
 							<TagLabel>{job.name}</TagLabel>
 						</Tag>
-					))}
-				</Wrap>
-			) : (
-				false
-			)}
+					)
+				)
+			);
+		}
 
-			{skills.length ? (
-				<Wrap spacing={1}>
-					{skills.map((skill: WPItem, index: number) => (
+		if (skills && skills.length) {
+			tags.push(
+				skills.map(
+					(skill: WPItem, index: number): ReactNode => (
 						<Tag key={index} colorScheme='green' size='sm' {...tagProps}>
 							<TagLabel>{skill.name}</TagLabel>
 						</Tag>
-					))}
-				</Wrap>
-			) : (
-				false
-			)}
+					)
+				)
+			);
+		}
 
-			{filters && filters.length > 0 ? (
-				<Text fontSize='xs' color='gray.500' my={0} fontStyle='italic'>
-					{filters.length === 1 ? '+1 additional filter' : `+${filters.length} additional filters`}
-				</Text>
-			) : (
-				false
-			)}
+		if (filters && filters.length > 0) {
+			tags.push(
+				filters.map(
+					(filter: WPItem, index: number): ReactNode => (
+						<Tag key={index} colorScheme='purple' size='sm' {...tagProps}>
+							<TagLabel>{filter.name}</TagLabel>
+						</Tag>
+					)
+				)
+			);
+		}
+
+		return tags;
+	};
+
+	return (
+		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
+			<TermTags />
 		</Flex>
 	);
 }
