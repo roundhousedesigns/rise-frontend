@@ -56,7 +56,7 @@ export default function SearchResultsView() {
 					aria-label='Possible scheduling conflict'
 					size='xs'
 				/>
-				<Text variant='helperText' fontSize='sm'>
+				<Text variant='helperText' fontSize='xs'>
 					= Possible scheduling conflict
 				</Text>
 			</Flex>

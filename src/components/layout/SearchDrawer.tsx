@@ -180,8 +180,18 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								<Button
 									colorScheme='blue'
 									onClick={handleSaveSearch}
-									isDisabled={!searchActive || searchResultsLoading}
+									isDisabled={!searchActive || searchResultsLoading || (jobs && jobs.length < 1)}
 									leftIcon={<FiSave />}
+									aria-label={
+										!searchActive || searchResultsLoading || (jobs && jobs.length < 1)
+											? 'Select some more terms to save.'
+											: 'Save these filters for later.'
+									}
+									title={
+										!searchActive || searchResultsLoading || (jobs && jobs.length < 1)
+											? 'Select some more terms to save.'
+											: 'Save these filters for later.'
+									}
 								>
 									Save filters
 								</Button>
