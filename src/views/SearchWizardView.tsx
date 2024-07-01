@@ -7,7 +7,6 @@ import {
 	AccordionPanel,
 	Box,
 	Fade,
-	Flex,
 	Spacer,
 	Stack,
 	Text,
