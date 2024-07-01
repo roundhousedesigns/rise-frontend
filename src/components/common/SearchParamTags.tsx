@@ -38,64 +38,36 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 		(term) => term.taxonomyName !== 'position' && term.taxonomyName !== 'skill'
 	);
 
-	// Collect term badges.
-	const TermTags = () => {
-		const tags: ReactNode[] = [];
+	/**
+	 * Renders tags based on the provided items and color scheme.
+	 */
+	const renderTags = (items: WPItem[], colorScheme?: string): ReactNode[] => {
+		return items.map(({ id, name }) => (
+			<Tag key={id} colorScheme={colorScheme} size='sm' {...tagProps}>
+				<TagLabel>{name}</TagLabel>
+			</Tag>
+		));
+	};
 
-		if (departments && departments.length) {
-			tags.push(
-				departments.map(
-					(department: WPItem, index: number): ReactNode => (
-						<Tag key={index} colorScheme='orange' size='sm' {...tagProps}>
-							<TagLabel>{department.name}</TagLabel>
-						</Tag>
-					)
-				)
-			);
-		}
+	/**
+	 * Generates an array of React nodes representing tags based on the provided items and color scheme.
+	 */
+	const termTags = (): ReactNode[] | undefined => {
+		const departmentTags = renderTags(departments, 'orange');
+		const jobTags = renderTags(jobs, 'blue');
+		const skillTags = renderTags(skills, 'green');
+		const filterTags = renderTags(filters, 'purple');
 
-		if (jobs && jobs.length) {
-			tags.push(
-				jobs.map(
-					(job: WPItem, index: number): ReactNode => (
-						<Tag key={index} colorScheme='blue' size='sm' {...tagProps}>
-							<TagLabel>{job.name}</TagLabel>
-						</Tag>
-					)
-				)
-			);
-		}
+		if (!departmentTags.length && !jobTags.length && !skillTags.length && !filterTags.length)
+			return [];
 
-		if (skills && skills.length) {
-			tags.push(
-				skills.map(
-					(skill: WPItem, index: number): ReactNode => (
-						<Tag key={index} colorScheme='green' size='sm' {...tagProps}>
-							<TagLabel>{skill.name}</TagLabel>
-						</Tag>
-					)
-				)
-			);
-		}
-
-		if (filters && filters.length > 0) {
-			tags.push(
-				filters.map(
-					(filter: WPItem, index: number): ReactNode => (
-						<Tag key={index} colorScheme='purple' size='sm' {...tagProps}>
-							<TagLabel>{filter.name}</TagLabel>
-						</Tag>
-					)
-				)
-			);
-		}
-
-		return tags;
+		if (departmentTags.length || jobTags.length || skillTags.length || filterTags.length)
+			return [departmentTags, jobTags, skillTags, filterTags];
 	};
 
 	return (
 		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
-			<TermTags />
+			{termTags()?.map((tag: ReactNode) => tag)}
 		</Flex>
 	);
 }
