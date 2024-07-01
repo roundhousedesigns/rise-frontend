@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { Box, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FiXCircle } from 'react-icons/fi';
+import { FiCalendar, FiXCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
 import DatePickerButton from '@common/inputs/DatePickerButton';
 import { SearchContext } from '@context/SearchContext';
@@ -84,7 +84,16 @@ export default function SearchFilterDates() {
 				)}
 			</Flex>
 			<Text variant='helperText'>
-				Candidates with potential scheduling conflicts will be highlighted.
+				Candidates who have potential scheduling conflicts will be highlighted with a{' '}
+				<IconButton
+					icon={<FiCalendar />}
+					variant='sampleIconButton'
+					aria-label='Scheduling conflict icon'
+					bgColor='red.300'
+					color='text.dark'
+					size='xs'
+				/>
+				.
 			</Text>
 		</Box>
 	);

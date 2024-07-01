@@ -20,14 +20,15 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	inline: defineStyle({
-		cursor: 'default',
+	sampleIconButton: defineStyle({
+		cursor: 'default !important',
 		display: 'inline-flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderRadius: 'full',
 		mx: 1,
-		bg: 'blackAlpha.300',
+		pointerEvents: 'none',
+		opacity: '1 !important',
 	}),
 	searchFilter: defineStyle({
 		_dark: {

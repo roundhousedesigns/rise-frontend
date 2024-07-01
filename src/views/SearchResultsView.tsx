@@ -49,7 +49,7 @@ export default function SearchResultsView() {
 			<Flex justifyContent='flex-start' alignItems='center' gap={1} mb={4} mt={0} ml={12}>
 				<IconButton
 					icon={<FiCalendar />}
-					variant='inline'
+					variant='sampleIconButton'
 					title='Search'
 					bgColor='red.300'
 					color='text.dark'
