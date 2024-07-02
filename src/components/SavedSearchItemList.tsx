@@ -1,4 +1,4 @@
-import { chakra, Text, Card, Flex, Container } from '@chakra-ui/react';
+import { chakra, Text, Container, Box } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { WPPost } from '@lib/classes';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
@@ -17,8 +17,8 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	return (
 		<chakra.div {...props}>
 			{savedSearches && savedSearches.length > 0 ? (
-				<Container ml={0} px={0} maxW='4xl'>
-					<Flex gap={4} justifyContent='space-between' position='relative' flexWrap='wrap'>
+				<Container ml={0} px={0} maxW='none'>
+					<Box sx={{ columnCount: [1, 2], columnGap: 2 }}>
 						<AnimatePresence>
 							{savedSearches.map((savedSearch: WPPost) => {
 								const { id, content, title } = savedSearch;
@@ -37,20 +37,12 @@ export default function SavedSearchItemList({ ...props }: Props) {
 										flex='0 1 auto'
 										flexBasis={{ base: '100%', md: '49%' }}
 									>
-										<Card
-											my={0}
-											py={2}
-											px={3}
-											variant='gray'
-											w='auto'
-										>
-											<SavedSearchItem searchTerms={filters} title={title} id={id} />
-										</Card>
+										<SavedSearchItem searchTerms={filters} title={title} id={id} />
 									</MotionBox>
 								);
 							})}
 						</AnimatePresence>
-					</Flex>
+					</Box>
 				</Container>
 			) : (
 				<Text fontSize='sm'>No saved searches.</Text>

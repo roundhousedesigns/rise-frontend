@@ -48,16 +48,16 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				mb={4}
 				defaultIndex={savedSearches && savedSearches.length > 0 ? 0 : undefined}
 			>
-				<AccordionItem>
+				<AccordionItem bg='blackAlpha.50'>
 					<h3>
-						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pt={2}>
+						<AccordionButton fontSize='md' fontWeight='normal' pt={2}>
 							<Text as='span' m={0}>
 								Your Saved Searches
 							</Text>
 							<AccordionIcon />
 						</AccordionButton>
 					</h3>
-					<AccordionPanel px={0}>
+					<AccordionPanel p={4}>
 						<SavedSearchItemList />
 					</AccordionPanel>
 				</AccordionItem>

@@ -2,15 +2,15 @@ import { useContext, useEffect, useRef } from 'react';
 import {
 	useDisclosure,
 	useToast,
-	Button,
 	Stack,
 	StackItem,
 	Flex,
-	IconButton,
-	ButtonGroup,
+	Text,
+	Card,
+	Button,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch, FiSave, FiDelete, FiEdit2, FiAlertTriangle } from 'react-icons/fi';
+import { FiSearch, FiDelete, FiEdit2 } from 'react-icons/fi';
 import { compareSearchFilterSets, extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { SearchFilterSet } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
@@ -50,8 +50,6 @@ export default function SavedSearchItem({
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
-
-	const hasName = title && title !== '';
 
 	const { isOpen: editIsOpen, onOpen: editOnOpen, onClose: editOnClose } = useDisclosure();
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
@@ -103,10 +101,6 @@ export default function SavedSearchItem({
 		editOnOpen();
 	};
 
-	const handleUpdateClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		editOnClose();
-	};
-
 	const handleDelete = () => {
 		if (!id) return;
 
@@ -129,11 +123,11 @@ export default function SavedSearchItem({
 	};
 
 	return termIds && termIds.length > 0 ? (
-		<>
-			<Stack w='auto' alignItems='space-between' {...props}>
-				<StackItem>
-					<Flex>
-						{hasName ? (
+		<Card p={0} _first={{ mt: 0 }}>
+			<Flex justifyContent='space-between'>
+				<Stack w='auto' alignItems='space-between' p={2} {...props}>
+					<StackItem>
+						<Flex alignItems='flex-end'>
 							<LinkWithIcon
 								onClick={handleEditClick}
 								icon={FiEdit2}
@@ -150,79 +144,54 @@ export default function SavedSearchItem({
 									borderBottomColor: 'gray.300',
 									_hover: { borderBottomColor: 'gray.400' },
 								}}
-								_dark={{ borderBottomColor: 'gray.600', _hover: { borderBottomColor: 'gray.400' } }}
+								_dark={{
+									borderBottomColor: 'gray.600',
+									_hover: { borderBottomColor: 'gray.400' },
+								}}
 								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 							>
-								{title}
+								{title ? (
+									title
+								) : (
+									<Text as='span' opacity='0.5' lineHeight='normal'>
+										Name this search
+									</Text>
+								)}
 							</LinkWithIcon>
-						) : (
-							false
-						)}
-						{id && showControls ? (
-							<ButtonGroup
-								alignItems='center'
-								justifyContent='space-between'
-								flex='0 0 auto'
-								size='sm'
-								spacing={1}
-								ml={4}
-							>
-								<IconButton
-									icon={<FiSearch />}
-									colorScheme='green'
-									aria-label='Reuse this search'
-									title='Reuse this search'
-									onClick={handleSearchClick}
-								/>
-								<IconButton
-									icon={<FiDelete />}
-									colorScheme='orange'
-									aria-label='Delete this search'
-									title='Delete'
-									onClick={deleteOnOpen}
-								/>
-							</ButtonGroup>
-						) : (
-							false
-						)}
-					</Flex>
-				</StackItem>
-				<StackItem>
-					<Flex w='full' justifyContent='space-between' flexWrap='wrap' gap={2}>
+						</Flex>
+					</StackItem>
+					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
 						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
-						{showSaveButton ? (
-							!!id ? (
-								<Button
-									colorScheme={savedSearchFiltersUntouched.current ? 'blue' : 'yellow'}
-									leftIcon={savedSearchFiltersUntouched.current ? <FiSave /> : <FiAlertTriangle />}
-									aria-label='Update saved filters'
-									title='Update saved filters'
-									onClick={
-										savedSearchFiltersUntouched.current ? handleUpdateClick : handleEditClick
-									}
-									isDisabled={savedSearchFiltersUntouched.current}
-									size='sm'
-								>
-									Update
-								</Button>
-							) : (
-								<Button
-									colorScheme='blue'
-									leftIcon={<FiSave />}
-									aria-label='Save Search'
-									title='Save search'
-									onClick={handleEditClick}
-									size='sm'
-								>
-									Save search
-								</Button>
-							)
-						) : (
-							false
-						)}
-					</Flex>
-				</StackItem>
-			</Stack>
+					</StackItem>
+				</Stack>
+				{id && showControls ? (
+					<Stack alignItems='center' justifyContent='fill' p={2} spacing={2}>
+						<Button
+							leftIcon={<FiSearch />}
+							aria-label='Search these filters'
+							title='Search these filters'
+							size='xs'
+							w='100%'
+							colorScheme='gray'
+							onClick={handleSearchClick}
+						>
+							Search
+						</Button>
+						<Button
+							leftIcon={<FiDelete />}
+							aria-label='Delete this search'
+							title='Delete'
+							size='xs'
+							w='100%'
+							onClick={deleteOnOpen}
+						>
+							Delete
+						</Button>
+					</Stack>
+				) : (
+					false
+				)}
+			</Flex>
 
 			<EditSavedSearchModal
 				id={id ? id : 0}
@@ -240,6 +209,6 @@ export default function SavedSearchItem({
 			>
 				Are you sure you want to delete this saved search?
 			</ConfirmActionDialog>
-		</>
+		</Card>
 	) : null;
 }
