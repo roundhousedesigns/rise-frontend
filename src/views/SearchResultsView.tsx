@@ -3,10 +3,10 @@ import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiCalendar } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
-import useSavedSearches from '@hooks/queries/useSavedSearches';
 
 export default function SearchResultsView() {
 	const {

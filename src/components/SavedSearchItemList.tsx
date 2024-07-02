@@ -1,6 +1,6 @@
 import { chakra, Text, Container } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { WPPost } from '@lib/classes';
+import { SearchFilterSet, WPPost } from '@lib/classes';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
 import SavedSearchItem from '@components/SavedSearchItem';
 
@@ -25,7 +25,8 @@ export default function SavedSearchItemList({ ...props }: Props) {
 								return;
 							}
 
-							const filters = JSON.parse(content);
+							const json = JSON.parse(content);
+							const filters = new SearchFilterSet(json);
 
 							return (
 								<MotionBox

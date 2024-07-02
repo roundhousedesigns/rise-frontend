@@ -11,13 +11,12 @@ import {
 	Button,
 	Text,
 } from '@chakra-ui/react';
-import TextInput from './common/inputs/TextInput';
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
-import { SearchFilterSet } from '@lib/types';
-import { prepareSearchFilterSetRaw } from '@lib/utils';
+import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
+import { SearchContext } from '@context/SearchContext';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import useViewer from '@hooks/queries/useViewer';
-import { SearchContext } from '@/context/SearchContext';
+import TextInput from '@common/inputs/TextInput';
 
 interface Props {
 	id: number;
@@ -59,7 +58,7 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 		saveSearchMutation({
 			userId: loggedInId,
 			title: saveSearchFieldText,
-			filterSet: prepareSearchFilterSetRaw(searchTerms),
+			filterSet: new QueryableSearchFilterSet(searchTerms),
 			id,
 		})
 			.then((results) => {

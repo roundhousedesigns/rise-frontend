@@ -21,9 +21,12 @@ export default function SearchFilterDepartment() {
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
-			type: 'SET_DEPARTMENT',
+			type: 'SET_POSITIONS',
 			payload: {
-				departments: [term],
+				filter: {
+					key: 'departments',
+					value: [term],
+				},
 			},
 		});
 
@@ -60,6 +63,6 @@ export default function SearchFilterDepartment() {
 	) : error ? (
 		<>Error</>
 	) : (
-		<>Nada</>
+		<></>
 	);
 }

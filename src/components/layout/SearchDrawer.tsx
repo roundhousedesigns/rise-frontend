@@ -35,7 +35,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			filters: {
 				name,
 				filterSet: {
-					positions: { jobs, departments },
+					positions: { departments, jobs },
 					skills,
 					unions,
 					locations,

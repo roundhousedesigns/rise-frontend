@@ -48,7 +48,7 @@ export default function AdditionalSearchFilters() {
 			type: 'SET_FILTER',
 			payload: {
 				filter: {
-					name,
+					key: name,
 					value: newValue,
 				},
 			},

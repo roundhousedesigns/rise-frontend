@@ -23,8 +23,10 @@ export default function SearchFilterDates() {
 		// If startDate is after endDate (and endDate is set), clear endDate.
 		if (startDate && endDate && startDate > endDate) {
 			searchDispatch({
-				type: 'SET_JOB_DATES',
-				payload: { jobDates: new DateRange({ startDate, endDate: undefined }) },
+				type: 'SET_FILTER',
+				payload: {
+					filter: { key: 'jobDates', value: new DateRange({ startDate, endDate: undefined }) },
+				},
 			});
 		}
 	}, [startDate]);
@@ -37,8 +39,13 @@ export default function SearchFilterDates() {
 		(targetId: string) =>
 		(date: Date): void => {
 			searchDispatch({
-				type: 'SET_JOB_DATES',
-				payload: { jobDates: new DateRange({ ...jobDates, [targetId]: date }) },
+				type: 'SET_FILTER',
+				payload: {
+					filter: {
+						key: 'jobDates',
+						value: new DateRange({ ...jobDates, [targetId]: date }),
+					},
+				},
 			});
 		};
 

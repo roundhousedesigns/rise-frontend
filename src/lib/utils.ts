@@ -3,13 +3,16 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, DateRange, UserProfile, WPItem } from '@lib/classes';
 import {
-	DateRangeParams,
+	Credit,
+	PersonalLinks,
+	DateRange,
+	UserProfile,
+	WPItem,
 	SearchFilterSet,
-	SearchFilterSetRaw,
-	SearchResultCandidate,
-} from '@lib/types';
+	QueryableSearchFilterSet,
+} from '@lib/classes';
+import { DateRangeParams, SearchFilterSetParams, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
 import { passwordStrength } from 'check-password-strength';
 const { VITE_FRONTEND_URL } = import.meta.env;
@@ -238,20 +241,15 @@ export function getUniqueTermIdsFromString(json: any): number[] {
 
 /**
  * Extract the IDs of terms from an object.
- * @param obj  The object to extract the IDs from.
+ * @param obj The object to extract the IDs from.
  * @returns The IDs of the terms.
  */
-export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw): number[] {
+export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetParams): number[] {
 	if (!obj) return [];
-
-	const ignoreKeys = ['searchName'];
 
 	const numbersArray: number[] = [];
 
 	Object.keys(obj).forEach((key) => {
-		// Ignore the 'searchName' key
-		if (ignoreKeys.includes(key)) return;
-
 		const value = obj[key];
 
 		// If the value is an object, recurse.
@@ -296,32 +294,13 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
 		}
 	}
 
-	return {
+	return new SearchFilterSet({
 		...searchObj,
 		positions: {
 			departments: [departmentId.toString()],
 			jobs: searchObj.positions,
 		},
-	};
-}
-
-/**
- * Flattens the `positions` object to a single `positions` property
- * containing an array of job IDs, and removes the `jobDates` property.
- *
- * @param searchObj
- * @returns The flattened search object.
- */
-export function prepareSearchFilterSetRaw(searchObj: SearchFilterSet): SearchFilterSetRaw {
-	const preparedSearchObj: SearchFilterSetRaw = {
-		...searchObj,
-		positions: searchObj.positions.jobs,
-	};
-
-	// Remove the `jobDates` property if it exists
-	delete preparedSearchObj.jobDates;
-
-	return preparedSearchObj;
+	});
 }
 
 /**
@@ -332,9 +311,8 @@ export function prepareSearchFilterSetRaw(searchObj: SearchFilterSet): SearchFil
  * @return {boolean} True if the filter sets are equal, false otherwise.
  */
 export function compareSearchFilterSets(a: SearchFilterSet, b: SearchFilterSet): boolean {
-	// Prep the filter sets first.
-	const filtersA = prepareSearchFilterSetRaw(a);
-	const filtersB = prepareSearchFilterSetRaw(b);
+	const filtersA = new QueryableSearchFilterSet(a);
+	const filtersB = new QueryableSearchFilterSet(b);
 
 	return isEqual(filtersA, filtersB);
 }

@@ -20,9 +20,12 @@ export default function SearchFilterSkills(): JSX.Element {
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
-			type: 'SET_SKILLS',
+			type: 'SET_FILTER',
 			payload: {
-				skills: terms,
+				filter: {
+					key: 'skills',
+					value: terms,
+				},
 			},
 		});
 	};

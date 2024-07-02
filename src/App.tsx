@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Box, Spacer, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
-import { SearchContextProvider } from '@context/SearchContext';
+import { SearchContext, SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import Header from '@layout/Header';
@@ -11,6 +11,13 @@ export default function App() {
 	const {
 		result: { loading },
 	} = useViewer();
+
+	// DEBUG
+	const {
+		search: {
+			filters: { filterSet },
+		},
+	} = useContext(SearchContext);
 
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
 

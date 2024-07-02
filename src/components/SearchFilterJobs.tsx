@@ -22,9 +22,12 @@ export default function SearchFilterJobs() {
 
 	const handleToggleTerm = (terms: string[]) => {
 		searchDispatch({
-			type: 'SET_JOBS',
+			type: 'SET_POSITIONS',
 			payload: {
-				jobs: terms,
+				filter: {
+					key: 'jobs',
+					value: terms,
+				},
 			},
 		});
 	};

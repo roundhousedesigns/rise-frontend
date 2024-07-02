@@ -11,23 +11,18 @@ import {
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave } from 'react-icons/fi';
-import {
-	compareSearchFilterSets,
-	extractSearchTermIds,
-	prepareSearchFilterSet,
-	prepareSearchFilterSetRaw,
-} from '@lib/utils';
-import { SearchFilterSet } from '@lib/types';
+import { compareSearchFilterSets, extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
+import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
+import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
-import EditSavedSearchModal from './EditSavedSearchModal';
-import useSaveSearch from '@/hooks/mutations/useSaveSearch';
+import EditSavedSearchModal from '@components/EditSavedSearchModal';
 
 interface Props {
 	id?: number;
@@ -108,7 +103,7 @@ export default function SavedSearchItem({
 		});
 	};
 
-	const handleEditClick = () => {
+	const handleEditTitleClick = () => {
 		editOnOpen();
 	};
 
@@ -118,7 +113,7 @@ export default function SavedSearchItem({
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
-			filterSet: prepareSearchFilterSetRaw(searchTerms),
+			filterSet: new QueryableSearchFilterSet(searchTerms),
 			id,
 		})
 			.then((results) => {
@@ -178,7 +173,7 @@ export default function SavedSearchItem({
 					<StackItem>
 						<Flex alignItems='flex-end'>
 							<LinkWithIcon
-								onClick={handleEditClick}
+								onClick={handleEditTitleClick}
 								icon={FiEdit2}
 								fontSize='lg'
 								mb={1}
