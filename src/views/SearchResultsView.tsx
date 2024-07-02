@@ -67,20 +67,17 @@ export default function SearchResultsView() {
 
 	return (
 		<>
-			{savedSearchId ? (
-				<Card maxW='50%'>
-					<SavedSearchItem
-						searchTerms={filterSet}
-						id={savedSearchId}
-						title={savedSearchTitle ? savedSearchTitle : undefined}
-						showControls={false}
-						showSaveButton
-						width='100%'
-					/>
-				</Card>
-			) : (
-				false
-			)}
+			<Card maxW='50%'>
+				<SavedSearchItem
+					searchTerms={filterSet}
+					id={savedSearchId ? savedSearchId : undefined}
+					title={savedSearchTitle ? savedSearchTitle : undefined}
+					showControls={false}
+					showSaveButton
+					width='100%'
+				/>
+			</Card>
+
 			{resultsCount ? (
 				<>
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>

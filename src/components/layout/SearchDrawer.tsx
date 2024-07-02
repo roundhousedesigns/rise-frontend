@@ -14,16 +14,13 @@ import {
 	ButtonGroup,
 	Collapse,
 	Spinner,
-	Spacer,
-	useDisclosure,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiRefreshCcw, FiSave, FiSearch, FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
 import useViewer from '@hooks/queries/useViewer';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import SearchWizardView from '@views/SearchWizardView';
-import EditSavedSearchModal from '../EditSavedSearchModal';
 
 interface Props {
 	isOpen: boolean;
@@ -54,28 +51,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		searchDispatch,
 	} = useContext(SearchContext);
 
-	const filtersForSave = {
-		positions: {
-			jobs,
-			departments,
-		},
-		skills: skills && skills.length > 0 ? skills : [],
-		unions: unions && unions.length > 0 ? unions : [],
-		locations: locations && locations.length > 0 ? locations : [],
-		experienceLevels: experienceLevels && experienceLevels.length > 0 ? experienceLevels : [],
-		genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
-		racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
-		personalIdentities:
-			personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
-	};
-
 	const navigate = useNavigate();
-
-	const {
-		isOpen: isOpenEditSavedSearchModal,
-		onOpen: onOpenEditSavedSearchModal,
-		onClose: onCloseEditSavedSearchModal,
-	} = useDisclosure();
 
 	const [getSearchResults, { data: { filteredCandidates } = [], loading: searchResultsLoading }] =
 		useCandidateSearch();
@@ -118,9 +94,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				console.error(err);
 			});
 	};
-
-	// Handle saving search filters
-	const handleSaveSearch = () => onOpenEditSavedSearchModal();
 
 	// Handle form submission
 	const handleSubmit = (e: FormEvent) => {
@@ -176,26 +149,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							_light={{ bgColor: 'gray.300' }}
 							_dark={{ bgColor: 'gray.100' }}
 						>
-							<ButtonGroup w='full'>
-								<Button
-									colorScheme='blue'
-									onClick={handleSaveSearch}
-									isDisabled={!searchActive || searchResultsLoading || (jobs && jobs.length < 1)}
-									leftIcon={<FiSave />}
-									aria-label={
-										!searchActive || searchResultsLoading || (jobs && jobs.length < 1)
-											? 'Select some more terms to save.'
-											: 'Save these filters for later.'
-									}
-									title={
-										!searchActive || searchResultsLoading || (jobs && jobs.length < 1)
-											? 'Select some more terms to save.'
-											: 'Save these filters for later.'
-									}
-								>
-									Save filters
-								</Button>
-								<Spacer />
+							<ButtonGroup w='full' justifyContent='flex-end'>
 								<Button
 									colorScheme='green'
 									onClick={handleSubmit}
@@ -219,13 +173,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 					</Collapse>
 				</DrawerContent>
 			</Drawer>
-			<EditSavedSearchModal
-				id={0}
-				title={''}
-				searchTerms={filtersForSave}
-				isOpen={isOpenEditSavedSearchModal}
-				onClose={onCloseEditSavedSearchModal}
-			/>
 		</>
 	);
 }
