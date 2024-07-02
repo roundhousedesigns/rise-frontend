@@ -628,13 +628,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				onClick={handleFileInputClear}
 				aria-label={label}
 				data-field={field}
+				isLoading={clearProfileFieldMutationLoading && fieldCurrentlyClearing === field}
 				{...props}
 			>
-				{clearProfileFieldMutationLoading && fieldCurrentlyClearing === field ? (
-					<Spinner />
-				) : (
-					children
-				)}
+				{children}
 			</Button>
 		);
 	};

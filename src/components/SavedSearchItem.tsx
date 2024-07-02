@@ -10,8 +10,13 @@ import {
 	Button,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch, FiDelete, FiEdit2 } from 'react-icons/fi';
-import { compareSearchFilterSets, extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
+import { FiSearch, FiDelete, FiEdit2, FiSave } from 'react-icons/fi';
+import {
+	compareSearchFilterSets,
+	extractSearchTermIds,
+	prepareSearchFilterSet,
+	prepareSearchFilterSetRaw,
+} from '@lib/utils';
 import { SearchFilterSet } from '@lib/types';
 import { SearchContext } from '@context/SearchContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
@@ -22,6 +27,7 @@ import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
 import EditSavedSearchModal from './EditSavedSearchModal';
+import useSaveSearch from '@/hooks/mutations/useSaveSearch';
 
 interface Props {
 	id?: number;
@@ -67,6 +73,11 @@ export default function SavedSearchItem({
 		};
 	}, [currentFilterSet, savedSearchFilterSet]);
 
+	const {
+		saveSearchMutation,
+		results: { loading: saveLoading },
+	} = useSaveSearch();
+
 	const toast = useToast();
 
 	// Update SearchContext with the new results whenever the query returns.
@@ -85,7 +96,7 @@ export default function SavedSearchItem({
 	const termIds = extractSearchTermIds(searchTerms);
 	const [terms] = useTaxonomyTerms(termIds);
 
-	const handleSearchClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleSearchClick = () => {
 		const filterSet = prepareSearchFilterSet(searchTerms, terms);
 
 		searchDispatch({
@@ -97,8 +108,46 @@ export default function SavedSearchItem({
 		});
 	};
 
-	const handleEditClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleEditClick = () => {
 		editOnOpen();
+	};
+
+	const handleUpdateClick = () => {
+		if (!title || !id) return;
+
+		saveSearchMutation({
+			userId: loggedInId,
+			title,
+			filterSet: prepareSearchFilterSetRaw(searchTerms),
+			id,
+		})
+			.then((results) => {
+				const {
+					data: {
+						updateOrCreateSavedSearch: { id },
+					},
+				} = results;
+
+				searchDispatch({
+					type: 'SET_SAVED_SEARCH_FILTERS',
+					payload: {
+						filterSet: searchTerms,
+						savedSearchId: id,
+					},
+				});
+			})
+			.then(() => {
+				editOnClose();
+
+				toast({
+					title: 'Saved!',
+					description: 'You can recall your saved searches later from the Search drawer.',
+					position: 'bottom',
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
+			});
 	};
 
 	const handleDelete = () => {
@@ -123,23 +172,22 @@ export default function SavedSearchItem({
 	};
 
 	return termIds && termIds.length > 0 ? (
-		<Card p={0} _first={{ mt: 0 }}>
+		<Card p={0} _first={{ mt: 0 }} {...props}>
 			<Flex justifyContent='space-between'>
-				<Stack w='auto' alignItems='space-between' p={2} {...props}>
+				<Stack w='auto' alignItems='space-between' p={2}>
 					<StackItem>
 						<Flex alignItems='flex-end'>
 							<LinkWithIcon
 								onClick={handleEditClick}
 								icon={FiEdit2}
 								fontSize='lg'
-								my={0}
+								mb={1}
 								flex={1}
 								iconSide='left'
 								color='inherit'
 								borderBottomWidth='2px'
 								borderBottomStyle='dotted'
 								textDecoration='none !important'
-								_hover={{ borderBottom: '1px  dotted brand.blue' }}
 								_light={{
 									borderBottomColor: 'gray.300',
 									_hover: { borderBottomColor: 'gray.400' },
@@ -164,29 +212,47 @@ export default function SavedSearchItem({
 						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
 					</StackItem>
 				</Stack>
-				{id && showControls ? (
+				{id ? (
 					<Stack alignItems='center' justifyContent='fill' p={2} spacing={2}>
-						<Button
-							leftIcon={<FiSearch />}
-							aria-label='Search these filters'
-							title='Search these filters'
-							size='xs'
-							w='100%'
-							colorScheme='gray'
-							onClick={handleSearchClick}
-						>
-							Search
-						</Button>
-						<Button
-							leftIcon={<FiDelete />}
-							aria-label='Delete this search'
-							title='Delete'
-							size='xs'
-							w='100%'
-							onClick={deleteOnOpen}
-						>
-							Delete
-						</Button>
+						{showControls ? (
+							<>
+								<Button
+									leftIcon={<FiSearch />}
+									aria-label='Search these filters'
+									title='Search these filters'
+									size='xs'
+									w='100%'
+									colorScheme='gray'
+									onClick={handleSearchClick}
+								>
+									Search
+								</Button>
+								<Button
+									leftIcon={<FiDelete />}
+									aria-label='Delete this search'
+									title='Delete'
+									size='xs'
+									w='100%'
+									onClick={deleteOnOpen}
+								>
+									Delete
+								</Button>
+							</>
+						) : !savedSearchFiltersUntouched.current ? (
+							<Button
+								colorScheme={'yellow'}
+								leftIcon={<FiSave />}
+								aria-label='Update saved filters'
+								title='Update saved filters'
+								onClick={handleUpdateClick}
+								size='sm'
+								isLoading={saveLoading}
+							>
+								Update
+							</Button>
+						) : (
+							false
+						)}
 					</Stack>
 				) : (
 					false

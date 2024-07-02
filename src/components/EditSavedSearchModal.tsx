@@ -1,4 +1,5 @@
 import {
+	useToast,
 	Modal,
 	ModalOverlay,
 	ModalContent,
@@ -9,11 +10,9 @@ import {
 	FormLabel,
 	Button,
 	Text,
-	useToast,
-	Spinner,
 } from '@chakra-ui/react';
 import TextInput from './common/inputs/TextInput';
-import { FormEvent, useContext, useRef, useState } from 'react';
+import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { SearchFilterSet } from '@lib/types';
 import { prepareSearchFilterSetRaw } from '@lib/utils';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
@@ -37,7 +36,11 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 		results: { loading: saveLoading },
 	} = useSaveSearch();
 
-	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>(title ? title : '');
+	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>('');
+
+	useEffect(() => {
+		setSaveSearchFieldText(title ? title : '');
+	}, [title]);
 
 	const toast = useToast();
 
@@ -113,8 +116,14 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 								ref={initialSaveModalRef}
 							/>
 						</FormControl>
-						<Button colorScheme='blue' mr={3} type='submit' isDisabled={saveLoading}>
-							{saveLoading ? <Spinner /> : 'Save'}
+						<Button
+							colorScheme='blue'
+							mr={3}
+							type='submit'
+							isDisabled={saveLoading}
+							isLoading={saveLoading}
+						>
+							Save
 						</Button>
 						<Button onClick={handleEditOnClose} colorScheme='red' isDisabled={saveLoading}>
 							Cancel

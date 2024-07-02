@@ -507,7 +507,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										Images
 									</Heading>
 
-									<Box w='full' mx='auto' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+									<Box w='full' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 										{mediaImages.map((image: string | undefined, index: Key) => (
 											<Image
 												key={index}
