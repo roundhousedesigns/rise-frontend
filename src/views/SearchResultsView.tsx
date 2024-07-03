@@ -92,7 +92,6 @@ export default function SearchResultsView() {
 						<Link as={RouterLink} to='/searches' m={0}>
 							Manage your saved searches
 						</Link>
-						.
 					</Text>
 				</Box>
 			) : (
