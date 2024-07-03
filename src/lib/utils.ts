@@ -310,7 +310,7 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
  * @param {SearchFilterSet} b - The second search filter set to compare.
  * @return {boolean} True if the filter sets are equal, false otherwise.
  */
-export function compareSearchFilterSets(a: SearchFilterSet, b: SearchFilterSet): boolean {
+export function searchFilterSetsAreEqual(a: SearchFilterSet, b: SearchFilterSet): boolean {
 	const filtersA = new QueryableSearchFilterSet(a);
 	const filtersB = new QueryableSearchFilterSet(b);
 

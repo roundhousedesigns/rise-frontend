@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '@lib/classes';
 import {
-	compareSearchFilterSets,
+	searchFilterSetsAreEqual,
 	getProfilePrefix,
 	validateEmail,
 	validatePassword,
@@ -208,18 +208,5 @@ export const useSavedSearchFiltersChanged = (): boolean => {
 		},
 	} = useContext(SearchContext);
 
-	const savedSearchFiltersChanged = useRef<boolean>(true);
-
-	useEffect(() => {
-		savedSearchFiltersChanged.current = compareSearchFilterSets(
-			currentFilterSet,
-			savedSearchFilterSet
-		);
-
-		return () => {
-			savedSearchFiltersChanged.current = true;
-		};
-	}, [currentFilterSet, savedSearchFilterSet]);
-
-	return savedSearchFiltersChanged.current;
+	return !searchFilterSetsAreEqual(currentFilterSet, savedSearchFilterSet);
 };

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
 	useDisclosure,
 	useToast,
@@ -8,9 +8,10 @@ import {
 	Text,
 	Card,
 	Button,
+	Box,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch, FiDelete, FiEdit2, FiSave } from 'react-icons/fi';
+import { FiSearch, FiDelete, FiEdit2, FiSave, FiAlertTriangle } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
@@ -58,6 +59,8 @@ export default function SavedSearchItem({
 
 	const savedSearchFiltersChanged = useSavedSearchFiltersChanged();
 
+	const [saveNewSearch, setSaveNewSearch] = useState<boolean>(false);
+
 	const {
 		saveSearchMutation,
 		results: { loading: saveLoading },
@@ -92,6 +95,11 @@ export default function SavedSearchItem({
 			},
 		});
 
+		const filterDepartment = document.getElementById('filterDepartment');
+		if (filterDepartment) {
+			filterDepartment.scrollIntoView({ behavior: 'smooth' });
+		}
+
 		if (!drawerIsOpen) openDrawer();
 	};
 
@@ -99,14 +107,19 @@ export default function SavedSearchItem({
 		editOnOpen();
 	};
 
+	const handleSaveNewSearchClick = () => {
+		setSaveNewSearch(true);
+		editOnOpen();
+	};
+
 	const handleUpdateClick = () => {
-		if (!title || !id) return;
+		if (!title) return;
 
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
 			filterSet: new QueryableSearchFilterSet(searchTerms),
-			id,
+			id: saveNewSearch ? undefined : id,
 		})
 			.then((results) => {
 				const {
@@ -125,6 +138,8 @@ export default function SavedSearchItem({
 			})
 			.then(() => {
 				editOnClose();
+
+				setSaveNewSearch(false);
 
 				toast({
 					title: 'Saved!',
@@ -226,17 +241,35 @@ export default function SavedSearchItem({
 								</Button>
 							</>
 						) : savedSearchFiltersChanged ? (
-							<Button
-								colorScheme={'yellow'}
-								leftIcon={<FiSave />}
-								aria-label='Update saved filters'
-								title='Update saved filters'
-								onClick={handleUpdateClick}
-								size='sm'
-								isLoading={saveLoading}
-							>
-								Update
-							</Button>
+							<Box textAlign='center'>
+								<Text variant='helperText' mt={0} fontSize='2xs'>
+									Your search has changed:
+								</Text>
+								<Stack>
+									<Button
+										colorScheme={'yellow'}
+										leftIcon={<FiAlertTriangle />}
+										aria-label='Update saved filters'
+										title='Update saved filters'
+										onClick={handleUpdateClick}
+										size='sm'
+										isLoading={saveLoading}
+									>
+										Update
+									</Button>
+									<Button
+										colorScheme={'blue'}
+										leftIcon={<FiSave />}
+										aria-label='Update saved filters'
+										title='Update saved filters'
+										onClick={handleSaveNewSearchClick}
+										size='sm'
+										isLoading={saveLoading}
+									>
+										Save New
+									</Button>
+								</Stack>
+							</Box>
 						) : (
 							false
 						)}
@@ -247,7 +280,7 @@ export default function SavedSearchItem({
 			</Flex>
 
 			<EditSavedSearchModal
-				id={id ? id : 0}
+				id={id && !saveNewSearch ? id : 0}
 				title={title ? title : ''}
 				isOpen={editIsOpen}
 				onClose={handleEditClose}

@@ -285,8 +285,8 @@ export class QueryableSearchFilterSet {
 
 	constructor(params: SearchFilterSet | SearchFilterSetParams) {
 		// If params.positions is an object with a departments and jobs property, set it to the value of params.positions.jobs.
-		if (params.positions && params.positions.departments && params.positions.jobs) {
-			this.positions = params.positions.departments;
+		if (params.positions.departments && params.positions.jobs) {
+			this.positions = params.positions.jobs;
 		}
 
 		this.skills = params.skills;
@@ -353,10 +353,20 @@ export class SearchFilterSet implements SearchFilterSetParams {
 	}
 
 	/**
-	 * Setter for positions
+	 * Setter for departments
 	 */
-	setPositions(key: string, value: string[]) {
-		this.positions[key] = value;
+	setDepartments(value: string[]) {
+		this.positions.departments = value;
+
+		// Reset jobs
+		this.positions.jobs = [];
+	}
+
+	/**
+	 * Setter for jobs
+	 */
+	setJobs(value: string[]) {
+		this.positions.jobs = value;
 	}
 }
 

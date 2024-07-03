@@ -21,12 +21,9 @@ export default function SearchFilterDepartment() {
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
-			type: 'SET_POSITIONS_CHILD',
+			type: 'SET_DEPARTMENTS',
 			payload: {
-				filter: {
-					key: 'departments',
-					value: [term],
-				},
+				departments: [term],
 			},
 		});
 

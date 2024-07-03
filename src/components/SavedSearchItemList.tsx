@@ -1,4 +1,4 @@
-import { chakra, Text, Flex } from '@chakra-ui/react';
+import { chakra, Text, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SearchFilterSet, WPPost } from '@lib/classes';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
@@ -12,18 +12,28 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	const [savedSearches] = useSavedSearches();
 	const MotionBox = motion(chakra.div);
 
+	const isLargerThanMd = useBreakpointValue(
+		{
+			base: false,
+			md: true,
+		},
+		{ ssr: false }
+	);
+
 	// TODO Maintain indexes when editing a saved search's name.
 
 	return (
 		<chakra.div {...props}>
 			{savedSearches && savedSearches.length > 0 ? (
-				<Flex ml={0} mx='auto' px={0} maxW='4xl' justify-content='center' gap={4} flexWrap='wrap'>
+				<Flex ml={0} px={0} maxW='4xl' justify-content='center' gap={2} flexWrap='wrap'>
 					<AnimatePresence>
-						{savedSearches.map((savedSearch: WPPost) => {
+						{savedSearches.map((savedSearch: WPPost, index: number) => {
 							const { id, content, title } = savedSearch;
 							if (!content) {
 								return;
 							}
+
+							const even = index % 2 === 0;
 
 							const json = JSON.parse(content);
 							const filters = new SearchFilterSet(json);
@@ -34,9 +44,19 @@ export default function SavedSearchItemList({ ...props }: Props) {
 									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
 									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
-									flex='1 1 350px'
+									flex='1 1 400px'
 								>
-									<SavedSearchItem searchTerms={filters} title={title} id={id} />
+									<SavedSearchItem
+										searchTerms={filters}
+										title={title}
+										id={id}
+										_light={{
+											bgColor: !isLargerThanMd && even ? 'blackAlpha.200' : 'blackAlpha.50',
+										}}
+										_dark={{
+											bgColor: !isLargerThanMd && even ? 'whiteAlpha.200' : 'whiteAlpha.50',
+										}}
+									/>
 								</MotionBox>
 							);
 						})}

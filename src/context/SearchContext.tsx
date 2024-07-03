@@ -75,12 +75,11 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				searchActive: false,
 			};
 
-		case 'SET_POSITIONS': {
-			if (!action.payload?.departments || !action.payload?.jobs) return state;
+		case 'SET_DEPARTMENTS': {
+			if (!action.payload?.departments) return state;
 
-			const filterSet = state.filters.filterSet;
-			filterSet.setPositions('departments', action.payload.departments);
-			filterSet.setPositions('jobs', action.payload.jobs);
+			const filterSet = new SearchFilterSet(state.filters.filterSet);
+			filterSet.setDepartments(action.payload.departments);
 
 			return {
 				...state,
@@ -92,15 +91,28 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 		}
 
-		case 'SET_POSITIONS_CHILD': {
-			if (
-				!action.payload?.filter ||
-				(action.payload.filter.key !== 'departments' && action.payload.filter.key !== 'jobs')
-			)
-				return state;
+		case 'SET_JOBS': {
+			if (!action.payload?.jobs) return state;
 
-			const filterSet = state.filters.filterSet;
-			filterSet.setPositions(action.payload.filter.key, action.payload.filter.value);
+			const filterSet = new SearchFilterSet(state.filters.filterSet);
+			filterSet.setJobs(action.payload.jobs);
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet,
+				},
+				searchActive: true,
+			};
+		}
+
+		case 'SET_POSITIONS': {
+			if (!action.payload?.departments || !action.payload?.jobs) return state;
+
+			const filterSet = new SearchFilterSet(state.filters.filterSet);
+			filterSet.setDepartments(action.payload.departments);
+			filterSet.setJobs(action.payload.jobs);
 
 			return {
 				...state,
@@ -116,7 +128,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			if (!action.payload?.filter) return state;
 			const { key, value } = action.payload.filter;
 
-			const filterSet = state.filters.filterSet;
+			const filterSet = new SearchFilterSet(state.filters.filterSet);
 			filterSet.set(key, value);
 
 			return {
