@@ -1,12 +1,11 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Box, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiXCircle } from 'react-icons/fi';
+import { DateRange } from '@lib/classes';
+import { SearchContext } from '@context/SearchContext';
 import DatePickerButton from '@common/inputs/DatePickerButton';
-import { SearchContext } from '@/context/SearchContext';
-import { DateRange } from '@/lib/classes';
-import { useState } from 'react';
 
 export default function SearchFilterDates() {
 	const {

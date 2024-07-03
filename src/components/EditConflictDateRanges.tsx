@@ -19,7 +19,7 @@ import { DateRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
-import EditConflictDateRangeModal from '@/components/EditConflictDateRangeModal';
+import EditConflictDateRangeModal from '@components/EditConflictDateRangeModal';
 
 export default function EditConflictDateRanges() {
 	const { loggedInId } = useViewer();

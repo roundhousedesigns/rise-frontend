@@ -48,7 +48,7 @@ import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
 import CreditItem from '@components/CreditItem';
-import ConflictDateRanges from '@/components/ConflictDateRanges';
+import ConflictDateRanges from '@components/ConflictDateRanges';
 
 interface Props {
 	profile: UserProfile;

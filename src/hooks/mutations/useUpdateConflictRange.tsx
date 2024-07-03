@@ -27,8 +27,8 @@ const useUpdateConflictRange = () => {
 				input: {
 					id,
 					userId,
-					startDate: startDate.toLocaleDateString(),
-					endDate: endDate.toLocaleDateString(),
+					startDate: startDate.toISOString(),
+					endDate: endDate.toISOString(),
 				},
 			},
 			refetchQueries: [

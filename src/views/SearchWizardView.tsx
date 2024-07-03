@@ -20,7 +20,7 @@ import SearchFilterSkills from '@components/SearchFilterSkills';
 import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
-import SearchFilterDates from '@/components/SearchFilterDates';
+import SearchFilterDates from '@components/SearchFilterDates';
 
 interface Props {
 	showButtons?: boolean;
