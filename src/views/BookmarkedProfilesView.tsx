@@ -9,7 +9,7 @@ export default function BookmarkedProfilesView() {
 				Click the{' '}
 				<IconButton
 					icon={<FiBookmark />}
-					variant='inline'
+					variant='sampleIconButton'
 					mx={1}
 					aria-label='Sample unclickable bookmark icon'
 					title='Bookmark'
@@ -18,9 +18,9 @@ export default function BookmarkedProfilesView() {
 				to save a candidate to your bookmarks list. A{' '}
 				<IconButton
 					icon={<FiThumbsUp />}
-					variant='inline'
+					variant='sampleIconButton'
 					mx={1}
-					aria-label='Sample unclickable thumbs up icon'
+					aria-label='Sample thumbs up icon'
 					title='Looking for work'
 					bgColor='green.500'
 				/>{' '}

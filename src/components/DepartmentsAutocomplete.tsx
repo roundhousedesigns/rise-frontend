@@ -31,15 +31,9 @@ export default function DepartmentsAutocomplete() {
 		} = params;
 
 		searchDispatch({
-			type: 'SET_DEPARTMENT',
+			type: 'SET_POSITIONS',
 			payload: {
 				departments: [parentId.toString()],
-			},
-		});
-
-		searchDispatch({
-			type: 'SET_JOBS',
-			payload: {
 				jobs: [id.toString()],
 			},
 		});

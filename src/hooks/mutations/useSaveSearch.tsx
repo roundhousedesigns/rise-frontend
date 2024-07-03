@@ -3,11 +3,16 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { SearchFilterSetRaw } from '@lib/types';
+import { QueryableSearchFilterSet } from '@/lib/classes';
 import { QUERY_SAVED_SEARCHES } from '@hooks/queries/useSavedSearches';
 
 const MUTATE_UPDATE_SAVED_SEARCH = gql`
-	mutation SaveSearch($filterSet: SearchFilterSetRaw!, $id: ID!, $title: String!, $userId: ID!) {
+	mutation SaveSearch(
+		$filterSet: QueryableSearchFilterSet!
+		$id: ID!
+		$title: String!
+		$userId: ID!
+	) {
 		updateOrCreateSavedSearch(
 			input: { filterSet: $filterSet, id: $id, title: $title, userId: $userId }
 		) {
@@ -27,7 +32,7 @@ const useSaveSearch = () => {
 	}: {
 		id?: number;
 		title: string;
-		filterSet: SearchFilterSetRaw;
+		filterSet: QueryableSearchFilterSet;
 		userId: number;
 	}) => {
 		return mutation({

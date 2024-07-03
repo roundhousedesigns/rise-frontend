@@ -1,6 +1,6 @@
-import { createContext, Key, ReactNode, useReducer } from 'react';
-import { DateRange } from '@lib/classes';
-import { SearchFilterSet, SearchResultCandidate } from '@lib/types';
+import { createContext, ReactNode, useReducer } from 'react';
+import { DateRange, SearchFilterSet } from '@lib/classes';
+import { SearchResultCandidate } from '@lib/types';
 import { additionalFilterKeys } from '@lib/utils';
 
 interface SearchState {
@@ -10,6 +10,10 @@ interface SearchState {
 	};
 	searchActive: boolean;
 	additionalFiltersActive: number[];
+	savedSearch: {
+		id?: number;
+		filterSet: SearchFilterSet;
+	};
 	results: SearchResultCandidate[];
 }
 
@@ -22,42 +26,39 @@ interface SearchAction {
 		skills?: string[];
 		locations?: string[];
 		filter?: {
-			name: string;
-			value: string | string[] | Key[];
+			key: string;
+			value: any;
 		};
 		searchActive?: boolean;
 		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
+		savedSearchId?: number;
 		results?: SearchResultCandidate[];
 		additionalFiltersActive?: number[];
 	};
 }
 
-const initialSearchState: SearchState = {
+/**
+ * Returns the initial state for the search context.
+ *
+ * @return {SearchState} The initial search state with default values for filters, search activity, active filters, saved search, and results.
+ */
+const getInitialSearchState = (): SearchState => ({
 	filters: {
 		name: '',
-		filterSet: {
-			positions: {
-				departments: [],
-				jobs: [],
-			},
-			skills: [],
-			jobDates: new DateRange(),
-			unions: [],
-			locations: [],
-			experienceLevels: [],
-			genderIdentities: [],
-			racialIdentities: [],
-			personalIdentities: [],
-		},
+		filterSet: new SearchFilterSet(),
 	},
 	searchActive: false,
 	additionalFiltersActive: [],
+	savedSearch: {
+		id: 0,
+		filterSet: new SearchFilterSet(),
+	},
 	results: [],
-};
+});
 
 export const SearchContext = createContext({
-	search: initialSearchState,
+	search: getInitialSearchState(),
 	searchDispatch: ({}: SearchAction) => {},
 });
 
@@ -67,119 +68,103 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			return {
 				...state,
 				filters: {
-					...initialSearchState.filters,
+					...getInitialSearchState().filters,
 					name: action.payload.name ? action.payload.name : '',
 				},
 				// Clear all other filters and set the main search controls to inactive
 				searchActive: false,
 			};
 
-		case 'SET_SEARCH_ACTIVE':
-			if (action.payload?.searchActive === undefined) return state;
+		case 'SET_POSITIONS': {
+			if (!action.payload?.departments || !action.payload?.jobs) return state;
 
-			return {
-				...state,
-				searchActive: action.payload.searchActive,
-			};
-
-		case 'SET_DEPARTMENT':
-			if (!action.payload?.departments) return state;
+			const filterSet = state.filters.filterSet;
+			filterSet.setPositions('departments', action.payload.departments);
+			filterSet.setPositions('jobs', action.payload.jobs);
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					filterSet: {
-						...state.filters.filterSet,
-						positions: {
-							departments: action.payload.departments,
-							// Clear jobs
-							jobs: [],
-						},
-						// Clear skills
-						skills: [],
-					},
+					filterSet,
 				},
 				searchActive: true,
 			};
+		}
 
-		case 'SET_JOBS':
-			if (!action.payload?.jobs) return state;
+		case 'SET_POSITIONS_CHILD': {
+			if (
+				!action.payload?.filter ||
+				(action.payload.filter.key !== 'departments' && action.payload.filter.key !== 'jobs')
+			)
+				return state;
+
+			const filterSet = state.filters.filterSet;
+			filterSet.setPositions(action.payload.filter.key, action.payload.filter.value);
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					filterSet: {
-						...state.filters.filterSet,
-						positions: {
-							...state.filters.filterSet.positions,
-							jobs: action.payload.jobs,
-						},
-					},
+					filterSet,
 				},
 				searchActive: true,
 			};
+		}
 
-		case 'SET_SKILLS':
-			if (!action.payload?.skills) return state;
-
-			return {
-				...state,
-				filters: {
-					...state.filters,
-					filterSet: {
-						...state.filters.filterSet,
-						skills: action.payload.skills,
-					},
-				},
-				searchActive: true,
-			};
-
-		case 'SET_FILTER':
+		case 'SET_FILTER': {
 			if (!action.payload?.filter) return state;
+			const { key, value } = action.payload.filter;
+
+			const filterSet = state.filters.filterSet;
+			filterSet.set(key, value);
 
 			return {
 				...state,
 				filters: {
 					...state.filters,
-					filterSet: {
-						...state.filters.filterSet,
-						[action.payload.filter.name]: action.payload.filter.value,
-					},
+					filterSet,
 				},
 				searchActive: true,
 			};
+		}
 
-		case 'SET_JOB_DATES':
-			if (!action.payload?.jobDates) return state;
-
-			return {
-				...state,
-				filters: {
-					...state.filters,
-					filterSet: {
-						...state.filters.filterSet,
-						jobDates: action.payload.jobDates,
-					},
-				},
-				searchActive: true,
-			};
-
-		case 'SET_ADDITIONAL_FILTERS_ACTIVE':
+		case 'SET_ADDITIONAL_FILTERS_ACTIVE': {
 			if (!action.payload?.additionalFiltersActive) return state;
 
 			return {
 				...state,
 				additionalFiltersActive: action.payload.additionalFiltersActive,
 			};
+		}
 
-		case 'RESTORE_AND_SEARCH': {
+		case 'SET_SAVED_SEARCH_FILTERS': {
 			const {
-				payload: { filterSet },
+				payload: { filterSet, savedSearchId },
 			} = action;
 
 			if (!filterSet) return state;
+
+			return {
+				...state,
+				filters: {
+					...state.filters,
+					filterSet,
+				},
+				searchActive: true,
+				savedSearch: {
+					id: savedSearchId ? savedSearchId : 0,
+					filterSet,
+				},
+			};
+		}
+
+		case 'RESTORE_SAVED_SEARCH': {
+			const {
+				payload: { filterSet, savedSearchId },
+			} = action;
+
+			if (!filterSet || !savedSearchId) return state;
 
 			const filterIndexes: number[] = [];
 
@@ -195,6 +180,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				},
 				searchActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
+				savedSearch: {
+					id: savedSearchId,
+					filterSet,
+				},
 			};
 		}
 
@@ -205,7 +194,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 			};
 
 		case 'RESET_SEARCH_FILTERS':
-			return initialSearchState;
+			return getInitialSearchState();
 
 		default:
 			return state;
@@ -213,7 +202,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 }
 
 export const SearchContextProvider = ({ children }: { children: ReactNode }) => {
-	const [search, searchDispatch] = useReducer(searchContextReducer, initialSearchState);
+	const [search, searchDispatch] = useReducer(searchContextReducer, getInitialSearchState());
 
 	return (
 		<SearchContext.Provider value={{ search, searchDispatch }}>{children}</SearchContext.Provider>

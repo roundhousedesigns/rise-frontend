@@ -14,15 +14,19 @@ export default function SearchFilterDepartment() {
 					positions: { departments },
 				},
 			},
+			savedSearch: { id: savedSearchId },
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
-			type: 'SET_DEPARTMENT',
+			type: 'SET_POSITIONS_CHILD',
 			payload: {
-				departments: [term],
+				filter: {
+					key: 'departments',
+					value: [term],
+				},
 			},
 		});
 
@@ -40,7 +44,7 @@ export default function SearchFilterDepartment() {
 	return !loading && !error ? (
 		<Box id='filterDepartment'>
 			<Heading as='h3' variant='searchFilterTitle' mb={4}>
-				Or, browse by department:
+				{savedSearchId ? 'Browse' : 'Or, browse'} by department:
 			</Heading>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>

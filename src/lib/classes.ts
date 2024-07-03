@@ -8,6 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 	DateRangeParams,
+	SearchFilterSetParams,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
 
@@ -268,6 +269,94 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	constructor(params: CandidateData) {
 		super(params);
 		Object.assign(this, params);
+	}
+}
+
+export class QueryableSearchFilterSet {
+	[key: string]: any;
+	positions?: string[];
+	skills?: string[];
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+
+	constructor(params: SearchFilterSet | SearchFilterSetParams) {
+		// If params.positions is an object with a departments and jobs property, set it to the value of params.positions.jobs.
+		if (params.positions && params.positions.departments && params.positions.jobs) {
+			this.positions = params.positions.departments;
+		}
+
+		this.skills = params.skills;
+		this.unions = params.unions;
+		this.locations = params.locations;
+		this.experienceLevels = params.experienceLevels;
+		this.genderIdentities = params.genderIdentities;
+		this.racialIdentities = params.racialIdentities;
+		this.personalIdentities = params.personalIdentities;
+	}
+}
+
+/**
+ * A set of search filters.
+ */
+export class SearchFilterSet implements SearchFilterSetParams {
+	[key: string]: any;
+	positions: {
+		[key: string]: string[] | undefined;
+		departments?: string[];
+		jobs?: string[];
+	} = {
+		departments: [],
+		jobs: [],
+	};
+	skills?: string[];
+	jobDates?: DateRange;
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+
+	constructor(params?: SearchFilterSetParams) {
+		if (!params) return;
+
+		Object.assign(this, params);
+
+		const {
+			positions: { departments, jobs },
+		} = params;
+
+		if (departments && departments.length > 0) {
+			this.positions = {
+				...this.positions,
+				departments: params.positions.departments?.map((department) => department.toLowerCase()),
+			};
+		}
+
+		if (jobs && jobs.length > 0) {
+			this.positions = {
+				...this.positions,
+				jobs: params.positions.jobs?.map((job) => job.toLowerCase()),
+			};
+		}
+	}
+
+	/**
+	 * Setter for any property
+	 */
+	set(key: string, value: any) {
+		this[key] = value;
+	}
+
+	/**
+	 * Setter for positions
+	 */
+	setPositions(key: string, value: string[]) {
+		this.positions[key] = value;
 	}
 }
 

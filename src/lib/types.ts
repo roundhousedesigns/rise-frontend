@@ -191,7 +191,7 @@ export interface updateBookmarkedProfilesInput {
 /**
  * The data shape for a search query.
  */
-export interface SearchFilterSet {
+export interface SearchFilterSetParams {
 	positions: {
 		departments?: string[];
 		jobs?: string[];
@@ -204,30 +204,13 @@ export interface SearchFilterSet {
 	genderIdentities?: string[];
 	racialIdentities?: string[];
 	personalIdentities?: string[];
-	searchName?: string;
-	searchDates?: DateRangeParams;
-}
-
-/**
- * The data shape for a raw search query.
- * Flattens `positions` and omits `jobDates`.
- */
-export interface SearchFilterSetRaw {
-	positions?: string[];
-	skills?: string[];
-	unions?: string[];
-	locations?: string[];
-	experienceLevels?: string[];
-	genderIdentities?: string[];
-	racialIdentities?: string[];
-	personalIdentities?: string[];
-	searchName?: string;
 }
 
 /**
  * The data shape for a search query.
  */
-export interface SearchFilterSet {
+export interface SearchFilterSetParams {
+	[key: string]: any;
 	positions: {
 		departments?: string[];
 		jobs?: string[];
@@ -240,24 +223,6 @@ export interface SearchFilterSet {
 	genderIdentities?: string[];
 	racialIdentities?: string[];
 	personalIdentities?: string[];
-	searchName?: string;
-	[key: string]: any;
-}
-
-/**
- * The data shape for a raw search query (flat `positions`).
- */
-export interface SearchFilterSetRaw {
-	positions?: string[];
-	skills?: string[];
-	unions?: string[];
-	locations?: string[];
-	experienceLevels?: string[];
-	genderIdentities?: string[];
-	racialIdentities?: string[];
-	personalIdentities?: string[];
-	searchName?: string;
-	[key: string]: any;
 }
 
 /**

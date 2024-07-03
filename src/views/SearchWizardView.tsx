@@ -1,19 +1,5 @@
 import { FormEvent, useContext } from 'react';
-import {
-	Accordion,
-	AccordionButton,
-	AccordionIcon,
-	AccordionItem,
-	AccordionPanel,
-	Box,
-	Fade,
-	Flex,
-	Spacer,
-	Stack,
-	StackItem,
-	Text,
-} from '@chakra-ui/react';
-import useSavedSearches from '@hooks/queries/useSavedSearches';
+import { Accordion, Box, Fade, Spacer, Stack, StackItem } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
 import SearchFilterJobs from '@components/SearchFilterJobs';
@@ -23,6 +9,7 @@ import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
 import SearchFilterDates from '@components/SearchFilterDates';
 import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
+import SearchFilterAccordionItem from '@/components/common/SearchFilterAccordionItem';
 
 interface Props {
 	onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -38,41 +25,39 @@ export default function SearchWizardView({ onSubmit }: Props) {
 					positions: { departments = [], jobs = [] },
 				},
 			},
+			savedSearch: { id: savedSearchId },
 		},
 	} = useContext(SearchContext);
 
-	const [savedSearches] = useSavedSearches();
-
 	return (
 		<Stack direction='column' justifyContent='space-between' height='full'>
-			<Accordion
-				allowToggle
-				mb={4}
-				defaultIndex={savedSearches && savedSearches.length > 0 ? 0 : undefined}
-			>
-				<AccordionItem>
-					<h3>
-						<AccordionButton fontSize='md' fontWeight='normal' pl={0} pt={2}>
-							<Text as='span' m={0}>
-								Your Saved Searches
-							</Text>
-							<AccordionIcon />
-						</AccordionButton>
-					</h3>
-					<AccordionPanel px={0}>
-						<SavedSearchItemList />
-					</AccordionPanel>
-				</AccordionItem>
+			<Accordion allowToggle mb={4}>
+				<SearchFilterAccordionItem
+					heading='Saved Searches'
+					bg='blackAlpha.50'
+					headingProps={{ fontSize: 'md' }}
+				>
+					<SavedSearchItemList />
+				</SearchFilterAccordionItem>
+				<SearchFilterAccordionItem
+					heading='Search by Name'
+					bg='blackAlpha.50'
+					headingProps={{ fontSize: 'md' }}
+				>
+					<SearchFilterName />
+				</SearchFilterAccordionItem>
 			</Accordion>
 
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
 					<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
-						<StackItem>
-							<Box maxW='lg'>
-								<DepartmentsAutocomplete />
-							</Box>
-						</StackItem>
+						<Fade in={!savedSearchId} unmountOnExit>
+							<StackItem>
+								<Box maxW='lg'>
+									<DepartmentsAutocomplete />
+								</Box>
+							</StackItem>
+						</Fade>
 						<StackItem>
 							<Stack gap={8}>
 								<SearchFilterDepartment />
@@ -80,14 +65,10 @@ export default function SearchWizardView({ onSubmit }: Props) {
 									<SearchFilterJobs />
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<Flex alignItems='flex-start' gap={8} flexWrap='wrap'>
-										<Box flex='1 0 50%'>
-											<SearchFilterSkills />
-										</Box>
-										<Box flex='1 0 300px'>
-											<SearchFilterDates />
-										</Box>
-									</Flex>
+									<SearchFilterSkills />
+								</Fade>
+								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+									<SearchFilterDates />
 								</Fade>
 								<Fade in={searchActive && jobs && !!jobs.length} unmountOnExit>
 									<AdditionalSearchFilters />
@@ -99,7 +80,6 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			</Fade>
 
 			<Spacer />
-			{searchActive ? <Spacer /> : <SearchFilterName />}
 		</Stack>
 	);
 }

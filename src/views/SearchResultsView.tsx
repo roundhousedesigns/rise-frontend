@@ -1,23 +1,36 @@
-import { useContext, useMemo } from 'react';
-import { Flex, IconButton, Text } from '@chakra-ui/react';
-import { prepareSearchFilterSetForSave } from '@lib/utils';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { FiCalendar } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
-import { FiCalendar } from 'react-icons/fi';
 
 export default function SearchResultsView() {
 	const {
 		search: {
 			filters: { filterSet },
 			results,
+			savedSearch: { id: savedSearchId },
 		},
 	} = useContext(SearchContext);
 
 	const { jobDates } = filterSet;
-
 	const resultsCount = results.length;
+
+	const [savedSearches] = useSavedSearches();
+	const [savedSearchTitle, setSavedSearchTitle] = useState<string>('');
+
+	useEffect(() => {
+		const title = savedSearches?.find((search) => search.id === savedSearchId)?.title;
+		setSavedSearchTitle(title ? title : '');
+
+		return () => {
+			setSavedSearchTitle('');
+		};
+	}, [savedSearches, savedSearchId]);
 
 	/**
 	 * Set the results string based on the number of results.
@@ -46,14 +59,14 @@ export default function SearchResultsView() {
 			<Flex justifyContent='flex-start' alignItems='center' gap={1} mb={4} mt={0} ml={12}>
 				<IconButton
 					icon={<FiCalendar />}
-					variant='inline'
+					variant='sampleIconButton'
 					title='Search'
 					bgColor='red.300'
 					color='text.dark'
 					aria-label='Possible scheduling conflict'
 					size='xs'
 				/>
-				<Text variant='helperText' fontSize='sm'>
+				<Text variant='helperText' fontSize='xs'>
 					= Possible scheduling conflict
 				</Text>
 			</Flex>
@@ -64,7 +77,28 @@ export default function SearchResultsView() {
 
 	return (
 		<>
-			<SavedSearchItem searchTerms={prepareSearchFilterSetForSave(filterSet)} />
+			{filterSet.positions.departments?.length || filterSet.positions.jobs?.length ? (
+				<Box w='auto' display='inline-block' mt={4} maxW='600px'>
+					<SavedSearchItem
+						searchTerms={filterSet}
+						id={savedSearchId ? savedSearchId : undefined}
+						title={savedSearchTitle ? savedSearchTitle : undefined}
+						showControls={false}
+						showSaveButton
+						mb={1}
+						width='100%'
+					/>
+					<Text variant='helperText' fontSize='2xs' m={0}>
+						<Link as={RouterLink} to='/searches' m={0}>
+							Manage your saved searches
+						</Link>
+						.
+					</Text>
+				</Box>
+			) : (
+				false
+			)}
+
 			{resultsCount ? (
 				<>
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
