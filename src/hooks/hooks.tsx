@@ -8,7 +8,7 @@ import {
 	validatePassword,
 	validateProfileSlug,
 } from '@lib/utils';
-import { SearchContext } from '@/context/SearchContext';
+import { SearchContext } from '@context/SearchContext';
 
 /**
  * Custom hooks.

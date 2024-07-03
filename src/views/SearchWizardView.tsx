@@ -1,6 +1,7 @@
 import { FormEvent, useContext } from 'react';
 import { Accordion, Box, Fade, Spacer, Stack, StackItem } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
+import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
 import SearchFilterJobs from '@components/SearchFilterJobs';
 import SearchFilterSkills from '@components/SearchFilterSkills';
@@ -9,7 +10,6 @@ import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
 import SearchFilterDates from '@components/SearchFilterDates';
 import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
-import SearchFilterAccordionItem from '@/components/common/SearchFilterAccordionItem';
 
 interface Props {
 	onSubmit: (e: FormEvent<HTMLFormElement>) => void;

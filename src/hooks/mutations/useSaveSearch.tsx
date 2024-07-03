@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { QueryableSearchFilterSet } from '@/lib/classes';
+import { QueryableSearchFilterSet } from '@lib/classes';
 import { QUERY_SAVED_SEARCHES } from '@hooks/queries/useSavedSearches';
 
 const MUTATE_UPDATE_SAVED_SEARCH = gql`

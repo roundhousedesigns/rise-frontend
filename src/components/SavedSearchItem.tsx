@@ -18,6 +18,7 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
 import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
+import { useSavedSearchFiltersChanged } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
@@ -25,7 +26,6 @@ import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
-import { useSavedSearchFiltersChanged } from '@/hooks/hooks';
 
 interface Props {
 	id?: number;
