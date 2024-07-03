@@ -14,14 +14,22 @@ export default function SearchResultsView() {
 			filters: { filterSet },
 			results,
 			savedSearch: { id: savedSearchId },
+			searchActive,
 		},
 	} = useContext(SearchContext);
 
 	const { jobDates } = filterSet;
-	const resultsCount = results.length;
 
+	const [resultsCount, setResultsCount] = useState<number>(results.length);
 	const [savedSearches] = useSavedSearches();
 	const [savedSearchTitle, setSavedSearchTitle] = useState<string>('');
+
+	/**
+	 * Set the results count.
+	 */
+	useEffect(() => {
+		setResultsCount(results.length);
+	}, [results]);
 
 	useEffect(() => {
 		const title = savedSearches?.find((search) => search.id === savedSearchId)?.title;
@@ -98,11 +106,13 @@ export default function SearchResultsView() {
 				false
 			)}
 
-			{resultsCount ? (
+			{resultsCount > 0 ? (
 				<>
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 					{jobDates && jobDates.startDate ? <ConflictDateLegend /> : false}
 				</>
+			) : resultsCount === 0 && searchActive ? (
+				<Text fontSize='sm'>No results.</Text>
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>
 			)}

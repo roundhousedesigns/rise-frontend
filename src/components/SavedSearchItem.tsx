@@ -204,7 +204,7 @@ export default function SavedSearchItem({
 									title
 								) : (
 									<Text as='span' opacity='0.5' lineHeight='normal'>
-										Name this search
+										Save this search
 									</Text>
 								)}
 							</LinkWithIcon>
