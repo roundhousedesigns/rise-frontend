@@ -44,7 +44,7 @@ export default function SavedSearchItemList({ ...props }: Props) {
 									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
 									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
-									flex='1 1 400px'
+									flex='0 1 450px'
 								>
 									<SavedSearchItem
 										searchTerms={filters}

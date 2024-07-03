@@ -174,7 +174,7 @@ export default function SavedSearchItem({
 	};
 
 	return termIds && termIds.length > 0 ? (
-		<Card p={0} _first={{ mt: 0 }} {...props}>
+		<Card p={0} my={0} {...props}>
 			<Flex justifyContent='space-between'>
 				<Stack w='auto' alignItems='space-between' p={2}>
 					<StackItem>
