@@ -31,23 +31,6 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 	return (
 		<Stack direction='column' justifyContent='space-between' height='full'>
-			<Accordion allowToggle mb={4}>
-				<SearchFilterAccordionItem
-					heading='Saved Searches'
-					bg='blackAlpha.50'
-					headingProps={{ fontSize: 'md' }}
-				>
-					<SavedSearchItemList />
-				</SearchFilterAccordionItem>
-				<SearchFilterAccordionItem
-					heading='Search by Name'
-					bg='blackAlpha.50'
-					headingProps={{ fontSize: 'md' }}
-				>
-					<SearchFilterName />
-				</SearchFilterAccordionItem>
-			</Accordion>
-
 			<Fade in={!name}>
 				<form id='search-candidates' onSubmit={onSubmit}>
 					<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
@@ -80,6 +63,23 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			</Fade>
 
 			<Spacer />
+
+			<Accordion allowToggle mb={4}>
+				<SearchFilterAccordionItem
+					heading='Saved Searches'
+					bg='blackAlpha.50'
+					headingProps={{ fontSize: 'md' }}
+				>
+					<SavedSearchItemList px={4} />
+				</SearchFilterAccordionItem>
+				<SearchFilterAccordionItem
+					heading='Search by Name'
+					bg='blackAlpha.50'
+					headingProps={{ fontSize: 'md' }}
+				>
+					<SearchFilterName px={4} />
+				</SearchFilterAccordionItem>
+			</Accordion>
 		</Stack>
 	);
 }

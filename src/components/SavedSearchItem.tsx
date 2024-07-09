@@ -11,7 +11,7 @@ import {
 	Box,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
-import { FiSearch, FiDelete, FiEdit2, FiSave, FiAlertTriangle } from 'react-icons/fi';
+import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
 import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
 import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
@@ -175,7 +175,7 @@ export default function SavedSearchItem({
 
 	return termIds && termIds.length > 0 ? (
 		<Card p={0} my={0} {...props}>
-			<Flex justifyContent='space-between'>
+			<Flex justifyContent='space-between' alignItems='center'>
 				<Stack w='auto' alignItems='space-between' p={2}>
 					<StackItem>
 						<Flex alignItems='flex-end'>
@@ -211,20 +211,24 @@ export default function SavedSearchItem({
 						</Flex>
 					</StackItem>
 					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
-						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
+						<SearchParamTags
+							termIds={termIds}
+							termItems={terms}
+							flex='1'
+						/>
 					</StackItem>
 				</Stack>
 				{id ? (
-					<Stack alignItems='center' justifyContent='fill' p={2} spacing={2}>
+					<Box p={2}>
 						{showControls ? (
-							<>
+							<Stack>
 								<Button
 									leftIcon={<FiSearch />}
 									aria-label='Search these filters'
 									title='Search these filters'
 									size='xs'
 									w='100%'
-									colorScheme='gray'
+									colorScheme='green'
 									onClick={handleSearchClick}
 								>
 									Search
@@ -235,45 +239,41 @@ export default function SavedSearchItem({
 									title='Delete'
 									size='xs'
 									w='100%'
+									colorScheme='red'
 									onClick={deleteOnOpen}
 								>
 									Delete
 								</Button>
-							</>
+							</Stack>
 						) : savedSearchFiltersChanged ? (
-							<Box textAlign='center'>
-								<Text variant='helperText' mt={0} fontSize='2xs'>
-									Your search has changed:
-								</Text>
-								<Stack>
-									<Button
-										colorScheme={'yellow'}
-										leftIcon={<FiAlertTriangle />}
-										aria-label='Update saved filters'
-										title='Update saved filters'
-										onClick={handleUpdateClick}
-										size='sm'
-										isLoading={saveLoading}
-									>
-										Update
-									</Button>
-									<Button
-										colorScheme={'blue'}
-										leftIcon={<FiSave />}
-										aria-label='Update saved filters'
-										title='Update saved filters'
-										onClick={handleSaveNewSearchClick}
-										size='sm'
-										isLoading={saveLoading}
-									>
-										Save New
-									</Button>
-								</Stack>
-							</Box>
+							<Stack textAlign='center'>
+								<Button
+									colorScheme={'yellow'}
+									leftIcon={<FiSave />}
+									aria-label='Update saved filters'
+									title='Update saved filters'
+									onClick={handleUpdateClick}
+									size='sm'
+									isLoading={saveLoading}
+								>
+									Update
+								</Button>
+								<Button
+									colorScheme={'blue'}
+									leftIcon={<FiPlusCircle />}
+									aria-label='Update saved filters'
+									title='Update saved filters'
+									onClick={handleSaveNewSearchClick}
+									size='sm'
+									isLoading={saveLoading}
+								>
+									Save New
+								</Button>
+							</Stack>
 						) : (
 							false
 						)}
-					</Stack>
+					</Box>
 				) : (
 					false
 				)}

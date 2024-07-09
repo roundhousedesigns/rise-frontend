@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -90,34 +90,36 @@ export default function SearchFilterName({ ...props }: Props) {
 	};
 
 	return (
-		<form id='search-by-name' onSubmit={handleSubmit}>
-			<Flex gap={2} justifyContent='space-between' maxW='lg'>
-				<TextInput
-					placeholder='Name'
-					name='name'
-					label='Name'
-					labelHidden
-					value={name}
-					onChange={handleInputChange}
-					flex='1 0 60%'
-				/>
-				<IconButton
-					icon={<FiXCircle />}
-					onClick={handleClear}
-					aria-label='Clear name'
-					colorScheme='orange'
-					isDisabled={!name}
-				/>
-				<IconButton
-					aria-label='Search by name'
-					colorScheme='green'
-					type='submit'
-					form='search-by-name'
-					isDisabled={!name}
-					isLoading={loading}
-					icon={<FiSearch />}
-				/>
-			</Flex>
-		</form>
+		<Box {...props}>
+			<form id='search-by-name' onSubmit={handleSubmit}>
+				<Flex gap={2} justifyContent='space-between' maxW='lg'>
+					<TextInput
+						placeholder='Name'
+						name='name'
+						label='Name'
+						labelHidden
+						value={name}
+						onChange={handleInputChange}
+						flex='1 0 60%'
+					/>
+					<IconButton
+						icon={<FiXCircle />}
+						onClick={handleClear}
+						aria-label='Clear name'
+						colorScheme='orange'
+						isDisabled={!name}
+					/>
+					<IconButton
+						aria-label='Search by name'
+						colorScheme='green'
+						type='submit'
+						form='search-by-name'
+						isDisabled={!name}
+						isLoading={loading}
+						icon={<FiSearch />}
+					/>
+				</Flex>
+			</form>
+		</Box>
 	);
 }
