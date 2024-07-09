@@ -1,5 +1,5 @@
 import { Text, IconButton, Box } from '@chakra-ui/react';
-import { FiBookmark, FiThumbsUp } from 'react-icons/fi';
+import { FiBookmark } from 'react-icons/fi';
 import BookmarkedCandidateList from '@views/BookmarkedCandidateList';
 
 export default function BookmarkedProfilesView() {
@@ -15,16 +15,7 @@ export default function BookmarkedProfilesView() {
 					title='Bookmark'
 					bgColor='orange.400'
 				/>{' '}
-				to save a candidate to your bookmarks list. A{' '}
-				<IconButton
-					icon={<FiThumbsUp />}
-					variant='sampleIconButton'
-					mx={1}
-					aria-label='Sample thumbs up icon'
-					title='Looking for work'
-					bgColor='green.500'
-				/>{' '}
-				indicates that a candidate is looking for work.
+				to save a candidate to your bookmarks list.
 			</Text>
 
 			<BookmarkedCandidateList my={0} />
