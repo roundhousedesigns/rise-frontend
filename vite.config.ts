@@ -20,7 +20,7 @@ export default defineConfig({
 				systemNullSetters: false,
 			},
 		},
-		chunkSizeWarningLimit: 1300,
+		chunkSizeWarningLimit: 1400,
 	},
 	resolve: {
 		alias: [

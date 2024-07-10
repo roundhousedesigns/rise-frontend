@@ -34,8 +34,8 @@ export default function ConflictDateRanges({ conflictRanges, ...props }: Props):
 	}, [conflictRanges]);
 
 	const Legend = () => (
-		<Flex fontSize='sm' flexWrap='wrap' gap={4}>
-			<WrapWithIcon icon={FiCheckCircle} iconProps={{ color: 'brand.blue' }} my={0}>
+		<Flex fontSize='sm' flexWrap='wrap' gap={1}>
+			<WrapWithIcon icon={FiCheckCircle} iconProps={{ color: 'brand.blue' }} my={0} mr={1}>
 				Available
 			</WrapWithIcon>
 			<WrapWithIcon icon={FiAlertCircle} iconProps={{ color: 'red.300' }} my={0}>

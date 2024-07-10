@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import {
 	Button,
 	Box,
-	Spinner,
 	Flex,
 	Text,
 	useClipboard,
@@ -120,8 +119,9 @@ export default function ChangeProfileUrlView() {
 								type='submit'
 								colorScheme='green'
 								isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
+								isLoading={submitLoading}
 							>
-								{submitLoading ? <Spinner size='sm' /> : 'Save'}
+								Save
 							</Button>
 							<Button
 								colorScheme='red'

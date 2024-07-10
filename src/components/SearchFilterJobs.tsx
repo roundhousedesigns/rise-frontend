@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Heading, Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
+import { Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import usePositions from '@hooks/queries/usePositions';
 import CheckboxButton from '@common/inputs/CheckboxButton';
@@ -30,22 +30,17 @@ export default function SearchFilterJobs() {
 	};
 
 	return (
-		<Box id='filterJobs' mt={8}>
+		<Box>
 			{!loading && !error ? (
-				<>
-					<Heading as='h3' variant='searchFilterTitle'>
-						What job(s) are you looking to fill?
-					</Heading>
-					<CheckboxGroup value={jobs} onChange={handleToggleTerm}>
-						<Wrap>
-							{jobItems.map((term: WPItem) => (
-								<CheckboxButton key={term.id} value={term.id.toString()}>
-									{term.name}
-								</CheckboxButton>
-							))}
-						</Wrap>
-					</CheckboxGroup>
-				</>
+				<CheckboxGroup value={jobs} onChange={handleToggleTerm}>
+					<Wrap>
+						{jobItems.map((term: WPItem) => (
+							<CheckboxButton key={term.id} value={term.id.toString()}>
+								{term.name}
+							</CheckboxButton>
+						))}
+					</Wrap>
+				</CheckboxGroup>
 			) : loading ? (
 				<Spinner />
 			) : error ? (

@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Accordion, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -8,9 +8,12 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useSearchByName from '@hooks/queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
-import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 
-export default function SearchFilterName() {
+interface Props {
+	[prop: string]: any;
+}
+
+export default function SearchFilterName({ ...props }: Props) {
 	const {
 		search: {
 			filters: { name },
@@ -23,7 +26,7 @@ export default function SearchFilterName() {
 
 	const [getSearchResults, { data: { usersByName } = [], loading }] = useSearchByName();
 	const navigate = useNavigate();
-	const [open, setOpen] = useState<boolean>(false);
+	const [_ignored, setOpen] = useState<boolean>(false);
 
 	// Set open to true if `name` is truthy
 	useEffect(() => {
@@ -87,48 +90,36 @@ export default function SearchFilterName() {
 	};
 
 	return (
-		<Accordion
-			allowMultiple={true}
-			index={open ? [0] : []}
-			onChange={() => setOpen(!open)}
-			w='full'
-		>
-			<SearchFilterAccordionItem heading='Search by Name'>
-				<form id='search-by-name' onSubmit={handleSubmit}>
-					<Flex gap={2} justifyContent='space-between'>
-						<TextInput
-							placeholder='Name'
-							name='name'
-							label='Name'
-							labelHidden
-							value={name}
-							onChange={handleInputChange}
-							w='3xl'
-							flex='1 0 60%'
-							inputProps={{
-								borderWidth: '2px',
-								borderColor: 'gray.400',
-							}}
-						/>
-						<IconButton
-							icon={<FiXCircle />}
-							onClick={handleClear}
-							aria-label='Clear name'
-							colorScheme='orange'
-							isDisabled={!name}
-						/>
-						<IconButton
-							aria-label='Search by name'
-							colorScheme='green'
-							type='submit'
-							form='search-by-name'
-							isDisabled={!name}
-							isLoading={loading}
-							icon={<FiSearch />}
-						/>
-					</Flex>
-				</form>
-			</SearchFilterAccordionItem>
-		</Accordion>
+		<Box {...props}>
+			<form id='search-by-name' onSubmit={handleSubmit}>
+				<Flex gap={2} justifyContent='space-between' maxW='lg'>
+					<TextInput
+						placeholder='Name'
+						name='name'
+						label='Name'
+						labelHidden
+						value={name}
+						onChange={handleInputChange}
+						flex='1 0 60%'
+					/>
+					<IconButton
+						icon={<FiXCircle />}
+						onClick={handleClear}
+						aria-label='Clear name'
+						colorScheme='orange'
+						isDisabled={!name}
+					/>
+					<IconButton
+						aria-label='Search by name'
+						colorScheme='green'
+						type='submit'
+						form='search-by-name'
+						isDisabled={!name}
+						isLoading={loading}
+						icon={<FiSearch />}
+					/>
+				</Flex>
+			</form>
+		</Box>
 	);
 }

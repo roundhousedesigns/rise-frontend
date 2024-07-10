@@ -30,9 +30,11 @@ export default function DashboardView() {
 						{
 							<IconButton
 								icon={<FiSearch />}
-								variant='inline'
+								variant='sampleIconButton'
 								title='Search'
 								aria-label='Sample magnifying glass search icon'
+								isDisabled
+								bgColor='blackAlpha.300'
 							/>
 						}{' '}
 						button in the header.

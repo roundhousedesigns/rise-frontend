@@ -1,15 +1,5 @@
 import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
-import {
-	Card,
-	Heading,
-	Text,
-	Wrap,
-	Box,
-	Stack,
-	Flex,
-	Skeleton,
-	Badge,
-} from '@chakra-ui/react';
+import { Card, Heading, Text, Wrap, Box, Stack, Flex, Skeleton, Badge } from '@chakra-ui/react';
 import { Credit, WPItem } from '@lib/classes';
 import { decodeString, sortAndCompareArrays } from '@lib/utils';
 import useLazyTaxonomyTerms from '@hooks/queries/useLazyTaxonomyTerms';
@@ -96,7 +86,9 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	};
 
 	const yearString = () => {
-		if (workStart && workEnd && !workCurrent) {
+		if (workStart && workEnd && workStart === workEnd) {
+			return workStart;
+		} else if (workStart && workEnd && !workCurrent) {
 			return `${workStart} - ${workEnd}`;
 		} else if (workStart && workCurrent) {
 			return `${workStart} - Present`;

@@ -24,6 +24,7 @@ const xl = defineStyle({
 const variants = {
 	filled: definePartsStyle({
 		field: {
+			color: 'text.dark',
 			bg: 'gray.100',
 			_hover: {
 				bg: 'gray.200',

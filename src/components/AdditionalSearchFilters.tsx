@@ -1,5 +1,5 @@
 import { Key, useContext, useEffect } from 'react';
-import { Accordion, Fade } from '@chakra-ui/react';
+import { Accordion } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
@@ -11,7 +11,6 @@ export default function AdditionalSearchFilters() {
 	const {
 		search: {
 			filters: { filterSet },
-			searchActive,
 			additionalFiltersActive,
 		},
 		searchDispatch,
@@ -48,7 +47,7 @@ export default function AdditionalSearchFilters() {
 			type: 'SET_FILTER',
 			payload: {
 				filter: {
-					name,
+					key: name,
 					value: newValue,
 				},
 			},
@@ -70,72 +69,66 @@ export default function AdditionalSearchFilters() {
 		});
 	}, [filterSet]);
 
+	{
+	}
 	return (
-		<Fade in={searchActive} id='filterAdditional'>
-			<Accordion w='full' allowToggle defaultIndex={!isEmpty(additionalFiltersActive) ? [0] : []}>
-				<SearchFilterAccordionItem
-					heading='Additional Filters'
-					headingProps={{
-						fontSize: '2xl',
-					}}
-				>
-					{/* The order of these items must match the order of filters in the useEffect. */}
-					<Accordion
-						allowMultiple={true}
-						w='full'
-						defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
-					>
-						<SearchFilterAccordionItem heading='Locations'>
-							<ProfileCheckboxGroup
-								name='locations'
-								items={locationTerms}
-								checked={locations as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-						<SearchFilterAccordionItem heading='Unions'>
-							<ProfileCheckboxGroup
-								name='unions'
-								items={unionTerms}
-								checked={unions as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-						<SearchFilterAccordionItem heading='Experience Levels'>
-							<ProfileCheckboxGroup
-								name='experienceLevels'
-								items={experienceLevelTerms}
-								checked={experienceLevels as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-						<SearchFilterAccordionItem heading='Gender Identity'>
-							<ProfileCheckboxGroup
-								name='genderIdentities'
-								items={genderIdentityTerms}
-								checked={genderIdentities as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-						<SearchFilterAccordionItem heading='Personal Identity'>
-							<ProfileCheckboxGroup
-								name='personalIdentities'
-								items={personalIdentityTerms}
-								checked={personalIdentities as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-						<SearchFilterAccordionItem heading='Racial Identity'>
-							<ProfileCheckboxGroup
-								name='racialIdentities'
-								items={racialIdentityTerms}
-								checked={racialIdentities as string[]}
-								handleChange={handleInputChange}
-							/>
-						</SearchFilterAccordionItem>
-					</Accordion>
-				</SearchFilterAccordionItem>
-			</Accordion>
-		</Fade>
+		/* The order of these items must match the order of filters in the useEffect. */
+		<Accordion
+			allowMultiple={true}
+			w='full'
+			defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
+			mt={0}
+			pt={0}
+		>
+			<SearchFilterAccordionItem heading='Locations'>
+				<ProfileCheckboxGroup
+					name='locations'
+					items={locationTerms}
+					checked={locations as string[]}
+					handleChange={handleInputChange}
+					pt={0}
+				/>
+			</SearchFilterAccordionItem>
+			<SearchFilterAccordionItem heading='Unions'>
+				<ProfileCheckboxGroup
+					name='unions'
+					items={unionTerms}
+					checked={unions as string[]}
+					handleChange={handleInputChange}
+				/>
+			</SearchFilterAccordionItem>
+			<SearchFilterAccordionItem heading='Experience Levels'>
+				<ProfileCheckboxGroup
+					name='experienceLevels'
+					items={experienceLevelTerms}
+					checked={experienceLevels as string[]}
+					handleChange={handleInputChange}
+				/>
+			</SearchFilterAccordionItem>
+			<SearchFilterAccordionItem heading='Gender Identity'>
+				<ProfileCheckboxGroup
+					name='genderIdentities'
+					items={genderIdentityTerms}
+					checked={genderIdentities as string[]}
+					handleChange={handleInputChange}
+				/>
+			</SearchFilterAccordionItem>
+			<SearchFilterAccordionItem heading='Personal Identity'>
+				<ProfileCheckboxGroup
+					name='personalIdentities'
+					items={personalIdentityTerms}
+					checked={personalIdentities as string[]}
+					handleChange={handleInputChange}
+				/>
+			</SearchFilterAccordionItem>
+			<SearchFilterAccordionItem heading='Racial Identity'>
+				<ProfileCheckboxGroup
+					name='racialIdentities'
+					items={racialIdentityTerms}
+					checked={racialIdentities as string[]}
+					handleChange={handleInputChange}
+				/>
+			</SearchFilterAccordionItem>
+		</Accordion>
 	);
 }

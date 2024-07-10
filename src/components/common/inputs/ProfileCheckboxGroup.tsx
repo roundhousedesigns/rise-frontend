@@ -22,7 +22,7 @@ export default function ProfileCheckboxGroup({
 	handleChange,
 	...props
 }: Props) {
-	const numberChecked = checked.length;
+	const numberChecked = checked?.length;
 
 	return items ? (
 		<CheckboxGroup value={checked} onChange={handleChange(name)} {...props}>

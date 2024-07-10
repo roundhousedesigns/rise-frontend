@@ -6,36 +6,44 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Box,
+	Text,
 } from '@chakra-ui/react';
 
 interface Props {
 	heading: string;
-	headingProps?: any;
+	headingProps?: {
+		[prop: string]: any;
+	};
 	children: ReactNode;
+	[prop: string]: any;
 }
 
-export default function SearchFilterAccordionItem({ heading, headingProps, children }: Props) {
+export default function SearchFilterAccordionItem({
+	heading,
+	headingProps,
+	children,
+	...props
+}: Props) {
 	return (
-		<AccordionItem>
-			<Heading
-				as='h3'
-				mb={0}
-				flex='1'
-				textAlign='left'
-				my={0}
-				fontSize='xl'
-				lineHeight='normal'
-				{...headingProps}
-			>
+		<AccordionItem {...props}>
+			<Heading as='h3' flex='1' my={0}>
 				<AccordionButton>
-					<Box as='span' fontWeight='normal'>
+					<Text
+						as='span'
+						textAlign='left'
+						fontWeight='normal'
+						my={0}
+						fontSize='xl'
+						lineHeight='normal'
+						{...headingProps}
+					>
 						{heading}
-					</Box>
+					</Text>
 					<AccordionIcon />
 				</AccordionButton>
 			</Heading>
-			<AccordionPanel pb={2} pl={0} pr={1} mb={2} fontSize='sm'>
-				{children}
+			<AccordionPanel pt={0} pb={2} pr={1} pl={0} mt={0} mb={2} fontSize='sm'>
+				<Box mt={2}>{children}</Box>
 			</AccordionPanel>
 		</AccordionItem>
 	);

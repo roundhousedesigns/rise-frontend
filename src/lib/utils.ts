@@ -3,13 +3,15 @@
  */
 
 import { isEqual } from 'lodash';
-import { Credit, PersonalLinks, DateRange, UserProfile, WPItem } from '@lib/classes';
 import {
-	DateRangeParams,
+	Credit,
+	PersonalLinks,
+	DateRange,
+	UserProfile,
+	WPItem,
 	SearchFilterSet,
-	SearchFilterSetRaw,
-	SearchResultCandidate,
-} from '@lib/types';
+} from '@lib/classes';
+import { DateRangeParams, SearchFilterSetParams, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
 import { passwordStrength } from 'check-password-strength';
 const { VITE_FRONTEND_URL } = import.meta.env;
@@ -50,17 +52,6 @@ export function socialLink(network: string, value: string): string {
 	}
 
 	return socialLinkBases[network as keyof PersonalLinks] + suffix;
-}
-
-/**
- * Check if two numbers or strings are equal.
- *
- * @param {string|number} a The first value
- * @param {string|number} b The second value
- * @returns {boolean} Whether the numbers are equal.
- */
-export function isEqualNumberlike(a: number | string, b: number | string): boolean {
-	return isEqual(Number(a), Number(b));
 }
 
 /**
@@ -249,20 +240,15 @@ export function getUniqueTermIdsFromString(json: any): number[] {
 
 /**
  * Extract the IDs of terms from an object.
- * @param obj  The object to extract the IDs from.
+ * @param obj The object to extract the IDs from.
  * @returns The IDs of the terms.
  */
-export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw): number[] {
+export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetParams): number[] {
 	if (!obj) return [];
-
-	const ignoreKeys = ['searchName'];
 
 	const numbersArray: number[] = [];
 
 	Object.keys(obj).forEach((key) => {
-		// Ignore the 'searchName' key
-		if (ignoreKeys.includes(key)) return;
-
 		const value = obj[key];
 
 		// If the value is an object, recurse.
@@ -284,55 +270,17 @@ export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetRaw):
 }
 
 /**
- * Prepare a search object for use in frontend searching.
+ * Compares two search filter sets and returns a boolean indicating whether they are equal.
  *
- * @param searchObj The search object to prepare.
- * @param terms The terms to use for preparing the search object.
- * @returns The prepared search object.
+ * @param {SearchFilterSet} a - The first search filter set to compare.
+ * @param {SearchFilterSet} b - The second search filter set to compare.
+ * @return {boolean} True if the filter sets are equal, false otherwise.
  */
-export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchFilterSet {
-	let departmentId: number = 0;
+export function searchFilterSetsAreEqual(a: SearchFilterSet, b: SearchFilterSet): boolean {
+	const filtersA = a.toQueryableFilterSet();
+	const filtersB = b.toQueryableFilterSet();
 
-	// Get the term from `terms` that matches the first `position` in the search object.
-	// (There will only ever be one department, so we can bail after the first match.)
-	for (let term of terms) {
-		if (term.id === Number(searchObj.positions[0])) {
-			if (!term.parent) {
-				departmentId = term.id;
-			} else {
-				departmentId = term.parent.id;
-			}
-
-			break;
-		}
-	}
-
-	return {
-		...searchObj,
-		positions: {
-			departments: [departmentId.toString()],
-			jobs: searchObj.positions,
-		},
-	};
-}
-
-/**
- * Flattens the `positions` object to a single `positions` property
- * containing an array of job IDs, and removes the `jobDates` property.
- *
- * @param searchObj
- * @returns The flattened search object.
- */
-export function prepareSearchFilterSetForSave(searchObj: SearchFilterSet): SearchFilterSetRaw {
-	const preparedSearchObj: SearchFilterSetRaw = {
-		...searchObj,
-		positions: searchObj.positions.jobs,
-	};
-
-	// Remove the `jobDates` property if it exists
-	delete preparedSearchObj.jobDates;
-
-	return preparedSearchObj;
+	return isEqual(filtersA, filtersB);
 }
 
 /**

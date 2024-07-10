@@ -2,7 +2,6 @@ import { useContext, useMemo } from 'react';
 import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import usePositions from '@hooks/queries/usePositions';
-
 import { SearchContext } from '@context/SearchContext';
 import RadioButton from '@common/inputs/RadioButton';
 
@@ -15,13 +14,14 @@ export default function SearchFilterDepartment() {
 					positions: { departments },
 				},
 			},
+			savedSearch: { id: savedSearchId },
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
 	const handleToggleTerm = (term: string) => {
 		searchDispatch({
-			type: 'SET_DEPARTMENT',
+			type: 'SET_DEPARTMENTS',
 			payload: {
 				departments: [term],
 			},
@@ -40,8 +40,8 @@ export default function SearchFilterDepartment() {
 
 	return !loading && !error ? (
 		<Box id='filterDepartment'>
-			<Heading as='h3' variant='searchFilterTitle'>
-				Which department are you hiring for?
+			<Heading as='h3' variant='searchFilterTitle' mb={4}>
+				{savedSearchId ? 'Browse' : 'Or, browse'} by department:
 			</Heading>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
 				<Wrap>
@@ -60,6 +60,6 @@ export default function SearchFilterDepartment() {
 	) : error ? (
 		<>Error</>
 	) : (
-		<>Nada</>
+		<></>
 	);
 }

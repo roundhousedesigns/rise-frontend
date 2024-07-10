@@ -8,6 +8,7 @@ import {
 	WPItemParams,
 	CreditOutput,
 	DateRangeParams,
+	SearchFilterSetParams,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
 
@@ -272,6 +273,98 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 }
 
 /**
+ * A set of search filters.
+ */
+export class SearchFilterSet implements SearchFilterSetParams {
+	[key: string]: any;
+	positions: {
+		departments?: string[];
+		jobs?: string[];
+	} = {
+		departments: [],
+		jobs: [],
+	};
+	skills?: string[];
+	jobDates?: DateRange;
+	unions?: string[];
+	locations?: string[];
+	experienceLevels?: string[];
+	genderIdentities?: string[];
+	racialIdentities?: string[];
+	personalIdentities?: string[];
+
+	constructor(params?: SearchFilterSetParams, terms?: WPItem[]) {
+		if (!params) return;
+
+		Object.assign(this, params);
+
+		const { positions } = params;
+
+		if (Array.isArray(positions) || !!positions.departments) {
+			if (terms && terms.length > 0) {
+				const jobTerms = terms.filter(
+					(term) => term.taxonomyName === 'position' && (!!term.parent || !!term.parentId)
+				);
+				const departments: string[] = [];
+				jobTerms.forEach((job) => {
+					const { parent, parentId } = job;
+					if (!!parent) {
+						departments.push(parent.id.toString());
+					} else if (!!parentId) {
+						departments.push(parentId.toString());
+					}
+				});
+				const jobs = jobTerms.map((job) => job.id.toString());
+
+				this.positions = {
+					departments,
+					jobs,
+				};
+			}
+		}
+	}
+
+	/**
+	 * Setter for any property
+	 */
+	set(key: string, value: any) {
+		this[key] = value;
+	}
+
+	/**
+	 * Setter for departments
+	 */
+	setDepartments(value: string[]) {
+		this.positions.departments = value;
+
+		// Reset jobs
+		this.positions.jobs = [];
+	}
+
+	/**
+	 * Setter for jobs
+	 */
+	setJobs(value: string[]) {
+		this.positions.jobs = value;
+	}
+
+	/**
+	 * Returns a new object with the properties of the current instance,
+	 * excluding the `positions` property, and including a new `positions`
+	 * property with the value of the `jobs` property of the current instance.
+	 *
+	 * @return {Object} A new object with the properties of the current instance,
+	 *                  but with a flattened `positions` property.
+	 */
+	toQueryableFilterSet(): SearchFilterSetParams {
+		return {
+			...this,
+			positions: this.positions.jobs,
+		};
+	}
+}
+
+/**
  * A collection of personal links and social media handles.
  */
 export class PersonalLinks implements PersonalLinksParams {
@@ -438,7 +531,7 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
-	parent?: any;
+	parent?: WPItem;
 	taxonomyName?: string;
 	externalUrl?: string;
 

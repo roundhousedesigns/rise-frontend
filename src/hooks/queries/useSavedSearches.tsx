@@ -21,7 +21,7 @@ export const QUERY_SAVED_SEARCHES = gql`
 	}
 `;
 
-export default function useSavedSearches() {
+export default function useSavedSearches(): [WPPost[], any] {
 	const { loggedInId } = useViewer();
 	const result = useQuery(QUERY_SAVED_SEARCHES, {
 		variables: {
@@ -29,18 +29,20 @@ export default function useSavedSearches() {
 		},
 	});
 
-	const savedSearches = result.data?.savedSearches?.nodes?.map((savedSearch: WPItemParams) => {
-		const { id, author, title, content } = savedSearch;
+	const savedSearches: WPPost[] = result.data?.savedSearches?.nodes?.map(
+		(savedSearch: WPItemParams) => {
+			const { id, author, title, content } = savedSearch;
 
-		const params = {
-			id,
-			author,
-			title,
-			content,
-		};
+			const params = {
+				id,
+				author,
+				title,
+				content,
+			};
 
-		return new WPPost(params);
-	});
+			return new WPPost(params);
+		}
+	);
 
 	return [savedSearches, omit(result, ['data'])];
 }

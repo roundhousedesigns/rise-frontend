@@ -36,7 +36,7 @@ const usePositions = (parents: number[] = [0]): [WPItem[], any] => {
 		},
 	});
 
-	const preparedResult = result.data?.jobsByDepartments.map(
+	const preparedResult: WPItem[] = result.data?.jobsByDepartments.map(
 		(term: WPItemParams) => new WPItem(term)
 	);
 	preparedResult?.sort(sortWPItemsByName);

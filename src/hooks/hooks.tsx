@@ -1,7 +1,14 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { isEqual, omit } from 'lodash';
 import { UserProfile } from '@lib/classes';
-import { getProfilePrefix, validateEmail, validatePassword, validateProfileSlug } from '@lib/utils';
+import {
+	searchFilterSetsAreEqual,
+	getProfilePrefix,
+	validateEmail,
+	validatePassword,
+	validateProfileSlug,
+} from '@lib/utils';
+import { SearchContext } from '@context/SearchContext';
 
 /**
  * Custom hooks.
@@ -186,3 +193,20 @@ export const useValidatePassword = (password: string): string | undefined =>
  * @return True if the email address is valid.
  */
 export const useValidateEmail = (email: string): boolean => validateEmail(email);
+
+/**
+ * Returns a boolean indicating whether the currently restored Saved Search has been changed
+ * by the user.
+ *
+ * @return boolean True if the filter set has changed.
+ */
+export const useSavedSearchFiltersChanged = (): boolean => {
+	const {
+		search: {
+			filters: { filterSet: currentFilterSet },
+			savedSearch: { filterSet: savedSearchFilterSet },
+		},
+	} = useContext(SearchContext);
+
+	return !searchFilterSetsAreEqual(currentFilterSet, savedSearchFilterSet);
+};
