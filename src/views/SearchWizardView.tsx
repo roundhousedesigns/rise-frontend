@@ -1,5 +1,5 @@
 import { FormEvent, useContext } from 'react';
-import { Accordion, Box, Fade, Spacer, Stack, StackItem } from '@chakra-ui/react';
+import { Accordion, Box, Fade, Heading, Spacer, Stack, StackItem } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
@@ -43,18 +43,39 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						</Fade>
 						<StackItem>
 							<Stack gap={8}>
-								<SearchFilterDepartment />
+								<StackItem>
+									<SearchFilterSection id='filterDepartment'>
+										<SearchFilterDepartment />
+									</SearchFilterSection>
+								</StackItem>
 								<Fade in={!!departments.length} unmountOnExit>
-									<SearchFilterJobs />
+									<SearchFilterSection
+										id='filterJobs'
+										heading='What job(s) are you looking to fill?'
+									>
+										<SearchFilterJobs />
+									</SearchFilterSection>
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSkills />
+									<SearchFilterSection id='filterSkills' heading='What skills are you looking for?'>
+										<SearchFilterSkills />
+									</SearchFilterSection>
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterDates />
+									<SearchFilterSection
+										id='filterDates'
+										heading='Are you hiring for a particular date?'
+									>
+										<SearchFilterDates />
+									</SearchFilterSection>
 								</Fade>
 								<Fade in={searchActive && jobs && !!jobs.length} unmountOnExit>
-									<AdditionalSearchFilters />
+									<SearchFilterSection
+										id='filterAdditional'
+										heading='And some additional filters to refine your search:'
+									>
+										<AdditionalSearchFilters />
+									</SearchFilterSection>
 								</Fade>
 							</Stack>
 						</StackItem>
@@ -83,3 +104,26 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		</Stack>
 	);
 }
+
+const SearchFilterSection = ({
+	id,
+	heading,
+	children,
+	...props
+}: {
+	id: string;
+	heading?: string;
+	children: JSX.Element;
+	[prop: string]: any;
+}) => (
+	<Box id={id} {...props}>
+		{heading ? (
+			<Heading as='h3' variant='searchFilterTitle'>
+				{heading}
+			</Heading>
+		) : (
+			false
+		)}
+		{children}
+	</Box>
+);

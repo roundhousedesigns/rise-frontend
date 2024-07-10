@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Box, Flex, Heading, IconButton, Text } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiCalendar, FiXCircle } from 'react-icons/fi';
@@ -57,10 +57,7 @@ export default function SearchFilterDates() {
 	};
 
 	return (
-		<Box id='filterDates'>
-			<Heading as='h3' variant='searchFilterTitle'>
-				Are you hiring for a particular date?
-			</Heading>
+		<Box>
 			<Flex gap={4}>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Heading, Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
+import { Box, CheckboxGroup, Wrap, Skeleton } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import useRelatedSkills from '@hooks/queries/useRelatedSkills';
 
@@ -30,26 +30,22 @@ export default function SearchFilterSkills(): JSX.Element {
 		});
 	};
 
-	return data?.length > 0 && !loading && !error ? (
-		<Box id='filterSkills' style={{ scrollMarginTop: '83px' }}>
-			<Heading as='h3' variant='searchFilterTitle'>
-				What skills are you looking for?
-			</Heading>
-			<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm}>
-				<Wrap>
-					{data.map((term: WPItem) => (
-						<CheckboxButton key={term.id} value={term.id.toString()}>
-							{term.name}
-						</CheckboxButton>
-					))}
-				</Wrap>
-			</CheckboxGroup>
+	return (
+		<Box style={{ scrollMarginTop: '83px' }}>
+			<Skeleton isLoaded={data?.length > 0 && !loading && !error}>
+				<Box minH='8em'>
+					<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm}>
+						<Wrap>
+							{data?.map((term: WPItem) => (
+								<CheckboxButton key={term.id} value={term.id.toString()}>
+									{term.name}
+								</CheckboxButton>
+							))}
+						</Wrap>
+					</CheckboxGroup>
+				</Box>
+			</Skeleton>
+			{error ? <ErrorAlert message={error.message} /> : false}
 		</Box>
-	) : loading ? (
-		<Spinner />
-	) : error ? (
-		<ErrorAlert message={error.message} />
-	) : (
-		<></>
 	);
 }
