@@ -43,11 +43,15 @@ export default function SearchFilterDepartment() {
 			<Heading as='h3' variant='searchFilterTitle' mb={4}>
 				{savedSearchId ? 'Browse' : 'Or, browse'} by department:
 			</Heading>
-			<RadioGroup onChange={handleToggleTerm} value={departmentId}>
+			<RadioGroup onChange={handleToggleTerm} value={departmentId} size='sm'>
 				<Wrap>
 					{data.map((term: WPItem) => {
 						return (
-							<RadioButton key={term.id} name='search-departments' value={term.id.toString()}>
+							<RadioButton
+								key={term.id}
+								name='search-departments'
+								value={term.id.toString()}
+							>
 								{term.name}
 							</RadioButton>
 						);

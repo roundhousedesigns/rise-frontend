@@ -83,7 +83,7 @@ export const radioCheckboxButtonStyleObject = {
 				bg: 'gray.600',
 			},
 			_hover: {
-				bg: 'gray.50',
+				bg: 'gray.200',
 			},
 		},
 	},
