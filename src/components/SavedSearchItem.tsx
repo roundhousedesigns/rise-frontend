@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import {
 	useDisclosure,
 	useToast,
@@ -9,6 +9,7 @@ import {
 	Card,
 	Button,
 	Box,
+	Skeleton,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
@@ -71,11 +72,13 @@ export default function SavedSearchItem({
 	const termIds = extractSearchTermIds(searchTerms);
 	const [terms] = useTaxonomyTerms(termIds);
 
-	// set up useMemo to create a new SearchFilterSet object
-	const searchFilterSet = useMemo(
-		() => new SearchFilterSet(searchTerms, terms),
-		[searchTerms, terms]
-	);
+	const searchFilterSet = useRef(searchTerms);
+
+	useEffect(() => {
+		if (!isEqual(searchTerms, searchFilterSet.current)) return;
+
+		searchFilterSet.current = new SearchFilterSet(searchTerms, terms);
+	}, [JSON.stringify(searchTerms)]);
 
 	const toast = useToast();
 
@@ -98,7 +101,7 @@ export default function SavedSearchItem({
 			type: 'RESTORE_SAVED_SEARCH',
 			payload: {
 				savedSearchId: id,
-				filterSet: searchFilterSet,
+				filterSet: searchFilterSet.current,
 			},
 		});
 
@@ -129,7 +132,7 @@ export default function SavedSearchItem({
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
-			filterSet: searchFilterSet.toQueryableFilterSet(),
+			filterSet: searchFilterSet.current.toQueryableFilterSet(),
 			id: saveNewSearch ? undefined : id,
 		})
 			.then((results) => {
@@ -142,7 +145,7 @@ export default function SavedSearchItem({
 				searchDispatch({
 					type: 'SET_SAVED_SEARCH_FILTERS',
 					payload: {
-						filterSet: searchFilterSet,
+						filterSet: searchFilterSet.current,
 						savedSearchId: id,
 					},
 				});
@@ -192,7 +195,7 @@ export default function SavedSearchItem({
 
 	return termIds && termIds.length > 0 ? (
 		<Card p={0} my={0} {...props}>
-			<Flex justifyContent='space-between' alignItems='center'>
+			<Flex justifyContent='space-between'>
 				<Stack w='auto' alignItems='space-between' p={2}>
 					<StackItem>
 						<Flex alignItems='flex-end'>
@@ -228,7 +231,9 @@ export default function SavedSearchItem({
 						</Flex>
 					</StackItem>
 					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
-						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
+						<Skeleton isLoaded={!!terms}>
+							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
+						</Skeleton>
 					</StackItem>
 				</Stack>
 				{id ? (
@@ -299,7 +304,7 @@ export default function SavedSearchItem({
 				title={title ? title : ''}
 				isOpen={editIsOpen}
 				onClose={handleEditClose}
-				searchTerms={searchFilterSet}
+				searchTerms={searchFilterSet.current}
 			/>
 
 			<ConfirmActionDialog
