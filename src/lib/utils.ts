@@ -10,7 +10,6 @@ import {
 	UserProfile,
 	WPItem,
 	SearchFilterSet,
-	QueryableSearchFilterSet,
 } from '@lib/classes';
 import { DateRangeParams, SearchFilterSetParams, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
@@ -271,39 +270,6 @@ export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetParam
 }
 
 /**
- * Prepare a search object for use in frontend searching.
- *
- * @param searchObj The search object to prepare.
- * @param terms The terms to use for preparing the search object.
- * @returns The prepared search object.
- */
-export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchFilterSet {
-	let departmentId: number = 0;
-
-	// Get the term from `terms` that matches the first `position` in the search object.
-	// (There will only ever be one department, so we can bail after the first match.)
-	for (let term of terms) {
-		if (term.id === Number(searchObj.positions[0])) {
-			if (!term.parent) {
-				departmentId = term.id;
-			} else {
-				departmentId = term.parent.id;
-			}
-
-			break;
-		}
-	}
-
-	return new SearchFilterSet({
-		...searchObj,
-		positions: {
-			departments: [departmentId.toString()],
-			jobs: searchObj.positions,
-		},
-	});
-}
-
-/**
  * Compares two search filter sets and returns a boolean indicating whether they are equal.
  *
  * @param {SearchFilterSet} a - The first search filter set to compare.
@@ -311,8 +277,8 @@ export function prepareSearchFilterSet(searchObj: any, terms: WPItem[]): SearchF
  * @return {boolean} True if the filter sets are equal, false otherwise.
  */
 export function searchFilterSetsAreEqual(a: SearchFilterSet, b: SearchFilterSet): boolean {
-	const filtersA = new QueryableSearchFilterSet(a);
-	const filtersB = new QueryableSearchFilterSet(b);
+	const filtersA = a.toQueryableFilterSet();
+	const filtersB = b.toQueryableFilterSet();
 
 	return isEqual(filtersA, filtersB);
 }

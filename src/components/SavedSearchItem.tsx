@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import {
 	useDisclosure,
 	useToast,
@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
-import { extractSearchTermIds, prepareSearchFilterSet } from '@lib/utils';
-import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
+import { extractSearchTermIds } from '@lib/utils';
+import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useCandidateSearch from '@hooks/queries/useCandidateSearch';
@@ -57,14 +57,25 @@ export default function SavedSearchItem({
 	const { isOpen: deleteIsOpen, onOpen: deleteOnOpen, onClose: deleteOnClose } = useDisclosure();
 	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
 
+	const [saveNewSearch, setSaveNewSearch] = useState<boolean>(false);
 	const savedSearchFiltersChanged = useSavedSearchFiltersChanged();
 
-	const [saveNewSearch, setSaveNewSearch] = useState<boolean>(false);
+	const [whichButtonClicked, setWhichButtonClicked] = useState<string>('');
 
 	const {
 		saveSearchMutation,
 		results: { loading: saveLoading },
 	} = useSaveSearch();
+
+	// Get all the term IDs from the params object.
+	const termIds = extractSearchTermIds(searchTerms);
+	const [terms] = useTaxonomyTerms(termIds);
+
+	// set up useMemo to create a new SearchFilterSet object
+	const searchFilterSet = useMemo(
+		() => new SearchFilterSet(searchTerms, terms),
+		[searchTerms, terms]
+	);
 
 	const toast = useToast();
 
@@ -80,18 +91,14 @@ export default function SavedSearchItem({
 		});
 	}, [filteredCandidates]);
 
-	// Get all the term IDs from the params object.
-	const termIds = extractSearchTermIds(searchTerms);
-	const [terms] = useTaxonomyTerms(termIds);
-
 	const handleSearchClick = () => {
-		const filterSet = prepareSearchFilterSet(searchTerms, terms);
+		setWhichButtonClicked('search');
 
 		searchDispatch({
 			type: 'RESTORE_SAVED_SEARCH',
 			payload: {
 				savedSearchId: id,
-				filterSet,
+				filterSet: searchFilterSet,
 			},
 		});
 
@@ -108,17 +115,21 @@ export default function SavedSearchItem({
 	};
 
 	const handleSaveNewSearchClick = () => {
+		setWhichButtonClicked('new');
+
 		setSaveNewSearch(true);
 		editOnOpen();
 	};
 
 	const handleUpdateClick = () => {
+		setWhichButtonClicked('update');
+
 		if (!title) return;
 
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
-			filterSet: new QueryableSearchFilterSet(searchTerms),
+			filterSet: searchFilterSet.toQueryableFilterSet(),
 			id: saveNewSearch ? undefined : id,
 		})
 			.then((results) => {
@@ -131,7 +142,7 @@ export default function SavedSearchItem({
 				searchDispatch({
 					type: 'SET_SAVED_SEARCH_FILTERS',
 					payload: {
-						filterSet: searchTerms,
+						filterSet: searchFilterSet,
 						savedSearchId: id,
 					},
 				});
@@ -149,10 +160,14 @@ export default function SavedSearchItem({
 					duration: 3000,
 					isClosable: true,
 				});
+
+				setWhichButtonClicked('');
 			});
 	};
 
 	const handleDelete = () => {
+		setWhichButtonClicked('delete');
+
 		if (!id) return;
 
 		deleteOwnSavedSearchMutation(id.toString(), loggedInId).then(() => {
@@ -170,6 +185,8 @@ export default function SavedSearchItem({
 	};
 
 	const handleEditClose = () => {
+		setWhichButtonClicked('');
+
 		editOnClose();
 	};
 
@@ -211,11 +228,7 @@ export default function SavedSearchItem({
 						</Flex>
 					</StackItem>
 					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
-						<SearchParamTags
-							termIds={termIds}
-							termItems={terms}
-							flex='1'
-						/>
+						<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
 					</StackItem>
 				</Stack>
 				{id ? (
@@ -254,7 +267,8 @@ export default function SavedSearchItem({
 									title='Update saved filters'
 									onClick={handleUpdateClick}
 									size='sm'
-									isLoading={saveLoading}
+									isLoading={saveLoading && whichButtonClicked === 'update'}
+									isDisabled={saveLoading}
 								>
 									Update
 								</Button>
@@ -265,7 +279,8 @@ export default function SavedSearchItem({
 									title='Update saved filters'
 									onClick={handleSaveNewSearchClick}
 									size='sm'
-									isLoading={saveLoading}
+									isLoading={saveLoading && whichButtonClicked === 'new'}
+									isDisabled={saveLoading}
 								>
 									Save New
 								</Button>
@@ -284,7 +299,7 @@ export default function SavedSearchItem({
 				title={title ? title : ''}
 				isOpen={editIsOpen}
 				onClose={handleEditClose}
-				searchTerms={searchTerms}
+				searchTerms={searchFilterSet}
 			/>
 
 			<ConfirmActionDialog

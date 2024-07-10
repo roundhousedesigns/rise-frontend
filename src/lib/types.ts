@@ -192,29 +192,13 @@ export interface updateBookmarkedProfilesInput {
  * The data shape for a search query.
  */
 export interface SearchFilterSetParams {
-	positions: {
-		departments?: string[];
-		jobs?: string[];
-	};
-	skills?: string[];
-	jobDates?: DateRange;
-	unions?: string[];
-	locations?: string[];
-	experienceLevels?: string[];
-	genderIdentities?: string[];
-	racialIdentities?: string[];
-	personalIdentities?: string[];
-}
-
-/**
- * The data shape for a search query.
- */
-export interface SearchFilterSetParams {
 	[key: string]: any;
-	positions: {
-		departments?: string[];
-		jobs?: string[];
-	};
+	positions:
+		| {
+				departments?: string[];
+				jobs?: string[];
+		  }
+		| string[];
 	skills?: string[];
 	jobDates?: DateRange;
 	unions?: string[];

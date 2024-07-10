@@ -12,7 +12,7 @@ import {
 	Text,
 } from '@chakra-ui/react';
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
-import { QueryableSearchFilterSet, SearchFilterSet } from '@lib/classes';
+import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import useViewer from '@hooks/queries/useViewer';
@@ -53,12 +53,14 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 	};
 
 	const handleSave = (e: FormEvent) => {
+		// TODO Don't allow saving an existing title.
+
 		e.preventDefault();
 
 		saveSearchMutation({
 			userId: loggedInId,
 			title: saveSearchFieldText,
-			filterSet: new QueryableSearchFilterSet(searchTerms),
+			filterSet: searchTerms.toQueryableFilterSet(),
 			id,
 		})
 			.then((results) => {

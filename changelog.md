@@ -10,6 +10,8 @@ with 1.0.0beta.
 - Improve: Saved Search UI/UX -> updating, saving, editing.
 - Improve: Minor UI enhancements.
 - Improve: Simplify `SearchFilterSet` (and related) classes, types, and interfaces.
+- Improve: Simplify `SearchFilterSet` and related classes and interfaces.
+- Improve: Refactor Saved Searches and Saved Search Items.
 - Change: 'SearchFilterSetRaw' -> 'QueryableSearchFilterSet'. **Requires backend version 1.1.5**
 
 ## \[1.1.7] - 2024-06-22

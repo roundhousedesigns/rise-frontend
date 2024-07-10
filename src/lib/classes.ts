@@ -272,40 +272,12 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
 	}
 }
 
-export class QueryableSearchFilterSet {
-	[key: string]: any;
-	positions?: string[];
-	skills?: string[];
-	unions?: string[];
-	locations?: string[];
-	experienceLevels?: string[];
-	genderIdentities?: string[];
-	racialIdentities?: string[];
-	personalIdentities?: string[];
-
-	constructor(params: SearchFilterSet | SearchFilterSetParams) {
-		// If params.positions is an object with a departments and jobs property, set it to the value of params.positions.jobs.
-		if (params.positions.departments && params.positions.jobs) {
-			this.positions = params.positions.jobs;
-		}
-
-		this.skills = params.skills;
-		this.unions = params.unions;
-		this.locations = params.locations;
-		this.experienceLevels = params.experienceLevels;
-		this.genderIdentities = params.genderIdentities;
-		this.racialIdentities = params.racialIdentities;
-		this.personalIdentities = params.personalIdentities;
-	}
-}
-
 /**
  * A set of search filters.
  */
 export class SearchFilterSet implements SearchFilterSetParams {
 	[key: string]: any;
 	positions: {
-		[key: string]: string[] | undefined;
 		departments?: string[];
 		jobs?: string[];
 	} = {
@@ -321,27 +293,34 @@ export class SearchFilterSet implements SearchFilterSetParams {
 	racialIdentities?: string[];
 	personalIdentities?: string[];
 
-	constructor(params?: SearchFilterSetParams) {
+	constructor(params?: SearchFilterSetParams, terms?: WPItem[]) {
 		if (!params) return;
 
 		Object.assign(this, params);
 
-		const {
-			positions: { departments, jobs },
-		} = params;
+		const { positions } = params;
 
-		if (departments && departments.length > 0) {
-			this.positions = {
-				...this.positions,
-				departments: params.positions.departments?.map((department) => department.toLowerCase()),
-			};
-		}
+		if (Array.isArray(positions) || !!positions.departments) {
+			if (terms && terms.length > 0) {
+				const jobTerms = terms.filter(
+					(term) => term.taxonomyName === 'position' && (!!term.parent || !!term.parentId)
+				);
+				const departments: string[] = [];
+				jobTerms.forEach((job) => {
+					const { parent, parentId } = job;
+					if (!!parent) {
+						departments.push(parent.id.toString());
+					} else if (!!parentId) {
+						departments.push(parentId.toString());
+					}
+				});
+				const jobs = jobTerms.map((job) => job.id.toString());
 
-		if (jobs && jobs.length > 0) {
-			this.positions = {
-				...this.positions,
-				jobs: params.positions.jobs?.map((job) => job.toLowerCase()),
-			};
+				this.positions = {
+					departments,
+					jobs,
+				};
+			}
 		}
 	}
 
@@ -367,6 +346,21 @@ export class SearchFilterSet implements SearchFilterSetParams {
 	 */
 	setJobs(value: string[]) {
 		this.positions.jobs = value;
+	}
+
+	/**
+	 * Returns a new object with the properties of the current instance,
+	 * excluding the `positions` property, and including a new `positions`
+	 * property with the value of the `jobs` property of the current instance.
+	 *
+	 * @return {Object} A new object with the properties of the current instance,
+	 *                  but with a flattened `positions` property.
+	 */
+	toQueryableFilterSet(): SearchFilterSetParams {
+		return {
+			...this,
+			positions: this.positions.jobs,
+		};
 	}
 }
 
@@ -537,7 +531,7 @@ export class WPItem implements WPItemParams {
 	name: string;
 	slug?: string;
 	parentId?: number;
-	parent?: any;
+	parent?: WPItem;
 	taxonomyName?: string;
 	externalUrl?: string;
 
