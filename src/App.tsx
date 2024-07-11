@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) 2024 Maestra Music and Roundhouse Designs. All rights reserved.
+ */
+
 import { useEffect, useRef, useState } from 'react';
 import { Box, Spacer, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';

@@ -82,3 +82,6 @@ Include screen capture and testing steps if applicable
 
 - `yarn build` to build for production
 - `yarn preview` to serve a production preview
+
+---
+Copyright (c) 2024 Maestra Music and Roundhouse Designs. All rights reserved.
