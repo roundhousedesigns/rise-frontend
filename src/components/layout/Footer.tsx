@@ -9,9 +9,9 @@ interface FooterLinkProps {
 	children: ReactNode;
 }
 
-function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX.Element {
+function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
 	return (
-		<Link href={href} color='inherit' isExternal={isExternal}>
+		<Link href={href} color='inherit' isExternal>
 			{children}
 		</Link>
 	);
@@ -20,30 +20,25 @@ function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX
 export default function Footer() {
 	const { value: footerNotice } = useFrontendSetting('footer_notice');
 
+	const year = new Date().getFullYear();
+
 	return (
 		<LightMode>
 			<Box w='full' py={4} alignItems='center' bgColor='brand.orange' fontSize='sm'>
 				<Container maxW='6xl' textAlign='center'>
 					<Text align='center'>{footerNotice}</Text>
 					<Text>
-						©2023{' '}
-						<FooterLink href='https://maestramusic.org' isExternal>
-							Maestra Music Inc.
-						</FooterLink>{' '}
+						&copy; {year}{' '}
+						<FooterLink href='https://maestramusic.org'>Maestra Music Inc.</FooterLink>
 						<Dot boxSize={1} />
-						<FooterLink href='https://risetheatre.org/terms-conditions' isExternal>
+						<FooterLink href='https://risetheatre.org/terms-conditions'>
 							Terms & Conditions
-						</FooterLink>{' '}
-						<Dot boxSize={1} />
-						<FooterLink href='https://www.risetheatre.org/privacy-policy' isExternal>
-							Privacy Policy
 						</FooterLink>
+						<Dot boxSize={1} />
+						<FooterLink href='https://risetheatre.org/privacy-policy'>Privacy Policy</FooterLink>
 					</Text>
 					<Text>
-						By{' '}
-						<FooterLink href='https://roundhouse-designs.com' isExternal>
-							Roundhouse Designs
-						</FooterLink>
+						By <FooterLink href='https://roundhouse-designs.com'>Roundhouse Designs</FooterLink>
 					</Text>
 				</Container>
 			</Box>
