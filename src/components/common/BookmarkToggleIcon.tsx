@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { IconButton, useColorMode, useToken } from '@chakra-ui/react';
-import { FiBookmark } from 'react-icons/fi';
+import { FiStar } from 'react-icons/fi';
 import { toggleArrayItem } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
@@ -41,7 +41,7 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 	return (
 		<IconButton
 			icon={
-				<FiBookmark
+				<FiStar
 					color={isBookmarked ? orange : ''}
 					fill={isBookmarked ? orange : 'transparent'}
 					stroke={colorMode === 'dark' ? lightGray : darkGray}

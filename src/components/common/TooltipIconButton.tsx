@@ -31,8 +31,8 @@ export default function TooltipIconButton({
 					icon={icon}
 					variant='solid'
 					aria-label={label}
-					// isDisabled={isDisabled}
-					// pointerEvents={isDisabled ? 'none' : 'auto'}
+					isDisabled={isDisabled}
+					pointerEvents={isDisabled ? 'none' : 'auto'}
 					{...props}
 				/>
 			</Tooltip>

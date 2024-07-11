@@ -6,20 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
-import useViewer from '@hooks/queries/useViewer';
 import Header from '@layout/Header';
 import Main from '@layout/Main';
 import Footer from '@layout/Footer';
 
 export default function App() {
-	const {
-		result: { loading },
-	} = useViewer();
-
-	useEffect(() => {
-		console.info('loading changed');
-	}, [loading]);
-
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
 
 	// Get the header height so we can offset the main content

@@ -15,20 +15,22 @@ import {
 	Icon,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiBookmark, FiFileText, FiFolder } from 'react-icons/fi';
+import { FiSearch, FiUser, FiStar, FiFileText, FiFolder } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
+import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
-import SearchDrawer from '@layout/SearchDrawer';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import ProfileNotices from '@common/ProfileNotices';
+import TooltipIconButton from '@common/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
-import TooltipIconButton from '../common/TooltipIconButton';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
+	const [savedSearches] = useSavedSearches();
 
 	const [profile] = useUserProfile(loggedInId);
 
@@ -38,7 +40,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange] = useToken('colors', ['orange.300']);
+	const [orange] = useToken('colors', ['orange.100']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -110,7 +112,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								size='md'
 							>
 								<TooltipIconButton
-									icon={<FiBookmark fill={bookmarkedProfiles.length ? orange : 'none'} />}
+									icon={<FiStar fill={bookmarkedProfiles.length ? orange : 'none'} />}
 									label='Bookmarked profiles'
 									as={RouterLink}
 									to='/bookmarks'
@@ -118,10 +120,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								/>
 
 								<TooltipIconButton
-									icon={<FiFolder />}
+									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'
+									isDisabled={!savedSearches?.length}
 								/>
 
 								{results.length ? (

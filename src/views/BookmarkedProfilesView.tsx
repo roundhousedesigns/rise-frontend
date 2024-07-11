@@ -1,5 +1,5 @@
 import { Text, IconButton, Box } from '@chakra-ui/react';
-import { FiBookmark } from 'react-icons/fi';
+import { FiStar } from 'react-icons/fi';
 import BookmarkedCandidateList from '@views/BookmarkedCandidateList';
 
 export default function BookmarkedProfilesView() {
@@ -8,7 +8,7 @@ export default function BookmarkedProfilesView() {
 			<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 				Click the{' '}
 				<IconButton
-					icon={<FiBookmark />}
+					icon={<FiStar />}
 					variant='sampleIconButton'
 					mx={1}
 					aria-label='Sample unclickable bookmark icon'
