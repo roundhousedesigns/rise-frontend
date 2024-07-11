@@ -40,7 +40,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, light] = useToken('colors', ['orange.100', 'text.light']);
+	const [orange, light] = useToken('colors', ['orange.300', 'text.light']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,

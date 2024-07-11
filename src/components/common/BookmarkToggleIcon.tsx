@@ -18,7 +18,7 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
 
 	const { colorMode } = useColorMode();
-	const [orange, lightGray, darkGray] = useToken('colors', ['orange.100', 'gray.300', 'gray.600']);
+	const [orange, lightGray, darkGray] = useToken('colors', ['orange.300', 'gray.300', 'gray.600']);
 
 	const updateBookmarkedProfilesHandler = () => {
 		if (!id) return;
