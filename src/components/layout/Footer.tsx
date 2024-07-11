@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@hooks/queries/useFrontendSetting';
+import { Dot } from '../common/icons/Dot';
 
 interface FooterLinkProps {
 	href?: string;
@@ -10,11 +11,7 @@ interface FooterLinkProps {
 
 function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX.Element {
 	return (
-		<Link
-			href={href}
-			color='inherit'
-			isExternal={isExternal}
-		>
+		<Link href={href} color='inherit' isExternal={isExternal}>
 			{children}
 		</Link>
 	);
@@ -33,17 +30,17 @@ export default function Footer() {
 						<FooterLink href='https://maestramusic.org' isExternal>
 							Maestra Music Inc.
 						</FooterLink>{' '}
-						|{' '}
+						<Dot boxSize={1} />
 						<FooterLink href='https://risetheatre.org/terms-conditions' isExternal>
 							Terms & Conditions
 						</FooterLink>{' '}
-						|{' '}
+						<Dot boxSize={1} />
 						<FooterLink href='https://www.risetheatre.org/privacy-policy' isExternal>
 							Privacy Policy
 						</FooterLink>
 					</Text>
 					<Text>
-						Site by{' '}
+						By{' '}
 						<FooterLink href='https://roundhouse-designs.com' isExternal>
 							Roundhouse Designs
 						</FooterLink>
