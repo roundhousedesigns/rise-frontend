@@ -1,8 +1,7 @@
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
 	Box,
-	IconButton,
 	Image,
 	Container,
 	Link,
@@ -12,10 +11,11 @@ import {
 	BoxProps,
 	Flex,
 	useBreakpointValue,
-	useToken,
 	ButtonGroup,
+	Icon,
+	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiBookmark, FiFileText, FiTag } from 'react-icons/fi';
+import { FiSearch, FiUser, FiBookmark, FiFileText, FiLayers } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import { SearchContext } from '@context/SearchContext';
@@ -23,23 +23,22 @@ import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
 import SearchDrawer from '@layout/SearchDrawer';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
 import ProfileNotices from '@common/ProfileNotices';
 import MainMenu from '@components/MainMenu';
+import TooltipIconButton from '../common/TooltipIconButton';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
-	const [orange] = useToken('colors', ['brand.orange']);
 
 	const [profile] = useUserProfile(loggedInId);
 
 	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
-	const drawerButtonRef = useRef(null);
 
 	const {
 		search: { results },
 	} = useContext(SearchContext);
 
+	const [orange] = useToken('colors', ['orange.400']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -100,8 +99,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 						false
 					)}
 
+					{/* Logged in */}
 					{loggedInId ? (
-						<>
+						<Flex alignItems='center'>
 							<ButtonGroup
 								color='text.light'
 								mx={2}
@@ -109,28 +109,34 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								justifyContent='flex-end'
 								size='md'
 							>
-								<IconButton
-									as={RouterLink}
+								<TooltipIconButton
 									icon={<FiBookmark fill={bookmarkedProfiles.length ? orange : 'none'} />}
-									aria-label='Bookmarked profiles'
+									label='Bookmarked profiles'
+									as={RouterLink}
 									to='/bookmarks'
 									isDisabled={!bookmarkedProfiles.length}
 								/>
 
-								<IconButton
+								<TooltipIconButton
+									icon={<FiLayers />}
 									as={RouterLink}
-									icon={<FiTag />}
-									aria-label='Saved searches'
+									label='Saved searches'
 									to='/searches'
 								/>
 
 								{results.length ? (
-									<ResponsiveButton
+									<TooltipIconButton
 										as={RouterLink}
 										to='/results'
 										icon={
 											isLargerThanMd ? (
-												<Badge py={1} px={2} ml={0} borderRadius='full' color='dark'>
+												<Badge
+													py={1}
+													px={2}
+													borderRadius='full'
+													variant='subtle'
+													colorScheme='orange'
+												>
 													{results.length}
 												</Badge>
 											) : (
@@ -138,37 +144,47 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 											)
 										}
 										label='Search results'
-									>
-										Results
-									</ResponsiveButton>
+									/>
 								) : (
 									false
 								)}
+							</ButtonGroup>
+							<Icon aria-label='Separator' viewBox='0 0 200 200' color='gray.50' boxSize={2}>
+								<path
+									stroke='currentColor'
+									strokeWidth={5}
+									d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
+								/>
+							</Icon>
+							<ButtonGroup
+								color='text.light'
+								mx={2}
+								flex='1 0 auto'
+								justifyContent='flex-end'
+								size='md'
+							>
+								<TooltipIconButton
+									icon={<FiSearch />}
+									onClick={handleDrawerOpen}
+									label='Search'
+									colorScheme='green'
+								/>
 
 								{isLargerThanMd ? (
-									<IconButton
-										as={RouterLink}
+									<TooltipIconButton
 										icon={<FiUser />}
-										aria-label='My Profile'
+										as={RouterLink}
+										label='My Profile'
+										colorScheme='blue'
 										to={`/profile/${loggedInSlug}`}
 									/>
 								) : (
 									false
 								)}
-
-								<IconButton
-									ref={drawerButtonRef}
-									icon={<FiSearch />}
-									onClick={handleDrawerOpen}
-									aria-label='Search profiles'
-									colorScheme='green'
-								>
-									Search
-								</IconButton>
 							</ButtonGroup>
 
 							<MainMenu />
-						</>
+						</Flex>
 					) : (
 						false
 					)}

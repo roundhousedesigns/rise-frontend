@@ -5,7 +5,6 @@ import {
 	ListItem,
 	Flex,
 	Spacer,
-	IconButton,
 	Button,
 	Text,
 	Heading,
@@ -20,6 +19,7 @@ import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
 import EditConflictDateRangeModal from '@components/EditConflictDateRangeModal';
+import TooltipIconButton from './common/TooltipIconButton';
 
 export default function EditConflictDateRanges() {
 	const { loggedInId } = useViewer();
@@ -112,11 +112,11 @@ export default function EditConflictDateRanges() {
 											{conflictRange.toString('long')}
 										</Link>
 										<Spacer />
-										<IconButton
-											onClick={() => handleDeleteDateRange(conflictRange)}
+										<TooltipIconButton
 											icon={<FiDelete />}
 											size='sm'
-											aria-label='Remove date range'
+											label='Remove date range'
+											onClick={() => handleDeleteDateRange(conflictRange)}
 											colorScheme='red'
 										/>
 									</Flex>

@@ -16,8 +16,6 @@ const baseStyle = definePartsStyle({
 		color: 'text.dark',
 		bg: 'whiteAlpha.600',
 		px: 2,
-		// py: 1,
-		// my: 1,
 		_hover: {
 			borderBottomColor: 'text.dark',
 		},
@@ -31,8 +29,6 @@ const baseStyle = definePartsStyle({
 		borderBottomStyle: 'solid',
 		bg: 'whiteAlpha.700',
 		px: 2,
-		// py: 1,
-		// my: 1,
 		_focus: {
 			boxShadow: 'none',
 		},

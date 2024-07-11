@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Skeleton, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
@@ -59,11 +59,9 @@ export default function App() {
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
 					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between' gap={0}>
 						<Header ref={headerRef} />
-						<Skeleton isLoaded={!loading} h='100vh'>
-							<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
-								<Main />
-							</Box>
-						</Skeleton>
+						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
+							<Main />
+						</Box>
 						<Spacer />
 						<Footer />
 					</Stack>

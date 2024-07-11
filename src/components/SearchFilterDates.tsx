@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FiCalendar, FiXCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
 import DatePickerButton from '@common/inputs/DatePickerButton';
+import TooltipIconButton from '@common/TooltipIconButton';
 import { SearchContext } from '@context/SearchContext';
 
 export default function SearchFilterDates() {
@@ -82,9 +83,9 @@ export default function SearchFilterDates() {
 					/>
 				)}
 				{startDate && (
-					<IconButton
+					<TooltipIconButton
 						icon={<FiXCircle />}
-						aria-label='Clear dates'
+						label='Clear dates'
 						onClick={handleClearDates}
 						colorScheme='red'
 					/>
@@ -95,7 +96,7 @@ export default function SearchFilterDates() {
 				<IconButton
 					icon={<FiCalendar />}
 					variant='sampleIconButton'
-					aria-label='Scheduling conflict icon'
+					aria-label='Example scheduling conflict icon'
 					bgColor='red.300'
 					color='text.dark'
 					size='xs'

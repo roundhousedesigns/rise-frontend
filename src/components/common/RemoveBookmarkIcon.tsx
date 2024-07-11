@@ -1,4 +1,4 @@
-import { IconButton, useDisclosure, useToken } from '@chakra-ui/react';
+import { IconButton, useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
 import { FiMinusCircle } from 'react-icons/fi';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 
@@ -9,7 +9,8 @@ interface Props {
 
 export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [red, lightGray] = useToken('colors', ['brand.red', 'gray.300']);
+	const { colorMode } = useColorMode();
+	const [red, light, dark] = useToken('colors', ['brand.red', 'gray.50', 'gray.900']);
 
 	const iconLabel = 'Remove this candidate from your saved candidates';
 
@@ -21,7 +22,15 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 	return (
 		<>
 			<IconButton
-				icon={<FiMinusCircle color={red} fill={red} stroke={lightGray} strokeWidth={2} size={30} />}
+				icon={
+					<FiMinusCircle
+						color={red}
+						fill={red}
+						stroke={colorMode === 'dark' ? dark : light}
+						strokeWidth={2}
+						size={30}
+					/>
+				}
 				variant={'bookmark'}
 				aria-label={iconLabel}
 				title={iconLabel}
