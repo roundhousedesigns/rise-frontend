@@ -7,6 +7,8 @@ with 1.0.0beta.
 
 - Change: Remove text labels on header buttons
 - Add: Saved Searches button to header nav
+- Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
+- Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
 
