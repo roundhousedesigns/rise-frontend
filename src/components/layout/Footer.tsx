@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@hooks/queries/useFrontendSetting';
-import { Dot } from '../common/icons/Dot';
+import { Dot } from '@common/icons/Dot';
 
 interface FooterLinkProps {
 	href?: string;

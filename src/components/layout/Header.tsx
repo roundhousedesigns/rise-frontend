@@ -12,7 +12,6 @@ import {
 	Flex,
 	useBreakpointValue,
 	ButtonGroup,
-	Icon,
 	useToken,
 } from '@chakra-ui/react';
 import { FiSearch, FiUser, FiStar, FiFileText, FiFolder } from 'react-icons/fi';
@@ -25,6 +24,7 @@ import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
 import ProfileNotices from '@common/ProfileNotices';
+import { Dot } from '@common/icons/Dot';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 
@@ -40,7 +40,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange] = useToken('colors', ['orange.100']);
+	const [orange, light] = useToken('colors', ['orange.100', 'text.light']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -152,13 +152,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									false
 								)}
 							</ButtonGroup>
-							<Icon aria-label='Separator' viewBox='0 0 200 200' color='gray.50' boxSize={2}>
-								<path
-									stroke='currentColor'
-									strokeWidth={5}
-									d='M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0'
-								/>
-							</Icon>
+							<Dot boxSize={2} pathProps={{ fill: 'transparent', stroke: light }} />
 							<ButtonGroup
 								color='text.light'
 								mx={2}
