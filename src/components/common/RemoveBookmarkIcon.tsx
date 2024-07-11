@@ -32,7 +32,7 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 						size={30}
 					/>
 				}
-				variant={'bookmark'}
+				borderRadius='full'
 				label={iconLabel}
 				onClick={onOpen}
 				mr={2}

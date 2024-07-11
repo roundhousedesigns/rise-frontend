@@ -48,8 +48,6 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				px={2}
 				mr={4}
 				my={0}
-				borderWidth={2}
-				variant='gray'
 				_dark={{
 					_hover: {
 						bg: 'gray.700',
