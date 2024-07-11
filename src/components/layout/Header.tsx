@@ -15,7 +15,7 @@ import {
 	Icon,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiBookmark, FiFileText, FiLayers } from 'react-icons/fi';
+import { FiSearch, FiUser, FiBookmark, FiFileText, FiPaperclip } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import { SearchContext } from '@context/SearchContext';
@@ -38,7 +38,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange] = useToken('colors', ['orange.400']);
+	const [orange] = useToken('colors', ['orange.300']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -118,7 +118,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								/>
 
 								<TooltipIconButton
-									icon={<FiLayers />}
+									icon={<FiPaperclip />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'

@@ -16,7 +16,7 @@ import {
 	FiHome,
 	FiCompass,
 	FiBookmark,
-	FiLayers,
+	FiPaperclip,
 	FiSettings,
 	FiHelpCircle,
 	FiLogOut,
@@ -76,7 +76,7 @@ export default function MainMenu() {
 				<MenuItem as={RouterLink} to='/bookmarks' icon={<FiBookmark />}>
 					Bookmarked Profiles
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/searches' icon={<FiLayers />}>
+				<MenuItem as={RouterLink} to='/searches' icon={<FiPaperclip />}>
 					Your Searches
 				</MenuItem>
 				<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
