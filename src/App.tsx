@@ -3,7 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Spacer, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Skeleton, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@hooks/queries/useViewer';
@@ -41,9 +41,7 @@ export default function App() {
 
 	return (
 		<SearchContextProvider>
-			<Stack
-				direction='column'
-				alignItems='center'
+			<Box
 				minH='-webkit-fill-available'
 				_dark={{
 					bg: 'gray.900',
@@ -58,13 +56,15 @@ export default function App() {
 					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between'>
 						<Header ref={headerRef} />
 						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
-							{loading ? <Spinner /> : <Main />}
+							<Skeleton isLoaded={!loading}>
+								<Main />
+							</Skeleton>
 						</Box>
 						<Spacer />
 						<Footer />
 					</Stack>
 				</SearchDrawerContext.Provider>
-			</Stack>
+			</Box>
 		</SearchContextProvider>
 	);
 }

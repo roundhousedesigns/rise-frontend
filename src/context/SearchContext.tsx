@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useReducer } from 'react';
-import { DateRange, SearchFilterSet } from '@lib/classes';
+import { SearchFilterSet } from '@lib/classes';
 import { SearchResultCandidate } from '@lib/types';
 import { additionalFilterKeys } from '@lib/utils';
 
@@ -30,7 +30,6 @@ interface SearchAction {
 			value: any;
 		};
 		searchActive?: boolean;
-		jobDates?: DateRange;
 		filterSet?: SearchFilterSet;
 		savedSearchId?: number;
 		results?: SearchResultCandidate[];

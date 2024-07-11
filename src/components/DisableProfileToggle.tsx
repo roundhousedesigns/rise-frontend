@@ -54,11 +54,11 @@ export default function DisableProfileToggle({
 	return (
 		<ToggleOptionSwitch
 			id='disableProfile'
-			checked={!disableProfile}
+			checked={disableProfile}
 			callback={handleToggleDisableProfile}
-			label='Privacy'
-			iconLeft={FiEyeOff}
-			iconRight={FiEye}
+			label={`Privacy ${disableProfile ? 'On' : 'Off'}`}
+			iconRight={FiEyeOff}
+			iconLeft={FiEye}
 			size={size}
 			loading={loading}
 			showLabel={showLabel}

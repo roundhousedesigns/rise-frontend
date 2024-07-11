@@ -27,9 +27,7 @@ export default function Main() {
 			alignItems='center'
 			flex='1 1 auto'
 		>
-			<Container w='full' maxW='6xl' px={4} pb={4}>
-				{/* DEBUG */}
-
+			<Container w='full' maxW='6xl' px={{ base: 4, md: 8 }} pb={4}>
 				<Routes>
 					<Route
 						path='/'

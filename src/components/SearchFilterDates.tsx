@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Flex, IconButton, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiCalendar, FiXCircle } from 'react-icons/fi';
@@ -53,12 +53,15 @@ export default function SearchFilterDates() {
 	 * Clears the selected dates and updates the job dates with an empty DateRange.
 	 */
 	const handleClearDates = (): void => {
-		searchDispatch({ type: 'SET_JOB_DATES', payload: { jobDates: new DateRange() } });
+		searchDispatch({
+			type: 'SET_FILTER',
+			payload: { filter: { key: 'jobDates', value: new DateRange() } },
+		});
 	};
 
 	return (
-		<Box>
-			<Flex gap={4}>
+		<>
+			<Flex gap={4} alignItems='center' flexWrap='wrap'>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}
 					selected={startDate}
@@ -97,8 +100,7 @@ export default function SearchFilterDates() {
 					color='text.dark'
 					size='xs'
 				/>
-				.
 			</Text>
-		</Box>
+		</>
 	);
 }
