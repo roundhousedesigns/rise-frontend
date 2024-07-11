@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@hooks/queries/useFrontendSetting';
+import { Dot } from '../common/icons/Dot';
 
 interface FooterLinkProps {
 	href?: string;
@@ -8,9 +9,9 @@ interface FooterLinkProps {
 	children: ReactNode;
 }
 
-function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX.Element {
+function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
 	return (
-		<Link href={href} color='inherit' isExternal={isExternal}>
+		<Link href={href} color='inherit' isExternal>
 			{children}
 		</Link>
 	);
@@ -27,24 +28,17 @@ export default function Footer() {
 				<Container maxW='6xl' textAlign='center'>
 					<Text align='center'>{footerNotice}</Text>
 					<Text>
-						©{year}{' '}
-						<FooterLink href='https://maestramusic.org' isExternal>
-							Maestra Music Inc.
-						</FooterLink>{' '}
-						|{' '}
-						<FooterLink href='https://risetheatre.org/terms-conditions' isExternal>
+						&copy; {year}{' '}
+						<FooterLink href='https://maestramusic.org'>Maestra Music Inc.</FooterLink>
+						<Dot boxSize={1} />
+						<FooterLink href='https://risetheatre.org/terms-conditions'>
 							Terms & Conditions
-						</FooterLink>{' '}
-						|{' '}
-						<FooterLink href='https://www.risetheatre.org/privacy-policy' isExternal>
-							Privacy Policy
 						</FooterLink>
+						<Dot boxSize={1} />
+						<FooterLink href='https://risetheatre.org/privacy-policy'>Privacy Policy</FooterLink>
 					</Text>
 					<Text>
-						Site by{' '}
-						<FooterLink href='https://roundhouse-designs.com' isExternal>
-							Roundhouse Designs
-						</FooterLink>
+						By <FooterLink href='https://roundhouse-designs.com'>Roundhouse Designs</FooterLink>
 					</Text>
 				</Container>
 			</Box>
