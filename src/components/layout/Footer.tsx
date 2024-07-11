@@ -10,11 +10,7 @@ interface FooterLinkProps {
 
 function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX.Element {
 	return (
-		<Link
-			href={href}
-			color='inherit'
-			isExternal={isExternal}
-		>
+		<Link href={href} color='inherit' isExternal={isExternal}>
 			{children}
 		</Link>
 	);
@@ -23,13 +19,15 @@ function FooterLink({ href, isExternal = true, children }: FooterLinkProps): JSX
 export default function Footer() {
 	const { value: footerNotice } = useFrontendSetting('footer_notice');
 
+	const year = new Date().getFullYear();
+
 	return (
 		<LightMode>
 			<Box w='full' py={4} alignItems='center' bgColor='brand.orange' fontSize='sm'>
 				<Container maxW='6xl' textAlign='center'>
 					<Text align='center'>{footerNotice}</Text>
 					<Text>
-						©2023{' '}
+						©{year}{' '}
 						<FooterLink href='https://maestramusic.org' isExternal>
 							Maestra Music Inc.
 						</FooterLink>{' '}
