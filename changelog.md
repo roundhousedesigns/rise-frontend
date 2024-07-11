@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.8] - Unreleased
+## \[1.1.8] - 2024-07-10
 
 - Add: Autocomplete for finding and populating departments/jobs on the search form.
 - Fix: Add display case for workStart === workEnd for Credit display.
