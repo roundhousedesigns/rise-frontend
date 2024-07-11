@@ -4,9 +4,9 @@ import { FiEdit3 } from 'react-icons/fi';
 import useViewer from '@hooks/queries/useViewer';
 import useUserId from '@hooks/queries/useUserId';
 import useUserProfile from '@hooks/queries/useUserProfile';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import Page from '@components/Page';
 import ProfileView from '@views/ProfileView';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
 
 export default function Profile(): JSX.Element {
 	const { loggedInId, loggedInSlug } = useViewer();
@@ -22,15 +22,13 @@ export default function Profile(): JSX.Element {
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>
 			{profileIsLoggedInUser && (
-				<ResponsiveButton
+				<TooltipIconButton
 					label='Edit profile'
 					icon={<FiEdit3 />}
 					as={RouterLink}
 					to='/profile/edit'
 					colorScheme='green'
-				>
-					Edit
-				</ResponsiveButton>
+				/>
 			)}
 		</ButtonGroup>
 	);

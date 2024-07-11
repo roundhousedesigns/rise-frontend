@@ -18,8 +18,8 @@ import { DateRange } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
 import useViewer from '@hooks/queries/useViewer';
 import useDeleteOwnConflictRange from '@hooks/mutations/useDeleteOwnConflictRange';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditConflictDateRangeModal from '@components/EditConflictDateRangeModal';
-import TooltipIconButton from './common/TooltipIconButton';
 
 export default function EditConflictDateRanges() {
 	const { loggedInId } = useViewer();

@@ -20,7 +20,6 @@ import {
 	Icon,
 	useBreakpointValue,
 	Spacer,
-	IconButton,
 } from '@chakra-ui/react';
 import {
 	FiMail,
@@ -44,6 +43,7 @@ import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ProfileStackItem from '@common/ProfileStackItem';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
@@ -425,14 +425,13 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 												previewIcon={false}
 												maxW='250px'
 											/>
-											<IconButton
+											<TooltipIconButton
 												icon={<FiDownload />}
 												as={Link}
-												aria-label='Download resume'
+												label='Download resume'
 												href={resume}
 												colorScheme='green'
 												my={0}
-												download
 											/>
 										</Flex>
 									</ProfileStackItem>

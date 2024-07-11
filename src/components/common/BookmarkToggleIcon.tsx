@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { IconButton, useColorMode, useToken } from '@chakra-ui/react';
+import { useColorMode, useToken } from '@chakra-ui/react';
 import { FiStar } from 'react-icons/fi';
 import { toggleArrayItem } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	id: number;
@@ -17,11 +18,7 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
 
 	const { colorMode } = useColorMode();
-	const [orange, lightGray, darkGray] = useToken('colors', [
-		'brand.orange',
-		'gray.300',
-		'gray.600',
-	]);
+	const [orange, lightGray, darkGray] = useToken('colors', ['orange.100', 'gray.300', 'gray.600']);
 
 	const updateBookmarkedProfilesHandler = () => {
 		if (!id) return;
@@ -36,23 +33,21 @@ export default function BookmarkToggleIcon({ id, isDisabled, ...props }: Props) 
 		updateBookmarkedProfilesMutation(loggedInId, updatedBookmarkedProfiles);
 	};
 
-	const iconLabel = isBookmarked ? 'Remove from Saved list' : 'Add to Saved list';
+	const iconLabel = isBookmarked ? 'Unstar this profile' : 'Star this profile';
 
 	return (
-		<IconButton
+		<TooltipIconButton
 			icon={
 				<FiStar
 					color={isBookmarked ? orange : ''}
 					fill={isBookmarked ? orange : 'transparent'}
 					stroke={colorMode === 'dark' ? lightGray : darkGray}
-					strokeWidth={1}
-					size={24}
+					size={20}
 				/>
 			}
 			cursor='pointer'
 			borderRadius='full'
-			aria-label={iconLabel}
-			title={iconLabel}
+			label={iconLabel}
 			onClick={updateBookmarkedProfilesHandler}
 			mx={2}
 			{...props}

@@ -25,7 +25,7 @@ import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
 import useSavedSearches from '@hooks/queries/useSavedSearches';
 import ProfileNotices from '@common/ProfileNotices';
-import TooltipIconButton from '@common/TooltipIconButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {

@@ -1,3 +1,6 @@
+/**
+ * @deprecated v1.1.9
+ */
 import { ReactNode, ReactElement, JSXElementConstructor } from 'react';
 import { Button, ButtonProps, IconButton, forwardRef, useBreakpointValue } from '@chakra-ui/react';
 

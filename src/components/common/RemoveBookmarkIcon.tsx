@@ -1,6 +1,7 @@
-import { IconButton, useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
+import { useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
 import { FiMinusCircle } from 'react-icons/fi';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	id: number;
@@ -21,7 +22,7 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 
 	return (
 		<>
-			<IconButton
+			<TooltipIconButton
 				icon={
 					<FiMinusCircle
 						color={red}
@@ -32,8 +33,7 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 					/>
 				}
 				variant={'bookmark'}
-				aria-label={iconLabel}
-				title={iconLabel}
+				label={iconLabel}
 				onClick={onOpen}
 				mr={2}
 			/>

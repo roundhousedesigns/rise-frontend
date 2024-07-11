@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { IconButton, useClipboard, useToast } from '@chakra-ui/react';
+import { useClipboard, useToast } from '@chakra-ui/react';
 import { FiShare2 } from 'react-icons/fi';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	url: string;
@@ -48,12 +49,6 @@ export default function ShareButton({ url, ...props }: Props) {
 	}, [hasCopied]);
 
 	return (
-		<IconButton
-			aria-label='Share'
-			title='Share'
-			icon={<FiShare2 />}
-			onClick={handleShareClick}
-			{...props}
-		/>
+		<TooltipIconButton label='Share' icon={<FiShare2 />} onClick={handleShareClick} {...props} />
 	);
 }

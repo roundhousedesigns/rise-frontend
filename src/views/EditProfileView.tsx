@@ -10,7 +10,6 @@ import {
 	Stack,
 	Spinner,
 	StackItem,
-	IconButton,
 	Button,
 	ButtonGroup,
 	useToast,
@@ -68,6 +67,7 @@ import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
@@ -1171,20 +1171,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										gap={{ base: 2, md: 0 }}
 										direction={{ base: 'column', md: 'row' }}
 									>
-										<IconButton
+										<TooltipIconButton
 											colorScheme='gray'
 											icon={<FiArrowUpCircle />}
-											aria-label='Move up Credit'
+											label='Move Credit up'
 											isDisabled={index === 0}
 											id={credit.id}
 											onClick={() => {
 												handleCreditMoveUp(index);
 											}}
 										/>
-										<IconButton
+										<TooltipIconButton
 											colorScheme='gray'
 											icon={<FiArrowDownCircle />}
-											aria-label='Move down Credit'
+											label='Move Credit down'
 											isDisabled={index === creditsSorted.length - 1}
 											id={credit.id}
 											onClick={() => {

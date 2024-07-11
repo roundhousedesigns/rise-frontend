@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -8,6 +8,7 @@ import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useSearchByName from '@hooks/queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	[prop: string]: any;
@@ -102,15 +103,15 @@ export default function SearchFilterName({ ...props }: Props) {
 						onChange={handleInputChange}
 						flex='1 0 60%'
 					/>
-					<IconButton
+					<TooltipIconButton
 						icon={<FiXCircle />}
 						onClick={handleClear}
-						aria-label='Clear name'
+						label='Clear name'
 						colorScheme='orange'
-						isDisabled={!name}
+						isDisabled={!name || loading}
 					/>
-					<IconButton
-						aria-label='Search by name'
+					<TooltipIconButton
+						label='Search'
 						colorScheme='green'
 						type='submit'
 						form='search-by-name'

@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FiCalendar, FiXCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
 import DatePickerButton from '@common/inputs/DatePickerButton';
-import TooltipIconButton from '@common/TooltipIconButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import { SearchContext } from '@context/SearchContext';
 
 export default function SearchFilterDates() {
