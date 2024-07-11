@@ -16,6 +16,10 @@ export default function App() {
 		result: { loading },
 	} = useViewer();
 
+	useEffect(() => {
+		console.info('loading changed');
+	}, [loading]);
+
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
 
 	// Get the header height so we can offset the main content
@@ -53,13 +57,13 @@ export default function App() {
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between'>
+					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between' gap={0}>
 						<Header ref={headerRef} />
-						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
-							<Skeleton isLoaded={!loading}>
+						<Skeleton isLoaded={!loading} h='100vh'>
+							<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
 								<Main />
-							</Skeleton>
-						</Box>
+							</Box>
+						</Skeleton>
 						<Spacer />
 						<Footer />
 					</Stack>
