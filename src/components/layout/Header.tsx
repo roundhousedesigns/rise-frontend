@@ -21,6 +21,7 @@ import {
 	useToken,
 	useColorMode,
 	Icon,
+	Stack,
 } from '@chakra-ui/react';
 import {
 	FiSearch,
@@ -192,7 +193,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{loggedInId ? (
 						<>
-							<Flex
+							<Stack
+								direction='row'
 								color='text.light'
 								gap={2}
 								mx={2}
@@ -205,7 +207,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								{results.length ? <SearchResultsButton /> : false}
 								<SearchButton />
 								{isLargerThanMd ? <MyProfileButton /> : null}
-							</Flex>
+							</Stack>
 							<Menu>
 								<MenuButton
 									aria-label='Menu'
