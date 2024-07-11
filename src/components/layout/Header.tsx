@@ -15,7 +15,7 @@ import {
 	Icon,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiBookmark, FiFileText, FiPaperclip } from 'react-icons/fi';
+import { FiSearch, FiUser, FiBookmark, FiFileText, FiFolder } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import { SearchContext } from '@context/SearchContext';
@@ -118,7 +118,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								/>
 
 								<TooltipIconButton
-									icon={<FiPaperclip />}
+									icon={<FiFolder />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'
