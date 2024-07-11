@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.9-headerUpgrade] - Unreleased
+
+- Change: Remove text labels on header buttons
+- Add: Saved Searches button to header nav
+- Improve: `<Menu>` extracted to new `<MainMenu>` component.
+- Improve: Refactor header and main menu.
+
 ## \[1.1.8] - 2024-07-10
 
 - Add: Autocomplete for finding and populating departments/jobs on the search form.
