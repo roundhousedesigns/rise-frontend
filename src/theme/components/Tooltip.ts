@@ -3,9 +3,10 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/react';
 // define the base component styles
 const baseStyle = defineStyle({
 	borderRadius: 'md',
-	borderWidth: '2px',
+	borderWidth: '1px',
 	px: 2,
-	py: 0,
+	py: 1,
+	fontSize: 'xs',
 	_dark: {
 		bg: 'gray.700',
 		color: 'text.light',

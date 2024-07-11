@@ -10,6 +10,7 @@ import {
 	Button,
 	Box,
 	Skeleton,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
@@ -26,6 +27,7 @@ import useSaveSearch from '@hooks/mutations/useSaveSearch';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
 
 interface Props {
@@ -210,13 +212,15 @@ export default function SavedSearchItem({
 								borderBottomWidth='2px'
 								borderBottomStyle='dotted'
 								textDecoration='none !important'
+								transition='border 150ms ease'
+								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
 								_light={{
 									borderBottomColor: 'gray.300',
-									_hover: { borderBottomColor: 'gray.400' },
+									_hover: { borderBottomColor: 'gray.500' },
 								}}
 								_dark={{
 									borderBottomColor: 'gray.600',
-									_hover: { borderBottomColor: 'gray.400' },
+									_hover: { borderBottomColor: 'gray.500' },
 								}}
 								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 							>
@@ -239,30 +243,24 @@ export default function SavedSearchItem({
 				{id ? (
 					<Box p={2}>
 						{showControls ? (
-							<Stack>
-								<Button
-									leftIcon={<FiSearch />}
-									aria-label='Search these filters'
-									title='Search these filters'
-									size='xs'
-									w='100%'
+							<ButtonGroup size='sm'>
+								<TooltipIconButton
+									icon={<FiSearch />}
+									label='Load these filters'
 									colorScheme='green'
 									onClick={handleSearchClick}
 								>
 									Search
-								</Button>
-								<Button
-									leftIcon={<FiDelete />}
-									aria-label='Delete this search'
-									title='Delete'
-									size='xs'
-									w='100%'
+								</TooltipIconButton>
+								<TooltipIconButton
+									icon={<FiDelete />}
+									label='Delete this search'
 									colorScheme='red'
 									onClick={deleteOnOpen}
 								>
 									Delete
-								</Button>
-							</Stack>
+								</TooltipIconButton>
+							</ButtonGroup>
 						) : savedSearchFiltersChanged ? (
 							<Stack textAlign='center'>
 								<Button
