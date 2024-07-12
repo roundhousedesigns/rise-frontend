@@ -87,9 +87,9 @@ export default function EditConflictDateRanges() {
 			<List flexDirection='column' spacing={0}>
 				{sortedDateRanges && sortedDateRanges.length ? (
 					<AnimatePresence>
-						{sortedDateRanges.map((conflictRange, index) => (
+						{sortedDateRanges.map((conflictRange) => (
 							<MotionBox
-								key={index}
+								key={conflictRange.toString()}
 								initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
 								animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 								exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)

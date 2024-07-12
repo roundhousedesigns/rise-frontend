@@ -14,7 +14,7 @@ export const QUERY_VIEWER = gql`
 			email
 			username
 			disableProfile
-			starredProfileConnections(first: 100) {
+			starredProfiles(first: 100) {
 				nodes {
 					databaseId
 				}
@@ -48,12 +48,11 @@ const useViewer = (): Props => {
 		email,
 		username,
 		disableProfile,
-		starredProfileConnections,
+		starredProfiles: starredProfilesRaw,
 	} = result?.data?.viewer || {};
 
 	const starredProfiles =
-		starredProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) ||
-		[];
+		starredProfilesRaw?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
 
 	return {
 		loggedInId,

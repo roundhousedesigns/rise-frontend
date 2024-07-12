@@ -104,7 +104,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 		credits,
 	} = profile || {};
 
-	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
+	// Ensure media videos are unique
+	const mediaVideos = Array.from(new Set([mediaVideo1, mediaVideo2].filter(Boolean)));
+
 	const mediaImages = [
 		mediaImage1,
 		mediaImage2,
@@ -186,11 +188,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 			{...props}
 		>
 			<ShareButton url={profileUrl} borderRadius='full' />
-			{id && allowStar ? (
-				<StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
-			) : (
-				false
-			)}
+			{id && allowStar ? <StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' /> : false}
 		</Flex>
 	);
 
@@ -485,10 +483,11 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										Video
 									</Heading>
 									<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
-										{mediaVideos.map((video: string | undefined, index: Key) => {
+										{mediaVideos.map((video: string | undefined) => {
 											if (!video) return false;
 											return (
-												<Box key={index} position='relative' paddingBottom='56.25%'>
+												// Videos are unique, so we can just use the string as the key.
+												<Box key={video} position='relative' paddingBottom='56.25%'>
 													<Box position='absolute' top={0} left={0} width='100%' height='100%'>
 														<ReactPlayer url={video} controls width='100%' height='100%' />
 													</Box>

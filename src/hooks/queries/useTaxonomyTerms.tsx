@@ -48,10 +48,9 @@ const useTaxonomyTerms = (ids: number[]): [WPItem[], any] => {
 		},
 	});
 
-	const preparedResult =
-		result.data?.terms.nodes && result.data.terms.nodes.length > 0
-			? result.data.terms.nodes.map((node: WPItem) => new WPItem(node) as WPItemParams)
-			: null;
+	const preparedResult: WPItem[] = [];
+	if (result.data?.terms.nodes && result.data.terms.nodes.length > 0)
+		result.data.terms.nodes.forEach((node: WPItemParams) => preparedResult.push(new WPItem(node)));
 
 	return [preparedResult, omit(result, ['data'])];
 };

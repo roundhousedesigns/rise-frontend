@@ -1,6 +1,5 @@
-// useUpdateStarredProfiles.ts
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_VIEWER } from '@hooks/queries/useViewer';
+import useViewer, { QUERY_VIEWER } from '@hooks/queries/useViewer';
 
 const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 	mutation updateStarredProfilesMutation(
@@ -17,7 +16,7 @@ const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 		) {
 			clientMutationId
 			viewer {
-				starredProfileConnections {
+				starredProfiles {
 					nodes {
 						databaseId
 					}
@@ -28,12 +27,10 @@ const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 `;
 
 const useUpdateStarredProfiles = () => {
+	const { loggedInId } = useViewer();
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_STARRED_PROFILE);
 
-	const updateStarredProfilesMutation = (
-		loggedInId: number,
-		updatedStarredProfiles: number[]
-	) => {
+	const updateStarredProfilesMutation = (updatedStarredProfiles: number[]) => {
 		return mutation({
 			variables: {
 				loggedInId,
@@ -46,6 +43,8 @@ const useUpdateStarredProfiles = () => {
 			],
 		});
 	};
+
+	if (results.error) console.error(results.error);
 
 	return { updateStarredProfilesMutation, results };
 };

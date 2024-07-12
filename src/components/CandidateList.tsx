@@ -19,7 +19,7 @@ const CandidateList = ({ userIds, inOrder }: Props): JSX.Element => {
 		if (!inOrder) return preparedCandidates;
 
 		// Sort the array of Candidate objects by the order of the IDs in the userIds array.
-		return userIds.map((id): Candidate[] =>
+		return userIds.map((id) =>
 			preparedCandidates.find((candidate: Candidate) => candidate.id === id)
 		);
 	}, [preparedCandidates?.map((candidate: Candidate) => candidate.id)]);
@@ -32,8 +32,9 @@ const CandidateList = ({ userIds, inOrder }: Props): JSX.Element => {
 				<ErrorAlert message={error.message} />
 			) : memoizedCandidates ? (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
-					{memoizedCandidates.map((candidate: Candidate) => {
-						const { id } = candidate || {};
+					{memoizedCandidates.map((candidate: Candidate | undefined) => {
+						if (!candidate) return false;
+						const { id } = candidate;
 
 						return id ? (
 							<ListItem key={id}>

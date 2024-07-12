@@ -46,9 +46,9 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 	useEffect(() => {
 		if (!jobIds && !skillIds) return;
 
-		const termList = jobIds.concat(skillIds);
+		const joinedTermList = jobIds.concat(skillIds);
 
-		setTermList(termList);
+		setTermList(joinedTermList);
 	}, [jobIds, skillIds]);
 
 	// Get jobs terms from their IDs

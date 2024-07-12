@@ -1,5 +1,5 @@
 import { IconButton, Text } from '@chakra-ui/react';
-import StarredCandidateList from '@views/StarredCandidateList';
+import StarredProfileList from '@views/StarredProfileList';
 import useViewer from '@hooks/queries/useViewer';
 import { FiStar } from 'react-icons/fi';
 
@@ -25,7 +25,7 @@ export default function StarredProfilesView() {
 				false
 			)}
 
-			<StarredCandidateList my={8} />
+			<StarredProfileList my={8} />
 		</>
 	);
 }

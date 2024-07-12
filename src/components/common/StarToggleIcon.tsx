@@ -30,7 +30,7 @@ export default function StarToggleIcon({ id, isDisabled, ...props }: Props) {
 		const updatedStarredProfiles = toggleArrayItem(starredProfiles, id);
 
 		// Fire the mutation
-		updateStarredProfilesMutation(loggedInId, updatedStarredProfiles);
+		updateStarredProfilesMutation(updatedStarredProfiles);
 	};
 
 	const iconLabel = isStarred ? 'Unstar this profile' : 'Star this profile';
