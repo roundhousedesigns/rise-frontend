@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.9-headerUpgrade] - Unreleased
+## \[1.1.9-dev] - Unreleased
 
 - Change: Remove text labels on header buttons
 - Add: Saved Searches button to header nav
