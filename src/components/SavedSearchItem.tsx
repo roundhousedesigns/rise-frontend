@@ -160,7 +160,7 @@ export default function SavedSearchItem({
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
-			filterSet: searchFilterSet.current.toQueryableFilterSet(),
+			filterSet: searchFilterSet.toQueryableFilterSet(),
 			id: saveNewSearch ? undefined : id,
 		})
 			.then((results) => {
@@ -173,7 +173,7 @@ export default function SavedSearchItem({
 				searchDispatch({
 					type: 'SET_SAVED_SEARCH_FILTERS',
 					payload: {
-						filterSet: searchFilterSet.current,
+						filterSet: searchFilterSet,
 						savedSearchId: id,
 					},
 				});

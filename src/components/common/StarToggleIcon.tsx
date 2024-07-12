@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function StarToggleIcon({ id, isDisabled, ...props }: Props) {
-	const { loggedInId, starredProfiles } = useViewer();
+	const { starredProfiles } = useViewer();
 	const [isStarred, setIsStarred] = useState<boolean>(starredProfiles.includes(id));
 	const { updateStarredProfilesMutation } = useUpdateStarredProfiles();
 

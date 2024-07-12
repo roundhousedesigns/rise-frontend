@@ -14,15 +14,14 @@ const CandidateList = ({ userIds, inOrder }: Props): JSX.Element => {
 	const [preparedCandidates, { loading, error }] = useCandidates(userIds);
 
 	const memoizedCandidates = useMemo(() => {
-		if (!userIds.length) return [];
-		if (!preparedCandidates || !preparedCandidates.length) return [];
-		if (!inOrder) return preparedCandidates;
+		if (!userIds.length || !preparedCandidates?.length) return [];
 
-		// Sort the array of Candidate objects by the order of the IDs in the userIds array.
-		return userIds.map((id) =>
-			preparedCandidates.find((candidate: Candidate) => candidate.id === id)
-		);
-	}, [preparedCandidates?.map((candidate: Candidate) => candidate.id)]);
+		if (inOrder) {
+			return userIds.map((id) => preparedCandidates.find((candidate) => candidate.id === id));
+		}
+
+		return preparedCandidates;
+	}, [preparedCandidates?.map((candidate) => candidate.id), inOrder]);
 
 	return (
 		<>
