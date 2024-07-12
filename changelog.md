@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.9-bookmarkToStar]
+
+- Change: Bookmark terminology is now more appropriately "Starred".
+
 ## \[1.1.9-dev] - Unreleased
 
 - Change: Remove text labels on header buttons
