@@ -21,7 +21,7 @@ export default function SearchResultsView() {
 	const { jobDates } = filterSet;
 
 	const [resultsCount, setResultsCount] = useState<number>(results.length);
-	const [savedSearches] = useSavedSearches();
+	const [savedSearches] = useSavedSearches(savedSearchId ? [savedSearchId] : []);
 	const [savedSearchTitle, setSavedSearchTitle] = useState<string>('');
 
 	/**

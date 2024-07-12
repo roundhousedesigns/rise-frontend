@@ -9,8 +9,8 @@ import { WPItemParams } from '@lib/types';
 import useViewer from '@hooks/queries/useViewer';
 
 export const QUERY_SAVED_SEARCHES = gql`
-	query QuerySavedSearches($author: Int!) {
-		savedSearches(where: { author: $author }) {
+	query QuerySavedSearches($author: Int!, $in: [ID] = []) {
+		savedSearches(where: { author: $author, in: $in }) {
 			nodes {
 				content(format: RAW)
 				title
@@ -21,11 +21,12 @@ export const QUERY_SAVED_SEARCHES = gql`
 	}
 `;
 
-export default function useSavedSearches(): [WPPost[], any] {
+export default function useSavedSearches(ids: number[] = []): [WPPost[], any] {
 	const { loggedInId } = useViewer();
 	const result = useQuery(QUERY_SAVED_SEARCHES, {
 		variables: {
 			author: loggedInId,
+			in: ids
 		},
 	});
 
