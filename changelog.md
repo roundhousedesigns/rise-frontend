@@ -3,19 +3,16 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.9-bookmarkToStar]
-
-- Change: Bookmark terminology is now more appropriately "Starred".
-- Improve: `useSavedSearches()` can now take an array of IDs to include.
-
 ## \[1.1.9-dev] - Unreleased
 
+- Change: Bookmark terminology is now more appropriately "Starred". **Backend version 1.1.6**
+- Improve: `useSavedSearches()` can now take an array of IDs to include.
 - Change: Remove text labels on header buttons
 - Add: Saved Searches button to header nav
 - Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
-- Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
+- Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 
 ## \[1.1.8] - 2024-07-10
 
@@ -42,7 +39,7 @@ with 1.0.0beta.
 
 ## \[1.1.6] - 2024-05-07
 
-- Add: Change email address. **Requires backend version 1.1.3** (no tag yet)
+- Add: Change email address. **Requires backend version 1.1.3**
 - Improve: Default link color is now the brand blue.
 - Improve: Link underline hover transition.
 - Improve: Clean up imports.
