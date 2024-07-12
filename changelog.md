@@ -6,6 +6,7 @@ with 1.0.0beta.
 ## \[1.1.9-bookmarkToStar]
 
 - Change: Bookmark terminology is now more appropriately "Starred".
+- Improve: `useSavedSearches()` can now take an array of IDs to include.
 
 ## \[1.1.9-dev] - Unreleased
 
