@@ -44,10 +44,10 @@ export class User implements UserParams {
  */
 export class CurrentUser extends User {
 	email: string;
-	bookmarkedProfiles: number[];
+	starredProfiles: number[];
 
-	constructor(params?: UserParams & { email: string; bookmarkedProfiles: number[] }) {
-		const { id, firstName, lastName, slug, email, bookmarkedProfiles } = params || {};
+	constructor(params?: UserParams & { email: string; starredProfiles: number[] }) {
+		const { id, firstName, lastName, slug, email, starredProfiles } = params || {};
 
 		super({
 			id: id ? id : null,
@@ -57,7 +57,7 @@ export class CurrentUser extends User {
 		});
 
 		this.email = email ? email : '';
-		this.bookmarkedProfiles = bookmarkedProfiles ? bookmarkedProfiles : [];
+		this.starredProfiles = starredProfiles ? starredProfiles : [];
 	}
 
 	/**

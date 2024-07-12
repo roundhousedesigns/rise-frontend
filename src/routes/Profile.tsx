@@ -40,7 +40,7 @@ export default function Profile(): JSX.Element {
 			loading={loading}
 			pb={8}
 		>
-			{profile ? <ProfileView profile={profile} allowBookmark={loggedInId !== profileId} /> : false}
+			{profile ? <ProfileView profile={profile} allowStar={loggedInId !== profileId} /> : false}
 		</Page>
 	);
 }

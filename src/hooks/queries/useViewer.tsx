@@ -14,7 +14,7 @@ export const QUERY_VIEWER = gql`
 			email
 			username
 			disableProfile
-			bookmarkedProfileConnections(first: 50) {
+			starredProfileConnections(first: 100) {
 				nodes {
 					databaseId
 				}
@@ -32,7 +32,7 @@ interface Props {
 	username: string;
 	disableProfile: boolean;
 	result: QueryResult;
-	bookmarkedProfiles: number[];
+	starredProfiles: number[];
 }
 
 const useViewer = (): Props => {
@@ -48,11 +48,11 @@ const useViewer = (): Props => {
 		email,
 		username,
 		disableProfile,
-		bookmarkedProfileConnections,
+		starredProfileConnections,
 	} = result?.data?.viewer || {};
 
-	const bookmarkedProfiles =
-		bookmarkedProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) ||
+	const starredProfiles =
+		starredProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) ||
 		[];
 
 	return {
@@ -63,7 +63,7 @@ const useViewer = (): Props => {
 		email,
 		username,
 		disableProfile,
-		bookmarkedProfiles,
+		starredProfiles,
 		result,
 	};
 };

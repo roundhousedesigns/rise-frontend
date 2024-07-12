@@ -57,7 +57,6 @@ export default function MainMenu() {
 				colorScheme='yellow'
 				icon={<FiMenu />}
 				size='sm'
-				ml={{ base: 0, md: 4 }}
 			/>
 			<MenuList zIndex='100' color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
 				{!isLargerThanMd ? (
@@ -73,8 +72,8 @@ export default function MainMenu() {
 				<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
 					Dashboard
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/bookmarks' icon={<FiStar />}>
-					Bookmarked Profiles
+				<MenuItem as={RouterLink} to='/starred' icon={<FiStar />}>
+					Starred Profiles
 				</MenuItem>
 				<MenuItem as={RouterLink} to='/searches' icon={<FiFolder />}>
 					Your Searches

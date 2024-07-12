@@ -29,7 +29,7 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
-	const { loggedInId, loggedInSlug, bookmarkedProfiles } = useViewer();
+	const { loggedInId, loggedInSlug, starredProfiles } = useViewer();
 	const [savedSearches] = useSavedSearches();
 
 	const [profile] = useUserProfile(loggedInId);
@@ -112,11 +112,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								size='md'
 							>
 								<TooltipIconButton
-									icon={<FiStar fill={bookmarkedProfiles.length ? orange : 'none'} />}
-									label='Bookmarked profiles'
+									icon={<FiStar fill={starredProfiles.length ? orange : 'none'} />}
+									label='Starred profiles'
 									as={RouterLink}
-									to='/bookmarks'
-									isDisabled={!bookmarkedProfiles.length}
+									to='/stars'
+									isDisabled={!starredProfiles.length}
 								/>
 
 								<TooltipIconButton
@@ -152,7 +152,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									false
 								)}
 							</ButtonGroup>
-							<Dot boxSize={2} pathProps={{ fill: 'transparent', stroke: light }} />
+							<Dot boxSize={1} pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }} />
 							<ButtonGroup
 								color='text.light'
 								mx={2}
@@ -179,6 +179,12 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									false
 								)}
 							</ButtonGroup>
+
+							<Dot
+								boxSize={1}
+								pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
+								mr={3}
+							/>
 
 							<MainMenu />
 						</Flex>

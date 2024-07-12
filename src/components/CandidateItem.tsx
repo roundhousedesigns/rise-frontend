@@ -5,8 +5,8 @@ import { Candidate } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
-import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
-import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
+import StarToggleIcon from '@common/StarToggleIcon';
+import RemoveStarIcon from '@common/RemoveStarIcon';
 import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
@@ -36,9 +36,9 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	return id ? (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
-				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
+				<RemoveStarIcon id={id} handleRemoveStar={onRemove(id)} />
 			) : (
-				<BookmarkToggleIcon id={id} isDisabled={loggedInId === id} />
+				<StarToggleIcon id={id} isDisabled={loggedInId === id} />
 			)}
 			<Card
 				flex={1}

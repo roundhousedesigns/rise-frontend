@@ -38,7 +38,7 @@ import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
-import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
+import StarToggleIcon from '@common/StarToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
@@ -52,14 +52,14 @@ import ConflictDateRanges from '@components/ConflictDateRanges';
 
 interface Props {
 	profile: UserProfile;
-	allowBookmark?: boolean;
+	allowStar?: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, allowBookmark = true }: Props): JSX.Element | null {
+export default function ProfileView({ profile, allowStar = true }: Props): JSX.Element | null {
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
@@ -171,8 +171,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		});
 	}
 
-	// Share and Bookmark buttons.
-	const ShareBookmarkButtons = ({ ...props }: { [prop: string]: any }) => (
+	// Share and Star buttons.
+	const ShareStarButtons = ({ ...props }: { [prop: string]: any }) => (
 		<Flex
 			bg={{ base: 'transparent !important' }}
 			position={{ base: 'absolute', md: 'relative' }}
@@ -186,8 +186,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			{...props}
 		>
 			<ShareButton url={profileUrl} borderRadius='full' />
-			{id && allowBookmark ? (
-				<BookmarkToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
+			{id && allowStar ? (
+				<StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
 			) : (
 				false
 			)}
@@ -230,7 +230,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>
-						{!isLargerThanMd ? <ShareBookmarkButtons /> : false}
+						{!isLargerThanMd ? <ShareStarButtons /> : false}
 						<Flex
 							gap={6}
 							flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -302,7 +302,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											false
 										)}
 										<Spacer flex={1} />
-										{isLargerThanMd ? <ShareBookmarkButtons p={0} /> : false}
+										{isLargerThanMd ? <ShareStarButtons p={0} /> : false}
 									</Flex>
 									<ProfileSubtitle flex='0 0 100%' w='full' />
 								</StackItem>

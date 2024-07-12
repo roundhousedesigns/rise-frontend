@@ -5,7 +5,7 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 
 // WordPress block styles
-import '../../assets/css/wordpress.css';
+import '@assets/css/wordpress.css';
 import { WPPost } from '@lib/classes';
 
 export const QUERY_GLOBAL_NOTICES = gql`

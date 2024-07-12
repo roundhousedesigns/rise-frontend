@@ -1,21 +1,21 @@
 import { IconButton, Text } from '@chakra-ui/react';
-import BookmarkedCandidateList from '@views/BookmarkedCandidateList';
+import StarredCandidateList from '@views/StarredCandidateList';
 import useViewer from '@hooks/queries/useViewer';
 import { FiStar } from 'react-icons/fi';
 
-export default function BookmarkedProfilesView() {
-	const { bookmarkedProfiles } = useViewer();
+export default function StarredProfilesView() {
+	const { starredProfiles } = useViewer();
 	return (
 		<>
-			{bookmarkedProfiles.length === 0 ? (
+			{starredProfiles.length === 0 ? (
 				<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 					No saved profiles. Click a{' '}
 					<IconButton
 						icon={<FiStar />}
 						variant='sampleIconButton'
 						mx={1}
-						aria-label='Sample unclickable bookmark icon'
-						title='Bookmark'
+						aria-label='Sample unclickable star icon'
+						title='Star'
 						bgColor='gray.200'
 						color='text.dark'
 					/>{' '}
@@ -25,7 +25,7 @@ export default function BookmarkedProfilesView() {
 				false
 			)}
 
-			<BookmarkedCandidateList my={8} />
+			<StarredCandidateList my={8} />
 		</>
 	);
 }

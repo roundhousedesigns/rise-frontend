@@ -5,18 +5,18 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	id: number;
-	handleRemoveBookmark: (id: number) => void;
+	handleRemoveStar: (id: number) => void;
 }
 
-export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) {
+export default function RemoveStarIcon({ id, handleRemoveStar }: Props) {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode } = useColorMode();
-	const [red, light, dark] = useToken('colors', ['brand.red', 'gray.50', 'gray.900']);
+	const [orange, light, dark] = useToken('colors', ['orange.300', 'gray.50', 'gray.900']);
 
 	const iconLabel = 'Remove this candidate from your saved candidates';
 
 	const handleRemove = () => {
-		handleRemoveBookmark(id);
+		handleRemoveStar(id);
 		onClose();
 	};
 
@@ -25,8 +25,8 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 			<TooltipIconButton
 				icon={
 					<FiMinusCircle
-						color={red}
-						fill={red}
+						color={orange}
+						fill={orange}
 						stroke={colorMode === 'dark' ? dark : light}
 						strokeWidth={2}
 						size={30}
@@ -41,10 +41,10 @@ export default function RemoveBookmarkIcon({ id, handleRemoveBookmark }: Props) 
 				isOpen={isOpen}
 				onClose={onClose}
 				confirmAction={handleRemove}
-				headerText='Remove Bookmark?'
+				headerText='Unstar this profile?'
 				buttonsText={{ confirm: 'Yes', cancel: 'No' }}
 			>
-				Are you sure you want to remove this candidate from your bookmarks?
+				Are you sure you want to unstar this profile? You can always star it again later.
 			</ConfirmActionDialog>
 		</>
 	);

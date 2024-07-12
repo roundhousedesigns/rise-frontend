@@ -2,34 +2,36 @@ import { useEffect, useRef } from 'react';
 import { isEqual } from 'lodash';
 import { chakra, List, ListItem } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Candidate } from '@lib/classes';
+import { toggleArrayItem } from '@lib/utils';
 import useCandidates from '@hooks/queries/useCandidates';
 import useViewer from '@hooks/queries/useViewer';
 import CandidateItem from '@components/CandidateItem';
 import ErrorAlert from '@common/ErrorAlert';
-import useUpdateBookmarkedProfiles from '@hooks/mutations/useUpdateBookmarkedProfiles';
-import { Candidate } from '@lib/classes';
-import { toggleArrayItem } from '@lib/utils';
+import useUpdateStarredProfiles from '@hooks/mutations/useUpdateStarredProfiles';
 
 const MotionBox = motion(chakra.div);
 
-const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Element => {
-	const { loggedInId, bookmarkedProfiles } = useViewer();
-	const [preparedCandidates, { error }] = useCandidates(bookmarkedProfiles);
-	const { updateBookmarkedProfilesMutation } = useUpdateBookmarkedProfiles();
+// TODO Something's wrong with removal animation. Entire collection flashes.
 
-	const preparedCandidateIds = useRef<number[]>(bookmarkedProfiles);
+export default function StarredCandidateList({ ...props }: { [prop: string]: any }): JSX.Element {
+	const { loggedInId, starredProfiles } = useViewer();
+	const [preparedCandidates, { error }] = useCandidates(starredProfiles);
+	const { updateStarredProfilesMutation } = useUpdateStarredProfiles();
+
+	const preparedCandidateIds = useRef<number[]>(starredProfiles);
 
 	useEffect(() => {
-		if (isEqual(preparedCandidateIds.current, bookmarkedProfiles)) return;
+		if (isEqual(preparedCandidateIds.current, starredProfiles)) return;
 
-		preparedCandidateIds.current = bookmarkedProfiles;
-	}, [bookmarkedProfiles, preparedCandidateIds.current]);
+		preparedCandidateIds.current = starredProfiles;
+	}, [starredProfiles, preparedCandidateIds.current]);
 
 	const removeHandler = (id: number) => () => {
-		const ids = toggleArrayItem(bookmarkedProfiles, id);
+		const ids = toggleArrayItem(starredProfiles, id);
 
 		// Fire off the mutation.
-		updateBookmarkedProfilesMutation(loggedInId, ids).then((res) => {
+		updateStarredProfilesMutation(loggedInId, ids).then((res) => {
 			preparedCandidateIds.current = ids;
 		});
 	};
@@ -54,9 +56,7 @@ const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Ele
 									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
 								>
-									<ListItem>
-										<CandidateItem candidate={candidate} onRemove={removeHandler} />
-									</ListItem>
+									<CandidateItem as={ListItem} candidate={candidate} onRemove={removeHandler} />
 								</MotionBox>
 							);
 						})}
@@ -67,6 +67,4 @@ const BookmarkedCandidateList = ({ ...props }: { [prop: string]: any }): JSX.Ele
 			)}
 		</chakra.div>
 	);
-};
-
-export default BookmarkedCandidateList;
+}

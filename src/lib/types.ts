@@ -183,7 +183,7 @@ export interface ChangeEmailInput {
 	confirmEmail: string;
 }
 
-export interface updateBookmarkedProfilesInput {
+export interface updateStarredProfilesInput {
 	userId: number;
 	toggledUserId: number;
 }
