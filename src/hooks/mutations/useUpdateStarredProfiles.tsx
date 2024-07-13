@@ -2,19 +2,8 @@ import { gql, useMutation } from '@apollo/client';
 import useViewer, { QUERY_VIEWER } from '@hooks/queries/useViewer';
 
 const MUTATE_TOGGLE_STARRED_PROFILE = gql`
-	mutation updateStarredProfilesMutation(
-		$clientMutationId: String
-		$starredProfiles: [Int]
-		$loggedInId: Int
-	) {
-		updateStarredProfiles(
-			input: {
-				clientMutationId: $clientMutationId
-				starredProfiles: $starredProfiles
-				loggedInId: $loggedInId
-			}
-		) {
-			clientMutationId
+	mutation updateStarredProfilesMutation($toggledId: Int!, $loggedInId: Int!) {
+		updateStarredProfiles(input: { toggledId: $toggledId, loggedInId: $loggedInId }) {
 			viewer {
 				starredProfiles {
 					nodes {
@@ -22,6 +11,7 @@ const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 					}
 				}
 			}
+			toggledId
 		}
 	}
 `;
@@ -30,11 +20,12 @@ const useUpdateStarredProfiles = () => {
 	const { loggedInId } = useViewer();
 	const [mutation, results] = useMutation(MUTATE_TOGGLE_STARRED_PROFILE);
 
-	const updateStarredProfilesMutation = (updatedStarredProfiles: number[]) => {
+	const updateStarredProfilesMutation = (toggledId: number) => {
+		if ( ! loggedInId ) console.info('WAHTTTT');
 		return mutation({
 			variables: {
 				loggedInId,
-				starredProfiles: updatedStarredProfiles,
+				toggledId,
 			},
 			refetchQueries: [
 				{
@@ -44,7 +35,7 @@ const useUpdateStarredProfiles = () => {
 		});
 	};
 
-	if (results.error) console.error(results.error);
+	console.info('results', results);
 
 	return { updateStarredProfilesMutation, results };
 };

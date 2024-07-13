@@ -40,7 +40,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, light] = useToken('colors', ['orange.300', 'text.light']);
+	const [gray, light] = useToken('colors', ['gray.500', 'text.light']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -112,19 +112,17 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								size='md'
 							>
 								<TooltipIconButton
-									icon={<FiStar fill={starredProfiles.length ? orange : 'none'} />}
+									icon={<FiStar fill={starredProfiles.length ? gray : 'none'} />}
 									label='Starred profiles'
 									as={RouterLink}
 									to='/stars'
-									isDisabled={!starredProfiles.length}
 								/>
 
 								<TooltipIconButton
-									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
+									icon={<FiFolder fill={savedSearches?.length ? gray : 'none'} color={light} />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'
-									isDisabled={!savedSearches?.length}
 								/>
 
 								{results.length ? (

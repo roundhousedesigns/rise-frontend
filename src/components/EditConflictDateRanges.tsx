@@ -1,6 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
 import {
-	chakra,
 	List,
 	ListItem,
 	Flex,
@@ -26,8 +25,6 @@ export default function EditConflictDateRanges() {
 	const {
 		editProfile: { conflictRanges },
 	} = useContext(EditProfileContext);
-
-	const MotionBox = motion(chakra.div);
 
 	const {
 		deleteOwnConflictRangeMutation,
@@ -88,40 +85,39 @@ export default function EditConflictDateRanges() {
 				{sortedDateRanges && sortedDateRanges.length ? (
 					<AnimatePresence>
 						{sortedDateRanges.map((conflictRange) => (
-							<MotionBox
+							<ListItem
+								as={motion.div}
 								key={conflictRange.toString()}
 								initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
 								animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 								exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
 							>
-								<ListItem>
-									<Flex alignItems='center' justifyContent='flex-start' gap={2}>
-										<Link
-											href='#'
-											variant='dotted'
-											lineHeight='normal'
-											px={0}
-											flex='auto'
-											maxW='full'
-											bg='none'
-											height='auto'
-											w='100%'
-											borderRadius='none'
-											onClick={() => handleEditDateRange(conflictRange)}
-										>
-											{conflictRange.toString('long')}
-										</Link>
-										<Spacer />
-										<TooltipIconButton
-											icon={<FiDelete />}
-											size='sm'
-											label='Remove date range'
-											onClick={() => handleDeleteDateRange(conflictRange)}
-											colorScheme='red'
-										/>
-									</Flex>
-								</ListItem>
-							</MotionBox>
+								<Flex alignItems='center' justifyContent='flex-start' gap={2}>
+									<Link
+										href='#'
+										variant='dotted'
+										lineHeight='normal'
+										px={0}
+										flex='auto'
+										maxW='full'
+										bg='none'
+										height='auto'
+										w='100%'
+										borderRadius='none'
+										onClick={() => handleEditDateRange(conflictRange)}
+									>
+										{conflictRange.toString('long')}
+									</Link>
+									<Spacer />
+									<TooltipIconButton
+										icon={<FiDelete />}
+										size='sm'
+										label='Remove date range'
+										onClick={() => handleDeleteDateRange(conflictRange)}
+										colorScheme='red'
+									/>
+								</Flex>
+							</ListItem>
 						))}
 					</AnimatePresence>
 				) : (

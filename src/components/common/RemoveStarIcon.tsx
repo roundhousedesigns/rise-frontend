@@ -1,6 +1,7 @@
-import { useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
+import { Spinner, useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
 import { FiMinusCircle } from 'react-icons/fi';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
+import useUpdateStarredProfiles from '@hooks/mutations/useUpdateStarredProfiles';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
@@ -13,25 +14,34 @@ export default function RemoveStarIcon({ id, handleRemoveStar }: Props) {
 	const { colorMode } = useColorMode();
 	const [orange, light, dark] = useToken('colors', ['orange.300', 'gray.50', 'gray.900']);
 
-	const iconLabel = 'Remove this candidate from your saved candidates';
+	const {
+		results: { data: { updateStarredProfiles: { toggledId = null } = {} } = {}, loading },
+	} = useUpdateStarredProfiles();
+
+	const iconLabel = 'Remove';
 
 	const handleRemove = () => {
 		handleRemoveStar(id);
 		onClose();
 	};
 
+	const Icon = () =>
+		loading && toggledId === id ? (
+			<Spinner />
+		) : (
+			<FiMinusCircle
+				color={orange}
+				fill={orange}
+				stroke={colorMode === 'dark' ? dark : light}
+				strokeWidth={2}
+				size={30}
+			/>
+		);
+
 	return (
 		<>
 			<TooltipIconButton
-				icon={
-					<FiMinusCircle
-						color={orange}
-						fill={orange}
-						stroke={colorMode === 'dark' ? dark : light}
-						strokeWidth={2}
-						size={30}
-					/>
-				}
+				icon={<Icon />}
 				borderRadius='full'
 				label={iconLabel}
 				onClick={onOpen}

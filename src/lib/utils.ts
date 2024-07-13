@@ -212,21 +212,6 @@ export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
 };
 
 /**
- * Toggle the existence of an item in an array of primitive values.
- *
- * @param array The array to toggle the item in.
- * @param item The item to toggle.
- * @returns The new array.
- */
-export function toggleArrayItem(array: any[], item: any): any[] {
-	if (array.includes(item)) {
-		return array.filter((i) => i !== item);
-	}
-
-	return [...array, item];
-}
-
-/**
  * Extract the IDs of terms from a JSON string.
  * @param json The JSON string to extract the IDs from.
  * @returns The IDs of the terms.

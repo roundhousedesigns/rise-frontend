@@ -1,15 +1,16 @@
 import { ReactNode } from 'react';
-import { Heading, Box, Flex, Spinner, Center } from '@chakra-ui/react';
+import { Box, Heading, Text, Flex, Spinner, Center } from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
+	description?: string | JSX.Element;
 	actions?: ReactNode;
 	loading?: boolean;
 	children: ReactNode;
 	[prop: string]: any;
 }
 
-export default function Page({ title, actions, loading, children, ...props }: Props) {
+export default function Page({ title, description, actions, loading, children, ...props }: Props) {
 	return loading ? (
 		<Center>
 			<Spinner position='relative' top={12} />
@@ -21,12 +22,22 @@ export default function Page({ title, actions, loading, children, ...props }: Pr
 					<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
 						{title}
 					</Heading>
-				) : null}
+				) : (
+					false
+				)}
 
 				<Flex flexWrap='wrap' gap={2} justifyContent='flex-end'>
-					{actions ? actions : null}
+					{actions ? actions : false}
 				</Flex>
 			</Flex>
+
+			{description ? (
+				<Text as={Box} ml={1} fontSize='sm'>
+					{description}
+				</Text>
+			) : (
+				false
+			)}
 
 			{children}
 		</Box>

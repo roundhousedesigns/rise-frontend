@@ -11,7 +11,7 @@ import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
-	onRemove?: (id: number) => () => void;
+	onRemove?: (id: number) => void;
 	[prop: string]: any;
 }
 
@@ -36,7 +36,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 	return id ? (
 		<Flex alignItems='center'>
 			{!!onRemove ? (
-				<RemoveStarIcon id={id} handleRemoveStar={onRemove(id)} />
+				<RemoveStarIcon id={id} handleRemoveStar={() => onRemove(id)} />
 			) : (
 				<StarToggleIcon id={id} isDisabled={loggedInId === id} />
 			)}
@@ -102,7 +102,9 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				</Flex>
 			</Card>
 		</Flex>
-	) : null;
+	) : (
+		false
+	);
 };
 
 export default CandidateItem;

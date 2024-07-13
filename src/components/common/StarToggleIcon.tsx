@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useColorMode, useToken } from '@chakra-ui/react';
 import { FiStar } from 'react-icons/fi';
-import { toggleArrayItem } from '@lib/utils';
 import useViewer from '@hooks/queries/useViewer';
 import useUpdateStarredProfiles from '@hooks/mutations/useUpdateStarredProfiles';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
@@ -26,11 +25,8 @@ export default function StarToggleIcon({ id, isDisabled, ...props }: Props) {
 		// Optimistically update local state
 		setIsStarred(!isStarred);
 
-		// Update the starred profiles list
-		const updatedStarredProfiles = toggleArrayItem(starredProfiles, id);
-
 		// Fire the mutation
-		updateStarredProfilesMutation(updatedStarredProfiles);
+		updateStarredProfilesMutation(id);
 	};
 
 	const iconLabel = isStarred ? 'Unstar this profile' : 'Star this profile';
