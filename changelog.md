@@ -13,7 +13,7 @@ with 1.0.0beta.
 - Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
-- Improve: Refactor star/unstar profiles.
+- Improve: Refactor star/unstar profiles UX/UI.
 - Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 - Deprecate: `RemoveStarIcon` component, refactored into `StarToggleIcon`.
 
