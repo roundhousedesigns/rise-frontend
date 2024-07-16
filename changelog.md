@@ -6,13 +6,16 @@ with 1.0.0beta.
 ## \[1.1.9-dev] - Unreleased
 
 - Change: Bookmark terminology is now more appropriately "Starred". **Backend version 1.1.6**
+- Change: `updateStarredProfiles` mutation now has different inputs/outputs. **Backend version 1.1.6**
 - Improve: `useSavedSearches()` can now take an array of IDs to include.
 - Change: Remove text labels on header buttons
 - Add: Saved Searches button to header nav
 - Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
+- Improve: Refactor star/unstar profiles.
 - Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
+- Deprecate: `RemoveStarIcon` component, refactored into `StarToggleIcon`.
 
 ## \[1.1.8] - 2024-07-10
 
