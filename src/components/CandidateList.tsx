@@ -1,7 +1,7 @@
 import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
 import useCandidates from '@hooks/queries/useCandidates';
-import CandidateItem from '@components/CandidateItem';
 import ErrorAlert from '@common/ErrorAlert';
+import CandidateItem from '@components/CandidateItem';
 
 interface Props {
 	userIds: number[];

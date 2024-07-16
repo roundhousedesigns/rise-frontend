@@ -14,7 +14,7 @@ import {
 	ButtonGroup,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiStar, FiFileText, FiFolder } from 'react-icons/fi';
+import { FiSearch, FiUser, FiStar, FiFolder } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
@@ -40,7 +40,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [gray, light] = useToken('colors', ['gray.500', 'text.light']);
+	const [orange, light] = useToken('colors', ['orange.300', 'text.light']);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -103,23 +103,23 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{/* Logged in */}
 					{loggedInId ? (
-						<Flex alignItems='center'>
+						<Flex alignItems='center' gap={0}>
 							<ButtonGroup
 								color='text.light'
-								mx={2}
+								mx={{ base: 0, md: 2 }}
 								flex='1 0 auto'
 								justifyContent='flex-end'
 								size='md'
 							>
 								<TooltipIconButton
-									icon={<FiStar fill={starredProfiles.length ? gray : 'none'} />}
+									icon={<FiStar fill={starredProfiles && starredProfiles.length ? orange : 'none'} />}
 									label='Starred profiles'
 									as={RouterLink}
 									to='/stars'
 								/>
 
 								<TooltipIconButton
-									icon={<FiFolder fill={savedSearches?.length ? gray : 'none'} color={light} />}
+									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} color={light} />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'
@@ -130,19 +130,15 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										as={RouterLink}
 										to='/results'
 										icon={
-											isLargerThanMd ? (
-												<Badge
-													py={1}
-													px={2}
-													borderRadius='full'
-													variant='subtle'
-													colorScheme='orange'
-												>
-													{results.length}
-												</Badge>
-											) : (
-												<FiFileText />
-											)
+											<Badge
+												py={1}
+												px={2}
+												borderRadius='full'
+												variant='subtle'
+												colorScheme='orange'
+											>
+												{results.length}
+											</Badge>
 										}
 										label='Search results'
 									/>
@@ -150,7 +146,12 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									false
 								)}
 							</ButtonGroup>
-							<Dot boxSize={1} pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }} />
+							{isLargerThanMd ? (
+								<Dot
+									boxSize={1}
+									pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
+								/>
+							) : null}
 							<ButtonGroup
 								color='text.light'
 								mx={2}
@@ -173,16 +174,16 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										colorScheme='blue'
 										to={`/profile/${loggedInSlug}`}
 									/>
-								) : (
-									false
-								)}
+								) : null}
 							</ButtonGroup>
 
-							<Dot
-								boxSize={1}
-								pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
-								mr={3}
-							/>
+							{isLargerThanMd ? (
+								<Dot
+									boxSize={1}
+									pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
+									mr={3}
+								/>
+							) : null}
 
 							<MainMenu />
 						</Flex>

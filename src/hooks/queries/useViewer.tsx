@@ -32,7 +32,7 @@ interface Props {
 	username: string;
 	disableProfile: boolean;
 	result: QueryResult;
-	starredProfiles: number[];
+	starredProfiles?: number[];
 }
 
 const useViewer = (): Props => {
@@ -52,7 +52,7 @@ const useViewer = (): Props => {
 	} = result?.data?.viewer || {};
 
 	const starredProfiles =
-		starredProfilesRaw?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
+		starredProfilesRaw?.nodes?.map((node: { databaseId: number }) => node.databaseId) || undefined;
 
 	return {
 		loggedInId,

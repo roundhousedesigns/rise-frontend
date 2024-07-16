@@ -6,16 +6,14 @@ import { SearchContext } from '@context/SearchContext';
 import useViewer from '@hooks/queries/useViewer';
 import useUserProfile from '@hooks/queries/useUserProfile';
 import StarToggleIcon from '@common/StarToggleIcon';
-import RemoveStarIcon from '@common/RemoveStarIcon';
 import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
-	onRemove?: (id: number) => void;
 	[prop: string]: any;
 }
 
-const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
+const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate || {};
 
 	const [profile] = useUserProfile(id ? id : 0);
@@ -35,11 +33,8 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 
 	return id ? (
 		<Flex alignItems='center'>
-			{!!onRemove ? (
-				<RemoveStarIcon id={id} handleRemoveStar={() => onRemove(id)} />
-			) : (
-				<StarToggleIcon id={id} isDisabled={loggedInId === id} />
-			)}
+			<StarToggleIcon id={id} isDisabled={loggedInId === id} />
+
 			<Card
 				flex={1}
 				as={RouterLink}
@@ -103,7 +98,7 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 			</Card>
 		</Flex>
 	) : (
-		false
+		<></>
 	);
 };
 

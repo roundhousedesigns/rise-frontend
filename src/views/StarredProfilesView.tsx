@@ -5,9 +5,10 @@ import { FiStar } from 'react-icons/fi';
 
 export default function StarredProfilesView() {
 	const { starredProfiles } = useViewer();
+
 	return (
 		<>
-			{starredProfiles.length === 0 ? (
+			{starredProfiles && starredProfiles.length === 0 ? (
 				<Text size='sm' my={0} display='flex' alignItems='center' flexWrap='wrap'>
 					No saved profiles. Click a{' '}
 					<IconButton
@@ -21,9 +22,7 @@ export default function StarredProfilesView() {
 					/>{' '}
 					to save a profile to your list.
 				</Text>
-			) : (
-				false
-			)}
+			) : null}
 
 			<StarredProfileList my={8} />
 		</>
