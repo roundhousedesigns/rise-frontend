@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function StarToggleIcon({ id, ...props }: Props) {
-	const { loggedInId, starredProfiles } = useViewer();
+	const { starredProfiles } = useViewer();
 	const [isStarred, setIsStarred] = useState<boolean>(false);
 	const [hovered, setHovered] = useState<boolean>(false);
 
@@ -63,13 +63,12 @@ export default function StarToggleIcon({ id, ...props }: Props) {
 						/>
 					)
 				}
-				cursor='pointer'
+				cursor={loading ? 'default !important' : 'pointer'}
 				borderRadius='full'
 				label={isStarred ? 'Unstar this profile' : 'Star this profile'}
 				onClick={isStarred ? onOpenConfirmation : updateStarredProfilesHandler}
 				mx={2}
 				isLoading={loading}
-				isDisabled={!loggedInId}
 				onMouseEnter={() => setHovered(true)}
 				onMouseLeave={() => setHovered(false)}
 				{...props}

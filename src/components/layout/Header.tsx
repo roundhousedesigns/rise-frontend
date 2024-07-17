@@ -119,7 +119,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								/>
 
 								<TooltipIconButton
-									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} color={light} />}
+									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
 									as={RouterLink}
 									label='Saved searches'
 									to='/searches'
