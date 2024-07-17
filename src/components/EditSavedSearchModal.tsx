@@ -10,6 +10,7 @@ import {
 	FormLabel,
 	Button,
 	Text,
+	Tooltip,
 } from '@chakra-ui/react';
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { SearchFilterSet } from '@lib/classes';
@@ -109,13 +110,21 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 							<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
 								Name
 							</FormLabel>
-							<TextInput
-								name='title'
-								placeholder='My search'
-								onChange={handleSavedSearchNameChange}
-								value={saveSearchFieldText}
-								ref={initialSaveModalRef}
-							/>
+							<Tooltip
+								label='Edit search name'
+								placement='bottom'
+								role='presentation'
+								border='none'
+								hasArrow
+							>
+								<TextInput
+									name='title'
+									placeholder='My search'
+									onChange={handleSavedSearchNameChange}
+									value={saveSearchFieldText}
+									ref={initialSaveModalRef}
+								/>
+							</Tooltip>
 						</FormControl>
 						<Button
 							colorScheme='blue'

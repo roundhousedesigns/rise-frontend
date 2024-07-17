@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 interface Props {
-	heading: string;
+	heading: string | JSX.Element;
 	headingProps?: {
 		[prop: string]: any;
 	};
@@ -28,20 +28,27 @@ export default function SearchFilterAccordionItem({
 	children,
 	...props
 }: Props) {
+	const HeadingContent = (): JSX.Element =>
+		typeof heading === 'object' ? (
+			heading
+		) : (
+			<Text
+				as='span'
+				textAlign='left'
+				fontWeight='normal'
+				my={0}
+				fontSize={headingProps?.fontSize ? headingProps.fontSize : 'inherit'}
+				lineHeight='normal'
+			>
+				{heading}
+			</Text>
+		);
+
 	return (
 		<AccordionItem {...props}>
 			<Heading as='h3' flex='1' my={0}>
 				<AccordionButton {...headingProps}>
-					<Text
-						as='span'
-						textAlign='left'
-						fontWeight='normal'
-						my={0}
-						fontSize={headingProps?.fontSize ? headingProps.fontSize : 'inherit'}
-						lineHeight='normal'
-					>
-						{heading}
-					</Text>
+					<HeadingContent />
 					<AccordionIcon />
 				</AccordionButton>
 			</Heading>
