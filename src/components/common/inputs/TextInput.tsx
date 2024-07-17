@@ -25,6 +25,7 @@ interface Props {
 	error?: string;
 	leftElement?: ReactNode;
 	maxLength?: number;
+	sizeToken?: string;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -47,6 +48,7 @@ const TextInput = forwardRef(
 			error,
 			leftElement,
 			maxLength,
+			sizeToken = 'md',
 			inputProps,
 			onChange,
 			...props
@@ -67,12 +69,13 @@ const TextInput = forwardRef(
 						variant={inputVariant}
 						focusBorderColor='brand.blue'
 						placeholder={placeholder}
-						fontSize='md'
 						isDisabled={isDisabled}
 						px={3}
 						value={value}
 						name={name}
 						ref={forwardedRef}
+						fontSize={sizeToken}
+						size={sizeToken}
 						onChange={onChange}
 						_dark={{
 							color: 'text.dark',
@@ -90,7 +93,7 @@ const TextInput = forwardRef(
 						false
 					)}
 				</InputGroup>
-				<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
+				<Flex direction='row' pt={1} mb={0} alignItems='top' gap={4} justifyContent='space-between'>
 					{label ? (
 						<FormLabel
 							ml={2}

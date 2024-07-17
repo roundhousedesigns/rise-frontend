@@ -1,5 +1,15 @@
 import { FormEvent, useContext } from 'react';
-import { Accordion, Box, Fade, Heading, Spacer, Stack, StackItem } from '@chakra-ui/react';
+import {
+	Accordion,
+	Box,
+	Fade,
+	Heading,
+	Spacer,
+	Stack,
+	StackItem,
+	Text,
+	useColorMode,
+} from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
@@ -29,79 +39,98 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		},
 	} = useContext(SearchContext);
 
+	const { colorMode } = useColorMode();
+
 	return (
-		<Stack direction='column' justifyContent='space-between' height='full'>
-			<Fade in={!name}>
-				<form id='search-candidates' onSubmit={onSubmit}>
-					<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
-						<Fade in={!savedSearchId} unmountOnExit>
-							<StackItem>
-								<Box maxW='lg'>
-									<DepartmentsAutocomplete />
-								</Box>
-							</StackItem>
-						</Fade>
-						<StackItem>
-							<Stack gap={8}>
-								<StackItem>
-									<SearchFilterSection id='filterDepartment'>
-										<SearchFilterDepartment />
-									</SearchFilterSection>
-								</StackItem>
-								<Fade in={!!departments.length} unmountOnExit>
-									<SearchFilterSection
-										id='filterJobs'
-										heading='What job(s) are you looking to fill?'
-									>
-										<SearchFilterJobs />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection id='filterSkills' heading='What skills are you looking for?'>
-										<SearchFilterSkills />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection
-										id='filterDates'
-										heading='Are you hiring for a particular date?'
-									>
-										<SearchFilterDates />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={searchActive && jobs && !!jobs.length} unmountOnExit>
-									<SearchFilterSection
-										id='filterAdditional'
-										heading='And some additional filters to refine your search:'
-									>
-										<AdditionalSearchFilters />
-									</SearchFilterSection>
-								</Fade>
-							</Stack>
-						</StackItem>
-					</Stack>
-				</form>
-			</Fade>
-
-			<Spacer />
-
-			<Accordion allowToggle mb={4}>
+		<>
+			<Accordion allowToggle defaultIndex={name ? 1 : undefined}>
 				<SearchFilterAccordionItem
-					heading='Saved Searches'
-					bg='blackAlpha.50'
+					heading='Search by name'
+					bgColor={colorMode === 'light' ? 'blackAlpha.200' : 'whiteAlpha.200'}
+					border='none'
+					pb={0}
+					mb={0}
 					headingProps={{ fontSize: 'md' }}
+					panelProps={{ mb: 0 }}
 				>
-					<SavedSearchItemList px={4} />
-				</SearchFilterAccordionItem>
-				<SearchFilterAccordionItem
-					heading='Search by Name'
-					bg='blackAlpha.50'
-					headingProps={{ fontSize: 'md' }}
-				>
-					<SearchFilterName px={4} />
+					<SearchFilterName px={3} />
 				</SearchFilterAccordionItem>
 			</Accordion>
-		</Stack>
+			<Stack
+				direction='column'
+				justifyContent='space-between'
+				height='full'
+				mt={4}
+				transition='margin 250ms ease'
+			>
+				<Fade in={!name}>
+					<form id='search-candidates' onSubmit={onSubmit}>
+						<Stack mb={4} gap={6} height={name ? 0 : 'auto'}>
+							<Fade in={!savedSearchId} unmountOnExit>
+								<StackItem>
+									<Box maxW='lg'>
+										<DepartmentsAutocomplete />
+									</Box>
+								</StackItem>
+							</Fade>
+							<StackItem>
+								<Stack gap={8}>
+									<StackItem>
+										<SearchFilterSection id='filterDepartment'>
+											<SearchFilterDepartment />
+										</SearchFilterSection>
+									</StackItem>
+									<Fade in={!!departments.length} unmountOnExit>
+										<SearchFilterSection
+											id='filterJobs'
+											heading='What job(s) are you looking to fill?'
+										>
+											<SearchFilterJobs />
+										</SearchFilterSection>
+									</Fade>
+									<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+										<SearchFilterSection
+											id='filterSkills'
+											heading='What skills are you looking for?'
+										>
+											<SearchFilterSkills />
+										</SearchFilterSection>
+									</Fade>
+									<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+										<SearchFilterSection
+											id='filterDates'
+											heading='Are you hiring for a particular date?'
+										>
+											<SearchFilterDates />
+										</SearchFilterSection>
+									</Fade>
+									<Fade in={searchActive && jobs && !!jobs.length} unmountOnExit>
+										<SearchFilterSection
+											id='filterAdditional'
+											heading='And some additional filters to refine your search:'
+										>
+											<AdditionalSearchFilters />
+										</SearchFilterSection>
+									</Fade>
+								</Stack>
+							</StackItem>
+						</Stack>
+					</form>
+				</Fade>
+
+				<Spacer />
+
+				<Accordion allowToggle mb={4} defaultIndex={name ? 1 : undefined}>
+					<SearchFilterAccordionItem
+						heading='Saved Searches'
+						bg='blackAlpha.50'
+						headingProps={{ fontSize: 'md' }}
+					>
+						<SavedSearchItemList px={4} />
+					</SearchFilterAccordionItem>
+				</Accordion>
+			</Stack>
+		</>
 	);
 }
 

@@ -137,7 +137,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							/>
 						</Stack>
 					</DrawerHeader>
-					<DrawerBody py={8} px={{ base: 4, md: 8 }}>
+					<DrawerBody pt={0} pb={8} px={{ base: 4, md: 8 }} position='relative'>
 						<SearchWizardView onSubmit={handleSubmit} />
 					</DrawerBody>
 					<Collapse in={searchActive && !name} unmountOnExit={false}>
