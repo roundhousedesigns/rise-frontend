@@ -17,7 +17,7 @@ export default function StarredProfiles() {
 			>
 				{' '}
 			</IconButton>
-			button next to a profile to pin it.
+			button next to a profile to pin or unpin it.
 		</Text>
 	);
 
