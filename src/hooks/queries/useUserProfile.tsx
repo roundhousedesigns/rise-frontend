@@ -20,6 +20,8 @@ export const QUERY_PROFILE = gql`
 			image
 			phone
 			description
+			multilingual
+			languages
 			resume
 			willTravel
 			willTour
@@ -108,7 +110,7 @@ const useUserProfile = (id: number, count?: number): [UserProfile | null, any] =
 			author: id,
 			last: count,
 		},
-		fetchPolicy: 'cache-and-network',
+		// fetchPolicy: 'cache-and-network',
 	});
 
 	// Prepare the credits

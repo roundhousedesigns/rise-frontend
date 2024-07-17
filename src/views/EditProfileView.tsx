@@ -25,12 +25,14 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
+	Checkbox,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
 	FiGlobe,
+	FiLink,
 	FiInstagram,
 	FiLinkedin,
 	FiMail,
@@ -102,6 +104,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		description,
 		homebase,
 		website,
+		multilingual,
+		languages,
 		socials,
 		locations,
 		education,
@@ -306,7 +310,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 	}, [profile]);
 
-	const handleCheckboxInput = (name: string) => (newValue: any) => {
+	const handleCheckboxGroupChange = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
@@ -326,6 +330,18 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			payload: {
 				name,
 				value,
+			},
+		});
+	};
+
+	const handleSimpleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_INPUT',
+			payload: {
+				name,
+				value: checked,
 			},
 		});
 	};
@@ -966,7 +982,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<StackItem
 										as={TextInput}
 										value={website}
-										leftElement={<Icon as={FiGlobe} />}
+										leftElement={<Icon as={FiLink} />}
 										label='Website'
 										name='website'
 										onChange={handleInputChange}
@@ -975,6 +991,28 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										}}
 									/>
 								</Stack>
+							</ProfileStackItem>
+							<ProfileStackItem title='Languages' w='full' maxW='3xl' mt={4}>
+								<>
+									<Checkbox
+										name='multilingual'
+										isChecked={!!multilingual}
+										onChange={handleSimpleCheckboxChange}
+										variant='buttonStyle'
+										position='relative'
+									>
+										I speak more than one language.
+									</Checkbox>
+									<TextInput
+										value={languages}
+										leftElement={<Icon as={FiGlobe} />}
+										label='Languages spoken'
+										placeholder='What languages other than English do you speak?'
+										name='languages'
+										onChange={handleInputChange}
+										mt={2}
+									/>
+								</>
 							</ProfileStackItem>
 							<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
 								<SimpleGrid columns={[1, 2]} spacing={4}>
@@ -1026,7 +1064,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							requiredMessage='Please select at least one location.'
 							items={locationTerms}
 							checked={locations ? locations.map((item) => item.toString()) : []}
-							handleChange={handleCheckboxInput}
+							handleChange={handleCheckboxGroupChange}
 						/>
 					</>
 				</ProfileStackItem>
@@ -1101,7 +1139,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										name='unions'
 										items={unionTerms}
 										checked={unions ? unions.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1116,7 +1154,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										checked={
 											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
 										}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1133,7 +1171,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										checked={
 											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
 										}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1238,7 +1276,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									name='genderIdentities'
 									items={genderIdentityTerms}
 									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 							<ProfileStackItem title='Race/Ethnicity' flex='1 0 33%'>
@@ -1246,7 +1284,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									name='racialIdentities'
 									items={racialIdentityTerms}
 									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 							<ProfileStackItem title='Additional' flex='1 0 33%'>
@@ -1256,7 +1294,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									checked={
 										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
 									}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 						</Stack>
