@@ -14,7 +14,7 @@ export default function SearchResultsView() {
 			filters: { filterSet },
 			results,
 			savedSearch: { id: savedSearchId },
-			searchActive,
+			searchWizardActive,
 		},
 	} = useContext(SearchContext);
 
@@ -111,7 +111,7 @@ export default function SearchResultsView() {
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 					{jobDates && jobDates.startDate ? <ConflictDateLegend /> : false}
 				</>
-			) : resultsCount === 0 && searchActive ? (
+			) : resultsCount === 0 && searchWizardActive ? (
 				<Text fontSize='sm'>No results.</Text>
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>

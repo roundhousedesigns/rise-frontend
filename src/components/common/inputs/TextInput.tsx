@@ -57,11 +57,31 @@ const TextInput = forwardRef(
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
+		/**
+		 * Returns the box size based on the given size token.
+		 */
+		const boxSize = (): number | undefined => {
+			switch (sizeToken) {
+				case 'sm':
+					return 8;
+				case 'md':
+					return 10;
+				case 'lg':
+					return 12;
+			}
+
+			return undefined;
+		};
+
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 				<InputGroup position='relative'>
 					{leftElement && (
-						<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+						<InputLeftElement
+							pointerEvents='none'
+							_dark={{ color: 'text.dark' }}
+							boxSize={boxSize()}
+						>
 							{leftElement}
 						</InputLeftElement>
 					)}

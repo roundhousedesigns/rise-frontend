@@ -8,7 +8,7 @@ interface SearchState {
 		name: string;
 		filterSet: SearchFilterSet;
 	};
-	searchActive: boolean;
+	searchWizardActive: boolean;
 	additionalFiltersActive: number[];
 	savedSearch: {
 		id?: number;
@@ -29,7 +29,7 @@ interface SearchAction {
 			key: string;
 			value: any;
 		};
-		searchActive?: boolean;
+		searchWizardActive?: boolean;
 		filterSet?: SearchFilterSet;
 		savedSearchId?: number;
 		results?: SearchResultCandidate[];
@@ -47,7 +47,7 @@ const getInitialSearchState = (): SearchState => ({
 		name: '',
 		filterSet: new SearchFilterSet(),
 	},
-	searchActive: false,
+	searchWizardActive: false,
 	additionalFiltersActive: [],
 	savedSearch: {
 		id: 0,
@@ -71,7 +71,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					name: action.payload.name ? action.payload.name : '',
 				},
 				// Clear all other filters and set the main search controls to inactive
-				searchActive: false,
+				searchWizardActive: false,
 			};
 
 		case 'SET_DEPARTMENTS': {
@@ -86,7 +86,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 			};
 		}
 
@@ -102,7 +102,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 			};
 		}
 
@@ -119,7 +119,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 			};
 		}
 
@@ -136,7 +136,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 			};
 		}
 
@@ -162,7 +162,7 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 					...state.filters,
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 				savedSearch: {
 					id: savedSearchId ? savedSearchId : 0,
 					filterSet,
@@ -187,9 +187,10 @@ function searchContextReducer(state: SearchState, action: SearchAction): SearchS
 				...state,
 				filters: {
 					...state.filters,
+					name: '',
 					filterSet,
 				},
-				searchActive: true,
+				searchWizardActive: true,
 				additionalFiltersActive: filterIndexes.length ? filterIndexes : [],
 				savedSearch: {
 					id: savedSearchId,

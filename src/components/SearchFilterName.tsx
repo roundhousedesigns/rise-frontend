@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Flex, Stack } from '@chakra-ui/react';
+import { Box, Flex, Icon, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
-import { FiSearch, FiXCircle } from 'react-icons/fi';
+import { FiSearch, FiUser, FiXCircle } from 'react-icons/fi';
 import { convertUnscoredToScored } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
@@ -95,9 +95,10 @@ export default function SearchFilterName({ ...props }: Props) {
 			<form id='search-by-name' onSubmit={handleSubmit}>
 				<Flex gap={2} justifyContent='space-between' maxW='lg'>
 					<TextInput
-						placeholder='Name'
+						placeholder='Search by name'
+						leftElement={<Icon as={FiUser} />}
 						name='name'
-						label='Name'
+						label='Search by name'
 						labelHidden
 						value={name}
 						sizeToken='sm'
