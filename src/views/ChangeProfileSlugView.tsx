@@ -16,7 +16,7 @@ import useChangeProfileSlug from '@hooks/mutations/useChangeProfileSlug';
 import TextInput from '@common/inputs/TextInput';
 
 export default function ChangeProfileUrlView() {
-	const { loggedInId: userId, loggedInSlug } = useViewer();
+	const [{ loggedInId: userId, loggedInSlug }] = useViewer();
 
 	const [slug, setSlug] = useState<string>('');
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);

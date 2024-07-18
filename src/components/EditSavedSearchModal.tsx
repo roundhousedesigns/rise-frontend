@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, onClose }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const { searchDispatch } = useContext(SearchContext);
 	const initialSaveModalRef = useRef(null);
 	const {

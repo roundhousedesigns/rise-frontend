@@ -18,7 +18,7 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 
 	const [profile] = useUserProfile(id ? id : 0);
 	const { conflictRanges } = profile || {};
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 
 	const {
 		search: {

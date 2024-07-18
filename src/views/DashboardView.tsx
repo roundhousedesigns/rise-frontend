@@ -18,7 +18,7 @@ import useUserNotices from '@hooks/queries/useUserNotices';
 import ShortPost from '@components/ShortPost';
 
 export default function DashboardView() {
-	const { loggedInSlug } = useViewer();
+	const [{ loggedInSlug }] = useViewer();
 	const [notices] = useUserNotices();
 
 	return (

@@ -88,7 +88,7 @@ interface Props {
  */
 export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug } = useViewer();
+	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {

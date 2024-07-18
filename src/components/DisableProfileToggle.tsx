@@ -19,7 +19,7 @@ export default function DisableProfileToggle({
 	showHelperText,
 	...props
 }: Props): JSX.Element {
-	const { loggedInId, disableProfile } = useViewer();
+	const [{ loggedInId, disableProfile }] = useViewer();
 	const {
 		toggleDisableProfileMutation,
 		result: { data, loading },

@@ -37,6 +37,7 @@ const useRelatedSkills = (jobs: string[] = []): [WPItem[], any] => {
 		variables: {
 			jobs,
 		},
+		skip: !jobs.length,
 	});
 
 	const preparedResult = result.data?.jobSkills.map((skill: WPItemParams) => new WPItem(skill));

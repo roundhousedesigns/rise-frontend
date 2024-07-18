@@ -26,7 +26,7 @@ export default function EditConflictDateRangeModal({
 	isOpen,
 	onClose,
 }: Props): JSX.Element {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 
 	const [errorCode, setErrorCode] = useState<string>('');
 	const errorMessage = useErrorMessage(errorCode);

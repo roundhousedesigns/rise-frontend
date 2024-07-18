@@ -8,11 +8,9 @@ import useViewer from '@hooks/queries/useViewer';
 import ErrorAlert from '@common/ErrorAlert';
 import CandidateItem from '@components/CandidateItem';
 
-// FIXME Entire collection flashes when an item is removed.
-
 export default function StarredProfileList({ ...props }: { [prop: string]: any }): JSX.Element {
-	const { starredProfiles } = useViewer();
-	const [profiles, { error, loading }] = useCandidates(starredProfiles ? starredProfiles : []);
+	const [{ starredProfiles }] = useViewer();
+	const [profiles, { error, loading }] = useCandidates(starredProfiles);
 
 	const profilesRef = useRef<number[] | undefined>(starredProfiles);
 
@@ -20,17 +18,12 @@ export default function StarredProfileList({ ...props }: { [prop: string]: any }
 		if (!isEqual(profilesRef.current, starredProfiles)) {
 			profilesRef.current = starredProfiles;
 		}
-
-		return () => {
-			profilesRef.current = undefined;
-		};
 	}, [starredProfiles]);
 
 	return (
 		<chakra.div {...props}>
 			{!error && !loading ? (
 				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
-					{/* TODO move this into <CandidateList /> to DRY yourself off */}
 					<AnimatePresence>
 						{profilesRef.current?.map((id: number) => {
 							const profile = profiles.find((profile: Candidate) => profile.id === id);

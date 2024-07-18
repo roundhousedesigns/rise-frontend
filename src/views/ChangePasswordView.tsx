@@ -9,7 +9,7 @@ import useLogout from '@hooks/mutations/useLogout';
 import TextInput from '@common/inputs/TextInput';
 
 export default function ChangePasswordView() {
-	const { email: username } = useViewer();
+	const [{ email: username }] = useViewer();
 
 	const [userFields, setUserFields] = useState<ChangePasswordInput>({
 		currentPassword: '',

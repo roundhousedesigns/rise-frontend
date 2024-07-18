@@ -7,7 +7,7 @@ import TextInput from '@common/inputs/TextInput';
 import useViewer from '@hooks/queries/useViewer';
 
 export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback?: () => void }) {
-	const { username, email: userEmail } = useViewer();
+	const [{ username, email: userEmail }] = useViewer();
 
 	const [newEmail, setNewEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');

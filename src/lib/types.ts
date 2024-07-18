@@ -251,3 +251,17 @@ export interface ProfileNoticeAlert {
 		element?: JSX.Element;
 	};
 }
+
+/**
+ * The data shape for the Viewer.
+ */
+export interface ViewerData {
+	loggedInId: number;
+	loggedInSlug: string;
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+	username?: string;
+	disableProfile?: boolean;
+	starredProfiles?: number[];
+}

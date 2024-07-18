@@ -48,7 +48,7 @@ export default function SavedSearchItem({
 	showSaveButton = false,
 	...props
 }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },

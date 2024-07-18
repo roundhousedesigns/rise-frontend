@@ -27,7 +27,7 @@ import useLogout from '@hooks/mutations/useLogout';
 import DarkModeToggle from '@components/DarkModeToggle';
 
 export default function MainMenu() {
-	const { loggedInSlug } = useViewer();
+	const [{ loggedInSlug }] = useViewer();
 	const { logoutMutation } = useLogout();
 
 	const isLargerThanMd = useBreakpointValue(

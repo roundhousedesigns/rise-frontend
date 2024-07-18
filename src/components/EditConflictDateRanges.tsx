@@ -21,7 +21,7 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditConflictDateRangeModal from '@components/EditConflictDateRangeModal';
 
 export default function EditConflictDateRanges() {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const {
 		editProfile: { conflictRanges },
 	} = useContext(EditProfileContext);

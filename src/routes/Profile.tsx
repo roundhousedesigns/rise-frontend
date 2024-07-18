@@ -9,7 +9,7 @@ import Page from '@components/Page';
 import ProfileView from '@views/ProfileView';
 
 export default function Profile(): JSX.Element {
-	const { loggedInId, loggedInSlug } = useViewer();
+	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
