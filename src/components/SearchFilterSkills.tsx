@@ -31,7 +31,7 @@ export default function SearchFilterSkills(): JSX.Element {
 	};
 
 	return (
-		<Box style={{ scrollMarginTop: '83px' }}>
+		<>
 			<Skeleton isLoaded={data?.length > 0 && !loading && !error}>
 				<Box>
 					<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm} size='sm'>
@@ -46,6 +46,6 @@ export default function SearchFilterSkills(): JSX.Element {
 				</Box>
 			</Skeleton>
 			{error ? <ErrorAlert message={error.message} /> : false}
-		</Box>
+		</>
 	);
 }
