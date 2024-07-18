@@ -33,7 +33,7 @@ export default function SearchFilterSkills(): JSX.Element {
 	return (
 		<Box style={{ scrollMarginTop: '83px' }}>
 			<Skeleton isLoaded={data?.length > 0 && !loading && !error}>
-				<Box minH='8em'>
+				<Box>
 					<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm} size='sm'>
 						<Wrap>
 							{data?.map((term: WPItem) => (

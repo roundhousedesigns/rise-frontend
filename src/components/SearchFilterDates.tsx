@@ -91,8 +91,8 @@ export default function SearchFilterDates() {
 					/>
 				)}
 			</Flex>
-			<Text variant='helperText'>
-				Candidates who have potential scheduling conflicts will be highlighted with a{' '}
+			<Text variant='helperText' fontSize='sm'>
+				Candidates with potential scheduling conflicts will be highlighted with a{' '}
 				<IconButton
 					icon={<FiCalendar />}
 					variant='sampleIconButton'
@@ -100,7 +100,8 @@ export default function SearchFilterDates() {
 					bgColor='red.300'
 					color='text.dark'
 					size='xs'
-				/>
+				/>{' '}
+				badge.
 			</Text>
 		</>
 	);
