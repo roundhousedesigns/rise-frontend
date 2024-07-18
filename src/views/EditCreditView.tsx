@@ -243,8 +243,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		const creditToUpdate = new Credit(editCredit).prepareCreditForGraphQL();
 
 		updateCreditMutation(creditToUpdate, loggedInId)
-			.then((res) => {
-				console.info(res);
+			.then(() => {
 				closeModal();
 			})
 			.catch((err: any) => {
