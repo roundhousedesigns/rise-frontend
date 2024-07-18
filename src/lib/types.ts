@@ -1,4 +1,4 @@
-import { DateRange, WPItem } from '@lib/classes';
+import { DateRange, SearchFilterSet, WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -207,6 +207,16 @@ export interface SearchFilterSetParams {
 	genderIdentities?: string[];
 	racialIdentities?: string[];
 	personalIdentities?: string[];
+}
+
+/**
+ * The data shape for a search result item: departments, jobs, skills, filters (collected).
+ */
+export interface ParsedSearch {
+	id: number;
+	title: string;
+	filters: SearchFilterSet;
+	// Add any other properties you need
 }
 
 /**
