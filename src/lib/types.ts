@@ -258,10 +258,10 @@ export interface ProfileNoticeAlert {
 export interface ViewerData {
 	loggedInId: number;
 	loggedInSlug: string;
+	email: string;
+	username: string;
 	firstName?: string;
 	lastName?: string;
-	email?: string;
-	username?: string;
 	disableProfile?: boolean;
 	starredProfiles?: number[];
 }

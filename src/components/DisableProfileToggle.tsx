@@ -37,7 +37,7 @@ export default function DisableProfileToggle({
 			toast({
 				title: 'Updated!',
 				description: `Your profile is now ${updatedDisableProfile ? 'private' : 'public'}.`,
-				status: updatedDisableProfile ? 'warning' : 'info',
+				status: 'success',
 				duration: 3000,
 				isClosable: true,
 			});
@@ -54,7 +54,7 @@ export default function DisableProfileToggle({
 	return (
 		<ToggleOptionSwitch
 			id='disableProfile'
-			checked={disableProfile}
+			checked={!!disableProfile}
 			callback={handleToggleDisableProfile}
 			label={`Privacy ${disableProfile ? 'On' : 'Off'}`}
 			iconRight={FiEyeOff}
@@ -64,7 +64,7 @@ export default function DisableProfileToggle({
 			showLabel={showLabel}
 			{...props}
 		>
-			<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
+			<>{showHelperText ? <Description disableProfile={!!disableProfile} /> : <></>}</>
 		</ToggleOptionSwitch>
 	);
 }
