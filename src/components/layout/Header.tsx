@@ -29,7 +29,7 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
-	const { loggedInId, loggedInSlug, starredProfiles } = useViewer();
+	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
 	const [savedSearches] = useSavedSearches();
 
 	const [profile] = useUserProfile(loggedInId);

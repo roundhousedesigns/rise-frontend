@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function ProfileNotices(): JSX.Element {
-	const { disableProfile, loggedInId } = useViewer();
+	const [{ disableProfile, loggedInId }] = useViewer();
 	const [profile] = useUserProfile(loggedInId);
 
 	if (!profile) {

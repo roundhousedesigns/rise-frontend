@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Icon, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -96,29 +96,41 @@ export default function SearchFilterName({ ...props }: Props) {
 				<Flex gap={2} justifyContent='space-between' maxW='lg'>
 					<TextInput
 						placeholder='Name'
+						leftElement={<Icon as={FiSearch} />}
 						name='name'
-						label='Name'
+						label='Search by name'
 						labelHidden
 						value={name}
+						sizeToken='sm'
 						onChange={handleInputChange}
 						flex='1 0 60%'
 					/>
-					<TooltipIconButton
-						icon={<FiXCircle />}
-						onClick={handleClear}
-						label='Clear name'
-						colorScheme='orange'
-						isDisabled={!name || loading}
-					/>
-					<TooltipIconButton
-						label='Search'
-						colorScheme='green'
-						type='submit'
-						form='search-by-name'
-						isDisabled={!name}
-						isLoading={loading}
-						icon={<FiSearch />}
-					/>
+
+					<Stack
+						direction='row'
+						w={name ? 'auto' : 0}
+						overflow='hidden'
+						transition='width 250ms ease, opacity 250ms ease'
+					>
+						<TooltipIconButton
+							icon={<FiXCircle />}
+							onClick={handleClear}
+							label='Clear name'
+							colorScheme='orange'
+							size='sm'
+							isDisabled={!name || loading}
+						/>
+						<TooltipIconButton
+							label='Search'
+							colorScheme='green'
+							type='submit'
+							form='search-by-name'
+							size='sm'
+							isDisabled={!name}
+							isLoading={loading}
+							icon={<FiSearch />}
+						/>
+					</Stack>
 				</Flex>
 			</form>
 		</Box>

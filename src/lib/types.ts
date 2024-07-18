@@ -1,4 +1,4 @@
-import { DateRange, WPItem } from '@lib/classes';
+import { DateRange, SearchFilterSet, WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -214,6 +214,16 @@ export interface SearchFilterSetParams {
 /**
  * The data shape for a search result item: departments, jobs, skills, filters (collected).
  */
+export interface ParsedSearch {
+	id: number;
+	title: string;
+	filters: SearchFilterSet;
+	// Add any other properties you need
+}
+
+/**
+ * The data shape for a search result item: departments, jobs, skills, filters (collected).
+ */
 export interface OrganizedSearchTerms {
 	departments: WPItem[];
 	jobs: WPItem[];
@@ -242,4 +252,18 @@ export interface ProfileNoticeAlert {
 		};
 		element?: JSX.Element;
 	};
+}
+
+/**
+ * The data shape for the Viewer.
+ */
+export interface ViewerData {
+	loggedInId: number;
+	loggedInSlug: string;
+	email: string;
+	username: string;
+	firstName?: string;
+	lastName?: string;
+	disableProfile?: boolean;
+	starredProfiles?: number[];
 }

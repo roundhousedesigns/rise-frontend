@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import { chakra, List, ListItem, Spinner } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isEqual } from 'lodash';
@@ -8,10 +8,8 @@ import useViewer from '@hooks/queries/useViewer';
 import ErrorAlert from '@common/ErrorAlert';
 import CandidateItem from '@components/CandidateItem';
 
-// FIXME Entire collection flashes when an item is removed.
-
 export default function StarredProfileList({ ...props }: { [prop: string]: any }): JSX.Element {
-	const { starredProfiles } = useViewer();
+	const [{ starredProfiles }] = useViewer();
 	const [profiles, { error, loading }] = useCandidates(starredProfiles ? starredProfiles : []);
 
 	const profilesRef = useRef<number[] | undefined>(starredProfiles);
@@ -20,36 +18,33 @@ export default function StarredProfileList({ ...props }: { [prop: string]: any }
 		if (!isEqual(profilesRef.current, starredProfiles)) {
 			profilesRef.current = starredProfiles;
 		}
-
-		return () => {
-			profilesRef.current = undefined;
-		};
 	}, [starredProfiles]);
+
+	const renderedProfiles = useMemo(() => {
+		return profilesRef.current?.map((id: number) => {
+			const profile = profiles.find((profile: Candidate) => profile.id === id);
+
+			if (!profile) return null;
+
+			return (
+				<ListItem
+					key={id}
+					as={motion.li}
+					initial={{ opacity: 0 }} // Initial state before animation
+					animate={{ opacity: 1 }} // Animation state
+					exit={{ opacity: 0 }} // Exit state
+				>
+					<CandidateItem candidate={profile} />
+				</ListItem>
+			);
+		});
+	}, [profiles]);
 
 	return (
 		<chakra.div {...props}>
 			{!error && !loading ? (
 				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
-					{/* TODO move this into <CandidateList /> to DRY yourself off */}
-					<AnimatePresence>
-						{profilesRef.current?.map((id: number) => {
-							const profile = profiles.find((profile: Candidate) => profile.id === id);
-
-							if (!profile) return null;
-
-							return (
-								<ListItem
-									key={id}
-									as={motion.li}
-									initial={{ opacity: 0 }} // Initial state before animation
-									animate={{ opacity: 1 }} // Animation state
-									exit={{ opacity: 0 }} // Exit state
-								>
-									<CandidateItem candidate={profile} />
-								</ListItem>
-							);
-						})}
-					</AnimatePresence>
+					<AnimatePresence>{renderedProfiles}</AnimatePresence>
 				</List>
 			) : loading ? (
 				<Spinner />

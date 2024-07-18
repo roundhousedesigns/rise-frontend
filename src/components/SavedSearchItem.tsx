@@ -15,6 +15,7 @@ import {
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
 import { extractSearchTermIds } from '@lib/utils';
+import { WPItemParams } from '@lib/types';
 import { SearchFilterSet, WPItem } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
@@ -29,7 +30,6 @@ import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
-import { WPItemParams } from '@/lib/types';
 
 interface Props {
 	id?: number;
@@ -48,7 +48,7 @@ export default function SavedSearchItem({
 	showSaveButton = false,
 	...props
 }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },

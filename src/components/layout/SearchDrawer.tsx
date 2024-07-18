@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function SearchDrawer({ isOpen, onClose }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 
 	const {
 		search: {
@@ -46,7 +46,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 				},
 			},
 			results,
-			searchActive,
+			searchWizardActive,
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
@@ -137,10 +137,10 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							/>
 						</Stack>
 					</DrawerHeader>
-					<DrawerBody py={8} px={{ base: 4, md: 8 }}>
+					<DrawerBody pt={0} pb={4} px={{ base: 4, md: 8 }} my={0}>
 						<SearchWizardView onSubmit={handleSubmit} />
 					</DrawerBody>
-					<Collapse in={searchActive && !name} unmountOnExit={false}>
+					<Collapse in={searchWizardActive && !name} unmountOnExit={false}>
 						<DrawerFooter
 							mt={0}
 							py={2}
@@ -154,7 +154,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 									colorScheme='green'
 									onClick={handleSubmit}
 									form='search-candidates'
-									isDisabled={!searchActive || searchResultsLoading}
+									isDisabled={!searchWizardActive || searchResultsLoading}
 									leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
 									isLoading={!!searchResultsLoading}
 								>

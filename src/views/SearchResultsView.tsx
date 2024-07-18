@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { memo, useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiCalendar } from 'react-icons/fi';
@@ -14,7 +14,7 @@ export default function SearchResultsView() {
 			filters: { filterSet },
 			results,
 			savedSearch: { id: savedSearchId },
-			searchActive,
+			searchWizardActive,
 		},
 	} = useContext(SearchContext);
 
@@ -29,7 +29,7 @@ export default function SearchResultsView() {
 	 */
 	useEffect(() => {
 		setResultsCount(results.length);
-	}, [results]);
+	}, [results.length]);
 
 	useEffect(() => {
 		const title = savedSearches?.find((search) => search.id === savedSearchId)?.title;
@@ -55,7 +55,7 @@ export default function SearchResultsView() {
 		if (!resultsCount) return [];
 
 		// Sort the results by score.
-		const sortedResults = [...results].sort((a, b) => {
+		const sortedResults = results.sort((a, b) => {
 			return b.score - a.score;
 		});
 
@@ -83,11 +83,13 @@ export default function SearchResultsView() {
 		);
 	};
 
+	const SavedSearchItemMemo = memo(SavedSearchItem);
+
 	return (
 		<>
-			{filterSet.positions.departments?.length || filterSet.positions.jobs?.length ? (
+			{results.length > 0 ? (
 				<Box w='auto' display='inline-block' mt={4} maxW='600px'>
-					<SavedSearchItem
+					<SavedSearchItemMemo
 						searchTerms={filterSet}
 						id={savedSearchId ? savedSearchId : undefined}
 						title={savedSearchTitle ? savedSearchTitle : undefined}
@@ -111,7 +113,7 @@ export default function SearchResultsView() {
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 					{jobDates && jobDates.startDate ? <ConflictDateLegend /> : false}
 				</>
-			) : resultsCount === 0 && searchActive ? (
+			) : resultsCount === 0 && searchWizardActive ? (
 				<Text fontSize='sm'>No results.</Text>
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>

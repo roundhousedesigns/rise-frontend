@@ -61,7 +61,7 @@ interface Props {
 }
 
 export default function EditCreditView({ creditId, onClose: closeModal }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const { editProfile } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);

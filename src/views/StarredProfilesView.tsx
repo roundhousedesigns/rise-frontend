@@ -4,7 +4,7 @@ import useViewer from '@hooks/queries/useViewer';
 import { FiStar } from 'react-icons/fi';
 
 export default function StarredProfilesView() {
-	const { starredProfiles } = useViewer();
+	const [{ starredProfiles }] = useViewer();
 
 	return (
 		<>

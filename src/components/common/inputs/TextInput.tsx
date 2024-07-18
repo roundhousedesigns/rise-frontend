@@ -25,6 +25,7 @@ interface Props {
 	error?: string;
 	leftElement?: ReactNode;
 	maxLength?: number;
+	sizeToken?: string;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -47,6 +48,7 @@ const TextInput = forwardRef(
 			error,
 			leftElement,
 			maxLength,
+			sizeToken = 'md',
 			inputProps,
 			onChange,
 			...props
@@ -55,11 +57,31 @@ const TextInput = forwardRef(
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
+		/**
+		 * Returns the box size based on the given size token.
+		 */
+		const boxSize = (): number | undefined => {
+			switch (sizeToken) {
+				case 'sm':
+					return 8;
+				case 'md':
+					return 10;
+				case 'lg':
+					return 12;
+			}
+
+			return undefined;
+		};
+
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 				<InputGroup position='relative'>
 					{leftElement && (
-						<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+						<InputLeftElement
+							pointerEvents='none'
+							_dark={{ color: 'text.dark' }}
+							boxSize={boxSize()}
+						>
 							{leftElement}
 						</InputLeftElement>
 					)}
@@ -67,12 +89,13 @@ const TextInput = forwardRef(
 						variant={inputVariant}
 						focusBorderColor='brand.blue'
 						placeholder={placeholder}
-						fontSize='md'
 						isDisabled={isDisabled}
 						px={3}
 						value={value}
 						name={name}
 						ref={forwardedRef}
+						fontSize={sizeToken}
+						size={sizeToken}
 						onChange={onChange}
 						_dark={{
 							color: 'text.dark',
@@ -90,7 +113,7 @@ const TextInput = forwardRef(
 						false
 					)}
 				</InputGroup>
-				<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
+				<Flex direction='row' pt={1} mb={0} alignItems='top' gap={4} justifyContent='space-between'>
 					{label ? (
 						<FormLabel
 							ml={2}

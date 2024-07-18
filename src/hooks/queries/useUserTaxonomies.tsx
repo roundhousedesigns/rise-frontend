@@ -13,28 +13,28 @@ import { sortWPItemsByName } from '@lib/utils';
 
 const QUERY_USER_TAXONOMIES = gql`
 	query UserTaxonomies {
-		locations(first: 1000000, where: { orderby: TERM_ORDER }) {
+		locations(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		unions(first: 1000000, where: { orderby: TERM_ORDER }) {
+		unions(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		experienceLevels(first: 1000000, where: { orderby: TERM_ORDER }) {
+		experienceLevels(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		partnerDirectories(first: 1000000, where: { orderby: TERM_ORDER }) {
+		partnerDirectories(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
@@ -42,21 +42,21 @@ const QUERY_USER_TAXONOMIES = gql`
 				externalUrl
 			}
 		}
-		genderIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
+		genderIdentities(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		personalIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
+		personalIdentities(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug
 				name
 			}
 		}
-		racialIdentities(first: 1000000, where: { orderby: TERM_ORDER }) {
+		racialIdentities(first: 100, where: { orderby: TERM_ORDER }) {
 			nodes {
 				id: databaseId
 				slug

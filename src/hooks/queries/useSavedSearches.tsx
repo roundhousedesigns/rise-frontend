@@ -22,7 +22,7 @@ export const QUERY_SAVED_SEARCHES = gql`
 `;
 
 export default function useSavedSearches(ids: number[] = []): [WPPost[], any] {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const result = useQuery(QUERY_SAVED_SEARCHES, {
 		variables: {
 			author: loggedInId,

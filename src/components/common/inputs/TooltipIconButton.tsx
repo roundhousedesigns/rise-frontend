@@ -1,5 +1,5 @@
-import { ReactElement, JSXElementConstructor } from 'react';
-import { Tooltip, IconButton } from '@chakra-ui/react';
+import { ReactElement, JSXElementConstructor, useState } from 'react';
+import { Tooltip, IconButton, Box, useColorMode } from '@chakra-ui/react';
 
 interface Props {
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
@@ -18,13 +18,20 @@ export default function TooltipIconButton({
 	tooltipProps,
 	...props
 }: Props) {
+	const { colorMode } = useColorMode();
+	const [hovered, setHovered] = useState<boolean>(false);
+
 	return (
-		<>
+		<Box onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
 			<Tooltip
 				label={label}
 				placement='bottom'
 				aria-hidden={true}
 				role='presentation'
+				border='none'
+				bg={colorMode === 'dark' ? 'gray.700' : 'text.light'}
+				isOpen={!!hovered}
+				hasArrow
 				{...tooltipProps}
 			>
 				<IconButton
@@ -36,6 +43,6 @@ export default function TooltipIconButton({
 					{...props}
 				/>
 			</Tooltip>
-		</>
+		</Box>
 	);
 }

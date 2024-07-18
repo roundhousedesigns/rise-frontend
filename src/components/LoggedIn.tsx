@@ -10,10 +10,7 @@ interface Props {
 }
 
 export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
-	const {
-		loggedInId,
-		result: { loading },
-	} = useViewer();
+	const [{ loggedInId }, { loading }] = useViewer();
 
 	// get the current route
 	const { pathname } = useLocation();
