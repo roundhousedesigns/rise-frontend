@@ -1,5 +1,17 @@
-import { FormEvent, useContext, useEffect, useState } from 'react';
-import { Accordion, Box, Fade, Icon, Text, Stack, StackItem, Flex } from '@chakra-ui/react';
+import { FormEvent, useContext } from 'react';
+import {
+	Accordion,
+	Box,
+	Fade,
+	Icon,
+	Text,
+	Stack,
+	StackItem,
+	Flex,
+	Collapse,
+	Spacer,
+	useToken,
+} from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import SearchFilterSection from '@common/SearchFilterSection';
@@ -12,6 +24,7 @@ import SavedSearchItemList from '@components/SavedSearchItemList';
 import SearchFilterDates from '@components/SearchFilterDates';
 import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
 import { FiFolder, FiUser } from 'react-icons/fi';
+import useSavedSearches from '@/hooks/queries/useSavedSearches';
 
 interface Props {
 	onSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -31,133 +44,117 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		},
 	} = useContext(SearchContext);
 
-	const [optionsAccordionIndex, setOptionsAccordionIndex] = useState<number | undefined>();
+	const savedSearches = useSavedSearches();
 
-	useEffect(() => {
-		if (!!name) {
-			setOptionsAccordionIndex(0);
-		} else if (searchWizardActive && !savedSearchId) {
-			setOptionsAccordionIndex(undefined);
-		} else if (savedSearchId) {
-			setOptionsAccordionIndex(1);
-		} else {
-			setOptionsAccordionIndex(undefined);
-		}
-
-		return () => {
-			setOptionsAccordionIndex(undefined);
-		};
-	}, [searchWizardActive, savedSearchId]);
-
-	const handleOptionsAccordionIndexChange = (index: number) => {
-		setOptionsAccordionIndex(index);
-	};
+	const [orange] = useToken('colors', ['orange.300']);
 
 	return (
-		<>
+		<Stack
+			direction='column'
+			justifyContent='space-between'
+			height='full'
+			pt={searchWizardActive ? 4 : 0}
+			transition='padding 250ms ease'
+		>
+			<Collapse in={!searchWizardActive}>
+				<Accordion allowToggle mb={4} defaultIndex={name ? 0 : undefined}>
+					<SearchFilterAccordionItem
+						heading={
+							<Flex alignItems='center'>
+								<Icon as={FiUser} mr={2} />
+								<Text as='span' my={0}>
+									Name Lookup
+								</Text>
+							</Flex>
+						}
+						headingProps={{ fontSize: 'md' }}
+						panelProps={{ mb: 0, px: 3 }}
+					>
+						<SearchFilterName />
+					</SearchFilterAccordionItem>
+				</Accordion>
+			</Collapse>
+
+			<Box
+				opacity={name ? 0.2 : 1}
+				pointerEvents={name ? 'none' : 'auto'}
+				transition='opacity 250ms ease'
+			>
+				<form id='search-candidates' onSubmit={onSubmit}>
+					<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
+						<Fade in={!savedSearchId} unmountOnExit>
+							<StackItem>
+								<Box maxW='lg'>
+									<DepartmentsAutocomplete />
+								</Box>
+							</StackItem>
+						</Fade>
+						<StackItem>
+							<Stack gap={8}>
+								<StackItem>
+									<SearchFilterSection id='filterDepartment'>
+										<SearchFilterDepartment />
+									</SearchFilterSection>
+								</StackItem>
+								<Fade in={!!departments.length} unmountOnExit>
+									<SearchFilterSection
+										id='filterJobs'
+										heading='What job(s) are you looking to fill?'
+									>
+										<SearchFilterJobs />
+									</SearchFilterSection>
+								</Fade>
+								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+									<SearchFilterSection id='filterSkills' heading='What skills are you looking for?'>
+										<SearchFilterSkills />
+									</SearchFilterSection>
+								</Fade>
+								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+									<SearchFilterSection
+										id='filterDates'
+										heading='Are you hiring for a particular date?'
+									>
+										<SearchFilterDates />
+									</SearchFilterSection>
+								</Fade>
+								<Fade in={searchWizardActive && jobs && !!jobs.length} unmountOnExit>
+									<SearchFilterSection
+										id='filterAdditional'
+										heading='And some additional filters to refine your search:'
+									>
+										<AdditionalSearchFilters />
+									</SearchFilterSection>
+								</Fade>
+							</Stack>
+						</StackItem>
+					</Stack>
+				</form>
+			</Box>
+
+			<Spacer />
+
 			<Accordion
 				allowToggle
 				mb={4}
-				// defaultIndex={name ? 0 : !!savedSearchId ? 1 : undefined}
-				onChange={handleOptionsAccordionIndexChange}
-				index={optionsAccordionIndex}
+				defaultIndex={savedSearchId ? 0 : undefined}
 				_dark={{ bgColor: 'blackAlpha.300' }}
-				_light={{ bgColor: 'gray.1000' }}
+				_light={{ bgColor: 'gray.100' }}
 			>
 				<SearchFilterAccordionItem
 					heading={
 						<Flex alignItems='center'>
-							<Icon as={FiUser} mr={2} />
+							<Icon as={FiFolder} fill={savedSearches.length > 0 ? orange : 'transparent'} mr={2} />
 							<Text as='span' my={0}>
-								Search by name
+								Saved Searches
 							</Text>
 						</Flex>
 					}
 					headingProps={{ fontSize: 'md' }}
-					panelProps={{ mb: 0, mt: -2 }}
+					panelProps={{ mb: 0, px: 3, pb: 4 }}
 				>
-					<SearchFilterName px={3} />
-				</SearchFilterAccordionItem>
-				<SearchFilterAccordionItem
-					heading={
-						<Flex alignItems='center'>
-							<Icon as={FiFolder} mr={2} />
-							<Text as='span' my={0}>
-								Saved searches
-							</Text>
-						</Flex>
-					}
-					headingProps={{ fontSize: 'md' }}
-				>
-					<SavedSearchItemList px={4} />
+					<SavedSearchItemList />
 				</SearchFilterAccordionItem>
 			</Accordion>
-			<Stack
-				direction='column'
-				justifyContent='space-between'
-				height='full'
-				mt={4}
-				transition='margin 250ms ease'
-			>
-				<Box
-					opacity={name ? 0.2 : 1}
-					pointerEvents={name ? 'none' : 'auto'}
-					transition='opacity 250ms ease'
-				>
-					<form id='search-candidates' onSubmit={onSubmit}>
-						<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
-							<Fade in={!savedSearchId} unmountOnExit>
-								<StackItem>
-									<Box maxW='lg'>
-										<DepartmentsAutocomplete />
-									</Box>
-								</StackItem>
-							</Fade>
-							<StackItem>
-								<Stack gap={8}>
-									<StackItem>
-										<SearchFilterSection id='filterDepartment'>
-											<SearchFilterDepartment />
-										</SearchFilterSection>
-									</StackItem>
-									<Fade in={!!departments.length} unmountOnExit>
-										<SearchFilterSection
-											id='filterJobs'
-											heading='What job(s) are you looking to fill?'
-										>
-											<SearchFilterJobs />
-										</SearchFilterSection>
-									</Fade>
-									<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-										<SearchFilterSection
-											id='filterSkills'
-											heading='What skills are you looking for?'
-										>
-											<SearchFilterSkills />
-										</SearchFilterSection>
-									</Fade>
-									<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-										<SearchFilterSection
-											id='filterDates'
-											heading='Are you hiring for a particular date?'
-										>
-											<SearchFilterDates />
-										</SearchFilterSection>
-									</Fade>
-									<Fade in={searchWizardActive && jobs && !!jobs.length} unmountOnExit>
-										<SearchFilterSection
-											id='filterAdditional'
-											heading='And some additional filters to refine your search:'
-										>
-											<AdditionalSearchFilters />
-										</SearchFilterSection>
-									</Fade>
-								</Stack>
-							</StackItem>
-						</Stack>
-					</form>
-				</Box>
-			</Stack>
-		</>
+		</Stack>
 	);
 }
