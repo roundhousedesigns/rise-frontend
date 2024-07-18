@@ -63,12 +63,12 @@ export default function SearchWizardView({ onSubmit }: Props) {
 							<Flex alignItems='center'>
 								<Icon as={FiUser} mr={2} />
 								<Text as='span' my={0}>
-									Name Lookup
+									Search by Name
 								</Text>
 							</Flex>
 						}
 						headingProps={{ fontSize: 'md' }}
-						panelProps={{ mb: 0, px: 3 }}
+						panelProps={{ mb: 0, mt: -2, px: 3 }}
 					>
 						<SearchFilterName />
 					</SearchFilterAccordionItem>
