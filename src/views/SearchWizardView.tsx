@@ -8,7 +8,6 @@ import {
 	Stack,
 	StackItem,
 	Flex,
-	Collapse,
 	Spacer,
 	useToken,
 } from '@chakra-ui/react';
@@ -56,7 +55,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			pt={searchWizardActive ? 4 : 0}
 			transition='padding 250ms ease'
 		>
-			<Collapse in={!searchWizardActive}>
+			{searchWizardActive ? null : (
 				<Accordion allowToggle mb={4} defaultIndex={name ? 0 : undefined}>
 					<SearchFilterAccordionItem
 						heading={
@@ -73,7 +72,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<SearchFilterName />
 					</SearchFilterAccordionItem>
 				</Accordion>
-			</Collapse>
+			)}
 
 			<Box
 				opacity={name ? 0.2 : 1}
