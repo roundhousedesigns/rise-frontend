@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@hooks/queries/useFrontendSetting';
 import { Dot } from '@common/icons/Dot';
+const { VITE_RISE_DEV_MODE, VITE_RISE_VERSION } = import.meta.env;
 
 interface FooterLinkProps {
 	href?: string;
@@ -40,6 +41,12 @@ export default function Footer() {
 					<Text>
 						By <FooterLink href='https://roundhouse-designs.com'>Roundhouse Designs</FooterLink>
 					</Text>
+
+					{VITE_RISE_DEV_MODE ? (
+						<Text p={2} bgColor='brand.green'>
+							Version: {VITE_RISE_VERSION}
+						</Text>
+					) : null}
 				</Container>
 			</Box>
 		</LightMode>
