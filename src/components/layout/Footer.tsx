@@ -4,8 +4,6 @@ import useFrontendSetting from '@hooks/queries/useFrontendSetting';
 import { Dot } from '@common/icons/Dot';
 const { VITE_RISE_DEV_MODE, VITE_RISE_VERSION } = import.meta.env;
 
-console.info('VITE_RISE_VERSION', VITE_RISE_VERSION);
-
 interface FooterLinkProps {
 	href?: string;
 	isExternal?: boolean;
