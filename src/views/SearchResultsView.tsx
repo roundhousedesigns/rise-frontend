@@ -1,5 +1,5 @@
 import { memo, useContext, useEffect, useMemo, useState } from 'react';
-import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiCalendar } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
@@ -7,6 +7,7 @@ import useSavedSearches from '@hooks/queries/useSavedSearches';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
+import InlineIconText from '../components/InlineIconText';
 
 export default function SearchResultsView() {
 	const {
@@ -65,18 +66,12 @@ export default function SearchResultsView() {
 	const ConflictDateLegend = () => {
 		return jobDates && jobDates.startDate ? (
 			<Flex justifyContent='flex-start' alignItems='center' gap={1} mb={4} mt={0} ml={12}>
-				<IconButton
+				<InlineIconText
+					text='badge = Possible scheduling conflict'
 					icon={<FiCalendar />}
-					variant='sampleIconButton'
-					title='Search'
-					bgColor='red.300'
-					color='text.dark'
-					aria-label='Possible scheduling conflict'
-					size='xs'
+					query='badge'
+					description='Scheduling conflict'
 				/>
-				<Text variant='helperText' fontSize='xs'>
-					= Possible scheduling conflict
-				</Text>
 			</Flex>
 		) : (
 			<></>

@@ -22,11 +22,8 @@ const variants = {
 	}),
 	sampleIconButton: defineStyle({
 		cursor: 'default !important',
-		display: 'inline-flex',
 		alignItems: 'center',
-		justifyContent: 'center',
 		borderRadius: 'full',
-		mx: 1,
 		pointerEvents: 'none',
 		opacity: '1 !important',
 	}),
