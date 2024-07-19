@@ -1031,7 +1031,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										variant='buttonStyle'
 										position='relative'
 									>
-										I speak more than one language.
+										I speak more than one language
 									</Checkbox>
 									<Collapse in={multilingual}>
 										<TextInput
