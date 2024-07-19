@@ -22,7 +22,7 @@ export default function StarredProfileList({ ...props }: { [prop: string]: any }
 
 	const renderedProfiles = useMemo(() => {
 		return profilesRef.current?.map((id: number) => {
-			const profile = profiles.find((profile: Candidate) => profile.id === id);
+			const profile = profiles?.find((profile: Candidate) => profile.id === id);
 
 			if (!profile) return null;
 
