@@ -91,11 +91,24 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const [getRelatedSkills, { loading: relatedSkillsLoading }] = useLazyRelatedSkills();
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
+	const [requirementsMet, setRequirementsMet] = useState<boolean>(false);
+	const requiredFields = ['title', 'jobTitle', 'jobLocation', 'venue', 'workStart'];
+
 	// Fetch jobs & skills lists on mount
 	useEffect(() => {
 		refetchAndSetJobs(selectedDepartmentIds);
 		refetchAndSetSkills(selectedJobIds);
 	}, []);
+
+	// Check that all required fields have been filled.
+	useEffect(() => {
+		const allFilled = requiredFields.every((field: string) => {
+			if (!!editCredit[field]) return true;
+			else return false;
+		});
+
+		setRequirementsMet(allFilled);
+	}, [editCredit]);
 
 	/** Fetches jobs given array of departmentIds, sets jobs
 	 *
@@ -256,6 +269,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					handleSubmit={handleSubmit}
 					handleCancel={handleCancel}
 					isLoading={updateCreditLoading}
+					requirementsMet={requirementsMet}
 				/>
 			</Flex>
 
@@ -420,6 +434,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					handleSubmit={handleSubmit}
 					handleCancel={handleCancel}
 					isLoading={updateCreditLoading}
+					requirementsMet={requirementsMet}
 				/>
 			</Flex>
 		</>

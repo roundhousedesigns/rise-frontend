@@ -4,11 +4,17 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	isLoading?: boolean;
+	requirementsMet: boolean;
 	handleSubmit: () => void;
 	handleCancel: () => void;
 }
 
-export default function EditCreditButtons({ isLoading, handleSubmit, handleCancel }: Props) {
+export default function EditCreditButtons({
+	isLoading,
+	requirementsMet,
+	handleSubmit,
+	handleCancel,
+}: Props) {
 	return (
 		<ButtonGroup size='md'>
 			<TooltipIconButton
@@ -18,6 +24,7 @@ export default function EditCreditButtons({ isLoading, handleSubmit, handleCance
 				icon={<FiCheck />}
 				label='Save'
 				colorScheme='green'
+				isDisabled={!requirementsMet || isLoading}
 			/>
 			<TooltipIconButton
 				icon={<FiX />}
