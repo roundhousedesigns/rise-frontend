@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react'
 import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
@@ -24,10 +24,15 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: [
+			{ find: '@@', replacement: fileURLToPath(new URL('./', import.meta.url)) },
 			{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
 			{
 				find: '@theme',
 				replacement: fileURLToPath(new URL('./src/theme', import.meta.url)),
+			},
+			{
+				find: '@dev',
+				replacement: fileURLToPath(new URL('./src/dev', import.meta.url)),
 			},
 			{
 				find: '@assets',

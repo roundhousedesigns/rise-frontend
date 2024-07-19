@@ -1,8 +1,11 @@
 import { ReactNode } from 'react';
+import pkgJSON from '@@/package.json';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@hooks/queries/useFrontendSetting';
+import DevMode from '@dev/DevMode';
 import { Dot } from '@common/icons/Dot';
-const { VITE_RISE_DEV_MODE, VITE_RISE_VERSION } = import.meta.env;
+
+const __APP_VERSION__ = `v${pkgJSON.version}`;
 
 interface FooterLinkProps {
 	href?: string;
@@ -42,14 +45,12 @@ export default function Footer() {
 						By <FooterLink href='https://roundhouse-designs.com'>Roundhouse Designs</FooterLink>
 					</Text>
 
-					{VITE_RISE_DEV_MODE ? (
-						<>
-							<Box p={2} bgColor='brand.green' fontSize='sm'>
-								<Text fontWeight='bold'>Development Branch</Text>
-								<Text>{VITE_RISE_VERSION}</Text>
-							</Box>
-						</>
-					) : null}
+					<DevMode>
+						<Box p={2} bgColor='brand.green' fontSize='sm'>
+							<Text fontWeight='bold'>Development Branch</Text>
+							<Text>{__APP_VERSION__}</Text>
+						</Box>
+					</DevMode>
 				</Container>
 			</Box>
 		</LightMode>
