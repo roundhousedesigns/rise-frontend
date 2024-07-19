@@ -54,7 +54,7 @@ import XIcon from '@common/icons/X';
 import { sortCreditsByIndex } from '@lib/utils';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
-import { useProfileEdited } from '@hooks/hooks';
+import { useErrorMessage, useProfileEdited } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
@@ -76,6 +76,7 @@ import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import EditConflictDateRanges from '@components/EditConflictDateRanges';
+import { isEqual } from 'lodash';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -104,7 +105,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		description,
 		homebase,
 		website,
-		multilingual,
 		languages,
 		socials,
 		locations,
@@ -134,6 +134,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
+
+	const [multilingual, setMultilingual] = useState<boolean>(false);
 
 	const [resumePreview, setResumePreview] = useState('');
 
@@ -167,6 +169,17 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
 
+	const [errorCode, setErrorCode] = useState<string>('');
+	const errorMessage = useErrorMessage(errorCode);
+
+	useEffect(() => {
+		if (multilingual && !languages) {
+			setErrorCode('multilingual_no_languages');
+		}
+
+		return () => setErrorCode('');
+	});
+
 	/**
 	 * EditCredit Modal
 	 */
@@ -196,7 +209,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
-		if (!editProfile || originalProfile.current) return;
+		if (!editProfile || !!originalProfile.current || isEqual(editProfile, originalProfile.current))
+			return;
 
 		originalProfile.current = editProfile;
 	}, [editProfile]);
@@ -320,6 +334,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
+	/**
+	 * Updates the input state in the edit profile reducer based on the provided event.
+	 *
+	 * @param {ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>} event - The event triggered by the input change.
+	 * @return {void} This function does not return anything.
+	 */
 	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => {
@@ -334,19 +354,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
-	const handleSimpleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = event.target;
-
-		editProfileDispatch({
-			type: 'UPDATE_INPUT',
-			payload: {
-				name,
-				value: checked,
-			},
-		});
-	};
-
 	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		// FIXME Editing socials isn't triggering `hasEditedProfile` change.
 		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
@@ -997,7 +1006,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<Checkbox
 										name='multilingual'
 										isChecked={!!multilingual}
-										onChange={handleSimpleCheckboxChange}
+										onChange={() => setMultilingual(!multilingual)}
 										variant='buttonStyle'
 										position='relative'
 									>
@@ -1009,6 +1018,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										label='Languages spoken'
 										placeholder='What languages other than English do you speak?'
 										name='languages'
+										error={errorMessage}
 										onChange={handleInputChange}
 										mt={2}
 									/>
@@ -1405,7 +1415,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					leftIcon={saveLoading ? undefined : <FiSave />}
 					aria-label={'Save changes'}
 					colorScheme='green'
-					isDisabled={saveLoading}
+					isDisabled={saveLoading || !!errorMessage}
 					isLoading={!!saveLoading}
 					size='lg'
 					mr={4}

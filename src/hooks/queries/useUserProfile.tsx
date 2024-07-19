@@ -20,7 +20,6 @@ export const QUERY_PROFILE = gql`
 			image
 			phone
 			description
-			multilingual
 			languages
 			resume
 			willTravel

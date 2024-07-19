@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.9-multilingual]
+
+- Add: "Multilingual" local checkbox with simple "languages spoken" field.
+
 ## \[1.1.9-dev] - Unreleased
 
 - Change: Bookmark terminology is now more appropriately "Starred". **Backend version 1.1.6**

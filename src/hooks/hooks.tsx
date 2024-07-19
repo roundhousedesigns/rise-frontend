@@ -66,6 +66,7 @@ export const useLocalStorage = (
  * @returns {string} The formatted error message.
  */
 export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Error'): string => {
+	// TODO Return an object keyed by code to handle multiple errors at once.
 	if (!errorCode) return '';
 
 	switch (errorCode) {
@@ -112,9 +113,11 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'user_slug_invalid':
 			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
-		// Other errors
+		// Profile Edit errors
 		case 'conflict_range_overlap':
 			return 'This date range overlaps with an existing busy time. Please try again.';
+		case 'multilingual_no_languages':
+			return 'Please enter at least one language.';
 
 		default:
 			return defaultMessage + ': ' + errorCode;
