@@ -26,6 +26,7 @@ import {
 	AccordionPanel,
 	Card,
 	Checkbox,
+	Collapse,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
@@ -51,10 +52,10 @@ import {
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
-import { sortCreditsByIndex } from '@lib/utils';
+import { hasProfileChanged, sortCreditsByIndex } from '@lib/utils';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
-import { useErrorMessage, useProfileEdited } from '@hooks/hooks';
+import { useErrorMessage } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
@@ -76,7 +77,6 @@ import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import EditConflictDateRanges from '@components/EditConflictDateRanges';
-import { isEqual } from 'lodash';
 
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
@@ -105,6 +105,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		description,
 		homebase,
 		website,
+		multilingual,
 		languages,
 		socials,
 		locations,
@@ -132,10 +133,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
 	const originalProfile = useRef<UserProfile | null>(null);
 
+	const [hasEditedProfile, setHasEditedProfile] = useState<boolean>(false);
+
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
-
-	const [multilingual, setMultilingual] = useState<boolean>(false);
 
 	const [resumePreview, setResumePreview] = useState('');
 
@@ -167,10 +168,19 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 
-	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
+	// useProfileEdited(editProfile, originalProfile.current);
 
 	const [errorCode, setErrorCode] = useState<string>('');
 	const errorMessage = useErrorMessage(errorCode);
+
+	useEffect(() => {
+		// Update the hasEditedProfile state when the editProfile changes.
+		if (!originalProfile.current) return;
+
+		setHasEditedProfile(hasProfileChanged(editProfile, originalProfile.current));
+
+		return () => setHasEditedProfile(false);
+	}, [editProfile, originalProfile.current]);
 
 	useEffect(() => {
 		if (multilingual && !languages) {
@@ -209,8 +219,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
-		if (!editProfile || !!originalProfile.current || isEqual(editProfile, originalProfile.current))
-			return;
+		if (!editProfile || !!originalProfile.current) return;
 
 		originalProfile.current = editProfile;
 	}, [editProfile]);
@@ -368,7 +377,19 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
-	const handleRadioInputChange = (name: string) => (newValue: string) => {
+	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_BOOLEAN_INPUT',
+			payload: {
+				name,
+				value: checked,
+			},
+		});
+	};
+
+	const handleRadioGroupInputChange = (name: string) => (newValue: string) => {
 		editProfileDispatch({
 			type: 'UPDATE_BOOLEAN_INPUT',
 			payload: {
@@ -1005,23 +1026,25 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								<>
 									<Checkbox
 										name='multilingual'
-										isChecked={!!multilingual}
-										onChange={() => setMultilingual(!multilingual)}
+										isChecked={multilingual}
+										onChange={handleCheckboxChange}
 										variant='buttonStyle'
 										position='relative'
 									>
 										I speak more than one language.
 									</Checkbox>
-									<TextInput
-										value={languages}
-										leftElement={<Icon as={FiGlobe} />}
-										label='Languages spoken'
-										placeholder='What languages other than English do you speak?'
-										name='languages'
-										error={errorMessage}
-										onChange={handleInputChange}
-										mt={2}
-									/>
+									<Collapse in={multilingual}>
+										<TextInput
+											value={languages}
+											leftElement={<Icon as={FiGlobe} />}
+											label='Languages spoken'
+											placeholder='What languages other than English do you speak?'
+											name='languages'
+											error={errorMessage}
+											onChange={handleInputChange}
+											mt={2}
+										/>
+									</Collapse>
 								</>
 							</ProfileStackItem>
 							<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
@@ -1090,7 +1113,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
 								]}
-								handleChange={handleRadioInputChange}
+								handleChange={handleRadioGroupInputChange}
 							/>
 						</Box>
 						<Box>
@@ -1103,7 +1126,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
 								]}
-								handleChange={handleRadioInputChange}
+								handleChange={handleRadioGroupInputChange}
 							/>
 						</Box>
 						<Box>

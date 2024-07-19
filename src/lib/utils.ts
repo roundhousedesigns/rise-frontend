@@ -2,7 +2,7 @@
  * Utilities.
  */
 
-import { isEqual } from 'lodash';
+import { isEqual, omit } from 'lodash';
 import {
 	Credit,
 	PersonalLinks,
@@ -93,6 +93,43 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
 export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
 	return items.filter((item) => ids.includes(item.id));
 }
+/**
+ * Determine if a user profile has been edited.
+ *
+ * @param editProfile
+ * @param origProfile
+ */
+export const hasProfileChanged = (editProfile: UserProfile, origProfile: UserProfile) => {
+	if (origProfile === null) return false;
+
+	const ignoreFields = [
+		'credits',
+		'conflictRanges',
+		'slug',
+		'image',
+		'resume',
+		'mediaImage1',
+		'mediaImage2',
+		'mediaImage3',
+		'mediaImage4',
+		'mediaImage5',
+		'mediaImage6',
+	];
+
+	const profile1 = new UserProfile({
+		...omit(editProfile, ignoreFields),
+		id: 0,
+		slug: '',
+	});
+
+	const profile2 = new UserProfile({
+		...omit(origProfile, ignoreFields),
+		id: 0,
+		slug: '',
+	});
+
+	return !isEqual(profile1, profile2);
+};
 
 /**
  * Prepare a user profile for GraphQL.
@@ -105,6 +142,7 @@ export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 	const {
 		slug,
 		image,
+		multilingual,
 		resume,
 		mediaImage1,
 		mediaImage2,
@@ -116,6 +154,11 @@ export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 		credits,
 		...sanitized
 	} = profile;
+
+	// Prepare the languages field
+	if (!multilingual) {
+		sanitized.languages = '';
+	}
 
 	return sanitized;
 }
@@ -474,4 +517,12 @@ export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange)
 	}
 
 	return rangeStart <= jobEnd && rangeEnd >= jobStart;
+}
+
+export function cloneInstance(instance: object): any {
+	// Create a new object with the same prototype as the instance
+	const newInstance = Object.create(Object.getPrototypeOf(instance));
+
+	// Copy all properties from the instance to the new object
+	return Object.assign(newInstance, instance);
 }

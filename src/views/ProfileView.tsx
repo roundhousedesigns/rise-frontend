@@ -31,6 +31,7 @@ import {
 	FiMap,
 	FiDownload,
 	FiExternalLink,
+	FiGlobe,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
@@ -82,6 +83,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 		homebase,
 		locations,
 		website,
+		languages,
 		socials,
 		unions,
 		partnerDirectories,
@@ -259,9 +261,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 											</Box>
 										</Card>
-									) : (
-										false
-									)}
+									) : null}
 								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
@@ -296,11 +296,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
 												{pronouns}
 											</Tag>
-										) : (
-											false
-										)}
+										) : null}
 										<Spacer flex={1} />
-										{isLargerThanMd ? <ShareStarButtons p={0} /> : false}
+										{isLargerThanMd ? <ShareStarButtons p={0} /> : null}
 									</Flex>
 									<ProfileSubtitle flex='0 0 100%' w='full' />
 								</StackItem>
@@ -311,7 +309,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms
 													? SelectedTerms({ ids: locations, terms: locationTerms })
-													: false}
+													: null}
 											</WrapWithIcon>
 											<WrapWithIcon icon={FiMap} mr={2}>
 												<Wrap>
@@ -329,9 +327,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											</WrapWithIcon>
 										</>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{unions && unions.length > 0 && unionTerms ? (
 									<ProfileStackItem title='Unions/Guilds/Memberships'>
@@ -339,9 +335,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											{SelectedTerms({ ids: unions, terms: unionTerms })}
 										</WrapWithIcon>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 									<ProfileStackItem title='RISE Network Partner Directories'>
@@ -355,9 +349,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											</Wrap>
 										</Flex>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{email || phone || website ? (
 									<StackItem>
@@ -371,48 +363,44 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 														{email}
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 											{phone ? (
 												<ListItem>
 													<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
 														{phone}
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 											{website ? (
 												<ListItem>
 													<LinkWithIcon href={website} target='_blank' icon={FiExternalLink}>
 														Visit Website
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 										</List>
 									</StackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{conflictRanges.length && !isLargerThanMd ? (
 									<ProfileStackItem title='Conflicts'>
 										<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
+
+								{languages ? (
+									<ProfileStackItem title='Languages'>
+										<WrapWithIcon icon={FiGlobe} m={0}>
+											<Text m={0}>{languages}</Text>
+										</WrapWithIcon>
+									</ProfileStackItem>
+								) : null}
 
 								{!socials.isEmpty() ? (
 									<ProfileStackItem title='Social'>
 										<PersonalIconLinks socials={socials} />
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{resume ? (
 									<ProfileStackItem title='Resume'>
@@ -433,9 +421,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											/>
 										</Flex>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 							</Stack>
 						</Flex>
 					</>
@@ -496,9 +482,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										})}
 									</SimpleGrid>
 								</>
-							) : (
-								false
-							)}
+							) : null}
 							{mediaImages.length > 0 ? (
 								<Box mt={6}>
 									<Heading as='h3' variant='contentTitle' size='md'>
@@ -518,14 +502,10 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										))}
 									</Box>
 								</Box>
-							) : (
-								false
-							)}
+							) : null}
 						</>
 					</ProfileStackItem>
-				) : (
-					false
-				)}
+				) : null}
 			</Stack>
 		</>
 	) : null;

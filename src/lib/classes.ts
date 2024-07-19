@@ -88,6 +88,7 @@ export class UserProfile extends User {
 	willTour = false;
 	education?: string;
 	website?: string;
+	multilingual?: boolean;
 	languages?: string;
 	socials = new PersonalLinks();
 	locations: number[] = [];
@@ -129,6 +130,7 @@ export class UserProfile extends User {
 			willTravel,
 			willTour,
 			education,
+			multilingual,
 			languages,
 			socials,
 			twitter,
@@ -164,6 +166,7 @@ export class UserProfile extends User {
 		this.image = image;
 		this.phone = phone;
 		this.website = website;
+		this.multilingual = multilingual !== undefined ? multilingual : languages ? true : false;
 		this.languages = languages ? decodeString(languages) : languages;
 		this.description = description ? decodeString(description) : description;
 		this.resume = resume;
@@ -238,6 +241,13 @@ export class UserProfile extends User {
 				return new DateRange(dates);
 			});
 		}
+	}
+
+	/**
+	 * Setter for any property
+	 */
+	set(key: string, value: any) {
+		this[key] = value;
 	}
 
 	/**

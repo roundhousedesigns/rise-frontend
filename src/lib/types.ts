@@ -44,6 +44,7 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	willTour?: boolean | string | number | null;
 	education?: string;
+	multilingual?: boolean;
 	languages?: string;
 	socials?: PersonalLinksParams;
 	twitter?: string;
