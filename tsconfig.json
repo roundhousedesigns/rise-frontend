@@ -21,8 +21,14 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@@/*": [
+        "./*"
+      ],
       "@/*": [
         "./src/*"
+      ],
+      "@dev/*": [
+        "./src/dev/*"
       ],
       "@theme/*": [
         "./src/theme/*"
