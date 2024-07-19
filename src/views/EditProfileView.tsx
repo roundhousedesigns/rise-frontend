@@ -1022,7 +1022,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									/>
 								</Stack>
 							</ProfileStackItem>
-							<ProfileStackItem title='Languages' w='full' maxW='3xl' mt={4}>
+							<ProfileStackItem title='Additional Languages' w='full' maxW='3xl' mt={4}>
 								<>
 									<Checkbox
 										name='multilingual'
@@ -1037,8 +1037,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										<TextInput
 											value={languages}
 											leftElement={<Icon as={FiGlobe} />}
-											label='Languages spoken'
-											placeholder='What languages other than English do you speak?'
+											label='What languages other than English do you speak?'
+											placeholder='Spanish, Italian, Esperanto...'
 											name='languages'
 											error={errorMessage}
 											onChange={handleInputChange}

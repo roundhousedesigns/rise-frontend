@@ -389,7 +389,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{languages ? (
-									<ProfileStackItem title='Languages'>
+									<ProfileStackItem title='Additional Languages'>
 										<WrapWithIcon icon={FiGlobe} m={0}>
 											<Text m={0}>{languages}</Text>
 										</WrapWithIcon>
