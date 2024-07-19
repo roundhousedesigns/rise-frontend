@@ -43,9 +43,12 @@ export default function Footer() {
 					</Text>
 
 					{VITE_RISE_DEV_MODE ? (
-						<Text p={2} bgColor='brand.green'>
-							Version: {VITE_RISE_VERSION}
-						</Text>
+						<>
+							<Box p={2} bgColor='brand.green'>
+								<Text fontWeight='bold'>Development Branch</Text>
+								<Text>Version: {VITE_RISE_VERSION}</Text>
+							</Box>
+						</>
 					) : null}
 				</Container>
 			</Box>
