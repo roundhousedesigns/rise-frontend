@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useColorMode, useDisclosure, useToken } from '@chakra-ui/react';
 import { FiMinusCircle, FiStar } from 'react-icons/fi';
-import useViewer from '@hooks/queries/useViewer';
-import useUpdateStarredProfiles from '@hooks/mutations/useUpdateStarredProfiles';
+import useViewer from '@queries/useViewer';
+import useUpdateStarredProfiles from '@mutations/useUpdateStarredProfiles';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 

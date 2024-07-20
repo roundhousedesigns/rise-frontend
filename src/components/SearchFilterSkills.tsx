@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Box, CheckboxGroup, Wrap, Skeleton } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
-import useRelatedSkills from '@hooks/queries/useRelatedSkills';
+import useRelatedSkills from '@queries/useRelatedSkills';
 
 import ErrorAlert from '@common/ErrorAlert';
 import CheckboxButton from '@common/inputs/CheckboxButton';

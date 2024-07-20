@@ -109,9 +109,7 @@ const TextInput = forwardRef(
 								{`${value ? value.length : 0}/${maxLength}`}
 							</Text>
 						</Flex>
-					) : (
-						false
-					)}
+					) : null}
 				</InputGroup>
 				<Flex direction='row' pt={1} mb={0} alignItems='top' gap={4} justifyContent='space-between'>
 					{label ? (
@@ -122,7 +120,7 @@ const TextInput = forwardRef(
 							my={0}
 							lineHeight='normal'
 							fontSize='sm'
-							flexGrow='0'
+							flexGrow='1'
 							sx={{
 								visibility: labelHidden ? 'hidden' : 'visible',
 								position: labelHidden ? 'absolute' : 'initial',
@@ -130,34 +128,29 @@ const TextInput = forwardRef(
 						>
 							{label}
 						</FormLabel>
-					) : (
-						false
-					)}
-					<Wrap w='full' alignItems='flex-start'>
-						{helperText ? (
-							<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
-								<Flex
-									w='full'
-									justifyContent='space-between'
-									alignItems='center'
-									lineHeight='normal'
-									fontSize='xs'
-								>
-									<Text m={0} variant='helperText'>
-										{helperText}
-									</Text>
-								</Flex>
-							</FormHelperText>
-						) : (
-							false
-						)}
-						{error && (
-							<FormErrorMessage fontWeight='bold' mt={0}>
-								{error}
-							</FormErrorMessage>
-						)}
-					</Wrap>
+					) : null}
 				</Flex>
+				<Wrap w='full' alignItems='flex-start' ml={2} opacity={0.9} fontStyle='italic'>
+					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+						<Flex
+							w='full'
+							justifyContent='space-between'
+							alignItems='center'
+							lineHeight='normal'
+							fontSize='xs'
+						>
+							{error ? (
+								<FormErrorMessage fontWeight='bold' mt={0} flex='1' fontSize='xs'>
+									{error}
+								</FormErrorMessage>
+							) : helperText ? (
+								<Text m={0} variant='helperText'>
+									{helperText}
+								</Text>
+							) : null}
+						</Flex>
+					</FormHelperText>
+				</Wrap>
 			</FormControl>
 		);
 	}

@@ -4,7 +4,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { SearchFilterSetParams } from '@lib/types';
-import { QUERY_SAVED_SEARCHES } from '@hooks/queries/useSavedSearches';
+import { QUERY_SAVED_SEARCHES } from '@queries/useSavedSearches';
 
 const MUTATE_UPDATE_SAVED_SEARCH = gql`
 	mutation SaveSearch(

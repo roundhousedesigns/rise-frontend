@@ -9,8 +9,10 @@ with 1.0.0beta.
 
 ## \[1.1.9-dev] - Unreleased
 
-- Change: Bookmark terminology is now more appropriately "Starred". **Backend version 1.1.6**
-- Change: `updateStarredProfiles` mutation now has different inputs/outputs. **Backend version 1.1.6**
+- Change: Fast-forward backend to match versions starting with **v1.1.9**.
+- Change: Bookmark terminology is now more appropriately "Starred".
+- Change: `updateStarredProfiles` mutation now has different inputs/outputs.
+- Improve: `useUserId` -> `useUserIdBySlug`.
 - Improve: `useSavedSearches()` can now take an array of IDs to include.
 - Change: Remove text labels on header buttons
 - Add: `<DevMode>` component for dev branch display.
@@ -20,6 +22,7 @@ with 1.0.0beta.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
 - Improve: Refactor star/unstar profiles UX/UI.
+- Improve: @aliases for hooks/queries and hooks/mutations.
 - Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 - Deprecate: `RemoveStarIcon` component, refactored into `StarToggleIcon`.
 

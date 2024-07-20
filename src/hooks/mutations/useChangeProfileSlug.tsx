@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_VIEWER } from '@hooks/queries/useViewer';
+import { QUERY_VIEWER } from '@queries/useViewer';
 
 const MUTATE_CHANGE_PROFILE_SLUG = gql`
 	mutation ChangeProfileSlug($userId: Int!, $newSlug: String!) {

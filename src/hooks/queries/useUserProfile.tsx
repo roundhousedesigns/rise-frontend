@@ -102,14 +102,15 @@ export const QUERY_PROFILE = gql`
  * @param id User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
-const useUserProfile = (id: number, count?: number): [UserProfile | null, any] => {
+const useUserProfile = (id: number | null, count?: number): [UserProfile | null, any] => {
 	const result = useQuery(QUERY_PROFILE, {
 		variables: {
 			id,
 			author: id,
 			last: count,
 		},
-		// fetchPolicy: 'cache-and-network',
+		skip: id === null,
+		fetchPolicy: 'cache-and-network',
 	});
 
 	// Prepare the credits

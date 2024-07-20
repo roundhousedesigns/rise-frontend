@@ -51,6 +51,12 @@
       "@hooks/*": [
         "./src/hooks/*"
       ],
+      "@queries/*": [
+        "./src/hooks/queries/*"
+      ],
+      "@mutations/*": [
+        "./src/hooks/mutations/*"
+      ],
       "@lib/*": [
         "./src/lib/*"
       ],

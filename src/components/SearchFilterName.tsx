@@ -6,7 +6,7 @@ import { FiSearch, FiXCircle } from 'react-icons/fi';
 import { convertUnscoredToScored } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
-import useSearchByName from '@hooks/queries/useSearchByName';
+import useSearchByName from '@queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 

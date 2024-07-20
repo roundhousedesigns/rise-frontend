@@ -21,10 +21,10 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { FiHelpCircle } from 'react-icons/fi';
 import { handleReCaptchaVerify } from '@lib/utils';
 import TextInput from '@common/inputs/TextInput';
-import useRegisterUser from '@hooks/mutations/useRegisterUser';
+import useRegisterUser from '@mutations/useRegisterUser';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { RegisterUserInput } from '@lib/types';
-import usePostContent from '@hooks/queries/usePostContent';
+import usePostContent from '@queries/usePostContent';
 import BackToLoginButton from '@common/BackToLoginButton';
 
 export default function RegisterView() {

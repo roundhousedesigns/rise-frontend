@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_VIEWER } from '@hooks/queries/useViewer';
+import { QUERY_VIEWER } from '@queries/useViewer';
 
 const MUTATE_TOGGLE_STARRED_PROFILE = gql`
 	mutation updateStarredProfilesMutation($toggledId: Int!) {

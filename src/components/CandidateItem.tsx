@@ -3,8 +3,8 @@ import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
-import useViewer from '@hooks/queries/useViewer';
-import useUserProfile from '@hooks/queries/useUserProfile';
+import useViewer from '@queries/useViewer';
+import useUserProfile from '@queries/useUserProfile';
 import StarToggleIcon from '@common/StarToggleIcon';
 import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 

@@ -8,8 +8,8 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import { DateRange } from '@lib/classes';
-import useViewer from '@hooks/queries/useViewer';
-import useUpdateConflictRange from '@hooks/mutations/useUpdateConflictRange';
+import useViewer from '@queries/useViewer';
+import useUpdateConflictRange from '@mutations/useUpdateConflictRange';
 import { useErrorMessage } from '@hooks/hooks';
 import DateRangePicker from '@common/inputs/DateRangePicker';
 
@@ -40,9 +40,8 @@ export default function EditConflictDateRangeModal({
 
 	const toast = useToast();
 
-	// Close modal if update is successful
 	useEffect(() => {
-		// TODO check if second ? is needed (don't think it is)
+		// Close modal if update is successfulF
 		if (data?.updateOrCreateConflictRange?.id && !loading) {
 			onClose();
 

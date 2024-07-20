@@ -37,8 +37,8 @@ import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
-import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
-import useResumePreview from '@hooks/queries/useResumePreview';
+import useUserTaxonomies from '@queries/useUserTaxonomies';
+import useResumePreview from '@queries/useResumePreview';
 import StarToggleIcon from '@common/StarToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
@@ -352,7 +352,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{email || phone || website ? (
-									<StackItem>
+									<StackItem my={1}>
 										<Heading as='h3' variant='contentTitle'>
 											Contact
 										</Heading>
@@ -389,7 +389,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{languages ? (
-									<ProfileStackItem title='Additional Languages'>
+									<ProfileStackItem title='Additional Languages' my={2}>
 										<WrapWithIcon icon={FiGlobe} m={0}>
 											<Text m={0}>{languages}</Text>
 										</WrapWithIcon>

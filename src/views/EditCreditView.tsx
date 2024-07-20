@@ -4,11 +4,11 @@ import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
 import { sortWPItemsByName } from '@lib/utils';
 import { EditProfileContext } from '@context/EditProfileContext';
-import usePositions from '@hooks/queries/usePositions';
-import useLazyPositions from '@hooks/queries/useLazyPositions';
-import useLazyRelatedSkills from '@hooks/queries/useLazyRelatedSkills';
-import useViewer from '@hooks/queries/useViewer';
-import useUpdateCredit from '@hooks/mutations/useUpdateCredit';
+import usePositions from '@queries/usePositions';
+import useLazyPositions from '@queries/useLazyPositions';
+import useLazyRelatedSkills from '@queries/useLazyRelatedSkills';
+import useViewer from '@queries/useViewer';
+import useUpdateCredit from '@mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
@@ -276,7 +276,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Flex gap={4}>
 				<TextInput
 					name='title'
-					label='Production/Show/Company Title'
+					label='Company/Production Name'
 					value={title}
 					isRequired
 					onChange={handleInputChange}
@@ -386,11 +386,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						handleChange={handleDepartmentsChange}
 					/>
 				</StackItem>
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Position
-					</Heading>
-					{selectedDepartmentIds.length && !jobsLoading ? (
+				{selectedDepartmentIds.length && !jobsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Position
+						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>
 							<ProfileCheckboxGroup
@@ -402,16 +402,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleJobsChange}
 							/>
 						</>
-					) : jobsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : jobsLoading ? (
+					<Spinner />
+				) : null}
 
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Skills
-					</Heading>
-					{selectedJobIds.length && !relatedSkillsLoading ? (
+				{selectedJobIds.length && !relatedSkillsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Skills
+						</Heading>
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
@@ -423,10 +423,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleSkillsChange}
 							/>
 						</>
-					) : relatedSkillsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : relatedSkillsLoading ? (
+					<Spinner />
+				) : null}
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
