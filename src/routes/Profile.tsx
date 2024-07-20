@@ -18,8 +18,6 @@ export default function Profile(): JSX.Element {
 
 	const [profile, { loading }] = useUserProfile(userId);
 
-	console.info(profile, userId);
-
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>
 			{profileIsLoggedInUser && (
