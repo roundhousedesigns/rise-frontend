@@ -3,22 +3,19 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.9-multilingual]
+## \[1.1.9] - 2024-07-20
 
 - Add: "Multilingual" local checkbox with simple "languages spoken" field.
-
-## \[1.1.9-dev] - Unreleased
-
+- Add: `<DevMode>` component for dev branch display.
+- Add: Import version from package.json.
+- Add: Saved Searches button to header nav
+- Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
 - Change: Fast-forward backend to match versions starting with **v1.1.9**.
 - Change: Bookmark terminology is now more appropriately "Starred".
 - Change: `updateStarredProfiles` mutation now has different inputs/outputs.
 - Improve: `useUserId` -> `useUserIdBySlug`.
 - Improve: `useSavedSearches()` can now take an array of IDs to include.
 - Change: Remove text labels on header buttons
-- Add: `<DevMode>` component for dev branch display.
-- Add: Import version from package.json.
-- Add: Saved Searches button to header nav
-- Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
 - Improve: Refactor star/unstar profiles UX/UI.
