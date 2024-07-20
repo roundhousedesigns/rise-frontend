@@ -1,4 +1,4 @@
-import { List, ListItem, Spinner, Text } from '@chakra-ui/react';
+import { List, ListItem, Spinner } from '@chakra-ui/react';
 import useCandidates from '@queries/useCandidates';
 import ErrorAlert from '@common/ErrorAlert';
 import CandidateItem from '@components/CandidateItem';
