@@ -276,7 +276,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			<Flex gap={4}>
 				<TextInput
 					name='title'
-					label='Production/Show/Company Title'
+					label='Company/Production Name'
 					value={title}
 					isRequired
 					onChange={handleInputChange}
@@ -386,11 +386,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						handleChange={handleDepartmentsChange}
 					/>
 				</StackItem>
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Position
-					</Heading>
-					{selectedDepartmentIds.length && !jobsLoading ? (
+				{selectedDepartmentIds.length && !jobsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Position
+						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>
 							<ProfileCheckboxGroup
@@ -402,16 +402,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleJobsChange}
 							/>
 						</>
-					) : jobsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : jobsLoading ? (
+					<Spinner />
+				) : null}
 
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Skills
-					</Heading>
-					{selectedJobIds.length && !relatedSkillsLoading ? (
+				{selectedJobIds.length && !relatedSkillsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Skills
+						</Heading>
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
@@ -423,10 +423,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleSkillsChange}
 							/>
 						</>
-					) : relatedSkillsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : relatedSkillsLoading ? (
+					<Spinner />
+				) : null}
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>

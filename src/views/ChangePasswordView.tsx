@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { chakra, Button, Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
-import { FiHelpCircle } from 'react-icons/fi';
+import { chakra, Button, Text, Box, Flex, ListItem, List, Card } from '@chakra-ui/react';
 import { ChangePasswordInput } from '@lib/types';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
@@ -78,25 +77,13 @@ export default function ChangePasswordView() {
 
 	return (
 		<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
-			<Flex gap={6} flexWrap='wrap'>
+			<Box my={4}>
 				<TextInput
 					value={currentPassword}
 					name='currentPassword'
 					id='currentPassword'
 					variant='filled'
-					label={
-						<>
-							Current password{' '}
-							<Tooltip
-								hasArrow
-								label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
-							>
-								<chakra.span>
-									<Icon as={FiHelpCircle} />
-								</chakra.span>
-							</Tooltip>
-						</>
-					}
+					label='Current password'
 					isRequired
 					onChange={handleInputChange}
 					error={errorCode === 'incorrect_password' ? errorMessage : ''}
@@ -105,47 +92,60 @@ export default function ChangePasswordView() {
 						autoComplete: 'current-password',
 					}}
 				/>
-				<TextInput
-					value={newPassword}
-					name='newPassword'
-					id='newPassword'
-					variant='filled'
-					label='New password'
-					helperText='Passwords must have at least one lowercase letter, one uppercase letter, one number, and
-					one special character.'
-					isRequired
-					onChange={handleInputChange}
-					error={
-						errorCode && errorCode !== 'incorrect_password' && errorCode !== 'password_mismatch'
-							? errorMessage
-							: ''
-					}
-					flex='1'
-					inputProps={{
-						type: 'password',
-						autoComplete: 'new-password',
-					}}
-				/>
-				<TextInput
-					value={confirmPassword}
-					name='confirmPassword'
-					id='confirmPassword'
-					type='password'
-					variant='filled'
-					label='Confirm your new password'
-					isRequired
-					error={
-						errorCode && errorCode === 'password_mismatch' && confirmPassword ? errorMessage : ''
-					}
-					onChange={handleInputChange}
-					flex={{ base: 'auto', md: '1' }}
-					inputProps={{
-						type: 'password',
-						autoComplete: 'new-password',
-					}}
-				/>
-			</Flex>
-			<Box mt={2}>
+			</Box>
+			<Card _dark={{ bgColor: 'gray.800' }} my={8} gap={6}>
+				<Flex alignItems='center' mx='auto' gap={6} lineHeight='normal' fontSize='xs' pt={1}>
+					<Text m={0} fontStyle='italic'>
+						Passwords must have at least:
+					</Text>
+					<List listStyleType='disc'>
+						<ListItem>one lowercase letter</ListItem>
+						<ListItem>one uppercase letter</ListItem>
+						<ListItem>one one number</ListItem>
+						<ListItem>one special character.</ListItem>
+					</List>
+				</Flex>
+				<Flex gap={6} flexWrap='wrap'>
+					<TextInput
+						value={newPassword}
+						name='newPassword'
+						id='newPassword'
+						variant='filled'
+						label='New password'
+						isRequired
+						onChange={handleInputChange}
+						error={
+							errorCode && errorCode !== 'incorrect_password' && errorCode !== 'password_mismatch'
+								? errorMessage
+								: ''
+						}
+						flex='1'
+						inputProps={{
+							type: 'password',
+							autoComplete: 'new-password',
+						}}
+					/>
+					<TextInput
+						value={confirmPassword}
+						name='confirmPassword'
+						id='confirmPassword'
+						type='password'
+						variant='filled'
+						label='Confirm your new password'
+						isRequired
+						error={
+							errorCode && errorCode === 'password_mismatch' && confirmPassword ? errorMessage : ''
+						}
+						onChange={handleInputChange}
+						flex={{ base: 'auto', md: '1' }}
+						inputProps={{
+							type: 'password',
+							autoComplete: 'new-password',
+						}}
+					/>
+				</Flex>
+			</Card>
+			<Box mt={4}>
 				<Button
 					type='submit'
 					colorScheme='orange'

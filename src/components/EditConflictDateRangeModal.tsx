@@ -40,9 +40,8 @@ export default function EditConflictDateRangeModal({
 
 	const toast = useToast();
 
-	// Close modal if update is successful
 	useEffect(() => {
-		// TODO check if second ? is needed (don't think it is)
+		// Close modal if update is successfulF
 		if (data?.updateOrCreateConflictRange?.id && !loading) {
 			onClose();
 
