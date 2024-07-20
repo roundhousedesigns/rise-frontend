@@ -11,8 +11,8 @@ import {
 } from '@chakra-ui/react';
 import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import useViewer from '@hooks/queries/useViewer';
-import useUserNotices from '@hooks/queries/useUserNotices';
+import useViewer from '@queries/useViewer';
+import useUserNotices from '@queries/useUserNotices';
 import ShortPost from '@components/ShortPost';
 import InlineIconText from '@components/InlineIconText';
 

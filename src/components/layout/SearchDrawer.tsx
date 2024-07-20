@@ -18,8 +18,8 @@ import {
 import { isEqual } from 'lodash';
 import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
-import useViewer from '@hooks/queries/useViewer';
-import useCandidateSearch from '@hooks/queries/useCandidateSearch';
+import useViewer from '@queries/useViewer';
+import useCandidateSearch from '@queries/useCandidateSearch';
 import SearchWizardView from '@views/SearchWizardView';
 
 interface Props {

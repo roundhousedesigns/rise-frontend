@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import pkgJSON from '@@/package.json';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
-import useFrontendSetting from '@hooks/queries/useFrontendSetting';
+import useFrontendSetting from '@queries/useFrontendSetting';
 import DevMode from '@dev/DevMode';
 import { Dot } from '@common/icons/Dot';
 

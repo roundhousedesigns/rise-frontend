@@ -3,7 +3,7 @@
  */
 
 import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
-import { QUERY_TAXONOMY_TERMS } from '@hooks/queries/useTaxonomyTerms';
+import { QUERY_TAXONOMY_TERMS } from '@queries/useTaxonomyTerms';
 
 /**
  * usePositions hook. Queries a single taxonomy term by ID.

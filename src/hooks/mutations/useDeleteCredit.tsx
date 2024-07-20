@@ -3,7 +3,7 @@
  */
 
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_PROFILE } from '@hooks/queries/useUserProfile';
+import { QUERY_PROFILE } from '@queries/useUserProfile';
 
 const MUTATE_DELETE_CREDIT = gql`
 	mutation DeleteCredit($input: DeleteOwnCreditInput!) {

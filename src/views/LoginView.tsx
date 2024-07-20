@@ -27,7 +27,7 @@ import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
 import ContentView from '@views/ContentView';
 import { useErrorMessage } from '@hooks/hooks';
-import useLogin from '@hooks/mutations/useLogin';
+import useLogin from '@mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
 
 interface Props {

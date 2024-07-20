@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react';
 import { chakra, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SearchFilterSet, WPPost } from '@lib/classes';
-import useSavedSearches from '@hooks/queries/useSavedSearches';
+import useSavedSearches from '@queries/useSavedSearches';
 import SavedSearchItem from '@components/SavedSearchItem';
 import { ParsedSearch } from '@/lib/types';
 

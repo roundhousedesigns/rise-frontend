@@ -2,9 +2,9 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { chakra, Button, Text, Box, Flex, ListItem, List, Card } from '@chakra-ui/react';
 import { ChangePasswordInput } from '@lib/types';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
-import useViewer from '@hooks/queries/useViewer';
-import useChangeUserPassword from '@hooks/mutations/useChangeUserPassword';
-import useLogout from '@hooks/mutations/useLogout';
+import useViewer from '@queries/useViewer';
+import useChangeUserPassword from '@mutations/useChangeUserPassword';
+import useLogout from '@mutations/useLogout';
 import TextInput from '@common/inputs/TextInput';
 
 export default function ChangePasswordView() {

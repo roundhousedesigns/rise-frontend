@@ -4,7 +4,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
 
 import TextInput from '@common/inputs/TextInput';
-import useSendPasswordResetEmail from '@hooks/mutations/useSendPasswordResetEmail';
+import useSendPasswordResetEmail from '@mutations/useSendPasswordResetEmail';
 import { useErrorMessage } from '@hooks/hooks';
 import { handleReCaptchaVerify } from '@lib/utils';
 

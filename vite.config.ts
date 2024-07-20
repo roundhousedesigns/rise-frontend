@@ -59,6 +59,14 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/hooks', import.meta.url)),
 			},
 			{
+				find: '@queries',
+				replacement: fileURLToPath(new URL('./src/hooks/queries', import.meta.url)),
+			},
+			{
+				find : '@mutations',
+				replacement: fileURLToPath(new URL('./src/hooks/mutations', import.meta.url)),
+			},
+			{
 				find: '@lib',
 				replacement: fileURLToPath(new URL('./src/lib', import.meta.url)),
 			},

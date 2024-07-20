@@ -3,8 +3,8 @@ import { chakra, List, ListItem, Spinner } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isEqual } from 'lodash';
 import { Candidate } from '@lib/classes';
-import useCandidates from '@hooks/queries/useCandidates';
-import useViewer from '@hooks/queries/useViewer';
+import useCandidates from '@queries/useCandidates';
+import useViewer from '@queries/useViewer';
 import ErrorAlert from '@common/ErrorAlert';
 import CandidateItem from '@components/CandidateItem';
 

@@ -15,8 +15,8 @@ import {
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
-import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useViewer from '@hooks/queries/useViewer';
+import useSaveSearch from '@mutations/useSaveSearch';
+import useViewer from '@queries/useViewer';
 import TextInput from '@common/inputs/TextInput';
 
 interface Props {

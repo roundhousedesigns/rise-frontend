@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Highlight, Text, useToast } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
-import useViewer from '@hooks/queries/useViewer';
-import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
+import useViewer from '@queries/useViewer';
+import useToggleDisableProfile from '@mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 
 interface Props {

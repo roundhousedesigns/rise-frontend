@@ -18,6 +18,7 @@ with 1.0.0beta.
 - Improve: `<Menu>` extracted to new `<MainMenu>` component.
 - Improve: Refactor header and main menu.
 - Improve: Refactor star/unstar profiles UX/UI.
+- Improve: @aliases for hooks/queries and hooks/mutations.
 - Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
 - Deprecate: `RemoveStarIcon` component, refactored into `StarToggleIcon`.
 

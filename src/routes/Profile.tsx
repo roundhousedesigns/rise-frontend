@@ -1,12 +1,12 @@
 import { ButtonGroup } from '@chakra-ui/react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { FiEdit3 } from 'react-icons/fi';
-import useViewer from '@hooks/queries/useViewer';
-import useUserProfile from '@hooks/queries/useUserProfile';
+import useViewer from '@queries/useViewer';
+import useUserIdBySlug from '@queries/useUserIdBySlug';
+import useUserProfile from '@queries/useUserProfile';
+import ProfileView from '@views/ProfileView';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import Page from '@components/Page';
-import ProfileView from '@views/ProfileView';
-import useUserIdBySlug from '../hooks/queries/useUserIdBySlug';
 
 export default function Profile(): JSX.Element {
 	const [{ loggedInId, loggedInSlug }] = useViewer();
@@ -17,6 +17,8 @@ export default function Profile(): JSX.Element {
 	const profileIsLoggedInUser = loggedInSlug === slug;
 
 	const [profile, { loading }] = useUserProfile(userId);
+
+	console.info(profile, userId);
 
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>

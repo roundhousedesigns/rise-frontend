@@ -22,8 +22,8 @@ import {
 	FiLogOut,
 } from 'react-icons/fi';
 import { Link as RouterLink } from 'react-router-dom';
-import useViewer from '@hooks/queries/useViewer';
-import useLogout from '@hooks/mutations/useLogout';
+import useViewer from '@queries/useViewer';
+import useLogout from '@mutations/useLogout';
 import DarkModeToggle from '@components/DarkModeToggle';
 
 export default function MainMenu() {
