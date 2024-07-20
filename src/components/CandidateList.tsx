@@ -17,8 +17,6 @@ export default function CandidateList({ userIds, inOrder }: Props): JSX.Element 
 				<Spinner />
 			) : error ? (
 				<ErrorAlert message={error.message} />
-			) : !preparedCandidates?.length ? (
-				<Text>No profiles to show.</Text>
 			) : (
 				<List alignItems='left' h='auto' w='full' spacing={4}>
 					{inOrder
