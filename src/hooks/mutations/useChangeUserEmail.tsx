@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_VIEWER } from '@hooks/queries/useViewer';
+import { QUERY_VIEWER } from '@queries/useViewer';
 
 // Define the GraphQL mutation for changing the user's email
 const MUTATE_CHANGE_USER_EMAIL = gql`

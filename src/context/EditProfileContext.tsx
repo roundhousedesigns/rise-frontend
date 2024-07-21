@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useReducer } from 'react';
-import { Credit, UserProfile } from '@lib/classes';
-import { generateRandomString, sanitizeBoolean } from '@lib/utils';
+import { Credit, PersonalLinks, UserProfile } from '@lib/classes';
+import { cloneInstance, generateRandomString, sanitizeBoolean } from '@lib/utils';
 
 interface EditProfileAction {
 	type: string;
@@ -24,17 +24,18 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 		case 'UPDATE_INPUT': {
 			if (!action.payload.name) return state;
 
-			const current = { ...state };
-			current[action.payload.name] = action.payload.value;
+			const current: UserProfile = cloneInstance(state);
+
+			current.set(action.payload.name, action.payload.value);
 
 			return current;
 		}
 
 		case 'UPDATE_BOOLEAN_INPUT': {
-			if (!action.payload.name || !action.payload.value) return state;
+			if (!action.payload.name || [undefined, null].includes(action.payload.value)) return state;
 
-			const current = { ...state };
-			current[action.payload.name] = sanitizeBoolean(action.payload.value);
+			const current: UserProfile = cloneInstance(state);
+			current.set(action.payload.name, sanitizeBoolean(action.payload.value));
 
 			return current;
 		}
@@ -42,8 +43,12 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 		case 'UPDATE_PERSONAL_LINKS_INPUT': {
 			if (!action.payload.name) return state;
 
-			const current = { ...state };
-			(current.socials as any)[action.payload.name] = action.payload.value;
+			const current: UserProfile = cloneInstance(state);
+
+			current.set(
+				'socials',
+				new PersonalLinks({ ...current.socials, [action.payload.name]: action.payload.value })
+			);
 
 			return current;
 		}

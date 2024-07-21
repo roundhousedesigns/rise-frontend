@@ -1,5 +1,5 @@
-import useUserProfile from '@hooks/queries/useUserProfile';
-import useViewer from '@hooks/queries/useViewer';
+import useUserProfile from '@queries/useUserProfile';
+import useViewer from '@queries/useViewer';
 import ProfileNotice from '@common/ProfileNotice';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function ProfileNotices(): JSX.Element {
-	const { disableProfile, loggedInId } = useViewer();
+	const [{ disableProfile, loggedInId }] = useViewer();
 	const [profile] = useUserProfile(loggedInId);
 
 	if (!profile) {

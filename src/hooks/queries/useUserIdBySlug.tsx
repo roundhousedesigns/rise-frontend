@@ -1,5 +1,5 @@
 /**
- * useUserId hook. Query to retrieve one User by database ID.
+ * useUserIdBySlug hook. Query to retrieve one User by database ID.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -7,7 +7,7 @@ import { omit } from 'lodash';
 
 const QUERY_USER_ID = gql`
 	query QueryUserIdBySlug($slug: String!) {
-		userBySlug(slug: $slug)
+		userIdBySlug(slug: $slug)
 	}
 `;
 
@@ -17,16 +17,16 @@ const QUERY_USER_ID = gql`
  * @param id User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
-const useUserId = (slug: string): [number | null, any] => {
+const useUserIdBySlug = (slug: string): [number | null, any] => {
 	const result = useQuery(QUERY_USER_ID, {
 		variables: {
 			slug,
 		},
 	});
 
-	const { userBySlug: userId } = result.data || {};
+	const { userIdBySlug: userId } = result.data || {};
 
 	return [userId, omit(result, ['data'])];
 };
 
-export default useUserId;
+export default useUserIdBySlug;

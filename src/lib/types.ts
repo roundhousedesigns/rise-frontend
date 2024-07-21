@@ -1,4 +1,4 @@
-import { DateRange, WPItem } from '@lib/classes';
+import { DateRange, SearchFilterSet, WPItem } from '@lib/classes';
 
 /**
  * The data shape for generic WordPress item input.
@@ -44,6 +44,8 @@ export interface UserProfileParams {
 	willTravel?: boolean | string | number | null;
 	willTour?: boolean | string | number | null;
 	education?: string;
+	multilingual?: boolean;
+	languages?: string;
 	socials?: PersonalLinksParams;
 	twitter?: string;
 	linkedin?: string;
@@ -183,7 +185,7 @@ export interface ChangeEmailInput {
 	confirmEmail: string;
 }
 
-export interface updateBookmarkedProfilesInput {
+export interface updateStarredProfilesInput {
 	userId: number;
 	toggledUserId: number;
 }
@@ -207,6 +209,16 @@ export interface SearchFilterSetParams {
 	genderIdentities?: string[];
 	racialIdentities?: string[];
 	personalIdentities?: string[];
+}
+
+/**
+ * The data shape for a search result item: departments, jobs, skills, filters (collected).
+ */
+export interface ParsedSearch {
+	id: number;
+	title: string;
+	filters: SearchFilterSet;
+	// Add any other properties you need
 }
 
 /**
@@ -240,4 +252,18 @@ export interface ProfileNoticeAlert {
 		};
 		element?: JSX.Element;
 	};
+}
+
+/**
+ * The data shape for the Viewer.
+ */
+export interface ViewerData {
+	loggedInId: number;
+	loggedInSlug: string;
+	email: string;
+	username: string;
+	firstName?: string;
+	lastName?: string;
+	disableProfile?: boolean;
+	starredProfiles?: number[];
 }

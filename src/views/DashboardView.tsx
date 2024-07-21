@@ -3,42 +3,33 @@ import {
 	Heading,
 	Button,
 	Flex,
-	Text,
 	Spacer,
 	List,
 	ListItem,
-	IconButton,
 	Stack,
 	StackItem,
 } from '@chakra-ui/react';
 import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import useViewer from '@hooks/queries/useViewer';
-import useUserNotices from '@hooks/queries/useUserNotices';
+import useViewer from '@queries/useViewer';
+import useUserNotices from '@queries/useUserNotices';
 import ShortPost from '@components/ShortPost';
+import InlineIconText from '@components/InlineIconText';
 
 export default function DashboardView() {
-	const { loggedInSlug } = useViewer();
+	const [{ loggedInSlug }] = useViewer();
 	const [notices] = useUserNotices();
 
 	return (
 		<Stack direction='column'>
 			<StackItem as={Card}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
-					<Text fontSize='xl' my={0} display='flex' alignItems='center' flexWrap='wrap'>
-						To start a Search, use the{' '}
-						{
-							<IconButton
-								icon={<FiSearch />}
-								variant='sampleIconButton'
-								title='Search'
-								aria-label='Sample magnifying glass search icon'
-								isDisabled
-								bgColor='blackAlpha.300'
-							/>
-						}{' '}
-						button in the header.
-					</Text>
+					<InlineIconText
+						icon={<FiSearch />}
+						text='To start a Search, use the star button in the header.'
+						query='star'
+						description='search'
+					/>
 					<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
 						<Button
 							as={Link}

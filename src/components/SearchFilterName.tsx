@@ -1,13 +1,14 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex, Icon, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 import { convertUnscoredToScored } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
-import useSearchByName from '@hooks/queries/useSearchByName';
+import useSearchByName from '@queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	[prop: string]: any;
@@ -95,29 +96,41 @@ export default function SearchFilterName({ ...props }: Props) {
 				<Flex gap={2} justifyContent='space-between' maxW='lg'>
 					<TextInput
 						placeholder='Name'
+						leftElement={<Icon as={FiSearch} />}
 						name='name'
-						label='Name'
+						label='Search by name'
 						labelHidden
 						value={name}
+						sizeToken='sm'
 						onChange={handleInputChange}
 						flex='1 0 60%'
 					/>
-					<IconButton
-						icon={<FiXCircle />}
-						onClick={handleClear}
-						aria-label='Clear name'
-						colorScheme='orange'
-						isDisabled={!name}
-					/>
-					<IconButton
-						aria-label='Search by name'
-						colorScheme='green'
-						type='submit'
-						form='search-by-name'
-						isDisabled={!name}
-						isLoading={loading}
-						icon={<FiSearch />}
-					/>
+
+					<Stack
+						direction='row'
+						w={name ? 'auto' : 0}
+						overflow='hidden'
+						transition='width 250ms ease, opacity 250ms ease'
+					>
+						<TooltipIconButton
+							icon={<FiXCircle />}
+							onClick={handleClear}
+							label='Clear name'
+							colorScheme='orange'
+							size='sm'
+							isDisabled={!name || loading}
+						/>
+						<TooltipIconButton
+							label='Search'
+							colorScheme='green'
+							type='submit'
+							form='search-by-name'
+							size='sm'
+							isDisabled={!name}
+							isLoading={loading}
+							icon={<FiSearch />}
+						/>
+					</Stack>
 				</Flex>
 			</form>
 		</Box>

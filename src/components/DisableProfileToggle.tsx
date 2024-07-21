@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Highlight, Text, useToast } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
-import useViewer from '@hooks/queries/useViewer';
-import useToggleDisableProfile from '@hooks/mutations/useToggleDisableProfile';
+import useViewer from '@queries/useViewer';
+import useToggleDisableProfile from '@mutations/useToggleDisableProfile';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 
 interface Props {
@@ -19,7 +19,7 @@ export default function DisableProfileToggle({
 	showHelperText,
 	...props
 }: Props): JSX.Element {
-	const { loggedInId, disableProfile } = useViewer();
+	const [{ loggedInId, disableProfile }] = useViewer();
 	const {
 		toggleDisableProfileMutation,
 		result: { data, loading },
@@ -37,7 +37,7 @@ export default function DisableProfileToggle({
 			toast({
 				title: 'Updated!',
 				description: `Your profile is now ${updatedDisableProfile ? 'private' : 'public'}.`,
-				status: updatedDisableProfile ? 'warning' : 'info',
+				status: 'success',
 				duration: 3000,
 				isClosable: true,
 			});
@@ -54,17 +54,17 @@ export default function DisableProfileToggle({
 	return (
 		<ToggleOptionSwitch
 			id='disableProfile'
-			checked={!disableProfile}
+			checked={!!disableProfile}
 			callback={handleToggleDisableProfile}
-			label='Privacy'
-			iconLeft={FiEyeOff}
-			iconRight={FiEye}
+			label={`Privacy ${disableProfile ? 'On' : 'Off'}`}
+			iconRight={FiEyeOff}
+			iconLeft={FiEye}
 			size={size}
 			loading={loading}
 			showLabel={showLabel}
 			{...props}
 		>
-			<>{showHelperText ? <Description disableProfile={disableProfile} /> : <></>}</>
+			<>{showHelperText ? <Description disableProfile={!!disableProfile} /> : <></>}</>
 		</ToggleOptionSwitch>
 	);
 }

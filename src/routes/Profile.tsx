@@ -1,36 +1,33 @@
 import { ButtonGroup } from '@chakra-ui/react';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import { FiEdit3 } from 'react-icons/fi';
-import useViewer from '@hooks/queries/useViewer';
-import useUserId from '@hooks/queries/useUserId';
-import useUserProfile from '@hooks/queries/useUserProfile';
-import Page from '@components/Page';
+import useViewer from '@queries/useViewer';
+import useUserIdBySlug from '@queries/useUserIdBySlug';
+import useUserProfile from '@queries/useUserProfile';
 import ProfileView from '@views/ProfileView';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
+import Page from '@components/Page';
 
 export default function Profile(): JSX.Element {
-	const { loggedInId, loggedInSlug } = useViewer();
+	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
-	const [userId] = useUserId(slug);
+	const [userId] = useUserIdBySlug(slug);
 	const profileIsLoggedInUser = loggedInSlug === slug;
-	const profileId = profileIsLoggedInUser ? loggedInId : userId;
 
-	const [profile, { loading }] = useUserProfile(profileId ? profileId : loggedInId);
+	const [profile, { loading }] = useUserProfile(userId);
 
 	const PageActions = () => (
 		<ButtonGroup size='md' alignItems='center'>
 			{profileIsLoggedInUser && (
-				<ResponsiveButton
+				<TooltipIconButton
 					label='Edit profile'
 					icon={<FiEdit3 />}
 					as={RouterLink}
 					to='/profile/edit'
 					colorScheme='green'
-				>
-					Edit
-				</ResponsiveButton>
+				/>
 			)}
 		</ButtonGroup>
 	);
@@ -42,7 +39,7 @@ export default function Profile(): JSX.Element {
 			loading={loading}
 			pb={8}
 		>
-			{profile ? <ProfileView profile={profile} allowBookmark={loggedInId !== profileId} /> : false}
+			{profile ? <ProfileView profile={profile} allowStar={loggedInId !== userId} /> : false}
 		</Page>
 	);
 }

@@ -34,6 +34,7 @@ const usePositions = (parents: number[] = [0]): [WPItem[], any] => {
 		variables: {
 			departments: parents,
 		},
+		skip: !parents.length,
 	});
 
 	const preparedResult: WPItem[] = result.data?.jobsByDepartments.map(

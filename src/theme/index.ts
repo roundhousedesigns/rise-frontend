@@ -8,23 +8,24 @@ import { colors } from '@theme/foundations/colors';
 import { fonts } from '@theme/foundations/fonts';
 
 // Component style overrides
-import headingTheme from '@theme/components/Heading';
-import textTheme from '@theme/components/Text';
-import linkTheme from '@theme/components/Link';
-import cardTheme from '@theme/components/Card';
-import buttonTheme from '@theme/components/Button';
-import menuTheme from '@theme/components/Menu';
 import accordionTheme from '@theme/components/Accordion';
 import alertTheme from '@theme/components/Alert';
-import editableTheme from '@theme/components/Editable';
-import spinnerTheme from '@theme/components/Spinner';
-import inputTheme from '@theme/components/Input';
-import dividerTheme from '@theme/components/Divider';
 import avatarTheme from '@theme/components/Avatar';
 import badgeTheme from '@theme/components/Badge';
-import radioTheme from '@theme/components/Radio';
+import buttonTheme from '@theme/components/Button';
+import cardTheme from '@theme/components/Card';
 import checkboxTheme from '@theme/components/Checkbox';
+import dividerTheme from '@theme/components/Divider';
+import editableTheme from '@theme/components/Editable';
+import headingTheme from '@theme/components/Heading';
+import inputTheme from '@theme/components/Input';
+import linkTheme from '@theme/components/Link';
 import markTheme from '@theme/components/Mark';
+import menuTheme from '@theme/components/Menu';
+import radioTheme from '@theme/components/Radio';
+import spinnerTheme from '@theme/components/Spinner';
+import textTheme from '@theme/components/Text';
+import tooltipTheme from '@theme/components/Tooltip';
 
 // Config
 const config = {
@@ -38,23 +39,24 @@ const overrides = {
 	fonts,
 	colors,
 	components: {
-		Heading: headingTheme,
-		Text: textTheme,
-		Link: linkTheme,
-		Card: cardTheme,
-		Button: buttonTheme,
-		Menu: menuTheme,
-		Accordion: accordionTheme,
-		Alert: alertTheme,
-		Editable: editableTheme,
-		Spinner: spinnerTheme,
-		Input: inputTheme,
-		Divider: dividerTheme,
 		Avatar: avatarTheme,
 		Badge: badgeTheme,
-		Radio: radioTheme,
+		Button: buttonTheme,
+		Card: cardTheme,
 		Checkbox: checkboxTheme,
+		Divider: dividerTheme,
+		Editable: editableTheme,
+		Alert: alertTheme,
+		Heading: headingTheme,
+		Input: inputTheme,
+		Link: linkTheme,
+		Menu: menuTheme,
+		Accordion: accordionTheme,
 		Mark: markTheme,
+		Radio: radioTheme,
+		Spinner: spinnerTheme,
+		Text: textTheme,
+		Tooltip: tooltipTheme,
 	},
 };
 

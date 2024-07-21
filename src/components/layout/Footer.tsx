@@ -1,7 +1,11 @@
 import { ReactNode } from 'react';
+import pkgJSON from '@@/package.json';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
-import useFrontendSetting from '@hooks/queries/useFrontendSetting';
-import { Dot } from '../common/icons/Dot';
+import useFrontendSetting from '@queries/useFrontendSetting';
+import DevMode from '@dev/DevMode';
+import { Dot } from '@common/icons/Dot';
+
+const __APP_VERSION__ = `v${pkgJSON.version}`;
 
 interface FooterLinkProps {
 	href?: string;
@@ -40,6 +44,13 @@ export default function Footer() {
 					<Text>
 						By <FooterLink href='https://roundhouse-designs.com'>Roundhouse Designs</FooterLink>
 					</Text>
+
+					<DevMode>
+						<Box p={2} bgColor='brand.green' fontSize='sm'>
+							<Text fontWeight='bold'>Development Branch</Text>
+							<Text>{__APP_VERSION__}</Text>
+						</Box>
+					</DevMode>
 				</Container>
 			</Box>
 		</LightMode>

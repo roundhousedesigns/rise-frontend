@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef, useContext } from 'react';
-import { isEqual, omit } from 'lodash';
-import { UserProfile } from '@lib/classes';
 import {
 	searchFilterSetsAreEqual,
 	getProfilePrefix,
@@ -66,6 +64,7 @@ export const useLocalStorage = (
  * @returns {string} The formatted error message.
  */
 export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Error'): string => {
+	// TODO Return an object keyed by code to handle multiple errors at once.
 	if (!errorCode) return '';
 
 	switch (errorCode) {
@@ -112,50 +111,15 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		case 'user_slug_invalid':
 			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
-		// Other errors
+		// Profile Edit errors
 		case 'conflict_range_overlap':
 			return 'This date range overlaps with an existing busy time. Please try again.';
+		case 'multilingual_no_languages':
+			return 'Please enter at least one language.';
 
 		default:
 			return defaultMessage + ': ' + errorCode;
 	}
-};
-
-/**
- * Determine if a user profile has been edited.
- *
- * @param editProfile
- * @param origProfile
- */
-export const useProfileEdited = (editProfile: UserProfile, origProfile: UserProfile | null) => {
-	if (origProfile === null) return;
-
-	const ignoreFields = [
-		'credits',
-		'conflictRanges',
-		'slug',
-		'image',
-		'resume',
-		'mediaImage1',
-		'mediaImage2',
-		'mediaImage3',
-		'mediaImage4',
-		'mediaImage5',
-		'mediaImage6',
-	];
-
-	const profile1 = new UserProfile({
-		...omit(origProfile, ignoreFields),
-		id: 0,
-		slug: '',
-	});
-	const profile2 = new UserProfile({
-		...omit(editProfile, ignoreFields),
-		id: 0,
-		slug: '',
-	});
-
-	return !isEqual(profile1, profile2);
 };
 
 /**

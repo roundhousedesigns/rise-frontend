@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
 	useDisclosure,
 	useToast,
@@ -10,22 +10,25 @@ import {
 	Button,
 	Box,
 	Skeleton,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
 import { extractSearchTermIds } from '@lib/utils';
-import { SearchFilterSet } from '@lib/classes';
+import { WPItemParams } from '@lib/types';
+import { SearchFilterSet, WPItem } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
-import useCandidateSearch from '@hooks/queries/useCandidateSearch';
-import useTaxonomyTerms from '@hooks/queries/useTaxonomyTerms';
+import useCandidateSearch from '@queries/useCandidateSearch';
+import useLazyTaxonomyTerms from '@queries/useLazyTaxonomyTerms';
 import { useSavedSearchFiltersChanged } from '@hooks/hooks';
-import useViewer from '@hooks/queries/useViewer';
-import useDeleteOwnSavedSearch from '@hooks/mutations/useDeleteOwnSavedSearch';
-import useSaveSearch from '@hooks/mutations/useSaveSearch';
+import useViewer from '@queries/useViewer';
+import useDeleteOwnSavedSearch from '@mutations/useDeleteOwnSavedSearch';
+import useSaveSearch from '@mutations/useSaveSearch';
 import SearchParamTags from '@common/SearchParamTags';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
 
 interface Props {
@@ -45,7 +48,7 @@ export default function SavedSearchItem({
 	showSaveButton = false,
 	...props
 }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
 		search: { results },
@@ -59,6 +62,9 @@ export default function SavedSearchItem({
 	const { deleteOwnSavedSearchMutation } = useDeleteOwnSavedSearch();
 
 	const [saveNewSearch, setSaveNewSearch] = useState<boolean>(false);
+	const [searchFilterSet, setSearchFilterSet] = useState<SearchFilterSet | null>(null);
+	const [terms, setTerms] = useState<WPItem[]>([]);
+
 	const savedSearchFiltersChanged = useSavedSearchFiltersChanged();
 
 	const [whichButtonClicked, setWhichButtonClicked] = useState<string>('');
@@ -70,15 +76,35 @@ export default function SavedSearchItem({
 
 	// Get all the term IDs from the params object.
 	const termIds = extractSearchTermIds(searchTerms);
-	const [terms] = useTaxonomyTerms(termIds);
-
-	const searchFilterSet = useRef(searchTerms);
+	const [getTerms] = useLazyTaxonomyTerms();
 
 	useEffect(() => {
-		if (!isEqual(searchTerms, searchFilterSet.current)) return;
+		if (!termIds.length) return;
 
-		searchFilterSet.current = new SearchFilterSet(searchTerms, terms);
-	}, [JSON.stringify(searchTerms)]);
+		getTerms({
+			variables: {
+				include: termIds,
+			},
+		}).then((res) => {
+			const {
+				data: {
+					terms: { nodes },
+				},
+			} = res;
+			if (!nodes) return;
+
+			setTerms(nodes.map((term: WPItemParams) => new WPItem(term)));
+		});
+	}, [termIds.length]);
+
+	useEffect(() => {
+		if (!searchTerms || !terms) return;
+
+		const newSearchFilterSet = new SearchFilterSet(searchTerms, terms);
+		if (!isEqual(searchFilterSet, newSearchFilterSet)) {
+			setSearchFilterSet(newSearchFilterSet);
+		}
+	}, [searchTerms, terms]);
 
 	const toast = useToast();
 
@@ -95,13 +121,15 @@ export default function SavedSearchItem({
 	}, [filteredCandidates]);
 
 	const handleSearchClick = () => {
+		if (!searchFilterSet) return;
+
 		setWhichButtonClicked('search');
 
 		searchDispatch({
 			type: 'RESTORE_SAVED_SEARCH',
 			payload: {
 				savedSearchId: id,
-				filterSet: searchFilterSet.current,
+				filterSet: searchFilterSet,
 			},
 		});
 
@@ -125,14 +153,14 @@ export default function SavedSearchItem({
 	};
 
 	const handleUpdateClick = () => {
-		setWhichButtonClicked('update');
+		if (!searchFilterSet || !title) return;
 
-		if (!title) return;
+		setWhichButtonClicked('update');
 
 		saveSearchMutation({
 			userId: loggedInId,
 			title,
-			filterSet: searchFilterSet.current.toQueryableFilterSet(),
+			filterSet: searchFilterSet.toQueryableFilterSet(),
 			id: saveNewSearch ? undefined : id,
 		})
 			.then((results) => {
@@ -145,7 +173,7 @@ export default function SavedSearchItem({
 				searchDispatch({
 					type: 'SET_SAVED_SEARCH_FILTERS',
 					payload: {
-						filterSet: searchFilterSet.current,
+						filterSet: searchFilterSet,
 						savedSearchId: id,
 					},
 				});
@@ -193,7 +221,7 @@ export default function SavedSearchItem({
 		editOnClose();
 	};
 
-	return termIds && termIds.length > 0 ? (
+	return terms && terms.length > 0 ? (
 		<Card p={0} my={0} {...props}>
 			<Flex justifyContent='space-between'>
 				<Stack w='auto' alignItems='space-between' p={2}>
@@ -210,13 +238,15 @@ export default function SavedSearchItem({
 								borderBottomWidth='2px'
 								borderBottomStyle='dotted'
 								textDecoration='none !important'
+								transition='border 150ms ease'
+								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
 								_light={{
 									borderBottomColor: 'gray.300',
-									_hover: { borderBottomColor: 'gray.400' },
+									_hover: { borderBottomColor: 'gray.500' },
 								}}
 								_dark={{
 									borderBottomColor: 'gray.600',
-									_hover: { borderBottomColor: 'gray.400' },
+									_hover: { borderBottomColor: 'gray.500' },
 								}}
 								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
 							>
@@ -231,7 +261,7 @@ export default function SavedSearchItem({
 						</Flex>
 					</StackItem>
 					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
-						<Skeleton isLoaded={!!terms}>
+						<Skeleton isLoaded={!!terms.length}>
 							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
 						</Skeleton>
 					</StackItem>
@@ -239,30 +269,24 @@ export default function SavedSearchItem({
 				{id ? (
 					<Box p={2}>
 						{showControls ? (
-							<Stack>
-								<Button
-									leftIcon={<FiSearch />}
-									aria-label='Search these filters'
-									title='Search these filters'
-									size='xs'
-									w='100%'
+							<ButtonGroup size='sm'>
+								<TooltipIconButton
+									icon={<FiSearch />}
+									label='Load these filters'
 									colorScheme='green'
 									onClick={handleSearchClick}
 								>
 									Search
-								</Button>
-								<Button
-									leftIcon={<FiDelete />}
-									aria-label='Delete this search'
-									title='Delete'
-									size='xs'
-									w='100%'
+								</TooltipIconButton>
+								<TooltipIconButton
+									icon={<FiDelete />}
+									label='Delete this search'
 									colorScheme='red'
 									onClick={deleteOnOpen}
 								>
 									Delete
-								</Button>
-							</Stack>
+								</TooltipIconButton>
+							</ButtonGroup>
 						) : savedSearchFiltersChanged ? (
 							<Stack textAlign='center'>
 								<Button
@@ -304,7 +328,7 @@ export default function SavedSearchItem({
 				title={title ? title : ''}
 				isOpen={editIsOpen}
 				onClose={handleEditClose}
-				searchTerms={searchFilterSet.current}
+				searchTerms={searchFilterSet ? searchFilterSet : new SearchFilterSet()}
 			/>
 
 			<ConfirmActionDialog

@@ -6,7 +6,7 @@ import { omit } from 'lodash';
 import parse from 'html-react-parser';
 
 // WordPress block styles
-import '../../assets/css/wordpress.css';
+import '@assets/css/wordpress.css';
 
 export const QUERY_CONTENT = gql`
 	query PostContentQuery($id: ID = "") {

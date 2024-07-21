@@ -10,7 +10,6 @@ import {
 	Stack,
 	Spinner,
 	StackItem,
-	IconButton,
 	Button,
 	ButtonGroup,
 	useToast,
@@ -26,12 +25,15 @@ import {
 	AccordionIcon,
 	AccordionPanel,
 	Card,
+	Checkbox,
+	Collapse,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
 	FiGlobe,
+	FiLink,
 	FiInstagram,
 	FiLinkedin,
 	FiMail,
@@ -50,10 +52,10 @@ import {
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
-import { sortCreditsByIndex } from '@lib/utils';
+import { hasProfileChanged, sortCreditsByIndex } from '@lib/utils';
 import { Credit, UserProfile } from '@lib/classes';
 import { EditProfileContext } from '@context/EditProfileContext';
-import { useProfileEdited } from '@hooks/hooks';
+import { useErrorMessage } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
@@ -68,6 +70,7 @@ import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import TextInput from '@common/inputs/TextInput';
 import TextareaInput from '@common/inputs/TextareaInput';
 import FileUploadButton from '@common/inputs/FileUploadButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import CreditItem from '@components/CreditItem';
 import EditCreditModal from '@components/EditCreditModal';
 import DeleteCreditButton from '@components/DeleteCreditButton';
@@ -88,7 +91,7 @@ interface Props {
  */
 export default function EditProfileView({ profile }: Props): JSX.Element | null {
 	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
-	const { loggedInId, loggedInSlug } = useViewer();
+	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const { colorMode } = useColorMode();
 
 	const {
@@ -102,6 +105,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		description,
 		homebase,
 		website,
+		multilingual,
+		languages,
 		socials,
 		locations,
 		education,
@@ -127,6 +132,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	// TODO implement edited alert dialog on exit and on save button enable/disable
 	const originalProfile = useRef<UserProfile | null>(null);
+
+	const [hasEditedProfile, setHasEditedProfile] = useState<boolean>(false);
 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
@@ -161,7 +168,27 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 
-	const hasEditedProfile = useProfileEdited(editProfile, originalProfile.current);
+	// useProfileEdited(editProfile, originalProfile.current);
+
+	const [errorCode, setErrorCode] = useState<string>('');
+	const errorMessage = useErrorMessage(errorCode);
+
+	useEffect(() => {
+		// Update the hasEditedProfile state when the editProfile changes.
+		if (!originalProfile.current) return;
+
+		setHasEditedProfile(hasProfileChanged(editProfile, originalProfile.current));
+
+		return () => setHasEditedProfile(false);
+	}, [editProfile, originalProfile.current]);
+
+	useEffect(() => {
+		if (multilingual && !languages) {
+			setErrorCode('multilingual_no_languages');
+		}
+
+		return () => setErrorCode('');
+	});
 
 	/**
 	 * EditCredit Modal
@@ -192,7 +219,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
-		if (!editProfile || originalProfile.current) return;
+		if (!editProfile || !!originalProfile.current) return;
 
 		originalProfile.current = editProfile;
 	}, [editProfile]);
@@ -306,7 +333,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 	}, [profile]);
 
-	const handleCheckboxInput = (name: string) => (newValue: any) => {
+	const handleCheckboxGroupChange = (name: string) => (newValue: any) => {
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
 			payload: {
@@ -316,6 +343,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
+	/**
+	 * Updates the input state in the edit profile reducer based on the provided event.
+	 *
+	 * @param {ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>} event - The event triggered by the input change.
+	 * @return {void} This function does not return anything.
+	 */
 	const handleInputChange = (
 		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
 	) => {
@@ -331,6 +364,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		// FIXME Editing socials isn't triggering `hasEditedProfile` change.
 		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
@@ -343,7 +377,19 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
-	const handleRadioInputChange = (name: string) => (newValue: string) => {
+	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const { name, checked } = event.target;
+
+		editProfileDispatch({
+			type: 'UPDATE_BOOLEAN_INPUT',
+			payload: {
+				name,
+				value: checked,
+			},
+		});
+	};
+
+	const handleRadioGroupInputChange = (name: string) => (newValue: string) => {
 		editProfileDispatch({
 			type: 'UPDATE_BOOLEAN_INPUT',
 			payload: {
@@ -840,7 +886,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<form id='edit-profile' onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<ProfileStackItem mt={4} mb={0}>
-					<Accordion allowToggle defaultIndex={0}>
+					<Accordion allowToggle>
 						<AccordionItem>
 							<Heading as='h3' m={0}>
 								<AccordionButton>
@@ -966,7 +1012,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									<StackItem
 										as={TextInput}
 										value={website}
-										leftElement={<Icon as={FiGlobe} />}
+										leftElement={<Icon as={FiLink} />}
 										label='Website'
 										name='website'
 										onChange={handleInputChange}
@@ -975,6 +1021,31 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										}}
 									/>
 								</Stack>
+							</ProfileStackItem>
+							<ProfileStackItem title='Additional Languages' w='full' maxW='3xl' mt={4}>
+								<>
+									<Checkbox
+										name='multilingual'
+										isChecked={multilingual}
+										onChange={handleCheckboxChange}
+										variant='buttonStyle'
+										position='relative'
+									>
+										I speak more than one language
+									</Checkbox>
+									<Collapse in={multilingual}>
+										<TextInput
+											value={languages}
+											leftElement={<Icon as={FiGlobe} />}
+											label='What languages other than English do you speak?'
+											placeholder='Spanish, Italian, Esperanto...'
+											name='languages'
+											error={errorMessage}
+											onChange={handleInputChange}
+											mt={2}
+										/>
+									</Collapse>
+								</>
 							</ProfileStackItem>
 							<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
 								<SimpleGrid columns={[1, 2]} spacing={4}>
@@ -1026,7 +1097,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							requiredMessage='Please select at least one location.'
 							items={locationTerms}
 							checked={locations ? locations.map((item) => item.toString()) : []}
-							handleChange={handleCheckboxInput}
+							handleChange={handleCheckboxGroupChange}
 						/>
 					</>
 				</ProfileStackItem>
@@ -1042,7 +1113,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
 								]}
-								handleChange={handleRadioInputChange}
+								handleChange={handleRadioGroupInputChange}
 							/>
 						</Box>
 						<Box>
@@ -1055,7 +1126,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
 								]}
-								handleChange={handleRadioInputChange}
+								handleChange={handleRadioGroupInputChange}
 							/>
 						</Box>
 						<Box>
@@ -1101,7 +1172,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										name='unions'
 										items={unionTerms}
 										checked={unions ? unions.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1116,7 +1187,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										checked={
 											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
 										}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1133,7 +1204,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										checked={
 											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
 										}
-										handleChange={handleCheckboxInput}
+										handleChange={handleCheckboxGroupChange}
 									/>
 								</Box>
 							</>
@@ -1171,20 +1242,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										gap={{ base: 2, md: 0 }}
 										direction={{ base: 'column', md: 'row' }}
 									>
-										<IconButton
+										<TooltipIconButton
 											colorScheme='gray'
 											icon={<FiArrowUpCircle />}
-											aria-label='Move up Credit'
+											label='Move Credit up'
 											isDisabled={index === 0}
 											id={credit.id}
 											onClick={() => {
 												handleCreditMoveUp(index);
 											}}
 										/>
-										<IconButton
+										<TooltipIconButton
 											colorScheme='gray'
 											icon={<FiArrowDownCircle />}
-											aria-label='Move down Credit'
+											label='Move Credit down'
 											isDisabled={index === creditsSorted.length - 1}
 											id={credit.id}
 											onClick={() => {
@@ -1238,7 +1309,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									name='genderIdentities'
 									items={genderIdentityTerms}
 									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 							<ProfileStackItem title='Race/Ethnicity' flex='1 0 33%'>
@@ -1246,7 +1317,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									name='racialIdentities'
 									items={racialIdentityTerms}
 									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 							<ProfileStackItem title='Additional' flex='1 0 33%'>
@@ -1256,7 +1327,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									checked={
 										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
 									}
-									handleChange={handleCheckboxInput}
+									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
 						</Stack>
@@ -1367,7 +1438,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					leftIcon={saveLoading ? undefined : <FiSave />}
 					aria-label={'Save changes'}
 					colorScheme='green'
-					isDisabled={saveLoading}
+					isDisabled={saveLoading || !!errorMessage}
 					isLoading={!!saveLoading}
 					size='lg'
 					mr={4}

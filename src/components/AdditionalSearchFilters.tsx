@@ -3,7 +3,7 @@ import { Accordion } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { additionalFilterKeys } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
-import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
+import useUserTaxonomies from '@queries/useUserTaxonomies';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 

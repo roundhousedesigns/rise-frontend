@@ -3,24 +3,22 @@ import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
-import useViewer from '@hooks/queries/useViewer';
-import useUserProfile from '@hooks/queries/useUserProfile';
-import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
-import RemoveBookmarkIcon from '@common/RemoveBookmarkIcon';
+import useViewer from '@queries/useViewer';
+import useUserProfile from '@queries/useUserProfile';
+import StarToggleIcon from '@common/StarToggleIcon';
 import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
-	onRemove?: (id: number) => () => void;
 	[prop: string]: any;
 }
 
-const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
+const CandidateItem = ({ candidate, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate || {};
 
 	const [profile] = useUserProfile(id ? id : 0);
 	const { conflictRanges } = profile || {};
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 
 	const {
 		search: {
@@ -35,11 +33,8 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 
 	return id ? (
 		<Flex alignItems='center'>
-			{!!onRemove ? (
-				<RemoveBookmarkIcon id={id} handleRemoveBookmark={onRemove(id)} />
-			) : (
-				<BookmarkToggleIcon id={id} isDisabled={loggedInId === id} />
-			)}
+			<StarToggleIcon id={id} isDisabled={loggedInId === id} />
+
 			<Card
 				flex={1}
 				as={RouterLink}
@@ -48,8 +43,6 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				px={2}
 				mr={4}
 				my={0}
-				borderWidth={2}
-				variant='gray'
 				_dark={{
 					_hover: {
 						bg: 'gray.700',
@@ -104,7 +97,9 @@ const CandidateItem = ({ candidate, onRemove, ...props }: Props) => {
 				</Flex>
 			</Card>
 		</Flex>
-	) : null;
+	) : (
+		<></>
+	);
 };
 
 export default CandidateItem;

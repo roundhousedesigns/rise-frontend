@@ -10,12 +10,13 @@ import {
 	FormLabel,
 	Button,
 	Text,
+	Tooltip,
 } from '@chakra-ui/react';
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
-import useSaveSearch from '@hooks/mutations/useSaveSearch';
-import useViewer from '@hooks/queries/useViewer';
+import useSaveSearch from '@mutations/useSaveSearch';
+import useViewer from '@queries/useViewer';
 import TextInput from '@common/inputs/TextInput';
 
 interface Props {
@@ -27,7 +28,7 @@ interface Props {
 }
 
 export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, onClose }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const { searchDispatch } = useContext(SearchContext);
 	const initialSaveModalRef = useRef(null);
 	const {
@@ -109,13 +110,21 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 							<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
 								Name
 							</FormLabel>
-							<TextInput
-								name='title'
-								placeholder='My search'
-								onChange={handleSavedSearchNameChange}
-								value={saveSearchFieldText}
-								ref={initialSaveModalRef}
-							/>
+							<Tooltip
+								label='Edit search name'
+								placement='bottom'
+								role='presentation'
+								border='none'
+								hasArrow
+							>
+								<TextInput
+									name='title'
+									placeholder='My search'
+									onChange={handleSavedSearchNameChange}
+									value={saveSearchFieldText}
+									ref={initialSaveModalRef}
+								/>
+							</Tooltip>
 						</FormControl>
 						<Button
 							colorScheme='blue'

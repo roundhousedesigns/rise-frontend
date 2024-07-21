@@ -7,16 +7,18 @@ interface DatePickerButtonProps {
 	ariaLabel?: string;
 	value?: string;
 	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+	[prop: string]: any;
 }
 
 const DatePickerButton = forwardRef<HTMLButtonElement, DatePickerButtonProps>(
-	({ defaultText, ariaLabel, value, onClick }, ref): JSX.Element => (
+	({ defaultText, ariaLabel, value, onClick, ...props }, ref): JSX.Element => (
 		<Button
 			onClick={onClick}
 			leftIcon={<FiCalendar />}
 			ref={ref}
 			variant='searchFilter'
 			aria-label={ariaLabel ? ariaLabel : defaultText}
+			{...props}
 		>
 			{value ? value : defaultText}
 		</Button>

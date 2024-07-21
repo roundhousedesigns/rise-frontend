@@ -2,12 +2,12 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { chakra, Button, Flex, Box, Text, Link, Divider, useToast } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { obscureEmail } from '@lib/utils';
-import useChangeUserEmail from '@hooks/mutations/useChangeUserEmail';
+import useChangeUserEmail from '@mutations/useChangeUserEmail';
 import TextInput from '@common/inputs/TextInput';
-import useViewer from '@hooks/queries/useViewer';
+import useViewer from '@queries/useViewer';
 
 export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback?: () => void }) {
-	const { username, email: userEmail } = useViewer();
+	const [{ username, email: userEmail }] = useViewer();
 
 	const [newEmail, setNewEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');

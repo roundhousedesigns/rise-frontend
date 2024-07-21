@@ -3,19 +3,14 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Spacer, Spinner, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
-import useViewer from '@hooks/queries/useViewer';
 import Header from '@layout/Header';
 import Main from '@layout/Main';
 import Footer from '@layout/Footer';
 
 export default function App() {
-	const {
-		result: { loading },
-	} = useViewer();
-
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
 
 	// Get the header height so we can offset the main content
@@ -41,9 +36,7 @@ export default function App() {
 
 	return (
 		<SearchContextProvider>
-			<Stack
-				direction='column'
-				alignItems='center'
+			<Box
 				minH='-webkit-fill-available'
 				_dark={{
 					bg: 'gray.900',
@@ -55,16 +48,16 @@ export default function App() {
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between'>
+					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between' gap={0}>
 						<Header ref={headerRef} />
 						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
-							{loading ? <Spinner /> : <Main />}
+							<Main />
 						</Box>
 						<Spacer />
 						<Footer />
 					</Stack>
 				</SearchDrawerContext.Provider>
-			</Stack>
+			</Box>
 		</SearchContextProvider>
 	);
 }

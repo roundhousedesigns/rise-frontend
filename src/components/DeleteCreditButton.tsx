@@ -1,6 +1,7 @@
-import { IconButton, useDisclosure } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
 import { FiTrash2 } from 'react-icons/fi';
 import ConfirmActionDialog from '@common/ConfirmActionDialog';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	id: string;
@@ -17,10 +18,10 @@ export default function DeleteCreditButton({ handleDeleteCredit, id }: Props): J
 
 	return (
 		<>
-			<IconButton
+			<TooltipIconButton
 				colorScheme='red'
 				icon={<FiTrash2 />}
-				aria-label='Delete Credit'
+				label='Delete Credit'
 				onClick={onOpen}
 			/>
 

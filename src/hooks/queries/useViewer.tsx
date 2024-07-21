@@ -2,7 +2,9 @@
  * useViewer hook. Query information about the current logged in user.
  */
 
-import { QueryResult, gql, useQuery } from '@apollo/client';
+import { ViewerData } from '@/lib/types';
+import { gql, useQuery } from '@apollo/client';
+import { omit } from 'lodash';
 
 export const QUERY_VIEWER = gql`
 	query QueryViewer {
@@ -14,7 +16,7 @@ export const QUERY_VIEWER = gql`
 			email
 			username
 			disableProfile
-			bookmarkedProfileConnections(first: 50) {
+			starredProfiles(first: 100) {
 				nodes {
 					databaseId
 				}
@@ -23,22 +25,8 @@ export const QUERY_VIEWER = gql`
 	}
 `;
 
-interface Props {
-	loggedInId: number;
-	loggedInSlug: string;
-	firstName: string;
-	lastName: string;
-	email: string;
-	username: string;
-	disableProfile: boolean;
-	result: QueryResult;
-	bookmarkedProfiles: number[];
-}
-
-const useViewer = (): Props => {
-	const result = useQuery(QUERY_VIEWER, {
-		fetchPolicy: 'cache-and-network',
-	});
+const useViewer = (): [ViewerData, any] => {
+	const result = useQuery(QUERY_VIEWER);
 
 	const {
 		id: loggedInId,
@@ -48,24 +36,25 @@ const useViewer = (): Props => {
 		email,
 		username,
 		disableProfile,
-		bookmarkedProfileConnections,
+		starredProfiles: starredProfilesRaw,
 	} = result?.data?.viewer || {};
 
-	const bookmarkedProfiles =
-		bookmarkedProfileConnections?.nodes.map((node: { databaseId: number }) => node.databaseId) ||
-		[];
+	const starredProfiles =
+		starredProfilesRaw?.nodes.map((node: { databaseId: number }) => node.databaseId) || [];
 
-	return {
-		loggedInId,
-		loggedInSlug,
-		firstName,
-		lastName,
-		email,
-		username,
-		disableProfile,
-		bookmarkedProfiles,
-		result,
-	};
+	return [
+		{
+			loggedInId,
+			loggedInSlug,
+			firstName,
+			lastName,
+			email,
+			username,
+			disableProfile,
+			starredProfiles,
+		},
+		omit(result, ['data']),
+	];
 };
 
 export default useViewer;

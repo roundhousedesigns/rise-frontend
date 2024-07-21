@@ -1,12 +1,13 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
-import { Box, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { memo, useContext, useEffect, useMemo, useState } from 'react';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiCalendar } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
-import useSavedSearches from '@hooks/queries/useSavedSearches';
+import useSavedSearches from '@queries/useSavedSearches';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
+import InlineIconText from '../components/InlineIconText';
 
 export default function SearchResultsView() {
 	const {
@@ -14,14 +15,14 @@ export default function SearchResultsView() {
 			filters: { filterSet },
 			results,
 			savedSearch: { id: savedSearchId },
-			searchActive,
+			searchWizardActive,
 		},
 	} = useContext(SearchContext);
 
 	const { jobDates } = filterSet;
 
 	const [resultsCount, setResultsCount] = useState<number>(results.length);
-	const [savedSearches] = useSavedSearches();
+	const [savedSearches] = useSavedSearches(savedSearchId ? [savedSearchId] : []);
 	const [savedSearchTitle, setSavedSearchTitle] = useState<string>('');
 
 	/**
@@ -29,7 +30,7 @@ export default function SearchResultsView() {
 	 */
 	useEffect(() => {
 		setResultsCount(results.length);
-	}, [results]);
+	}, [results.length]);
 
 	useEffect(() => {
 		const title = savedSearches?.find((search) => search.id === savedSearchId)?.title;
@@ -55,7 +56,7 @@ export default function SearchResultsView() {
 		if (!resultsCount) return [];
 
 		// Sort the results by score.
-		const sortedResults = [...results].sort((a, b) => {
+		const sortedResults = results.sort((a, b) => {
 			return b.score - a.score;
 		});
 
@@ -65,29 +66,25 @@ export default function SearchResultsView() {
 	const ConflictDateLegend = () => {
 		return jobDates && jobDates.startDate ? (
 			<Flex justifyContent='flex-start' alignItems='center' gap={1} mb={4} mt={0} ml={12}>
-				<IconButton
+				<InlineIconText
+					text='badge = Possible scheduling conflict'
 					icon={<FiCalendar />}
-					variant='sampleIconButton'
-					title='Search'
-					bgColor='red.300'
-					color='text.dark'
-					aria-label='Possible scheduling conflict'
-					size='xs'
+					query='badge'
+					description='Scheduling conflict'
 				/>
-				<Text variant='helperText' fontSize='xs'>
-					= Possible scheduling conflict
-				</Text>
 			</Flex>
 		) : (
 			<></>
 		);
 	};
 
+	const SavedSearchItemMemo = memo(SavedSearchItem);
+
 	return (
 		<>
-			{filterSet.positions.departments?.length || filterSet.positions.jobs?.length ? (
+			{results.length > 0 ? (
 				<Box w='auto' display='inline-block' mt={4} maxW='600px'>
-					<SavedSearchItem
+					<SavedSearchItemMemo
 						searchTerms={filterSet}
 						id={savedSearchId ? savedSearchId : undefined}
 						title={savedSearchTitle ? savedSearchTitle : undefined}
@@ -111,7 +108,7 @@ export default function SearchResultsView() {
 					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 					{jobDates && jobDates.startDate ? <ConflictDateLegend /> : false}
 				</>
-			) : resultsCount === 0 && searchActive ? (
+			) : resultsCount === 0 && searchWizardActive ? (
 				<Text fontSize='sm'>No results.</Text>
 			) : (
 				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>

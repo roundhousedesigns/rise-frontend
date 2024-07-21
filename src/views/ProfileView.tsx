@@ -20,7 +20,6 @@ import {
 	Icon,
 	useBreakpointValue,
 	Spacer,
-	IconButton,
 } from '@chakra-ui/react';
 import {
 	FiMail,
@@ -32,18 +31,20 @@ import {
 	FiMap,
 	FiDownload,
 	FiExternalLink,
+	FiGlobe,
 } from 'react-icons/fi';
 import ReactPlayer from 'react-player';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import { useProfileUrl } from '@hooks/hooks';
-import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
-import useResumePreview from '@hooks/queries/useResumePreview';
-import BookmarkToggleIcon from '@common/BookmarkToggleIcon';
+import useUserTaxonomies from '@queries/useUserTaxonomies';
+import useResumePreview from '@queries/useResumePreview';
+import StarToggleIcon from '@common/StarToggleIcon';
 import LinkWithIcon from '@common/LinkWithIcon';
 import ShareButton from '@common/ShareButton';
 import WrapWithIcon from '@common/WrapWithIcon';
 import ProfileStackItem from '@common/ProfileStackItem';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import CreditsTagLegend from '@components/CreditsTagLegend';
 import PersonalIconLinks from '@components/PersonalIconLinks';
@@ -52,14 +53,14 @@ import ConflictDateRanges from '@components/ConflictDateRanges';
 
 interface Props {
 	profile: UserProfile;
-	allowBookmark?: boolean;
+	allowStar?: boolean;
 }
 
 /**
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function ProfileView({ profile, allowBookmark = true }: Props): JSX.Element | null {
+export default function ProfileView({ profile, allowStar = true }: Props): JSX.Element | null {
 	const params = useParams();
 
 	const slug = params.slug ? params.slug : '';
@@ -82,6 +83,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		homebase,
 		locations,
 		website,
+		languages,
 		socials,
 		unions,
 		partnerDirectories,
@@ -104,7 +106,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		credits,
 	} = profile || {};
 
-	const mediaVideos = [mediaVideo1, mediaVideo2].filter((video) => !!video);
+	// Ensure media videos are unique
+	const mediaVideos = Array.from(new Set([mediaVideo1, mediaVideo2].filter(Boolean)));
+
 	const mediaImages = [
 		mediaImage1,
 		mediaImage2,
@@ -171,8 +175,8 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 		});
 	}
 
-	// Share and Bookmark buttons.
-	const ShareBookmarkButtons = ({ ...props }: { [prop: string]: any }) => (
+	// Share and Star buttons.
+	const ShareStarButtons = ({ ...props }: { [prop: string]: any }) => (
 		<Flex
 			bg={{ base: 'transparent !important' }}
 			position={{ base: 'absolute', md: 'relative' }}
@@ -186,11 +190,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			{...props}
 		>
 			<ShareButton url={profileUrl} borderRadius='full' />
-			{id && allowBookmark ? (
-				<BookmarkToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' />
-			) : (
-				false
-			)}
+			{id && allowStar ? <StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' /> : false}
 		</Flex>
 	);
 
@@ -230,7 +230,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 			<Stack direction='column' flexWrap='nowrap' gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>
-						{!isLargerThanMd ? <ShareBookmarkButtons /> : false}
+						{!isLargerThanMd ? <ShareStarButtons /> : false}
 						<Flex
 							gap={6}
 							flexWrap={{ base: 'wrap', md: 'nowrap' }}
@@ -261,9 +261,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 											</Box>
 										</Card>
-									) : (
-										false
-									)}
+									) : null}
 								</Stack>
 							) : (
 								<Avatar size='superLg' src={image} name={profile.fullName()} />
@@ -298,11 +296,9 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
 												{pronouns}
 											</Tag>
-										) : (
-											false
-										)}
+										) : null}
 										<Spacer flex={1} />
-										{isLargerThanMd ? <ShareBookmarkButtons p={0} /> : false}
+										{isLargerThanMd ? <ShareStarButtons p={0} /> : null}
 									</Flex>
 									<ProfileSubtitle flex='0 0 100%' w='full' />
 								</StackItem>
@@ -313,7 +309,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms
 													? SelectedTerms({ ids: locations, terms: locationTerms })
-													: false}
+													: null}
 											</WrapWithIcon>
 											<WrapWithIcon icon={FiMap} mr={2}>
 												<Wrap>
@@ -331,9 +327,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											</WrapWithIcon>
 										</>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{unions && unions.length > 0 && unionTerms ? (
 									<ProfileStackItem title='Unions/Guilds/Memberships'>
@@ -341,9 +335,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											{SelectedTerms({ ids: unions, terms: unionTerms })}
 										</WrapWithIcon>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 									<ProfileStackItem title='RISE Network Partner Directories'>
@@ -357,12 +349,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 											</Wrap>
 										</Flex>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{email || phone || website ? (
-									<StackItem>
+									<StackItem my={1}>
 										<Heading as='h3' variant='contentTitle'>
 											Contact
 										</Heading>
@@ -373,48 +363,44 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 														{email}
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 											{phone ? (
 												<ListItem>
 													<LinkWithIcon href={`tel:${phone}`} icon={FiPhone}>
 														{phone}
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 											{website ? (
 												<ListItem>
 													<LinkWithIcon href={website} target='_blank' icon={FiExternalLink}>
 														Visit Website
 													</LinkWithIcon>
 												</ListItem>
-											) : (
-												false
-											)}
+											) : null}
 										</List>
 									</StackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{conflictRanges.length && !isLargerThanMd ? (
 									<ProfileStackItem title='Conflicts'>
 										<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
+
+								{languages ? (
+									<ProfileStackItem title='Additional Languages' my={2}>
+										<WrapWithIcon icon={FiGlobe} m={0}>
+											<Text m={0}>{languages}</Text>
+										</WrapWithIcon>
+									</ProfileStackItem>
+								) : null}
 
 								{!socials.isEmpty() ? (
 									<ProfileStackItem title='Social'>
 										<PersonalIconLinks socials={socials} />
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 
 								{resume ? (
 									<ProfileStackItem title='Resume'>
@@ -425,20 +411,17 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 												previewIcon={false}
 												maxW='250px'
 											/>
-											<IconButton
+											<TooltipIconButton
 												icon={<FiDownload />}
 												as={Link}
-												aria-label='Download resume'
+												label='Download resume'
 												href={resume}
 												colorScheme='green'
 												my={0}
-												download
 											/>
 										</Flex>
 									</ProfileStackItem>
-								) : (
-									false
-								)}
+								) : null}
 							</Stack>
 						</Flex>
 					</>
@@ -486,10 +469,11 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										Video
 									</Heading>
 									<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
-										{mediaVideos.map((video: string | undefined, index: Key) => {
+										{mediaVideos.map((video: string | undefined) => {
 											if (!video) return false;
 											return (
-												<Box key={index} position='relative' paddingBottom='56.25%'>
+												// Videos are unique, so we can just use the string as the key.
+												<Box key={video} position='relative' paddingBottom='56.25%'>
 													<Box position='absolute' top={0} left={0} width='100%' height='100%'>
 														<ReactPlayer url={video} controls width='100%' height='100%' />
 													</Box>
@@ -498,9 +482,7 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										})}
 									</SimpleGrid>
 								</>
-							) : (
-								false
-							)}
+							) : null}
 							{mediaImages.length > 0 ? (
 								<Box mt={6}>
 									<Heading as='h3' variant='contentTitle' size='md'>
@@ -520,14 +502,10 @@ export default function ProfileView({ profile, allowBookmark = true }: Props): J
 										))}
 									</Box>
 								</Box>
-							) : (
-								false
-							)}
+							) : null}
 						</>
 					</ProfileStackItem>
-				) : (
-					false
-				)}
+				) : null}
 			</Stack>
 		</>
 	) : null;

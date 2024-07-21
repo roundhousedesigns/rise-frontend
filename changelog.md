@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.9] - 2024-07-20
+
+- Add: "Multilingual" local checkbox with simple "languages spoken" field.
+- Add: `<DevMode>` component for dev branch display.
+- Add: Import version from package.json.
+- Add: Saved Searches button to header nav
+- Add: `TooltipIconButton` component to show a styled tooltip on icon buttons.
+- Change: Fast-forward backend to match versions starting with **v1.1.9**.
+- Change: Bookmark terminology is now more appropriately "Starred".
+- Change: `updateStarredProfiles` mutation now has different inputs/outputs.
+- Improve: `useUserId` -> `useUserIdBySlug`.
+- Improve: `useSavedSearches()` can now take an array of IDs to include.
+- Change: Remove text labels on header buttons
+- Improve: `<Menu>` extracted to new `<MainMenu>` component.
+- Improve: Refactor header and main menu.
+- Improve: Refactor star/unstar profiles UX/UI.
+- Improve: @aliases for hooks/queries and hooks/mutations.
+- Deprecate: `ReponsiveButton` component, in favor of new `TooltipIconButton`.
+- Deprecate: `RemoveStarIcon` component, refactored into `StarToggleIcon`.
+
 ## \[1.1.8] - 2024-07-10
 
 - Add: Autocomplete for finding and populating departments/jobs on the search form.
@@ -28,7 +48,7 @@ with 1.0.0beta.
 
 ## \[1.1.6] - 2024-05-07
 
-- Add: Change email address. **Requires backend version 1.1.3** (no tag yet)
+- Add: Change email address. **Requires backend version 1.1.3**
 - Improve: Default link color is now the brand blue.
 - Improve: Link underline hover transition.
 - Improve: Clean up imports.

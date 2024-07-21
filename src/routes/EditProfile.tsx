@@ -2,8 +2,8 @@ import { forwardRef, useRef } from 'react';
 import { Button, Spinner } from '@chakra-ui/react';
 import { FiArrowDown } from 'react-icons/fi';
 import { EditProfileContextProvider } from '@context/EditProfileContext';
-import useViewer from '@hooks/queries/useViewer';
-import useUserProfile from '@hooks/queries/useUserProfile';
+import useViewer from '@queries/useViewer';
+import useUserProfile from '@queries/useUserProfile';
 import EditProfileView from '@views/EditProfileView';
 import Page from '@components/Page';
 import ErrorAlert from '@common/ErrorAlert';
@@ -31,7 +31,7 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 });
 
 export default function EditProfile() {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const [profile, { loading, error }] = useUserProfile(loggedInId);
 	const ref = useRef<HTMLButtonElement>(null);
 

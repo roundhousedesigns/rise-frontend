@@ -1,35 +1,38 @@
 import { ButtonGroup } from '@chakra-ui/react';
 import { FiCheck, FiX } from 'react-icons/fi';
-import ResponsiveButton from '@common/inputs/ResponsiveButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	isLoading?: boolean;
+	requirementsMet: boolean;
 	handleSubmit: () => void;
 	handleCancel: () => void;
 }
 
-export default function EditCreditButtons({ isLoading, handleSubmit, handleCancel }: Props) {
+export default function EditCreditButtons({
+	isLoading,
+	requirementsMet,
+	handleSubmit,
+	handleCancel,
+}: Props) {
 	return (
 		<ButtonGroup size='md'>
-			<ResponsiveButton
+			<TooltipIconButton
 				type='submit'
 				isLoading={isLoading}
 				onClick={handleSubmit}
 				icon={<FiCheck />}
 				label='Save'
 				colorScheme='green'
-			>
-				Save
-			</ResponsiveButton>
-			<ResponsiveButton
+				isDisabled={!requirementsMet || isLoading}
+			/>
+			<TooltipIconButton
 				icon={<FiX />}
 				label='Cancel changes'
 				colorScheme='red'
 				onClick={handleCancel}
 				isDisabled={isLoading}
-			>
-				Cancel
-			</ResponsiveButton>
+			/>
 		</ButtonGroup>
 	);
 }

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Page from '@components/Page';
 import LoginView from '@views/LoginView';
-import useViewer from '@hooks/queries/useViewer';
+import useViewer from '@queries/useViewer';
 
 export default function Login() {
 	const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function Login() {
 	const alert = params.get('alert');
 	const alertStatus = params.get('alertStatus');
 
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 
 	// If the user is logged in, redirect them to the home page.
 	useEffect(() => {

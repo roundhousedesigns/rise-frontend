@@ -5,7 +5,7 @@
  */
 
 import { LazyQueryExecFunction, QueryResult, useLazyQuery } from '@apollo/client';
-import { QUERY_RELATED_SKILLS } from '@hooks/queries/useRelatedSkills';
+import { QUERY_RELATED_SKILLS } from '@queries/useRelatedSkills';
 
 /**
  * useLazyRelatedSkills hook.

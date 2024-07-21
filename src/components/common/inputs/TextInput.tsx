@@ -25,6 +25,7 @@ interface Props {
 	error?: string;
 	leftElement?: ReactNode;
 	maxLength?: number;
+	sizeToken?: string;
 	inputProps?: {
 		[prop: string]: any;
 	};
@@ -47,6 +48,7 @@ const TextInput = forwardRef(
 			error,
 			leftElement,
 			maxLength,
+			sizeToken = 'md',
 			inputProps,
 			onChange,
 			...props
@@ -55,11 +57,31 @@ const TextInput = forwardRef(
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
+		/**
+		 * Returns the box size based on the given size token.
+		 */
+		const boxSize = (): number | undefined => {
+			switch (sizeToken) {
+				case 'sm':
+					return 8;
+				case 'md':
+					return 10;
+				case 'lg':
+					return 12;
+			}
+
+			return undefined;
+		};
+
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
 				<InputGroup position='relative'>
 					{leftElement && (
-						<InputLeftElement pointerEvents='none' _dark={{ color: 'text.dark' }}>
+						<InputLeftElement
+							pointerEvents='none'
+							_dark={{ color: 'text.dark' }}
+							boxSize={boxSize()}
+						>
 							{leftElement}
 						</InputLeftElement>
 					)}
@@ -67,12 +89,13 @@ const TextInput = forwardRef(
 						variant={inputVariant}
 						focusBorderColor='brand.blue'
 						placeholder={placeholder}
-						fontSize='md'
 						isDisabled={isDisabled}
 						px={3}
 						value={value}
 						name={name}
 						ref={forwardedRef}
+						fontSize={sizeToken}
+						size={sizeToken}
 						onChange={onChange}
 						_dark={{
 							color: 'text.dark',
@@ -86,11 +109,9 @@ const TextInput = forwardRef(
 								{`${value ? value.length : 0}/${maxLength}`}
 							</Text>
 						</Flex>
-					) : (
-						false
-					)}
+					) : null}
 				</InputGroup>
-				<Flex direction='row' pt={1} mb={2} alignItems='top' gap={4} justifyContent='space-between'>
+				<Flex direction='row' pt={1} mb={0} alignItems='top' gap={4} justifyContent='space-between'>
 					{label ? (
 						<FormLabel
 							ml={2}
@@ -99,7 +120,7 @@ const TextInput = forwardRef(
 							my={0}
 							lineHeight='normal'
 							fontSize='sm'
-							flexGrow='0'
+							flexGrow='1'
 							sx={{
 								visibility: labelHidden ? 'hidden' : 'visible',
 								position: labelHidden ? 'absolute' : 'initial',
@@ -107,34 +128,29 @@ const TextInput = forwardRef(
 						>
 							{label}
 						</FormLabel>
-					) : (
-						false
-					)}
-					<Wrap w='full' alignItems='flex-start'>
-						{helperText ? (
-							<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
-								<Flex
-									w='full'
-									justifyContent='space-between'
-									alignItems='center'
-									lineHeight='normal'
-									fontSize='xs'
-								>
-									<Text m={0} variant='helperText'>
-										{helperText}
-									</Text>
-								</Flex>
-							</FormHelperText>
-						) : (
-							false
-						)}
-						{error && (
-							<FormErrorMessage fontWeight='bold' mt={0}>
-								{error}
-							</FormErrorMessage>
-						)}
-					</Wrap>
+					) : null}
 				</Flex>
+				<Wrap w='full' alignItems='flex-start' ml={2} opacity={0.9} fontStyle='italic'>
+					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+						<Flex
+							w='full'
+							justifyContent='space-between'
+							alignItems='center'
+							lineHeight='normal'
+							fontSize='xs'
+						>
+							{error ? (
+								<FormErrorMessage fontWeight='bold' mt={0} flex='1' fontSize='xs'>
+									{error}
+								</FormErrorMessage>
+							) : helperText ? (
+								<Text m={0} variant='helperText'>
+									{helperText}
+								</Text>
+							) : null}
+						</Flex>
+					</FormHelperText>
+				</Wrap>
 			</FormControl>
 		);
 	}

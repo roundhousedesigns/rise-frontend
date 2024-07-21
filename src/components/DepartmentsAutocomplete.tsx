@@ -11,7 +11,7 @@ import {
 } from '@choc-ui/chakra-autocomplete';
 import { WPItem } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
-import usePositions from '@hooks/queries/usePositions';
+import usePositions from '@queries/usePositions';
 
 export default function DepartmentsAutocomplete() {
 	const { searchDispatch } = useContext(SearchContext);
@@ -52,7 +52,6 @@ export default function DepartmentsAutocomplete() {
 				<Heading as={FormLabel} variant='searchFilterTitle' mb={4}>
 					Type a job title to begin.
 				</Heading>
-				{/* <Flex gap={2} alignItems='center' flexWrap='wrap'> */}
 				<Box flex='1 0 400px'>
 					<AutoComplete onSelectOption={handleAutocompleteSelect} openOnFocus>
 						<AutoCompleteInput variant='filled' placeholder='Start typing' />
@@ -86,7 +85,6 @@ export default function DepartmentsAutocomplete() {
 				<FormHelperText fontSize='xs' maxW='75%'>
 					Your starting filters will be selected automatically, and you can adjust them as you like.
 				</FormHelperText>
-				{/* </Flex> */}
 			</FormControl>
 		</Box>
 	);

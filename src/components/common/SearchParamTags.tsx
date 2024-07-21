@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function SearchParamTags({ termIds, termItems, tagProps, ...props }: Props) {
-	if (!termIds || !termItems) return null;
+	if (!termIds.length || !termItems.length) return null;
 
 	const terms: WPItem[] = termIds.map(
 		(termId) => termItems.find((term: WPItem) => term.id === termId) as WPItem

@@ -11,12 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
-import useViewer from '@hooks/queries/useViewer';
-import useChangeProfileSlug from '@hooks/mutations/useChangeProfileSlug';
+import useViewer from '@queries/useViewer';
+import useChangeProfileSlug from '@mutations/useChangeProfileSlug';
 import TextInput from '@common/inputs/TextInput';
 
 export default function ChangeProfileUrlView() {
-	const { loggedInId: userId, loggedInSlug } = useViewer();
+	const [{ loggedInId: userId, loggedInSlug }] = useViewer();
 
 	const [slug, setSlug] = useState<string>('');
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);

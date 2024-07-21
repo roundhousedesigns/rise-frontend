@@ -5,7 +5,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { UserProfile } from '@lib/classes';
 import { prepareUserProfileForGraphQL } from '@lib/utils';
-import { QUERY_PROFILE } from '@hooks/queries/useUserProfile';
+import { QUERY_PROFILE } from '@queries/useUserProfile';
 
 const MUTATE_UPDATE_USER = gql`
 	mutation UpdateProfile($input: UpdateProfileInput = {}) {

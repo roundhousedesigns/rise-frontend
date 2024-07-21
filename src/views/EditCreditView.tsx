@@ -4,11 +4,11 @@ import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
 import { sortWPItemsByName } from '@lib/utils';
 import { EditProfileContext } from '@context/EditProfileContext';
-import usePositions from '@hooks/queries/usePositions';
-import useLazyPositions from '@hooks/queries/useLazyPositions';
-import useLazyRelatedSkills from '@hooks/queries/useLazyRelatedSkills';
-import useViewer from '@hooks/queries/useViewer';
-import useUpdateCredit from '@hooks/mutations/useUpdateCredit';
+import usePositions from '@queries/usePositions';
+import useLazyPositions from '@queries/useLazyPositions';
+import useLazyRelatedSkills from '@queries/useLazyRelatedSkills';
+import useViewer from '@queries/useViewer';
+import useUpdateCredit from '@mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
@@ -61,7 +61,7 @@ interface Props {
 }
 
 export default function EditCreditView({ creditId, onClose: closeModal }: Props) {
-	const { loggedInId } = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const { editProfile } = useContext(EditProfileContext);
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
@@ -91,11 +91,24 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const [getRelatedSkills, { loading: relatedSkillsLoading }] = useLazyRelatedSkills();
 	const [skills, setSkills] = useState<WPItem[]>([]);
 
+	const [requirementsMet, setRequirementsMet] = useState<boolean>(false);
+	const requiredFields = ['title', 'jobTitle', 'jobLocation', 'venue', 'workStart'];
+
 	// Fetch jobs & skills lists on mount
 	useEffect(() => {
 		refetchAndSetJobs(selectedDepartmentIds);
 		refetchAndSetSkills(selectedJobIds);
 	}, []);
+
+	// Check that all required fields have been filled.
+	useEffect(() => {
+		const allFilled = requiredFields.every((field: string) => {
+			if (!!editCredit[field]) return true;
+			else return false;
+		});
+
+		setRequirementsMet(allFilled);
+	}, [editCredit]);
 
 	/** Fetches jobs given array of departmentIds, sets jobs
 	 *
@@ -256,13 +269,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					handleSubmit={handleSubmit}
 					handleCancel={handleCancel}
 					isLoading={updateCreditLoading}
+					requirementsMet={requirementsMet}
 				/>
 			</Flex>
 
 			<Flex gap={4}>
 				<TextInput
 					name='title'
-					label='Production/Show/Company Title'
+					label='Company/Production Name'
 					value={title}
 					isRequired
 					onChange={handleInputChange}
@@ -372,11 +386,11 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						handleChange={handleDepartmentsChange}
 					/>
 				</StackItem>
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Position
-					</Heading>
-					{selectedDepartmentIds.length && !jobsLoading ? (
+				{selectedDepartmentIds.length && !jobsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Position
+						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>
 							<ProfileCheckboxGroup
@@ -388,16 +402,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleJobsChange}
 							/>
 						</>
-					) : jobsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : jobsLoading ? (
+					<Spinner />
+				) : null}
 
-				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
-						Skills
-					</Heading>
-					{selectedJobIds.length && !relatedSkillsLoading ? (
+				{selectedJobIds.length && !relatedSkillsLoading ? (
+					<StackItem>
+						<Heading as='h4' variant='contentTitle'>
+							Skills
+						</Heading>
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
@@ -409,10 +423,10 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleSkillsChange}
 							/>
 						</>
-					) : relatedSkillsLoading ? (
-						<Spinner />
-					) : null}
-				</StackItem>
+					</StackItem>
+				) : relatedSkillsLoading ? (
+					<Spinner />
+				) : null}
 			</Stack>
 
 			<Flex justifyContent='flex-end' mt={4} mb={0}>
@@ -420,6 +434,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					handleSubmit={handleSubmit}
 					handleCancel={handleCancel}
 					isLoading={updateCreditLoading}
+					requirementsMet={requirementsMet}
 				/>
 			</Flex>
 		</>

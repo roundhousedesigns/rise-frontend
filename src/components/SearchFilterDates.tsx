@@ -1,11 +1,13 @@
 import { useContext, useEffect } from 'react';
-import { Box, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FiCalendar, FiXCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
 import DatePickerButton from '@common/inputs/DatePickerButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import { SearchContext } from '@context/SearchContext';
+import InlineIconText from '@components/InlineIconText';
 
 export default function SearchFilterDates() {
 	const {
@@ -53,12 +55,15 @@ export default function SearchFilterDates() {
 	 * Clears the selected dates and updates the job dates with an empty DateRange.
 	 */
 	const handleClearDates = (): void => {
-		searchDispatch({ type: 'SET_JOB_DATES', payload: { jobDates: new DateRange() } });
+		searchDispatch({
+			type: 'SET_FILTER',
+			payload: { filter: { key: 'jobDates', value: new DateRange() } },
+		});
 	};
 
 	return (
-		<Box>
-			<Flex gap={4}>
+		<>
+			<Flex gap={4} alignItems='center' flexWrap='wrap'>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}
 					selected={startDate}
@@ -79,26 +84,23 @@ export default function SearchFilterDates() {
 					/>
 				)}
 				{startDate && (
-					<IconButton
+					<TooltipIconButton
 						icon={<FiXCircle />}
-						aria-label='Clear dates'
+						label='Clear dates'
 						onClick={handleClearDates}
 						colorScheme='red'
 					/>
 				)}
 			</Flex>
-			<Text variant='helperText'>
-				Candidates who have potential scheduling conflicts will be highlighted with a{' '}
-				<IconButton
-					icon={<FiCalendar />}
-					variant='sampleIconButton'
-					aria-label='Scheduling conflict icon'
-					bgColor='red.300'
-					color='text.dark'
-					size='xs'
-				/>
-				.
-			</Text>
-		</Box>
+
+			<InlineIconText
+				icon={<FiCalendar />}
+				text='Candidates with potential scheduling conflicts will be highlighted with a badge.'
+				query='badge'
+				description='scheduling conflict'
+				fontSize='sm'
+				iconProps={{ size: 'xs', bgColor: 'red.300', color: 'text.dark' }}
+			/>
+		</>
 	);
 }
