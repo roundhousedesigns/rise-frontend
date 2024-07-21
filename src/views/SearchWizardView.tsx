@@ -43,7 +43,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 		},
 	} = useContext(SearchContext);
 
-	const savedSearches = useSavedSearches();
+	const [savedSearches] = useSavedSearches();
 
 	const [orange] = useToken('colors', ['orange.300']);
 
@@ -148,6 +148,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 							</Text>
 						</Flex>
 					}
+					isDisabled={!savedSearches.length}
 					headingProps={{ fontSize: 'md' }}
 					panelProps={{ mb: 0, px: 3, pb: 4 }}
 				>
