@@ -110,7 +110,6 @@ const useUserProfile = (id: number | null, count?: number): [UserProfile | null,
 			last: count,
 		},
 		skip: id === null,
-		fetchPolicy: 'cache-and-network',
 	});
 
 	// Prepare the credits

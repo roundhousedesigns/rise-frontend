@@ -3,8 +3,11 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.9] - 2024-07-20
+## \[1.1.91]
 
+## \[1.1.9 - 1.1.91] - 2024-07-20
+
+- Fix: Search results sometimes not loading on first attempt.
 - Add: "Multilingual" local checkbox with simple "languages spoken" field.
 - Add: `<DevMode>` component for dev branch display.
 - Add: Import version from package.json.
