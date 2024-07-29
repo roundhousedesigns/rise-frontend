@@ -142,13 +142,13 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<SearchFilterAccordionItem
 					heading={
 						<Flex alignItems='center'>
-							<Icon as={FiFolder} fill={savedSearches.length > 0 ? orange : 'transparent'} mr={2} />
+							<Icon as={FiFolder} fill={savedSearches?.length > 0 ? orange : 'transparent'} mr={2} />
 							<Text as='span' my={0}>
 								Saved Searches
 							</Text>
 						</Flex>
 					}
-					isDisabled={!savedSearches.length}
+					isDisabled={!savedSearches || !savedSearches.length}
 					headingProps={{ fontSize: 'md' }}
 					panelProps={{ mb: 0, px: 3, pb: 4 }}
 				>

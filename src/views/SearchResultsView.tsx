@@ -55,13 +55,19 @@ export default function SearchResultsView() {
 	const orderedResults: number[] = useMemo(() => {
 		if (!resultsCount) return [];
 
+		// Don't mess with state.
+		const resultsForSort = [...results];
+
 		// Sort the results by score.
-		const sortedResults = results.sort((a, b) => {
-			return b.score - a.score;
+		const sortedResults = resultsForSort.sort((a, b) => {
+			const { score: aScore } = a;
+			const { score: bScore } = b;
+
+			return aScore - bScore;
 		});
 
 		return sortedResults.map((item) => Number(item.id));
-	}, [results]);
+	}, [resultsCount, results]);
 
 	const ConflictDateLegend = () => {
 		return jobDates && jobDates.startDate ? (
