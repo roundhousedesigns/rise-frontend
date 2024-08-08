@@ -8,7 +8,12 @@ import useViewer from '@queries/useViewer';
 import ErrorAlert from '@common/ErrorAlert';
 import CandidateItem from '@components/CandidateItem';
 
-export default function StarredProfileList({ ...props }: { [prop: string]: any }): JSX.Element {
+interface Props {
+	showToggle?: boolean;
+	[prop: string]: any;
+}
+
+export default function StarredProfileList({ showToggle, ...props }: Props): JSX.Element {
 	const [{ starredProfiles }] = useViewer();
 	const [profiles, { error, loading }] = useCandidates(starredProfiles ? starredProfiles : []);
 
@@ -34,7 +39,7 @@ export default function StarredProfileList({ ...props }: { [prop: string]: any }
 					animate={{ opacity: 1 }} // Animation state
 					exit={{ opacity: 0 }} // Exit state
 				>
-					<CandidateItem candidate={profile} />
+					<CandidateItem candidate={profile} showToggle={showToggle} />
 				</ListItem>
 			);
 		});

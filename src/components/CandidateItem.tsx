@@ -10,10 +10,11 @@ import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 
 interface Props {
 	candidate: Candidate;
+	showToggle?: boolean;
 	[prop: string]: any;
 }
 
-const CandidateItem = ({ candidate, ...props }: Props) => {
+const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 	const { id, image, slug, selfTitle } = candidate || {};
 
 	const [profile] = useUserProfile(id ? id : 0);
@@ -33,7 +34,7 @@ const CandidateItem = ({ candidate, ...props }: Props) => {
 
 	return id ? (
 		<Flex alignItems='center'>
-			<StarToggleIcon id={id} isDisabled={loggedInId === id} />
+			{showToggle ? <StarToggleIcon id={id} isDisabled={loggedInId === id} /> : null}
 
 			<Card
 				flex={1}

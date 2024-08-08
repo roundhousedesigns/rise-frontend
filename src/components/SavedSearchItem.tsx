@@ -185,7 +185,7 @@ export default function SavedSearchItem({
 
 				toast({
 					title: 'Saved!',
-					description: 'You can recall your saved searches later from the Search drawer.',
+					description: 'This search has been saved for later.',
 					position: 'bottom',
 					status: 'success',
 					duration: 3000,
