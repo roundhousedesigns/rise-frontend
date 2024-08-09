@@ -8,7 +8,7 @@ interface Props {
 export default function LoginLink({ ...props }: Props) {
 	return (
 		<Flex alignItems='center' textAlign='right' flexWrap='wrap' {...props}>
-			<Heading size={'sm'} mr={2} mb={0}>
+			<Heading size='sm' mr={2} mb={0}>
 				Already have <br />
 				an account?
 			</Heading>

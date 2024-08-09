@@ -271,7 +271,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								direction='column'
 								justifyContent='space-evenly'
 								gap={4}
-								width={'100%'}
+								width='100%'
 								lineHeight={1}
 							>
 								<StackItem display='flex' flexWrap='wrap'>

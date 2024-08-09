@@ -38,7 +38,7 @@ export default function EditProfile() {
 	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
 	return (
-		<Page title={'Update Profile'} actions={<PageActions />}>
+		<Page title='Update Profile' actions={<PageActions />}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} />

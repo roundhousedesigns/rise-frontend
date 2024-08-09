@@ -290,7 +290,7 @@ export default function SavedSearchItem({
 						) : savedSearchFiltersChanged ? (
 							<Stack textAlign='center'>
 								<Button
-									colorScheme={'yellow'}
+									colorScheme='yellow'
 									leftIcon={<FiSave />}
 									aria-label='Update saved filters'
 									title='Update saved filters'
@@ -302,7 +302,7 @@ export default function SavedSearchItem({
 									Update
 								</Button>
 								<Button
-									colorScheme={'blue'}
+									colorScheme='blue'
 									leftIcon={<FiPlusCircle />}
 									aria-label='Update saved filters'
 									title='Update saved filters'

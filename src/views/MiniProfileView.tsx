@@ -10,6 +10,7 @@ import {
 	Button,
 	Avatar,
 	Box,
+	Progress,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
@@ -17,6 +18,7 @@ import { UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
 import { useProfileUrl } from '../hooks/hooks';
 import ShareButton from '../components/common/ShareButton';
+import RiseStar from '../components/common/icons/RiseStar';
 
 interface Props {
 	profile: UserProfile;
@@ -38,6 +40,9 @@ export default function MiniProfileView({
 	const { image, pronouns, selfTitle, homebase } = profile || {};
 
 	const profileUrl = useProfileUrl(loggedInSlug);
+
+	// DUMMY
+	const dummyComplete = 60;
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -98,27 +103,38 @@ export default function MiniProfileView({
 					</Flex>
 				</StackItem>
 
-				<StackItem as={ProfileSubtitle} textAlign='center' fontSize='md' />
+				<StackItem as={ProfileSubtitle} textAlign='center' fontSize='md' my={0} />
 
-				<StackItem as={ButtonGroup} size='sm' textAlign='center' w='full'>
-					<Button
-						as={RouterLink}
-						leftIcon={<FiUser />}
-						to={`/profile/${loggedInSlug}`}
-						colorScheme='blue'
-						my={0}
-					>
-						View
-					</Button>
-					<Button
-						as={RouterLink}
-						leftIcon={<FiEdit3 />}
-						to='/profile/edit'
-						colorScheme='green'
-						my={0}
-					>
-						Edit
-					</Button>
+				<StackItem as={RiseStar} textAlign='center' my={2} color='brand.orange' />
+
+				<StackItem>
+					<Progress hasStripe value={dummyComplete} colorScheme='yellow' position='relative' />
+					<Text m={0} fontSize='xs' textAlign='right' fontStyle='italic'>
+						{`Profile ${dummyComplete}% complete`}
+					</Text>
+				</StackItem>
+
+				<StackItem textAlign='center' w='full' mt={2}>
+					<ButtonGroup size='sm'>
+						<Button
+							as={RouterLink}
+							leftIcon={<FiUser />}
+							to={`/profile/${loggedInSlug}`}
+							colorScheme='blue'
+							my={0}
+						>
+							View
+						</Button>
+						<Button
+							as={RouterLink}
+							leftIcon={<FiEdit3 />}
+							to='/profile/edit'
+							colorScheme='green'
+							my={0}
+						>
+							Edit
+						</Button>
+					</ButtonGroup>
 				</StackItem>
 			</Stack>
 		</Card>

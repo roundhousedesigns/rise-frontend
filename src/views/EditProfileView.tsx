@@ -799,7 +799,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		const currentImage = imageData[fieldName];
 
 		return (
-			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
+			<Box maxW='100%' p={0} borderRadius='md' {...props}>
 				{currentImage ? (
 					<>
 						<Image
@@ -1436,7 +1436,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					type='submit'
 					form='edit-profile'
 					leftIcon={saveLoading ? undefined : <FiSave />}
-					aria-label={'Save changes'}
+					aria-label='Save changes'
 					colorScheme='green'
 					isDisabled={saveLoading || !!errorMessage}
 					isLoading={!!saveLoading}
