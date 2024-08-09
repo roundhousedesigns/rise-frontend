@@ -1,71 +1,31 @@
 import {
 	Card,
 	Heading,
-	Button,
-	Flex,
-	Spacer,
 	List,
 	ListItem,
 	Grid,
 	GridItem,
 	Box,
 	Stack,
+	Spinner,
 } from '@chakra-ui/react';
-import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import StarredProfileList from '@views/StarredProfileList';
+import MiniProfileView from '@views/MiniProfileView';
+import useUserProfile from '@queries/useUserProfile';
 import useViewer from '@queries/useViewer';
 import useUserNotices from '@queries/useUserNotices';
 import ShortPost from '@components/ShortPost';
-import InlineIconText from '@components/InlineIconText';
-import SavedSearchItemList from '../components/SavedSearchItemList';
-import StarredProfileList from './StarredProfileList';
+import SavedSearchItemList from '@components/SavedSearchItemList';
 
 export default function DashboardView() {
-	const [{ loggedInSlug }] = useViewer();
+	const [{ loggedInId }] = useViewer();
 	const [notices] = useUserNotices();
 
-	return (
-		<Grid templateColumns={{ base: '1fr', md: '1fr 400px' }} gap={8} w='full' maxW='none'>
-			<GridItem as={Stack} gap={6}>
-				<Widget>
-					<>
-						<Heading as='h2' variant='contentTitle'>
-							Getting Started
-						</Heading>
-						<Card m={0}>
-							<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
-								<InlineIconText
-									icon={<FiSearch />}
-									text='To start a Search, use the star button in the header.'
-									query='star'
-									description='search'
-								/>
-								<Flex gap={4} w='full' flexWrap='wrap' mt={4}>
-									<Button
-										as={Link}
-										leftIcon={<FiUser />}
-										to={`/profile/${loggedInSlug}`}
-										colorScheme='blue'
-										my={0}
-									>
-										View your profile
-									</Button>
-									<Button
-										as={Link}
-										leftIcon={<FiEdit3 />}
-										to='/profile/edit'
-										colorScheme='green'
-										my={0}
-									>
-										Edit your profile
-									</Button>
-									<Spacer />
-								</Flex>
-							</Flex>
-						</Card>
-					</>
-				</Widget>
+	const [profile, { loading }] = useUserProfile(loggedInId);
 
+	return (
+		<Grid templateColumns={{ base: '1fr', md: '2fr 1fr' }} gap={8} w='full' maxW='none'>
+			<GridItem as={Stack} spacing={6} id='dashboard-primary'>
 				{notices.length > 0 ? (
 					<Widget>
 						<>
@@ -95,17 +55,6 @@ export default function DashboardView() {
 						</>
 					</Widget>
 				) : null}
-			</GridItem>
-
-			<GridItem as={Stack} gap={6}>
-				<Widget>
-					<>
-						<Heading as='h2' variant='contentTitle'>
-							Saved Searches
-						</Heading>
-						<SavedSearchItemList />
-					</>
-				</Widget>
 
 				<Widget>
 					<>
@@ -113,6 +62,26 @@ export default function DashboardView() {
 							Following
 						</Heading>
 						<StarredProfileList showToggle={false} />
+					</>
+				</Widget>
+			</GridItem>
+
+			<GridItem as={Stack} spacing={6} id='dashboard-secondary'>
+				<Widget>
+					{profile ? (
+						<MiniProfileView profile={profile} allowStar={false} />
+					) : loading ? (
+						<Spinner />
+					) : (
+						<></>
+					)}
+				</Widget>
+				<Widget>
+					<>
+						<Heading as='h2' variant='contentTitle'>
+							Saved Searches
+						</Heading>
+						<SavedSearchItemList />
 					</>
 				</Widget>
 			</GridItem>
