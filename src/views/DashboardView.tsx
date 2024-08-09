@@ -30,28 +30,15 @@ export default function DashboardView() {
 					<Widget>
 						<>
 							<Heading as='h2' variant='contentTitle'>
-								Updates
+								News
 							</Heading>
-							<Card m={0}>
-								<List spacing={4}>
-									{notices.map((notice: any) => (
-										<ListItem
-											key={notice.id}
-											my={0}
-											px={0}
-											pt={0}
-											pb={2}
-											borderBottomWidth='1px'
-											borderBottomStyle='solid'
-											_dark={{ borderColor: 'gray.500' }}
-											_light={{ borderColor: 'gray.200' }}
-											_last={{ borderBottom: 'none', pb: 0 }}
-										>
-											<ShortPost post={notice} mb={4} />
-										</ListItem>
-									))}
-								</List>
-							</Card>
+							<List spacing={4}>
+								{notices.map((notice: any) => (
+									<ListItem key={notice.id}>
+										<ShortPost post={notice} mb={4} as={Card} />
+									</ListItem>
+								))}
+							</List>
 						</>
 					</Widget>
 				) : null}
