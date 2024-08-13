@@ -500,7 +500,7 @@ export class DateRange implements DateRangeParams {
 	/**
 	 * Converts the DateRange to a string in the given format.
 	 *
-	 * @param {string} [format='default'] - The format to use for the string. Accepted values are:
+	 * @param {string} [format={'default'}] - The format to use for the string. Accepted values are:
 	 *     - 'default': The default format, which is 'MM-DD-YYYY'.
 	 *     - 'iso': The ISO format, which is 'YYYY-MM-DD'.
 	 *     - 'long': The long format, which is a more human-readable format, like "May 20, 2004".

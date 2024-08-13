@@ -16,20 +16,20 @@ export default function EditCreditButtons({
 	handleCancel,
 }: Props) {
 	return (
-		<ButtonGroup size='md'>
+		<ButtonGroup size={'md'}>
 			<TooltipIconButton
-				type='submit'
+				type={'submit'}
 				isLoading={isLoading}
 				onClick={handleSubmit}
 				icon={<FiCheck />}
-				label='Save'
-				colorScheme='green'
+				label={'Save'}
+				colorScheme={'green'}
 				isDisabled={!requirementsMet || isLoading}
 			/>
 			<TooltipIconButton
 				icon={<FiX />}
-				label='Cancel changes'
-				colorScheme='red'
+				label={'Cancel changes'}
+				colorScheme={'red'}
 				onClick={handleCancel}
 				isDisabled={isLoading}
 			/>

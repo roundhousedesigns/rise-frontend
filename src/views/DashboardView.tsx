@@ -24,12 +24,12 @@ export default function DashboardView() {
 	const [profile, { loading }] = useUserProfile(loggedInId);
 
 	return (
-		<Grid templateColumns={{ base: '1fr', md: '2fr 1fr' }} gap={8} w='full' maxW='none'>
-			<GridItem as={Stack} spacing={6} id='dashboard-primary'>
+		<Grid templateColumns={{ base: '1fr', md: '2fr 1fr' }} gap={8} w={'full'} maxW={'none'}>
+			<GridItem as={Stack} spacing={6} id={'dashboard-primary'}>
 				{notices.length > 0 ? (
 					<Widget>
 						<>
-							<Heading as='h2' variant='contentTitle'>
+							<Heading as={'h2'} variant={'contentTitle'}>
 								News
 							</Heading>
 							<List spacing={4}>
@@ -45,7 +45,7 @@ export default function DashboardView() {
 
 				<Widget>
 					<>
-						<Heading as='h2' variant='contentTitle'>
+						<Heading as={'h2'} variant={'contentTitle'}>
 							Following
 						</Heading>
 						<StarredProfileList showToggle={false} />
@@ -53,7 +53,7 @@ export default function DashboardView() {
 				</Widget>
 			</GridItem>
 
-			<GridItem as={Stack} spacing={6} id='dashboard-secondary'>
+			<GridItem as={Stack} spacing={6} id={'dashboard-secondary'}>
 				<Widget>
 					{profile ? (
 						<MiniProfileView profile={profile} allowStar={false} />
@@ -65,7 +65,7 @@ export default function DashboardView() {
 				</Widget>
 				<Widget>
 					<>
-						<Heading as='h2' variant='contentTitle'>
+						<Heading as={'h2'} variant={'contentTitle'}>
 							Saved Searches
 						</Heading>
 						<SavedSearchItemList />

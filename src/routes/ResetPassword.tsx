@@ -14,7 +14,7 @@ export default function ResetPassword() {
 			{key && login ? (
 				<ResetPasswordView token={key} login={login} />
 			) : (
-				<Text size='md'>Invalid password reset link.</Text>
+				<Text size={'md'}>Invalid password reset link.</Text>
 			)}
 		</Page>
 	);

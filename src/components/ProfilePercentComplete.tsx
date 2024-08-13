@@ -8,8 +8,8 @@ const ProfilePercentComplete = ({ ...props }: { [prop: string]: any }) => {
 
 	return (
 		<Box>
-			<Progress hasStripe value={percentComplete} position='relative' {...props} />
-			<Text m={0} fontSize='xs' textAlign='right' fontStyle='italic'>
+			<Progress hasStripe value={percentComplete} position={'relative'} {...props} />
+			<Text m={0} fontSize={'xs'} textAlign={'right'} fontStyle={'italic'}>
 				{`${percentComplete}% complete`}
 			</Text>
 		</Box>

@@ -87,7 +87,7 @@ export default function EditConflictDateRangeModal({
 		updateConflictRangeMutation(id, loggedInId, newStartDate, newEndDate);
 	};
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside'>
+		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior={'outside'}>
 			<ModalOverlay />
 			<ModalContent>
 				<ModalCloseButton />

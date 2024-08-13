@@ -69,15 +69,15 @@ export default function DateRangePicker({
 				selectsRange
 				inline
 			/>
-			<Stack direction='column'>
+			<Stack direction={'column'}>
 				{newStartDate && newEndDate ? (
 					<>
 						<Spacer />
 						<Box>
-							<Text fontSize='sm'>Selected:</Text>
-							<Text fontSize='lg'>{dateRangeString()}</Text>
+							<Text fontSize={'sm'}>Selected:</Text>
+							<Text fontSize={'lg'}>{dateRangeString()}</Text>
 							{error ? (
-								<Text variant='notice' fontSize='sm'>
+								<Text variant={'notice'} fontSize={'sm'}>
 									{error}
 								</Text>
 							) : (
@@ -91,7 +91,7 @@ export default function DateRangePicker({
 				)}
 				<>
 					<Spacer />
-					<Button onClick={handleSave} colorScheme='blue' isDisabled={!newStartDate || !newEndDate}>
+					<Button onClick={handleSave} colorScheme={'blue'} isDisabled={!newStartDate || !newEndDate}>
 						Save
 					</Button>
 				</>

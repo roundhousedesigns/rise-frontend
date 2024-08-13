@@ -110,13 +110,13 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<>
-			<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
+			<Drawer isOpen={isOpen} onClose={onClose} placement={'top'} isFullHeight={name ? false : true}>
 				<DrawerOverlay />
-				<DrawerContent display='flex' flexDirection='column' height='100%'>
+				<DrawerContent display={'flex'} flexDirection={'column'} height={'100%'}>
 					<DrawerHeader
-						bg='text.dark'
-						color='text.light'
-						borderBottomWidth='2px'
+						bg={'text.dark'}
+						color={'text.light'}
+						borderBottomWidth={'2px'}
 						_light={{
 							borderBottomColor: 'text.dark',
 						}}
@@ -124,16 +124,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							borderBottomColor: 'text.light',
 						}}
 					>
-						<Stack direction='row' justifyContent='space-between' alignItems='center'>
-							<Heading as='h2' variant='contentTitle' mb={0} color='text.light'>
+						<Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
+							<Heading as={'h2'} variant={'contentTitle'} mb={0} color={'text.light'}>
 								Search
 							</Heading>
 							<IconButton
 								icon={<FiX />}
-								aria-label='Close'
-								fontSize='3xl'
+								aria-label={'Close'}
+								fontSize={'3xl'}
 								onClick={onClose}
-								variant='invisible'
+								variant={'invisible'}
 							/>
 						</Stack>
 					</DrawerHeader>
@@ -144,16 +144,16 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 						<DrawerFooter
 							mt={0}
 							py={2}
-							borderTop='1px'
-							borderTopColor='gray.300'
+							borderTop={'1px'}
+							borderTopColor={'gray.300'}
 							_light={{ bgColor: 'gray.300' }}
 							_dark={{ bgColor: 'gray.100' }}
 						>
-							<ButtonGroup w='full' justifyContent='flex-end'>
+							<ButtonGroup w={'full'} justifyContent={'flex-end'}>
 								<Button
-									colorScheme='green'
+									colorScheme={'green'}
 									onClick={handleSubmit}
-									form='search-candidates'
+									form={'search-candidates'}
 									isDisabled={!searchWizardActive || searchResultsLoading}
 									leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
 									isLoading={!!searchResultsLoading}
@@ -162,7 +162,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 								</Button>
 								<Button
 									isDisabled={searchResultsLoading ? true : false}
-									colorScheme='orange'
+									colorScheme={'orange'}
 									onClick={handleSearchReset}
 									leftIcon={<FiRefreshCcw />}
 								>

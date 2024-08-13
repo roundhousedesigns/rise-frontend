@@ -63,7 +63,7 @@ export default function Main() {
 		},
 		{
 			path: '/stars',
-			element: <Navigate to='/starred' replace />,
+			element: <Navigate to={'/starred'} replace />,
 		},
 		{
 			path: '/searches',
@@ -109,16 +109,16 @@ export default function Main() {
 
 	return (
 		<Box
-			id='main'
-			w='full'
-			h='auto'
+			id={'main'}
+			w={'full'}
+			h={'auto'}
 			py={2}
-			background='none'
-			justifyContent='center'
-			alignItems='center'
-			flex='1 1 auto'
+			background={'none'}
+			justifyContent={'center'}
+			alignItems={'center'}
+			flex={'1 1 auto'}
 		>
-			<Container w='full' maxW='6xl' px={{ base: 4, md: 8 }} pb={4}>
+			<Container w={'full'} maxW={'6xl'} px={{ base: 4, md: 8 }} pb={4}>
 				{routes}
 			</Container>
 		</Box>

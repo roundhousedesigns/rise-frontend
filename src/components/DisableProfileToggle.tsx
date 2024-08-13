@@ -53,7 +53,7 @@ export default function DisableProfileToggle({
 
 	return (
 		<ToggleOptionSwitch
-			id='disableProfile'
+			id={'disableProfile'}
 			checked={!!disableProfile}
 			callback={handleToggleDisableProfile}
 			label={`Privacy ${disableProfile ? 'On' : 'Off'}`}
@@ -71,13 +71,13 @@ export default function DisableProfileToggle({
 
 const Description = ({ disableProfile }: { disableProfile: boolean }) => {
 	return disableProfile ? (
-		<Text as='span'>
+		<Text as={'span'}>
 			<Highlight query={['private', 'hidden']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
 				Your profile is private and you won't appear in searches.
 			</Highlight>
 		</Text>
 	) : (
-		<Text as='span'>
+		<Text as={'span'}>
 			<Highlight query={['public']} styles={{ bg: 'brand.yellow', px: 1, mx: 0 }}>
 				Your profile is public and you'll appear in searches.
 			</Highlight>

@@ -9,7 +9,7 @@ interface Props {
 
 export default function CheckboxButton({ value, children, ...props }: Props): ReactElement {
 	return (
-		<Checkbox value={value} variant='buttonStyle' position='relative' {...props}>
+		<Checkbox value={value} variant={'buttonStyle'} position={'relative'} {...props}>
 			<Box pl={1}>{children}</Box>
 		</Checkbox>
 	);

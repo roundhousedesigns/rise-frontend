@@ -15,7 +15,7 @@ export default function ShortPost({ post, ...props }: Props) {
 	return (
 		<Card id={id.toString()} pt={0} px={0} gap={2} {...props}>
 			<CardHeader px={3} py={2} bg={colorMode === 'dark' ? 'blackAlpha.300' : 'blackAlpha.100'}>
-				<Heading variant='contentSubtitle' my={0}>
+				<Heading variant={'contentSubtitle'} my={0}>
 					{title ? title : ' '}
 				</Heading>
 			</CardHeader>

@@ -33,10 +33,10 @@ export default function TooltipIconButton({
 		<Box onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
 			<Tooltip
 				label={label}
-				placement='bottom'
+				placement={'bottom'}
 				aria-hidden={true}
-				role='presentation'
-				border='none'
+				role={'presentation'}
+				border={'none'}
 				bg={colorMode === 'dark' ? 'gray.700' : 'text.light'}
 				isOpen={!!hovered}
 				isDisabled={!isLargerThanMd}
@@ -45,7 +45,7 @@ export default function TooltipIconButton({
 			>
 				<IconButton
 					icon={icon}
-					variant='solid'
+					variant={'solid'}
 					aria-label={label}
 					isDisabled={isDisabled}
 					pointerEvents={isDisabled ? 'none' : 'auto'}

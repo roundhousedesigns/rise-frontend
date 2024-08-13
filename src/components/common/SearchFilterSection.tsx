@@ -11,7 +11,7 @@ export default function SearchFilterSection({ id, heading, children, ...props }:
 	return (
 		<Box id={id} {...props}>
 			{heading ? (
-				<Heading as='h3' variant='searchFilterTitle'>
+				<Heading as={'h3'} variant={'searchFilterTitle'}>
 					{heading}
 				</Heading>
 			) : (

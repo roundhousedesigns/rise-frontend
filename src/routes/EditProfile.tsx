@@ -21,9 +21,9 @@ const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
 			onClick={handleClick}
 			leftIcon={<FiArrowDown />}
 			ref={ref}
-			title='Scroll to Credits'
-			textDecoration='none'
-			colorScheme='blue'
+			title={'Scroll to Credits'}
+			textDecoration={'none'}
+			colorScheme={'blue'}
 		>
 			Jump to Credits
 		</Button>
@@ -38,12 +38,12 @@ export default function EditProfile() {
 	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
 	return (
-		<Page title='Update Profile' actions={<PageActions />}>
+		<Page title={'Update Profile'} actions={<PageActions />}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} />
 				) : loading ? (
-					<Spinner alignSelf='center' />
+					<Spinner alignSelf={'center'} />
 				) : error ? (
 					<ErrorAlert message={error.message} />
 				) : (

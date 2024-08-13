@@ -11,10 +11,10 @@ interface Props {
 
 export default function SocialIcon({ label, name, value, icon }: Props) {
 	return (
-		<Link href={socialLink(name, value)} isExternal display='block' my={0}>
+		<Link href={socialLink(name, value)} isExternal display={'block'} my={0}>
 			<IconButton
-				colorScheme='blue'
-				borderRadius='full'
+				colorScheme={'blue'}
+				borderRadius={'full'}
 				boxSize={12}
 				aria-label={label}
 				icon={icon}

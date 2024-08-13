@@ -47,7 +47,7 @@ export default function MiniProfileView({
 	const ProfileSubtitle = ({ ...props }: any) => {
 		const SelfTitle = () => {
 			return (
-				<Text as='span' textDecoration='underline'>
+				<Text as={'span'} textDecoration={'underline'}>
 					{selfTitle}
 				</Text>
 			);
@@ -55,14 +55,14 @@ export default function MiniProfileView({
 
 		const HomeBase = () => {
 			return (
-				<Text as='span' textDecoration='underline'>
+				<Text as={'span'} textDecoration={'underline'}>
 					{homebase}
 				</Text>
 			);
 		};
 
 		return (
-			<Heading size='md' mt={2} fontWeight='medium' {...props}>
+			<Heading size={'md'} mt={2} fontWeight={'medium'} {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -82,48 +82,48 @@ export default function MiniProfileView({
 	};
 
 	return profile ? (
-		<Card px={4} align='center' {...props}>
-			<Box position='absolute' top={2} right={2}>
+		<Card px={4} align={'center'} {...props}>
+			<Box position={'absolute'} top={2} right={2}>
 				<ShareButton url={profileUrl} />
 			</Box>
-			<Stack direction='column' lineHeight={1} w='full'>
+			<Stack direction={'column'} lineHeight={1} w={'full'}>
 				{image ? (
-					<StackItem textAlign='center'>
-						<Avatar size='superLg' src={image} name={profile.fullName()} />
+					<StackItem textAlign={'center'}>
+						<Avatar size={'superLg'} src={image} name={profile.fullName()} />
 					</StackItem>
 				) : null}
 				<StackItem
-					flexWrap='wrap'
+					flexWrap={'wrap'}
 					justifyContent={{ base: 'center', md: 'flex-start' }}
-					alignItems='center'
+					alignItems={'center'}
 				>
-					<Flex justifyContent='center' flexWrap='wrap' gap={2}>
-						<Heading size='lg' m={0} fontWeight='bold' lineHeight='none'>
+					<Flex justifyContent={'center'} flexWrap={'wrap'} gap={2}>
+						<Heading size={'lg'} m={0} fontWeight={'bold'} lineHeight={'none'}>
 							{profile.fullName()}
 						</Heading>
 						{pronouns ? (
-							<Tag colorScheme='blue' size='md'>
+							<Tag colorScheme={'blue'} size={'md'}>
 								{pronouns}
 							</Tag>
 						) : null}
 					</Flex>
 				</StackItem>
 
-				<StackItem as={ProfileSubtitle} textAlign='center' fontSize='md' my={0} />
+				<StackItem as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
 
 				{percentComplete < 100 ? (
-					<StackItem as={RiseStar} textAlign='center' my={2} color='brand.orange' />
+					<StackItem as={RiseStar} textAlign={'center'} my={2} color={'brand.orange'} />
 				) : null}
 
 				<StackItem textAlign={'right'}>
 					{percentComplete < 100 ? <ProfilePercentComplete colorScheme={barColor()} /> : null}
 
-					<ButtonGroup size='xs' mt={2}>
+					<ButtonGroup size={'xs'} mt={2}>
 						<Button
 							as={RouterLink}
 							leftIcon={<FiUser />}
 							to={`/profile/${loggedInSlug}`}
-							colorScheme='blue'
+							colorScheme={'blue'}
 							my={0}
 						>
 							View
@@ -131,8 +131,8 @@ export default function MiniProfileView({
 						<Button
 							as={RouterLink}
 							leftIcon={<FiEdit3 />}
-							to='/profile/edit'
-							colorScheme='green'
+							to={'/profile/edit'}
+							colorScheme={'green'}
 							my={0}
 						>
 							Edit

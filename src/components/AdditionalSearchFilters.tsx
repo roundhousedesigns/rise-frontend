@@ -75,55 +75,55 @@ export default function AdditionalSearchFilters() {
 		/* The order of these items must match the order of filters in the useEffect. */
 		<Accordion
 			allowMultiple={true}
-			w='full'
+			w={'full'}
 			defaultIndex={additionalFiltersActive.length ? additionalFiltersActive : undefined}
 			mt={0}
 			pt={0}
 		>
-			<SearchFilterAccordionItem heading='Locations'>
+			<SearchFilterAccordionItem heading={'Locations'}>
 				<ProfileCheckboxGroup
-					name='locations'
+					name={'locations'}
 					items={locationTerms}
 					checked={locations as string[]}
 					handleChange={handleInputChange}
 					pt={0}
 				/>
 			</SearchFilterAccordionItem>
-			<SearchFilterAccordionItem heading='Unions'>
+			<SearchFilterAccordionItem heading={'Unions'}>
 				<ProfileCheckboxGroup
-					name='unions'
+					name={'unions'}
 					items={unionTerms}
 					checked={unions as string[]}
 					handleChange={handleInputChange}
 				/>
 			</SearchFilterAccordionItem>
-			<SearchFilterAccordionItem heading='Experience Levels'>
+			<SearchFilterAccordionItem heading={'Experience Levels'}>
 				<ProfileCheckboxGroup
-					name='experienceLevels'
+					name={'experienceLevels'}
 					items={experienceLevelTerms}
 					checked={experienceLevels as string[]}
 					handleChange={handleInputChange}
 				/>
 			</SearchFilterAccordionItem>
-			<SearchFilterAccordionItem heading='Gender Identity'>
+			<SearchFilterAccordionItem heading={'Gender Identity'}>
 				<ProfileCheckboxGroup
-					name='genderIdentities'
+					name={'genderIdentities'}
 					items={genderIdentityTerms}
 					checked={genderIdentities as string[]}
 					handleChange={handleInputChange}
 				/>
 			</SearchFilterAccordionItem>
-			<SearchFilterAccordionItem heading='Personal Identity'>
+			<SearchFilterAccordionItem heading={'Personal Identity'}>
 				<ProfileCheckboxGroup
-					name='personalIdentities'
+					name={'personalIdentities'}
 					items={personalIdentityTerms}
 					checked={personalIdentities as string[]}
 					handleChange={handleInputChange}
 				/>
 			</SearchFilterAccordionItem>
-			<SearchFilterAccordionItem heading='Racial Identity'>
+			<SearchFilterAccordionItem heading={'Racial Identity'}>
 				<ProfileCheckboxGroup
-					name='racialIdentities'
+					name={'racialIdentities'}
 					items={racialIdentityTerms}
 					checked={racialIdentities as string[]}
 					handleChange={handleInputChange}

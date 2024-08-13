@@ -56,34 +56,34 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	return (
 		<Box
 			ref={ref}
-			id='header'
-			w='full'
-			bg='text.dark'
-			color='text.light'
-			position='fixed'
-			top='0'
+			id={'header'}
+			w={'full'}
+			bg={'text.dark'}
+			color={'text.light'}
+			position={'fixed'}
+			top={'0'}
 			borderBottomWidth={2}
-			borderBottomColor='text.light'
+			borderBottomColor={'text.light'}
 			zIndex={1000}
 		>
-			<Container centerContent w='full' maxW='9xl' p={2}>
-				<Flex w='full' justifyContent='space-between' align='center'>
+			<Container centerContent w={'full'} maxW={'9xl'} p={2}>
+				<Flex w={'full'} justifyContent={'space-between'} align={'center'}>
 					<Link
 						as={RouterLink}
-						to='/'
+						to={'/'}
 						my={0}
-						w='auto'
-						display='block'
+						w={'auto'}
+						display={'block'}
 						maxW={{ base: '50%', md: '350px' }}
-						position='relative'
+						position={'relative'}
 					>
 						<Image
 							src={logo}
-							alt='RISE logo'
-							loading='eager'
-							h='auto'
-							position='relative'
-							display='block'
+							alt={'RISE logo'}
+							loading={'eager'}
+							h={'auto'}
+							position={'relative'}
+							display={'block'}
 							ml={{ base: 1, md: 4 }}
 							pr={3}
 							mt={1}
@@ -94,8 +94,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{/* Not logged in */}
 					{!loggedInId ? (
-						<Link as={RouterLink} to='https://risetheatre.org' my={0} isExternal flex='0 0 auto'>
-							<Image src={circleLogo} alt='RISE icon' loading='eager' h={12} />
+						<Link as={RouterLink} to={'https://risetheatre.org'} my={0} isExternal flex={'0 0 auto'}>
+							<Image src={circleLogo} alt={'RISE icon'} loading={'eager'} h={12} />
 						</Link>
 					) : (
 						false
@@ -103,44 +103,44 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{/* Logged in */}
 					{loggedInId ? (
-						<Flex alignItems='center' gap={0}>
+						<Flex alignItems={'center'} gap={0}>
 							<ButtonGroup
-								color='text.light'
+								color={'text.light'}
 								mx={{ base: 0, md: 2 }}
-								flex='1 0 auto'
-								justifyContent='flex-end'
-								size='md'
+								flex={'1 0 auto'}
+								justifyContent={'flex-end'}
+								size={'md'}
 							>
 								<TooltipIconButton
 									icon={<FiStar fill={starredProfiles && starredProfiles.length ? orange : 'none'} />}
-									label='Starred profiles'
+									label={'Starred profiles'}
 									as={RouterLink}
-									to='/stars'
+									to={'/stars'}
 								/>
 
 								<TooltipIconButton
 									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
 									as={RouterLink}
-									label='Saved searches'
-									to='/searches'
+									label={'Saved searches'}
+									to={'/searches'}
 								/>
 
 								{results.length ? (
 									<TooltipIconButton
 										as={RouterLink}
-										to='/results'
+										to={'/results'}
 										icon={
 											<Badge
 												py={1}
 												px={2}
-												borderRadius='full'
-												variant='subtle'
-												colorScheme='orange'
+												borderRadius={'full'}
+												variant={'subtle'}
+												colorScheme={'orange'}
 											>
 												{results.length}
 											</Badge>
 										}
-										label='Search results'
+										label={'Search results'}
 									/>
 								) : (
 									false
@@ -153,25 +153,25 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								/>
 							) : null}
 							<ButtonGroup
-								color='text.light'
+								color={'text.light'}
 								mx={2}
-								flex='1 0 auto'
-								justifyContent='flex-end'
-								size='md'
+								flex={'1 0 auto'}
+								justifyContent={'flex-end'}
+								size={'md'}
 							>
 								<TooltipIconButton
 									icon={<FiSearch />}
 									onClick={handleDrawerOpen}
-									label='Search'
-									colorScheme='green'
+									label={'Search'}
+									colorScheme={'green'}
 								/>
 
 								{isLargerThanMd ? (
 									<TooltipIconButton
 										icon={<FiUser />}
 										as={RouterLink}
-										label='My Profile'
-										colorScheme='blue'
+										label={'My Profile'}
+										colorScheme={'blue'}
 										to={`/profile/${loggedInSlug}`}
 									/>
 								) : null}

@@ -3,7 +3,7 @@ import SettingsView from '@views/SettingsView';
 
 export default function Settings() {
 	return (
-		<Page title='Settings'>
+		<Page title={'Settings'}>
 			<SettingsView />
 		</Page>
 	);

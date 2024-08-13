@@ -59,17 +59,17 @@ export default function SearchFilterJobs({ heading }: Props) {
 			{!loading && !error ? (
 				<>
 					<Heading
-						as='h3'
-						size='md'
+						as={'h3'}
+						size={'md'}
 						mb={6}
 						pb={2}
-						w='full'
-						borderBottom='2px'
-						borderColor='gray.600'
+						w={'full'}
+						borderBottom={'2px'}
+						borderColor={'gray.600'}
 					>
 						{heading}
 					</Heading>
-					<Wrap justifyContent='flex-start' alignItems='center' w='full'>
+					<Wrap justifyContent={'flex-start'} alignItems={'center'} w={'full'}>
 						{positionItems.map((term: WPItem) => {
 							const checkbox = getCheckboxProps({ value: term.id.toString() });
 

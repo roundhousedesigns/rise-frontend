@@ -57,11 +57,11 @@ export default function LoginView() {
 	};
 
 	return (
-		<Container maxW='2xl' mt={6}>
-			<Heading as='h2' size='xl' mb={4}>
+		<Container maxW={'2xl'} mt={6}>
+			<Heading as={'h2'} size={'xl'} mb={4}>
 				Lost password
 			</Heading>
-			<Text fontSize='md'>
+			<Text fontSize={'md'}>
 				Please enter your email address, and we'll send you a link to reset your password.
 			</Text>
 			<Box my={4}>
@@ -69,8 +69,8 @@ export default function LoginView() {
 					<Flex gap={2}>
 						<TextInput
 							value={username}
-							name='username'
-							label='Email'
+							name={'username'}
+							label={'Email'}
 							isRequired
 							onChange={handleInputChange}
 							inputProps={{
@@ -78,7 +78,7 @@ export default function LoginView() {
 							}}
 							error={errorMessage}
 						/>
-						<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+						<Button type={'submit'} colorScheme={'blue'} px={6} isLoading={!!submitLoading}>
 							Submit
 						</Button>
 					</Flex>

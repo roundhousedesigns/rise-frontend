@@ -43,7 +43,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 	 */
 	const renderTags = (items: WPItem[], colorScheme?: string): ReactNode[] => {
 		return items.map(({ id, name }) => (
-			<Tag key={id} colorScheme={colorScheme} size='sm' {...tagProps}>
+			<Tag key={id} colorScheme={colorScheme} size={'sm'} {...tagProps}>
 				<TagLabel>{name}</TagLabel>
 			</Tag>
 		));
@@ -66,7 +66,7 @@ export default function SearchParamTags({ termIds, termItems, tagProps, ...props
 	};
 
 	return (
-		<Flex flexWrap='wrap' gap={1} alignItems='center' {...props}>
+		<Flex flexWrap={'wrap'} gap={1} alignItems={'center'} {...props}>
 			{termTags()?.map((tag: ReactNode) => tag)}
 		</Flex>
 	);

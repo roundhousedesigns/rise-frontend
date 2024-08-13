@@ -3,7 +3,7 @@ import SearchResultsView from '@views/SearchResultsView';
 
 export default function Search() {
 	return (
-		<Page title='Search Results'>
+		<Page title={'Search Results'}>
 			<SearchResultsView />
 		</Page>
 	);

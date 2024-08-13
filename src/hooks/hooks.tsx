@@ -189,6 +189,7 @@ export const useProfileCompletion = (profileId: number): number => {
 	const fieldsToCalculate = {
 		selfTitle: 10,
 		email: 10,
+		image: 10,
 		homebase: 10,
 		pronouns: 5,
 		description: 10,
@@ -200,14 +201,6 @@ export const useProfileCompletion = (profileId: number): number => {
 		unions: 5,
 		experienceLevels: 1,
 		credits: 30,
-		// mediaVideo1: 1,
-		// mediaVideo2: 1,
-		// mediaImage1: 1,
-		// mediaImage2: 1,
-		// mediaImage3: 1,
-		// mediaImage4: 1,
-		// mediaImage5: 1,
-		// mediaImage6: 1,
 		// firstName: 1,
 		// lastName: 1,
 		// phone: 1,
@@ -219,6 +212,14 @@ export const useProfileCompletion = (profileId: number): number => {
 		// genderIdentities: 1,
 		// racialIdentities,
 		// personalIdentities,
+		// mediaVideo1: 1,
+		// mediaVideo2: 1,
+		// mediaImage1: 1,
+		// mediaImage2: 1,
+		// mediaImage3: 1,
+		// mediaImage4: 1,
+		// mediaImage5: 1,
+		// mediaImage6: 1,
 	};
 
 	// Add up the total weights for each field
