@@ -231,6 +231,7 @@ export const useProfileCompletion = (profileId: number): number => {
 		return 0;
 	}
 
+	// Calculate the weight.
 	for (const [field, weight] of Object.entries(fieldsToCalculate)) {
 		if (profile[field] && typeof profile[field] === 'object') {
 			if (Object.values(profile[field]).some((value) => value)) {
@@ -242,6 +243,5 @@ export const useProfileCompletion = (profileId: number): number => {
 	}
 
 	// Divide the score by the total weight, multiplied by 100, to get the profile completion percentage as a decimal. Round to the nearest integer.
-
 	return Math.round((profileCompletion / totalWeight) * 100);
 };
