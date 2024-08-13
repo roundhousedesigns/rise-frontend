@@ -15,10 +15,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
 import { UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
-import { useProfileUrl } from '../hooks/hooks';
-import ShareButton from '../components/common/ShareButton';
-import RiseStar from '../components/common/icons/RiseStar';
-import ProfilePercentComplete from '../components/ProfilePercentComplete';
+import { useProfileCompletion, useProfileUrl } from '@hooks/hooks';
+import ShareButton from '@common/ShareButton';
+import ProfilePercentComplete from '@components/ProfilePercentComplete';
 
 interface Props {
 	profile: UserProfile;
@@ -35,9 +34,11 @@ export default function MiniProfileView({
 	allowStar = true,
 	...props
 }: Props): JSX.Element {
-	const [{ loggedInSlug }] = useViewer();
+	const [{ loggedInSlug, loggedInId }] = useViewer();
 
 	const { image, pronouns, selfTitle, homebase } = profile || {};
+
+	const percentComplete = useProfileCompletion(loggedInId);
 
 	const profileUrl = useProfileUrl(loggedInSlug);
 
@@ -102,12 +103,10 @@ export default function MiniProfileView({
 
 				<StackItem as={ProfileSubtitle} textAlign='center' fontSize='md' my={0} />
 
-				<StackItem as={RiseStar} textAlign='center' my={2} color='brand.orange' />
+				<StackItem textAlign={'right'}>
+					{percentComplete < 100 ? <ProfilePercentComplete /> : null}
 
-				<StackItem as={ProfilePercentComplete} />
-
-				<StackItem textAlign='center' w='full' mt={2}>
-					<ButtonGroup size='sm'>
+					<ButtonGroup size='xs' mt={2}>
 						<Button
 							as={RouterLink}
 							leftIcon={<FiUser />}

@@ -10,7 +10,7 @@ const ProfilePercentComplete = () => {
 		<Box>
 			<Progress hasStripe value={percentComplete} colorScheme='yellow' position='relative' />
 			<Text m={0} fontSize='xs' textAlign='right' fontStyle='italic'>
-				{`Profile ${percentComplete}% complete`}
+				{`${percentComplete}% complete`}
 			</Text>
 		</Box>
 	);
