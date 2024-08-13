@@ -10,15 +10,15 @@ import {
 	Button,
 	Avatar,
 	Box,
-	Progress,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
 import { UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
-import { useProfileCompletion, useProfileUrl } from '../hooks/hooks';
+import { useProfileUrl } from '../hooks/hooks';
 import ShareButton from '../components/common/ShareButton';
 import RiseStar from '../components/common/icons/RiseStar';
+import ProfilePercentComplete from '../components/ProfilePercentComplete';
 
 interface Props {
 	profile: UserProfile;
@@ -35,13 +35,11 @@ export default function MiniProfileView({
 	allowStar = true,
 	...props
 }: Props): JSX.Element {
-	const [{ loggedInSlug, loggedInId }] = useViewer();
+	const [{ loggedInSlug }] = useViewer();
 
 	const { image, pronouns, selfTitle, homebase } = profile || {};
 
 	const profileUrl = useProfileUrl(loggedInSlug);
-
-	const percentComplete = useProfileCompletion(loggedInId);
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -106,12 +104,7 @@ export default function MiniProfileView({
 
 				<StackItem as={RiseStar} textAlign='center' my={2} color='brand.orange' />
 
-				<StackItem>
-					<Progress hasStripe value={percentComplete} colorScheme='yellow' position='relative' />
-					<Text m={0} fontSize='xs' textAlign='right' fontStyle='italic'>
-						{`Profile ${percentComplete}% complete`}
-					</Text>
-				</StackItem>
+				<StackItem as={ProfilePercentComplete} />
 
 				<StackItem textAlign='center' w='full' mt={2}>
 					<ButtonGroup size='sm'>
