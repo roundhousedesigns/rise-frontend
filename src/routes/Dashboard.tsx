@@ -1,3 +1,4 @@
+import { Spacer } from '@chakra-ui/react';
 import Page from '@components/Page';
 
 import useViewer from '@queries/useViewer';
@@ -8,6 +9,7 @@ export default function Dashboard() {
 
 	return (
 		<Page title={`Hello, ${firstName}!`}>
+			<Spacer h={6} />
 			<DashboardView />
 		</Page>
 	);

@@ -64,7 +64,7 @@ export default function StarToggleIcon({ id, ...props }: Props) {
 					)
 				}
 				cursor={loading ? 'default !important' : 'pointer'}
-				borderRadius='full'
+				borderRadius={'full'}
 				label={isStarred ? 'Unstar this profile' : 'Star this profile'}
 				onClick={isStarred ? onOpenConfirmation : updateStarredProfilesHandler}
 				mx={2}
@@ -78,7 +78,7 @@ export default function StarToggleIcon({ id, ...props }: Props) {
 				isOpen={isOpenConfirmation}
 				onClose={onCloseConfirmation}
 				confirmAction={updateStarredProfilesHandler}
-				headerText='Unstar this profile?'
+				headerText={'Unstar this profile?'}
 				buttonsText={{ confirm: 'Yes', cancel: 'No' }}
 			>
 				Are you sure you want to unstar this profile? You can always star it again later.

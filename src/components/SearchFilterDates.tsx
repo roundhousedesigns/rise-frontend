@@ -63,21 +63,21 @@ export default function SearchFilterDates() {
 
 	return (
 		<>
-			<Flex gap={4} alignItems='center' flexWrap='wrap'>
+			<Flex gap={4} alignItems={'center'} flexWrap={'wrap'}>
 				<DatePicker
 					closeOnScroll={(e) => e.target === document}
 					selected={startDate}
-					customInput={<DatePickerButton defaultText='Start' ariaLabel='Start date' />}
+					customInput={<DatePickerButton defaultText={'Start'} ariaLabel={'Start date'} />}
 					onChange={handleDateChange('startDate')}
 					minDate={new Date()}
 				/>
-				{startDate && <Text fontSize='md'> to </Text>}
+				{startDate && <Text fontSize={'md'}> to </Text>}
 				{startDate && (
 					<DatePicker
 						closeOnScroll={(e) => e.target === document}
 						selected={endDate}
 						customInput={
-							<DatePickerButton defaultText='End (optional)' ariaLabel='End date (optional)' />
+							<DatePickerButton defaultText={'End (optional)'} ariaLabel={'End date (optional)'} />
 						}
 						onChange={handleDateChange('endDate')}
 						minDate={startDate}
@@ -86,19 +86,19 @@ export default function SearchFilterDates() {
 				{startDate && (
 					<TooltipIconButton
 						icon={<FiXCircle />}
-						label='Clear dates'
+						label={'Clear dates'}
 						onClick={handleClearDates}
-						colorScheme='red'
+						colorScheme={'red'}
 					/>
 				)}
 			</Flex>
 
 			<InlineIconText
 				icon={<FiCalendar />}
-				text='Candidates with potential scheduling conflicts will be highlighted with a badge.'
-				query='badge'
-				description='scheduling conflict'
-				fontSize='sm'
+				text={'Candidates with potential scheduling conflicts will be highlighted with a badge.'}
+				query={'badge'}
+				description={'scheduling conflict'}
+				fontSize={'sm'}
 				iconProps={{ size: 'xs', bgColor: 'red.300', color: 'text.dark' }}
 			/>
 		</>

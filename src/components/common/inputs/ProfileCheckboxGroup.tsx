@@ -27,7 +27,7 @@ export default function ProfileCheckboxGroup({
 	return items ? (
 		<CheckboxGroup value={checked} onChange={handleChange(name)} {...props}>
 			{isRequired && requiredMessage && numberChecked < 1 ? (
-				<Text color='red.500' fontSize='sm'>
+				<Text color={'red.500'} fontSize={'sm'}>
 					{requiredMessage}
 				</Text>
 			) : null}

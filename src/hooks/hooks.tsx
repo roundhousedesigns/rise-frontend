@@ -7,6 +7,7 @@ import {
 	validateProfileSlug,
 } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
+import useUserProfile from '@queries/useUserProfile';
 
 /**
  * Custom hooks.
@@ -173,4 +174,75 @@ export const useSavedSearchFiltersChanged = (): boolean => {
 	} = useContext(SearchContext);
 
 	return !searchFilterSetsAreEqual(currentFilterSet, savedSearchFilterSet);
+};
+
+/**
+ * Calculates the completion percentage of a user's profile.
+ *
+ * @param {number} profileId - The ID of the user's profile to calculate completion for.
+ * @return {number} The completion percentage of the user's profile, as a whole number between 0 and 100.
+ */
+export const useProfileCompletion = (profileId: number): number => {
+	const [profile] = useUserProfile(profileId);
+
+	// Field weights
+	const fieldsToCalculate = {
+		selfTitle: 10,
+		email: 10,
+		image: 10,
+		homebase: 10,
+		pronouns: 5,
+		description: 10,
+		resume: 15,
+		education: 5,
+		locations: 10,
+		socials: 5,
+		website: 5,
+		unions: 5,
+		experienceLevels: 1,
+		credits: 30,
+		// firstName: 1,
+		// lastName: 1,
+		// phone: 1,
+		// willTravel: 1,
+		// willTour: 1,
+		// partnerDirectories: 1,
+		// multilingual: 1,
+		// languages: 1,
+		// genderIdentities: 1,
+		// racialIdentities,
+		// personalIdentities,
+		// mediaVideo1: 1,
+		// mediaVideo2: 1,
+		// mediaImage1: 1,
+		// mediaImage2: 1,
+		// mediaImage3: 1,
+		// mediaImage4: 1,
+		// mediaImage5: 1,
+		// mediaImage6: 1,
+	};
+
+	// Add up the total weights for each field
+	const totalWeight = Object.values(fieldsToCalculate).reduce((a, b) => a + b, 0);
+
+	// Calculate the profile completion percentage. If a field's value is truthy, add the weight. If a field's value is an object, only add the weight if at least one of its properties is truthy.
+	let profileCompletion = 0;
+
+	if (!profile) {
+		return 0;
+	}
+
+	// Calculate the weight.
+	for (const [field, weight] of Object.entries(fieldsToCalculate)) {
+		if (profile[field] && typeof profile[field] === 'object') {
+			if (Object.values(profile[field]).some((value) => value)) {
+				profileCompletion += weight;
+			}
+		} else if (profile[field]) {
+			profileCompletion += weight;
+		}
+	}
+
+	// Divide the score by the total weight, multiplied by 100, to get the profile completion percentage as a decimal. Round to the nearest integer.
+	return Math.round((profileCompletion / totalWeight) * 100);
 };

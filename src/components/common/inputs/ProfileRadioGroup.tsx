@@ -40,7 +40,7 @@ export default function ProfileRadioGroup({
 					})}
 				</Wrap>
 			</RadioGroup>
-			{label ? <FormLabel fontSize='sm'>{label}</FormLabel> : false}
+			{label ? <FormLabel fontSize={'sm'}>{label}</FormLabel> : false}
 		</chakra.div>
 	) : null;
 }

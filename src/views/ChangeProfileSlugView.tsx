@@ -91,21 +91,21 @@ export default function ChangeProfileUrlView() {
 	};
 
 	return (
-		<Box borderRadius='lg' w='full'>
-			<Flex mt={2} gap={8} alignItems='center' flexWrap='wrap' justifyContent='space-between'>
-				<Box flex='1 0 auto'>
+		<Box borderRadius={'lg'} w={'full'}>
+			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
+				<Box flex={'1 0 auto'}>
 					<form onSubmit={handleSubmit}>
-						<Heading variant='contentSubtitle'>Handle</Heading>
+						<Heading variant={'contentSubtitle'}>Handle</Heading>
 						<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
 						<Wrap>
 							<TextInput
 								value={slug}
-								name='slug'
-								id='slug'
-								maxW='300px'
-								label='New profile tag'
+								name={'slug'}
+								id={'slug'}
+								maxW={'300px'}
+								label={'New profile tag'}
 								labelHidden
-								helperText='Letters, numbers, dashes, and underscores.'
+								helperText={'Letters, numbers, dashes, and underscores.'}
 								error={errorMessage}
 								isRequired
 								maxLength={20}
@@ -113,18 +113,18 @@ export default function ChangeProfileUrlView() {
 								inputProps={{
 									pl: 2,
 								}}
-								flex='1'
+								flex={'1'}
 							/>
 							<Button
-								type='submit'
-								colorScheme='green'
+								type={'submit'}
+								colorScheme={'green'}
 								isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
 								isLoading={submitLoading}
 							>
 								Save
 							</Button>
 							<Button
-								colorScheme='red'
+								colorScheme={'red'}
 								isDisabled={!hasEditedSlug}
 								onClick={() => setSlug(loggedInSlug)}
 							>
@@ -134,8 +134,8 @@ export default function ChangeProfileUrlView() {
 					</form>
 				</Box>
 
-				<Box flex='auto'>
-					<Text fontSize='sm'>
+				<Box flex={'auto'}>
+					<Text fontSize={'sm'}>
 						{hasEditedSlug
 							? 'Save your changes to update your profile URL.'
 							: 'Your current profile URL is:'}
@@ -143,12 +143,12 @@ export default function ChangeProfileUrlView() {
 					<Box opacity={hasEditedSlug ? 0.8 : 1}>
 						<Button
 							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-							title='Copy profile URL'
+							title={'Copy profile URL'}
 							onClick={onCopy}
 							isDisabled={!!hasEditedSlug}
-							maxW='100%'
-							colorScheme='yellow'
-							overflow='hidden'
+							maxW={'100%'}
+							colorScheme={'yellow'}
+							overflow={'hidden'}
 						>
 							{profileUrl}
 						</Button>

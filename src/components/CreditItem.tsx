@@ -106,33 +106,33 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 				tabIndex={0}
 				onKeyDown={handleCreditKeyDown}
 				borderWidth={isEditable ? '3px' : '0'}
-				borderStyle='dashed'
-				borderColor='gray.300'
+				borderStyle={'dashed'}
+				borderColor={'gray.300'}
 				_hover={isEditable ? { borderColor: 'gray.500' } : {}}
 			>
 				<Skeleton isLoaded={!termsLoading}>
 					<Flex
-						alignItems='flex-start'
-						justifyContent='space-between'
+						alignItems={'flex-start'}
+						justifyContent={'space-between'}
 						flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					>
-						<Box flex='1'>
-							<Flex alignItems='center' gap={2} flexWrap='wrap' mb={2}>
-								<Heading as='h3' fontWeight='bold' fontSize='xl' my={0}>
+						<Box flex={'1'}>
+							<Flex alignItems={'center'} gap={2} flexWrap={'wrap'} mb={2}>
+								<Heading as={'h3'} fontWeight={'bold'} fontSize={'xl'} my={0}>
 									{title}
 								</Heading>
 								<Badge
-									flex='0 0 auto'
-									fontSize='md'
-									fontWeight='bold'
-									textTransform='none'
+									flex={'0 0 auto'}
+									fontSize={'md'}
+									fontWeight={'bold'}
+									textTransform={'none'}
 									px={2}
 									py={1}
 								>
 									{` ${yearString()}`}
 								</Badge>
 							</Flex>
-							<Flex my={0} alignItems='center' flexWrap='wrap' gap={2}>
+							<Flex my={0} alignItems={'center'} flexWrap={'wrap'} gap={2}>
 								{venue ? (
 									<WrapWithIcon icon={FiStar} mr={1}>
 										{decodeString(venue)}
@@ -147,16 +147,16 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 								) : (
 									false
 								)}
-								<Flex my={0} alignItems='center' flexWrap='wrap' gap={2}>
+								<Flex my={0} alignItems={'center'} flexWrap={'wrap'} gap={2}>
 									{jobTitle && <WrapWithIcon icon={FiBriefcase}>{jobTitle}</WrapWithIcon>}
 									{intern || fellow ? (
-										<Flex color='brand.yellow' gap={1} ml={2}>
+										<Flex color={'brand.yellow'} gap={1} ml={2}>
 											{intern ? (
 												<Text
-													flex='0 0 auto'
-													fontSize='sm'
-													fontWeight='bold'
-													textTransform='none'
+													flex={'0 0 auto'}
+													fontSize={'sm'}
+													fontWeight={'bold'}
+													textTransform={'none'}
 													py={1}
 												>
 													Internship
@@ -166,7 +166,7 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 											)}
 
 											{intern && fellow ? (
-												<Text fontSize='2xl' mx={0} my={1}>
+												<Text fontSize={'2xl'} mx={0} my={1}>
 													&middot;
 												</Text>
 											) : (
@@ -175,12 +175,12 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 
 											{fellow ? (
 												<Text
-													flex='0 0 auto'
-													fontSize='sm'
-													fontWeight='bold'
-													textTransform='none'
+													flex={'0 0 auto'}
+													fontSize={'sm'}
+													fontWeight={'bold'}
+													textTransform={'none'}
 													py={1}
-													colorScheme='yellow'
+													colorScheme={'yellow'}
 												>
 													Fellowship
 												</Text>
@@ -196,20 +196,20 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 						</Box>
 
 						<Box flex={{ base: '0 0 100%', md: '0 50%' }}>
-							<Stack direction='column' mt={{ base: 4, md: 0 }}>
+							<Stack direction={'column'} mt={{ base: 4, md: 0 }}>
 								{departmentIds?.length || jobs?.length || skills?.length ? (
-									<Stack direction='column'>
-										<WPItemBadgeList items={departments} colorScheme='orange' />
-										<WPItemBadgeList items={jobs} colorScheme='blue' />
-										<WPItemBadgeList items={skills} colorScheme='green' />
+									<Stack direction={'column'}>
+										<WPItemBadgeList items={departments} colorScheme={'orange'} />
+										<WPItemBadgeList items={jobs} colorScheme={'blue'} />
+										<WPItemBadgeList items={skills} colorScheme={'green'} />
 									</Stack>
 								) : isEditable ? (
-									<Wrap justify='right'>
+									<Wrap justify={'right'}>
 										<Text
 											textAlign={{ base: 'left', md: 'right' }}
-											maxWidth='250px'
-											fontSize='sm'
-											lineHeight='short'
+											maxWidth={'250px'}
+											fontSize={'sm'}
+											lineHeight={'short'}
 										>
 											This credit won't be active and searchable until you add at least one
 											department and a job.

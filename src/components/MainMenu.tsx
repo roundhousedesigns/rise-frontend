@@ -51,14 +51,14 @@ export default function MainMenu() {
 	return (
 		<Menu>
 			<MenuButton
-				aria-label='Menu'
+				aria-label={'Menu'}
 				as={IconButton}
-				borderRadius='full'
-				colorScheme='yellow'
+				borderRadius={'full'}
+				colorScheme={'yellow'}
 				icon={<FiMenu />}
-				size='sm'
+				size={'sm'}
 			/>
-			<MenuList zIndex='100' color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
+			<MenuList zIndex={'100'} color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
 				{!isLargerThanMd ? (
 					<MenuOptionGroup>
 						<MenuItem as={RouterLink} to={`/profile/${loggedInSlug}`} icon={<FiHome />}>
@@ -69,23 +69,23 @@ export default function MainMenu() {
 				) : (
 					false
 				)}
-				<MenuItem as={RouterLink} to='/' icon={<FiCompass />}>
+				<MenuItem as={RouterLink} to={'/'} icon={<FiCompass />}>
 					Dashboard
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/starred' icon={<FiStar />}>
+				<MenuItem as={RouterLink} to={'/starred'} icon={<FiStar />}>
 					Starred Profiles
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/searches' icon={<FiFolder />}>
+				<MenuItem as={RouterLink} to={'/searches'} icon={<FiFolder />}>
 					Your Searches
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/settings' icon={<FiSettings />}>
+				<MenuItem as={RouterLink} to={'/settings'} icon={<FiSettings />}>
 					Settings
 				</MenuItem>
 				<MenuDivider />
 				<MenuItem
 					as={Link}
 					my={0}
-					href='https://risetheatre.org'
+					href={'https://risetheatre.org'}
 					icon={<FiHome />}
 					isExternal
 					_hover={{
@@ -94,18 +94,18 @@ export default function MainMenu() {
 				>
 					RISE Home
 				</MenuItem>
-				<MenuItem as={RouterLink} to='/help' icon={<FiHelpCircle />}>
+				<MenuItem as={RouterLink} to={'/help'} icon={<FiHelpCircle />}>
 					Help
 				</MenuItem>
 				<MenuDivider />
-				<Flex mx={2} justifyContent='space-between' alignItems='center'>
+				<Flex mx={2} justifyContent={'space-between'} alignItems={'center'}>
 					<DarkModeToggle showLabel={false} showHelperText={false} />
 					<IconButton
-						aria-label='Logout'
+						aria-label={'Logout'}
 						icon={<FiLogOut />}
 						boxSize={8}
 						onClick={logout}
-						variant='ghost'
+						variant={'ghost'}
 					/>
 				</Flex>
 			</MenuList>

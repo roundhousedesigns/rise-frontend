@@ -146,18 +146,18 @@ export default function RegisterView() {
 
 			<Divider my={6} />
 
-			<Heading as='h2' variant='contentTitle'>
+			<Heading as={'h2'} variant={'contentTitle'}>
 				Create an account
 			</Heading>
 			<form onSubmit={handleSubmit}>
-				<Stack direction='row' spacing={6}>
+				<Stack direction={'row'} spacing={6}>
 					<TextInput
 						value={firstName}
-						name='firstName'
+						name={'firstName'}
 						isRequired
 						onChange={handleInputChange}
-						flex='1'
-						label='First name'
+						flex={'1'}
+						label={'First name'}
 						inputProps={{
 							size: 'xl',
 							autoComplete: 'given-name',
@@ -166,11 +166,11 @@ export default function RegisterView() {
 					/>
 					<TextInput
 						value={lastName}
-						name='lastName'
+						name={'lastName'}
 						isRequired
 						onChange={handleInputChange}
-						flex='1'
-						label='Last name'
+						flex={'1'}
+						label={'Last name'}
 						inputProps={{
 							size: 'xl',
 							autoComplete: 'family-name',
@@ -180,11 +180,11 @@ export default function RegisterView() {
 				</Stack>
 				<TextInput
 					value={email}
-					name='email'
-					id='email'
-					type='email'
-					variant='filled'
-					label='Email address'
+					name={'email'}
+					id={'email'}
+					type={'email'}
+					variant={'filled'}
+					label={'Email address'}
 					error={
 						errorCode !== 'password_too_weak' && errorCode !== 'password_mismatch' && errorCode
 							? errorMessage
@@ -198,19 +198,19 @@ export default function RegisterView() {
 						tabIndex: 3,
 					}}
 				/>
-				<Stack direction='row' spacing={6} flexWrap='wrap'>
+				<Stack direction={'row'} spacing={6} flexWrap={'wrap'}>
 					<TextInput
 						value={password}
-						name='password'
-						id='password'
-						type='password'
-						variant='filled'
+						name={'password'}
+						id={'password'}
+						type={'password'}
+						variant={'filled'}
 						label={
 							<>
 								Password{' '}
 								<Tooltip
 									hasArrow
-									label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+									label={'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'}
 								>
 									<chakra.span>
 										<Icon as={FiHelpCircle} />
@@ -231,11 +231,11 @@ export default function RegisterView() {
 					/>
 					<TextInput
 						value={confirmPassword}
-						name='confirmPassword'
-						id='confirmPassword'
-						type='password'
-						variant='filled'
-						label='Confirm your password'
+						name={'confirmPassword'}
+						id={'confirmPassword'}
+						type={'password'}
+						variant={'filled'}
+						label={'Confirm your password'}
 						flex={1}
 						isRequired
 						error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
@@ -251,52 +251,52 @@ export default function RegisterView() {
 
 				<Flex
 					justifyContent={'space-between'}
-					alignItems='flex-end'
+					alignItems={'flex-end'}
 					mt={2}
-					flex='0 0 auto'
-					flexWrap='wrap'
+					flex={'0 0 auto'}
+					flexWrap={'wrap'}
 					gap={8}
 				>
 					<Box mt={4} pr={8}>
 						<FormControl>
 							<Checkbox
-								size='sm'
-								w='full'
+								size={'sm'}
+								w={'full'}
 								isRequired
 								onChange={() => setOfAge(!ofAge)}
 								tabIndex={6}
 							>
 								I am over 18 years of age.
-								<chakra.span color='red.300' ml={1}>
+								<chakra.span color={'red.300'} ml={1}>
 									*
 								</chakra.span>
 							</Checkbox>
 						</FormControl>
 						<FormControl>
 							<Checkbox
-								size='sm'
-								w='full'
+								size={'sm'}
+								w={'full'}
 								isRequired
 								onChange={() => setTermsAccepted(!termsAccepted)}
 								tabIndex={7}
 							>
 								I have read and accept the RISE Theatre Directory{' '}
-								<Link as={RouterLink} to='http://risetheatre.org/terms-conditions' isExternal>
+								<Link as={RouterLink} to={'http://risetheatre.org/terms-conditions'} isExternal>
 									Terms and Conditions
 								</Link>{' '}
 								and{' '}
-								<Link as={RouterLink} to='http://risetheatre.org/privacy-policy' isExternal>
+								<Link as={RouterLink} to={'http://risetheatre.org/privacy-policy'} isExternal>
 									Privacy Policy
 								</Link>
 								.
-								<chakra.span color='red.300' ml={1}>
+								<chakra.span color={'red.300'} ml={1}>
 									*
 								</chakra.span>
 							</Checkbox>
 						</FormControl>
 						<Button
-							type='submit'
-							colorScheme='orange'
+							type={'submit'}
+							colorScheme={'orange'}
 							isDisabled={!formIsValid || submitLoading}
 							mt={4}
 							tabIndex={8}
@@ -305,7 +305,7 @@ export default function RegisterView() {
 							Create account
 						</Button>
 					</Box>
-					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent='flex-end' />}
+					{!isLargerThanMd && <BackToLoginButton width={'full'} justifyContent={'flex-end'} />}
 				</Flex>
 			</form>
 		</>

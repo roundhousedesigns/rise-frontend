@@ -10,7 +10,7 @@ export default function ContentView({ postId, ...props }: Props) {
 	const [content, { contentLoading, contentError }] = usePostContent(postId);
 
 	return (
-		<Box mt={4} pt={4} className='wp-post-content' {...props}>
+		<Box mt={4} pt={4} className={'wp-post-content'} {...props}>
 			{contentLoading && !contentError ? <SkeletonText /> : content}
 		</Box>
 	);

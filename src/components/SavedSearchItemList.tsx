@@ -47,7 +47,7 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	return (
 		<chakra.div {...props}>
 			{parsedSearches.length > 0 ? (
-				<Flex ml={0} px={0} maxW='4xl' justify-content='center' gap={2} flexWrap='wrap'>
+				<Flex ml={0} px={0} maxW={'4xl'} justify-content={'center'} gap={2} flexWrap={'wrap'}>
 					<AnimatePresence>
 						{parsedSearches.map(({ id, title, filters }) => {
 							return (
@@ -57,7 +57,7 @@ export default function SavedSearchItemList({ ...props }: Props) {
 									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
 									animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 									exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
-									flex='0 1 450px'
+									flex={'0 1 450px'}
 									searchTerms={filters}
 									title={title}
 									id={id}

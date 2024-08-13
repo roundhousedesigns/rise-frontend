@@ -138,7 +138,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 		const items = getWPItemsFromIds(ids, terms);
 
 		return items ? (
-			<Flex gap={1} flexWrap='wrap'>
+			<Flex gap={1} flexWrap={'wrap'}>
 				{items.map((item: WPItem) => (
 					<Tag key={item.id}>{item.name}</Tag>
 				))}
@@ -161,9 +161,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 						key={term.id}
 						href={term.externalUrl}
 						isExternal
-						size='sm'
+						size={'sm'}
 						m={0}
-						colorScheme='orange'
+						colorScheme={'orange'}
 						leftIcon={<FiLink />}
 					>
 						{term.name}
@@ -185,12 +185,12 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 			w={{ base: '100%', md: 'auto' }}
 			p={2}
 			justifyContent={{ base: 'space-between', md: 'flex-end' }}
-			display='flex'
+			display={'flex'}
 			gap={{ base: 0, md: 2 }}
 			{...props}
 		>
-			<ShareButton url={profileUrl} borderRadius='full' />
-			{id && allowStar ? <StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='full' /> : false}
+			<ShareButton url={profileUrl} borderRadius={'full'} />
+			{id && allowStar ? <StarToggleIcon id={id} mx={{ base: 0 }} borderRadius={'full'} /> : false}
 		</Flex>
 	);
 
@@ -198,7 +198,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 	const ProfileSubtitle = ({ ...props }: any) => {
 		const SelfTitle = () => {
 			return (
-				<Text as='span' textDecoration='underline'>
+				<Text as={'span'} textDecoration={'underline'}>
 					{selfTitle}
 				</Text>
 			);
@@ -206,14 +206,14 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 
 		const HomeBase = () => {
 			return (
-				<Text as='span' textDecoration='underline'>
+				<Text as={'span'} textDecoration={'underline'}>
 					{homebase}
 				</Text>
 			);
 		};
 
 		return (
-			<Heading as='h2' size='md' mt={2} fontWeight='medium' {...props}>
+			<Heading as={'h2'} size={'md'} mt={2} fontWeight={'medium'} {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -227,7 +227,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 
 	return profile ? (
 		<>
-			<Stack direction='column' flexWrap='nowrap' gap={6}>
+			<Stack direction={'column'} flexWrap={'nowrap'} gap={6}>
 				<ProfileStackItem as={Card} p={4}>
 					<>
 						{!isLargerThanMd ? <ShareStarButtons /> : false}
@@ -237,25 +237,25 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 							justifyContent={{ base: 'center', md: 'flex-start' }}
 						>
 							{isLargerThanMd ? (
-								<Stack direction='column' w='40%' minW='160px' maxW='400px'>
+								<Stack direction={'column'} w={'40%'} minW={'160px'} maxW={'400px'}>
 									{image ? (
 										<Box>
 											<Image
 												src={image}
 												alt={`${profile.fullName()}'s picture`}
-												borderRadius='md'
-												loading='eager'
-												fit='cover'
-												w='full'
+												borderRadius={'md'}
+												loading={'eager'}
+												fit={'cover'}
+												w={'full'}
 											/>
 										</Box>
 									) : (
-										<Avatar size='2xl' name={profile.fullName()} mx={2} />
+										<Avatar size={'2xl'} name={profile.fullName()} mx={2} />
 									)}
 									{conflictRanges.length ? (
 										<Card pb={0} _dark={{ bg: 'gray.600' }} _light={{ bg: 'gray.200' }}>
 											<Box>
-												<Heading as='h3' variant='contentTitle'>
+												<Heading as={'h3'} variant={'contentTitle'}>
 													Scheduling Conflicts
 												</Heading>
 												<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
@@ -264,47 +264,47 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 									) : null}
 								</Stack>
 							) : (
-								<Avatar size='superLg' src={image} name={profile.fullName()} />
+								<Avatar size={'superLg'} src={image} name={profile.fullName()} />
 							)}
 
 							<Stack
-								direction='column'
-								justifyContent='space-evenly'
+								direction={'column'}
+								justifyContent={'space-evenly'}
 								gap={4}
 								width={'100%'}
 								lineHeight={1}
 							>
-								<StackItem display='flex' flexWrap='wrap'>
+								<StackItem display={'flex'} flexWrap={'wrap'}>
 									<Flex
 										justifyContent={{ base: 'center', md: 'space-between' }}
-										w='full'
-										flexWrap='wrap'
-										alignItems='center'
+										w={'full'}
+										flexWrap={'wrap'}
+										alignItems={'center'}
 									>
 										<Heading
-											as='h1'
-											size='xl'
+											as={'h1'}
+											size={'xl'}
 											mr={2}
 											mt={0}
 											mb={1}
-											fontWeight='bold'
-											lineHeight='none'
+											fontWeight={'bold'}
+											lineHeight={'none'}
 										>
 											{profile.fullName()}
 										</Heading>
 										{pronouns ? (
-											<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+											<Tag colorScheme={'blue'} size={'md'} mt={{ base: 2, md: 'initial' }}>
 												{pronouns}
 											</Tag>
 										) : null}
 										<Spacer flex={1} />
 										{isLargerThanMd ? <ShareStarButtons p={0} /> : null}
 									</Flex>
-									<ProfileSubtitle flex='0 0 100%' w='full' />
+									<ProfileSubtitle flex={'0 0 100%'} w={'full'} />
 								</StackItem>
 
 								{locations && locations.length > 0 ? (
-									<ProfileStackItem title='Works in'>
+									<ProfileStackItem title={'Works in'}>
 										<>
 											<WrapWithIcon icon={FiMapPin} mr={2}>
 												{locationTerms
@@ -314,12 +314,12 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											<WrapWithIcon icon={FiMap} mr={2}>
 												<Wrap>
 													{willTravel !== undefined && (
-														<Tag size='md' colorScheme={willTravel ? 'green' : 'orange'}>
+														<Tag size={'md'} colorScheme={willTravel ? 'green' : 'orange'}>
 															{willTravel ? 'Will Travel' : 'Local Only'}
 														</Tag>
 													)}
 													{willTour !== undefined && (
-														<Tag size='md' colorScheme={willTour ? 'green' : 'orange'}>
+														<Tag size={'md'} colorScheme={willTour ? 'green' : 'orange'}>
 															{willTour ? 'Will Tour' : 'No Tours'}
 														</Tag>
 													)}
@@ -330,7 +330,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{unions && unions.length > 0 && unionTerms ? (
-									<ProfileStackItem title='Unions/Guilds/Memberships'>
+									<ProfileStackItem title={'Unions/Guilds/Memberships'}>
 										<WrapWithIcon icon={FiUser}>
 											{SelectedTerms({ ids: unions, terms: unionTerms })}
 										</WrapWithIcon>
@@ -338,10 +338,10 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
-									<ProfileStackItem title='RISE Network Partner Directories'>
-										<Flex alignItems='center' flexWrap='nowrap' justifyContent='space-between'>
-											<Icon as={FiStar} boxSize={4} flex='0 0 auto' />
-											<Wrap flex='1' pl={2} spacing={2}>
+									<ProfileStackItem title={'RISE Network Partner Directories'}>
+										<Flex alignItems={'center'} flexWrap={'nowrap'} justifyContent={'space-between'}>
+											<Icon as={FiStar} boxSize={4} flex={'0 0 auto'} />
+											<Wrap flex={'1'} pl={2} spacing={2}>
 												{selectedLinkableTerms({
 													ids: partnerDirectories,
 													terms: partnerDirectoryTerms,
@@ -353,7 +353,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 
 								{email || phone || website ? (
 									<StackItem my={1}>
-										<Heading as='h3' variant='contentTitle'>
+										<Heading as={'h3'} variant={'contentTitle'}>
 											Contact
 										</Heading>
 										<List m={0} spacing={1}>
@@ -373,7 +373,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											) : null}
 											{website ? (
 												<ListItem>
-													<LinkWithIcon href={website} target='_blank' icon={FiExternalLink}>
+													<LinkWithIcon href={website} target={'_blank'} icon={FiExternalLink}>
 														Visit Website
 													</LinkWithIcon>
 												</ListItem>
@@ -383,13 +383,13 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{conflictRanges.length && !isLargerThanMd ? (
-									<ProfileStackItem title='Conflicts'>
+									<ProfileStackItem title={'Conflicts'}>
 										<ConflictDateRanges my={4} conflictRanges={conflictRanges} />
 									</ProfileStackItem>
 								) : null}
 
 								{languages ? (
-									<ProfileStackItem title='Additional Languages' my={2}>
+									<ProfileStackItem title={'Additional Languages'} my={2}>
 										<WrapWithIcon icon={FiGlobe} m={0}>
 											<Text m={0}>{languages}</Text>
 										</WrapWithIcon>
@@ -397,26 +397,26 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{!socials.isEmpty() ? (
-									<ProfileStackItem title='Social'>
+									<ProfileStackItem title={'Social'}>
 										<PersonalIconLinks socials={socials} />
 									</ProfileStackItem>
 								) : null}
 
 								{resume ? (
-									<ProfileStackItem title='Resume'>
+									<ProfileStackItem title={'Resume'}>
 										<Flex gap={2}>
 											<ResumePreviewModal
 												resumePreview={resumePreview}
 												resumeLink={resume}
 												previewIcon={false}
-												maxW='250px'
+												maxW={'250px'}
 											/>
 											<TooltipIconButton
 												icon={<FiDownload />}
 												as={Link}
-												label='Download resume'
+												label={'Download resume'}
 												href={resume}
-												colorScheme='green'
+												colorScheme={'green'}
 												my={0}
 											/>
 										</Flex>
@@ -428,9 +428,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 				</ProfileStackItem>
 
 				{credits && credits.length > 0 && (
-					<ProfileStackItem centerlineColor='brand.blue' title='Credits'>
+					<ProfileStackItem centerlineColor={'brand.blue'} title={'Credits'}>
 						<>
-							<Flex justifyContent='flex-end'>
+							<Flex justifyContent={'flex-end'}>
 								<CreditsTagLegend mr={4} />
 							</Flex>
 							<List m={0}>
@@ -445,27 +445,27 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 				)}
 
 				{description && (
-					<ProfileStackItem centerlineColor='brand.orange' title='About'>
-						<Text whiteSpace='pre-wrap' borderRadius='md'>
+					<ProfileStackItem centerlineColor={'brand.orange'} title={'About'}>
+						<Text whiteSpace={'pre-wrap'} borderRadius={'md'}>
 							{description.trim()}
 						</Text>
 					</ProfileStackItem>
 				)}
 
 				{education && (
-					<ProfileStackItem centerlineColor='brand.green' title='Education + Training'>
-						<Text whiteSpace='pre-wrap' borderRadius='md'>
+					<ProfileStackItem centerlineColor={'brand.green'} title={'Education + Training'}>
+						<Text whiteSpace={'pre-wrap'} borderRadius={'md'}>
 							{education.trim()}
 						</Text>
 					</ProfileStackItem>
 				)}
 
 				{mediaVideos.length > 0 || mediaImages.length > 0 ? (
-					<ProfileStackItem centerlineColor='brand.blue' title='Media'>
+					<ProfileStackItem centerlineColor={'brand.blue'} title={'Media'}>
 						<>
 							{mediaVideos.length > 0 ? (
 								<>
-									<Heading as='h3' variant='contentTitle' size='md'>
+									<Heading as={'h3'} variant={'contentTitle'} size={'md'}>
 										Video
 									</Heading>
 									<SimpleGrid columns={[1, 2]} mt={4} spacing={4}>
@@ -473,9 +473,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											if (!video) return false;
 											return (
 												// Videos are unique, so we can just use the string as the key.
-												<Box key={video} position='relative' paddingBottom='56.25%'>
-													<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-														<ReactPlayer url={video} controls width='100%' height='100%' />
+												<Box key={video} position={'relative'} paddingBottom={'56.25%'}>
+													<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
+														<ReactPlayer url={video} controls width={'100%'} height={'100%'} />
 													</Box>
 												</Box>
 											);
@@ -485,17 +485,17 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 							) : null}
 							{mediaImages.length > 0 ? (
 								<Box mt={6}>
-									<Heading as='h3' variant='contentTitle' size='md'>
+									<Heading as={'h3'} variant={'contentTitle'} size={'md'}>
 										Images
 									</Heading>
 
-									<Box w='full' sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
+									<Box w={'full'} sx={{ columnCount: [1, 2, 3], columnGap: '8px' }}>
 										{mediaImages.map((image: string | undefined, index: Key) => (
 											<Image
 												key={index}
 												src={image}
-												borderRadius='md'
-												fit='cover'
+												borderRadius={'md'}
+												fit={'cover'}
 												mb={2}
 												alt={`${profile.fullName()}'s image`}
 											/>

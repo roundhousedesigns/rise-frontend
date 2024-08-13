@@ -8,7 +8,7 @@ export default function Register() {
 	const Button = () => (isLargerThanMd ? <BackToLoginButton /> : <></>);
 
 	return (
-		<Page title='Join the Directory' actions={<Button />}>
+		<Page title={'Join the Directory'} actions={<Button />}>
 			<RegisterView />
 		</Page>
 	);

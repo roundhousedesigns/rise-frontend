@@ -19,7 +19,7 @@ export default function ProfileStackItem({
 				{title}
 			</HeadingCenterline>
 		) : (
-			<Heading as='h3' variant='contentTitle'>
+			<Heading as={'h3'} variant={'contentTitle'}>
 				{title}
 			</Heading>
 		);
