@@ -983,7 +983,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								false
 							)}
 							<ProfileStackItem title='Contact'>
-								<Stack direction='column' spacing={0}>
+								<Stack direction='column'>
 									<StackItem
 										as={TextInput}
 										value={email}

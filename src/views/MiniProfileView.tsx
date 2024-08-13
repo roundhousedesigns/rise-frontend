@@ -16,7 +16,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
 import { UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
-import { useProfileUrl } from '../hooks/hooks';
+import { useProfileCompletion, useProfileUrl } from '../hooks/hooks';
 import ShareButton from '../components/common/ShareButton';
 import RiseStar from '../components/common/icons/RiseStar';
 
@@ -35,14 +35,13 @@ export default function MiniProfileView({
 	allowStar = true,
 	...props
 }: Props): JSX.Element {
-	const [{ loggedInSlug }] = useViewer();
+	const [{ loggedInSlug, loggedInId }] = useViewer();
 
 	const { image, pronouns, selfTitle, homebase } = profile || {};
 
 	const profileUrl = useProfileUrl(loggedInSlug);
 
-	// DUMMY
-	const dummyComplete = 60;
+	const percentComplete = useProfileCompletion(loggedInId);
 
 	// Build the subtitle string.
 	const ProfileSubtitle = ({ ...props }: any) => {
@@ -108,9 +107,9 @@ export default function MiniProfileView({
 				<StackItem as={RiseStar} textAlign='center' my={2} color='brand.orange' />
 
 				<StackItem>
-					<Progress hasStripe value={dummyComplete} colorScheme='yellow' position='relative' />
+					<Progress hasStripe value={percentComplete} colorScheme='yellow' position='relative' />
 					<Text m={0} fontSize='xs' textAlign='right' fontStyle='italic'>
-						{`Profile ${dummyComplete}% complete`}
+						{`Profile ${percentComplete}% complete`}
 					</Text>
 				</StackItem>
 
