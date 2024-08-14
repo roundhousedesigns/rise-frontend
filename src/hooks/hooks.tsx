@@ -199,7 +199,7 @@ export const useProfileCompletion = (profileId: number): number => {
 		socials: 5,
 		website: 5,
 		unions: 5,
-		experienceLevels: 1,
+		experienceLevels: 5,
 		credits: 30,
 		// firstName: 1,
 		// lastName: 1,

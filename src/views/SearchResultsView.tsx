@@ -7,7 +7,7 @@ import useSavedSearches from '@queries/useSavedSearches';
 import TextCenterline from '@common/TextCenterline';
 import SavedSearchItem from '@components/SavedSearchItem';
 import CandidateList from '@components/CandidateList';
-import InlineIconText from '../components/InlineIconText';
+import InlineIconText from '@components/InlineIconText';
 
 export default function SearchResultsView() {
 	const {

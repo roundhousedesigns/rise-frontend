@@ -15,10 +15,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
 import { UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
-import { useProfileCompletion, useProfileUrl } from '../hooks/hooks';
-import ShareButton from '../components/common/ShareButton';
-import RiseStar from '../components/common/icons/RiseStar';
-import ProfilePercentComplete from '../components/ProfilePercentComplete';
+import { useProfileCompletion, useProfileUrl } from '@hooks/hooks';
+import ShareButton from '@common/ShareButton';
+import RiseStar from '@common/icons/RiseStar';
+import ProfilePercentComplete from '@components/ProfilePercentComplete';
 
 interface Props {
 	profile: UserProfile;
@@ -74,13 +74,6 @@ export default function MiniProfileView({
 		);
 	};
 
-	const barColor = () => {
-		// Set the color based on the percentage. 0 to 33 is red, 34 to 66 is yellow, 67 to 100 is green.
-		if (percentComplete < 34) return 'red';
-		if (percentComplete < 67) return 'yellow';
-		return 'blue';
-	};
-
 	return profile ? (
 		<Card px={4} align={'center'} {...props}>
 			<Box position={'absolute'} top={2} right={2}>
@@ -116,7 +109,7 @@ export default function MiniProfileView({
 				) : null}
 
 				<StackItem textAlign={'right'}>
-					{percentComplete < 100 ? <ProfilePercentComplete colorScheme={barColor()} /> : null}
+					{percentComplete < 100 ? <ProfilePercentComplete colorScheme={'yellow'} /> : null}
 
 					<ButtonGroup size={'xs'} mt={2}>
 						<Button
