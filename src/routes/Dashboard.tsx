@@ -8,8 +8,7 @@ export default function Dashboard() {
 	const [{ firstName }] = useViewer();
 
 	return (
-		<Page title={`Hello, ${firstName}!`}>
-			<Spacer h={6} />
+		<Page>
 			<DashboardView />
 		</Page>
 	);
