@@ -1,9 +1,8 @@
-import { getViewportPointFromEvent } from '@chakra-ui/utils';
-import React from 'react';
+import { useEffect } from 'react';
 const { VITE_UW_ACCOUNT } = import.meta.env;
 
 const UserWayScript = () => {
-	React.useEffect(() => {
+	useEffect(() => {
 		const script = document.createElement('script');
 		script.setAttribute('data-account', VITE_UW_ACCOUNT);
 		script.setAttribute('src', 'https://cdn.userway.org/widget.js');
