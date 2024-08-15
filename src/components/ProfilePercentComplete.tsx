@@ -8,9 +8,10 @@ const ProfilePercentComplete = ({ ...props }: { [prop: string]: any }) => {
 
 	return (
 		<Box>
+			<Text variant={'helperText'}>Complete your profile!</Text>
 			<Progress hasStripe value={percentComplete} position={'relative'} {...props} />
 			<Text m={0} fontSize={'xs'} textAlign={'right'} fontStyle={'italic'}>
-				{`${percentComplete}% complete`}
+				{`${percentComplete}%`}
 			</Text>
 		</Box>
 	);

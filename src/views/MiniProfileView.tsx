@@ -35,7 +35,7 @@ export default function MiniProfileView({
 	allowStar = true,
 	...props
 }: Props): JSX.Element {
-	const [{ loggedInSlug, loggedInId }] = useViewer();
+	const [{ loggedInSlug, loggedInId, disableProfile }] = useViewer();
 
 	const { image, pronouns, selfTitle, homebase } = profile || {};
 
@@ -77,7 +77,7 @@ export default function MiniProfileView({
 	return profile ? (
 		<Card px={4} align={'center'} {...props}>
 			<Box position={'absolute'} top={2} right={2}>
-				<ShareButton url={profileUrl} />
+				{percentComplete > 30 && !disableProfile ? <ShareButton url={profileUrl} /> : null}
 			</Box>
 			<Stack direction={'column'} lineHeight={1} w={'full'}>
 				{image ? (
@@ -102,36 +102,50 @@ export default function MiniProfileView({
 					</Flex>
 				</StackItem>
 
-				<StackItem as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
+				{percentComplete > 30 || disableProfile ? (
+					<>
+						<StackItem as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
 
-				{percentComplete < 100 ? (
-					<StackItem as={RiseStar} textAlign={'center'} my={2} color={'brand.orange'} />
-				) : null}
+						{percentComplete < 100 && !!image ? (
+							<StackItem as={RiseStar} textAlign={'center'} color={'brand.blue'} />
+						) : null}
 
-				<StackItem textAlign={'right'}>
-					{percentComplete < 100 ? <ProfilePercentComplete colorScheme={'yellow'} /> : null}
+						<StackItem textAlign={'right'}>
+							{percentComplete < 100 ? <ProfilePercentComplete colorScheme={'blue'} /> : null}
 
-					<ButtonGroup size={'xs'} mt={2}>
-						<Button
-							as={RouterLink}
-							leftIcon={<FiUser />}
-							to={`/profile/${loggedInSlug}`}
-							colorScheme={'blue'}
-							my={0}
-						>
-							View
-						</Button>
-						<Button
-							as={RouterLink}
-							leftIcon={<FiEdit3 />}
-							to={'/profile/edit'}
-							colorScheme={'green'}
-							my={0}
-						>
-							Edit
-						</Button>
-					</ButtonGroup>
-				</StackItem>
+							<ButtonGroup size={'xs'} mt={2}>
+								<Button
+									as={RouterLink}
+									leftIcon={<FiUser />}
+									to={`/profile/${loggedInSlug}`}
+									colorScheme={'blue'}
+									my={0}
+								>
+									View
+								</Button>
+								<Button
+									as={RouterLink}
+									leftIcon={<FiEdit3 />}
+									to={'/profile/edit'}
+									colorScheme={'green'}
+									my={0}
+								>
+									Edit
+								</Button>
+							</ButtonGroup>
+						</StackItem>
+					</>
+				) : (
+					<Button
+						as={RouterLink}
+						leftIcon={<FiEdit3 />}
+						to={'/profile/edit'}
+						colorScheme={'orange'}
+						my={2}
+					>
+						Create Your Profile
+					</Button>
+				)}
 			</Stack>
 		</Card>
 	) : (

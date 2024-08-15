@@ -18,9 +18,12 @@ export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 	// Allowed URL endpoints when logged out
 	const publicEndpoints = ['/register', '/login', '/lost-password', '/reset-password'];
 
+	const showContent =
+		(!hideOnly && !loggedInId && publicEndpoints.includes(pathname)) || loggedInId;
+
 	return loading ? (
 		<Spinner />
-	) : (!hideOnly && !loggedInId && publicEndpoints.includes(pathname)) || loggedInId ? (
+	) : showContent ? (
 		<>{children}</>
 	) : (
 		<Box p={0} mt={8}>

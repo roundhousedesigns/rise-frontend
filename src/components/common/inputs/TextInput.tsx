@@ -74,7 +74,7 @@ const TextInput = forwardRef(
 		};
 
 		return (
-			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
+			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
 				<InputGroup position={'relative'}>
 					{leftElement && (
 						<InputLeftElement
@@ -111,13 +111,21 @@ const TextInput = forwardRef(
 						</Flex>
 					) : null}
 				</InputGroup>
-				<Flex direction={'row'} pt={1} mb={0} alignItems={'top'} gap={4} justifyContent={'space-between'}>
+				<Flex
+					direction={'row'}
+					pt={1}
+					my={0}
+					alignItems={'top'}
+					gap={4}
+					justifyContent={'space-between'}
+				>
 					{label ? (
 						<FormLabel
 							ml={2}
 							w={'full'}
 							mr={0}
 							my={0}
+							pt={0}
 							lineHeight={'normal'}
 							fontSize={'sm'}
 							flexGrow={'1'}

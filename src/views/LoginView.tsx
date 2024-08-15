@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
 	Button,
@@ -51,7 +51,6 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 		results: { loading: submitLoading },
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
-	const navigate = useNavigate();
 
 	const errorMessage = useErrorMessage(errorCode);
 
@@ -72,15 +71,11 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 					return;
 				}
 
-				loginMutation({ ...credentials, reCaptchaToken: token })
-					.then((res) => {
-						if (res.data.loginWithCookiesAndReCaptcha.status === 'SUCCESS') {
-							navigate('/');
-						}
-					})
-					.catch((errors: { message: string }) => {
+				loginMutation({ ...credentials, reCaptchaToken: token }).catch(
+					(errors: { message: string }) => {
 						setErrorCode(errors.message);
-					});
+					}
+				);
 			})
 			.catch(() => {
 				setErrorCode('recaptcha_error');

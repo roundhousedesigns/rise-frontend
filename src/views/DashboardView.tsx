@@ -14,12 +14,14 @@ import MiniProfileView from '@views/MiniProfileView';
 import useUserProfile from '@queries/useUserProfile';
 import useViewer from '@queries/useViewer';
 import useUserNotices from '@queries/useUserNotices';
+import useSavedSearches from '@queries/useSavedSearches';
 import ShortPost from '@components/ShortPost';
 import SavedSearchItemList from '@components/SavedSearchItemList';
 
 export default function DashboardView() {
-	const [{ loggedInId }] = useViewer();
+	const [{ loggedInId, starredProfiles }] = useViewer();
 	const [notices] = useUserNotices();
+	const [savedSearches] = useSavedSearches();
 
 	const [profile, { loading }] = useUserProfile(loggedInId);
 
@@ -43,14 +45,16 @@ export default function DashboardView() {
 					</Widget>
 				) : null}
 
-				<Widget>
-					<>
-						<Heading as={'h2'} variant={'contentTitle'}>
-							Following
-						</Heading>
-						<StarredProfileList showToggle={false} />
-					</>
-				</Widget>
+				{starredProfiles?.length ? (
+					<Widget>
+						<>
+							<Heading as={'h2'} variant={'contentTitle'}>
+								Following
+							</Heading>
+							<StarredProfileList showToggle={false} />
+						</>
+					</Widget>
+				) : null}
 			</GridItem>
 
 			<GridItem as={Stack} spacing={6} id={'dashboard-secondary'}>
@@ -63,14 +67,16 @@ export default function DashboardView() {
 						<></>
 					)}
 				</Widget>
-				<Widget>
-					<>
-						<Heading as={'h2'} variant={'contentTitle'}>
-							Saved Searches
-						</Heading>
-						<SavedSearchItemList />
-					</>
-				</Widget>
+				{savedSearches?.length ? (
+					<Widget>
+						<>
+							<Heading as={'h2'} variant={'contentTitle'}>
+								Saved Searches
+							</Heading>
+							<SavedSearchItemList />
+						</>
+					</Widget>
+				) : null}
 			</GridItem>
 		</Grid>
 	);
