@@ -9,7 +9,6 @@ import SearchDrawerContext from '@context/SearchDrawerContext';
 import Header from '@layout/Header';
 import Main from '@layout/Main';
 import Footer from '@layout/Footer';
-import UserWayScript from '@components/UserWayScript';
 
 export default function App() {
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
@@ -58,7 +57,6 @@ export default function App() {
 						<Footer />
 					</Stack>
 				</SearchDrawerContext.Provider>
-				<UserWayScript />
 			</Box>
 		</SearchContextProvider>
 	);
