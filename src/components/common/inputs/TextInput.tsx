@@ -74,7 +74,7 @@ const TextInput = forwardRef(
 		};
 
 		return (
-			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
+			<FormControl isRequired={isRequired} isInvalid={!!error} my={2} {...props}>
 				<InputGroup position={'relative'}>
 					{leftElement && (
 						<InputLeftElement

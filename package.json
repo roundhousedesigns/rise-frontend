@@ -22,6 +22,7 @@
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
+    "country-flag-icons": "^1.5.13",
     "date-fns": "^3.6.0",
     "framer-motion": "^8.5.0",
     "graphql": "^16.8.1",

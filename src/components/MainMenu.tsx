@@ -25,6 +25,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import useViewer from '@queries/useViewer';
 import useLogout from '@mutations/useLogout';
 import DarkModeToggle from '@components/DarkModeToggle';
+import LanguageSelect from './LanguageSelect';
 
 export default function MainMenu() {
 	const [{ loggedInSlug }] = useViewer();
@@ -100,6 +101,7 @@ export default function MainMenu() {
 				<MenuDivider />
 				<Flex mx={2} justifyContent={'space-between'} alignItems={'center'}>
 					<DarkModeToggle showLabel={false} showHelperText={false} />
+					<LanguageSelect />
 					<IconButton
 						aria-label={'Logout'}
 						icon={<FiLogOut />}
