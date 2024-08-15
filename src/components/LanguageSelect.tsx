@@ -12,27 +12,6 @@ import {
 } from '@chakra-ui/react';
 import { US, ES } from 'country-flag-icons/react/3x2';
 
-const FlagIcon = forwardRef<
-	HTMLButtonElement,
-	{ lang: string; label: string; [prop: string]: any }
->(({ lang, label, ...props }, ref) => {
-	const flagMap: { [lang: string]: ReactElement } = {
-		en: <US title='English' />,
-		es: <ES title='Spanish' />,
-	};
-
-	return (
-		<IconButton
-			icon={flagMap[lang]}
-			aria-label={label}
-			cursor='pointer'
-			size='xs'
-			ref={ref}
-			{...props}
-		/>
-	);
-});
-
 function LanguageSelect() {
 	const [currentLang, setCurrentLang] = useState<string>('');
 
@@ -77,3 +56,24 @@ function LanguageSelect() {
 }
 
 export default LanguageSelect;
+
+const FlagIcon = forwardRef<
+	HTMLButtonElement,
+	{ lang: string; label: string; [prop: string]: any }
+>(({ lang, label, ...props }, ref) => {
+	const flagMap: { [lang: string]: ReactElement } = {
+		en: <US title='English' />,
+		es: <ES title='Spanish' />,
+	};
+
+	return (
+		<IconButton
+			icon={flagMap[lang]}
+			aria-label={label}
+			cursor='pointer'
+			size='xs'
+			ref={ref}
+			{...props}
+		/>
+	);
+});

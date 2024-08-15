@@ -239,6 +239,7 @@ export default function SavedSearchItem({
 								borderBottomStyle={'dotted'}
 								textDecoration={'none !important'}
 								transition={'border 150ms ease'}
+								className='no-translate'
 								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
 								_light={{
 									borderBottomColor: 'gray.300',
@@ -260,7 +261,13 @@ export default function SavedSearchItem({
 							</LinkWithIcon>
 						</Flex>
 					</StackItem>
-					<StackItem as={Flex} w={'full'} justifyContent={'space-between'} flexWrap={'wrap'} gap={6}>
+					<StackItem
+						as={Flex}
+						w={'full'}
+						justifyContent={'space-between'}
+						flexWrap={'wrap'}
+						gap={6}
+					>
 						<Skeleton isLoaded={!!terms.length}>
 							<SearchParamTags termIds={termIds} termItems={terms} flex={'1'} />
 						</Skeleton>

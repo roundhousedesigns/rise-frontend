@@ -68,6 +68,8 @@ export default function ToggleOptionSwitch({
 				<FormLabel
 					htmlFor={id}
 					visibility={showLabel ? 'visible' : 'hidden'}
+					position={showLabel ? 'initial' : 'absolute'}
+					left={showLabel ? 'initial' : '-9999px'}
 					my={0}
 					fontWeight={'bold'}
 				>

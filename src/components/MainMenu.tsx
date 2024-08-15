@@ -8,6 +8,7 @@ import {
 	MenuItem,
 	MenuList,
 	MenuOptionGroup,
+	Spacer,
 	useBreakpointValue,
 	useColorMode,
 } from '@chakra-ui/react';
@@ -100,8 +101,10 @@ export default function MainMenu() {
 				</MenuItem>
 				<MenuDivider />
 				<Flex mx={2} justifyContent={'space-between'} alignItems={'center'}>
-					<DarkModeToggle showLabel={false} showHelperText={false} />
+					<DarkModeToggle flex='1' showLabel={false} showHelperText={false} />
+					<Spacer flex='1' />
 					<LanguageSelect />
+					<Spacer flex='1' />
 					<IconButton
 						aria-label={'Logout'}
 						icon={<FiLogOut />}

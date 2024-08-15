@@ -16,6 +16,14 @@
 		<script>
 			Weglot.initialize({
 				api_key: 'wg_8c40778e1944faacc6b38a11bb56a1d46',
+				hide_switcher: true, // Customize the switcher
+				auto_switch: true,
+				auto_switch_fallback: 'en',
+				excluded_blocks: [
+					{
+						value: '.no-translate',
+					},
+				],
 			});
 		</script>
 	</head>
