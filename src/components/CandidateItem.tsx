@@ -66,6 +66,7 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 					<Avatar
 						size={'md'}
 						name={candidate.fullName()}
+						className='no-translate'
 						flex={'0 0 auto'}
 						mr={2}
 						src={image}
@@ -76,6 +77,7 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 					<Flex flex={'1'} alignItems={'center'} flexWrap={'wrap'}>
 						<Heading
 							as={'h3'}
+							className='no-translate'
 							fontSize={'lg'}
 							fontWeight={'normal'}
 							textAlign={'left'}

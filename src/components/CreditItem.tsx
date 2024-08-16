@@ -118,7 +118,13 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 					>
 						<Box flex={'1'}>
 							<Flex alignItems={'center'} gap={2} flexWrap={'wrap'} mb={2}>
-								<Heading as={'h3'} fontWeight={'bold'} fontSize={'xl'} my={0}>
+								<Heading
+									as={'h3'}
+									className='no-translate'
+									fontWeight={'bold'}
+									fontSize={'xl'}
+									my={0}
+								>
 									{title}
 								</Heading>
 								<Badge
@@ -134,14 +140,14 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 							</Flex>
 							<Flex my={0} alignItems={'center'} flexWrap={'wrap'} gap={2}>
 								{venue ? (
-									<WrapWithIcon icon={FiStar} mr={1}>
+									<WrapWithIcon icon={FiStar} mr={1} className='no-translate'>
 										{decodeString(venue)}
 									</WrapWithIcon>
 								) : (
 									false
 								)}
 								{jobLocation ? (
-									<WrapWithIcon icon={FiMapPin} mr={1}>
+									<WrapWithIcon icon={FiMapPin} mr={1} className='no-translate'>
 										{decodeString(`${jobLocation}`)}
 									</WrapWithIcon>
 								) : (

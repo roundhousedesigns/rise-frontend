@@ -82,7 +82,12 @@ export default function MiniProfileView({
 			<Stack direction={'column'} lineHeight={1} w={'full'}>
 				{image ? (
 					<StackItem textAlign={'center'}>
-						<Avatar size={'superLg'} src={image} name={profile.fullName()} />
+						<Avatar
+							className='no-translate'
+							size={'superLg'}
+							src={image}
+							name={profile.fullName()}
+						/>
 					</StackItem>
 				) : null}
 				<StackItem
@@ -91,7 +96,13 @@ export default function MiniProfileView({
 					alignItems={'center'}
 				>
 					<Flex justifyContent={'center'} flexWrap={'wrap'} gap={2}>
-						<Heading size={'lg'} m={0} fontWeight={'bold'} lineHeight={'none'}>
+						<Heading
+							size={'lg'}
+							className='no-translate'
+							m={0}
+							fontWeight={'bold'}
+							lineHeight={'none'}
+						>
 							{profile.fullName()}
 						</Heading>
 						{pronouns ? (

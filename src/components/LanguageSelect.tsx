@@ -1,16 +1,16 @@
-import { useState, useEffect, ReactElement, forwardRef } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import {
 	Box,
+	Button,
 	ButtonGroup,
-	IconButton,
+	Circle,
 	Popover,
 	PopoverArrow,
 	PopoverBody,
 	PopoverContent,
-	PopoverHeader,
 	PopoverTrigger,
 } from '@chakra-ui/react';
-import { US, ES } from 'country-flag-icons/react/3x2';
+import 'country-flag-icons/3x2/flags.css';
 
 function LanguageSelect() {
 	const [currentLang, setCurrentLang] = useState<string>('');
@@ -37,16 +37,15 @@ function LanguageSelect() {
 		<Box>
 			<Popover>
 				<PopoverTrigger>
-					<FlagIcon lang={currentLang} label='Change language' />
+					<FlagIcon lang={currentLang} label={'Change language'} />
 				</PopoverTrigger>
 
-				<PopoverContent>
+				<PopoverContent w='auto'>
 					<PopoverArrow />
-					<PopoverHeader>Change language</PopoverHeader>
-					<PopoverBody>
+					<PopoverBody m={0}>
 						<ButtonGroup>
-							<FlagIcon lang='en' label='English' onClick={() => changeLanguage('en')} />
-							<FlagIcon lang='es' label='Spanish' onClick={() => changeLanguage('es')} />
+							<FlagIcon lang={'en'} label={'English'} onClick={() => changeLanguage('en')} />
+							<FlagIcon lang={'es'} label={'Spanish'} onClick={() => changeLanguage('es')} />
 						</ButtonGroup>
 					</PopoverBody>
 				</PopoverContent>
@@ -61,19 +60,26 @@ const FlagIcon = forwardRef<
 	HTMLButtonElement,
 	{ lang: string; label: string; [prop: string]: any }
 >(({ lang, label, ...props }, ref) => {
-	const flagMap: { [lang: string]: ReactElement } = {
-		en: <US title='English' />,
-		es: <ES title='Spanish' />,
+	const flagMap: { [lang: string]: string } = {
+		en: 'US',
+		es: 'ES',
 	};
 
 	return (
-		<IconButton
-			icon={flagMap[lang]}
-			aria-label={label}
-			cursor='pointer'
-			size='xs'
-			ref={ref}
-			{...props}
-		/>
+		<Button ref={ref} bg='none' p={0} {...props}>
+			<Circle
+				className={`flag:${flagMap[lang] || 'US'}`}
+				aria-label={label}
+				cursor={'pointer'}
+				size={'28px'}
+				borderWidth={'2px'}
+				_dark={{
+					borderColor: 'text.light',
+				}}
+				_light={{
+					borderColor: 'text.dark',
+				}}
+			/>
+		</Button>
 	);
 });
