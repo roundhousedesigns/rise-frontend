@@ -26,6 +26,7 @@ import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { RegisterUserInput } from '@lib/types';
 import usePostContent from '@queries/usePostContent';
 import BackToLoginButton from '@common/BackToLoginButton';
+import RequiredAsterisk from '@common/RequiredAsterisk';
 
 export default function RegisterView() {
 	const [userFields, setUserFields] = useState<RegisterUserInput>({
@@ -210,7 +211,9 @@ export default function RegisterView() {
 								Password{' '}
 								<Tooltip
 									hasArrow
-									label={'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'}
+									label={
+										'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+									}
 								>
 									<chakra.span>
 										<Icon as={FiHelpCircle} />
@@ -267,9 +270,7 @@ export default function RegisterView() {
 								tabIndex={6}
 							>
 								I am over 18 years of age.
-								<chakra.span color={'red.300'} ml={1}>
-									*
-								</chakra.span>
+								<RequiredAsterisk />
 							</Checkbox>
 						</FormControl>
 						<FormControl>
@@ -289,9 +290,7 @@ export default function RegisterView() {
 									Privacy Policy
 								</Link>
 								.
-								<chakra.span color={'red.300'} ml={1}>
-									*
-								</chakra.span>
+								<RequiredAsterisk />
 							</Checkbox>
 						</FormControl>
 						<Button

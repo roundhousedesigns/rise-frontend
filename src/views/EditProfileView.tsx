@@ -364,7 +364,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		// FIXME Editing socials isn't triggering `hasEditedProfile` change.
 		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
@@ -608,7 +607,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			.then(() => {
 				toast({
 					title: 'Updated!',
-					description: 'Your chnages have been saved.',
+					description: 'Your changes have been saved.',
 					status: 'success',
 					duration: 3000,
 					isClosable: true,
@@ -1234,7 +1233,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						<NewCreditButton />
 
 						{/* TODO better reorder and delete animations */}
-						{/* TODO "Success" (or error) toast after saving credit and modal closes */}
 
 						{deleteCreditLoading ? (
 							<Spinner size={'sm'} colorScheme={'green'} />
@@ -1417,7 +1415,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								or are authorized to use these images as work samples.
 							</Text>
 							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-								{/* TODO show only the next available uploader, up to limit. */}
 								<FileDropzone fieldName={'mediaImage1'} text={'Image 1'} />
 								<FileDropzone fieldName={'mediaImage2'} text={'Image 2'} />
 								<FileDropzone fieldName={'mediaImage3'} text={'Image 3'} />

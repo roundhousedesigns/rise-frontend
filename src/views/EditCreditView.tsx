@@ -1,5 +1,14 @@
 import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
-import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra-ui/react';
+import {
+	Divider,
+	Flex,
+	Heading,
+	Text,
+	Spinner,
+	Stack,
+	StackItem,
+	useToast,
+} from '@chakra-ui/react';
 import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
 import { sortWPItemsByName } from '@lib/utils';
@@ -13,6 +22,7 @@ import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import EditCreditButtons from '@components/EditCreditButtons';
+import RequiredAsterisk from '../components/common/RequiredAsterisk';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -66,6 +76,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 
+	const toast = useToast();
+
 	const {
 		updateCreditMutation,
 		results: { loading: updateCreditLoading },
@@ -102,10 +114,17 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	// Check that all required fields have been filled.
 	useEffect(() => {
-		const allFilled = requiredFields.every((field: string) => {
+		let allFilled = requiredFields.every((field: string) => {
 			if (!!editCredit[field]) return true;
-			else return false;
+
+			return false;
 		});
+
+		// Ensure a department is set.
+		allFilled = allFilled && selectedDepartmentIds.length > 0;
+
+		// Ensure a job is set.
+		allFilled = allFilled && selectedJobIds.length > 0;
 
 		setRequirementsMet(allFilled);
 	}, [editCredit]);
@@ -245,8 +264,26 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		updateCreditMutation(creditToUpdate, loggedInId)
 			.then(() => {
 				closeModal();
+
+				toast({
+					title: 'Saved!',
+					description: 'Your credit has been saved.',
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+					position: 'bottom',
+				});
 			})
 			.catch((err: any) => {
+				toast({
+					title: 'Oops!',
+					description: 'There was an error saving this credit.' + err,
+					status: 'error',
+					duration: 3000,
+					isClosable: true,
+					position: 'bottom',
+				});
+
 				console.error(err);
 			});
 	};
@@ -373,6 +410,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				<StackItem>
 					<Heading as={'h4'} variant={'contentTitle'}>
 						Department
+						<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
 					</Heading>
 					<Text>Select all department(s) you worked under.</Text>
 					<ProfileCheckboxGroup
@@ -390,6 +428,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					<StackItem>
 						<Heading as={'h4'} variant={'contentTitle'}>
 							Position
+							<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
 						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>

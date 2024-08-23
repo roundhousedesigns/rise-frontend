@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.10-todos] - Unreleased
+
+- Fix: Toast typo.
+- Add: Success and error toasts for editing credits.
+- Add: `<RequiredAsterisk>` component.
+- Improve: Make Department and Job required on credit edit modal.
+
 ## \[1.1.10-dev] - Unreleased
 
 - Add: Dashboard grid layout with widgets.

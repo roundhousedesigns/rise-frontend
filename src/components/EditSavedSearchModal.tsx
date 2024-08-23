@@ -53,7 +53,7 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 	};
 
 	const handleSave = (e: FormEvent) => {
-		// TODO Don't allow saving an existing title.
+		// MAYBE Don't allow saving an existing title.
 
 		e.preventDefault();
 
@@ -106,7 +106,12 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 
 					<form id={'rename-search'} onSubmit={handleSave}>
 						<FormControl>
-							<FormLabel aria-label={'Name'} visibility={'hidden'} position={'absolute'} left={'9000px'}>
+							<FormLabel
+								aria-label={'Name'}
+								visibility={'hidden'}
+								position={'absolute'}
+								left={'9000px'}
+							>
 								Name
 							</FormLabel>
 							<TextInput
