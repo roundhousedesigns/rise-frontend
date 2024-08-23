@@ -12,7 +12,6 @@ const MUTATE_LOGIN = gql`
 			input: { login: $login, password: $password, reCaptchaToken: $reCaptchaToken }
 		) {
 			status
-			userId
 		}
 	}
 `;
