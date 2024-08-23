@@ -20,6 +20,8 @@ import ShareButton from '@common/ShareButton';
 import RiseStar from '@common/icons/RiseStar';
 import ProfilePercentComplete from '@components/ProfilePercentComplete';
 
+// TODO Unimplemented.
+
 interface Props {
 	profile: UserProfile;
 	allowStar?: boolean;

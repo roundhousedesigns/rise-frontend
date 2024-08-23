@@ -17,7 +17,7 @@ export const QUERY_RESUME_PREVIEW = gql`
 /**
  * Query to retrieve a resume previews and sourceURL
  *
- * @param id An option value. Do not prepend with `<pod_name>_`.
+ * @param {id} An option value. Do not prepend with `<pod_name>_`.
  * @returns A tuple of a prepared data object and a query result object.
  */
 

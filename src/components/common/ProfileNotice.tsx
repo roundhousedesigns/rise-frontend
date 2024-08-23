@@ -74,7 +74,7 @@ export default function ProfileNotice({
 					fontSize={'md'}
 					borderRadius={0}
 					py={1}
-					mb={0}
+					my={0}
 					justifyContent={'space-between'}
 					{...props}
 				>

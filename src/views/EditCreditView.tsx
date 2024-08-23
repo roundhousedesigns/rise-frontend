@@ -22,7 +22,7 @@ import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import EditCreditButtons from '@components/EditCreditButtons';
-import RequiredAsterisk from '../components/common/RequiredAsterisk';
+import RequiredAsterisk from '@common/RequiredAsterisk';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {

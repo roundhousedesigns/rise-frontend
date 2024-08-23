@@ -21,7 +21,7 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 	/**
 	 * Email validation.
 	 *
-	 * @param email
+	 * @param {email}
 	 * @returns
 	 */
 	const validateEmail = (email: string) => {

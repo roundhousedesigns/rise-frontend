@@ -5,10 +5,17 @@ import LoginView from '@views/LoginView';
 import useViewer from '@queries/useViewer';
 
 interface Props {
-	hideOnly?: boolean; // Only hide the child element, don't show the login view.
+	hideOnly?: boolean;
 	children: ReactNode;
 }
 
+/**
+ * Renders the children component if the user is logged in, otherwise displays the login view.
+ *
+ * @param {Props} props - Component props
+ * @param {boolean} props.hideOnly -  Determines whether to hide the child component or not. Defaults to false.
+ * @param {ReactNode} props.children - The component to render if the user is logged in.
+ */
 export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 	const [{ loggedInId }, { loading }] = useViewer();
 

@@ -211,8 +211,8 @@ export const useChangeProfileSlugError = (errorCode?: string): string => {
  *
  * @deprecated v1.1.9
  *
- * @param array The array to toggle the item in.
- * @param item The item to toggle.
+ * @param {array} The array to toggle the item in.
+ * @param {item} The item to toggle.
  * @returns The new array.
  */
 export function toggleArrayItem(array: any[], item: any): any[] {

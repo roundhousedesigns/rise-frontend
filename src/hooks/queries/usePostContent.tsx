@@ -19,7 +19,7 @@ export const QUERY_CONTENT = gql`
 /**
  * Query to retrieve content by post ID.
  *
- * @param id Post ID
+ * @param {id} Post ID
  * @returns A tuple of a prepared HTML string and a query result object.
  */
 const usePostContent = (id: number | string): [string | null, any] => {

@@ -126,7 +126,7 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 /**
  * Get the URL for a user profile.
  *
- * @param slug The user profile slug.
+ * @param {slug} The user profile slug.
  * @returns The user profile URL.
  */
 export const useProfileUrl = (slug: string): string => {
@@ -137,7 +137,7 @@ export const useProfileUrl = (slug: string): string => {
 /**
  * Validate a user profile slug.
  *
- * @param slug The user profile slug.
+ * @param {slug} The user profile slug.
  * @return True if the slug is valid.
  */
 export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);
@@ -145,7 +145,7 @@ export const useValidateProfileSlug = (slug: string): boolean => validateProfile
 /**
  * Validate a password to meet requirements
  *
- * @param password The password to validate
+ * @param {password} The password to validate
  * @return string|undefined 'weak' or 'strong'
  */
 export const useValidatePassword = (password: string): string | undefined =>
@@ -154,7 +154,7 @@ export const useValidatePassword = (password: string): string | undefined =>
 /**
  * Validate an email address.
  *
- * @param email The email address.
+ * @param {email} The email address.
  * @return True if the email address is valid.
  */
 export const useValidateEmail = (email: string): boolean => validateEmail(email);
@@ -181,6 +181,8 @@ export const useSavedSearchFiltersChanged = (): boolean => {
  *
  * @param {number} profileId - The ID of the user's profile to calculate completion for.
  * @return {number} The completion percentage of the user's profile, as a whole number between 0 and 100.
+ *
+ * @todo Unimplemented.
  */
 export const useProfileCompletion = (profileId: number | null): number => {
 	const [profile] = useUserProfile(profileId);

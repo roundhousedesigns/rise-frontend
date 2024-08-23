@@ -3,20 +3,20 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.10-todos] - Unreleased
+## \[1.1.10-dev] - Unreleased
 
-- Fix: Toast typo.
 - Add: Success and error toasts for editing credits.
 - Add: `<RequiredAsterisk>` component.
+- Fix: Form text field spacing.
+- Fix: Toast typo.
+- Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
 - Improve: Make Department and Job required on credit edit modal.
 
-## \[1.1.10-dev] - Unreleased
+Inactive:
 
 - Add: Dashboard grid layout with widgets.
 - Add: Profile completion %.
 - Add: Widgets: Mini Profile, Saved Searches, Following, News.
-- Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
-- Fix: Form text field spacing.
 
 ## \[1.1.9 - 1.1.91] - 2024-07-20
 
