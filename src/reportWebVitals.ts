@@ -1,14 +1,14 @@
-// TODO Modernize reportWebVitals
-import { ReportHandler } from 'web-vitals';
+// Modernized reportWebVitals
+import { Metric } from 'web-vitals';
 
-const reportWebVitals = (onPerfEntry?: ReportHandler) => {
-	if (onPerfEntry && onPerfEntry instanceof Function) {
-		import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
-			getCLS(onPerfEntry);
-			getFID(onPerfEntry);
-			getFCP(onPerfEntry);
-			getLCP(onPerfEntry);
-			getTTFB(onPerfEntry);
+const reportWebVitals = (onPerfEntry?: (metric: Metric) => void) => {
+	if (onPerfEntry && typeof onPerfEntry === 'function') {
+		import('web-vitals').then((vitals) => {
+			vitals.onCLS(onPerfEntry);
+			vitals.onFID(onPerfEntry);
+			vitals.onFCP(onPerfEntry);
+			vitals.onLCP(onPerfEntry);
+			vitals.onTTFB(onPerfEntry);
 		});
 	}
 };
