@@ -1,4 +1,5 @@
-import { ChangeEvent, ForwardedRef, forwardRef, ReactNode } from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, ReactNode, useCallback, useState } from 'react';
+import { debounce } from 'lodash';
 import {
 	Flex,
 	FormControl,
@@ -31,6 +32,7 @@ interface Props {
 	};
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
+	debounceTime?: number;
 }
 
 const TextInput = forwardRef(
@@ -51,6 +53,7 @@ const TextInput = forwardRef(
 			sizeToken = 'md',
 			inputProps,
 			onChange,
+			debounceTime = 300,
 			...props
 		}: Props,
 		forwardedRef: ForwardedRef<HTMLInputElement>
@@ -73,6 +76,21 @@ const TextInput = forwardRef(
 			return undefined;
 		};
 
+		const [localValue, setLocalValue] = useState(value);
+
+		const debouncedOnChange = useCallback(
+			debounce((value: string) => {
+				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+			}, debounceTime),
+			[onChange, name, debounceTime]
+		);
+
+		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+			const newValue = e.target.value;
+			setLocalValue(newValue);
+			debouncedOnChange(newValue);
+		};
+
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
 				<InputGroup position={'relative'}>
@@ -91,25 +109,25 @@ const TextInput = forwardRef(
 						placeholder={placeholder}
 						isDisabled={isDisabled}
 						px={3}
-						value={value}
+						value={localValue}
 						name={name}
 						ref={forwardedRef}
 						fontSize={sizeToken}
 						size={sizeToken}
-						onChange={onChange}
+						onChange={handleChange}
 						_dark={{
 							color: 'text.dark',
 						}}
 						maxLength={maxLength ? maxLength : undefined}
 						{...inputProps}
 					/>
-					{maxLength ? (
-						<Flex position={'absolute'} right={1} top={0} height={'full'} alignItems={'flex-end'}>
-							<Text m={0} variant={'helperText'} _dark={{ color: 'text.dark', opacity: 0.8 }}>
-								{`${value ? value.length : 0}/${maxLength}`}
-							</Text>
-						</Flex>
-					) : null}
+						{maxLength ? (
+							<Flex position={'absolute'} right={1} top={0} height={'full'} alignItems={'flex-end'}>
+								<Text m={0} variant={'helperText'} _dark={{ color: 'text.dark', opacity: 0.8 }}>
+									{`${localValue ? localValue.length : 0}/${maxLength}`}
+								</Text>
+							</Flex>
+						) : null}
 				</InputGroup>
 				<Flex
 					direction={'row'}

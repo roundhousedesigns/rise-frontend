@@ -1,6 +1,7 @@
-import { ReactNode, createContext, useReducer } from 'react';
+import { ReactNode, createContext, useReducer, useCallback } from 'react';
 import { Credit, PersonalLinks, UserProfile } from '@lib/classes';
 import { cloneInstance, generateRandomString, sanitizeBoolean } from '@lib/utils';
+import { debounce } from 'lodash';
 
 interface EditProfileAction {
 	type: string;
@@ -73,6 +74,15 @@ function editProfileContextReducer(state: UserProfile, action: EditProfileAction
 			return action.payload.profile;
 		}
 
+		case 'DEBOUNCED_UPDATE_INPUT': {
+			if (!action.payload.name) return state;
+
+			const current: UserProfile = cloneInstance(state);
+			current.set(action.payload.name, action.payload.value);
+
+			return current;
+		}
+
 		default:
 			return state;
 	}
@@ -84,7 +94,25 @@ interface Props {
 }
 
 export const EditProfileContextProvider = ({ initialState, children }: Props) => {
-	const [editProfile, editProfileDispatch] = useReducer(editProfileContextReducer, initialState);
+	const [editProfile, dispatch] = useReducer(editProfileContextReducer, initialState);
+
+	const debouncedDispatch = useCallback(
+		debounce((action: EditProfileAction) => {
+			dispatch(action);
+		}, 300),
+		[]
+	);
+
+	const editProfileDispatch = useCallback(
+		(action: EditProfileAction) => {
+			if (action.type === 'UPDATE_INPUT') {
+				debouncedDispatch({ ...action, type: 'DEBOUNCED_UPDATE_INPUT' });
+			} else {
+				dispatch(action);
+			}
+		},
+		[debouncedDispatch]
+	);
 
 	return (
 		<EditProfileContext.Provider value={{ editProfile, editProfileDispatch }}>
