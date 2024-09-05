@@ -1,4 +1,5 @@
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactNode, useCallback, useState, useEffect } from 'react';
+import { debounce } from 'lodash';
 import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 		[prop: string]: any;
 	};
 	[prop: string]: any;
+	debounceTime?: number;
 }
 
 export default function TextareaInput({
@@ -24,18 +26,45 @@ export default function TextareaInput({
 	name,
 	onChange,
 	inputProps,
+	debounceTime,
 	...props
 }: Props) {
+	const [localValue, setLocalValue] = useState(value);
+
+	const debouncedOnChange = useCallback(
+		debounce((value: string) => {
+			onChange({ target: { name, value } } as ChangeEvent<HTMLTextAreaElement>);
+		}, debounceTime),
+		[onChange, name, debounceTime]
+	);
+
+	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		const newValue = e.target.value;
+		setLocalValue(newValue);
+		if (debounceTime) {
+			debouncedOnChange(newValue);
+		} else {
+			onChange(e);
+		}
+	};
+
+	useEffect(() => {
+		return () => {
+			debouncedOnChange.cancel();
+		};
+	}, [debouncedOnChange]);
+
 	return (
 		<FormControl {...props}>
 			<Textarea
 				variant={'filled'}
 				placeholder={placeholder}
 				focusBorderColor={'blue.200'}
-				value={value ? value : ''}
+				value={localValue ? localValue : ''}
 				name={name}
 				resize={'vertical'}
-				onChange={onChange}
+				onChange={handleChange}
+				isDisabled={props.isDisabled}
 				{...inputProps}
 			/>
 			{label ? (

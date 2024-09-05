@@ -41,7 +41,6 @@ interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCha
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 	debounceTime?: number;
-	onDebounceStateChange?: (isDebouncing: boolean) => void;
 }
 
 const TextInput = forwardRef<HTMLInputElement, Props>(
@@ -63,7 +62,6 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 			inputProps,
 			onChange,
 			debounceTime,
-			onDebounceStateChange,
 			...props
 		},
 		forwardedRef
@@ -87,23 +85,18 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 		};
 
 		const [localValue, setLocalValue] = useState(value);
-		const [isDebouncing, setIsDebouncing] = useState(false);
 
 		const debouncedOnChange = useCallback(
 			debounce((value: string) => {
 				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
-				setIsDebouncing(false);
-				onDebounceStateChange?.(false);
 			}, debounceTime),
-			[onChange, name, debounceTime, onDebounceStateChange]
+			[onChange, name, debounceTime]
 		);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			setLocalValue(newValue);
 			if (debounceTime) {
-				setIsDebouncing(true);
-				onDebounceStateChange?.(true);
 				debouncedOnChange(newValue);
 			} else {
 				onChange(e);
