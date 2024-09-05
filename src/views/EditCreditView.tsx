@@ -20,9 +20,9 @@ import useViewer from '@queries/useViewer';
 import useUpdateCredit from '@mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
+import RequiredAsterisk from '@common/RequiredAsterisk';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
 import EditCreditButtons from '@components/EditCreditButtons';
-import RequiredAsterisk from '@common/RequiredAsterisk';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -317,6 +317,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					value={title}
 					isRequired
 					onChange={handleInputChange}
+					debounceTime={300}
 				/>
 
 				<TextInput
@@ -325,6 +326,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					isRequired
 					value={jobTitle}
 					onChange={handleInputChange}
+					debounceTime={300}
 				/>
 			</Flex>
 
@@ -336,6 +338,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					value={workStart}
 					onChange={handleInputChange}
 					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<TextInput
@@ -345,6 +348,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					isDisabled={workCurrent}
 					onChange={handleInputChange}
 					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<ProfileRadioGroup
@@ -367,6 +371,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					onChange={handleInputChange}
 					isRequired
 					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<TextInput
@@ -376,6 +381,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 					isRequired
 					onChange={handleInputChange}
 					flex={'1'}
+					debounceTime={300}
 				/>
 			</Flex>
 

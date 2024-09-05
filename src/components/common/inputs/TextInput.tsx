@@ -53,7 +53,7 @@ const TextInput = forwardRef(
 			sizeToken = 'md',
 			inputProps,
 			onChange,
-			debounceTime = 300,
+			debounceTime,
 			...props
 		}: Props,
 		forwardedRef: ForwardedRef<HTMLInputElement>
@@ -88,7 +88,11 @@ const TextInput = forwardRef(
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			setLocalValue(newValue);
-			debouncedOnChange(newValue);
+			if (debounceTime) {
+				debouncedOnChange(newValue);
+			} else {
+				onChange(e);
+			}
 		};
 
 		return (
@@ -121,13 +125,13 @@ const TextInput = forwardRef(
 						maxLength={maxLength ? maxLength : undefined}
 						{...inputProps}
 					/>
-						{maxLength ? (
-							<Flex position={'absolute'} right={1} top={0} height={'full'} alignItems={'flex-end'}>
-								<Text m={0} variant={'helperText'} _dark={{ color: 'text.dark', opacity: 0.8 }}>
-									{`${localValue ? localValue.length : 0}/${maxLength}`}
-								</Text>
-							</Flex>
-						) : null}
+					{maxLength ? (
+						<Flex position={'absolute'} right={1} top={0} height={'full'} alignItems={'flex-end'}>
+							<Text m={0} variant={'helperText'} _dark={{ color: 'text.dark', opacity: 0.8 }}>
+								{`${localValue ? localValue.length : 0}/${maxLength}`}
+							</Text>
+						</Flex>
+					) : null}
 				</InputGroup>
 				<Flex
 					direction={'row'}
