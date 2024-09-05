@@ -1,4 +1,12 @@
-import { ChangeEvent, ForwardedRef, forwardRef, ReactNode, useCallback, useState, useEffect } from 'react';
+import {
+	ChangeEvent,
+	ForwardedRef,
+	forwardRef,
+	ReactNode,
+	useCallback,
+	useState,
+	useEffect,
+} from 'react';
 import { debounce } from 'lodash';
 import {
 	Flex,
@@ -13,7 +21,7 @@ import {
 	Wrap,
 } from '@chakra-ui/react';
 
-interface Props {
+interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
 	name: string;
 	label?: string | JSX.Element;
 	labelHidden?: boolean;
@@ -33,11 +41,10 @@ interface Props {
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 	debounceTime?: number;
-	onDebounceStart?: () => void;
-	onDebounceEnd?: () => void;
+	onDebounceStateChange?: (isDebouncing: boolean) => void;
 }
 
-const TextInput = forwardRef(
+const TextInput = forwardRef<HTMLInputElement, Props>(
 	(
 		{
 			label,
@@ -56,11 +63,10 @@ const TextInput = forwardRef(
 			inputProps,
 			onChange,
 			debounceTime,
-			onDebounceStart,
-			onDebounceEnd,
+			onDebounceStateChange,
 			...props
-		}: Props,
-		forwardedRef: ForwardedRef<HTMLInputElement>
+		},
+		forwardedRef
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
@@ -87,9 +93,9 @@ const TextInput = forwardRef(
 			debounce((value: string) => {
 				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
 				setIsDebouncing(false);
-				onDebounceEnd?.();
+				onDebounceStateChange?.(false);
 			}, debounceTime),
-			[onChange, name, debounceTime, onDebounceEnd]
+			[onChange, name, debounceTime, onDebounceStateChange]
 		);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +103,7 @@ const TextInput = forwardRef(
 			setLocalValue(newValue);
 			if (debounceTime) {
 				setIsDebouncing(true);
-				onDebounceStart?.();
+				onDebounceStateChange?.(true);
 				debouncedOnChange(newValue);
 			} else {
 				onChange(e);
