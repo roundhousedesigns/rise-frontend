@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.10-debounce] - Unreleased
+
+- Improve: <TextInput> debounce added for significant performance increase.
+
 ## \[1.1.10-dev] - Unreleased
 
 - Add: Success and error toasts for editing credits.

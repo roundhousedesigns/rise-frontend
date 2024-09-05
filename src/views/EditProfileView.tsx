@@ -926,7 +926,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										flex={'1'}
 										label={'First name'}
 										minW={'200px'}
-										debounceTime={300}
 									/>
 									<TextInput
 										placeholder={'Last'}
@@ -937,7 +936,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										onChange={handleInputChange}
 										flex={'1'}
 										minW={'200px'}
-										debounceTime={300}
 									/>
 									<TextInput
 										value={pronouns}
@@ -949,7 +947,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											size: 'md',
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 								</Flex>
 							</ProfileStackItem>
@@ -967,7 +964,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 									<TextInput
 										placeholder={'Home base'}
@@ -981,7 +977,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 								</Flex>
 							</ProfileStackItem>
@@ -1005,7 +1000,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 									{/* TODO Add checkbox for "use account email address" */}
 									<StackItem
@@ -1019,7 +1013,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 									<StackItem
 										as={TextInput}
@@ -1031,7 +1024,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
-										debounceTime={300}
 									/>
 								</Stack>
 							</ProfileStackItem>
@@ -1056,7 +1048,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											error={errorMessage}
 											onChange={handleInputChange}
 											mt={2}
-											debounceTime={300}
 										/>
 									</Collapse>
 								</>
@@ -1070,7 +1061,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://linkedin/in/yourprofile'}
 										name={'socials.linkedin'}
 										onChange={handleSocialInputChange}
-										debounceTime={300}
 									/>
 									<TextInput
 										value={socials?.facebook}
@@ -1079,7 +1069,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://facebook.com/yourname'}
 										name={'socials.facebook'}
 										onChange={handleSocialInputChange}
-										debounceTime={300}
 									/>
 									<TextInput
 										value={socials?.instagram}
@@ -1088,7 +1077,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'@handle'}
 										name={'socials.instagram'}
 										onChange={handleSocialInputChange}
-										debounceTime={300}
 									/>
 									<TextInput
 										value={socials?.twitter}
@@ -1097,7 +1085,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'@handle'}
 										name={'socials.twitter'}
 										onChange={handleSocialInputChange}
-										debounceTime={300}
 									/>
 								</SimpleGrid>
 							</ProfileStackItem>
@@ -1315,7 +1302,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							inputProps={{
 								rows: 10,
 							}}
-							debounceTime={300}
 						/>
 					</>
 				</ProfileStackItem>
@@ -1368,7 +1354,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						inputProps={{
 							rows: 4,
 						}}
-						debounceTime={300}
 					/>
 				</ProfileStackItem>
 
@@ -1388,7 +1373,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
-										debounceTime={300}
 									/>
 									{mediaVideo1 ? (
 										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
@@ -1408,7 +1392,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
-										debounceTime={300}
 									/>
 									{mediaVideo2 ? (
 										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
