@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
+import { ChangeEvent, memo, useContext, useEffect, useReducer, useState } from 'react';
 import {
 	Divider,
 	Flex,
@@ -8,10 +8,12 @@ import {
 	Stack,
 	StackItem,
 	useToast,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
 import { sortWPItemsByName } from '@lib/utils';
+import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '@context/EditProfileContext';
 import usePositions from '@queries/usePositions';
 import useLazyPositions from '@queries/useLazyPositions';
@@ -22,7 +24,7 @@ import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
 import RequiredAsterisk from '@common/RequiredAsterisk';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
-import EditCreditButtons from '@components/EditCreditButtons';
+import TooltipIconButton from '../components/common/inputs/TooltipIconButton';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -296,18 +298,36 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
+	const EditCreditButtons = memo(() => {
+		return (
+			<ButtonGroup size={'md'}>
+				<TooltipIconButton
+					type={'submit'}
+					isLoading={updateCreditLoading}
+					onClick={handleSubmit}
+					icon={<FiCheck />}
+					label={'Save'}
+					colorScheme={'green'}
+					isDisabled={!requirementsMet || updateCreditLoading}
+				/>
+				<TooltipIconButton
+					icon={<FiX />}
+					label={'Cancel changes'}
+					colorScheme={'red'}
+					onClick={handleCancel}
+					isDisabled={updateCreditLoading}
+				/>
+			</ButtonGroup>
+		);
+	});
+
 	return (
 		<>
 			<Flex flex={'1'} justifyContent={'space-between'} py={2} mb={2}>
 				<Heading as={'h3'} size={'lg'} lineHeight={'base'}>
 					Edit Credit
 				</Heading>
-				<EditCreditButtons
-					handleSubmit={handleSubmit}
-					handleCancel={handleCancel}
-					isLoading={updateCreditLoading}
-					requirementsMet={requirementsMet}
-				/>
+				<EditCreditButtons />
 			</Flex>
 
 			<Flex gap={4}>
@@ -475,12 +495,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 			</Stack>
 
 			<Flex justifyContent={'flex-end'} mt={4} mb={0}>
-				<EditCreditButtons
-					handleSubmit={handleSubmit}
-					handleCancel={handleCancel}
-					isLoading={updateCreditLoading}
-					requirementsMet={requirementsMet}
-				/>
+				<EditCreditButtons />
 			</Flex>
 		</>
 	);

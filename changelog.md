@@ -6,6 +6,7 @@ with 1.0.0beta.
 ## \[1.1.10-debounce] - Unreleased
 
 - Improve: <TextInput> debounce added for significant performance increase.
+- Improve: Move EditCreditButtons into EditCreditView for simplicity.
 
 ## \[1.1.10-dev] - Unreleased
 

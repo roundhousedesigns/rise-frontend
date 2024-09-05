@@ -583,7 +583,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSave = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		// Manual required field validation
@@ -888,7 +888,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	return editProfile ? (
-		<form id={'edit-profile'} onSubmit={handleSubmit}>
+		<form id={'edit-profile'} onSubmit={handleSave}>
 			<Stack direction={'column'} flexWrap={'nowrap'} gap={4} position={'relative'}>
 				<ProfileStackItem mt={4} mb={0}>
 					<Accordion allowToggle>

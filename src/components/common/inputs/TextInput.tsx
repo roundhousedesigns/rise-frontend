@@ -1,4 +1,4 @@
-import { ChangeEvent, ForwardedRef, forwardRef, ReactNode, useCallback, useState } from 'react';
+import { ChangeEvent, ForwardedRef, forwardRef, ReactNode, useCallback, useState, useEffect } from 'react';
 import { debounce } from 'lodash';
 import {
 	Flex,
@@ -33,6 +33,8 @@ interface Props {
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 	debounceTime?: number;
+	onDebounceStart?: () => void;
+	onDebounceEnd?: () => void;
 }
 
 const TextInput = forwardRef(
@@ -54,6 +56,8 @@ const TextInput = forwardRef(
 			inputProps,
 			onChange,
 			debounceTime,
+			onDebounceStart,
+			onDebounceEnd,
 			...props
 		}: Props,
 		forwardedRef: ForwardedRef<HTMLInputElement>
@@ -77,23 +81,34 @@ const TextInput = forwardRef(
 		};
 
 		const [localValue, setLocalValue] = useState(value);
+		const [isDebouncing, setIsDebouncing] = useState(false);
 
 		const debouncedOnChange = useCallback(
 			debounce((value: string) => {
 				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+				setIsDebouncing(false);
+				onDebounceEnd?.();
 			}, debounceTime),
-			[onChange, name, debounceTime]
+			[onChange, name, debounceTime, onDebounceEnd]
 		);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			setLocalValue(newValue);
 			if (debounceTime) {
+				setIsDebouncing(true);
+				onDebounceStart?.();
 				debouncedOnChange(newValue);
 			} else {
 				onChange(e);
 			}
 		};
+
+		useEffect(() => {
+			return () => {
+				debouncedOnChange.cancel();
+			};
+		}, [debouncedOnChange]);
 
 		return (
 			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
