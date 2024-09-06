@@ -3,17 +3,14 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.10-debounce] - Unreleased
-
-- Improve: <TextInput> debounce added for significant performance increase.
-- Improve: Move EditCreditButtons into EditCreditView for simplicity.
-
 ## \[1.1.10-dev] - Unreleased
 
 - Add: Success and error toasts for editing credits.
 - Add: `<RequiredAsterisk>` component.
 - Fix: Form text field spacing.
 - Fix: Toast typo.
+- Improve: <TextInput> and <TextareaInput> debounce added for significant performance increase.
+- Improve: Move EditCreditButtons into EditCreditView for simplicity.
 - Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
 - Improve: Make Department and Job required on credit edit modal.
 
