@@ -39,7 +39,6 @@ export default function ProfileNotice({
 
 	const { title, description, cta } = notice;
 
-	// HACK: Ensure 'warning' has the orange color scheme
 	const colorScheme = status === 'warning' ? 'orange' : undefined;
 	const color = status === 'warning' ? 'text.dark' : undefined;
 

@@ -53,8 +53,6 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 	};
 
 	const handleSave = (e: FormEvent) => {
-		// MAYBE Don't allow saving an existing title.
-
 		e.preventDefault();
 
 		saveSearchMutation({
