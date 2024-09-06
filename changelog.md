@@ -14,12 +14,6 @@ with 1.0.0beta.
 - Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
 - Improve: Make Department and Job required on credit edit modal.
 
-Inactive:
-
-- Add: Dashboard grid layout with widgets.
-- Add: Profile completion %.
-- Add: Widgets: Mini Profile, Saved Searches, Following, News.
-
 ## \[1.1.9 - 1.1.91] - 2024-07-20
 
 - Fix: Search results sometimes not loading on first attempt.
