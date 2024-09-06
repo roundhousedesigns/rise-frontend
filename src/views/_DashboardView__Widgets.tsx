@@ -20,7 +20,7 @@ import SavedSearchItemList from '@components/SavedSearchItemList';
 
 // TODO Unimplemented.
 
-export default function DashboardView() {
+export default function DashboardView__Widgets() {
 	const [{ loggedInId, starredProfiles }] = useViewer();
 	const [notices] = useUserNotices();
 	const [savedSearches] = useSavedSearches();
