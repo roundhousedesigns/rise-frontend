@@ -99,7 +99,7 @@ export const QUERY_PROFILE = gql`
 /**
  * Query to retrieve one User by database ID.
  *
- * @param id User ID
+ * @param {id} User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
 const useUserProfile = (id: number | null, count?: number): [UserProfile | null, any] => {

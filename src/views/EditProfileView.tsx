@@ -168,8 +168,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
 
-	// useProfileEdited(editProfile, originalProfile.current);
-
 	const [errorCode, setErrorCode] = useState<string>('');
 	const errorMessage = useErrorMessage(errorCode);
 
@@ -364,7 +362,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		// FIXME Editing socials isn't triggering `hasEditedProfile` change.
 		const { name, value } = event.target;
 		const field = name.split('.')[1];
 
@@ -607,8 +604,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			})
 			.then(() => {
 				toast({
-					title: 'Saved!',
-					description: 'Your profile has been updated.',
+					title: 'Updated!',
+					description: 'Your changes have been saved.',
 					status: 'success',
 					duration: 3000,
 					isClosable: true,
@@ -669,8 +666,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		return (
 			<Button
 				leftIcon={icon ? icon : undefined}
-				size='md'
-				colorScheme='orange'
+				size={'md'}
+				colorScheme={'orange'}
 				onClick={handleFileInputClear}
 				aria-label={label}
 				data-field={field}
@@ -682,21 +679,23 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		);
 	};
 
-	const ProgressSpinner = () => <Spinner thickness='5px' speed='.8s' color='blue.500' size='xl' />;
+	const ProgressSpinner = () => (
+		<Spinner thickness={'5px'} speed={'.8s'} color={'blue.500'} size={'xl'} />
+	);
 
 	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
 		<Box {...props}>
 			<Box>
-				<Heading variant='contentTitle' my={0}>
+				<Heading variant={'contentTitle'} my={0}>
 					Profile image
 				</Heading>
-				<Text fontSize='sm' m={0}>
+				<Text fontSize={'sm'} m={0}>
 					Portrait orientation works best. Max 2MB.
 				</Text>
-				<Box maxW='300px'>
+				<Box maxW={'300px'}>
 					{uploadFileMutationLoading && fieldCurrentlyUploading === 'image' ? (
 						// Uploading
-						<Flex alignItems='center' justifyContent='center' h='200px'>
+						<Flex alignItems={'center'} justifyContent={'center'} h={'200px'}>
 							<ProgressSpinner />
 						</Flex>
 					) : image ? (
@@ -705,20 +704,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<Image
 								src={image}
 								alt={`Profile picture`}
-								loading='eager'
-								fit='cover'
-								borderRadius='md'
+								loading={'eager'}
+								fit={'cover'}
+								borderRadius={'md'}
 							/>
-							<ClearFieldButton field='image' label='Remove image' mt={2}>
+							<ClearFieldButton field={'image'} label={'Remove image'} mt={2}>
 								Remove
 							</ClearFieldButton>
 						</>
 					) : (
 						<FileDropzone
-							fieldName='image'
-							text='Profile image'
+							fieldName={'image'}
+							text={'Profile image'}
 							icon={FiUser}
-							h='full'
+							h={'full'}
 							iconProps={{ mb: 2, boxSize: '80px' }}
 						/>
 					)}
@@ -799,52 +798,56 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		const currentImage = imageData[fieldName];
 
 		return (
-			<Box maxW={'100%'} p={0} borderRadius='md' {...props}>
+			<Box maxW={'100%'} p={0} borderRadius={'md'} {...props}>
 				{currentImage ? (
 					<>
 						<Image
 							src={currentImage}
 							alt={text}
-							loading='eager'
-							fit='cover'
-							w='full'
-							borderRadius='md'
+							loading={'eager'}
+							fit={'cover'}
+							w={'full'}
+							borderRadius={'md'}
 							mb={1}
 						/>
-						<Flex gap={2} flexWrap={{ base: 'wrap', sm: 'nowrap' }} justifyContent='space-between'>
+						<Flex
+							gap={2}
+							flexWrap={{ base: 'wrap', sm: 'nowrap' }}
+							justifyContent={'space-between'}
+						>
 							<FileUploadButton
 								fieldName={fieldName}
 								icon={<FiImage />}
-								accept='image/jpeg,image/png,image/gif,image/webp'
+								accept={'image/jpeg,image/png,image/gif,image/webp'}
 								onChange={handleFileInputChange}
 								loading={uploadFileMutationLoading || clearProfileFieldMutationLoading}
-								flex='1 0 48%'
+								flex={'1 0 48%'}
 							>
 								<Text>Replace</Text>
 							</FileUploadButton>
-							<ClearFieldButton field={fieldName} label='Delete image' flex='1 0 48%'>
+							<ClearFieldButton field={fieldName} label={'Delete image'} flex={'1 0 48%'}>
 								Delete
 							</ClearFieldButton>
 						</Flex>
 					</>
 				) : uploadFileMutationLoading && fieldCurrentlyUploading === fieldName ? (
-					<Flex alignItems='center' justifyContent='center' padding={50}>
+					<Flex alignItems={'center'} justifyContent={'center'} padding={50}>
 						<ProgressSpinner />
 					</Flex>
 				) : (
 					<Flex
 						{...getRootProps({ width: '100%' })}
-						h='100%'
-						w='100%'
+						h={'100%'}
+						w={'100%'}
 						padding={5}
-						flexDirection='column'
-						alignItems='center'
-						justifyContent='center'
-						transition='background-color 50ms ease'
-						cursor='pointer'
-						borderWidth='2px'
-						borderRadius='md'
-						borderStyle='dashed'
+						flexDirection={'column'}
+						alignItems={'center'}
+						justifyContent={'center'}
+						transition={'background-color 50ms ease'}
+						cursor={'pointer'}
+						borderWidth={'2px'}
+						borderRadius={'md'}
+						borderStyle={'dashed'}
 						_light={{
 							backgroundColor: dragActive ? 'blackAlpha.200' : 'blackAlpha.50',
 							borderColor: 'blackAlpha.700',
@@ -856,8 +859,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					>
 						<Input {...getInputProps({ type: 'file' })} />
 						{icon ? <Icon as={icon} boxSize={10} {...iconProps} /> : false}
-						<Text textAlign='center'>Drag a file to upload, or click to choose.</Text>
-						<Text fontSize='xs'>{acceptString}</Text>
+						<Text textAlign={'center'}>Drag a file to upload, or click to choose.</Text>
+						<Text fontSize={'xs'}>{acceptString}</Text>
 					</Flex>
 				)}
 			</Box>
@@ -872,7 +875,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 		return (
 			<Button
-				aria-label='Add a new credit'
+				aria-label={'Add a new credit'}
 				leftIcon={<FiPlus />}
 				onClick={handleNewCredit}
 				isDisabled={editProfile.credits?.length === limit}
@@ -883,21 +886,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	return editProfile ? (
-		<form id='edit-profile' onSubmit={handleSubmit}>
-			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
+		<form id={'edit-profile'} onSubmit={handleSubmit}>
+			<Stack direction={'column'} flexWrap={'nowrap'} gap={4} position={'relative'}>
 				<ProfileStackItem mt={4} mb={0}>
 					<Accordion allowToggle>
 						<AccordionItem>
-							<Heading as='h3' m={0}>
+							<Heading as={'h3'} m={0}>
 								<AccordionButton>
-									<Box as='span' fontWeight='normal'>
+									<Box as={'span'} fontWeight={'normal'}>
 										Options
 									</Box>
 									<AccordionIcon />
 								</AccordionButton>
 							</Heading>
 							<AccordionPanel>
-								<Flex justifyContent='flex-start' gap={4}>
+								<Flex justifyContent={'flex-start'} gap={4}>
 									<Card py={2} my={0}>
 										<DisableProfileToggle showHelperText showLabel />
 									</Card>
@@ -907,37 +910,37 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</Accordion>
 				</ProfileStackItem>
 				<ProfileStackItem>
-					<Flex alignItems='flex-start' flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <Sidebar mb={2} width='30%' minWidth='300px' mr={4} /> : false}
-						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
-							<ProfileStackItem title='Name'>
-								<Flex alignItems='flex-end' gap={2} flexWrap='wrap' w='full'>
+					<Flex alignItems={'flex-start'} flexWrap={'wrap'} mt={2}>
+						{isLargerThanMd ? <Sidebar mb={2} width={'30%'} minWidth={'300px'} mr={4} /> : false}
+						<Stack flex={'1'} px={{ base: 0, md: 4 }} w={'full'}>
+							<ProfileStackItem title={'Name'}>
+								<Flex alignItems={'flex-end'} gap={2} flexWrap={'wrap'} w={'full'}>
 									<TextInput
-										placeholder='First'
+										placeholder={'First'}
 										value={firstName}
-										name='firstName'
+										name={'firstName'}
 										isRequired
 										onChange={handleInputChange}
-										flex='1'
-										label='First name'
-										minW='200px'
+										flex={'1'}
+										label={'First name'}
+										minW={'200px'}
 									/>
 									<TextInput
-										placeholder='Last'
+										placeholder={'Last'}
 										value={lastName}
-										name='lastName'
+										name={'lastName'}
 										isRequired
-										label='Last name'
+										label={'Last name'}
 										onChange={handleInputChange}
-										flex='1'
-										minW='200px'
+										flex={'1'}
+										minW={'200px'}
 									/>
 									<TextInput
 										value={pronouns}
-										name='pronouns'
-										label='Pronouns'
+										name={'pronouns'}
+										label={'Pronouns'}
 										onChange={handleInputChange}
-										maxW='150px'
+										maxW={'150px'}
 										inputProps={{
 											size: 'md',
 											tabIndex: 0,
@@ -945,30 +948,30 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									/>
 								</Flex>
 							</ProfileStackItem>
-							<ProfileStackItem title='Profession'>
-								<Flex alignItems='flex-start' gap={2} flexWrap='wrap' w='full' mt={4}>
+							<ProfileStackItem title={'Profession'}>
+								<Flex alignItems={'flex-start'} gap={2} flexWrap={'wrap'} w={'full'} mt={4}>
 									<TextInput
 										value={selfTitle}
-										name='selfTitle'
-										placeholder='Title'
-										label='Title/Trade/Profession'
+										name={'selfTitle'}
+										placeholder={'Title'}
+										label={'Title/Trade/Profession'}
 										leftElement={<Icon as={FiStar} />}
 										onChange={handleInputChange}
 										maxLength={50}
-										flex='1 0 48%'
+										flex={'1 0 48%'}
 										inputProps={{
 											tabIndex: 0,
 										}}
 									/>
 									<TextInput
-										placeholder='Home base'
+										placeholder={'Home base'}
 										value={homebase}
-										name='homebase'
-										label='Where do you currently live?'
+										name={'homebase'}
+										label={'Where do you currently live?'}
 										leftElement={<Icon as={FiHome} />}
 										onChange={handleInputChange}
 										maxLength={25}
-										flex='1 0 48%'
+										flex={'1 0 48%'}
 										inputProps={{
 											tabIndex: 0,
 										}}
@@ -976,21 +979,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</Flex>
 							</ProfileStackItem>
 							{!isLargerThanMd ? (
-								<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
+								<ProfileStackItem display={'flex'} flexWrap={'wrap'} gap={4}>
 									<Sidebar />
 								</ProfileStackItem>
 							) : (
 								false
 							)}
-							<ProfileStackItem title='Contact'>
-								<Stack direction='column' spacing={0}>
+							<ProfileStackItem title={'Contact'}>
+								<Stack direction={'column'}>
 									<StackItem
 										as={TextInput}
 										value={email}
 										leftElement={<Icon as={FiMail} />}
-										placeholder='me@somewhere.com'
-										label='Contact Email'
-										name='email'
+										placeholder={'me@somewhere.com'}
+										label={'Contact Email'}
+										name={'email'}
 										onChange={handleInputChange}
 										inputProps={{
 											tabIndex: 0,
@@ -1001,9 +1004,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										as={TextInput}
 										value={phone}
 										leftElement={<Icon as={FiPhone} />}
-										placeholder='(888) 888-8888'
-										label='Phone'
-										name='phone'
+										placeholder={'(888) 888-8888'}
+										label={'Phone'}
+										name={'phone'}
 										onChange={handleInputChange}
 										inputProps={{
 											tabIndex: 0,
@@ -1013,8 +1016,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										as={TextInput}
 										value={website}
 										leftElement={<Icon as={FiLink} />}
-										label='Website'
-										name='website'
+										label={'Website'}
+										name={'website'}
 										onChange={handleInputChange}
 										inputProps={{
 											tabIndex: 0,
@@ -1022,14 +1025,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									/>
 								</Stack>
 							</ProfileStackItem>
-							<ProfileStackItem title='Additional Languages' w='full' maxW='3xl' mt={4}>
+							<ProfileStackItem title={'Additional Languages'} w={'full'} maxW={'3xl'} mt={4}>
 								<>
 									<Checkbox
-										name='multilingual'
+										name={'multilingual'}
 										isChecked={multilingual}
 										onChange={handleCheckboxChange}
-										variant='buttonStyle'
-										position='relative'
+										variant={'buttonStyle'}
+										position={'relative'}
 									>
 										I speak more than one language
 									</Checkbox>
@@ -1037,9 +1040,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										<TextInput
 											value={languages}
 											leftElement={<Icon as={FiGlobe} />}
-											label='What languages other than English do you speak?'
-											placeholder='Spanish, Italian, Esperanto...'
-											name='languages'
+											label={'What languages other than English do you speak?'}
+											placeholder={'Spanish, Italian, Esperanto...'}
+											name={'languages'}
 											error={errorMessage}
 											onChange={handleInputChange}
 											mt={2}
@@ -1047,38 +1050,38 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 									</Collapse>
 								</>
 							</ProfileStackItem>
-							<ProfileStackItem title='Social' w='full' maxW='3xl' mt={4}>
+							<ProfileStackItem title={'Social'} w={'full'} maxW={'3xl'} mt={4}>
 								<SimpleGrid columns={[1, 2]} spacing={4}>
 									<TextInput
 										value={socials?.linkedin}
 										leftElement={<Icon as={FiLinkedin} />}
-										label='LinkedIn URL'
-										placeholder='https://linkedin/in/yourprofile'
-										name='socials.linkedin'
+										label={'LinkedIn URL'}
+										placeholder={'https://linkedin/in/yourprofile'}
+										name={'socials.linkedin'}
 										onChange={handleSocialInputChange}
 									/>
 									<TextInput
 										value={socials?.facebook}
 										leftElement={<Icon as={FiFacebook} />}
-										label='Facebook URL'
-										placeholder='https://facebook.com/yourname'
-										name='socials.facebook'
+										label={'Facebook URL'}
+										placeholder={'https://facebook.com/yourname'}
+										name={'socials.facebook'}
 										onChange={handleSocialInputChange}
 									/>
 									<TextInput
 										value={socials?.instagram}
 										leftElement={<Icon as={FiInstagram} />}
-										label='Instagram @handle'
-										placeholder='@handle'
-										name='socials.instagram'
+										label={'Instagram @handle'}
+										placeholder={'@handle'}
+										name={'socials.instagram'}
 										onChange={handleSocialInputChange}
 									/>
 									<TextInput
 										value={socials?.twitter}
 										leftElement={<Icon as={XIcon} />}
-										label='X/Twitter @handle'
-										placeholder='@handle'
-										name='socials.twitter'
+										label={'X/Twitter @handle'}
+										placeholder={'@handle'}
+										name={'socials.twitter'}
 										onChange={handleSocialInputChange}
 									/>
 								</SimpleGrid>
@@ -1086,29 +1089,29 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</Stack>
 					</Flex>
 				</ProfileStackItem>
-				<ProfileStackItem title='Work Locations' fontSize='sm'>
+				<ProfileStackItem title={'Work Locations'} fontSize={'sm'}>
 					<>
-						<Heading variant='contentSubtitle'>
+						<Heading variant={'contentSubtitle'}>
 							Select any areas in which you're a local hire.
 						</Heading>
 						<ProfileCheckboxGroup
-							name='locations'
+							name={'locations'}
 							isRequired
-							requiredMessage='Please select at least one location.'
+							requiredMessage={'Please select at least one location.'}
 							items={locationTerms}
 							checked={locations ? locations.map((item) => item.toString()) : []}
 							handleChange={handleCheckboxGroupChange}
 						/>
 					</>
 				</ProfileStackItem>
-				<ProfileStackItem py={4} display='flex' gap={10}>
-					<Flex flexWrap='wrap' gap={8} justifyContent='space-between'>
+				<ProfileStackItem py={4} display={'flex'} gap={10}>
+					<Flex flexWrap={'wrap'} gap={8} justifyContent={'space-between'}>
 						<Box>
-							<Heading variant='contentTitle'>Travel</Heading>
-							<Heading variant='contentSubtitle'>Would you work away from home?</Heading>
+							<Heading variant={'contentTitle'}>Travel</Heading>
+							<Heading variant={'contentSubtitle'}>Would you work away from home?</Heading>
 							<ProfileRadioGroup
 								defaultValue={willTravel ? 'true' : 'false'}
-								name='willTravel'
+								name={'willTravel'}
 								items={[
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
@@ -1117,11 +1120,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							/>
 						</Box>
 						<Box>
-							<Heading variant='contentTitle'>Tour</Heading>
-							<Heading variant='contentSubtitle'>Would you go on tour?</Heading>
+							<Heading variant={'contentTitle'}>Tour</Heading>
+							<Heading variant={'contentSubtitle'}>Would you go on tour?</Heading>
 							<ProfileRadioGroup
 								defaultValue={willTour ? 'true' : 'false'}
-								name='willTour'
+								name={'willTour'}
 								items={[
 									{ label: 'Yes', value: 'true' },
 									{ label: 'No', value: 'false' },
@@ -1131,45 +1134,45 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</Box>
 						<Box>
 							<Heading
-								variant='contentTitle'
-								flex='0 0 100%'
-								textAlign='left'
-								alignItems='center'
-								display='flex'
+								variant={'contentTitle'}
+								flex={'0 0 100%'}
+								textAlign={'left'}
+								alignItems={'center'}
+								display={'flex'}
 							>
 								Resume
 							</Heading>
-							{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
+							{!resume && <Heading variant={'contentSubtitle'}>PDF or image</Heading>}
 							{resume && resumePreview ? (
-								<Flex flexWrap='wrap'>
+								<Flex flexWrap={'wrap'}>
 									<ResumePreviewModal
 										resumePreview={resumePreview}
 										resumeLink={resume}
-										w='100%'
-										maxW='300px'
+										w={'100%'}
+										maxW={'300px'}
 										mr={{ base: 0, sm: 1 }}
 										mb={{ base: 1, sm: 0 }}
 									/>
-									<ClearFieldButton field='resume' label='Delete resume'>
+									<ClearFieldButton field={'resume'} label={'Delete resume'}>
 										Clear
 									</ClearFieldButton>
 								</Flex>
 							) : (
-								<FileDropzone fieldName='resume' text='Resume' allowPdf={true} />
+								<FileDropzone fieldName={'resume'} text={'Resume'} allowPdf={true} />
 							)}
 						</Box>
 					</Flex>
 				</ProfileStackItem>
 				<ProfileStackItem>
-					<Stack display='flex' gap={4}>
-						<ProfileStackItem title='Unions/Guilds/Memberships'>
+					<Stack display={'flex'} gap={4}>
+						<ProfileStackItem title={'Unions/Guilds/Memberships'}>
 							<>
-								<Heading variant='contentSubtitle'>
+								<Heading variant={'contentSubtitle'}>
 									What unions or guilds are you a member of?
 								</Heading>
-								<Box fontSize='sm'>
+								<Box fontSize={'sm'}>
 									<ProfileCheckboxGroup
-										name='unions'
+										name={'unions'}
 										items={unionTerms}
 										checked={unions ? unions.map((item) => item.toString()) : []}
 										handleChange={handleCheckboxGroupChange}
@@ -1177,12 +1180,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</Box>
 							</>
 						</ProfileStackItem>
-						<ProfileStackItem title='Experience Levels'>
+						<ProfileStackItem title={'Experience Levels'}>
 							<>
-								<Heading variant='contentSubtitle'>At what levels have you worked?</Heading>
-								<Box fontSize='sm'>
+								<Heading variant={'contentSubtitle'}>At what levels have you worked?</Heading>
+								<Box fontSize={'sm'}>
 									<ProfileCheckboxGroup
-										name='experienceLevels'
+										name={'experienceLevels'}
 										items={experienceLevelTerms}
 										checked={
 											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
@@ -1192,14 +1195,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								</Box>
 							</>
 						</ProfileStackItem>
-						<ProfileStackItem title='Partner Directories'>
+						<ProfileStackItem title={'Partner Directories'}>
 							<>
-								<Heading variant='contentSubtitle'>
+								<Heading variant={'contentSubtitle'}>
 									Are you a member of one of our partner organizations?
 								</Heading>
-								<Box fontSize='sm'>
+								<Box fontSize={'sm'}>
 									<ProfileCheckboxGroup
-										name='partnerDirectories'
+										name={'partnerDirectories'}
 										items={partnerDirectoryTerms}
 										checked={
 											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
@@ -1211,11 +1214,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						</ProfileStackItem>
 					</Stack>
 				</ProfileStackItem>
-				<ProfileStackItem title='Credits' centerlineColor='brand.blue' pos='relative' id='credits'>
+				<ProfileStackItem
+					title={'Credits'}
+					centerlineColor={'brand.blue'}
+					pos={'relative'}
+					id={'credits'}
+				>
 					<>
-						<Text fontSize='lg'>
+						<Text fontSize={'lg'}>
 							Add your 5 best credits here.{' '}
-							<Text as='span' fontStyle='italic'>
+							<Text as={'span'} fontStyle={'italic'}>
 								You must have at least one credit to be listed in searches!
 							</Text>
 						</Text>
@@ -1223,19 +1231,18 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						<NewCreditButton />
 
 						{/* TODO better reorder and delete animations */}
-						{/* TODO "Success" (or error) toast after saving credit and modal closes */}
 
 						{deleteCreditLoading ? (
-							<Spinner size='sm' colorScheme='green' />
+							<Spinner size={'sm'} colorScheme={'green'} />
 						) : (
 							creditsSorted.map((credit: Credit, index: number) => (
-								<Stack key={credit.id} direction='row' alignItems='center'>
+								<Stack key={credit.id} direction={'row'} alignItems={'center'}>
 									<CreditItem
 										credit={credit}
 										onClick={() => handleEditCredit(credit.id)}
 										isEditable
 										key={index}
-										width='full'
+										width={'full'}
 									/>
 									<Stack
 										as={isLargerThanMd ? ButtonGroup : undefined}
@@ -1243,9 +1250,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										direction={{ base: 'column', md: 'row' }}
 									>
 										<TooltipIconButton
-											colorScheme='gray'
+											colorScheme={'gray'}
 											icon={<FiArrowUpCircle />}
-											label='Move Credit up'
+											label={'Move Credit up'}
 											isDisabled={index === 0}
 											id={credit.id}
 											onClick={() => {
@@ -1253,9 +1260,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											}}
 										/>
 										<TooltipIconButton
-											colorScheme='gray'
+											colorScheme={'gray'}
 											icon={<FiArrowDownCircle />}
-											label='Move Credit down'
+											label={'Move Credit down'}
 											isDisabled={index === creditsSorted.length - 1}
 											id={credit.id}
 											onClick={() => {
@@ -1276,16 +1283,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='About' centerlineColor='brand.orange'>
+				<ProfileStackItem title={'About'} centerlineColor={'brand.orange'}>
 					<>
-						<Heading variant='contentTitle'>Bio</Heading>
-						<Text my={2} fontSize='lg'>
+						<Heading variant={'contentTitle'}>Bio</Heading>
+						<Text my={2} fontSize={'lg'}>
 							Write a little. Write a lot. It's up to you!
 						</Text>
 						<TextareaInput
 							value={description}
-							name='description'
-							label='Bio'
+							name={'description'}
+							label={'Bio'}
 							labelHidden
 							mt={2}
 							mb={4}
@@ -1297,32 +1304,32 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='Identity' centerlineColor='brand.yellow'>
+				<ProfileStackItem title={'Identity'} centerlineColor={'brand.yellow'}>
 					<>
-						<Text fontSize='lg'>
+						<Text fontSize={'lg'}>
 							The following optional fields will be <strong>searchable</strong>, but{' '}
 							<em>will not appear</em> on your public profile. Select any that apply.
 						</Text>
-						<Stack direction='row' mt={4} gap={2} flexWrap='wrap'>
-							<ProfileStackItem title='Gender' flex='1 0 33%'>
+						<Stack direction={'row'} mt={4} gap={2} flexWrap={'wrap'}>
+							<ProfileStackItem title={'Gender'} flex={'1 0 33%'}>
 								<ProfileCheckboxGroup
-									name='genderIdentities'
+									name={'genderIdentities'}
 									items={genderIdentityTerms}
 									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
-							<ProfileStackItem title='Race/Ethnicity' flex='1 0 33%'>
+							<ProfileStackItem title={'Race/Ethnicity'} flex={'1 0 33%'}>
 								<ProfileCheckboxGroup
-									name='racialIdentities'
+									name={'racialIdentities'}
 									items={racialIdentityTerms}
 									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
 									handleChange={handleCheckboxGroupChange}
 								/>
 							</ProfileStackItem>
-							<ProfileStackItem title='Additional' flex='1 0 33%'>
+							<ProfileStackItem title={'Additional'} flex={'1 0 33%'}>
 								<ProfileCheckboxGroup
-									name='personalIdentities'
+									name={'personalIdentities'}
 									items={personalIdentityTerms}
 									checked={
 										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
@@ -1334,12 +1341,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					</>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='Education + Training' centerlineColor='brand.green'>
+				<ProfileStackItem title={'Education + Training'} centerlineColor={'brand.green'}>
 					<TextareaInput
 						value={education}
-						name='education'
-						variant='outline'
-						label='Education and training'
+						name={'education'}
+						variant={'outline'}
+						label={'Education and training'}
 						labelHidden
 						onChange={handleInputChange}
 						inputProps={{
@@ -1348,25 +1355,27 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					/>
 				</ProfileStackItem>
 
-				<ProfileStackItem title='Media' centerlineColor='brand.blue'>
+				<ProfileStackItem title={'Media'} centerlineColor={'brand.blue'}>
 					<>
-						<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
+						<Heading variant={'contentSubtitle'}>
+							Showcase your work with images and videos.
+						</Heading>
 						<Box>
-							<Heading variant='contentTitle'>Videos</Heading>
+							<Heading variant={'contentTitle'}>Videos</Heading>
 							<SimpleGrid columns={[1, 2]} spacing={8}>
 								<Box>
 									<TextInput
 										value={mediaVideo1}
-										name='mediaVideo1'
-										label='Video embed 1'
-										placeholder='https://www.youtube.com/watch?v=M67E9mpwBpM'
+										name={'mediaVideo1'}
+										label={'Video embed 1'}
+										placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
 									/>
 									{mediaVideo1 ? (
-										<Box position='relative' paddingBottom='56.25%' w='full'>
-											<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-												<ReactPlayer url={mediaVideo1} controls width='100%' height='100%' />
+										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
+											<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
+												<ReactPlayer url={mediaVideo1} controls width={'100%'} height={'100%'} />
 											</Box>
 										</Box>
 									) : (
@@ -1376,16 +1385,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								<Box>
 									<TextInput
 										value={mediaVideo2}
-										name='mediaVideo2'
-										label='Video embed 2'
-										placeholder='https://www.youtube.com/watch?v=eR8YUj3C9lI'
+										name={'mediaVideo2'}
+										label={'Video embed 2'}
+										placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
 									/>
 									{mediaVideo2 ? (
-										<Box position='relative' paddingBottom='56.25%' w='full'>
-											<Box position='absolute' top={0} left={0} width='100%' height='100%'>
-												<ReactPlayer url={mediaVideo2} controls width='100%' height='100%' />
+										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
+											<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
+												<ReactPlayer url={mediaVideo2} controls width={'100%'} height={'100%'} />
 											</Box>
 										</Box>
 									) : (
@@ -1395,22 +1404,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							</SimpleGrid>
 						</Box>
 						<Box mt={6}>
-							<Heading variant='contentTitle'>Images</Heading>
-							<Text fontSize='lg' mb={0}>
+							<Heading variant={'contentTitle'}>Images</Heading>
+							<Text fontSize={'lg'} mb={0}>
 								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
 							</Text>
-							<Text variant='notice' fontSize='sm' fontStyle='italic' mb={4}>
+							<Text variant={'notice'} fontSize={'sm'} fontStyle={'italic'} mb={4}>
 								* By uploading images to your RISE profile, you acknowledge that you own the rights
 								or are authorized to use these images as work samples.
 							</Text>
 							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-								{/* TODO show only the next available uploader, up to limit. */}
-								<FileDropzone fieldName='mediaImage1' text='Image 1' />
-								<FileDropzone fieldName='mediaImage2' text='Image 2' />
-								<FileDropzone fieldName='mediaImage3' text='Image 3' />
-								<FileDropzone fieldName='mediaImage4' text='Image 4' />
-								<FileDropzone fieldName='mediaImage5' text='Image 5' />
-								<FileDropzone fieldName='mediaImage6' text='Image 6' />
+								<FileDropzone fieldName={'mediaImage1'} text={'Image 1'} />
+								<FileDropzone fieldName={'mediaImage2'} text={'Image 2'} />
+								<FileDropzone fieldName={'mediaImage3'} text={'Image 3'} />
+								<FileDropzone fieldName={'mediaImage4'} text={'Image 4'} />
+								<FileDropzone fieldName={'mediaImage5'} text={'Image 5'} />
+								<FileDropzone fieldName={'mediaImage6'} text={'Image 6'} />
 							</SimpleGrid>
 						</Box>
 					</>
@@ -1419,7 +1427,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 			<Slide
 				in={hasEditedProfile === true}
-				direction='bottom'
+				direction={'bottom'}
 				style={{
 					position: 'fixed',
 					bottom: 0,
@@ -1433,14 +1441,14 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				}}
 			>
 				<Button
-					type='submit'
-					form='edit-profile'
+					type={'submit'}
+					form={'edit-profile'}
 					leftIcon={saveLoading ? undefined : <FiSave />}
 					aria-label={'Save changes'}
-					colorScheme='green'
+					colorScheme={'green'}
 					isDisabled={saveLoading || !!errorMessage}
 					isLoading={!!saveLoading}
-					size='lg'
+					size={'lg'}
 					mr={4}
 					my={2}
 				>

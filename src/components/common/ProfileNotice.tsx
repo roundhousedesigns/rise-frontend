@@ -39,7 +39,6 @@ export default function ProfileNotice({
 
 	const { title, description, cta } = notice;
 
-	// HACK: Ensure 'warning' has the orange color scheme
 	const colorScheme = status === 'warning' ? 'orange' : undefined;
 	const color = status === 'warning' ? 'text.dark' : undefined;
 
@@ -67,18 +66,18 @@ export default function ProfileNotice({
 		<Collapse in={isVisible} unmountOnExit>
 			<LightMode>
 				<Alert
-					status='warning'
+					status={'warning'}
 					colorScheme={colorScheme}
 					color={color}
-					variant='subtle'
-					fontSize='md'
+					variant={'subtle'}
+					fontSize={'md'}
 					borderRadius={0}
 					py={1}
-					mb={0}
-					justifyContent='space-between'
+					my={0}
+					justifyContent={'space-between'}
 					{...props}
 				>
-					<Container maxW='90vw' display='flex' alignItems='center'>
+					<Container maxW={'90vw'} display={'flex'} alignItems={'center'}>
 						<AlertIcon />
 						<AlertTitle>{title}</AlertTitle>
 						{description ? <AlertDescription>{description} </AlertDescription> : false}
@@ -98,7 +97,7 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		title: "You haven't added any professional credits.",
 		description: (
 			<>
-				<Link as={RouterLink} to='/profile/edit'>
+				<Link as={RouterLink} to={'/profile/edit'}>
 					Add some credits
 				</Link>{' '}
 				to allow people to find you in the Directory!
@@ -109,7 +108,7 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		title: 'Your profile is currently hidden.',
 		description: (
 			<>
-				<Link as={RouterLink} to='/settings' color='text.dark' textDecorationColor='initial'>
+				<Link as={RouterLink} to={'/settings'} color={'text.dark'} textDecorationColor={'initial'}>
 					Take your profile public
 				</Link>{' '}
 				to appear in searches.

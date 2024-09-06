@@ -2,7 +2,7 @@
   "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "1.1.91",
+  "version": "1.1.10-dev",
   "type": "module",
   "engines": {
     "node": ">=20.12.0"
@@ -14,11 +14,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@apollo/client": "^3.10.3",
+    "@apollo/client": "^3.11.3",
     "@chakra-ui/react": "^2.8.2",
     "@choc-ui/chakra-autocomplete": "^5.5.1",
-    "@emotion/react": "^11.11.3",
-    "@emotion/styled": "^11.11.5",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
@@ -36,7 +36,7 @@
     "react-google-recaptcha-v3": "^1.10.1",
     "react-icons": "^4.12.0",
     "react-player": "^2.14.0",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.26.0",
     "semver": "^7.6.2",
     "web-vitals": "^3.5.0"
   },

@@ -49,19 +49,19 @@ export default function SearchWizardView({ onSubmit }: Props) {
 
 	return (
 		<Stack
-			direction='column'
-			justifyContent='space-between'
-			height='full'
+			direction={'column'}
+			justifyContent={'space-between'}
+			height={'full'}
 			pt={searchWizardActive ? 4 : 0}
-			transition='padding 250ms ease'
+			transition={'padding 250ms ease'}
 		>
 			{searchWizardActive ? null : (
 				<Accordion allowToggle mb={4} defaultIndex={name ? 0 : undefined}>
 					<SearchFilterAccordionItem
 						heading={
-							<Flex alignItems='center'>
+							<Flex alignItems={'center'}>
 								<Icon as={FiUser} mr={2} />
-								<Text as='span' my={0}>
+								<Text as={'span'} my={0}>
 									Search by Name
 								</Text>
 							</Flex>
@@ -77,13 +77,13 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			<Box
 				opacity={name ? 0.2 : 1}
 				pointerEvents={name ? 'none' : 'auto'}
-				transition='opacity 250ms ease'
+				transition={'opacity 250ms ease'}
 			>
-				<form id='search-candidates' onSubmit={onSubmit}>
+				<form id={'search-candidates'} onSubmit={onSubmit}>
 					<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
 						<Fade in={!savedSearchId} unmountOnExit>
 							<StackItem>
-								<Box maxW='lg'>
+								<Box maxW={'lg'}>
 									<DepartmentsAutocomplete />
 								</Box>
 							</StackItem>
@@ -91,35 +91,35 @@ export default function SearchWizardView({ onSubmit }: Props) {
 						<StackItem>
 							<Stack gap={8}>
 								<StackItem>
-									<SearchFilterSection id='filterDepartment'>
+									<SearchFilterSection id={'filterDepartment'}>
 										<SearchFilterDepartment />
 									</SearchFilterSection>
 								</StackItem>
 								<Fade in={!!departments.length} unmountOnExit>
 									<SearchFilterSection
-										id='filterJobs'
-										heading='What job(s) are you looking to fill?'
+										id={'filterJobs'}
+										heading={'What job(s) are you looking to fill?'}
 									>
 										<SearchFilterJobs />
 									</SearchFilterSection>
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection id='filterSkills' heading='What skills are you looking for?'>
+									<SearchFilterSection id={'filterSkills'} heading={'What skills are you looking for?'}>
 										<SearchFilterSkills />
 									</SearchFilterSection>
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
 									<SearchFilterSection
-										id='filterDates'
-										heading='Are you hiring for a particular date?'
+										id={'filterDates'}
+										heading={'Are you hiring for a particular date?'}
 									>
 										<SearchFilterDates />
 									</SearchFilterSection>
 								</Fade>
 								<Fade in={searchWizardActive && jobs && !!jobs.length} unmountOnExit>
 									<SearchFilterSection
-										id='filterAdditional'
-										heading='And some additional filters to refine your search:'
+										id={'filterAdditional'}
+										heading={'And some additional filters to refine your search:'}
 									>
 										<AdditionalSearchFilters />
 									</SearchFilterSection>
@@ -141,9 +141,9 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			>
 				<SearchFilterAccordionItem
 					heading={
-						<Flex alignItems='center'>
+						<Flex alignItems={'center'}>
 							<Icon as={FiFolder} fill={savedSearches?.length > 0 ? orange : 'transparent'} mr={2} />
-							<Text as='span' my={0}>
+							<Text as={'span'} my={0}>
 								Saved Searches
 							</Text>
 						</Flex>

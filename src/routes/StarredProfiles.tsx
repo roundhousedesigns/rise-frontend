@@ -7,14 +7,14 @@ export default function StarredProfiles() {
 	const Description = () => (
 		<InlineIconText
 			icon={<FiStar />}
-			text='Click the star button next to a profile to pin or unpin it.'
-			query='star'
-			description='star'
+			text={'Click the star button next to a profile to pin or unpin it.'}
+			query={'star'}
+			description={'star'}
 		/>
 	);
 
 	return (
-		<Page title='Starred Profiles' description={<Description />}>
+		<Page title={'Starred Profiles'} description={<Description />}>
 			<StarredProfilesView />
 		</Page>
 	);

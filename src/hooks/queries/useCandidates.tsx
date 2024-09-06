@@ -24,7 +24,7 @@ export const QUERY_CANDIDATES = gql`
 
 /**
  *
- * @param include_ids  An array of candidate IDs to include in the query.
+ * @param {include}_ids  An array of candidate IDs to include in the query.
  * @returns {Array} A tuple of a prepared data object and a query result object.
  */
 export default function useCandidates(include_ids: number[]): [Candidate[], any] {

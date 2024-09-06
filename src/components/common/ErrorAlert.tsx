@@ -5,5 +5,5 @@ interface Props {
 }
 
 export default function ErrorAlert({ message }: Props) {
-	return <Alert status='error'>{message}</Alert>;
+	return <Alert status={'error'}>{message}</Alert>;
 }

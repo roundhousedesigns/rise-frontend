@@ -70,7 +70,7 @@ export function decodeString(str: string): string {
 /**
  * Convert a string to a boolean. Strictly accepts case-insensitive "true" or "false".
  *
- * @param str The string to encode.
+ * @param {str} The string to encode.
  * @returns boolean|null The boolean value or null if the string is not "true" or "false".
  */
 export function sanitizeBoolean(value: string | boolean): boolean | null {
@@ -96,8 +96,8 @@ export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
 /**
  * Determine if a user profile has been edited.
  *
- * @param editProfile
- * @param origProfile
+ * @param {editProfile}
+ * @param {origProfile}
  */
 export const hasProfileChanged = (editProfile: UserProfile, origProfile: UserProfile) => {
 	if (origProfile === null) return false;
@@ -177,7 +177,7 @@ export function sortAndCompareArrays(a: number[] | string[], b: number[] | strin
 /**
  * Generate a random alphanumeric string.
  *
- * @param length The generated string length.
+ * @param {length} The generated string length.
  * @returns The generated string.
  */
 export function generateRandomString(length: number = 8): string {
@@ -194,8 +194,8 @@ export function generateRandomString(length: number = 8): string {
 /**
  * Handle reCAPTCHA verification.
  *
- * @param label The label for the reCAPTCHA.
- * @param executeRecaptcha The reCAPTCHA execution function.
+ * @param {label} The label for the reCAPTCHA.
+ * @param {executeRecaptcha} The reCAPTCHA execution function.
  * @returns The reCAPTCHA token (Promise)
  */
 export async function handleReCaptchaVerify({
@@ -224,7 +224,7 @@ export const getProfilePrefix = (): string => `${VITE_FRONTEND_URL}/profile/`;
 /**
  * Validate a profile slug string.
  *
- * @param str The string to validate.
+ * @param {str} The string to validate.
  * @returns boolean Whether the string is valid.
  */
 export function validateProfileSlug(str: string): boolean {
@@ -237,8 +237,8 @@ export function validateProfileSlug(str: string): boolean {
 /**
  * Compare 2 WPItems and sort them alphabetically by the `name` property.
  *
- * @param a The first WPItem.
- * @param b The second WPItem.
+ * @param {a} The first WPItem.
+ * @param {b} The second WPItem.
  * @returns The sort order.
  */
 export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
@@ -256,7 +256,7 @@ export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
 
 /**
  * Extract the IDs of terms from a JSON string.
- * @param json The JSON string to extract the IDs from.
+ * @param {json} The JSON string to extract the IDs from.
  * @returns The IDs of the terms.
  */
 export function getUniqueTermIdsFromString(json: any): number[] {
@@ -268,7 +268,7 @@ export function getUniqueTermIdsFromString(json: any): number[] {
 
 /**
  * Extract the IDs of terms from an object.
- * @param obj The object to extract the IDs from.
+ * @param {obj} The object to extract the IDs from.
  * @returns The IDs of the terms.
  */
 export function extractSearchTermIds(obj: SearchFilterSet | SearchFilterSetParams): number[] {
@@ -314,7 +314,7 @@ export function searchFilterSetsAreEqual(a: SearchFilterSet, b: SearchFilterSet)
 /**
  * Convert an array of user IDs to an array of SearchResultCandidate objects scored as '0'.
  *
- * @param userIds
+ * @param {userIds}
  * @returns An array of SearchResultCandidates with a score of zero.
  */
 export function convertUnscoredToScored(userIds: (number | string)[]): SearchResultCandidate[] {
@@ -329,9 +329,9 @@ export function convertUnscoredToScored(userIds: (number | string)[]): SearchRes
 /**
  * Set a cookie.
  *
- * @param name The name of the cookie.
- * @param value The cookie's value.
- * @param days The number of days until expiration (default: 7).
+ * @param {name} The name of the cookie.
+ * @param {value} The cookie's value.
+ * @param {days} The number of days until expiration (default: 7).
  * @returns void
  */
 export function setCookie(name: string, value: string | number | boolean, days: number = 7): void {
@@ -341,7 +341,7 @@ export function setCookie(name: string, value: string | number | boolean, days: 
 /**
  * Retrieve a cookie.
  *
- * @param name The name of the cookie to retrieve.
+ * @param {name} The name of the cookie to retrieve.
  * @returns The cookie's value or undefined if the cookie doesn't exist.
  */
 export function getCookie(name: string): string | undefined {
@@ -351,7 +351,7 @@ export function getCookie(name: string): string | undefined {
 /**
  * Remove a cookie.
  *
- * @param name The name of the cookie to delete.
+ * @param {name} The name of the cookie to delete.
  * @returns void
  */
 export function deleteCookie(name: string): void {
@@ -361,7 +361,7 @@ export function deleteCookie(name: string): void {
 /**
  * Prepare a collection of Credit objects from a raw array of GQL nodes.
  *
- * @param nodes The raw array of GQL nodes to prepare.
+ * @param {nodes} The raw array of GQL nodes to prepare.
  * @returns An array of Credit objects.
  */
 export function prepareCreditsFromGQLNodes(nodes: object[]): Credit[] {
@@ -425,7 +425,7 @@ export function prepareUnavailDatesFromGQLNodes(nodes: DateRangeParams[]): DateR
 /**
  * Sort a collection of Credits by their index property.
  *
- * @param credits The collection to sort.
+ * @param {credits} The collection to sort.
  * @returns A sorted array of Credits.
  */
 export function sortCreditsByIndex(credits: Credit[]): Credit[] {
@@ -438,7 +438,7 @@ export function sortCreditsByIndex(credits: Credit[]): Credit[] {
 /**
  * Validate a password to meet requirements
  *
- * @param password The password to validate
+ * @param {password} The password to validate
  * @return string|undefined 'weak' or 'strong'
  *
  * TODO: figuring out typing to allow (in index.d.ts):
@@ -469,7 +469,7 @@ export function validatePassword(password: string): string | undefined {
 /**
  * Validate an email address.
  *
- * @param email The email address to validate.
+ * @param {email} The email address to validate.
  * @returns True if the email address is valid, false otherwise.
  */
 export function validateEmail(email: string): boolean {
@@ -483,7 +483,7 @@ export function validateEmail(email: string): boolean {
 /**
  * Obscure an email address with asterisks, showing only the first few characters of the username.
  *
- * @param emailString The email address to obscure.
+ * @param {emailString} The email address to obscure.
  * @returns The obscured email address, or an error message if the input is not a valid email.
  */
 export function obscureEmail(emailString: string): string {
@@ -501,8 +501,8 @@ export function obscureEmail(emailString: string): string {
 /**
  * Check if a job date search filter range overlaps with any of the given conflict ranges.
  *
- * @param jobDates - The job schedule to check.
- * @param conflictRange - An array of conflict ranges to check against.
+ * @param {jobDates} - The job schedule to check.
+ * @param {conflictRange} - An array of conflict ranges to check against.
  * @returns True if the job schedule overlaps with any of the conflict ranges, false otherwise.
  */
 export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange): boolean {

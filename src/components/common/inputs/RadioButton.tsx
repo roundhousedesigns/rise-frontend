@@ -9,7 +9,7 @@ interface Props {
 
 export default function RadioButton({ value, children, ...props }: Props): ReactElement {
 	return (
-		<Radio value={value} variant='buttonStyle' position='relative' {...props}>
+		<Radio value={value} variant={'buttonStyle'} position={'relative'} {...props}>
 			{children}
 		</Radio>
 	);

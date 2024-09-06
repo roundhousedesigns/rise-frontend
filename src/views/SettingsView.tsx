@@ -29,15 +29,15 @@ export default function SettingsView() {
 	};
 
 	return (
-		<Container maxW='4xl' pl={0} mx={0}>
-			<SettingsSection title='Account'>
+		<Container maxW={'4xl'} pl={0} mx={0}>
+			<SettingsSection title={'Account'}>
 				<Flex gap={4}>
 					<Box>
-						<Button onClick={handleEmailClick} colorScheme='blue'>
+						<Button onClick={handleEmailClick} colorScheme={'blue'}>
 							Change your email address
 						</Button>
 						<SettingsModal
-							title='Change your account email'
+							title={'Change your account email'}
 							isOpen={isOpenEmail}
 							onClose={handleEmailClose}
 						>
@@ -46,11 +46,11 @@ export default function SettingsView() {
 					</Box>
 
 					<Box>
-						<Button onClick={handlePasswordClick} colorScheme='blue'>
+						<Button onClick={handlePasswordClick} colorScheme={'blue'}>
 							Change your password
 						</Button>
 						<SettingsModal
-							title='Change your password'
+							title={'Change your password'}
 							isOpen={isOpenPassword}
 							onClose={onClosePassword}
 						>
@@ -60,20 +60,20 @@ export default function SettingsView() {
 				</Flex>
 			</SettingsSection>
 
-			<SettingsSection title='Profile'>
+			<SettingsSection title={'Profile'}>
 				<ChangeProfileSlugView />
 			</SettingsSection>
 
-			<SettingsSection title='Options'>
-				<DisableProfileToggle showHelperText={true} size='lg' />
-				<DarkModeToggle showHelperText={true} size='lg' />
+			<SettingsSection title={'Options'}>
+				<DisableProfileToggle showHelperText={true} size={'lg'} />
+				<DarkModeToggle showHelperText={true} size={'lg'} />
 			</SettingsSection>
 
 			{/* TODO Setting: Close your account */}
-			<SettingsSection title='Close your account'>
+			<SettingsSection title={'Close your account'}>
 				<Text>
 					If you'd like to remove your account entirely, please email us at{' '}
-					<Link href='mailto:support@risetheatre.org' display='inline'>
+					<Link href={'mailto:support@risetheatre.org'} display={'inline'}>
 						support@risetheatre.org
 					</Link>{' '}
 					and let us know.

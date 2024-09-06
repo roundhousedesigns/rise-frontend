@@ -21,7 +21,7 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 	/**
 	 * Email validation.
 	 *
-	 * @param email
+	 * @param {email}
 	 * @returns
 	 */
 	const validateEmail = (email: string) => {
@@ -90,26 +90,26 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 
 	return (
 		<>
-			<Text mb={4} fontSize='md' lineHeight='normal'>
+			<Text mb={4} fontSize={'md'} lineHeight={'normal'}>
 				Your account email is <em>not</em> your profile's contact email. You can use a different
 				email address to show on your Profile page without changing your account email.{' '}
-				<Link as={RouterLink} to='/profile/edit' color='brand.blue'>
+				<Link as={RouterLink} to={'/profile/edit'} color={'brand.blue'}>
 					Edit your profile{' '}
 				</Link>{' '}
 				to set a new contact email.
 			</Text>
 			<Divider />
-			<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
-				<Flex gap={6} flexWrap='wrap'>
+			<chakra.form onSubmit={handleSubmit} mt={3} w={'full'}>
+				<Flex gap={6} flexWrap={'wrap'}>
 					<TextInput
 						value={newEmail}
-						name='newEmail'
-						id='newEmail'
-						variant='filled'
-						label='New email address'
+						name={'newEmail'}
+						id={'newEmail'}
+						variant={'filled'}
+						label={'New email address'}
 						placeholder={obscureEmail(userEmail)}
 						isRequired
-						flex='1'
+						flex={'1'}
 						onChange={handleEmailInputChange}
 						error={errorCode ? errorCode : ''}
 						inputProps={{
@@ -119,12 +119,12 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 					/>
 					<TextInput
 						value={password}
-						name='password'
-						id='password'
-						variant='filled'
-						label='Your password'
+						name={'password'}
+						id={'password'}
+						variant={'filled'}
+						label={'Your password'}
 						isRequired
-						flex='1'
+						flex={'1'}
 						onChange={handlePasswordInputChange}
 						inputProps={{
 							type: 'password',
@@ -133,8 +133,8 @@ export default function ChangeEmailView({ onSubmitCallback }: { onSubmitCallback
 				</Flex>
 				<Box mt={2}>
 					<Button
-						type='submit'
-						colorScheme='orange'
+						type={'submit'}
+						colorScheme={'orange'}
 						isDisabled={!emailIsValid || !password || submitLoading}
 						isLoading={submitLoading}
 					>

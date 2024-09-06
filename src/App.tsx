@@ -37,7 +37,7 @@ export default function App() {
 	return (
 		<SearchContextProvider>
 			<Box
-				minH='-webkit-fill-available'
+				minH={'-webkit-fill-available'}
 				_dark={{
 					bg: 'gray.900',
 					color: 'text.light',
@@ -48,9 +48,9 @@ export default function App() {
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Stack h='100vh' w='full' overflow='auto' justifyContent='space-between' gap={0}>
+					<Stack h={'100vh'} w={'full'} overflow={'auto'} justifyContent={'space-between'} gap={0}>
 						<Header ref={headerRef} />
-						<Box h='auto' w='full' paddingTop={`${headerHeight}px`}>
+						<Box h={'auto'} w={'full'} paddingTop={`${headerHeight}px`}>
 							<Main />
 						</Box>
 						<Spacer />

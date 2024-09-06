@@ -19,9 +19,9 @@ export default function DeleteCreditButton({ handleDeleteCredit, id }: Props): J
 	return (
 		<>
 			<TooltipIconButton
-				colorScheme='red'
+				colorScheme={'red'}
 				icon={<FiTrash2 />}
-				label='Delete Credit'
+				label={'Delete Credit'}
 				onClick={onOpen}
 			/>
 
@@ -29,7 +29,7 @@ export default function DeleteCreditButton({ handleDeleteCredit, id }: Props): J
 				isOpen={isOpen}
 				onClose={onClose}
 				confirmAction={handleDelete}
-				headerText='Delete Credit'
+				headerText={'Delete Credit'}
 				buttonsText={{ confirm: 'Delete' }}
 			>
 				Are you sure you want to permanently delete this credit?

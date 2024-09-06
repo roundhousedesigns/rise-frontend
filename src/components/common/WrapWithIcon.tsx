@@ -10,7 +10,7 @@ interface Props {
 
 export default function WrapWithIcon({ icon, iconProps, children, ...props }: Props): JSX.Element {
 	return (
-		<chakra.div display='flex' my={2} alignItems='center' {...props}>
+		<chakra.div display={'flex'} my={2} alignItems={'center'} {...props}>
 			{icon ? <Icon as={icon} mr={1} {...iconProps} /> : null}
 			{children}
 		</chakra.div>

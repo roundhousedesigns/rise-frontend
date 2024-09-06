@@ -7,18 +7,18 @@ export default function Help() {
 	const EmailButton = () => (
 		<Button
 			as={Link}
-			href='mailto:support@risetheatre.org'
-			colorScheme='red'
+			href={'mailto:support@risetheatre.org'}
+			colorScheme={'red'}
 			leftIcon={<FiFlag />}
-			size='sm'
+			size={'sm'}
 		>
 			Contact Support
 		</Button>
 	);
 
 	return (
-		<Page title='Help' actions={<EmailButton />}>
-			<ContentView postId='959' />
+		<Page title={'Help'} actions={<EmailButton />}>
+			<ContentView postId={'959'} />
 		</Page>
 	);
 }

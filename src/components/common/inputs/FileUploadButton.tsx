@@ -30,9 +30,9 @@ export default function FileUploadButton({
 		<Button
 			tabIndex={0}
 			leftIcon={icon ? icon : undefined}
-			size='md'
-			w='full'
-			colorScheme='green'
+			size={'md'}
+			w={'full'}
+			colorScheme={'green'}
 			opacity={loading ? 0.5 : 1}
 			cursor={loading ? 'progress' : 'pointer'}
 			isDisabled={loading}
@@ -43,7 +43,7 @@ export default function FileUploadButton({
 			<VisuallyHidden>
 				<input
 					ref={fileInputRef}
-					type='file'
+					type={'file'}
 					name={fieldName}
 					accept={accept}
 					onChange={onChange}

@@ -18,7 +18,7 @@ export default function CandidateList({ userIds, inOrder }: Props): JSX.Element 
 			) : error ? (
 				<ErrorAlert message={error.message} />
 			) : (
-				<List alignItems='left' h='auto' w='full' spacing={4}>
+				<List alignItems={'left'} h={'auto'} w={'full'} spacing={4}>
 					{inOrder
 						? userIds.map((id) => {
 								const candidate = preparedCandidates.find((candidate) => candidate.id === id);

@@ -53,8 +53,6 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 	};
 
 	const handleSave = (e: FormEvent) => {
-		// TODO Don't allow saving an existing title.
-
 		e.preventDefault();
 
 		saveSearchMutation({
@@ -83,7 +81,7 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 
 				toast({
 					title: 'Saved!',
-					description: 'You can recall your saved searches later from the Search drawer.',
+					description: 'This search has been saved for later.',
 					position: 'bottom',
 					status: 'success',
 					duration: 3000,
@@ -100,33 +98,38 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 				<ModalCloseButton />
 
 				<ModalBody pb={6}>
-					<Text fontSize='sm' mt={0}>
+					<Text fontSize={'sm'} mt={0}>
 						Give this search a short, descriptive name to easily run it again.
 					</Text>
 
-					<form id='rename-search' onSubmit={handleSave}>
+					<form id={'rename-search'} onSubmit={handleSave}>
 						<FormControl>
-							<FormLabel aria-label='Name' visibility='hidden' position='absolute' left='9000px'>
+							<FormLabel
+								aria-label={'Name'}
+								visibility={'hidden'}
+								position={'absolute'}
+								left={'9000px'}
+							>
 								Name
 							</FormLabel>
 							<TextInput
-								name='title'
-								placeholder='My search'
+								name={'title'}
+								placeholder={'My search'}
 								onChange={handleSavedSearchNameChange}
 								value={saveSearchFieldText}
 								ref={initialSaveModalRef}
 							/>
 						</FormControl>
 						<Button
-							colorScheme='blue'
+							colorScheme={'blue'}
 							mr={3}
-							type='submit'
+							type={'submit'}
 							isDisabled={saveLoading}
 							isLoading={saveLoading}
 						>
 							Save
 						</Button>
-						<Button onClick={handleEditOnClose} colorScheme='red' isDisabled={saveLoading}>
+						<Button onClick={handleEditOnClose} colorScheme={'red'} isDisabled={saveLoading}>
 							Cancel
 						</Button>
 					</form>

@@ -1,4 +1,5 @@
-import { ChangeEvent, ForwardedRef, forwardRef, ReactNode } from 'react';
+import { ChangeEvent, forwardRef, ReactNode, useCallback, useState, useEffect } from 'react';
+import { debounce } from 'lodash';
 import {
 	Flex,
 	FormControl,
@@ -12,7 +13,7 @@ import {
 	Wrap,
 } from '@chakra-ui/react';
 
-interface Props {
+interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
 	name: string;
 	label?: string | JSX.Element;
 	labelHidden?: boolean;
@@ -31,9 +32,10 @@ interface Props {
 	};
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
+	debounceTime?: number;
 }
 
-const TextInput = forwardRef(
+const TextInput = forwardRef<HTMLInputElement, Props>(
 	(
 		{
 			label,
@@ -51,9 +53,10 @@ const TextInput = forwardRef(
 			sizeToken = 'md',
 			inputProps,
 			onChange,
+			debounceTime,
 			...props
-		}: Props,
-		forwardedRef: ForwardedRef<HTMLInputElement>
+		},
+		forwardedRef
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
@@ -73,12 +76,37 @@ const TextInput = forwardRef(
 			return undefined;
 		};
 
+		const [localValue, setLocalValue] = useState(value);
+
+		const debouncedOnChange = useCallback(
+			debounce((value: string) => {
+				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+			}, debounceTime),
+			[onChange, name, debounceTime]
+		);
+
+		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+			const newValue = e.target.value;
+			setLocalValue(newValue);
+			if (debounceTime) {
+				debouncedOnChange(newValue);
+			} else {
+				onChange(e);
+			}
+		};
+
+		useEffect(() => {
+			return () => {
+				debouncedOnChange.cancel();
+			};
+		}, [debouncedOnChange]);
+
 		return (
-			<FormControl isRequired={isRequired} isInvalid={!!error} {...props}>
-				<InputGroup position='relative'>
+			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
+				<InputGroup position={'relative'}>
 					{leftElement && (
 						<InputLeftElement
-							pointerEvents='none'
+							pointerEvents={'none'}
 							_dark={{ color: 'text.dark' }}
 							boxSize={boxSize()}
 						>
@@ -87,16 +115,16 @@ const TextInput = forwardRef(
 					)}
 					<Input
 						variant={inputVariant}
-						focusBorderColor='brand.blue'
+						focusBorderColor={'brand.blue'}
 						placeholder={placeholder}
 						isDisabled={isDisabled}
 						px={3}
-						value={value}
+						value={localValue}
 						name={name}
 						ref={forwardedRef}
 						fontSize={sizeToken}
 						size={sizeToken}
-						onChange={onChange}
+						onChange={handleChange}
 						_dark={{
 							color: 'text.dark',
 						}}
@@ -104,23 +132,31 @@ const TextInput = forwardRef(
 						{...inputProps}
 					/>
 					{maxLength ? (
-						<Flex position='absolute' right={1} top={0} height='full' alignItems='flex-end'>
-							<Text m={0} variant='helperText' _dark={{ color: 'text.dark', opacity: 0.8 }}>
-								{`${value ? value.length : 0}/${maxLength}`}
+						<Flex position={'absolute'} right={1} top={0} height={'full'} alignItems={'flex-end'}>
+							<Text m={0} variant={'helperText'} _dark={{ color: 'text.dark', opacity: 0.8 }}>
+								{`${localValue ? localValue.length : 0}/${maxLength}`}
 							</Text>
 						</Flex>
 					) : null}
 				</InputGroup>
-				<Flex direction='row' pt={1} mb={0} alignItems='top' gap={4} justifyContent='space-between'>
+				<Flex
+					direction={'row'}
+					pt={1}
+					my={0}
+					alignItems={'top'}
+					gap={4}
+					justifyContent={'space-between'}
+				>
 					{label ? (
 						<FormLabel
 							ml={2}
-							w='full'
+							w={'full'}
 							mr={0}
 							my={0}
-							lineHeight='normal'
-							fontSize='sm'
-							flexGrow='1'
+							pt={0}
+							lineHeight={'normal'}
+							fontSize={'sm'}
+							flexGrow={'1'}
 							sx={{
 								visibility: labelHidden ? 'hidden' : 'visible',
 								position: labelHidden ? 'absolute' : 'initial',
@@ -130,21 +166,21 @@ const TextInput = forwardRef(
 						</FormLabel>
 					) : null}
 				</Flex>
-				<Wrap w='full' alignItems='flex-start' ml={2} opacity={0.9} fontStyle='italic'>
-					<FormHelperText my={0} flex='1' fontSize='xs' w='full'>
+				<Wrap w={'full'} alignItems={'flex-start'} ml={2} opacity={0.9} fontStyle={'italic'}>
+					<FormHelperText my={0} flex={'1'} fontSize={'xs'} w={'full'}>
 						<Flex
-							w='full'
-							justifyContent='space-between'
-							alignItems='center'
-							lineHeight='normal'
-							fontSize='xs'
+							w={'full'}
+							justifyContent={'space-between'}
+							alignItems={'center'}
+							lineHeight={'normal'}
+							fontSize={'xs'}
 						>
 							{error ? (
-								<FormErrorMessage fontWeight='bold' mt={0} flex='1' fontSize='xs'>
+								<FormErrorMessage fontWeight={'bold'} mt={0} flex={'1'} fontSize={'xs'}>
 									{error}
 								</FormErrorMessage>
 							) : helperText ? (
-								<Text m={0} variant='helperText'>
+								<Text m={0} variant={'helperText'}>
 									{helperText}
 								</Text>
 							) : null}

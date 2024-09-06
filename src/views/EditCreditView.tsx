@@ -1,8 +1,19 @@
-import { ChangeEvent, useContext, useEffect, useReducer, useState } from 'react';
-import { Divider, Flex, Heading, Text, Spinner, Stack, StackItem } from '@chakra-ui/react';
+import { ChangeEvent, memo, useContext, useEffect, useReducer, useState } from 'react';
+import {
+	Divider,
+	Flex,
+	Heading,
+	Text,
+	Spinner,
+	Stack,
+	StackItem,
+	useToast,
+	ButtonGroup,
+} from '@chakra-ui/react';
 import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
 import { sortWPItemsByName } from '@lib/utils';
+import { FiCheck, FiX } from 'react-icons/fi';
 import { EditProfileContext } from '@context/EditProfileContext';
 import usePositions from '@queries/usePositions';
 import useLazyPositions from '@queries/useLazyPositions';
@@ -11,8 +22,9 @@ import useViewer from '@queries/useViewer';
 import useUpdateCredit from '@mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
 import TextInput from '@common/inputs/TextInput';
+import RequiredAsterisk from '@common/RequiredAsterisk';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
-import EditCreditButtons from '@components/EditCreditButtons';
+import TooltipIconButton from '../components/common/inputs/TooltipIconButton';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -66,6 +78,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	const credit = editProfile.credits?.find((credit) => credit.id === creditId);
 	const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
 
+	const toast = useToast();
+
 	const {
 		updateCreditMutation,
 		results: { loading: updateCreditLoading },
@@ -102,10 +116,17 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	// Check that all required fields have been filled.
 	useEffect(() => {
-		const allFilled = requiredFields.every((field: string) => {
+		let allFilled = requiredFields.every((field: string) => {
 			if (!!editCredit[field]) return true;
-			else return false;
+
+			return false;
 		});
+
+		// Ensure a department is set.
+		allFilled = allFilled && selectedDepartmentIds.length > 0;
+
+		// Ensure a job is set.
+		allFilled = allFilled && selectedJobIds.length > 0;
 
 		setRequirementsMet(allFilled);
 	}, [editCredit]);
@@ -245,8 +266,26 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		updateCreditMutation(creditToUpdate, loggedInId)
 			.then(() => {
 				closeModal();
+
+				toast({
+					title: 'Saved!',
+					description: 'Your credit has been saved.',
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+					position: 'bottom',
+				});
 			})
 			.catch((err: any) => {
+				toast({
+					title: 'Oops!',
+					description: 'There was an error saving this credit.' + err,
+					status: 'error',
+					duration: 3000,
+					isClosable: true,
+					position: 'bottom',
+				});
+
 				console.error(err);
 			});
 	};
@@ -259,61 +298,83 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		});
 	};
 
+	const EditCreditButtons = memo(() => {
+		return (
+			<ButtonGroup size={'md'}>
+				<TooltipIconButton
+					type={'submit'}
+					isLoading={updateCreditLoading}
+					onClick={handleSubmit}
+					icon={<FiCheck />}
+					label={'Save'}
+					colorScheme={'green'}
+					isDisabled={!requirementsMet || updateCreditLoading}
+				/>
+				<TooltipIconButton
+					icon={<FiX />}
+					label={'Cancel changes'}
+					colorScheme={'red'}
+					onClick={handleCancel}
+					isDisabled={updateCreditLoading}
+				/>
+			</ButtonGroup>
+		);
+	});
+
 	return (
 		<>
-			<Flex flex='1' justifyContent='space-between' py={2} mb={2}>
-				<Heading as='h3' size='lg' lineHeight='base'>
+			<Flex flex={'1'} justifyContent={'space-between'} py={2} mb={2}>
+				<Heading as={'h3'} size={'lg'} lineHeight={'base'}>
 					Edit Credit
 				</Heading>
-				<EditCreditButtons
-					handleSubmit={handleSubmit}
-					handleCancel={handleCancel}
-					isLoading={updateCreditLoading}
-					requirementsMet={requirementsMet}
-				/>
+				<EditCreditButtons />
 			</Flex>
 
 			<Flex gap={4}>
 				<TextInput
-					name='title'
-					label='Company/Production Name'
+					name={'title'}
+					label={'Company/Production Name'}
 					value={title}
 					isRequired
 					onChange={handleInputChange}
+					debounceTime={300}
 				/>
 
 				<TextInput
-					name='jobTitle'
-					label='Job/Position Title'
+					name={'jobTitle'}
+					label={'Job/Position Title'}
 					isRequired
 					value={jobTitle}
 					onChange={handleInputChange}
+					debounceTime={300}
 				/>
 			</Flex>
 
-			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap' mt={1}>
+			<Flex justifyContent={'space-between'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
 				<TextInput
-					name='workStart'
-					label='Start year'
+					name={'workStart'}
+					label={'Start year'}
 					isRequired
 					value={workStart}
 					onChange={handleInputChange}
-					flex='1'
+					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<TextInput
-					name='workEnd'
-					label='End year'
+					name={'workEnd'}
+					label={'End year'}
 					value={!workCurrent ? workEnd : ''}
 					isDisabled={workCurrent}
 					onChange={handleInputChange}
-					flex='1'
+					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<ProfileRadioGroup
 					defaultValue={workCurrent ? 'true' : 'false'}
-					name='workCurrent'
-					label='Currently working here'
+					name={'workCurrent'}
+					label={'Currently working here'}
 					items={[
 						{ label: 'Yes', value: 'true' },
 						{ label: 'No', value: 'false' },
@@ -322,30 +383,32 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				/>
 			</Flex>
 
-			<Flex justifyContent='space-between' w='full' gap={4} flexWrap='wrap' mt={1}>
+			<Flex justifyContent={'space-between'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
 				<TextInput
-					name='venue'
-					label='Venue'
+					name={'venue'}
+					label={'Venue'}
 					value={venue}
 					onChange={handleInputChange}
 					isRequired
-					flex='1'
+					flex={'1'}
+					debounceTime={300}
 				/>
 
 				<TextInput
-					name='jobLocation'
-					label='Job Location'
+					name={'jobLocation'}
+					label={'Job Location'}
 					value={jobLocation}
 					isRequired
 					onChange={handleInputChange}
-					flex='1'
+					flex={'1'}
+					debounceTime={300}
 				/>
 			</Flex>
 
-			<Flex justifyContent='flex-start' w='full' gap={4} flexWrap='wrap' mt={1}>
+			<Flex justifyContent={'flex-start'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
 				<ProfileRadioGroup
 					defaultValue={intern ? 'true' : 'false'}
-					name='intern'
+					name={'intern'}
 					label={`This ${workCurrent ? 'is' : 'was'} an internship`}
 					items={[
 						{ label: 'Yes', value: 'true' },
@@ -356,7 +419,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 				<ProfileRadioGroup
 					defaultValue={fellow ? 'true' : 'false'}
-					name='fellow'
+					name={'fellow'}
 					label={`This ${workCurrent ? 'is' : 'was'} a fellowship`}
 					items={[
 						{ label: 'Yes', value: 'true' },
@@ -368,15 +431,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 			<Divider />
 
-			<Stack direction='column' spacing={6} fontSize='md'>
+			<Stack direction={'column'} spacing={6} fontSize={'md'}>
 				{/* TODO Make this required */}
 				<StackItem>
-					<Heading as='h4' variant='contentTitle'>
+					<Heading as={'h4'} variant={'contentTitle'}>
 						Department
+						<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
 					</Heading>
 					<Text>Select all department(s) you worked under.</Text>
 					<ProfileCheckboxGroup
-						name='departments'
+						name={'departments'}
 						items={allDepartments}
 						checked={
 							selectedDepartmentIds
@@ -388,13 +452,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				</StackItem>
 				{selectedDepartmentIds.length && !jobsLoading ? (
 					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
+						<Heading as={'h4'} variant={'contentTitle'}>
 							Position
+							<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
 						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>
 							<ProfileCheckboxGroup
-								name='jobs'
+								name={'jobs'}
 								items={jobs}
 								checked={
 									selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []
@@ -409,13 +474,13 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 				{selectedJobIds.length && !relatedSkillsLoading ? (
 					<StackItem>
-						<Heading as='h4' variant='contentTitle'>
+						<Heading as={'h4'} variant={'contentTitle'}>
 							Skills
 						</Heading>
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
-								name='skills'
+								name={'skills'}
 								items={skills}
 								checked={
 									selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []
@@ -429,13 +494,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				) : null}
 			</Stack>
 
-			<Flex justifyContent='flex-end' mt={4} mb={0}>
-				<EditCreditButtons
-					handleSubmit={handleSubmit}
-					handleCancel={handleCancel}
-					isLoading={updateCreditLoading}
-					requirementsMet={requirementsMet}
-				/>
+			<Flex justifyContent={'flex-end'} mt={4} mb={0}>
+				<EditCreditButtons />
 			</Flex>
 		</>
 	);

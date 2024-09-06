@@ -55,7 +55,7 @@ export default function DashboardView() {
 					</Heading>
 					<List spacing={6} mt={4}>
 						{notices.map((notice: any) => (
-							<ListItem as={Card} key={notice.id} my={0} p={0}>
+							<ListItem key={notice.id} my={0} p={0}>
 								<ShortPost post={notice} />
 							</ListItem>
 						))}

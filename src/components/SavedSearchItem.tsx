@@ -185,7 +185,7 @@ export default function SavedSearchItem({
 
 				toast({
 					title: 'Saved!',
-					description: 'You can recall your saved searches later from the Search drawer.',
+					description: 'This search has been saved for later.',
 					position: 'bottom',
 					status: 'success',
 					duration: 3000,
@@ -223,22 +223,22 @@ export default function SavedSearchItem({
 
 	return terms && terms.length > 0 ? (
 		<Card p={0} my={0} {...props}>
-			<Flex justifyContent='space-between'>
-				<Stack w='auto' alignItems='space-between' p={2}>
+			<Flex justifyContent={'space-between'}>
+				<Stack w={'auto'} alignItems={'space-between'} p={2}>
 					<StackItem>
-						<Flex alignItems='flex-end'>
+						<Flex alignItems={'flex-end'}>
 							<LinkWithIcon
 								onClick={handleEditTitleClick}
 								icon={FiEdit2}
-								fontSize='lg'
+								fontSize={'lg'}
 								mb={1}
 								flex={1}
-								iconSide='left'
-								color='inherit'
-								borderBottomWidth='2px'
-								borderBottomStyle='dotted'
-								textDecoration='none !important'
-								transition='border 150ms ease'
+								iconSide={'left'}
+								color={'inherit'}
+								borderBottomWidth={'2px'}
+								borderBottomStyle={'dotted'}
+								textDecoration={'none !important'}
+								transition={'border 150ms ease'}
 								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
 								_light={{
 									borderBottomColor: 'gray.300',
@@ -253,49 +253,49 @@ export default function SavedSearchItem({
 								{title ? (
 									title
 								) : (
-									<Text as='span' opacity='0.5' lineHeight='normal'>
+									<Text as={'span'} opacity={'0.5'} lineHeight={'normal'}>
 										Save this search
 									</Text>
 								)}
 							</LinkWithIcon>
 						</Flex>
 					</StackItem>
-					<StackItem as={Flex} w='full' justifyContent='space-between' flexWrap='wrap' gap={6}>
+					<StackItem as={Flex} w={'full'} justifyContent={'space-between'} flexWrap={'wrap'} gap={6}>
 						<Skeleton isLoaded={!!terms.length}>
-							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
+							<SearchParamTags termIds={termIds} termItems={terms} flex={'1'} />
 						</Skeleton>
 					</StackItem>
 				</Stack>
 				{id ? (
 					<Box p={2}>
 						{showControls ? (
-							<ButtonGroup size='sm'>
+							<ButtonGroup size={'sm'}>
 								<TooltipIconButton
 									icon={<FiSearch />}
-									label='Load these filters'
-									colorScheme='green'
+									label={'Load these filters'}
+									colorScheme={'green'}
 									onClick={handleSearchClick}
 								>
 									Search
 								</TooltipIconButton>
 								<TooltipIconButton
 									icon={<FiDelete />}
-									label='Delete this search'
-									colorScheme='red'
+									label={'Delete this search'}
+									colorScheme={'red'}
 									onClick={deleteOnOpen}
 								>
 									Delete
 								</TooltipIconButton>
 							</ButtonGroup>
 						) : savedSearchFiltersChanged ? (
-							<Stack textAlign='center'>
+							<Stack textAlign={'center'}>
 								<Button
 									colorScheme={'yellow'}
 									leftIcon={<FiSave />}
-									aria-label='Update saved filters'
-									title='Update saved filters'
+									aria-label={'Update saved filters'}
+									title={'Update saved filters'}
 									onClick={handleUpdateClick}
-									size='sm'
+									size={'sm'}
 									isLoading={saveLoading && whichButtonClicked === 'update'}
 									isDisabled={saveLoading}
 								>
@@ -304,10 +304,10 @@ export default function SavedSearchItem({
 								<Button
 									colorScheme={'blue'}
 									leftIcon={<FiPlusCircle />}
-									aria-label='Update saved filters'
-									title='Update saved filters'
+									aria-label={'Update saved filters'}
+									title={'Update saved filters'}
 									onClick={handleSaveNewSearchClick}
-									size='sm'
+									size={'sm'}
 									isLoading={saveLoading && whichButtonClicked === 'new'}
 									isDisabled={saveLoading}
 								>
@@ -335,7 +335,7 @@ export default function SavedSearchItem({
 				confirmAction={handleDelete}
 				isOpen={deleteIsOpen}
 				onClose={deleteOnClose}
-				headerText='Delete this search'
+				headerText={'Delete this search'}
 			>
 				Are you sure you want to delete this saved search?
 			</ConfirmActionDialog>

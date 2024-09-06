@@ -20,13 +20,13 @@ const InlineIconText = ({ text, icon, description, query, iconProps, ...props }:
 		return (
 			<IconButton
 				icon={icon}
-				variant='sampleIconButton'
-				title='Search'
+				variant={'sampleIconButton'}
+				title={'Search'}
 				mx={1}
-				position='relative'
-				bottom='2px'
+				position={'relative'}
+				bottom={'2px'}
 				aria-label={`${description} icon`}
-				bgColor='blackAlpha.300'
+				bgColor={'blackAlpha.300'}
 				isDisabled
 				{...iconProps}
 			/>
@@ -37,7 +37,7 @@ const InlineIconText = ({ text, icon, description, query, iconProps, ...props }:
 	const parts = text.split(regex);
 
 	return (
-		<Text fontSize='xl' my={0} display='inline' lineHeight='none' {...props}>
+		<Text fontSize={'xl'} my={0} display={'inline'} lineHeight={'none'} {...props}>
 			{parts.map((part, index) => (
 				<Fragment key={index}>
 					{part.toLowerCase() === query.toLowerCase() ? <InlineIcon /> : part}

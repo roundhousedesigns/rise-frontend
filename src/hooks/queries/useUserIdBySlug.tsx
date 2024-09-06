@@ -14,7 +14,7 @@ const QUERY_USER_ID = gql`
 /**
  * Query to retrieve a User ID by its slug (meta: `user_slug`)
  *
- * @param id User ID
+ * @param {id} User ID
  * @returns A tuple of a prepared data object and a query result object.
  */
 const useUserIdBySlug = (slug: string): [number | null, any] => {

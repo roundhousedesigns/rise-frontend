@@ -3,7 +3,22 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.91]
+## \[1.1.10-dev] - Unreleased
+
+- Add: Success and error toasts for editing credits.
+- Add: `<RequiredAsterisk>` component.
+- Fix: Form text field spacing.
+- Fix: Toast typo.
+- Improve: <TextInput> and <TextareaInput> debounce added for significant performance increase.
+- Improve: Move EditCreditButtons into EditCreditView for simplicity.
+- Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
+- Improve: Make Department and Job required on credit edit modal.
+
+Inactive:
+
+- Add: Dashboard grid layout with widgets.
+- Add: Profile completion %.
+- Add: Widgets: Mini Profile, Saved Searches, Following, News.
 
 ## \[1.1.9 - 1.1.91] - 2024-07-20
 
@@ -76,7 +91,7 @@ with 1.0.0beta.
 ## \[1.1.3] - 2024-03-15
 
 - Fix: refetchQuery on QUERY_PROFILE now using same variables and fires properly.
-Allowed removal of EditProfileContext credit update/delete actions.
+  Allowed removal of EditProfileContext credit update/delete actions.
 - Change: Hide "Get Help" button on dashboard.
 - Add: Alerts for "no credits" and "profile hidden" messages.
 
@@ -127,12 +142,12 @@ Allowed removal of EditProfileContext credit update/delete actions.
 - Improve: Settings page layout
 - Added: Saved searches and search history
 - Improve: WrapWithIcon -> IconContent. Text not required, all wrapped in a flexbox
-container.
+  container.
 
 ## \[1.0.8-hotfix1] - 2023-08-17
 
 - Fixed/Improved: Credits not updating. Fix involved more overt use of departments
-and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
+  and jobs, instead of relying on the `position` term. Concurrent backend fix to match.
 - Fixed: LinkedIn social links now reference full URL instead of handle
 
 ## \[1.0.8] - 2023-08-09
@@ -141,8 +156,8 @@ and jobs, instead of relying on the `position` term. Concurrent backend fix to m
 - Feature: Dashboard updates/notices feed
 - Feature: Basic password complexity enforcement
 - Fixed: Deselection of a department also unselects any tied jobs and skills that
-are no longer tied to a selected department. Same applies to deselection of a job
-with tied skills. (Thanks @ari-denary)
+  are no longer tied to a selected department. Same applies to deselection of a job
+  with tied skills. (Thanks @ari-denary)
 - Improved: Added common `ConfirmActionDialog` component for confirmation dialogs
 - Improved: Profile Share icon moved into Card component.
 - Improved: Menu icon standout color
@@ -156,18 +171,18 @@ with tied skills. (Thanks @ari-denary)
 - Added: Jump to Credits button (Edit Profile)
 - Improved: Cache policy on related skills
 - Improved: Changed website URL display to "View Website" to handle for overlong
-layout-breaking links
+  layout-breaking links
 - Improved: Minor styling tweaks
 - Improved: Credit Save/Cancel buttons no longer re-rendering unncessarily (flashing)
 - Improved: Credits saved without `position` terms now show a reminder to add on
-the Edit screen
+  the Edit screen
 - Improved: Combined error handler hooks into one `useErrorMessage` hook
 - Improved: deprecated.ts file to track deprecated code
 
 ## \[1.0.6] - 2023-06-12 - 2023-06-13
 
 - Improved: Mobile search UI - scroll to Jobs after selecting Department to indicate
-user should continue to scroll
+  user should continue to scroll
 - Improved: Unified style of React event, element, and type imports
 - Added: Profile slug editing
 - Fixed: Clear resume button restored
@@ -179,7 +194,7 @@ user should continue to scroll
 
 - Official Launcherino!
 - Improved: Accessibility - Refactored CheckboxButton and RadioButton and respective
-groups to be simpler and more accessible
+  groups to be simpler and more accessible
 - Improved: Styling
 - Improved: Mobile layouts and responsiveness
 
@@ -214,7 +229,7 @@ groups to be simpler and more accessible
 - Added: Search by Name
 - Added: ContentView component for displaying WP content
 - Fixed: Search results now return a much longer list of results (pre-pagination
-support)
+  support)
 - Changed: Support email added to footer
 
 ## \[1.0.1beta] - 2023-05-16

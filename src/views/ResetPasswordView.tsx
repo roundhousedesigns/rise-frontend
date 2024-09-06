@@ -92,25 +92,25 @@ export default function ResetPasswordView({ token, login }: Props) {
 	};
 
 	return (
-		<Container bg='whiteAlpha.500' borderRadius='lg' w='full'>
-			<Heading as='h3' size='lg'>
+		<Container bg={'whiteAlpha.500'} borderRadius={'lg'} w={'full'}>
+			<Heading as={'h3'} size={'lg'}>
 				Choose your new password.
 			</Heading>
 
 			<Box mt={2}>
 				<form onSubmit={handleSubmit}>
-					<Stack direction='row' spacing={6}>
+					<Stack direction={'row'} spacing={6}>
 						<TextInput
 							value={newPassword}
-							name='newPassword'
-							id='newPassword'
-							variant='filled'
+							name={'newPassword'}
+							id={'newPassword'}
+							variant={'filled'}
 							label={
 								<>
 									Password{' '}
 									<Tooltip
 										hasArrow
-										label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+										label={'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'}
 									>
 										<chakra.span>
 											<Icon as={FiHelpCircle} />
@@ -128,11 +128,11 @@ export default function ResetPasswordView({ token, login }: Props) {
 						/>
 						<TextInput
 							value={confirmPassword}
-							name='confirmPassword'
-							id='confirmPassword'
-							type='password'
-							variant='filled'
-							label='Confirm your password'
+							name={'confirmPassword'}
+							id={'confirmPassword'}
+							type={'password'}
+							variant={'filled'}
+							label={'Confirm your password'}
 							isRequired
 							onChange={handleInputChange}
 							inputProps={{
@@ -143,8 +143,8 @@ export default function ResetPasswordView({ token, login }: Props) {
 					</Stack>
 					<Box mt={4}>
 						<Button
-							type='submit'
-							colorScheme='orange'
+							type={'submit'}
+							colorScheme={'orange'}
 							isDisabled={!formIsValid || submitLoading}
 							isLoading={!!submitLoading}
 						>

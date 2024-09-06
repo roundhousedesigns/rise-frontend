@@ -7,6 +7,7 @@ import {
 	validateProfileSlug,
 } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
+import useUserProfile from '@queries/useUserProfile';
 
 /**
  * Custom hooks.
@@ -125,7 +126,7 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 /**
  * Get the URL for a user profile.
  *
- * @param slug The user profile slug.
+ * @param {slug} The user profile slug.
  * @returns The user profile URL.
  */
 export const useProfileUrl = (slug: string): string => {
@@ -136,7 +137,7 @@ export const useProfileUrl = (slug: string): string => {
 /**
  * Validate a user profile slug.
  *
- * @param slug The user profile slug.
+ * @param {slug} The user profile slug.
  * @return True if the slug is valid.
  */
 export const useValidateProfileSlug = (slug: string): boolean => validateProfileSlug(slug);
@@ -144,7 +145,7 @@ export const useValidateProfileSlug = (slug: string): boolean => validateProfile
 /**
  * Validate a password to meet requirements
  *
- * @param password The password to validate
+ * @param {password} The password to validate
  * @return string|undefined 'weak' or 'strong'
  */
 export const useValidatePassword = (password: string): string | undefined =>
@@ -153,7 +154,7 @@ export const useValidatePassword = (password: string): string | undefined =>
 /**
  * Validate an email address.
  *
- * @param email The email address.
+ * @param {email} The email address.
  * @return True if the email address is valid.
  */
 export const useValidateEmail = (email: string): boolean => validateEmail(email);
@@ -173,4 +174,77 @@ export const useSavedSearchFiltersChanged = (): boolean => {
 	} = useContext(SearchContext);
 
 	return !searchFilterSetsAreEqual(currentFilterSet, savedSearchFilterSet);
+};
+
+/**
+ * Calculates the completion percentage of a user's profile.
+ *
+ * @param {number} profileId - The ID of the user's profile to calculate completion for.
+ * @return {number} The completion percentage of the user's profile, as a whole number between 0 and 100.
+ *
+ * @todo Unimplemented.
+ */
+export const useProfileCompletion = (profileId: number | null): number => {
+	const [profile] = useUserProfile(profileId);
+
+	// Field weights
+	const fieldsToCalculate = {
+		selfTitle: 10,
+		email: 10,
+		image: 10,
+		homebase: 10,
+		pronouns: 5,
+		description: 10,
+		resume: 15,
+		education: 5,
+		locations: 10,
+		socials: 5,
+		website: 5,
+		unions: 5,
+		experienceLevels: 5,
+		credits: 30,
+		// firstName: 1,
+		// lastName: 1,
+		// phone: 1,
+		// willTravel: 1,
+		// willTour: 1,
+		// partnerDirectories: 1,
+		// multilingual: 1,
+		// languages: 1,
+		// genderIdentities: 1,
+		// racialIdentities,
+		// personalIdentities,
+		// mediaVideo1: 1,
+		// mediaVideo2: 1,
+		// mediaImage1: 1,
+		// mediaImage2: 1,
+		// mediaImage3: 1,
+		// mediaImage4: 1,
+		// mediaImage5: 1,
+		// mediaImage6: 1,
+	};
+
+	// Add up the total weights for each field
+	const totalWeight = Object.values(fieldsToCalculate).reduce((a, b) => a + b, 0);
+
+	// Calculate the profile completion percentage. If a field's value is truthy, add the weight. If a field's value is an object, only add the weight if at least one of its properties is truthy.
+	let profileCompletion = 0;
+
+	if (!profile) {
+		return 0;
+	}
+
+	// Calculate the weight.
+	for (const [field, weight] of Object.entries(fieldsToCalculate)) {
+		if (profile[field] && typeof profile[field] === 'object') {
+			if (Object.values(profile[field]).some((value) => value)) {
+				profileCompletion += weight;
+			}
+		} else if (profile[field]) {
+			profileCompletion += weight;
+		}
+	}
+
+	// Divide the score by the total weight, multiplied by 100, to get the profile completion percentage as a decimal. Round to the nearest integer.
+	return Math.round((profileCompletion / totalWeight) * 100);
 };

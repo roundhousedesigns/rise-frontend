@@ -13,31 +13,31 @@ interface Props {
 export default function Page({ title, description, actions, loading, children, ...props }: Props) {
 	return loading ? (
 		<Center>
-			<Spinner position='relative' top={12} />
+			<Spinner position={'relative'} top={12} />
 		</Center>
 	) : (
 		<Box mt={3} {...props}>
-			<Flex justifyContent='space-between' alignItems='flex-end' gap={2} flexWrap='wrap'>
-				{title ? (
-					<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
-						{title}
-					</Heading>
-				) : (
-					false
-				)}
+			{!!title || !!actions ? (
+				<Flex justifyContent={'space-between'} alignItems={'flex-end'} gap={2} flexWrap={'wrap'}>
+					{title ? (
+						<Heading variant={'pageTitle'} as={'h1'} my={0} lineHeight={'normal'}>
+							{title}
+						</Heading>
+					) : null}
 
-				<Flex flexWrap='wrap' gap={2} justifyContent='flex-end'>
-					{actions ? actions : false}
+					{actions ? (
+						<Flex flexWrap={'wrap'} gap={2} justifyContent={'flex-end'}>
+							{actions}
+						</Flex>
+					) : null}
 				</Flex>
-			</Flex>
+			) : null}
 
 			{description ? (
-				<Text as={Box} ml={1} fontSize='sm'>
+				<Text as={Box} ml={1} fontSize={'sm'}>
 					{description}
 				</Text>
-			) : (
-				false
-			)}
+			) : null}
 
 			{children}
 		</Box>

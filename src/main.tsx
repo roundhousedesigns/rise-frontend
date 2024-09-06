@@ -13,13 +13,13 @@ import App from '@/App';
 
 import reportWebVitals from '@/reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-
 // Env vars
 const { VITE_BACKEND_URL, VITE_GA4_ID, VITE_RECAPTCHA_SITE_KEY } = import.meta.env;
 
 // Initialize Google Analytics
 if (VITE_GA4_ID) ReactGA.initialize(VITE_GA4_ID);
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 /**
  * Apollo client.

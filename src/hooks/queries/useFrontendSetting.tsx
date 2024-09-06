@@ -14,7 +14,7 @@ const QUERY_FRONTEND_SETTING = gql`
 /**
  * Query to retrieve a User ID by its slug (meta: `user_slug`)
  *
- * @param key An option value. Do not prepend with `<pod_name>_`.
+ * @param {key} An option value. Do not prepend with `<pod_name>_`.
  * @returns A tuple of a prepared data object and a query result object.
  */
 const useFrontendSetting = (key: string) => {
