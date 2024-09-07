@@ -5,6 +5,12 @@ with 1.0.0beta.
 
 ## \[1.1.11-dashWidgetView] - Unreleased
 
+- Add: Dashboard grid layout with widgets.
+- Add: Profile completion %.
+- Add: Widgets: Mini Profile, Saved Searches, Following, News.
+
+## \[1.1.10] - 2024-09-06
+
 - Add: Success and error toasts for editing credits.
 - Add: `<RequiredAsterisk>` component.
 - Fix: Form text field spacing.
@@ -13,12 +19,6 @@ with 1.0.0beta.
 - Improve: Move EditCreditButtons into EditCreditView for simplicity.
 - Improve: Remove redirects from LoginView, since `<LoggedIn>` component takes care of view control.
 - Improve: Make Department and Job required on credit edit modal.
-
-Inactive:
-
-- Add: Dashboard grid layout with widgets.
-- Add: Profile completion %.
-- Add: Widgets: Mini Profile, Saved Searches, Following, News.
 
 ## \[1.1.9 - 1.1.91] - 2024-07-20
 

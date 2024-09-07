@@ -5,7 +5,6 @@ import {
 	ListItem,
 	Grid,
 	GridItem,
-	Box,
 	Stack,
 	Spinner,
 } from '@chakra-ui/react';
