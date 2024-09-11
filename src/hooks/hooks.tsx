@@ -86,12 +86,12 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		// Password Errors
 		// case 'empty_password':
 		// 	return 'Please enter your password.';
-		case 'incorrect_password':
-			return 'Incorrect password.';
-		case 'password_mismatch':
-			return 'Passwords do not match.';
-		case 'password_too_weak':
-			return 'Please make sure your password contains at least one lowercase letter, one uppercase letter, one number, and one special character.';
+		// case 'incorrect_password':
+		// 	return 'Incorrect password.';
+		// case 'password_mismatch':
+		// 	return 'Passwords do not match.';
+		// case 'password_too_weak':
+		// 	return 'Please make sure your password contains at least one lowercase letter, one uppercase letter, one number, and one special character.';
 
 		// Registration errors
 		// case 'existing_user_login':
@@ -100,20 +100,20 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 		// 	return 'Something went wrong. Please try again.';
 
 		// ReCAPTCHA errors
-		case 'recaptcha_error':
-		case 'no_recaptcha_token':
-		case 'bad_recaptcha_token':
-			return 'reCAPTCHA error.';
+		// case 'recaptcha_error':
+		// case 'no_recaptcha_token':
+		// case 'bad_recaptcha_token':
+		// 	return 'reCAPTCHA error.';
 
 		// Change profile slug errors
-		case 'user_not_found':
-			return 'There was an error updating your profile URL. Please contact support.';
-		case 'user_not_authorized':
-			return 'You do not appear to be logged in.';
-		case 'user_slug_not_unique':
-			return 'This alias is already in use. Please choose another.';
-		case 'user_slug_invalid':
-			return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
+		// case 'user_not_found':
+		// 	return 'There was an error updating your profile URL. Please contact support.';
+		// case 'user_not_authorized':
+		// 	return 'You do not appear to be logged in.';
+		// case 'user_slug_not_unique':
+		// 	return 'This alias is already in use. Please choose another.';
+		// case 'user_slug_invalid':
+		// 	return 'Only letters, numbers, dashes (-) and underscores (_) are allowed.';
 
 		// Profile Edit errors
 		case 'conflict_range_overlap':

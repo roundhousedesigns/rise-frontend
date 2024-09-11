@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-
 import TextInput from '@common/inputs/TextInput';
 import useSendPasswordResetEmail from '@mutations/useSendPasswordResetEmail';
 import { handleReCaptchaVerify } from '@lib/utils';
@@ -15,23 +14,14 @@ const validationSchema = Yup.object().shape({
 export default function LostPasswordView() {
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const {
-		sendPasswordResetEmailMutation,
-		results: { loading: submitLoading },
-	} = useSendPasswordResetEmail();
+	const { sendPasswordResetEmailMutation } = useSendPasswordResetEmail();
 
 	const toast = useToast();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		values: { username: string },
-		{
-			setSubmitting,
-			setFieldError,
-		}: {
-			setSubmitting: (isSubmitting: boolean) => void;
-			setFieldError: (field: string, message: string) => void;
-		}
+		{ setSubmitting, setFieldError }: FormikHelpers<{ username: string }>
 	) => {
 		const token = await handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha });
 		if (!token) {
@@ -41,18 +31,23 @@ export default function LostPasswordView() {
 		}
 
 		try {
-			await sendPasswordResetEmailMutation({ username: values.username, reCaptchaToken: token });
-			toast({
-				title: 'Email sent',
-				description: 'Please check your inbox for reset instructions.',
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-				position: 'bottom',
+			await sendPasswordResetEmailMutation({
+				username: values.username,
+				reCaptchaToken: token,
+			}).finally(() => {
+				toast({
+					title: 'Email sent!',
+					description: 'Please check your inbox for password reset instructions.',
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+					position: 'bottom',
+				});
+				navigate('/');
 			});
-			navigate('/');
 		} catch (error: any) {
-			setFieldError('username', 'An error occurred. Please try again.');
+			// Don't show the error to the user.
+			// setFieldError('username', 'An error occurred. Please try again.');
 		}
 		setSubmitting(false);
 	};

@@ -1,26 +1,22 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import {
-	Button,
-	Box,
-	Flex,
-	Text,
-	useClipboard,
-	useToast,
-	Heading,
-	Wrap,
-} from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Button, Box, Flex, Text, useClipboard, useToast, Heading, Wrap } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
-import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
+import { Formik, Form, Field, FieldInputProps, FormikHelpers } from 'formik';
+import * as Yup from 'yup';
+import { useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
 import useViewer from '@queries/useViewer';
 import useChangeProfileSlug from '@mutations/useChangeProfileSlug';
 import TextInput from '@common/inputs/TextInput';
 
-export default function ChangeProfileUrlView() {
+const validationSchema = Yup.object().shape({
+	slug: Yup.string()
+		.matches(/^[a-zA-Z0-9-_]+$/, 'Only letters, numbers, dashes, and underscores are allowed')
+		.required('Handle is required'),
+});
+
+export default function ChangeProfileSlugView() {
 	const [{ loggedInId: userId, loggedInSlug }] = useViewer();
 
-	const [slug, setSlug] = useState<string>('');
-	const [formIsValid, setFormIsValid] = useState<boolean>(false);
-	const [errorCode, setErrorCode] = useState<string>('');
 	const { onCopy, setValue: setCopyValue, hasCopied } = useClipboard('');
 
 	const profileUrl = useProfileUrl(loggedInSlug);
@@ -31,128 +27,118 @@ export default function ChangeProfileUrlView() {
 		results: { loading: submitLoading },
 	} = useChangeProfileSlug();
 
-	const newSlugIsClean = useValidateProfileSlug(slug);
-	const errorMessage = useErrorMessage(errorCode);
-
-	const hasEditedSlug = slug !== loggedInSlug;
-
-	// Whenever the loggedInSlug changes, update slug
-	useEffect(() => {
-		setSlug(loggedInSlug);
-	}, [loggedInSlug]);
-
-	// Check if form is valid
-	useEffect(() => {
-		if (!slug) return;
-
-		if (!newSlugIsClean) {
-			setErrorCode('user_slug_invalid');
-			setFormIsValid(false);
-			return;
-		}
-
-		setFormIsValid(true);
-		setErrorCode('');
-
-		return () => {
-			setFormIsValid(false);
-		};
-	}, [slug]);
+	const newSlugIsClean = useValidateProfileSlug;
 
 	// Set the copy value to the profile URL
 	useEffect(() => {
 		setCopyValue(profileUrl);
-	}, [profileUrl]);
+	}, [profileUrl, setCopyValue]);
 
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setSlug(e.target.value);
-	};
+	const handleSubmit = async (
+		values: { slug: string },
+		{ setSubmitting, setFieldError }: FormikHelpers<{ slug: string }>
+	) => {
+		if (!loggedInSlug || !values.slug) return;
 
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		if (!loggedInSlug || !slug) return;
+		if (!newSlugIsClean(values.slug)) {
+			setFieldError('slug', 'Invalid handle');
+			setSubmitting(false);
+			return;
+		}
 
-		changeProfileSlugMutation(userId, slug)
-			.then((res) => {
-				setSlug(res.data.changeProfileSlug.slug);
-
-				toast({
-					title: 'Updated!',
-					position: 'bottom',
-					description: 'Your handle has been updated.',
-					status: 'success',
-					duration: 3000,
-					isClosable: true,
-				});
-
-				setErrorCode('');
-			})
-			.catch((errors: { message: string }) => setErrorCode(errors.message));
+		try {
+			await changeProfileSlugMutation(userId, values.slug);
+			toast({
+				title: 'Updated!',
+				position: 'bottom',
+				description: 'Your handle has been updated.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+		} catch (error: any) {
+			setFieldError('slug', error.message);
+		}
+		setSubmitting(false);
 	};
 
 	return (
 		<Box borderRadius={'lg'} w={'full'}>
 			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
 				<Box flex={'1 0 auto'}>
-					<form onSubmit={handleSubmit}>
-						<Heading variant={'contentSubtitle'}>Handle</Heading>
-						<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
-						<Wrap>
-							<TextInput
-								value={slug}
-								name={'slug'}
-								id={'slug'}
-								maxW={'300px'}
-								label={'New profile tag'}
-								labelHidden
-								helperText={'Letters, numbers, dashes, and underscores.'}
-								error={errorMessage}
-								isRequired
-								maxLength={20}
-								onChange={handleInputChange}
-								inputProps={{
-									pl: 2,
-								}}
-								flex={'1'}
-							/>
-							<Button
-								type={'submit'}
-								colorScheme={'green'}
-								isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
-								isLoading={submitLoading}
-							>
-								Save
-							</Button>
-							<Button
-								colorScheme={'red'}
-								isDisabled={!hasEditedSlug}
-								onClick={() => setSlug(loggedInSlug)}
-							>
-								Cancel
-							</Button>
-						</Wrap>
-					</form>
-				</Box>
-
-				<Box flex={'auto'}>
-					<Text fontSize={'sm'}>
-						{hasEditedSlug
-							? 'Save your changes to update your profile URL.'
-							: 'Your current profile URL is:'}
-					</Text>
-					<Box opacity={hasEditedSlug ? 0.8 : 1}>
-						<Button
-							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-							title={'Copy profile URL'}
-							onClick={onCopy}
-							isDisabled={!!hasEditedSlug}
-							maxW={'100%'}
-							colorScheme={'yellow'}
-							overflow={'hidden'}
-						>
-							{profileUrl}
-						</Button>
-					</Box>
+					<Formik
+						initialValues={{
+							slug: loggedInSlug,
+						}}
+						validationSchema={validationSchema}
+						onSubmit={handleSubmit}
+						enableReinitialize
+					>
+						{({ isValid, dirty, isSubmitting, errors, touched, setValues }) => (
+							<Form>
+								<Heading variant={'contentSubtitle'}>Handle</Heading>
+								<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
+								<Wrap>
+									<Field name='slug'>
+										{({ field }: { field: FieldInputProps<string> }) => (
+											<TextInput
+												{...field}
+												maxW={'300px'}
+												label={'New profile tag'}
+												labelHidden
+												helperText={'Letters, numbers, dashes, and underscores.'}
+												my={0}
+												error={touched.slug && errors.slug}
+												isRequired
+												maxLength={20}
+												inputProps={{
+													pl: 2,
+												}}
+												flex={'1'}
+											/>
+										)}
+									</Field>
+									<Button
+										type={'submit'}
+										colorScheme={'green'}
+										isDisabled={!isValid || !dirty || isSubmitting}
+										isLoading={isSubmitting}
+									>
+										Save
+									</Button>
+									<Button
+										colorScheme={'red'}
+										isDisabled={!dirty}
+										onClick={() => {
+											setValues({ slug: loggedInSlug });
+										}}
+									>
+										Cancel
+									</Button>
+								</Wrap>
+								<Box flex={'auto'}>
+									<Text fontSize={'sm'}>
+										{dirty
+											? 'Save your changes to update your profile URL.'
+											: 'Your current profile URL is:'}
+									</Text>
+									<Box opacity={dirty ? 0.8 : 1}>
+										<Button
+											leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
+											title={'Copy profile URL'}
+											onClick={onCopy}
+											isDisabled={!!dirty}
+											maxW={'100%'}
+											colorScheme={'yellow'}
+											overflow={'hidden'}
+										>
+											{profileUrl}
+										</Button>
+									</Box>
+								</Box>
+							</Form>
+						)}
+					</Formik>
 				</Box>
 			</Flex>
 		</Box>

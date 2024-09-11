@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FieldInputProps } from 'formik';
 import * as Yup from 'yup';
 import { chakra, Button, Text, Box, Flex, ListItem, List, Card } from '@chakra-ui/react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -8,6 +7,7 @@ import useViewer from '@queries/useViewer';
 import useChangeUserPassword from '@mutations/useChangeUserPassword';
 import useLogout from '@mutations/useLogout';
 import TextInput from '@common/inputs/TextInput';
+import { FormikHelpers } from 'formik';
 
 const validationSchema = Yup.object().shape({
 	currentPassword: Yup.string().required('Current password is required'),
@@ -34,10 +34,11 @@ export default function ChangePasswordView() {
 		{
 			setSubmitting,
 			setFieldError,
-		}: {
-			setSubmitting: (isSubmitting: boolean) => void;
-			setFieldError: (field: string, message: string) => void;
-		}
+		}: FormikHelpers<{
+			currentPassword: string;
+			newPassword: string;
+			confirmPassword: string;
+		}>
 	) => {
 		const token = await handleReCaptchaVerify({ label: 'changePassword', executeRecaptcha });
 		if (!token) {
@@ -76,7 +77,7 @@ export default function ChangePasswordView() {
 					<chakra.div mt={3} w={'full'}>
 						<Box my={4}>
 							<Field name='currentPassword'>
-								{({ field }: any) => (
+								{({ field }: { field: FieldInputProps<string> }) => (
 									<TextInput
 										{...field}
 										name={'currentPassword'}
@@ -114,7 +115,7 @@ export default function ChangePasswordView() {
 							</Flex>
 							<Flex gap={6} flexWrap={'wrap'}>
 								<Field name='newPassword'>
-									{({ field }: any) => (
+									{({ field }: { field: FieldInputProps<string> }) => (
 										<TextInput
 											{...field}
 											name={'newPassword'}
@@ -132,7 +133,7 @@ export default function ChangePasswordView() {
 									)}
 								</Field>
 								<Field name='confirmPassword'>
-									{({ field }: any) => (
+									{({ field }: { field: FieldInputProps<string> }) => (
 										<TextInput
 											{...field}
 											name={'confirmPassword'}

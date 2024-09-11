@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import {
 	chakra,
@@ -64,10 +64,7 @@ export default function RegisterView() {
 		{
 			setSubmitting,
 			setFieldError,
-		}: {
-			setSubmitting: (isSubmitting: boolean) => void;
-			setFieldError: (field: string, message: string) => void;
-		}
+		}: FormikHelpers<RegisterUserInput & { ofAge: boolean; termsAccepted: boolean }>
 	) => {
 		const token = await handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha });
 		if (!token) {

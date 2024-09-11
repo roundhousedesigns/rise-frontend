@@ -21,7 +21,7 @@ import {
 	useMediaQuery,
 	DrawerHeader,
 } from '@chakra-ui/react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
@@ -51,15 +51,9 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const handleLoginSubmit = async (
+	const handleSubmit = async (
 		values: LoginInput,
-		{
-			setSubmitting,
-			setFieldError,
-		}: {
-			setSubmitting: (isSubmitting: boolean) => void;
-			setFieldError: (field: string, message: string) => void;
-		}
+		{ setSubmitting, setFieldError }: FormikHelpers<LoginInput>
 	) => {
 		try {
 			const token = await handleReCaptchaVerify({ label: 'login', executeRecaptcha });
@@ -112,7 +106,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 										reCaptchaToken: '',
 									}}
 									validationSchema={validationSchema}
-									onSubmit={handleLoginSubmit}
+									onSubmit={handleSubmit}
 								>
 									{({ isSubmitting, errors, touched }) => (
 										<Form>

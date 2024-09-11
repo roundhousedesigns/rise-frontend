@@ -87,6 +87,10 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 		const [localValue, setLocalValue] = useState(value);
 		const isDebouncing = useRef(false);
 
+		useEffect(() => {
+			setLocalValue(value);
+		}, [value]);
+
 		const handleDebouncedChange = (value: string) => {
 			onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
 			isDebouncing.current = false;

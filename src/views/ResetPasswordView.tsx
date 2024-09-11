@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import {
 	Button,
@@ -44,10 +44,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 		{
 			setSubmitting,
 			setFieldError,
-		}: {
-			setSubmitting: (isSubmitting: boolean) => void;
-			setFieldError: (field: string, message: string) => void;
-		}
+		}: FormikHelpers<{ newPassword: string; confirmPassword: string }>
 	) => {
 		if (!token || !login) {
 			setFieldError('newPassword', 'Invalid reset token or login');
