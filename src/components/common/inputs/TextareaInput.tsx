@@ -19,6 +19,12 @@ interface Props {
 	onDebounceEnd?: () => void;
 }
 
+/**
+ * TextareaInput component for rendering a controlled textarea with optional debouncing.
+ *
+ * @param props - Component props.
+ * @returns {JSX.Element} The rendered TextareaInput component.
+ */
 export default function TextareaInput({
 	label,
 	labelHidden,
@@ -32,20 +38,33 @@ export default function TextareaInput({
 	onDebounceStart,
 	onDebounceEnd,
 	...props
-}: Props) {
+}: Props): JSX.Element {
 	const [localValue, setLocalValue] = useState(value);
-
 	const isDebouncing = useRef(false);
 
-	const debouncedOnChange = useCallback(
-		debounce((value: string) => {
-			onChange({ target: { name, value } } as ChangeEvent<HTMLTextAreaElement>);
-			isDebouncing.current = false;
-			onDebounceEnd?.();
-		}, debounceTime),
-		[onChange, name, debounceTime, onDebounceEnd]
-	);
+	/**
+	 * Handles the debounced change event for the textarea.
+	 *
+	 * @param {string} value - The new value of the textarea.
+	 */
+	const handleDebouncedChange = (value: string) => {
+		onChange({ target: { name, value } } as ChangeEvent<HTMLTextAreaElement>);
+		isDebouncing.current = false;
+		onDebounceEnd?.();
+	};
 
+	const debouncedOnChange = useCallback(debounce(handleDebouncedChange, debounceTime), [
+		onChange,
+		name,
+		debounceTime,
+		onDebounceEnd,
+	]);
+
+	/**
+	 * Handles the change event for the textarea.
+	 *
+	 * @param {ChangeEvent<HTMLTextAreaElement>} e - The change event.
+	 */
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
 		setLocalValue(newValue);
@@ -54,7 +73,7 @@ export default function TextareaInput({
 				isDebouncing.current = true;
 				onDebounceStart?.();
 			}
-			debouncedOnChange(newValue);
+			handleDebouncedChange(newValue);
 		} else {
 			onChange(e);
 		}

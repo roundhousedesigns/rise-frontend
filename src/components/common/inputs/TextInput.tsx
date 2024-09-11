@@ -1,4 +1,12 @@
-import { ChangeEvent, forwardRef, ReactNode, useCallback, useState, useEffect, useRef } from 'react';
+import {
+	ChangeEvent,
+	forwardRef,
+	ReactNode,
+	useCallback,
+	useState,
+	useEffect,
+	useRef,
+} from 'react';
 import { debounce } from 'lodash';
 import {
 	Flex,
@@ -64,9 +72,6 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
-		/**
-		 * Returns the box size based on the given size token.
-		 */
 		const boxSize = (): number | undefined => {
 			switch (sizeToken) {
 				case 'sm':
@@ -76,22 +81,24 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 				case 'lg':
 					return 12;
 			}
-
 			return undefined;
 		};
 
 		const [localValue, setLocalValue] = useState(value);
-
 		const isDebouncing = useRef(false);
 
-		const debouncedOnChange = useCallback(
-			debounce((value: string) => {
-				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
-				isDebouncing.current = false;
-				onDebounceEnd?.();
-			}, debounceTime),
-			[onChange, name, debounceTime, onDebounceEnd]
-		);
+		const handleDebouncedChange = (value: string) => {
+			onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+			isDebouncing.current = false;
+			onDebounceEnd?.();
+		};
+
+		const debouncedOnChange = useCallback(debounce(handleDebouncedChange, debounceTime), [
+			onChange,
+			name,
+			debounceTime,
+			onDebounceEnd,
+		]);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
@@ -101,7 +108,7 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 					isDebouncing.current = true;
 					onDebounceStart?.();
 				}
-				debouncedOnChange(newValue);
+				handleDebouncedChange(newValue);
 			} else {
 				onChange(e);
 			}
