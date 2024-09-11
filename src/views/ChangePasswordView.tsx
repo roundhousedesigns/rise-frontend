@@ -1,160 +1,170 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import { chakra, Button, Text, Box, Flex, ListItem, List, Card } from '@chakra-ui/react';
-import { ChangePasswordInput } from '@lib/types';
-import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { handleReCaptchaVerify } from '@lib/utils';
 import useViewer from '@queries/useViewer';
 import useChangeUserPassword from '@mutations/useChangeUserPassword';
 import useLogout from '@mutations/useLogout';
 import TextInput from '@common/inputs/TextInput';
 
+const validationSchema = Yup.object().shape({
+	currentPassword: Yup.string().required('Current password is required'),
+	newPassword: Yup.string()
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			'Password must have at least one lowercase letter, one uppercase letter, one number, and one special character'
+		)
+		.required('New password is required'),
+	confirmPassword: Yup.string()
+		.oneOf([Yup.ref('newPassword')], 'Passwords must match')
+		.required('Confirm password is required'),
+});
+
 export default function ChangePasswordView() {
 	const [{ email: username }] = useViewer();
+	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const [userFields, setUserFields] = useState<ChangePasswordInput>({
-		currentPassword: '',
-		newPassword: '',
-		confirmPassword: '',
-	});
-	const { currentPassword, newPassword, confirmPassword } = userFields;
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
-	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
-	const [formIsValid, setFormIsValid] = useState<boolean>(false);
-	const [errorCode, setErrorCode] = useState<string>('');
-	const {
-		changeUserPasswordMutation,
-		results: { loading: submitLoading },
-	} = useChangeUserPassword();
-	const errorMessage = useErrorMessage(errorCode);
+	const { changeUserPasswordMutation } = useChangeUserPassword();
 	const { logoutMutation } = useLogout();
 
-	const newPasswordStrength = useValidatePassword(newPassword);
+	const handleSubmit = async (
+		values: { currentPassword: string; newPassword: string; confirmPassword: string },
+		{
+			setSubmitting,
+			setFieldError,
+		}: {
+			setSubmitting: (isSubmitting: boolean) => void;
+			setFieldError: (field: string, message: string) => void;
+		}
+	) => {
+		const token = await handleReCaptchaVerify({ label: 'changePassword', executeRecaptcha });
+		if (!token) {
+			setFieldError('currentPassword', 'ReCAPTCHA verification failed. Please try again.');
+			setSubmitting(false);
+			return;
+		}
 
-	// Set an error code if either of the password checks doesn't pass, otherwise set form is valid
-	useEffect(() => {
-		setFormIsValid(false);
-		if (!passwordsMatch) return setErrorCode('password_mismatch');
-		else if (newPassword.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
-		else setFormIsValid(true);
-		setErrorCode('');
-	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
-
-	// Check if passwords match and are complex enough, debounce to prevent spamming
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setPasswordStrongEnough(newPasswordStrength === 'strong');
-			setPasswordsMatch(newPassword === confirmPassword);
-		}, 500);
-		return () => clearTimeout(timer);
-	}, [newPassword, confirmPassword]);
-
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setUserFields({
-			...userFields,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		if (!currentPassword || !newPassword || !passwordsMatch) return;
-
-		changeUserPasswordMutation(username, currentPassword, newPassword)
-			.then(() => {
-				setUserFields({
-					currentPassword: '',
-					newPassword: '',
-					confirmPassword: '',
-				});
-				setErrorCode('');
-
-				logoutMutation().then(() => {
-					window.location.href =
-						'/login?alert=Success! Please log in with your new password.&alertStatus=success';
-				});
-			})
-			.catch((errors: { message: string }) => setErrorCode(errors.message));
+		try {
+			await changeUserPasswordMutation(username, values.currentPassword, values.newPassword);
+			await logoutMutation();
+			window.location.href =
+				'/login?alert=Success! Please log in with your new password.&alertStatus=success';
+		} catch (error: any) {
+			if (error.message === 'incorrect_password') {
+				setFieldError('currentPassword', 'Incorrect current password');
+			} else {
+				setFieldError('currentPassword', 'An error occurred. Please try again.');
+			}
+		}
+		setSubmitting(false);
 	};
 
 	return (
-		<chakra.form onSubmit={handleSubmit} mt={3} w={'full'}>
-			<Box my={4}>
-				<TextInput
-					value={currentPassword}
-					name={'currentPassword'}
-					id={'currentPassword'}
-					variant={'filled'}
-					label={'Current password'}
-					isRequired
-					onChange={handleInputChange}
-					error={errorCode === 'incorrect_password' ? errorMessage : ''}
-					inputProps={{
-						type: 'password',
-						autoComplete: 'current-password',
-					}}
-				/>
-			</Box>
-			<Card _dark={{ bgColor: 'gray.800' }} my={8} gap={6}>
-				<Flex alignItems={'center'} mx={'auto'} gap={6} lineHeight={'normal'} fontSize={'xs'} pt={1}>
-					<Text m={0} fontStyle={'italic'}>
-						Passwords must have at least:
-					</Text>
-					<List listStyleType={'disc'}>
-						<ListItem>one lowercase letter</ListItem>
-						<ListItem>one uppercase letter</ListItem>
-						<ListItem>one one number</ListItem>
-						<ListItem>one special character.</ListItem>
-					</List>
-				</Flex>
-				<Flex gap={6} flexWrap={'wrap'}>
-					<TextInput
-						value={newPassword}
-						name={'newPassword'}
-						id={'newPassword'}
-						variant={'filled'}
-						label={'New password'}
-						isRequired
-						onChange={handleInputChange}
-						error={
-							errorCode && errorCode !== 'incorrect_password' && errorCode !== 'password_mismatch'
-								? errorMessage
-								: ''
-						}
-						flex={'1'}
-						inputProps={{
-							type: 'password',
-							autoComplete: 'new-password',
-						}}
-					/>
-					<TextInput
-						value={confirmPassword}
-						name={'confirmPassword'}
-						id={'confirmPassword'}
-						type={'password'}
-						variant={'filled'}
-						label={'Confirm your new password'}
-						isRequired
-						error={
-							errorCode && errorCode === 'password_mismatch' && confirmPassword ? errorMessage : ''
-						}
-						onChange={handleInputChange}
-						flex={{ base: 'auto', md: '1' }}
-						inputProps={{
-							type: 'password',
-							autoComplete: 'new-password',
-						}}
-					/>
-				</Flex>
-			</Card>
-			<Box mt={4}>
-				<Button
-					type={'submit'}
-					colorScheme={'orange'}
-					isDisabled={!formIsValid || submitLoading}
-					isLoading={!!submitLoading}
-				>
-					Change password
-				</Button>
-			</Box>
-		</chakra.form>
+		<Formik
+			initialValues={{
+				currentPassword: '',
+				newPassword: '',
+				confirmPassword: '',
+			}}
+			validationSchema={validationSchema}
+			onSubmit={handleSubmit}
+		>
+			{({ isValid, dirty, isSubmitting, errors, touched }) => (
+				<Form>
+					<chakra.div mt={3} w={'full'}>
+						<Box my={4}>
+							<Field name='currentPassword'>
+								{({ field }: any) => (
+									<TextInput
+										{...field}
+										name={'currentPassword'}
+										id={'currentPassword'}
+										variant={'filled'}
+										label={'Current password'}
+										isRequired
+										error={touched.currentPassword && errors.currentPassword}
+										inputProps={{
+											type: 'password',
+											autoComplete: 'current-password',
+										}}
+									/>
+								)}
+							</Field>
+						</Box>
+						<Card _dark={{ bgColor: 'gray.800' }} my={8} gap={6}>
+							<Flex
+								alignItems={'center'}
+								mx={'auto'}
+								gap={6}
+								lineHeight={'normal'}
+								fontSize={'xs'}
+								pt={1}
+							>
+								<Text m={0} fontStyle={'italic'}>
+									Passwords must have at least:
+								</Text>
+								<List listStyleType={'disc'}>
+									<ListItem>one lowercase letter</ListItem>
+									<ListItem>one uppercase letter</ListItem>
+									<ListItem>one number</ListItem>
+									<ListItem>one special character</ListItem>
+								</List>
+							</Flex>
+							<Flex gap={6} flexWrap={'wrap'}>
+								<Field name='newPassword'>
+									{({ field }: any) => (
+										<TextInput
+											{...field}
+											name={'newPassword'}
+											id={'newPassword'}
+											variant={'filled'}
+											label={'New password'}
+											isRequired
+											error={touched.newPassword && errors.newPassword}
+											flex={'1'}
+											inputProps={{
+												type: 'password',
+												autoComplete: 'new-password',
+											}}
+										/>
+									)}
+								</Field>
+								<Field name='confirmPassword'>
+									{({ field }: any) => (
+										<TextInput
+											{...field}
+											name={'confirmPassword'}
+											id={'confirmPassword'}
+											type={'password'}
+											variant={'filled'}
+											label={'Confirm your new password'}
+											isRequired
+											error={touched.confirmPassword && errors.confirmPassword}
+											flex={{ base: 'auto', md: '1' }}
+											inputProps={{
+												type: 'password',
+												autoComplete: 'new-password',
+											}}
+										/>
+									)}
+								</Field>
+							</Flex>
+						</Card>
+						<Box mt={4}>
+							<Button
+								type={'submit'}
+								colorScheme={'orange'}
+								isDisabled={!isValid || !dirty || isSubmitting}
+								isLoading={isSubmitting}
+							>
+								Change password
+							</Button>
+						</Box>
+					</chakra.div>
+				</Form>
+			)}
+		</Formik>
 	);
 }

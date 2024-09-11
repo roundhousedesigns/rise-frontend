@@ -23,6 +23,7 @@
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
     "date-fns": "^3.6.0",
+    "formik": "^2.4.6",
     "framer-motion": "^8.5.0",
     "graphql": "^16.8.1",
     "html-react-parser": "^3.0.16",
@@ -38,7 +39,8 @@
     "react-player": "^2.14.0",
     "react-router-dom": "^6.26.0",
     "semver": "^7.6.2",
-    "web-vitals": "^3.5.0"
+    "web-vitals": "^3.5.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",

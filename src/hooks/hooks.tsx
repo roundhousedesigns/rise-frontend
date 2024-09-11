@@ -69,20 +69,23 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 	if (!errorCode) return '';
 
 	switch (errorCode) {
-		// Login errors
-		case 'invalid_username':
-		case 'invalid_email':
-			return 'No account exists for that email address.';
-		case 'empty_login':
-			return 'Please enter a username or email address.';
-		case 'invalid_account':
-			return 'Please use a different account.';
-		case 'bad_login':
-			return 'Something went wrong. Please try again.';
+		/**
+		 * Deprecating error cases as I convert to Formik.
+		 */
+
+		// case 'invalid_username':
+		// case 'invalid_email':
+		// 	return 'No account exists for that email address.';
+		// case 'empty_login':
+		// 	return 'Please enter a username or email address.';
+		// case 'invalid_account':
+		// 	return 'Please use a different account.';
+		// case 'bad_login':
+		// 	return 'Something went wrong. Please try again.';
 
 		// Password Errors
-		case 'empty_password':
-			return 'Please enter your password.';
+		// case 'empty_password':
+		// 	return 'Please enter your password.';
 		case 'incorrect_password':
 			return 'Incorrect password.';
 		case 'password_mismatch':
@@ -91,10 +94,10 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
 			return 'Please make sure your password contains at least one lowercase letter, one uppercase letter, one number, and one special character.';
 
 		// Registration errors
-		case 'existing_user_login':
-			return 'An account already exists for that email address. Please try logging in.';
-		case 'unspecified_create_user_error':
-			return 'Something went wrong. Please try again.';
+		// case 'existing_user_login':
+		// 	return 'An account already exists for that email address. Please try logging in.';
+		// case 'unspecified_create_user_error':
+		// 	return 'Something went wrong. Please try again.';
 
 		// ReCAPTCHA errors
 		case 'recaptcha_error':

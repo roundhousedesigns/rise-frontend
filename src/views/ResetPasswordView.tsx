@@ -1,8 +1,7 @@
-import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import {
 	Button,
-	FormErrorMessage,
 	Box,
 	Stack,
 	Container,
@@ -12,10 +11,9 @@ import {
 	Icon,
 	Tooltip,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { FiHelpCircle } from 'react-icons/fi';
 import TextInput from '@common/inputs/TextInput';
-import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
-import { ChangePasswordInput } from '@lib/types';
 import useResetUserPassword from '@mutations/useResetUserPassword';
 
 interface Props {
@@ -23,72 +21,55 @@ interface Props {
 	login: string;
 }
 
+const validationSchema = Yup.object().shape({
+	newPassword: Yup.string()
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			'Password must have at least one lowercase letter, one uppercase letter, one number, and one special character'
+		)
+		.required('New password is required'),
+	confirmPassword: Yup.string()
+		.oneOf([Yup.ref('newPassword')], 'Passwords must match')
+		.required('Confirm password is required'),
+});
+
 export default function ResetPasswordView({ token, login }: Props) {
-	const [userFields, setUserFields] = useState<ChangePasswordInput>({
-		newPassword: '',
-		confirmPassword: '',
-	});
-	const { newPassword, confirmPassword } = userFields;
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
-	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
-	const [formIsValid, setFormIsValid] = useState<boolean>(false);
-	const [errorCode, setErrorCode] = useState<string>('');
-	const {
-		resetUserPasswordMutation,
-		results: { loading: submitLoading },
-	} = useResetUserPassword();
+	const { resetUserPasswordMutation } = useResetUserPassword();
 
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const errorMessage = useErrorMessage(errorCode);
+	const handleSubmit = async (
+		values: { newPassword: string; confirmPassword: string },
+		{
+			setSubmitting,
+			setFieldError,
+		}: {
+			setSubmitting: (isSubmitting: boolean) => void;
+			setFieldError: (field: string, message: string) => void;
+		}
+	) => {
+		if (!token || !login) {
+			setFieldError('newPassword', 'Invalid reset token or login');
+			setSubmitting(false);
+			return;
+		}
 
-	const newPasswordStrength = useValidatePassword(newPassword);
-
-	// Set an error code if either of the password checks doesn't pass, otherwise set form is valid
-	useEffect(() => {
-		setFormIsValid(false);
-		if (!passwordsMatch) return setErrorCode('password_mismatch');
-		else if (newPassword.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
-		else setFormIsValid(true);
-		setErrorCode('');
-	}, [passwordsMatch, newPassword, confirmPassword, passwordStrongEnough]);
-
-	// useEffect to check if passwords match, debounce to prevent spamming
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setPasswordsMatch(newPassword === confirmPassword);
-			setPasswordStrongEnough(newPasswordStrength === 'strong');
-		}, 500);
-		return () => clearTimeout(timer);
-	}, [newPassword, confirmPassword]);
-
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setUserFields({
-			...userFields,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		if (!token || !login || !newPassword || !passwordsMatch) return;
-
-		resetUserPasswordMutation(token, login, newPassword)
-			.then(() => {
-				toast({
-					title: 'Success!',
-					description: 'Please login with your new password.',
-					status: 'success',
-					duration: 3000,
-					isClosable: true,
-					position: 'bottom',
-				});
-			})
-			.then(() => {
-				navigate('/login');
-			})
-			.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
+		try {
+			await resetUserPasswordMutation(token, login, values.newPassword);
+			toast({
+				title: 'Success!',
+				description: 'Please login with your new password.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			navigate('/login');
+		} catch (error: any) {
+			setFieldError('newPassword', 'An error occurred. Please try again.');
+		}
+		setSubmitting(false);
 	};
 
 	return (
@@ -98,61 +79,75 @@ export default function ResetPasswordView({ token, login }: Props) {
 			</Heading>
 
 			<Box mt={2}>
-				<form onSubmit={handleSubmit}>
-					<Stack direction={'row'} spacing={6}>
-						<TextInput
-							value={newPassword}
-							name={'newPassword'}
-							id={'newPassword'}
-							variant={'filled'}
-							label={
-								<>
-									Password{' '}
-									<Tooltip
-										hasArrow
-										label={'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'}
-									>
-										<chakra.span>
-											<Icon as={FiHelpCircle} />
-										</chakra.span>
-									</Tooltip>
-								</>
-							}
-							error={errorCode}
-							isRequired
-							onChange={handleInputChange}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-						<TextInput
-							value={confirmPassword}
-							name={'confirmPassword'}
-							id={'confirmPassword'}
-							type={'password'}
-							variant={'filled'}
-							label={'Confirm your password'}
-							isRequired
-							onChange={handleInputChange}
-							inputProps={{
-								type: 'password',
-								autoComplete: 'new-password',
-							}}
-						/>
-					</Stack>
-					<Box mt={4}>
-						<Button
-							type={'submit'}
-							colorScheme={'orange'}
-							isDisabled={!formIsValid || submitLoading}
-							isLoading={!!submitLoading}
-						>
-							Reset password
-						</Button>
-						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
-					</Box>
-				</form>
+				<Formik
+					initialValues={{
+						newPassword: '',
+						confirmPassword: '',
+					}}
+					validationSchema={validationSchema}
+					onSubmit={handleSubmit}
+				>
+					{({ isValid, dirty, isSubmitting, errors, touched }) => (
+						<Form>
+							<Stack direction={'row'} spacing={6}>
+								<Field name='newPassword'>
+									{({ field }: any) => (
+										<TextInput
+											{...field}
+											variant={'filled'}
+											label={
+												<>
+													Password{' '}
+													<Tooltip
+														hasArrow
+														label={
+															'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+														}
+													>
+														<chakra.span>
+															<Icon as={FiHelpCircle} />
+														</chakra.span>
+													</Tooltip>
+												</>
+											}
+											error={touched.newPassword && errors.newPassword}
+											isRequired
+											inputProps={{
+												type: 'password',
+												autoComplete: 'new-password',
+											}}
+										/>
+									)}
+								</Field>
+								<Field name='confirmPassword'>
+									{({ field }: any) => (
+										<TextInput
+											{...field}
+											variant={'filled'}
+											label={'Confirm your password'}
+											error={touched.confirmPassword && errors.confirmPassword}
+											isRequired
+											inputProps={{
+												type: 'password',
+												autoComplete: 'new-password',
+											}}
+										/>
+									)}
+								</Field>
+							</Stack>
+							<Box mt={4}>
+								<Button
+									type={'submit'}
+									colorScheme={'orange'}
+									isDisabled={!isValid || !dirty || isSubmitting}
+									isLoading={isSubmitting}
+								>
+									Reset password
+								</Button>
+							</Box>
+						</Form>
+					)}
+				</Formik>
 			</Box>
 		</Container>
 	);

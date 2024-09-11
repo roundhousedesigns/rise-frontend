@@ -1,4 +1,3 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
@@ -22,11 +21,12 @@ import {
 	useMediaQuery,
 	DrawerHeader,
 } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
 import ContentView from '@views/ContentView';
-import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
 
@@ -36,13 +36,12 @@ interface Props {
 	signInTitle?: boolean;
 }
 
+const validationSchema = Yup.object().shape({
+	login: Yup.string().email('Invalid email').required('Email is required'),
+	password: Yup.string().required('Password is required'),
+});
+
 export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
-	const [credentials, setCredentials] = useState<LoginInput>({
-		login: '',
-		password: '',
-		reCaptchaToken: '',
-	});
-	const [errorCode, setErrorCode] = useState<string>('');
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -52,34 +51,39 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	} = useLogin();
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const errorMessage = useErrorMessage(errorCode);
+	const handleLoginSubmit = async (
+		values: LoginInput,
+		{
+			setSubmitting,
+			setFieldError,
+		}: {
+			setSubmitting: (isSubmitting: boolean) => void;
+			setFieldError: (field: string, message: string) => void;
+		}
+	) => {
+		try {
+			const token = await handleReCaptchaVerify({ label: 'login', executeRecaptcha });
+			if (!token) {
+				setFieldError('login', 'ReCAPTCHA verification failed. Please try again.');
+				setSubmitting(false);
+				return;
+			}
 
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setCredentials({
-			...credentials,
-			[e.target.name]: e.target.value,
-		});
-	};
-
-	const handleLoginSubmit = (e: FormEvent) => {
-		e.preventDefault();
-
-		handleReCaptchaVerify({ label: 'login', executeRecaptcha })
-			.then((token) => {
-				if (!token) {
-					setErrorCode('recaptcha_error');
-					return;
-				}
-
-				loginMutation({ ...credentials, reCaptchaToken: token }).catch(
-					(errors: { message: string }) => {
-						setErrorCode(errors.message);
-					}
-				);
-			})
-			.catch(() => {
-				setErrorCode('recaptcha_error');
-			});
+			await loginMutation({ ...values, reCaptchaToken: token });
+		} catch (error: any) {
+			if (
+				error.message === 'invalid_username' ||
+				error.message === 'invalid_email' ||
+				error.message === 'invalid_account'
+			) {
+				setFieldError('login', 'Invalid email or account');
+			} else if (error.message === 'incorrect_password') {
+				setFieldError('password', 'Incorrect password');
+			} else {
+				setFieldError('login', 'An error occurred. Please try again.');
+			}
+		}
+		setSubmitting(false);
 	};
 
 	const sanitizedAlertStatus = alertStatus === 'error' ? 'error' : 'success';
@@ -90,86 +94,101 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				<Flex alignItems={'center'} gap={8} flexWrap={'wrap'}>
 					<Box flex={'1'}>
 						<Box maxWidth={'md'}>
-							{signInTitle ? (
+							{signInTitle && (
 								<Heading variant={'pageTitle'} as={'h1'} my={0} lineHeight={'normal'}>
 									Sign in to RISE
 								</Heading>
-							) : (
-								false
 							)}
 							<Text fontSize={'lg'}>
 								You'll need an account to create a profile or to search for candidates.
 							</Text>
 							<Divider my={4} />
 							<Box flex={'1 1 auto'}>
-								{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
-								<form onSubmit={handleLoginSubmit}>
-									<TextInput
-										value={credentials.login}
-										name={'login'}
-										label={'Email'}
-										autoComplete={'username'}
-										isRequired
-										onChange={handleInputChange}
-										error={
-											['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
-												? errorMessage
-												: ''
-										}
-										inputProps={{
-											autoComplete: 'username',
-											fontSize: 'lg',
-										}}
-									/>
-									<TextInput
-										value={credentials.password}
-										name={'password'}
-										label={'Password'}
-										isRequired
-										onChange={handleInputChange}
-										error={errorCode === 'incorrect_password' ? errorMessage : ''}
-										inputProps={{
-											type: 'password',
-											autoComplete: 'current-password',
-											fontSize: 'lg',
-										}}
-									/>
-									<Flex
-										gap={4}
-										alignItems={'center'}
-										justifyContent={'space-between'}
-										mt={4}
-										flexWrap={'wrap'}
+								{alert && <Alert status={sanitizedAlertStatus}>{alert}</Alert>}
+								<Formik
+									initialValues={{
+										login: '',
+										password: '',
+										reCaptchaToken: '',
+									}}
+									validationSchema={validationSchema}
+									onSubmit={handleLoginSubmit}
+								>
+									{({ isSubmitting, errors, touched }) => (
+										<Form>
+											<Field name='login'>
+												{({ field }: any) => (
+													<TextInput
+														{...field}
+														label={'Email'}
+														autoComplete={'username'}
+														isRequired
+														error={touched.login && errors.login}
+														inputProps={{
+															autoComplete: 'username',
+															fontSize: 'lg',
+														}}
+													/>
+												)}
+											</Field>
+											<Field name='password'>
+												{({ field }: any) => (
+													<TextInput
+														{...field}
+														label={'Password'}
+														isRequired
+														error={touched.password && errors.password}
+														inputProps={{
+															type: 'password',
+															autoComplete: 'current-password',
+															fontSize: 'lg',
+														}}
+													/>
+												)}
+											</Field>
+											<Flex
+												gap={4}
+												alignItems={'center'}
+												justifyContent={'space-between'}
+												mt={4}
+												flexWrap={'wrap'}
+											>
+												<Button
+													type={'submit'}
+													colorScheme={'blue'}
+													px={6}
+													isLoading={isSubmitting || submitLoading}
+												>
+													Sign In
+												</Button>
+												<Link as={RouterLink} to={'/lost-password'} fontSize={'sm'}>
+													Lost your password?
+												</Link>
+											</Flex>
+											<Box id={'recaptcha-badge'} />
+										</Form>
+									)}
+								</Formik>
+								<Divider />
+								<Box textAlign={'center'} flex={'1'}>
+									<Heading variant={'pageSubtitle'} fontSize={'xl'}>
+										Don't have an account?
+									</Heading>
+									<Button
+										as={RouterLink}
+										to={'/register'}
+										borderRadius={{ base: 'md', md: 'lg' }}
+										colorScheme={'green'}
+										color={'text.dark'}
+										size={'lg'}
 									>
-										<Button type={'submit'} colorScheme={'blue'} px={6} isLoading={!!submitLoading}>
-											Sign In
-										</Button>
-										<Link as={RouterLink} to={'/lost-password'} fontSize={'sm'}>
-											Lost your password?
-										</Link>
-									</Flex>
-									<Box id={'recaptcha-badge'} />
-									<Divider />
-									<Box textAlign={'center'} flex={'1'}>
-										<Heading variant={'pageSubtitle'} fontSize={'xl'}>
-											Don't have an account?
-										</Heading>
-										<Button
-											as={RouterLink}
-											to={'/register'}
-											borderRadius={{ base: 'md', md: 'lg' }}
-											colorScheme={'green'}
-											color={'text.dark'}
-											size={'lg'}
-										>
-											Join Now
-										</Button>
-									</Box>
-								</form>
+										Join Now
+									</Button>
+								</Box>
 							</Box>
 						</Box>
 					</Box>
-					{!isLargerThanMd ? <Divider my={0} /> : false}
+					{!isLargerThanMd && <Divider my={0} />}
 					<Box textAlign={'center'} flex={'1'} pb={2}>
 						<Stack textAlign={'center'} gap={6}>
 							<Heading as={'h2'} my={0} fontSize={{ base: '2xl', md: '3xl' }}>

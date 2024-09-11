@@ -1,16 +1,18 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 
 import TextInput from '@common/inputs/TextInput';
 import useSendPasswordResetEmail from '@mutations/useSendPasswordResetEmail';
-import { useErrorMessage } from '@hooks/hooks';
 import { handleReCaptchaVerify } from '@lib/utils';
 
-export default function LoginView() {
-	const [username, setUsername] = useState<string>('');
-	const [errorCode, setErrorCode] = useState<string>('');
+const validationSchema = Yup.object().shape({
+	username: Yup.string().email('Invalid email').required('Email is required'),
+});
+
+export default function LostPasswordView() {
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
 	const {
@@ -18,42 +20,41 @@ export default function LoginView() {
 		results: { loading: submitLoading },
 	} = useSendPasswordResetEmail();
 
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setUsername(e.target.value);
-	};
-
 	const toast = useToast();
 	const navigate = useNavigate();
 
-	const errorMessage = useErrorMessage(errorCode);
+	const handleSubmit = async (
+		values: { username: string },
+		{
+			setSubmitting,
+			setFieldError,
+		}: {
+			setSubmitting: (isSubmitting: boolean) => void;
+			setFieldError: (field: string, message: string) => void;
+		}
+	) => {
+		const token = await handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha });
+		if (!token) {
+			setFieldError('username', 'ReCAPTCHA verification failed. Please try again.');
+			setSubmitting(false);
+			return;
+		}
 
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-
-		handleReCaptchaVerify({ label: 'resetPassword', executeRecaptcha }).then((token) => {
-			if (!token) {
-				setErrorCode('recaptcha_error');
-				return;
-			}
-
-			sendPasswordResetEmailMutation({ username, reCaptchaToken: token })
-				.then(() => {
-					toast({
-						title: 'Email sent',
-						description: 'Please check your inbox for reset instructions.',
-						status: 'success',
-						duration: 3000,
-						isClosable: true,
-						position: 'bottom',
-					});
-				})
-				.then(() => {
-					navigate('/');
-				})
-				.catch((err) => {
-					setErrorCode(err.message);
-				});
-		});
+		try {
+			await sendPasswordResetEmailMutation({ username: values.username, reCaptchaToken: token });
+			toast({
+				title: 'Email sent',
+				description: 'Please check your inbox for reset instructions.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			navigate('/');
+		} catch (error: any) {
+			setFieldError('username', 'An error occurred. Please try again.');
+		}
+		setSubmitting(false);
 	};
 
 	return (
@@ -65,24 +66,42 @@ export default function LoginView() {
 				Please enter your email address, and we'll send you a link to reset your password.
 			</Text>
 			<Box my={4}>
-				<form onSubmit={handleSubmit}>
-					<Flex gap={2}>
-						<TextInput
-							value={username}
-							name={'username'}
-							label={'Email'}
-							isRequired
-							onChange={handleInputChange}
-							inputProps={{
-								autoComplete: 'username',
-							}}
-							error={errorMessage}
-						/>
-						<Button type={'submit'} colorScheme={'blue'} px={6} isLoading={!!submitLoading}>
-							Submit
-						</Button>
-					</Flex>
-				</form>
+				<Formik
+					initialValues={{
+						username: '',
+					}}
+					validationSchema={validationSchema}
+					onSubmit={handleSubmit}
+				>
+					{({ isValid, dirty, isSubmitting, errors, touched }) => (
+						<Form>
+							<Flex gap={2}>
+								<Field name='username'>
+									{({ field }: any) => (
+										<TextInput
+											{...field}
+											label={'Email'}
+											my={0}
+											isRequired
+											error={touched.username && errors.username}
+											inputProps={{
+												autoComplete: 'username',
+											}}
+										/>
+									)}
+								</Field>
+								<Button
+									type={'submit'}
+									colorScheme={'blue'}
+									isLoading={isSubmitting}
+									isDisabled={!isValid || !dirty || isSubmitting}
+								>
+									Submit
+								</Button>
+							</Flex>
+						</Form>
+					)}
+				</Formik>
 			</Box>
 		</Container>
 	);

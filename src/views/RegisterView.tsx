@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
 import {
 	chakra,
 	Button,
@@ -7,7 +8,6 @@ import {
 	Spinner,
 	Checkbox,
 	Link,
-	FormControl,
 	Divider,
 	Heading,
 	useToast,
@@ -22,31 +22,30 @@ import { FiHelpCircle } from 'react-icons/fi';
 import { handleReCaptchaVerify } from '@lib/utils';
 import TextInput from '@common/inputs/TextInput';
 import useRegisterUser from '@mutations/useRegisterUser';
-import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { RegisterUserInput } from '@lib/types';
 import usePostContent from '@queries/usePostContent';
 import BackToLoginButton from '@common/BackToLoginButton';
 import RequiredAsterisk from '@common/RequiredAsterisk';
 
-export default function RegisterView() {
-	const [userFields, setUserFields] = useState<RegisterUserInput>({
-		email: '',
-		firstName: '',
-		lastName: '',
-		password: '',
-		confirmPassword: '',
-		reCaptchaToken: '',
-	});
-	const { email, firstName, lastName, password, confirmPassword } = userFields;
-	const [termsAccepted, setTermsAccepted] = useState<boolean>(false);
-	const [ofAge, setOfAge] = useState<boolean>(false);
-	const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
-	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
-	const [formIsValid, setFormIsValid] = useState<boolean>(false);
-	const [errorCode, setErrorCode] = useState<string>('');
-	const [content, { contentLoading, contentError }] = usePostContent('576');
+const validationSchema = Yup.object().shape({
+	firstName: Yup.string().required('First name is required'),
+	lastName: Yup.string().required('Last name is required'),
+	email: Yup.string().email('Invalid email').required('Email is required'),
+	password: Yup.string()
+		.matches(
+			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+			'Password must have at least one lowercase letter, one uppercase letter, one number, and one special character'
+		)
+		.required('Password is required'),
+	confirmPassword: Yup.string()
+		.oneOf([Yup.ref('password')], 'Passwords must match')
+		.required('Confirm password is required'),
+	ofAge: Yup.boolean().oneOf([true], 'You must be over 18 years of age'),
+	termsAccepted: Yup.boolean().oneOf([true], 'You must accept the terms and conditions'),
+});
 
-	const passwordStrength = useValidatePassword(password);
+export default function RegisterView() {
+	const [content, { contentLoading, contentError }] = usePostContent('576');
 
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -57,80 +56,45 @@ export default function RegisterView() {
 		results: { loading: submitLoading },
 	} = useRegisterUser();
 
-	// Check if form is valid
-	useEffect(() => {
-		if (!passwordsMatch) return setErrorCode('password_mismatch');
-		else if (password.length && !passwordStrongEnough) return setErrorCode('password_too_weak');
-		else
-			setFormIsValid(
-				email.length > 0 &&
-					firstName.length > 0 &&
-					lastName.length > 0 &&
-					password.length > 0 &&
-					confirmPassword.length > 0 &&
-					passwordStrongEnough &&
-					passwordsMatch &&
-					ofAge &&
-					termsAccepted
-			);
-		setErrorCode('');
-	}, [
-		email,
-		firstName,
-		lastName,
-		password,
-		confirmPassword,
-		passwordStrongEnough,
-		passwordsMatch,
-		ofAge,
-		termsAccepted,
-	]);
-
-	// useEffect to check if passwords match, debounce to prevent spamming
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setPasswordStrongEnough(passwordStrength === 'strong');
-			setPasswordsMatch(password === confirmPassword);
-		}, 500);
-		return () => clearTimeout(timer);
-	}, [password, confirmPassword]);
-
-	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-		setUserFields({
-			...userFields,
-			[e.target.name]: e.target.value,
-		});
-	};
-
 	const navigate = useNavigate();
 	const toast = useToast();
-	const errorMessage = useErrorMessage(errorCode);
 
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
+	const handleSubmit = async (
+		values: RegisterUserInput & { ofAge: boolean; termsAccepted: boolean },
+		{
+			setSubmitting,
+			setFieldError,
+		}: {
+			setSubmitting: (isSubmitting: boolean) => void;
+			setFieldError: (field: string, message: string) => void;
+		}
+	) => {
+		const token = await handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha });
+		if (!token) {
+			setFieldError('email', 'ReCAPTCHA verification failed. Please try again.');
+			setSubmitting(false);
+			return;
+		}
 
-		handleReCaptchaVerify({ label: 'registerUser', executeRecaptcha }).then((token) => {
-			if (!token) {
-				setErrorCode('recaptcha_error');
-				return;
+		try {
+			await registerUserMutation({ ...values, reCaptchaToken: token });
+			toast({
+				title: 'Account created!',
+				description: 'Please check your inbox for confirmation.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'bottom',
+			});
+			navigate('/login');
+		} catch (error: any) {
+			if (error.message === 'email_exists') {
+				setFieldError('email', 'This email is already registered');
+			} else {
+				setFieldError('email', 'An error occurred. Please try again.');
 			}
-
-			registerUserMutation({ ...userFields, reCaptchaToken: token })
-				.then(() => {
-					toast({
-						title: 'Account created!',
-						description: 'Please check your inbox for confirmation.',
-						status: 'success',
-						duration: 3000,
-						isClosable: true,
-						position: 'bottom',
-					});
-				})
-				.then(() => {
-					navigate('/login');
-				})
-				.catch((errors: { message: SetStateAction<string> }) => setErrorCode(errors.message));
-		});
+		}
+		setSubmitting(false);
 	};
 
 	return (
@@ -141,172 +105,188 @@ export default function RegisterView() {
 				'Error loading content'
 			) : content ? (
 				<Box my={4}>{content}</Box>
-			) : (
-				false
-			)}
+			) : null}
 
 			<Divider my={6} />
 
 			<Heading as={'h2'} variant={'contentTitle'}>
 				Create an account
 			</Heading>
-			<form onSubmit={handleSubmit}>
-				<Stack direction={'row'} spacing={6}>
-					<TextInput
-						value={firstName}
-						name={'firstName'}
-						isRequired
-						onChange={handleInputChange}
-						flex={'1'}
-						label={'First name'}
-						inputProps={{
-							size: 'xl',
-							autoComplete: 'given-name',
-							tabIndex: 1,
-						}}
-					/>
-					<TextInput
-						value={lastName}
-						name={'lastName'}
-						isRequired
-						onChange={handleInputChange}
-						flex={'1'}
-						label={'Last name'}
-						inputProps={{
-							size: 'xl',
-							autoComplete: 'family-name',
-							tabIndex: 2,
-						}}
-					/>
-				</Stack>
-				<TextInput
-					value={email}
-					name={'email'}
-					id={'email'}
-					type={'email'}
-					variant={'filled'}
-					label={'Email address'}
-					error={
-						errorCode !== 'password_too_weak' && errorCode !== 'password_mismatch' && errorCode
-							? errorMessage
-							: ''
-					}
-					isRequired
-					onChange={handleInputChange}
-					inputProps={{
-						size: 'xl',
-						autoComplete: 'email',
-						tabIndex: 3,
-					}}
-				/>
-				<Stack direction={'row'} spacing={6} flexWrap={'wrap'}>
-					<TextInput
-						value={password}
-						name={'password'}
-						id={'password'}
-						type={'password'}
-						variant={'filled'}
-						label={
-							<>
-								Password{' '}
-								<Tooltip
-									hasArrow
-									label={
-										'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
-									}
-								>
-									<chakra.span>
-										<Icon as={FiHelpCircle} />
-									</chakra.span>
-								</Tooltip>
-							</>
-						}
-						flex={1}
-						isRequired
-						error={errorCode && errorCode === 'password_too_weak' ? errorMessage : ''}
-						onChange={handleInputChange}
-						inputProps={{
-							size: 'xl',
-							type: 'password',
-							autoComplete: 'new-password',
-							tabIndex: 4,
-						}}
-					/>
-					<TextInput
-						value={confirmPassword}
-						name={'confirmPassword'}
-						id={'confirmPassword'}
-						type={'password'}
-						variant={'filled'}
-						label={'Confirm your password'}
-						flex={1}
-						isRequired
-						error={errorCode && errorCode === 'password_mismatch' ? errorMessage : ''}
-						onChange={handleInputChange}
-						inputProps={{
-							size: 'xl',
-							type: 'password',
-							autoComplete: 'new-password',
-							tabIndex: 5,
-						}}
-					/>
-				</Stack>
+			<Formik
+				initialValues={{
+					firstName: '',
+					lastName: '',
+					email: '',
+					password: '',
+					confirmPassword: '',
+					ofAge: false,
+					termsAccepted: false,
+					reCaptchaToken: '',
+				}}
+				validationSchema={validationSchema}
+				onSubmit={handleSubmit}
+			>
+				{({ isValid, dirty, isSubmitting, errors, touched }) => (
+					<Form>
+						<Stack direction={'row'} spacing={6}>
+							<Field name='firstName'>
+								{({ field }: any) => (
+									<TextInput
+										{...field}
+										isRequired
+										flex={'1'}
+										label={'First name'}
+										error={touched.firstName && errors.firstName}
+										inputProps={{
+											size: 'xl',
+											autoComplete: 'given-name',
+											tabIndex: 1,
+										}}
+									/>
+								)}
+							</Field>
+							<Field name='lastName'>
+								{({ field }: any) => (
+									<TextInput
+										{...field}
+										isRequired
+										flex={'1'}
+										label={'Last name'}
+										error={touched.lastName && errors.lastName}
+										inputProps={{
+											size: 'xl',
+											autoComplete: 'family-name',
+											tabIndex: 2,
+										}}
+									/>
+								)}
+							</Field>
+						</Stack>
+						<Field name='email'>
+							{({ field }: any) => (
+								<TextInput
+									{...field}
+									type={'email'}
+									variant={'filled'}
+									label={'Email address'}
+									error={touched.email && errors.email}
+									isRequired
+									inputProps={{
+										size: 'xl',
+										autoComplete: 'email',
+										tabIndex: 3,
+									}}
+								/>
+							)}
+						</Field>
+						<Stack direction={'row'} spacing={6} flexWrap={'wrap'}>
+							<Field name='password'>
+								{({ field }: any) => (
+									<TextInput
+										{...field}
+										type={'password'}
+										variant={'filled'}
+										label={
+											<>
+												Password{' '}
+												<Tooltip
+													hasArrow
+													label={
+														'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
+													}
+												>
+													<chakra.span>
+														<Icon as={FiHelpCircle} />
+													</chakra.span>
+												</Tooltip>
+											</>
+										}
+										flex={1}
+										isRequired
+										error={touched.password && errors.password}
+										inputProps={{
+											size: 'xl',
+											type: 'password',
+											autoComplete: 'new-password',
+											tabIndex: 4,
+										}}
+									/>
+								)}
+							</Field>
+							<Field name='confirmPassword'>
+								{({ field }: any) => (
+									<TextInput
+										{...field}
+										type={'password'}
+										variant={'filled'}
+										label={'Confirm your password'}
+										flex={1}
+										isRequired
+										error={touched.confirmPassword && errors.confirmPassword}
+										inputProps={{
+											size: 'xl',
+											type: 'password',
+											autoComplete: 'new-password',
+											tabIndex: 5,
+										}}
+									/>
+								)}
+							</Field>
+						</Stack>
 
-				<Flex
-					justifyContent={'space-between'}
-					alignItems={'flex-end'}
-					mt={2}
-					flex={'0 0 auto'}
-					flexWrap={'wrap'}
-					gap={8}
-				>
-					<Box mt={4} pr={8}>
-						<FormControl>
-							<Checkbox
-								size={'sm'}
-								w={'full'}
-								isRequired
-								onChange={() => setOfAge(!ofAge)}
-								tabIndex={6}
-							>
-								I am over 18 years of age.
-								<RequiredAsterisk />
-							</Checkbox>
-						</FormControl>
-						<FormControl>
-							<Checkbox
-								size={'sm'}
-								w={'full'}
-								isRequired
-								onChange={() => setTermsAccepted(!termsAccepted)}
-								tabIndex={7}
-							>
-								I have read and accept the RISE Theatre Directory{' '}
-								<Link as={RouterLink} to={'http://risetheatre.org/terms-conditions'} isExternal>
-									Terms and Conditions
-								</Link>{' '}
-								and{' '}
-								<Link as={RouterLink} to={'http://risetheatre.org/privacy-policy'} isExternal>
-									Privacy Policy
-								</Link>
-								.
-								<RequiredAsterisk />
-							</Checkbox>
-						</FormControl>
-						<Button
-							type={'submit'}
-							colorScheme={'orange'}
-							isDisabled={!formIsValid || submitLoading}
-							mt={4}
-							tabIndex={8}
-							isLoading={!!submitLoading}
+						<Flex
+							justifyContent={'space-between'}
+							alignItems={'flex-end'}
+							mt={2}
+							flex={'0 0 auto'}
+							flexWrap={'wrap'}
+							gap={8}
 						>
-							Create account
-						</Button>
-					</Box>
-					{!isLargerThanMd && <BackToLoginButton width={'full'} justifyContent={'flex-end'} />}
-				</Flex>
-			</form>
+							<Box mt={4} pr={8}>
+								<Field name='ofAge'>
+									{({ field }: any) => (
+										<Checkbox {...field} size={'sm'} w={'full'} isRequired tabIndex={6}>
+											I am over 18 years of age.
+											<RequiredAsterisk />
+										</Checkbox>
+									)}
+								</Field>
+								<Field name='termsAccepted'>
+									{({ field }: any) => (
+										<Checkbox {...field} size={'sm'} w={'full'} isRequired tabIndex={7}>
+											I have read and accept the RISE Theatre Directory{' '}
+											<Link
+												as={RouterLink}
+												to={'http://risetheatre.org/terms-conditions'}
+												isExternal
+											>
+												Terms and Conditions
+											</Link>{' '}
+											and{' '}
+											<Link as={RouterLink} to={'http://risetheatre.org/privacy-policy'} isExternal>
+												Privacy Policy
+											</Link>
+											.
+											<RequiredAsterisk />
+										</Checkbox>
+									)}
+								</Field>
+								<Button
+									type={'submit'}
+									colorScheme={'orange'}
+									isDisabled={!isValid || !dirty || isSubmitting}
+									mt={4}
+									tabIndex={8}
+									isLoading={isSubmitting}
+								>
+									Create account
+								</Button>
+							</Box>
+							{!isLargerThanMd && <BackToLoginButton width={'full'} justifyContent={'flex-end'} />}
+						</Flex>
+					</Form>
+				)}
+			</Formik>
 		</>
 	);
 }
