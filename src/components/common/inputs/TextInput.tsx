@@ -1,4 +1,4 @@
-import { ChangeEvent, forwardRef, ReactNode, useCallback, useState, useEffect } from 'react';
+import { ChangeEvent, forwardRef, ReactNode, useCallback, useState, useEffect, useRef } from 'react';
 import { debounce } from 'lodash';
 import {
 	Flex,
@@ -33,6 +33,8 @@ interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCha
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 	debounceTime?: number;
+	onDebounceStart?: () => void;
+	onDebounceEnd?: () => void;
 }
 
 const TextInput = forwardRef<HTMLInputElement, Props>(
@@ -54,6 +56,8 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 			inputProps,
 			onChange,
 			debounceTime,
+			onDebounceStart,
+			onDebounceEnd,
 			...props
 		},
 		forwardedRef
@@ -78,17 +82,25 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 
 		const [localValue, setLocalValue] = useState(value);
 
+		const isDebouncing = useRef(false);
+
 		const debouncedOnChange = useCallback(
 			debounce((value: string) => {
 				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+				isDebouncing.current = false;
+				onDebounceEnd?.();
 			}, debounceTime),
-			[onChange, name, debounceTime]
+			[onChange, name, debounceTime, onDebounceEnd]
 		);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			setLocalValue(newValue);
 			if (debounceTime) {
+				if (!isDebouncing.current) {
+					isDebouncing.current = true;
+					onDebounceStart?.();
+				}
 				debouncedOnChange(newValue);
 			} else {
 				onChange(e);
