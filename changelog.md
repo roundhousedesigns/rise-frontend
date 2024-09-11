@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## \[1.1.11] - Unreleased
+
 ## \[1.1.10] - 2024-09-06
 
 - Add: Success and error toasts for editing credits.

@@ -2,7 +2,7 @@
   "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "1.1.10",
+  "version": "1.1.11-dev",
   "type": "module",
   "engines": {
     "node": ">=20.12.0"
