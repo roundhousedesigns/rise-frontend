@@ -42,7 +42,8 @@ const useUpdateCredit = () => {
 			refetchQueries: [
 				{
 					query: QUERY_PROFILE,
-					variables: { id: userId, author: userId, lastCredits: 5 },
+					variables: { id: userId, author: userId, last: 5 },
+					fetchPolicy: 'network-only',
 				},
 			],
 		});

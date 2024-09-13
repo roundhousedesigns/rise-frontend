@@ -93,43 +93,6 @@ export function sanitizeBoolean(value: string | boolean): boolean | null {
 export function getWPItemsFromIds(ids: number[], items: WPItem[]): WPItem[] {
 	return items.filter((item) => ids.includes(item.id));
 }
-/**
- * Determine if a user profile has been edited.
- *
- * @param {editProfile}
- * @param {origProfile}
- */
-export const hasProfileChanged = (editProfile: UserProfile, origProfile: UserProfile) => {
-	if (origProfile === null) return false;
-
-	const ignoreFields = [
-		'credits',
-		'conflictRanges',
-		'slug',
-		'image',
-		'resume',
-		'mediaImage1',
-		'mediaImage2',
-		'mediaImage3',
-		'mediaImage4',
-		'mediaImage5',
-		'mediaImage6',
-	];
-
-	const profile1 = new UserProfile({
-		...omit(editProfile, ignoreFields),
-		id: 0,
-		slug: '',
-	});
-
-	const profile2 = new UserProfile({
-		...omit(origProfile, ignoreFields),
-		id: 0,
-		slug: '',
-	});
-
-	return !isEqual(profile1, profile2);
-};
 
 /**
  * Prepare a user profile for GraphQL.
@@ -164,20 +127,9 @@ export function prepareUserProfileForGraphQL(profile: UserProfile): object {
 }
 
 /**
- * Sort two arrays and compare them.
- *
- * @param {number[]|string[]} a The first array to compare.
- * @param {number[]|string[]} b The second array to compare.
- * @returns {boolean} Whether the arrays are equal.
- */
-export function sortAndCompareArrays(a: number[] | string[], b: number[] | string[]): boolean {
-	return isEqual(a.sort(), b.sort());
-}
-
-/**
  * Generate a random alphanumeric string.
  *
- * @param {length} The generated string length.
+ * @param {number} length The generated string length.
  * @returns The generated string.
  */
 export function generateRandomString(length: number = 8): string {

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent, FormEvent } from 'react';
+import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent } from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -17,7 +17,6 @@ import {
 	Icon,
 	SimpleGrid,
 	Slide,
-	Input,
 	As,
 	Accordion,
 	AccordionItem,
@@ -27,9 +26,12 @@ import {
 	Card,
 	Checkbox,
 	Collapse,
+	Input,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
+import { Formik, Form, Field, FieldInputProps, FormikHelpers, FormikProps } from 'formik';
+import * as Yup from 'yup';
 import {
 	FiFacebook,
 	FiGlobe,
@@ -52,10 +54,8 @@ import {
 } from 'react-icons/fi';
 import { useDropzone } from 'react-dropzone';
 import XIcon from '@common/icons/X';
-import { hasProfileChanged, sortCreditsByIndex } from '@lib/utils';
+import { generateRandomString, sortCreditsByIndex } from '@lib/utils';
 import { Credit, UserProfile } from '@lib/classes';
-import { EditProfileContext } from '@context/EditProfileContext';
-import { useErrorMessage } from '@hooks/hooks';
 import useViewer from '@hooks/queries/useViewer';
 import useUserTaxonomies from '@hooks/queries/useUserTaxonomies';
 import useResumePreview from '@hooks/queries/useResumePreview';
@@ -78,6 +78,41 @@ import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import EditConflictDateRanges from '@components/EditConflictDateRanges';
 
+const validationSchema = Yup.object().shape({
+	firstName: Yup.string().required('First name is required'),
+	lastName: Yup.string().required('Last name is required'),
+	email: Yup.string().email('Invalid email'),
+	selfTitle: Yup.string().required('Title/Trade/Profession is required'),
+	homebase: Yup.string().required('Home base is required'),
+	locations: Yup.array().min(1, 'Please select at least one work location'),
+	bio: Yup.string().max(500, 'Bio must be 500 characters or less'),
+	phone: Yup.string().matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format'),
+	website: Yup.string().url('Invalid URL format'),
+	socials: Yup.object().shape({
+		instagram: Yup.string().matches(/^(@?[\w.]+)?$/, 'Invalid Instagram handle'),
+		twitter: Yup.string().matches(/^(@?[\w]+)?$/, 'Invalid Twitter handle'),
+		linkedin: Yup.string().url('Invalid LinkedIn URL').nullable(),
+		facebook: Yup.string().url('Invalid Facebook URL').nullable(),
+	}),
+	imdb: Yup.string().url('Invalid IMDb URL'),
+	willTravel: Yup.boolean(),
+	willTour: Yup.boolean(),
+	unions: Yup.array().of(Yup.string()),
+	skills: Yup.array().of(Yup.string()),
+	equipment: Yup.array().of(Yup.string()),
+	/*
+	 * Special fields:
+	 */
+	// image: Yup.string().url('Invalid URL'),
+	// resume: Yup.string().url('Invalid resume URL'),
+	// mediaImage1: Yup.string().url('Invalid URL'),
+	// mediaImage2: Yup.string().url('Invalid URL'),
+	// mediaImage3: Yup.string().url('Invalid URL'),
+	// mediaImage4: Yup.string().url('Invalid URL'),
+	// mediaImage5: Yup.string().url('Invalid URL'),
+	// mediaImage6: Yup.string().url('Invalid URL'),
+});
+
 // TODO Refactor into smaller components.
 // TODO Add cancel/navigation-away confirmation when exiting with edits
 
@@ -90,37 +125,13 @@ interface Props {
  * @returns {JSX.Element} The profile view.
  */
 export default function EditProfileView({ profile }: Props): JSX.Element | null {
-	const { editProfile, editProfileDispatch } = useContext(EditProfileContext);
 	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const { colorMode } = useColorMode();
 
+	// Special fields.
 	const {
-		firstName,
-		lastName,
-		pronouns,
-		selfTitle,
-		email,
 		resume,
 		image,
-		description,
-		homebase,
-		website,
-		multilingual,
-		languages,
-		socials,
-		locations,
-		education,
-		willTravel,
-		willTour,
-		phone,
-		unions,
-		partnerDirectories,
-		experienceLevels,
-		genderIdentities,
-		racialIdentities,
-		personalIdentities,
-		mediaVideo1,
-		mediaVideo2,
 		mediaImage1,
 		mediaImage2,
 		mediaImage3,
@@ -128,20 +139,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		mediaImage5,
 		mediaImage6,
 		credits,
-	} = editProfile || {};
+	} = profile || {};
 
-	// TODO implement edited alert dialog on exit and on save button enable/disable
-	const originalProfile = useRef<UserProfile | null>(null);
-
-	const [hasEditedProfile, setHasEditedProfile] = useState<boolean>(false);
+	// TODO implement exit intent dialog.
 
 	const [fieldCurrentlyUploading, setFieldCurrentlyUploading] = useState<string>('');
 	const [fieldCurrentlyClearing, setFieldCurrentlyClearing] = useState<string>('');
 
 	const [resumePreview, setResumePreview] = useState('');
 
-	const [editCredit, setEditCredit] = useState<string>('');
-	const editCreditId = useRef<string>('');
+	const [editCredit, setEditCredit] = useState<Credit | null>(null);
 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<boolean>(false);
@@ -167,41 +174,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		deleteCreditMutation,
 		results: { loading: deleteCreditLoading },
 	} = useDeleteCredit();
-
-	const [errorCode, setErrorCode] = useState<string>('');
-	const errorMessage = useErrorMessage(errorCode);
-
-	const [isAnyInputDebouncing, setIsAnyInputDebouncing] = useState(false);
-	const debouncingInputs = useRef(new Set<string>());
-
-	const handleDebounceStart = (inputName: string) => {
-		debouncingInputs.current.add(inputName);
-		setIsAnyInputDebouncing(true);
-	};
-
-	const handleDebounceEnd = (inputName: string) => {
-		debouncingInputs.current.delete(inputName);
-		if (debouncingInputs.current.size === 0) {
-			setIsAnyInputDebouncing(false);
-		}
-	};
-
-	useEffect(() => {
-		// Update the hasEditedProfile state when the editProfile changes.
-		if (!originalProfile.current) return;
-
-		setHasEditedProfile(hasProfileChanged(editProfile, originalProfile.current));
-
-		return () => setHasEditedProfile(false);
-	}, [editProfile, originalProfile.current]);
-
-	useEffect(() => {
-		if (multilingual && !languages) {
-			setErrorCode('multilingual_no_languages');
-		}
-
-		return () => setErrorCode('');
-	});
 
 	/**
 	 * EditCredit Modal
@@ -230,13 +202,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 	}, [resume, retrievedResumePreview]);
 
-	// Set the original profile to the current profile when it is loaded.
-	useEffect(() => {
-		if (!editProfile || !!originalProfile.current) return;
-
-		originalProfile.current = editProfile;
-	}, [editProfile]);
-
 	// If the credits order has changed, fire the mutation to save it after a delay.
 	useEffect(() => {
 		if (!hasEditedCreditOrder) return;
@@ -262,19 +227,19 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	// If we've got a new credit to edit, open the modal.
 	useEffect(() => {
-		if (!credits || !credits.length) return;
+		if (!creditsSorted || !creditsSorted.length) return;
 
 		// look for a credit in credits that has the isNew property set to true
-		const newCredit = credits.find((credit) => credit.isNew);
-		if (newCredit && newCredit.id !== editCreditId.current) {
-			setEditCredit(newCredit.id);
+		const newCredit = creditsSorted.find((credit) => credit.isNew);
+		if (newCredit && newCredit.id !== editCredit?.id) {
+			setEditCredit(newCredit);
 			creditModalOnOpen();
 		}
 
 		return () => {
-			setEditCredit('');
+			setEditCredit(null);
 		};
-	}, [credits]);
+	}, [creditsSorted]);
 
 	// Resort the credits on rerender.
 	useEffect(() => {
@@ -331,85 +296,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		},
 	] = useUserTaxonomies();
 
-	const {
-		updateProfileMutation,
-		results: { loading: saveLoading },
-	} = useUpdateProfile();
+	const { updateProfileMutation } = useUpdateProfile();
 
 	const toast = useToast();
 	const navigate = useNavigate();
-
-	// Set context on load, and update it when the profile changes.
-	useEffect(() => {
-		if (profile) {
-			editProfileDispatch({ type: 'INIT', payload: { profile } });
-		}
-	}, [profile]);
-
-	const handleCheckboxGroupChange = (name: string) => (newValue: any) => {
-		editProfileDispatch({
-			type: 'UPDATE_INPUT',
-			payload: {
-				name,
-				value: newValue,
-			},
-		});
-	};
-
-	/**
-	 * Updates the input state in the edit profile reducer based on the provided event.
-	 *
-	 * @param {ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>} event - The event triggered by the input change.
-	 * @return {void} This function does not return anything.
-	 */
-	const handleInputChange = (
-		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-	) => {
-		const { name, value } = event.target;
-
-		editProfileDispatch({
-			type: 'UPDATE_INPUT',
-			payload: {
-				name,
-				value,
-			},
-		});
-	};
-
-	const handleSocialInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
-		const field = name.split('.')[1];
-
-		editProfileDispatch({
-			type: 'UPDATE_PERSONAL_LINKS_INPUT',
-			payload: {
-				name: field,
-				value,
-			},
-		});
-	};
-
-	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const { name, checked } = event.target;
-
-		editProfileDispatch({
-			type: 'UPDATE_BOOLEAN_INPUT',
-			payload: {
-				name,
-				value: checked,
-			},
-		});
-	};
-
-	const handleRadioGroupInputChange = (name: string) => (newValue: string) => {
-		editProfileDispatch({
-			type: 'UPDATE_BOOLEAN_INPUT',
-			payload: {
-				name,
-				value: newValue,
-			},
-		});
-	};
 
 	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		if (!event || !event.target || !event.target.files) return;
@@ -450,15 +340,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		setFieldCurrentlyUploading(name);
 
 		uploadFileMutation(file, name, loggedInId)
-			.then((result) => {
-				editProfileDispatch({
-					type: 'UPDATE_INPUT',
-					payload: {
-						name,
-						value: result.data.uploadFile.fileUrl,
-					},
-				});
-
+			.then(() => {
 				setFieldCurrentlyUploading('');
 
 				// success toast
@@ -498,15 +380,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		setFieldCurrentlyUploading(name);
 
 		uploadFileMutation(file, name, loggedInId)
-			.then((result) => {
-				editProfileDispatch({
-					type: 'UPDATE_INPUT',
-					payload: {
-						name,
-						value: result.data.uploadFile.fileUrl,
-					},
-				});
-
+			.then(() => {
 				setFieldCurrentlyUploading('');
 
 				// success toast
@@ -558,23 +432,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				isClosable: true,
 			});
 
-			editProfileDispatch({
-				type: 'UPDATE_INPUT',
-				payload: {
-					name: fieldName,
-					value: '',
-				},
-			});
-
 			setFieldCurrentlyClearing('');
 		});
 	};
 
 	const handleNewCredit = () => {
-		editProfileDispatch({
-			type: 'ADD_NEW_CREDIT',
-			payload: {},
-		});
+		setCreditsSorted([
+			...creditsSorted,
+			new Credit({
+				id: generateRandomString(8),
+				isNew: true,
+				index: creditsSorted.length,
+				positions: { departments: [], jobs: [] },
+			}),
+		]);
 	};
 
 	const handleDeleteCredit = (creditId: string) => {
@@ -596,77 +467,53 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const submitForm = () => {
-			if (isAnyInputDebouncing) {
-				// If still debouncing, poll again
-				setTimeout(submitForm, 50);
-				return;
-			}
-
-			// Manual required field validation
-			if (!Boolean(locations.length)) {
-				toast({
-					title: 'Missing required field.',
-					description: 'Please select at least one work location.',
-					status: 'error',
-					duration: 3000,
-					isClosable: true,
-					position: 'bottom',
-				});
-
-				return;
-			}
-
-			updateProfileMutation(editProfile)
-				.then(() => {
-					navigate(`/profile/${loggedInSlug}`);
-				})
-				.then(() => {
-					toast({
-						title: 'Updated!',
-						description: 'Your changes have been saved.',
-						status: 'success',
-						duration: 3000,
-						isClosable: true,
-						position: 'bottom',
-					});
-				})
-				.catch((err) => {
-					toast({
-						title: 'Oops!',
-						description: 'There was an error saving your profile: ' + err,
-						status: 'error',
-						duration: 3000,
-						isClosable: true,
-						position: 'bottom',
-					});
-				});
-		};
-
-		submitForm();
+	const handleSubmit = async (
+		values: UserProfile,
+		{ setSubmitting }: FormikHelpers<UserProfile>
+	) => {
+		try {
+			await updateProfileMutation(values);
+			navigate(`/profile/${loggedInSlug}`);
+			toast({
+				title: 'Updated!',
+				description: 'Your changes have been saved.',
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+				position: 'bottom',
+			});
+		} catch (err) {
+			toast({
+				title: 'Oops!',
+				description: 'There was an error saving your profile: ' + err,
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+				position: 'bottom',
+			});
+		} finally {
+			setSubmitting(false);
+		}
 	};
 
 	const handleEditCredit = (creditId: string) => {
-		setEditCredit(creditId);
+		const credit = creditsSorted.find((credit) => credit.id === creditId);
+		if (!credit) return;
+
+		setEditCredit(credit);
 		creditModalOnOpen();
 	};
 
 	const handleCloseEditCredit = () => {
-		editCreditId.current = '';
+		setEditCredit(null);
 
 		// If we're editing a new credit, but nothing has been filled out, delete it.
-		if (editCredit && credits) {
-			const credit = credits.find((credit) => credit.id === editCredit);
+		if (editCredit && creditsSorted) {
+			const credit = creditsSorted.find((credit) => credit.id === editCredit.id);
+
 			if (credit && credit.isNew) {
-				editProfileDispatch({
-					type: 'DELETE_CREDIT',
-					payload: {
-						creditId: editCredit,
-					},
-				});
+				const updatedCredits = creditsSorted.filter((c) => c.id !== editCredit.id);
+				setCreditsSorted(updatedCredits);
 			}
 		}
 
@@ -750,7 +597,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 			</Box>
 			<Card>
 				<Box>
-					<EditConflictDateRanges />
+					<EditConflictDateRanges profile={profile} />
 				</Box>
 			</Card>
 		</Box>
@@ -781,7 +628,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		const onDragLeave = () => setDragActive(false);
 		const onDrop = (acceptedFiles: File[]) => {
 			setDragActive(false);
-			handleFileUpload(acceptedFiles[0], fieldName);
+			if (acceptedFiles.length > 0) {
+				handleFileUpload(acceptedFiles[0], fieldName);
+			}
 		};
 
 		// React-Dropzone set-up and options
@@ -894,7 +743,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const NewCreditButton = (): JSX.Element | null => {
 		// Check if there's a new credit, and don't count it toward the limit.
-		const newCredit = credits.find((credit) => credit.isNew);
+		const newCredit = credits?.find((credit) => credit.isNew);
 		const max = 5;
 		const limit = newCredit ? max + 1 : max;
 
@@ -903,634 +752,777 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				aria-label={'Add a new credit'}
 				leftIcon={<FiPlus />}
 				onClick={handleNewCredit}
-				isDisabled={editProfile.credits?.length === limit}
+				isDisabled={profile?.credits?.length === limit}
 			>
 				New Credit
 			</Button>
 		);
 	};
 
-	return editProfile ? (
-		<form id={'edit-profile'} onSubmit={handleSubmit}>
-			<Stack direction={'column'} flexWrap={'nowrap'} gap={4} position={'relative'}>
-				<ProfileStackItem mt={4} mb={0}>
-					<Accordion allowToggle>
-						<AccordionItem>
-							<Heading as={'h3'} m={0}>
-								<AccordionButton>
-									<Box as={'span'} fontWeight={'normal'}>
-										Options
-									</Box>
-									<AccordionIcon />
-								</AccordionButton>
-							</Heading>
-							<AccordionPanel>
-								<Flex justifyContent={'flex-start'} gap={4}>
-									<Card py={2} my={0}>
-										<DisableProfileToggle showHelperText showLabel />
-									</Card>
-								</Flex>
-							</AccordionPanel>
-						</AccordionItem>
-					</Accordion>
-				</ProfileStackItem>
-				<ProfileStackItem>
-					<Flex alignItems={'flex-start'} flexWrap={'wrap'} mt={2}>
-						{isLargerThanMd ? <Sidebar mb={2} width={'30%'} minWidth={'300px'} mr={4} /> : false}
-						<Stack flex={'1'} px={{ base: 0, md: 4 }} w={'full'}>
-							<ProfileStackItem title={'Name'}>
-								<Flex alignItems={'flex-end'} gap={2} flexWrap={'wrap'} w={'full'}>
-									<TextInput
-										placeholder={'First'}
-										value={firstName}
-										name={'firstName'}
-										isRequired
-										onChange={handleInputChange}
-										flex={'1'}
-										label={'First name'}
-										minW={'200px'}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('firstName')}
-										onDebounceEnd={() => handleDebounceEnd('firstName')}
-									/>
-									<TextInput
-										placeholder={'Last'}
-										value={lastName}
-										name={'lastName'}
-										isRequired
-										label={'Last name'}
-										onChange={handleInputChange}
-										flex={'1'}
-										minW={'200px'}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('lastName')}
-										onDebounceEnd={() => handleDebounceEnd('lastName')}
-									/>
-									<TextInput
-										value={pronouns}
-										name={'pronouns'}
-										label={'Pronouns'}
-										onChange={handleInputChange}
-										maxW={'150px'}
-										inputProps={{
-											size: 'md',
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('pronouns')}
-										onDebounceEnd={() => handleDebounceEnd('pronouns')}
-									/>
-								</Flex>
-							</ProfileStackItem>
-							<ProfileStackItem title={'Profession'}>
-								<Flex alignItems={'flex-start'} gap={2} flexWrap={'wrap'} w={'full'} mt={4}>
-									<TextInput
-										value={selfTitle}
-										name={'selfTitle'}
-										placeholder={'Title'}
-										label={'Title/Trade/Profession'}
-										leftElement={<Icon as={FiStar} />}
-										onChange={handleInputChange}
-										maxLength={50}
-										flex={'1 0 48%'}
-										inputProps={{
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('selfTitle')}
-										onDebounceEnd={() => handleDebounceEnd('selfTitle')}
-									/>
-									<TextInput
-										placeholder={'Home base'}
-										value={homebase}
-										name={'homebase'}
-										label={'Where do you currently live?'}
-										leftElement={<Icon as={FiHome} />}
-										onChange={handleInputChange}
-										maxLength={25}
-										flex={'1 0 48%'}
-										inputProps={{
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('homebase')}
-										onDebounceEnd={() => handleDebounceEnd('homebase')}
-									/>
-								</Flex>
-							</ProfileStackItem>
-							{!isLargerThanMd ? (
-								<ProfileStackItem display={'flex'} flexWrap={'wrap'} gap={4}>
-									<Sidebar />
-								</ProfileStackItem>
-							) : (
-								false
-							)}
-							<ProfileStackItem title={'Contact'}>
-								<Stack direction={'column'}>
-									<StackItem
-										as={TextInput}
-										value={email}
-										leftElement={<Icon as={FiMail} />}
-										placeholder={'me@somewhere.com'}
-										label={'Contact Email'}
-										name={'email'}
-										onChange={handleInputChange}
-										inputProps={{
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('email')}
-										onDebounceEnd={() => handleDebounceEnd('email')}
-									/>
-									{/* TODO Add checkbox for "use account email address" */}
-									<StackItem
-										as={TextInput}
-										value={phone}
-										leftElement={<Icon as={FiPhone} />}
-										placeholder={'(888) 888-8888'}
-										label={'Phone'}
-										name={'phone'}
-										onChange={handleInputChange}
-										inputProps={{
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('phone')}
-										onDebounceEnd={() => handleDebounceEnd('phone')}
-									/>
-									<StackItem
-										as={TextInput}
-										value={website}
-										leftElement={<Icon as={FiLink} />}
-										label={'Website'}
-										name={'website'}
-										onChange={handleInputChange}
-										inputProps={{
-											tabIndex: 0,
-										}}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('website')}
-										onDebounceEnd={() => handleDebounceEnd('website')}
-									/>
+	return profile ? (
+		<Formik initialValues={profile} validationSchema={validationSchema} onSubmit={handleSubmit}>
+			{({ isValid, dirty, isSubmitting, values, errors, touched }) => (
+				<Form id='edit-profile'>
+					<Stack direction={'column'} flexWrap={'nowrap'} gap={4} position={'relative'}>
+						<ProfileStackItem mt={4} mb={0}>
+							<Accordion allowToggle>
+								<AccordionItem>
+									<Heading as={'h3'} m={0}>
+										<AccordionButton>
+											<Box as={'span'} fontWeight={'normal'}>
+												Options
+											</Box>
+											<AccordionIcon />
+										</AccordionButton>
+									</Heading>
+									<AccordionPanel>
+										<Flex justifyContent={'flex-start'} gap={4}>
+											<Card py={2} my={0}>
+												<DisableProfileToggle showHelperText showLabel />
+											</Card>
+										</Flex>
+									</AccordionPanel>
+								</AccordionItem>
+							</Accordion>
+						</ProfileStackItem>
+
+						<ProfileStackItem>
+							<Flex alignItems={'flex-start'} flexWrap={'wrap'} mt={2}>
+								{isLargerThanMd ? (
+									<Sidebar mb={2} width={'30%'} minWidth={'300px'} mr={4} />
+								) : (
+									false
+								)}
+								<Stack flex={'1'} px={{ base: 0, md: 4 }} w={'full'}>
+									<ProfileStackItem title={'Name'}>
+										<Flex alignItems={'flex-end'} gap={2} flexWrap={'wrap'} w={'full'}>
+											<Field name='firstName'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														placeholder={'First'}
+														label={'First name'}
+														isRequired
+														error={touched.firstName && errors.firstName}
+														flex={'1'}
+														minW={'200px'}
+													/>
+												)}
+											</Field>
+											<Field name='lastName'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														placeholder={'Last'}
+														label={'Last name'}
+														isRequired
+														error={touched.lastName && errors.lastName}
+														flex={'1'}
+														minW={'200px'}
+													/>
+												)}
+											</Field>
+											<Field name='pronouns'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														label={'Pronouns'}
+														maxW={'150px'}
+														inputProps={{
+															size: 'md',
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+										</Flex>
+									</ProfileStackItem>
+									<ProfileStackItem title={'Profession'}>
+										<Flex alignItems={'flex-start'} gap={2} flexWrap={'wrap'} w={'full'} mt={4}>
+											<Field name='selfTitle'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														placeholder={'Title'}
+														label={'Title/Trade/Profession'}
+														isRequired
+														leftElement={<Icon as={FiStar} />}
+														maxLength={50}
+														flex={'1 0 48%'}
+														inputProps={{
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+											<Field name='homebase'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														placeholder={'Home base'}
+														label={'Where do you currently live?'}
+														isRequired
+														leftElement={<Icon as={FiHome} />}
+														maxLength={25}
+														flex={'1 0 48%'}
+														inputProps={{
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+										</Flex>
+									</ProfileStackItem>
+
+									{!isLargerThanMd ? (
+										<ProfileStackItem display={'flex'} flexWrap={'wrap'} gap={4}>
+											<Sidebar />
+										</ProfileStackItem>
+									) : (
+										false
+									)}
+
+									<ProfileStackItem title={'Contact'}>
+										<Stack direction={'column'}>
+											<Field name='email'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiMail} />}
+														placeholder={'me@somewhere.com'}
+														label={'Contact Email'}
+														inputProps={{
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+											{/* TODO Add checkbox for "use account email address" */}
+											<Field name='phone'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiPhone} />}
+														placeholder={'(888) 888-8888'}
+														label={'Phone'}
+														inputProps={{
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+											<Field name='website'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiLink} />}
+														label={'Website'}
+														inputProps={{
+															tabIndex: 0,
+														}}
+													/>
+												)}
+											</Field>
+										</Stack>
+									</ProfileStackItem>
+
+									<ProfileStackItem title={'Additional Languages'} w={'full'} maxW={'3xl'} mt={4}>
+										<>
+											<Field name='multilingual'>
+												{({ field }: { field: FieldInputProps<boolean> }) => {
+													// Destructure 'value' from field to exclude it
+													const { value, ...fieldWithoutValue } = field;
+
+													return (
+														<Checkbox
+															{...fieldWithoutValue}
+															isChecked={field.value}
+															onChange={(e) => field.onChange(e)}
+															variant={'buttonStyle'}
+															position={'relative'}
+														>
+															I speak more than one language
+														</Checkbox>
+													);
+												}}
+											</Field>
+											<Field name='languages'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<Collapse in={!!values.multilingual}>
+														<TextInput
+															{...field}
+															leftElement={<Icon as={FiGlobe} />}
+															label={'What languages other than English do you speak?'}
+															placeholder={'Spanish, Italian, Esperanto...'}
+															error={touched.languages && errors.languages}
+															mt={2}
+														/>
+													</Collapse>
+												)}
+											</Field>
+										</>
+									</ProfileStackItem>
+									<ProfileStackItem title={'Social'} w={'full'} maxW={'3xl'} mt={4}>
+										<SimpleGrid columns={[1, 2]} spacing={4}>
+											<Field name='socials.linkedin'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiLinkedin} />}
+														label={'LinkedIn URL'}
+														placeholder={'https://linkedin/in/yourprofile'}
+													/>
+												)}
+											</Field>
+											<Field name='socials.facebook'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiFacebook} />}
+														label={'Facebook URL'}
+														placeholder={'https://facebook.com/yourname'}
+													/>
+												)}
+											</Field>
+											<Field name='socials.instagram'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<Icon as={FiInstagram} />}
+														label={'Instagram @handle'}
+														placeholder={'@handle'}
+													/>
+												)}
+											</Field>
+											<Field name='socials.twitter'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														leftElement={<XIcon />}
+														label={'X/Twitter @handle'}
+														placeholder={'@handle'}
+													/>
+												)}
+											</Field>
+										</SimpleGrid>
+									</ProfileStackItem>
 								</Stack>
-							</ProfileStackItem>
-							<ProfileStackItem title={'Additional Languages'} w={'full'} maxW={'3xl'} mt={4}>
-								<>
-									<Checkbox
-										name={'multilingual'}
-										isChecked={multilingual}
-										onChange={handleCheckboxChange}
-										variant={'buttonStyle'}
-										position={'relative'}
+							</Flex>
+						</ProfileStackItem>
+
+						<ProfileStackItem title={'Work Locations'} fontSize={'sm'}>
+							<>
+								<Heading variant={'contentSubtitle'}>
+									Select any areas in which you're a local hire.
+								</Heading>
+								<Field name='locations'>
+									{({
+										field,
+										form,
+									}: {
+										field: FieldInputProps<string[]>;
+										form: FormikProps<any>;
+									}) => {
+										return (
+											<ProfileCheckboxGroup
+												isRequired
+												items={locationTerms}
+												checked={
+													field.value ? field.value.map((item: string) => item.toString()) : []
+												}
+												handleChange={(value: string[]) => form.setFieldValue('locations', value)}
+											/>
+										);
+									}}
+								</Field>
+							</>
+						</ProfileStackItem>
+
+						<ProfileStackItem py={4} display={'flex'} gap={10}>
+							<Flex flexWrap={'wrap'} gap={8} justifyContent={'space-between'}>
+								<Box>
+									<Heading variant={'contentTitle'}>Travel</Heading>
+									<Heading variant={'contentSubtitle'}>Would you work away from home?</Heading>
+									<Field name='willTravel'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string>;
+											form: FormikProps<UserProfile>;
+										}) => (
+											<ProfileRadioGroup
+												{...field}
+												items={[
+													{ label: 'Yes', value: 'true' },
+													{ label: 'No', value: 'false' },
+												]}
+												defaultValue={field.value.toString()}
+												handleChange={(value: string) =>
+													form.setFieldValue(field.name, value === 'true')
+												}
+											/>
+										)}
+									</Field>
+								</Box>
+								<Box>
+									<Heading variant={'contentTitle'}>Tour</Heading>
+									<Heading variant={'contentSubtitle'}>Would you go on tour?</Heading>
+									<Field name='willTour'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string>;
+											form: FormikProps<UserProfile>;
+										}) => {
+											return (
+												<ProfileRadioGroup
+													{...field}
+													items={[
+														{ label: 'Yes', value: 'true' },
+														{ label: 'No', value: 'false' },
+													]}
+													defaultValue={field.value.toString()}
+													handleChange={(value: string) =>
+														form.setFieldValue(field.name, value === 'true')
+													}
+												/>
+											);
+										}}
+									</Field>
+								</Box>
+								<Box>
+									<Heading
+										variant={'contentTitle'}
+										flex={'0 0 100%'}
+										textAlign={'left'}
+										alignItems={'center'}
+										display={'flex'}
 									>
-										I speak more than one language
-									</Checkbox>
-									<Collapse in={multilingual}>
-										<TextInput
-											value={languages}
-											leftElement={<Icon as={FiGlobe} />}
-											label={'What languages other than English do you speak?'}
-											placeholder={'Spanish, Italian, Esperanto...'}
-											name={'languages'}
-											error={errorMessage}
-											onChange={handleInputChange}
+										Resume
+									</Heading>
+									<Field name='resume'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string>;
+											form: FormikProps<any>;
+										}) => (
+											<>
+												{!field.value && (
+													<Heading variant={'contentSubtitle'}>PDF or image</Heading>
+												)}
+												{field.value && resumePreview ? (
+													<Flex flexWrap={'wrap'}>
+														<ResumePreviewModal
+															resumePreview={resumePreview}
+															resumeLink={field.value}
+															w={'100%'}
+															maxW={'300px'}
+															mr={{ base: 0, sm: 1 }}
+															mb={{ base: 1, sm: 0 }}
+														/>
+														<ClearFieldButton field={'resume'} label={'Delete resume'}>
+															Clear
+														</ClearFieldButton>
+													</Flex>
+												) : (
+													<FileDropzone fieldName={'resume'} text={'Resume'} allowPdf={true} />
+												)}
+											</>
+										)}
+									</Field>
+								</Box>
+							</Flex>
+						</ProfileStackItem>
+
+						<ProfileStackItem>
+							<Stack display={'flex'} gap={4}>
+								<ProfileStackItem title={'Unions/Guilds/Memberships'}>
+									<Field name='unions'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string[]>;
+											form: FormikProps<any>;
+										}) => (
+											<>
+												<Heading variant={'contentSubtitle'}>
+													What unions or guilds are you a member of?
+												</Heading>
+												<Box fontSize={'sm'}>
+													<ProfileCheckboxGroup
+														items={unionTerms}
+														checked={field.value ? field.value.map((item) => item.toString()) : []}
+														handleChange={(value: string[]) => form.setFieldValue('unions', value)}
+													/>
+												</Box>
+											</>
+										)}
+									</Field>
+								</ProfileStackItem>
+								<ProfileStackItem title={'Experience Levels'}>
+									<Field name='experienceLevels'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string[]>;
+											form: FormikProps<any>;
+										}) => (
+											<>
+												<Heading variant={'contentSubtitle'}>
+													At what levels have you worked?
+												</Heading>
+												<Box fontSize={'sm'}>
+													<ProfileCheckboxGroup
+														items={experienceLevelTerms}
+														checked={field.value ? field.value.map((item) => item.toString()) : []}
+														handleChange={(value: string[]) =>
+															form.setFieldValue('experienceLevels', value)
+														}
+													/>
+												</Box>
+											</>
+										)}
+									</Field>
+								</ProfileStackItem>
+								<ProfileStackItem title={'Partner Directories'}>
+									<Field name='partnerDirectories'>
+										{({
+											field,
+											form,
+										}: {
+											field: FieldInputProps<string[]>;
+											form: FormikProps<any>;
+										}) => (
+											<>
+												<Heading variant={'contentSubtitle'}>
+													Are you a member of one of our partner organizations?
+												</Heading>
+												<Box fontSize={'sm'}>
+													<ProfileCheckboxGroup
+														items={partnerDirectoryTerms}
+														checked={field.value ? field.value.map((item) => item.toString()) : []}
+														handleChange={(value: string[]) =>
+															form.setFieldValue('partnerDirectories', value)
+														}
+													/>
+												</Box>
+											</>
+										)}
+									</Field>
+								</ProfileStackItem>
+							</Stack>
+						</ProfileStackItem>
+
+						<ProfileStackItem
+							title={'Credits'}
+							centerlineColor={'brand.blue'}
+							pos={'relative'}
+							id={'credits'}
+						>
+							<>
+								<Text fontSize={'lg'}>
+									Add your 5 best credits here.{' '}
+									<Text as={'span'} fontStyle={'italic'}>
+										You must have at least one credit to be listed in searches!
+									</Text>
+								</Text>
+
+								<NewCreditButton />
+
+								{/* TODO better reorder and delete animations */}
+
+								{deleteCreditLoading ? (
+									<Spinner size={'sm'} colorScheme={'green'} />
+								) : (
+									creditsSorted.map((credit: Credit, index: number) => (
+										<Stack key={credit.id} direction={'row'} alignItems={'center'}>
+											<CreditItem
+												credit={credit}
+												onClick={() => handleEditCredit(credit.id)}
+												isEditable
+												key={index}
+												width={'full'}
+											/>
+											<Stack
+												as={isLargerThanMd ? ButtonGroup : undefined}
+												gap={{ base: 2, md: 0 }}
+												direction={{ base: 'column', md: 'row' }}
+											>
+												<TooltipIconButton
+													colorScheme={'gray'}
+													icon={<FiArrowUpCircle />}
+													label={'Move Credit up'}
+													isDisabled={index === 0}
+													id={credit.id}
+													onClick={() => {
+														handleCreditMoveUp(index);
+													}}
+												/>
+												<TooltipIconButton
+													colorScheme={'gray'}
+													icon={<FiArrowDownCircle />}
+													label={'Move Credit down'}
+													isDisabled={index === creditsSorted.length - 1}
+													id={credit.id}
+													onClick={() => {
+														handleCreditMoveDown(index);
+													}}
+												/>
+												<DeleteCreditButton
+													handleDeleteCredit={handleDeleteCredit}
+													id={credit.id}
+												/>
+											</Stack>
+										</Stack>
+									))
+								)}
+
+								<EditCreditModal
+									isOpen={creditModalIsOpen}
+									onClose={handleCloseEditCredit}
+									credit={creditsSorted?.find((credit) => credit.id === editCredit?.id) ?? null}
+								/>
+							</>
+						</ProfileStackItem>
+
+						<ProfileStackItem title={'About'} centerlineColor={'brand.orange'}>
+							<Field name='description'>
+								{({ field }: { field: FieldInputProps<string> }) => (
+									<>
+										<Heading variant={'contentTitle'}>Bio</Heading>
+										<Text my={2} fontSize={'lg'}>
+											Write a little. Write a lot. It's up to you!
+										</Text>
+										<TextareaInput
+											{...field}
+											label={'Bio'}
+											labelHidden
 											mt={2}
-											debounceTime={300}
-											onDebounceStart={() => handleDebounceStart('languages')}
-											onDebounceEnd={() => handleDebounceEnd('languages')}
+											mb={4}
+											inputProps={{
+												rows: 10,
+											}}
 										/>
-									</Collapse>
-								</>
-							</ProfileStackItem>
-							<ProfileStackItem title={'Social'} w={'full'} maxW={'3xl'} mt={4}>
-								<SimpleGrid columns={[1, 2]} spacing={4}>
-									<TextInput
-										value={socials?.linkedin}
-										leftElement={<Icon as={FiLinkedin} />}
-										label={'LinkedIn URL'}
-										placeholder={'https://linkedin/in/yourprofile'}
-										name={'socials.linkedin'}
-										onChange={handleSocialInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('socials.linkedin')}
-										onDebounceEnd={() => handleDebounceEnd('socials.linkedin')}
-									/>
-									<TextInput
-										value={socials?.facebook}
-										leftElement={<Icon as={FiFacebook} />}
-										label={'Facebook URL'}
-										placeholder={'https://facebook.com/yourname'}
-										name={'socials.facebook'}
-										onChange={handleSocialInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('socials.facebook')}
-										onDebounceEnd={() => handleDebounceEnd('socials.facebook')}
-									/>
-									<TextInput
-										value={socials?.instagram}
-										leftElement={<Icon as={FiInstagram} />}
-										label={'Instagram @handle'}
-										placeholder={'@handle'}
-										name={'socials.instagram'}
-										onChange={handleSocialInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('socials.instagram')}
-										onDebounceEnd={() => handleDebounceEnd('socials.instagram')}
-									/>
-									<TextInput
-										value={socials?.twitter}
-										leftElement={<XIcon />}
-										label={'X/Twitter @handle'}
-										placeholder={'@handle'}
-										name={'socials.twitter'}
-										onChange={handleSocialInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('socials.twitter')}
-										onDebounceEnd={() => handleDebounceEnd('socials.twitter')}
-									/>
-								</SimpleGrid>
-							</ProfileStackItem>
-						</Stack>
-					</Flex>
-				</ProfileStackItem>
-				<ProfileStackItem title={'Work Locations'} fontSize={'sm'}>
-					<>
-						<Heading variant={'contentSubtitle'}>
-							Select any areas in which you're a local hire.
-						</Heading>
-						<ProfileCheckboxGroup
-							name={'locations'}
-							isRequired
-							requiredMessage={'Please select at least one location.'}
-							items={locationTerms}
-							checked={locations ? locations.map((item) => item.toString()) : []}
-							handleChange={handleCheckboxGroupChange}
-						/>
-					</>
-				</ProfileStackItem>
-				<ProfileStackItem py={4} display={'flex'} gap={10}>
-					<Flex flexWrap={'wrap'} gap={8} justifyContent={'space-between'}>
-						<Box>
-							<Heading variant={'contentTitle'}>Travel</Heading>
-							<Heading variant={'contentSubtitle'}>Would you work away from home?</Heading>
-							<ProfileRadioGroup
-								defaultValue={willTravel ? 'true' : 'false'}
-								name={'willTravel'}
-								items={[
-									{ label: 'Yes', value: 'true' },
-									{ label: 'No', value: 'false' },
-								]}
-								handleChange={handleRadioGroupInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading variant={'contentTitle'}>Tour</Heading>
-							<Heading variant={'contentSubtitle'}>Would you go on tour?</Heading>
-							<ProfileRadioGroup
-								defaultValue={willTour ? 'true' : 'false'}
-								name={'willTour'}
-								items={[
-									{ label: 'Yes', value: 'true' },
-									{ label: 'No', value: 'false' },
-								]}
-								handleChange={handleRadioGroupInputChange}
-							/>
-						</Box>
-						<Box>
-							<Heading
-								variant={'contentTitle'}
-								flex={'0 0 100%'}
-								textAlign={'left'}
-								alignItems={'center'}
-								display={'flex'}
-							>
-								Resume
-							</Heading>
-							{!resume && <Heading variant={'contentSubtitle'}>PDF or image</Heading>}
-							{resume && resumePreview ? (
-								<Flex flexWrap={'wrap'}>
-									<ResumePreviewModal
-										resumePreview={resumePreview}
-										resumeLink={resume}
-										w={'100%'}
-										maxW={'300px'}
-										mr={{ base: 0, sm: 1 }}
-										mb={{ base: 1, sm: 0 }}
-									/>
-									<ClearFieldButton field={'resume'} label={'Delete resume'}>
-										Clear
-									</ClearFieldButton>
-								</Flex>
-							) : (
-								<FileDropzone fieldName={'resume'} text={'Resume'} allowPdf={true} />
-							)}
-						</Box>
-					</Flex>
-				</ProfileStackItem>
-				<ProfileStackItem>
-					<Stack display={'flex'} gap={4}>
-						<ProfileStackItem title={'Unions/Guilds/Memberships'}>
+									</>
+								)}
+							</Field>
+						</ProfileStackItem>
+
+						<ProfileStackItem title={'Identity'} centerlineColor={'brand.yellow'}>
 							<>
-								<Heading variant={'contentSubtitle'}>
-									What unions or guilds are you a member of?
-								</Heading>
-								<Box fontSize={'sm'}>
-									<ProfileCheckboxGroup
-										name={'unions'}
-										items={unionTerms}
-										checked={unions ? unions.map((item) => item.toString()) : []}
-										handleChange={handleCheckboxGroupChange}
-									/>
-								</Box>
+								<Text fontSize={'lg'}>
+									The following optional fields will be <strong>searchable</strong>, but{' '}
+									<em>will not appear</em> on your public profile. Select any that apply.
+								</Text>
+								<Stack direction={'row'} mt={4} gap={2} flexWrap={'wrap'}>
+									<ProfileStackItem title={'Gender'} flex={'1 0 33%'}>
+										<Field name='genderIdentities'>
+											{({
+												field,
+												form,
+											}: {
+												field: FieldInputProps<number[]>;
+												form: FormikProps<UserProfile>;
+											}) => (
+												<ProfileCheckboxGroup
+													items={genderIdentityTerms}
+													checked={field.value.map((item) => item.toString())}
+													handleChange={(value: string[]) =>
+														form.setFieldValue('genderIdentities', value)
+													}
+												/>
+											)}
+										</Field>
+									</ProfileStackItem>
+									<ProfileStackItem title={'Race/Ethnicity'} flex={'1 0 33%'}>
+										<Field name='racialIdentities'>
+											{({ field }: { field: FieldInputProps<number[]> }) => (
+												<ProfileCheckboxGroup
+													items={racialIdentityTerms}
+													checked={field.value.map((item) => item.toString())}
+													handleChange={(value: string[]) => {
+														field.onChange({
+															target: {
+																name: field.name,
+																value: value.map(Number),
+															},
+														});
+													}}
+												/>
+											)}
+										</Field>
+									</ProfileStackItem>
+									<ProfileStackItem title={'Additional'} flex={'1 0 33%'}>
+										<Field name='personalIdentities'>
+											{({ field }: { field: FieldInputProps<number[]> }) => (
+												<ProfileCheckboxGroup
+													items={personalIdentityTerms}
+													checked={field.value.map((item) => item.toString())}
+													handleChange={(value: string[]) => {
+														field.onChange({
+															target: {
+																name: field.name,
+																value: value.map(Number),
+															},
+														});
+													}}
+												/>
+											)}
+										</Field>
+									</ProfileStackItem>
+								</Stack>
 							</>
 						</ProfileStackItem>
-						<ProfileStackItem title={'Experience Levels'}>
-							<>
-								<Heading variant={'contentSubtitle'}>At what levels have you worked?</Heading>
-								<Box fontSize={'sm'}>
-									<ProfileCheckboxGroup
-										name={'experienceLevels'}
-										items={experienceLevelTerms}
-										checked={
-											experienceLevels ? experienceLevels.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxGroupChange}
+
+						<ProfileStackItem title={'Education + Training'} centerlineColor={'brand.green'}>
+							<Field name='education'>
+								{({ field }: { field: FieldInputProps<string> }) => (
+									<TextareaInput
+										{...field}
+										variant={'outline'}
+										label={'Education and training'}
+										labelHidden
+										inputProps={{
+											rows: 4,
+										}}
 									/>
-								</Box>
-							</>
+								)}
+							</Field>
 						</ProfileStackItem>
-						<ProfileStackItem title={'Partner Directories'}>
+
+						<ProfileStackItem title={'Media'} centerlineColor={'brand.blue'}>
 							<>
 								<Heading variant={'contentSubtitle'}>
-									Are you a member of one of our partner organizations?
+									Showcase your work with images and videos.
 								</Heading>
-								<Box fontSize={'sm'}>
-									<ProfileCheckboxGroup
-										name={'partnerDirectories'}
-										items={partnerDirectoryTerms}
-										checked={
-											partnerDirectories ? partnerDirectories.map((item) => item.toString()) : []
-										}
-										handleChange={handleCheckboxGroupChange}
-									/>
+								<Box>
+									<Heading variant={'contentTitle'}>Videos</Heading>
+									<SimpleGrid columns={[1, 2]} spacing={8}>
+										<Box>
+											<Field name='mediaVideo1'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														label={'Video embed 1'}
+														placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
+														leftElement={<FiVideo />}
+													/>
+												)}
+											</Field>
+											{values.mediaVideo1 ? (
+												<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
+													<Box
+														position={'absolute'}
+														top={0}
+														left={0}
+														width={'100%'}
+														height={'100%'}
+													>
+														<ReactPlayer
+															url={values.mediaVideo1}
+															controls
+															width={'100%'}
+															height={'100%'}
+														/>
+													</Box>
+												</Box>
+											) : (
+												false
+											)}
+										</Box>
+										<Box>
+											<Field name='mediaVideo2'>
+												{({ field }: { field: FieldInputProps<string> }) => (
+													<TextInput
+														{...field}
+														label={'Video embed 2'}
+														placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
+														leftElement={<FiVideo />}
+													/>
+												)}
+											</Field>
+											{values.mediaVideo2 ? (
+												<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
+													<Box
+														position={'absolute'}
+														top={0}
+														left={0}
+														width={'100%'}
+														height={'100%'}
+													>
+														<ReactPlayer
+															url={values.mediaVideo2}
+															controls
+															width={'100%'}
+															height={'100%'}
+														/>
+													</Box>
+												</Box>
+											) : (
+												false
+											)}
+										</Box>
+									</SimpleGrid>
+								</Box>
+								<Box mt={6}>
+									<Heading variant={'contentTitle'}>Images</Heading>
+									<Text fontSize={'lg'} mb={0}>
+										Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
+									</Text>
+									<Text variant={'notice'} fontSize={'sm'} fontStyle={'italic'} mb={4}>
+										* By uploading images to your RISE profile, you acknowledge that you own the
+										rights or are authorized to use these images as work samples.
+									</Text>
+									<SimpleGrid columns={[1, 2, 3]} spacing={8}>
+										<FileDropzone fieldName={'mediaImage1'} text={'Image 1'} />
+										<FileDropzone fieldName={'mediaImage2'} text={'Image 2'} />
+										<FileDropzone fieldName={'mediaImage3'} text={'Image 3'} />
+										<FileDropzone fieldName={'mediaImage4'} text={'Image 4'} />
+										<FileDropzone fieldName={'mediaImage5'} text={'Image 5'} />
+										<FileDropzone fieldName={'mediaImage6'} text={'Image 6'} />
+									</SimpleGrid>
 								</Box>
 							</>
 						</ProfileStackItem>
 					</Stack>
-				</ProfileStackItem>
-				<ProfileStackItem
-					title={'Credits'}
-					centerlineColor={'brand.blue'}
-					pos={'relative'}
-					id={'credits'}
-				>
-					<>
-						<Text fontSize={'lg'}>
-							Add your 5 best credits here.{' '}
-							<Text as={'span'} fontStyle={'italic'}>
-								You must have at least one credit to be listed in searches!
-							</Text>
-						</Text>
 
-						<NewCreditButton />
-
-						{/* TODO better reorder and delete animations */}
-
-						{deleteCreditLoading ? (
-							<Spinner size={'sm'} colorScheme={'green'} />
-						) : (
-							creditsSorted.map((credit: Credit, index: number) => (
-								<Stack key={credit.id} direction={'row'} alignItems={'center'}>
-									<CreditItem
-										credit={credit}
-										onClick={() => handleEditCredit(credit.id)}
-										isEditable
-										key={index}
-										width={'full'}
-									/>
-									<Stack
-										as={isLargerThanMd ? ButtonGroup : undefined}
-										gap={{ base: 2, md: 0 }}
-										direction={{ base: 'column', md: 'row' }}
-									>
-										<TooltipIconButton
-											colorScheme={'gray'}
-											icon={<FiArrowUpCircle />}
-											label={'Move Credit up'}
-											isDisabled={index === 0}
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveUp(index);
-											}}
-										/>
-										<TooltipIconButton
-											colorScheme={'gray'}
-											icon={<FiArrowDownCircle />}
-											label={'Move Credit down'}
-											isDisabled={index === creditsSorted.length - 1}
-											id={credit.id}
-											onClick={() => {
-												handleCreditMoveDown(index);
-											}}
-										/>
-										<DeleteCreditButton handleDeleteCredit={handleDeleteCredit} id={credit.id} />
-									</Stack>
-								</Stack>
-							))
-						)}
-
-						<EditCreditModal
-							isOpen={creditModalIsOpen}
-							onClose={handleCloseEditCredit}
-							creditId={editCredit}
-						/>
-					</>
-				</ProfileStackItem>
-
-				<ProfileStackItem title={'About'} centerlineColor={'brand.orange'}>
-					<>
-						<Heading variant={'contentTitle'}>Bio</Heading>
-						<Text my={2} fontSize={'lg'}>
-							Write a little. Write a lot. It's up to you!
-						</Text>
-						<TextareaInput
-							value={description}
-							name={'description'}
-							label={'Bio'}
-							labelHidden
-							mt={2}
-							mb={4}
-							onChange={handleInputChange}
-							inputProps={{
-								rows: 10,
-							}}
-							debounceTime={300}
-							onDebounceStart={() => handleDebounceStart('description')}
-							onDebounceEnd={() => handleDebounceEnd('description')}
-						/>
-					</>
-				</ProfileStackItem>
-
-				<ProfileStackItem title={'Identity'} centerlineColor={'brand.yellow'}>
-					<>
-						<Text fontSize={'lg'}>
-							The following optional fields will be <strong>searchable</strong>, but{' '}
-							<em>will not appear</em> on your public profile. Select any that apply.
-						</Text>
-						<Stack direction={'row'} mt={4} gap={2} flexWrap={'wrap'}>
-							<ProfileStackItem title={'Gender'} flex={'1 0 33%'}>
-								<ProfileCheckboxGroup
-									name={'genderIdentities'}
-									items={genderIdentityTerms}
-									checked={genderIdentities ? genderIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxGroupChange}
-								/>
-							</ProfileStackItem>
-							<ProfileStackItem title={'Race/Ethnicity'} flex={'1 0 33%'}>
-								<ProfileCheckboxGroup
-									name={'racialIdentities'}
-									items={racialIdentityTerms}
-									checked={racialIdentities ? racialIdentities.map((item) => item.toString()) : []}
-									handleChange={handleCheckboxGroupChange}
-								/>
-							</ProfileStackItem>
-							<ProfileStackItem title={'Additional'} flex={'1 0 33%'}>
-								<ProfileCheckboxGroup
-									name={'personalIdentities'}
-									items={personalIdentityTerms}
-									checked={
-										personalIdentities ? personalIdentities.map((item) => item.toString()) : []
-									}
-									handleChange={handleCheckboxGroupChange}
-								/>
-							</ProfileStackItem>
-						</Stack>
-					</>
-				</ProfileStackItem>
-
-				<ProfileStackItem title={'Education + Training'} centerlineColor={'brand.green'}>
-					<TextareaInput
-						value={education}
-						name={'education'}
-						variant={'outline'}
-						label={'Education and training'}
-						labelHidden
-						onChange={handleInputChange}
-						inputProps={{
-							rows: 4,
+					<Slide
+						in={dirty}
+						direction={'bottom'}
+						style={{
+							position: 'fixed',
+							bottom: 0,
+							left: 0,
+							width: 'full',
+							backgroundColor: colorMode === 'dark' ? 'white' : '#222',
+							borderTopWidth: '1px',
+							borderTopColor: 'gray.100',
+							textAlign: 'right',
+							zIndex: 3,
 						}}
-						debounceTime={300}
-						onDebounceStart={() => handleDebounceStart('education')}
-						onDebounceEnd={() => handleDebounceEnd('education')}
-					/>
-				</ProfileStackItem>
-
-				<ProfileStackItem title={'Media'} centerlineColor={'brand.blue'}>
-					<>
-						<Heading variant={'contentSubtitle'}>
-							Showcase your work with images and videos.
-						</Heading>
-						<Box>
-							<Heading variant={'contentTitle'}>Videos</Heading>
-							<SimpleGrid columns={[1, 2]} spacing={8}>
-								<Box>
-									<TextInput
-										value={mediaVideo1}
-										name={'mediaVideo1'}
-										label={'Video embed 1'}
-										placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
-										leftElement={<FiVideo />}
-										onChange={handleInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('mediaVideo1')}
-										onDebounceEnd={() => handleDebounceEnd('mediaVideo1')}
-									/>
-									{mediaVideo1 ? (
-										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
-											<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
-												<ReactPlayer url={mediaVideo1} controls width={'100%'} height={'100%'} />
-											</Box>
-										</Box>
-									) : (
-										false
-									)}
-								</Box>
-								<Box>
-									<TextInput
-										value={mediaVideo2}
-										name={'mediaVideo2'}
-										label={'Video embed 2'}
-										placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
-										leftElement={<FiVideo />}
-										onChange={handleInputChange}
-										debounceTime={300}
-										onDebounceStart={() => handleDebounceStart('mediaVideo2')}
-										onDebounceEnd={() => handleDebounceEnd('mediaVideo2')}
-									/>
-									{mediaVideo2 ? (
-										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
-											<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
-												<ReactPlayer url={mediaVideo2} controls width={'100%'} height={'100%'} />
-											</Box>
-										</Box>
-									) : (
-										false
-									)}
-								</Box>
-							</SimpleGrid>
-						</Box>
-						<Box mt={6}>
-							<Heading variant={'contentTitle'}>Images</Heading>
-							<Text fontSize={'lg'} mb={0}>
-								Allowed formats: jpg, png, gif, heic, or webp. 2MB or less, please.
-							</Text>
-							<Text variant={'notice'} fontSize={'sm'} fontStyle={'italic'} mb={4}>
-								* By uploading images to your RISE profile, you acknowledge that you own the rights
-								or are authorized to use these images as work samples.
-							</Text>
-							<SimpleGrid columns={[1, 2, 3]} spacing={8}>
-								<FileDropzone fieldName={'mediaImage1'} text={'Image 1'} />
-								<FileDropzone fieldName={'mediaImage2'} text={'Image 2'} />
-								<FileDropzone fieldName={'mediaImage3'} text={'Image 3'} />
-								<FileDropzone fieldName={'mediaImage4'} text={'Image 4'} />
-								<FileDropzone fieldName={'mediaImage5'} text={'Image 5'} />
-								<FileDropzone fieldName={'mediaImage6'} text={'Image 6'} />
-							</SimpleGrid>
-						</Box>
-					</>
-				</ProfileStackItem>
-			</Stack>
-
-			<Slide
-				in={hasEditedProfile === true}
-				direction={'bottom'}
-				style={{
-					position: 'fixed',
-					bottom: 0,
-					left: 0,
-					width: 'full',
-					backgroundColor: colorMode === 'dark' ? 'white' : '#222',
-					borderTopWidth: '1px',
-					borderTopColor: 'gray.100',
-					textAlign: 'right',
-					zIndex: 3,
-				}}
-			>
-				<Button
-					type={'submit'}
-					form={'edit-profile'}
-					leftIcon={saveLoading ? undefined : <FiSave />}
-					aria-label={'Save changes'}
-					colorScheme={'green'}
-					isDisabled={saveLoading || !!errorMessage}
-					isLoading={!!saveLoading}
-					size={'lg'}
-					mr={4}
-					my={2}
-				>
-					Save Changes
-				</Button>
-			</Slide>
-		</form>
+					>
+						<Button
+							type={'submit'}
+							leftIcon={isSubmitting ? undefined : <FiSave />}
+							aria-label={'Save changes'}
+							colorScheme={'green'}
+							// isDisabled={!isValid || !dirty || isSubmitting}
+							isLoading={isSubmitting}
+							size={'lg'}
+							mr={4}
+							my={2}
+						>
+							Save Changes
+						</Button>
+					</Slide>
+				</Form>
+			)}
+		</Formik>
 	) : null;
 }

@@ -3,7 +3,12 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.11] - Unreleased
+## \[1.1.11-formik] - Unreleased
+
+- Add: Formik!
+- Add: Formik support to the form elements (`<  FormikTextInput>`, `<FormikTextareaInput>`, etc)
+- Improve: Refactor of `<TextInput>` and `<TextareaInput>` to now use `<FormikField>`
+- Remove: `EditProfileContext`. Formik now handles all form state!
 
 ## \[1.1.10] - 2024-09-06
 

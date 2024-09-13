@@ -2,6 +2,10 @@
  * Deprecated functionality.
  */
 
+import { isEqual } from 'lodash';
+import { omit } from 'lodash';
+import { UserProfile } from '@lib/classes';
+
 /**
  * Format a login error message.
  *
@@ -221,4 +225,59 @@ export function toggleArrayItem(array: any[], item: any): any[] {
 	}
 
 	return [...array, item];
+}
+
+/**
+ * Determine if a user profile has been edited.
+ *
+ * @deprecated 1.1.11
+ *
+ * @param {editProfile}
+ * @param {origProfile}
+ 
+ */
+export const hasProfileChanged = (editProfile: UserProfile, origProfile: UserProfile): boolean => {
+	if (origProfile === null) return false;
+
+	const ignoreFields = [
+		'credits',
+		'conflictRanges',
+		'slug',
+		'image',
+		'resume',
+		'mediaImage1',
+		'mediaImage2',
+		'mediaImage3',
+		'mediaImage4',
+		'mediaImage5',
+		'mediaImage6',
+	];
+
+	const profile1 = new UserProfile({
+		...omit(editProfile, ignoreFields),
+		id: 0,
+		slug: '',
+	});
+
+	const profile2 = new UserProfile({
+		...omit(origProfile, ignoreFields),
+		id: 0,
+		slug: '',
+	});
+
+	return !isEqual(profile1, profile2);
+};
+
+/**
+ * Sort two arrays and compare them.
+ *
+ * @deprecated 1.1.11
+ *
+ * @param {number[]|string[]} a The first array to compare.
+ * @param {number[]|string[]} b The second array to compare.
+ * @returns {boolean} Whether the arrays are equal.
+ *
+ */
+export function sortAndCompareArrays(a: number[] | string[], b: number[] | string[]): boolean {
+	return isEqual(a.sort(), b.sort());
 }

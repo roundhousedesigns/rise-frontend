@@ -10,7 +10,7 @@ interface Props {
 	}[];
 	groupButtons?: boolean;
 	defaultValue: string;
-	handleChange: (name: string) => (value: string) => void;
+	handleChange: (value: string) => void;
 	[prop: string]: any;
 }
 
@@ -23,24 +23,18 @@ export default function ProfileRadioGroup({
 	handleChange,
 	...props
 }: Props) {
-	const handleToggleItem = (value: string) => {
-		handleChange(name)(value);
-	};
-
 	return items ? (
 		<chakra.div {...props}>
-			<RadioGroup value={defaultValue} onChange={handleToggleItem}>
+			<RadioGroup defaultValue={defaultValue} onChange={handleChange}>
 				<Wrap spacing={1}>
-					{items.map((item: { label: string; value: string }) => {
-						return (
-							<RadioButton key={`${item.label}:${item.value}`} value={item.value}>
-								{item.label}
-							</RadioButton>
-						);
-					})}
+					{items.map((item) => (
+						<RadioButton key={`${item.label}:${item.value}`} value={item.value}>
+							{item.label}
+						</RadioButton>
+					))}
 				</Wrap>
 			</RadioGroup>
-			{label ? <FormLabel fontSize={'sm'}>{label}</FormLabel> : false}
+			{label && <FormLabel fontSize={'sm'}>{label}</FormLabel>}
 		</chakra.div>
 	) : null;
 }

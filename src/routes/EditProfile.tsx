@@ -1,14 +1,13 @@
 import { forwardRef, useRef } from 'react';
 import { Button, Spinner } from '@chakra-ui/react';
 import { FiArrowDown } from 'react-icons/fi';
-import { EditProfileContextProvider } from '@context/EditProfileContext';
 import useViewer from '@queries/useViewer';
 import useUserProfile from '@queries/useUserProfile';
 import EditProfileView from '@views/EditProfileView';
 import Page from '@components/Page';
 import ErrorAlert from '@common/ErrorAlert';
 
-const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
+const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props_ignored, ref) => {
 	const handleClick = () => {
 		const creditsElement = document.getElementById('credits');
 		if (creditsElement) {
@@ -39,17 +38,15 @@ export default function EditProfile() {
 
 	return (
 		<Page title={'Update Profile'} actions={<PageActions />}>
-			<EditProfileContextProvider initialState={profile}>
-				{profile && !loading && !error ? (
-					<EditProfileView profile={profile} />
-				) : loading ? (
-					<Spinner alignSelf={'center'} />
-				) : error ? (
-					<ErrorAlert message={error.message} />
-				) : (
-					''
-				)}
-			</EditProfileContextProvider>
+			{profile && !loading && !error ? (
+				<EditProfileView profile={profile} />
+			) : loading ? (
+				<Spinner alignSelf={'center'} />
+			) : error ? (
+				<ErrorAlert message={error.message} />
+			) : (
+				''
+			)}
 		</Page>
 	);
 }

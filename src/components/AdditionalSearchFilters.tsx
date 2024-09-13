@@ -42,7 +42,7 @@ export default function AdditionalSearchFilters() {
 		? racialIdentityTermsUnfiltered.filter((item) => item.slug !== 'white')
 		: [];
 
-	const handleInputChange = (name: string) => (newValue: string | Key[]) => {
+	const handleInputChange = (name: string) => (newValue: string[]) => {
 		searchDispatch({
 			type: 'SET_FILTER',
 			payload: {
@@ -85,7 +85,7 @@ export default function AdditionalSearchFilters() {
 					name={'locations'}
 					items={locationTerms}
 					checked={locations as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('locations')}
 					pt={0}
 				/>
 			</SearchFilterAccordionItem>
@@ -94,7 +94,7 @@ export default function AdditionalSearchFilters() {
 					name={'unions'}
 					items={unionTerms}
 					checked={unions as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('unions')}
 				/>
 			</SearchFilterAccordionItem>
 			<SearchFilterAccordionItem heading={'Experience Levels'}>
@@ -102,7 +102,7 @@ export default function AdditionalSearchFilters() {
 					name={'experienceLevels'}
 					items={experienceLevelTerms}
 					checked={experienceLevels as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('experienceLevels')}
 				/>
 			</SearchFilterAccordionItem>
 			<SearchFilterAccordionItem heading={'Gender Identity'}>
@@ -110,7 +110,7 @@ export default function AdditionalSearchFilters() {
 					name={'genderIdentities'}
 					items={genderIdentityTerms}
 					checked={genderIdentities as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('genderIdentities')}
 				/>
 			</SearchFilterAccordionItem>
 			<SearchFilterAccordionItem heading={'Personal Identity'}>
@@ -118,7 +118,7 @@ export default function AdditionalSearchFilters() {
 					name={'personalIdentities'}
 					items={personalIdentityTerms}
 					checked={personalIdentities as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('personalIdentities')}
 				/>
 			</SearchFilterAccordionItem>
 			<SearchFilterAccordionItem heading={'Racial Identity'}>
@@ -126,7 +126,7 @@ export default function AdditionalSearchFilters() {
 					name={'racialIdentities'}
 					items={racialIdentityTerms}
 					checked={racialIdentities as string[]}
-					handleChange={handleInputChange}
+					handleChange={handleInputChange('racialIdentities')}
 				/>
 			</SearchFilterAccordionItem>
 		</Accordion>

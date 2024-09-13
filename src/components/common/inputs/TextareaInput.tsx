@@ -1,5 +1,4 @@
-import { ChangeEvent, ReactNode, useCallback, useState, useEffect, useRef } from 'react';
-import { debounce } from 'lodash';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
 
 interface Props {
@@ -14,9 +13,6 @@ interface Props {
 		[prop: string]: any;
 	};
 	[prop: string]: any;
-	debounceTime?: number;
-	onDebounceStart?: () => void;
-	onDebounceEnd?: () => void;
 }
 
 /**
@@ -34,31 +30,9 @@ export default function TextareaInput({
 	name,
 	onChange,
 	inputProps,
-	debounceTime,
-	onDebounceStart,
-	onDebounceEnd,
 	...props
 }: Props): JSX.Element {
 	const [localValue, setLocalValue] = useState(value);
-	const isDebouncing = useRef(false);
-
-	/**
-	 * Handles the debounced change event for the textarea.
-	 *
-	 * @param {string} value - The new value of the textarea.
-	 */
-	const handleDebouncedChange = (value: string) => {
-		onChange({ target: { name, value } } as ChangeEvent<HTMLTextAreaElement>);
-		isDebouncing.current = false;
-		onDebounceEnd?.();
-	};
-
-	const debouncedOnChange = useCallback(debounce(handleDebouncedChange, debounceTime), [
-		onChange,
-		name,
-		debounceTime,
-		onDebounceEnd,
-	]);
 
 	/**
 	 * Handles the change event for the textarea.
@@ -68,22 +42,9 @@ export default function TextareaInput({
 	const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		const newValue = e.target.value;
 		setLocalValue(newValue);
-		if (debounceTime) {
-			if (!isDebouncing.current) {
-				isDebouncing.current = true;
-				onDebounceStart?.();
-			}
-			handleDebouncedChange(newValue);
-		} else {
-			onChange(e);
-		}
-	};
 
-	useEffect(() => {
-		return () => {
-			debouncedOnChange.cancel();
-		};
-	}, [debouncedOnChange]);
+		onChange(e);
+	};
 
 	return (
 		<FormControl {...props}>

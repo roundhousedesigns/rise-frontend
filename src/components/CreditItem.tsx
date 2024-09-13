@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
+import { useEffect, useState, KeyboardEvent } from 'react';
 import { Card, Heading, Text, Wrap, Box, Stack, Flex, Skeleton, Badge } from '@chakra-ui/react';
 import { Credit, WPItem } from '@lib/classes';
-import { decodeString, sortAndCompareArrays } from '@lib/utils';
+import { decodeString } from '@lib/utils';
 import useLazyTaxonomyTerms from '@queries/useLazyTaxonomyTerms';
 import useTaxonomyTerms from '@queries/useTaxonomyTerms';
 import WrapWithIcon from '@common/WrapWithIcon';
@@ -32,8 +32,6 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 
 	// Get jobs and skills terms from their IDs
 	const [termList, setTermList] = useState<number[]>([]);
-	const memoizedTermList = useMemo(() => termList, [termList]);
-
 	const [departments] = useTaxonomyTerms(departmentIds ? departmentIds : []);
 
 	// The term items for each set.
@@ -53,14 +51,14 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 
 	// Get jobs terms from their IDs
 	useEffect(() => {
-		if (!sortAndCompareArrays(termList, memoizedTermList) || termList.length === 0) return;
+		if (termList.length === 0) return;
 
 		getTerms({
 			variables: {
 				include: termList,
 			},
 		});
-	}, [termList, memoizedTermList]);
+	}, [termList, getTerms]);
 
 	// Set jobs and skills state
 	useEffect(() => {
@@ -121,52 +119,50 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 								<Heading as={'h3'} fontWeight={'bold'} fontSize={'xl'} my={0}>
 									{title}
 								</Heading>
-								<Badge
-									flex={'0 0 auto'}
-									fontSize={'md'}
-									fontWeight={'bold'}
-									textTransform={'none'}
-									px={2}
-									py={1}
-								>
+								<Badge flex={'0 0 auto'} variant={'strong'} fontSize={'md'} textTransform={'none'}>
 									{` ${yearString()}`}
 								</Badge>
 							</Flex>
 							<Flex my={0} alignItems={'center'} flexWrap={'wrap'} gap={2}>
 								{venue ? (
-									<WrapWithIcon icon={FiStar} mr={1}>
+									<WrapWithIcon icon={FiStar} mr={1} iconLabel={'Star icon'}>
 										{decodeString(venue)}
 									</WrapWithIcon>
 								) : (
 									false
 								)}
 								{jobLocation ? (
-									<WrapWithIcon icon={FiMapPin} mr={1}>
+									<WrapWithIcon icon={FiMapPin} mr={1} iconLabel={'Map icon'}>
 										{decodeString(`${jobLocation}`)}
 									</WrapWithIcon>
 								) : (
 									false
 								)}
 								<Flex my={0} alignItems={'center'} flexWrap={'wrap'} gap={2}>
-									{jobTitle && <WrapWithIcon icon={FiBriefcase}>{jobTitle}</WrapWithIcon>}
+									{jobTitle && (
+										<WrapWithIcon icon={FiBriefcase} iconLabel={'Briefcase icon'}>
+											{jobTitle}
+										</WrapWithIcon>
+									)}
 									{intern || fellow ? (
-										<Flex color={'brand.yellow'} gap={1} ml={2}>
+										<Flex gap={1} ml={2} alignItems={'center'}>
 											{intern ? (
-												<Text
+												<Badge
 													flex={'0 0 auto'}
-													fontSize={'sm'}
+													fontSize={'xs'}
 													fontWeight={'bold'}
 													textTransform={'none'}
-													py={1}
+													px={1}
+													colorScheme='yellow'
 												>
 													Internship
-												</Text>
+												</Badge>
 											) : (
 												''
 											)}
 
 											{intern && fellow ? (
-												<Text fontSize={'2xl'} mx={0} my={1}>
+												<Text fontSize={'xl'} mx={0} my={1}>
 													&middot;
 												</Text>
 											) : (
@@ -174,16 +170,15 @@ export default function CreditItem({ credit, isEditable, onClick, ...props }: Pr
 											)}
 
 											{fellow ? (
-												<Text
+												<Badge
 													flex={'0 0 auto'}
-													fontSize={'sm'}
-													fontWeight={'bold'}
+													fontSize={'xs'}
 													textTransform={'none'}
-													py={1}
-													colorScheme={'yellow'}
+													px={1}
+													colorScheme='yellow'
 												>
 													Fellowship
-												</Text>
+												</Badge>
 											) : (
 												''
 											)}

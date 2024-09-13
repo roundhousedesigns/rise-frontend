@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
 	List,
 	ListItem,
@@ -13,18 +13,20 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiDelete, FiPlus } from 'react-icons/fi';
-import { DateRange } from '@lib/classes';
-import { EditProfileContext } from '@context/EditProfileContext';
+import { DateRange, UserProfile } from '@lib/classes';
 import useViewer from '@queries/useViewer';
 import useDeleteOwnConflictRange from '@mutations/useDeleteOwnConflictRange';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditConflictDateRangeModal from '@components/EditConflictDateRangeModal';
 
-export default function EditConflictDateRanges() {
+interface Props {
+	profile: UserProfile | null;
+}
+
+export default function EditConflictDateRanges({ profile }: Props) {
 	const [{ loggedInId }] = useViewer();
-	const {
-		editProfile: { conflictRanges },
-	} = useContext(EditProfileContext);
+
+	const conflictRanges = profile?.conflictRanges;
 
 	const {
 		deleteOwnConflictRangeMutation,
@@ -32,7 +34,7 @@ export default function EditConflictDateRanges() {
 	} = useDeleteOwnConflictRange();
 
 	const sortedDateRanges: DateRange[] = useMemo(() => {
-		return conflictRanges
+		return (conflictRanges ?? [])
 			.slice()
 			.sort((a, b) =>
 				a.startDate && b.startDate ? a.startDate.getTime() - b.startDate.getTime() : 0
