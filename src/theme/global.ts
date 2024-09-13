@@ -2,6 +2,8 @@
  * Global style overrides.
  */
 
+import { graphqlSync } from 'graphql';
+
 export const styles = {
 	global: {
 		html: { fontSize: '18px' },
@@ -72,6 +74,10 @@ export const radioCheckboxButtonStyleObject = {
 			bg: 'gray.800',
 			_checked: {
 				bg: 'gray.300',
+				color: 'gray.900',
+				_hover: {
+					color: 'gray.100',
+				},
 			},
 			_hover: {
 				bg: 'gray.600',
@@ -82,11 +88,11 @@ export const radioCheckboxButtonStyleObject = {
 			_checked: {
 				bg: 'gray.600',
 				_hover: {
-					bg: 'gray.500',
+					bg: 'gray.700',
 				},
 			},
 			_hover: {
-				bg: 'gray.200',
+				bg: 'gray.400',
 			},
 		},
 	},
@@ -94,7 +100,7 @@ export const radioCheckboxButtonStyleObject = {
 		letterSpacing: '0.06em',
 		_dark: {
 			_checked: {
-				color: 'gray.900',
+				// color: 'gray.900',
 			},
 		},
 		_light: {

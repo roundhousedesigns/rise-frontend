@@ -29,6 +29,14 @@ const variants = {
 			color: 'text.dark',
 		},
 	}),
+	formError: defineStyle({
+		fontWeight: 'bold',
+		fontStyle: 'italic',
+		mt: 0,
+		flex: '1',
+		fontSize: 'xs',
+		color: 'brand.red',
+	}),
 };
 
 export default defineStyleConfig({

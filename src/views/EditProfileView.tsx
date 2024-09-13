@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef, ChangeEvent, MouseEvent } from 'react';
+import { useState, useEffect, ChangeEvent, MouseEvent } from 'react';
 import {
 	useMediaQuery,
 	useColorMode,
@@ -27,11 +27,12 @@ import {
 	Checkbox,
 	Collapse,
 	Input,
+	chakra,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
 import { Formik, Form, Field, FieldInputProps, FormikHelpers, FormikProps } from 'formik';
 import * as Yup from 'yup';
+import ReactPlayer from 'react-player';
 import {
 	FiFacebook,
 	FiGlobe,
@@ -77,40 +78,35 @@ import DeleteCreditButton from '@components/DeleteCreditButton';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import ResumePreviewModal from '@components/ResumePreviewModal';
 import EditConflictDateRanges from '@components/EditConflictDateRanges';
+import FormErrorText from '@common/FormErrorText';
 
 const validationSchema = Yup.object().shape({
 	firstName: Yup.string().required('First name is required'),
 	lastName: Yup.string().required('Last name is required'),
+	pronouns: Yup.string().max(15, 'Pronouns must be 15 characters or less'),
 	email: Yup.string().email('Invalid email'),
 	selfTitle: Yup.string().required('Title/Trade/Profession is required'),
 	homebase: Yup.string().required('Home base is required'),
 	locations: Yup.array().min(1, 'Please select at least one work location'),
-	bio: Yup.string().max(500, 'Bio must be 500 characters or less'),
-	phone: Yup.string().matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format'),
 	website: Yup.string().url('Invalid URL format'),
+	willTravel: Yup.boolean(),
+	willTour: Yup.boolean(),
+	multilingual: Yup.boolean(),
+	languages: Yup.string().when('multilingual', {
+		is: true,
+		then: (schema) => schema.required('Please specify the languages you speak'),
+		otherwise: (schema) =>
+			schema.test('is-empty', 'Languages should be empty when not multilingual', (value) => !value),
+	}),
+	// TODO Fix social handle validation, not working.
 	socials: Yup.object().shape({
 		instagram: Yup.string().matches(/^(@?[\w.]+)?$/, 'Invalid Instagram handle'),
 		twitter: Yup.string().matches(/^(@?[\w]+)?$/, 'Invalid Twitter handle'),
 		linkedin: Yup.string().url('Invalid LinkedIn URL').nullable(),
 		facebook: Yup.string().url('Invalid Facebook URL').nullable(),
 	}),
-	imdb: Yup.string().url('Invalid IMDb URL'),
-	willTravel: Yup.boolean(),
-	willTour: Yup.boolean(),
-	unions: Yup.array().of(Yup.string()),
-	skills: Yup.array().of(Yup.string()),
-	equipment: Yup.array().of(Yup.string()),
-	/*
-	 * Special fields:
-	 */
-	// image: Yup.string().url('Invalid URL'),
-	// resume: Yup.string().url('Invalid resume URL'),
-	// mediaImage1: Yup.string().url('Invalid URL'),
-	// mediaImage2: Yup.string().url('Invalid URL'),
-	// mediaImage3: Yup.string().url('Invalid URL'),
-	// mediaImage4: Yup.string().url('Invalid URL'),
-	// mediaImage5: Yup.string().url('Invalid URL'),
-	// mediaImage6: Yup.string().url('Invalid URL'),
+	mediaVideo1: Yup.string().url('Invalid video URL'),
+	mediaVideo2: Yup.string().url('Invalid video URL'),
 });
 
 // TODO Refactor into smaller components.
@@ -128,7 +124,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const [{ loggedInId, loggedInSlug }] = useViewer();
 	const { colorMode } = useColorMode();
 
-	// Special fields.
+	// Non-form fields.
 	const {
 		resume,
 		image,
@@ -827,7 +823,8 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														label={'Pronouns'}
-														maxW={'150px'}
+														maxLength={15}
+														maxW={'155px'}
 														inputProps={{
 															size: 'md',
 															tabIndex: 0,
@@ -846,6 +843,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														placeholder={'Title'}
 														label={'Title/Trade/Profession'}
 														isRequired
+														error={touched.selfTitle && errors.selfTitle}
 														leftElement={<Icon as={FiStar} />}
 														maxLength={50}
 														flex={'1 0 48%'}
@@ -861,6 +859,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														{...field}
 														placeholder={'Home base'}
 														label={'Where do you currently live?'}
+														error={touched.homebase && errors.homebase}
 														isRequired
 														leftElement={<Icon as={FiHome} />}
 														maxLength={25}
@@ -891,6 +890,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														leftElement={<Icon as={FiMail} />}
 														placeholder={'me@somewhere.com'}
 														label={'Contact Email'}
+														error={touched.email && errors.email}
 														inputProps={{
 															tabIndex: 0,
 														}}
@@ -917,6 +917,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														{...field}
 														leftElement={<Icon as={FiLink} />}
 														label={'Website'}
+														error={touched.website && errors.website}
 														inputProps={{
 															tabIndex: 0,
 														}}
@@ -969,6 +970,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														leftElement={<Icon as={FiLinkedin} />}
+														error={touched.socials?.linkedin && errors.socials?.linkedin}
 														label={'LinkedIn URL'}
 														placeholder={'https://linkedin/in/yourprofile'}
 													/>
@@ -979,6 +981,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														leftElement={<Icon as={FiFacebook} />}
+														error={touched.socials?.facebook && errors.socials?.facebook}
 														label={'Facebook URL'}
 														placeholder={'https://facebook.com/yourname'}
 													/>
@@ -989,6 +992,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														leftElement={<Icon as={FiInstagram} />}
+														error={touched.socials?.instagram && errors.socials?.instagram}
 														label={'Instagram @handle'}
 														placeholder={'@handle'}
 													/>
@@ -1000,6 +1004,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 														{...field}
 														leftElement={<XIcon />}
 														label={'X/Twitter @handle'}
+														error={touched.socials?.twitter && errors.socials?.twitter}
 														placeholder={'@handle'}
 													/>
 												)}
@@ -1014,6 +1019,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							<>
 								<Heading variant={'contentSubtitle'}>
 									Select any areas in which you're a local hire.
+									<chakra.span color={'brand.red'}>*</chakra.span>
 								</Heading>
 								<Field name='locations'>
 									{({
@@ -1021,17 +1027,23 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										form,
 									}: {
 										field: FieldInputProps<string[]>;
-										form: FormikProps<any>;
+										form: FormikProps<UserProfile>;
 									}) => {
 										return (
-											<ProfileCheckboxGroup
-												isRequired
-												items={locationTerms}
-												checked={
-													field.value ? field.value.map((item: string) => item.toString()) : []
-												}
-												handleChange={(value: string[]) => form.setFieldValue('locations', value)}
-											/>
+											<>
+												{errors.locations ? (
+													<Text variant='formError'>{errors.locations}</Text>
+												) : (
+													false
+												)}
+												<ProfileCheckboxGroup
+													items={locationTerms}
+													checked={
+														field.value ? field.value.map((item: string) => item.toString()) : []
+													}
+													handleChange={(value: string[]) => form.setFieldValue('locations', value)}
+												/>
+											</>
 										);
 									}}
 								</Field>
@@ -1108,7 +1120,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											form,
 										}: {
 											field: FieldInputProps<string>;
-											form: FormikProps<any>;
+											form: FormikProps<UserProfile>;
 										}) => (
 											<>
 												{!field.value && (
@@ -1147,7 +1159,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											form,
 										}: {
 											field: FieldInputProps<string[]>;
-											form: FormikProps<any>;
+											form: FormikProps<UserProfile>;
 										}) => (
 											<>
 												<Heading variant={'contentSubtitle'}>
@@ -1171,7 +1183,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											form,
 										}: {
 											field: FieldInputProps<string[]>;
-											form: FormikProps<any>;
+											form: FormikProps<UserProfile>;
 										}) => (
 											<>
 												<Heading variant={'contentSubtitle'}>
@@ -1197,7 +1209,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											form,
 										}: {
 											field: FieldInputProps<string[]>;
-											form: FormikProps<any>;
+											form: FormikProps<UserProfile>;
 										}) => (
 											<>
 												<Heading variant={'contentSubtitle'}>
@@ -1410,6 +1422,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														label={'Video embed 1'}
+														error={touched.mediaVideo1 && errors.mediaVideo1}
 														placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
 														leftElement={<FiVideo />}
 													/>
@@ -1442,6 +1455,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 													<TextInput
 														{...field}
 														label={'Video embed 2'}
+														error={touched.mediaVideo2 && errors.mediaVideo2}
 														placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
 														leftElement={<FiVideo />}
 													/>
@@ -1512,7 +1526,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							leftIcon={isSubmitting ? undefined : <FiSave />}
 							aria-label={'Save changes'}
 							colorScheme={'green'}
-							// isDisabled={!isValid || !dirty || isSubmitting}
+							isDisabled={!isValid || !dirty || isSubmitting}
 							isLoading={isSubmitting}
 							size={'lg'}
 							mr={4}

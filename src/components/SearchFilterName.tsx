@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Box, Flex, Icon, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
+import { Formik, Form, Field, FieldInputProps } from 'formik';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
 import { convertUnscoredToScored } from '@lib/utils';
 import { SearchContext } from '@context/SearchContext';
@@ -27,14 +28,7 @@ export default function SearchFilterName({ ...props }: Props) {
 
 	const [getSearchResults, { data: { usersByName } = [], loading }] = useSearchByName();
 	const navigate = useNavigate();
-	const [_ignored, setOpen] = useState<boolean>(false);
 
-	// Set open to true if `name` is truthy
-	useEffect(() => {
-		if (name) setOpen(true);
-	}, [name]);
-
-	// Set the results after a search
 	useEffect(() => {
 		if (isEqual(usersByName, results) || !usersByName) return;
 
@@ -48,37 +42,10 @@ export default function SearchFilterName({ ...props }: Props) {
 		});
 	}, [usersByName]);
 
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-	) => {
-		e.preventDefault();
-
-		const { value } = e.target;
-
-		searchDispatch({
-			type: 'SET_NAME',
-			payload: {
-				name: value,
-			},
-		});
-	};
-
-	const handleClear = () => {
-		searchDispatch({
-			type: 'SET_NAME',
-			payload: {
-				name: '',
-			},
-		});
-	};
-
-	// Handle form submission
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-
+	const handleSubmit = (values: { name: string }) => {
 		getSearchResults({
 			variables: {
-				name,
+				name: values.name,
 			},
 		})
 			.then(() => {
@@ -92,47 +59,53 @@ export default function SearchFilterName({ ...props }: Props) {
 
 	return (
 		<Box {...props}>
-			<form id={'search-by-name'} onSubmit={handleSubmit}>
-				<Flex gap={2} justifyContent={'space-between'} maxW={'lg'}>
-					<TextInput
-						placeholder={'Name'}
-						leftElement={<Icon as={FiSearch} />}
-						name={'name'}
-						label={'Search by name'}
-						labelHidden
-						value={name}
-						sizeToken={'sm'}
-						onChange={handleInputChange}
-						flex={'1 0 60%'}
-					/>
+			<Formik initialValues={{ name }} onSubmit={handleSubmit} enableReinitialize>
+				{({ values, setFieldValue }) => (
+					<Form id='search-by-name'>
+						<Flex gap={2} justifyContent='space-between' maxW='lg'>
+							<Field name='name'>
+								{({ field }: { field: FieldInputProps<string> }) => (
+									<TextInput
+										{...field}
+										placeholder='Name'
+										leftElement={<Icon as={FiSearch} />}
+										label='Search by name'
+										labelHidden
+										sizeToken='sm'
+										flex='1 0 60%'
+									/>
+								)}
+							</Field>
 
-					<Stack
-						direction={'row'}
-						w={name ? 'auto' : 0}
-						overflow={'hidden'}
-						transition={'width 250ms ease, opacity 250ms ease'}
-					>
-						<TooltipIconButton
-							icon={<FiXCircle />}
-							onClick={handleClear}
-							label={'Clear name'}
-							colorScheme={'orange'}
-							size={'sm'}
-							isDisabled={!name || loading}
-						/>
-						<TooltipIconButton
-							label={'Search'}
-							colorScheme={'green'}
-							type={'submit'}
-							form={'search-by-name'}
-							size={'sm'}
-							isDisabled={!name}
-							isLoading={loading}
-							icon={<FiSearch />}
-						/>
-					</Stack>
-				</Flex>
-			</form>
+							<Stack
+								direction='row'
+								w={values.name ? 'auto' : 0}
+								overflow='hidden'
+								transition='width 250ms ease, opacity 250ms ease'
+							>
+								<TooltipIconButton
+									icon={<FiXCircle />}
+									onClick={() => setFieldValue('name', '')}
+									label='Clear name'
+									colorScheme='orange'
+									size='sm'
+									isDisabled={!values.name || loading}
+								/>
+								<TooltipIconButton
+									label='Search'
+									colorScheme='green'
+									type='submit'
+									form='search-by-name'
+									size='sm'
+									isDisabled={!values.name}
+									isLoading={loading}
+									icon={<FiSearch />}
+								/>
+							</Stack>
+						</Flex>
+					</Form>
+				)}
+			</Formik>
 		</Box>
 	);
 }

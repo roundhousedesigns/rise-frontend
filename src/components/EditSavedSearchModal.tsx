@@ -1,3 +1,4 @@
+import { useContext, useRef } from 'react';
 import {
 	useToast,
 	Modal,
@@ -6,12 +7,11 @@ import {
 	ModalHeader,
 	ModalCloseButton,
 	ModalBody,
-	FormControl,
-	FormLabel,
 	Button,
 	Text,
 } from '@chakra-ui/react';
-import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
+import { Formik, Form, Field, FieldInputProps, FormikProps } from 'formik';
+import * as Yup from 'yup';
 import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
 import useSaveSearch from '@mutations/useSaveSearch';
@@ -30,34 +30,18 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 	const [{ loggedInId }] = useViewer();
 	const { searchDispatch } = useContext(SearchContext);
 	const initialSaveModalRef = useRef(null);
-	const {
-		saveSearchMutation,
-		results: { loading: saveLoading },
-	} = useSaveSearch();
-
-	const [saveSearchFieldText, setSaveSearchFieldText] = useState<string>('');
-
-	useEffect(() => {
-		setSaveSearchFieldText(title ? title : '');
-	}, [title]);
+	const { saveSearchMutation } = useSaveSearch();
 
 	const toast = useToast();
 
-	const handleEditOnClose = () => {
-		// setSaveSearchFieldText(title ? title : '');
-		onClose();
-	};
+	const validationSchema = Yup.object().shape({
+		title: Yup.string().required('Title is required'),
+	});
 
-	const handleSavedSearchNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setSaveSearchFieldText(event.target.value);
-	};
-
-	const handleSave = (e: FormEvent) => {
-		e.preventDefault();
-
+	const handleSubmit = (values: { title: string }) => {
 		saveSearchMutation({
 			userId: loggedInId,
-			title: saveSearchFieldText,
+			title: values.title,
 			filterSet: searchTerms.toQueryableFilterSet(),
 			id,
 		})
@@ -90,6 +74,10 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 			});
 	};
 
+	const handleEditOnClose = () => {
+		onClose();
+	};
+
 	return (
 		<Modal initialFocusRef={initialSaveModalRef} isOpen={isOpen} onClose={handleEditOnClose}>
 			<ModalOverlay />
@@ -102,37 +90,45 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 						Give this search a short, descriptive name to easily run it again.
 					</Text>
 
-					<form id={'rename-search'} onSubmit={handleSave}>
-						<FormControl>
-							<FormLabel
-								aria-label={'Name'}
-								visibility={'hidden'}
-								position={'absolute'}
-								left={'9000px'}
-							>
-								Name
-							</FormLabel>
-							<TextInput
-								name={'title'}
-								placeholder={'My search'}
-								onChange={handleSavedSearchNameChange}
-								value={saveSearchFieldText}
-								ref={initialSaveModalRef}
-							/>
-						</FormControl>
-						<Button
-							colorScheme={'blue'}
-							mr={3}
-							type={'submit'}
-							isDisabled={saveLoading}
-							isLoading={saveLoading}
-						>
-							Save
-						</Button>
-						<Button onClick={handleEditOnClose} colorScheme={'red'} isDisabled={saveLoading}>
-							Cancel
-						</Button>
-					</form>
+					<Formik
+						initialValues={{ title: title || '' }}
+						validationSchema={validationSchema}
+						onSubmit={handleSubmit}
+					>
+						{({ isSubmitting }) => (
+							<Form>
+								<Field name='title'>
+									{({
+										field,
+										form,
+									}: {
+										field: FieldInputProps<string>;
+										form: FormikProps<{ title: string }>;
+									}) => (
+										<TextInput
+											{...field}
+											label={'Title'}
+											placeholder={'My search'}
+											ref={initialSaveModalRef}
+											error={form.errors.title && form.touched.title}
+										/>
+									)}
+								</Field>
+								<Button
+									colorScheme={'blue'}
+									mr={3}
+									type={'submit'}
+									isDisabled={isSubmitting}
+									isLoading={isSubmitting}
+								>
+									Save
+								</Button>
+								<Button onClick={handleEditOnClose} colorScheme={'red'} isDisabled={isSubmitting}>
+									Cancel
+								</Button>
+							</Form>
+						)}
+					</Formik>
 				</ModalBody>
 			</ModalContent>
 		</Modal>

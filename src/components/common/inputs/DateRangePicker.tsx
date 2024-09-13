@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box, Button, Flex, Spacer, Stack, Text } from '@chakra-ui/react';
 import DatePicker from 'react-datepicker';
 import { DateRange } from '@lib/classes';
+
 import 'react-datepicker/dist/react-datepicker.css';
 
 interface Props {
@@ -91,7 +92,11 @@ export default function DateRangePicker({
 				)}
 				<>
 					<Spacer />
-					<Button onClick={handleSave} colorScheme={'blue'} isDisabled={!newStartDate || !newEndDate}>
+					<Button
+						onClick={handleSave}
+						colorScheme={'blue'}
+						isDisabled={!newStartDate || !newEndDate}
+					>
 						Save
 					</Button>
 				</>

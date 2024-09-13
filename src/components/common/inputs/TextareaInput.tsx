@@ -1,5 +1,6 @@
 import { ChangeEvent, ReactNode, useState } from 'react';
 import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
+import FormErrorText from '@common/FormErrorText';
 
 interface Props {
 	name: string;
@@ -7,6 +8,7 @@ interface Props {
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
+	error?: string;
 	leftElement?: ReactNode;
 	onChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
 	inputProps?: {
@@ -27,6 +29,7 @@ export default function TextareaInput({
 	helperText,
 	placeholder,
 	value,
+	error,
 	name,
 	onChange,
 	inputProps,
@@ -59,6 +62,7 @@ export default function TextareaInput({
 				isDisabled={props.isDisabled}
 				{...inputProps}
 			/>
+			{error ? <FormErrorText message={error} /> : false}
 			{label ? (
 				<FormLabel
 					ml={2}

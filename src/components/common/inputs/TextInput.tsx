@@ -2,7 +2,6 @@ import { ChangeEvent, forwardRef, ReactNode, useState, useEffect } from 'react';
 import {
 	Flex,
 	FormControl,
-	FormErrorMessage,
 	FormHelperText,
 	FormLabel,
 	Input,
@@ -11,6 +10,7 @@ import {
 	Text,
 	Wrap,
 } from '@chakra-ui/react';
+import FormErrorText from '@common/FormErrorText';
 
 interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
 	name: string;
@@ -157,9 +157,7 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 							fontSize={'xs'}
 						>
 							{error ? (
-								<FormErrorMessage fontWeight={'bold'} mt={0} flex={'1'} fontSize={'xs'}>
-									{error}
-								</FormErrorMessage>
+								<FormErrorText message={error} />
 							) : helperText ? (
 								<Text m={0} variant={'helperText'}>
 									{helperText}
