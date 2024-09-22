@@ -1,25 +1,31 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { Box, Heading, Wrap, Spinner, RadioGroup } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import usePositions from '@queries/usePositions';
 import { SearchContext } from '@context/SearchContext';
 import RadioButton from '@common/inputs/RadioButton';
+import { useField, useFormikContext } from 'formik';
 
 export default function SearchFilterDepartment() {
 	const [data, { loading, error }] = usePositions();
 	const {
 		search: {
-			filters: {
-				filterSet: {
-					positions: { departments },
-				},
-			},
 			savedSearch: { id: savedSearchId },
 		},
 		searchDispatch,
 	} = useContext(SearchContext);
 
+	const { setFieldValue } = useFormikContext();
+	const [field] = useField('positions.departments');
+
+	useEffect(() => {
+		console.info('field.value', field.value);
+	}, [field.value]);
+
 	const handleToggleTerm = (term: string) => {
+		setFieldValue('positions.departments', [term]);
+		setFieldValue('positions.jobs', []); // Clear jobs when department changes
+
 		searchDispatch({
 			type: 'SET_DEPARTMENTS',
 			payload: {
@@ -35,35 +41,26 @@ export default function SearchFilterDepartment() {
 	};
 
 	const departmentId = useMemo(() => {
-		return departments && departments.length > 0 ? departments[0] : '';
-	}, [departments]);
+		return field.value && field.value.length > 0 ? field.value[0] : '';
+	}, [field.value]);
 
-	return !loading && !error ? (
+	if (loading) return <Spinner />;
+	if (error) return <>Error</>;
+
+	return (
 		<Box id={'filterDepartment'}>
 			<Heading as={'h3'} variant={'searchFilterTitle'} mb={4}>
 				{savedSearchId ? 'Browse' : 'Or, browse'} by department:
 			</Heading>
 			<RadioGroup onChange={handleToggleTerm} value={departmentId} size={'sm'}>
 				<Wrap>
-					{data.map((term: WPItem) => {
-						return (
-							<RadioButton
-								key={term.id}
-								name={'search-departments'}
-								value={term.id.toString()}
-							>
-								{term.name}
-							</RadioButton>
-						);
-					})}
+					{data.map((term: WPItem) => (
+						<RadioButton key={term.id} name={'search-departments'} value={term.id.toString()}>
+							{term.name}
+						</RadioButton>
+					))}
 				</Wrap>
 			</RadioGroup>
 		</Box>
-	) : loading ? (
-		<Spinner />
-	) : error ? (
-		<>Error</>
-	) : (
-		<></>
 	);
 }

@@ -1,4 +1,4 @@
-import { FormEvent, useContext } from 'react';
+import { useContext } from 'react';
 import {
 	Accordion,
 	Box,
@@ -11,34 +11,27 @@ import {
 	Spacer,
 	useToken,
 } from '@chakra-ui/react';
+import { useFormikContext } from 'formik';
+import { FiFolder } from 'react-icons/fi';
+import { SearchFilterSet } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
+import useSavedSearches from '@hooks/queries/useSavedSearches';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
 import SearchFilterSection from '@common/SearchFilterSection';
 import SearchFilterDepartment from '@components/SearchFilterDepartment';
 import SearchFilterJobs from '@components/SearchFilterJobs';
 import SearchFilterSkills from '@components/SearchFilterSkills';
-import SearchFilterName from '@components/SearchFilterName';
 import AdditionalSearchFilters from '@components/AdditionalSearchFilters';
 import SavedSearchItemList from '@components/SavedSearchItemList';
 import SearchFilterDates from '@components/SearchFilterDates';
 import DepartmentsAutocomplete from '@components/DepartmentsAutocomplete';
-import { FiFolder, FiUser } from 'react-icons/fi';
-import useSavedSearches from '@/hooks/queries/useSavedSearches';
 
-interface Props {
-	onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-}
-
-export default function SearchWizardView({ onSubmit }: Props) {
+export default function SearchWizardView() {
+	const { values } = useFormikContext<SearchFilterSet>();
 	const {
 		search: {
 			searchWizardActive,
-			filters: {
-				name,
-				filterSet: {
-					positions: { departments = [], jobs = [] },
-				},
-			},
+			filters: { name },
 			savedSearch: { id: savedSearchId },
 		},
 	} = useContext(SearchContext);
@@ -46,6 +39,9 @@ export default function SearchWizardView({ onSubmit }: Props) {
 	const [savedSearches] = useSavedSearches();
 
 	const [orange] = useToken('colors', ['orange.300']);
+
+	const departments = values.positions.departments || [];
+	const jobs = values.positions.jobs || [];
 
 	return (
 		<Stack
@@ -55,79 +51,61 @@ export default function SearchWizardView({ onSubmit }: Props) {
 			pt={searchWizardActive ? 4 : 0}
 			transition={'padding 250ms ease'}
 		>
-			{searchWizardActive ? null : (
-				<Accordion allowToggle mb={4} defaultIndex={name ? 0 : undefined}>
-					<SearchFilterAccordionItem
-						heading={
-							<Flex alignItems={'center'}>
-								<Icon as={FiUser} mr={2} />
-								<Text as={'span'} my={0}>
-									Search by Name
-								</Text>
-							</Flex>
-						}
-						headingProps={{ fontSize: 'md' }}
-						panelProps={{ mb: 0, mt: -2, px: 3 }}
-					>
-						<SearchFilterName />
-					</SearchFilterAccordionItem>
-				</Accordion>
-			)}
-
 			<Box
 				opacity={name ? 0.2 : 1}
 				pointerEvents={name ? 'none' : 'auto'}
 				transition={'opacity 250ms ease'}
 			>
-				<form id={'search-candidates'} onSubmit={onSubmit}>
-					<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
-						<Fade in={!savedSearchId} unmountOnExit>
-							<StackItem>
-								<Box maxW={'lg'}>
-									<DepartmentsAutocomplete />
-								</Box>
-							</StackItem>
-						</Fade>
+				<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
+					<Fade in={!savedSearchId} unmountOnExit>
 						<StackItem>
-							<Stack gap={8}>
-								<StackItem>
-									<SearchFilterSection id={'filterDepartment'}>
-										<SearchFilterDepartment />
-									</SearchFilterSection>
-								</StackItem>
-								<Fade in={!!departments.length} unmountOnExit>
-									<SearchFilterSection
-										id={'filterJobs'}
-										heading={'What job(s) are you looking to fill?'}
-									>
-										<SearchFilterJobs />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection id={'filterSkills'} heading={'What skills are you looking for?'}>
-										<SearchFilterSkills />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection
-										id={'filterDates'}
-										heading={'Are you hiring for a particular date?'}
-									>
-										<SearchFilterDates />
-									</SearchFilterSection>
-								</Fade>
-								<Fade in={searchWizardActive && jobs && !!jobs.length} unmountOnExit>
-									<SearchFilterSection
-										id={'filterAdditional'}
-										heading={'And some additional filters to refine your search:'}
-									>
-										<AdditionalSearchFilters />
-									</SearchFilterSection>
-								</Fade>
-							</Stack>
+							<Box maxW={'lg'}>
+								<DepartmentsAutocomplete />
+							</Box>
 						</StackItem>
-					</Stack>
-				</form>
+					</Fade>
+					<StackItem>
+						<Stack gap={8}>
+							<StackItem>
+								<SearchFilterSection id={'filterDepartment'}>
+									<SearchFilterDepartment />
+								</SearchFilterSection>
+							</StackItem>
+							<Fade in={!!departments.length} unmountOnExit>
+								<SearchFilterSection
+									id={'filterJobs'}
+									heading={'What job(s) are you looking to fill?'}
+								>
+									<SearchFilterJobs />
+								</SearchFilterSection>
+							</Fade>
+							<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+								<SearchFilterSection
+									id={'filterSkills'}
+									heading={'What skills are you looking for?'}
+								>
+									<SearchFilterSkills />
+								</SearchFilterSection>
+							</Fade>
+							<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
+								<SearchFilterSection
+									id={'filterDates'}
+									heading={'Are you hiring for a particular date?'}
+								>
+									<SearchFilterDates />
+								</SearchFilterSection>
+							</Fade>
+							<Fade in={searchWizardActive && jobs && !!jobs.length} unmountOnExit>
+								<SearchFilterSection
+									id={'filterAdditional'}
+									heading={'And some additional filters to refine your search:'}
+								>
+									<AdditionalSearchFilters />
+								</SearchFilterSection>
+							</Fade>
+						</Stack>
+					</StackItem>
+				</Stack>
 			</Box>
 
 			<Spacer />
@@ -142,7 +120,11 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<SearchFilterAccordionItem
 					heading={
 						<Flex alignItems={'center'}>
-							<Icon as={FiFolder} fill={savedSearches?.length > 0 ? orange : 'transparent'} mr={2} />
+							<Icon
+								as={FiFolder}
+								fill={savedSearches?.length > 0 ? orange : 'transparent'}
+								mr={2}
+							/>
 							<Text as={'span'} my={0}>
 								Saved Searches
 							</Text>

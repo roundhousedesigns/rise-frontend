@@ -1,26 +1,23 @@
 import { useContext } from 'react';
 import { Box, Spinner, CheckboxGroup, Wrap } from '@chakra-ui/react';
+import { useField, useFormikContext } from 'formik';
 import { WPItem } from '@lib/classes';
+import { SearchContext } from '@context/SearchContext';
 import usePositions from '@queries/usePositions';
 import CheckboxButton from '@common/inputs/CheckboxButton';
 
-import { SearchContext } from '@context/SearchContext';
-
 export default function SearchFilterJobs() {
-	const {
-		search: {
-			filters: {
-				filterSet: {
-					positions: { departments = [], jobs },
-				},
-			},
-		},
-		searchDispatch,
-	} = useContext(SearchContext);
+	const { values, setFieldValue } = useFormikContext<{
+		positions: { departments: string[]; jobs: string[] };
+	}>();
+	const [field] = useField('positions.jobs');
+	const { searchDispatch } = useContext(SearchContext);
 
-	const [jobItems, { loading, error }] = usePositions([Number(departments[0])]);
+	const departmentId = values.positions.departments[0];
+	const [jobItems, { loading, error }] = usePositions(departmentId ? [Number(departmentId)] : []);
 
 	const handleToggleTerm = (terms: string[]) => {
+		setFieldValue('positions.jobs', terms);
 		searchDispatch({
 			type: 'SET_JOBS',
 			payload: {
@@ -32,7 +29,7 @@ export default function SearchFilterJobs() {
 	return (
 		<Box>
 			{!loading && !error ? (
-				<CheckboxGroup value={jobs} onChange={handleToggleTerm} size={'sm'}>
+				<CheckboxGroup value={field.value} onChange={handleToggleTerm} size={'sm'}>
 					<Wrap>
 						{jobItems.map((term: WPItem) => (
 							<CheckboxButton key={term.id} value={term.id.toString()}>

@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
 	Drawer,
@@ -14,13 +14,21 @@ import {
 	ButtonGroup,
 	Collapse,
 	Spinner,
+	Accordion,
+	Flex,
+	Icon,
+	Text,
 } from '@chakra-ui/react';
+import { Formik, Form } from 'formik';
 import { isEqual } from 'lodash';
-import { FiRefreshCcw, FiSearch, FiX } from 'react-icons/fi';
+import { FiRefreshCcw, FiSearch, FiUser, FiX } from 'react-icons/fi';
 import { SearchContext } from '@context/SearchContext';
 import useViewer from '@queries/useViewer';
 import useCandidateSearch from '@queries/useCandidateSearch';
 import SearchWizardView from '@views/SearchWizardView';
+import { SearchFilterSet } from '@lib/classes';
+import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
+import SearchFilterName from '@components/SearchFilterName';
 
 interface Props {
 	isOpen: boolean;
@@ -32,19 +40,7 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	const {
 		search: {
-			filters: {
-				name,
-				filterSet: {
-					positions: { departments, jobs },
-					skills,
-					unions,
-					locations,
-					experienceLevels,
-					genderIdentities,
-					racialIdentities,
-					personalIdentities,
-				},
-			},
+			filters: { name, filterSet },
 			results,
 			searchWizardActive,
 		},
@@ -68,21 +64,35 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 		});
 	}, [filteredCandidates]);
 
-	const runSearch = () => {
+	const runSearch = (values: SearchFilterSet) => {
 		// set the positions array to the jobs array if it's not empty, otherwise use the departments array
-		const positions = jobs && jobs.length > 0 ? jobs : departments;
+		const positions =
+			values.positions.jobs && values.positions.jobs.length > 0
+				? values.positions.jobs
+				: values.positions.departments;
 
 		getSearchResults({
 			variables: {
 				positions,
-				skills: skills && skills.length > 0 ? skills : [],
-				unions: unions && unions.length > 0 ? unions : [],
-				locations: locations && locations.length > 0 ? locations : [],
-				experienceLevels: experienceLevels && experienceLevels.length > 0 ? experienceLevels : [],
-				genderIdentities: genderIdentities && genderIdentities.length > 0 ? genderIdentities : [],
-				racialIdentities: racialIdentities && racialIdentities.length > 0 ? racialIdentities : [],
+				skills: values.skills && values.skills.length > 0 ? values.skills : [],
+				unions: values.unions && values.unions.length > 0 ? values.unions : [],
+				locations: values.locations && values.locations.length > 0 ? values.locations : [],
+				experienceLevels:
+					values.experienceLevels && values.experienceLevels.length > 0
+						? values.experienceLevels
+						: [],
+				genderIdentities:
+					values.genderIdentities && values.genderIdentities.length > 0
+						? values.genderIdentities
+						: [],
+				racialIdentities:
+					values.racialIdentities && values.racialIdentities.length > 0
+						? values.racialIdentities
+						: [],
 				personalIdentities:
-					personalIdentities && personalIdentities.length > 0 ? personalIdentities : [],
+					values.personalIdentities && values.personalIdentities.length > 0
+						? values.personalIdentities
+						: [],
 				searchUserId: loggedInId,
 			},
 		})
@@ -95,12 +105,6 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 			});
 	};
 
-	// Handle form submission
-	const handleSubmit = (e: FormEvent) => {
-		e.preventDefault();
-		runSearch();
-	};
-
 	const handleSearchReset = () => {
 		searchDispatch({
 			type: 'RESET_SEARCH_FILTERS',
@@ -110,7 +114,12 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<>
-			<Drawer isOpen={isOpen} onClose={onClose} placement={'top'} isFullHeight={name ? false : true}>
+			<Drawer
+				isOpen={isOpen}
+				onClose={onClose}
+				placement={'top'}
+				isFullHeight={name ? false : true}
+			>
 				<DrawerOverlay />
 				<DrawerContent display={'flex'} flexDirection={'column'} height={'100%'}>
 					<DrawerHeader
@@ -137,40 +146,79 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 							/>
 						</Stack>
 					</DrawerHeader>
-					<DrawerBody pt={0} pb={4} px={{ base: 4, md: 8 }} my={0}>
-						<SearchWizardView onSubmit={handleSubmit} />
-					</DrawerBody>
-					<Collapse in={searchWizardActive && !name} unmountOnExit={false}>
-						<DrawerFooter
-							mt={0}
-							py={2}
-							borderTop={'1px'}
-							borderTopColor={'gray.300'}
-							_light={{ bgColor: 'gray.300' }}
-							_dark={{ bgColor: 'gray.100' }}
-						>
-							<ButtonGroup w={'full'} justifyContent={'flex-end'}>
-								<Button
-									colorScheme={'green'}
-									onClick={handleSubmit}
-									form={'search-candidates'}
-									isDisabled={!searchWizardActive || searchResultsLoading}
-									leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
-									isLoading={!!searchResultsLoading}
-								>
-									Search
-								</Button>
-								<Button
-									isDisabled={searchResultsLoading ? true : false}
-									colorScheme={'orange'}
-									onClick={handleSearchReset}
-									leftIcon={<FiRefreshCcw />}
-								>
-									Reset
-								</Button>
-							</ButtonGroup>
-						</DrawerFooter>
-					</Collapse>
+
+					{searchWizardActive ? null : (
+						<Accordion allowToggle mb={4} defaultIndex={name ? 0 : undefined}>
+							<SearchFilterAccordionItem
+								heading={
+									<Flex alignItems={'center'}>
+										<Icon as={FiUser} mr={2} />
+										<Text as={'span'} my={0}>
+											Search by Name
+										</Text>
+									</Flex>
+								}
+								headingProps={{ fontSize: 'md' }}
+								panelProps={{ mb: 0, mt: -2, px: 3 }}
+							>
+								<SearchFilterName />
+							</SearchFilterAccordionItem>
+						</Accordion>
+					)}
+
+					<Formik
+						initialValues={filterSet}
+						onSubmit={(values) => {
+							runSearch(values);
+							searchDispatch({
+								type: 'SET_FILTER',
+								payload: { filter: { key: 'filterSet', value: values } },
+							});
+						}}
+						enableReinitialize={true}
+					>
+						{({ submitForm, dirty }) => {
+							console.log('dirty', dirty);
+
+							return (
+								<Form>
+									<DrawerBody pt={0} pb={4} px={{ base: 4, md: 8 }} my={0}>
+										<SearchWizardView />
+									</DrawerBody>
+									<Collapse in={dirty && !name} unmountOnExit={false}>
+										<DrawerFooter
+											mt={0}
+											py={2}
+											borderTop={'1px'}
+											borderTopColor={'gray.300'}
+											_light={{ bgColor: 'gray.300' }}
+											_dark={{ bgColor: 'gray.100' }}
+										>
+											<ButtonGroup w={'full'} justifyContent={'flex-end'}>
+												<Button
+													colorScheme={'green'}
+													onClick={submitForm}
+													isDisabled={searchResultsLoading}
+													leftIcon={searchResultsLoading ? <Spinner /> : <FiSearch />}
+													isLoading={!!searchResultsLoading}
+												>
+													Search
+												</Button>
+												<Button
+													isDisabled={searchResultsLoading ? true : false}
+													colorScheme={'orange'}
+													onClick={handleSearchReset}
+													leftIcon={<FiRefreshCcw />}
+												>
+													Reset
+												</Button>
+											</ButtonGroup>
+										</DrawerFooter>
+									</Collapse>
+								</Form>
+							);
+						}}
+					</Formik>
 				</DrawerContent>
 			</Drawer>
 		</>

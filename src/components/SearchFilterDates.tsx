@@ -8,30 +8,28 @@ import DatePickerButton from '@common/inputs/DatePickerButton';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import { SearchContext } from '@context/SearchContext';
 import InlineIconText from '@components/InlineIconText';
+import { useField, useFormikContext } from 'formik';
 
 export default function SearchFilterDates() {
-	const {
-		search: {
-			filters: {
-				filterSet: { jobDates },
-			},
-		},
-		searchDispatch,
-	} = useContext(SearchContext);
+	const { setFieldValue } = useFormikContext();
+	const [field] = useField('jobDates');
+	const { searchDispatch } = useContext(SearchContext);
 
-	const { startDate, endDate } = jobDates || new DateRange();
+	const { startDate, endDate } = field.value || new DateRange();
 
 	useEffect(() => {
 		// If startDate is after endDate (and endDate is set), clear endDate.
 		if (startDate && endDate && startDate > endDate) {
+			const newDateRange = new DateRange({ startDate, endDate: undefined });
+			setFieldValue('jobDates', newDateRange);
 			searchDispatch({
 				type: 'SET_FILTER',
 				payload: {
-					filter: { key: 'jobDates', value: new DateRange({ startDate, endDate: undefined }) },
+					filter: { key: 'jobDates', value: newDateRange },
 				},
 			});
 		}
-	}, [startDate]);
+	}, [startDate, endDate, setFieldValue, searchDispatch]);
 
 	/**
 	 * Updates the selected dates by setting the value of a specific date field to the provided date.
@@ -40,12 +38,14 @@ export default function SearchFilterDates() {
 	const handleDateChange =
 		(targetId: string) =>
 		(date: Date): void => {
+			const newDateRange = new DateRange({ ...field.value, [targetId]: date });
+			setFieldValue('jobDates', newDateRange);
 			searchDispatch({
 				type: 'SET_FILTER',
 				payload: {
 					filter: {
 						key: 'jobDates',
-						value: new DateRange({ ...jobDates, [targetId]: date }),
+						value: newDateRange,
 					},
 				},
 			});
@@ -55,9 +55,11 @@ export default function SearchFilterDates() {
 	 * Clears the selected dates and updates the job dates with an empty DateRange.
 	 */
 	const handleClearDates = (): void => {
+		const emptyDateRange = new DateRange();
+		setFieldValue('jobDates', emptyDateRange);
 		searchDispatch({
 			type: 'SET_FILTER',
-			payload: { filter: { key: 'jobDates', value: new DateRange() } },
+			payload: { filter: { key: 'jobDates', value: emptyDateRange } },
 		});
 	};
 
