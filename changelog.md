@@ -5,6 +5,7 @@ with 1.0.0beta.
 
 ## \[1.1.11-delete-account] - Unreleased
 
+- Add: Delete account confirmation button and confirmation dialog.
 - Improve: Remove 'cancel' button on profile slug change.
 - Improve: Fix alignments and spacing of profile slug change.
 - Improve: query name MUTATE_TOGGLE_SEARCH_ONLY -> MUTATE_TOGGLE_DISABLE_PROFILE
