@@ -163,7 +163,6 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 					pt={1}
 					my={0}
 					alignItems={'top'}
-					gap={4}
 					justifyContent={'space-between'}
 				>
 					{label ? (
@@ -185,21 +184,20 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 						</FormLabel>
 					) : null}
 				</Flex>
-				<Wrap w={'full'} alignItems={'flex-start'} ml={2} opacity={0.9} fontStyle={'italic'}>
-					<FormHelperText my={0} flex={'1'} fontSize={'xs'} w={'full'}>
+				<Wrap w={'full'} alignItems={'flex-start'} opacity={0.9} fontStyle={'italic'}>
+					<FormHelperText my={0} flex={'1'} w={'full'}>
 						<Flex
 							w={'full'}
 							justifyContent={'space-between'}
 							alignItems={'center'}
 							lineHeight={'normal'}
-							fontSize={'xs'}
 						>
 							{error ? (
 								<FormErrorMessage fontWeight={'bold'} mt={0} flex={'1'} fontSize={'xs'}>
 									{error}
 								</FormErrorMessage>
 							) : helperText ? (
-								<Text m={0} variant={'helperText'}>
+								<Text m={0} variant={'helperText'} fontSize={'2xs'}>
 									{helperText}
 								</Text>
 							) : null}

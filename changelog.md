@@ -3,7 +3,12 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.11] - Unreleased
+## \[1.1.11-delete-account] - Unreleased
+
+- Improve: Remove 'cancel' button on profile slug change.
+- Improve: Fix alignments and spacing of profile slug change.
+- Improve: query name MUTATE_TOGGLE_SEARCH_ONLY -> MUTATE_TOGGLE_DISABLE_PROFILE
+- Improve: ProfileNotice padding and font sizing.
 
 ## \[1.1.10] - 2024-09-06
 

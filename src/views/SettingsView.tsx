@@ -1,4 +1,8 @@
-import { Button, Link, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Button, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
+import useViewer from '@queries/useViewer';
+import usedeleteOwnAccount from '@@/src/hooks/mutations/useDeleteOwnAccount';
+import useLogout from '@mutations/useLogout';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeEmailView from '@views/ChangeEmailView';
@@ -14,6 +18,10 @@ export default function SettingsView() {
 		onClose: onClosePassword,
 	} = useDisclosure();
 
+	const { logoutMutation } = useLogout();
+
+	const { deleteOwnAccountMutation, result: deleteOwnAccountResult } = usedeleteOwnAccount();
+	const [{ loggedInId }] = useViewer();
 	const { isOpen: isOpenEmail, onOpen: onOpenEmail, onClose: onCloseEmail } = useDisclosure();
 
 	const handlePasswordClick = () => {
@@ -28,12 +36,25 @@ export default function SettingsView() {
 		onCloseEmail();
 	};
 
+	const handleDeleteOwnAccount = () => {
+		// TODO: Add confirmation dialog
+		deleteOwnAccountMutation(loggedInId);
+	};
+
+	useEffect(() => {
+		if (deleteOwnAccountResult.data) {
+			logoutMutation().then(() => {
+				window.location.href = '/';
+			});
+		}
+	}, [deleteOwnAccountResult.data]);
+
 	return (
 		<Container maxW={'4xl'} pl={0} mx={0}>
 			<SettingsSection title={'Account'}>
-				<Flex gap={4}>
+				<Flex gap={2}>
 					<Box>
-						<Button onClick={handleEmailClick} colorScheme={'blue'}>
+						<Button onClick={handleEmailClick} colorScheme={'gray'}>
 							Change your email address
 						</Button>
 						<SettingsModal
@@ -46,7 +67,7 @@ export default function SettingsView() {
 					</Box>
 
 					<Box>
-						<Button onClick={handlePasswordClick} colorScheme={'blue'}>
+						<Button onClick={handlePasswordClick} colorScheme={'gray'}>
 							Change your password
 						</Button>
 						<SettingsModal
@@ -71,13 +92,10 @@ export default function SettingsView() {
 
 			{/* TODO Setting: Close your account */}
 			<SettingsSection title={'Close your account'}>
-				<Text>
-					If you'd like to remove your account entirely, please email us at{' '}
-					<Link href={'mailto:support@risetheatre.org'} display={'inline'}>
-						support@risetheatre.org
-					</Link>{' '}
-					and let us know.
-				</Text>
+				<Text>If you'd like to remove your account entirely, please use the button below.</Text>
+				<Button colorScheme={'red'} onClick={handleDeleteOwnAccount}>
+					Delete account
+				</Button>
 			</SettingsSection>
 		</Container>
 	);
