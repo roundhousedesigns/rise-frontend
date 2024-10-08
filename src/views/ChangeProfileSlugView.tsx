@@ -8,6 +8,7 @@ import {
 	useToast,
 	Heading,
 	Wrap,
+	ButtonGroup,
 } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
@@ -93,16 +94,17 @@ export default function ChangeProfileUrlView() {
 	return (
 		<Box borderRadius={'lg'} w={'full'}>
 			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
-				<Box flex={'1 0 auto'}>
+				<Box flex={'1 0 auto'} w='full'>
 					<form onSubmit={handleSubmit}>
 						<Heading variant={'contentSubtitle'}>Handle</Heading>
 						<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
-						<Wrap>
+						<Flex gap={2} flexWrap={'wrap'} w='100%' alignItems={'flex-start'}>
 							<TextInput
 								value={slug}
 								name={'slug'}
 								id={'slug'}
 								maxW={'300px'}
+								mt={0}
 								label={'New profile tag'}
 								labelHidden
 								helperText={'Letters, numbers, dashes, and underscores.'}
@@ -123,14 +125,7 @@ export default function ChangeProfileUrlView() {
 							>
 								Save
 							</Button>
-							<Button
-								colorScheme={'red'}
-								isDisabled={!hasEditedSlug}
-								onClick={() => setSlug(loggedInSlug)}
-							>
-								Cancel
-							</Button>
-						</Wrap>
+						</Flex>
 					</form>
 				</Box>
 
@@ -143,11 +138,10 @@ export default function ChangeProfileUrlView() {
 					<Box opacity={hasEditedSlug ? 0.8 : 1}>
 						<Button
 							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-							title={'Copy profile URL'}
+							title={'Copy'}
 							onClick={onCopy}
 							isDisabled={!!hasEditedSlug}
 							maxW={'100%'}
-							colorScheme={'yellow'}
 							overflow={'hidden'}
 						>
 							{profileUrl}
