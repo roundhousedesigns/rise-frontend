@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
+import { Button, Text, useDisclosure, Container, Flex, Box, ButtonGroup } from '@chakra-ui/react';
 import useViewer from '@queries/useViewer';
 import usedeleteOwnAccount from '@@/src/hooks/mutations/useDeleteOwnAccount';
 import useLogout from '@mutations/useLogout';
@@ -10,6 +10,7 @@ import SettingsSection from '@components/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
 import { SettingsModal } from '@components/SettingsModal';
+import DeleteAccountView from './DeleteAccountView';
 
 export default function SettingsView() {
 	const {
@@ -18,10 +19,12 @@ export default function SettingsView() {
 		onClose: onClosePassword,
 	} = useDisclosure();
 
-	const { logoutMutation } = useLogout();
+	const {
+		isOpen: isOpenDeleteAccount,
+		onOpen: onOpenDeleteAccount,
+		onClose: onCloseDeleteAccount,
+	} = useDisclosure();
 
-	const { deleteOwnAccountMutation, result: deleteOwnAccountResult } = usedeleteOwnAccount();
-	const [{ loggedInId }] = useViewer();
 	const { isOpen: isOpenEmail, onOpen: onOpenEmail, onClose: onCloseEmail } = useDisclosure();
 
 	const handlePasswordClick = () => {
@@ -35,19 +38,6 @@ export default function SettingsView() {
 	const handleEmailClose = () => {
 		onCloseEmail();
 	};
-
-	const handleDeleteOwnAccount = () => {
-		// TODO: Add confirmation dialog
-		deleteOwnAccountMutation(loggedInId);
-	};
-
-	useEffect(() => {
-		if (deleteOwnAccountResult.data) {
-			logoutMutation().then(() => {
-				window.location.href = '/';
-			});
-		}
-	}, [deleteOwnAccountResult.data]);
 
 	return (
 		<Container maxW={'4xl'} pl={0} mx={0}>
@@ -90,12 +80,20 @@ export default function SettingsView() {
 				<DarkModeToggle showHelperText={true} size={'lg'} />
 			</SettingsSection>
 
-			{/* TODO Setting: Close your account */}
 			<SettingsSection title={'Close your account'}>
-				<Text>If you'd like to remove your account entirely, please use the button below.</Text>
-				<Button colorScheme={'red'} onClick={handleDeleteOwnAccount}>
-					Delete account
-				</Button>
+				<Text m={0}>If you'd like to remove your account entirely, please use the button below. You can always re-register at any time.</Text>
+				<ButtonGroup>
+					<Button colorScheme={'red'} onClick={onOpenDeleteAccount}>
+						Delete account
+					</Button>
+				</ButtonGroup>
+				<SettingsModal
+					title={'Delete your account'}
+					isOpen={isOpenDeleteAccount}
+					onClose={onCloseDeleteAccount}
+				>
+					<DeleteAccountView onClose={onCloseDeleteAccount} />
+				</SettingsModal>
 			</SettingsSection>
 		</Container>
 	);
