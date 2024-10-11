@@ -26,12 +26,14 @@ export default function DeleteAccountView({ onClose }: { onClose: () => void }) 
 
 	useEffect(() => {
 		if (deleteOwnAccountResult.data) {
+			onClose();
+
 			toast({
 				title: 'Account deleted',
 				description:
-					'Your account and all data have been permanently deleted. You can re-register at any time.',
+					'Your account and data have been permanently deleted. You can re-register at any time.',
 				status: 'success',
-				duration: 3000,
+				duration: 2000,
 			});
 
 			setTimeout(() => {
