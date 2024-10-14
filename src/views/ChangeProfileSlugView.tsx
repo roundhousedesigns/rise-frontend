@@ -1,5 +1,16 @@
 import { useEffect } from 'react';
-import { Button, Box, Flex, Text, useClipboard, useToast, Heading, Wrap } from '@chakra-ui/react';
+import {
+	Button,
+	Box,
+	Flex,
+	Text,
+	useClipboard,
+	useToast,
+	Heading,
+	Wrap,
+	ButtonGroup,
+	Spacer,
+} from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { Formik, Form, Field, FieldInputProps, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
@@ -22,10 +33,7 @@ export default function ChangeProfileSlugView() {
 	const profileUrl = useProfileUrl(loggedInSlug);
 	const toast = useToast();
 
-	const {
-		changeProfileSlugMutation,
-		results: { loading: submitLoading },
-	} = useChangeProfileSlug();
+	const { changeProfileSlugMutation } = useChangeProfileSlug();
 
 	const newSlugIsClean = useValidateProfileSlug;
 
@@ -65,20 +73,20 @@ export default function ChangeProfileSlugView() {
 	return (
 		<Box borderRadius={'lg'} w={'full'}>
 			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
-				<Box flex={'1 0 auto'}>
-					<Formik
-						initialValues={{
-							slug: loggedInSlug,
-						}}
-						validationSchema={validationSchema}
-						onSubmit={handleSubmit}
-						enableReinitialize
-					>
-						{({ isValid, dirty, isSubmitting, errors, touched, setValues }) => (
-							<Form>
+				<Formik
+					initialValues={{
+						slug: loggedInSlug,
+					}}
+					validationSchema={validationSchema}
+					onSubmit={handleSubmit}
+					enableReinitialize
+				>
+					{({ isValid, dirty, isSubmitting, errors, touched, setValues }) => (
+						<Form>
+							<Box>
 								<Heading variant={'contentSubtitle'}>Handle</Heading>
 								<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
-								<Wrap>
+								<Flex flexWrap='wrap' justifyContent={'space-between'} gap={2} w='full'>
 									<Field name='slug'>
 										{({ field }: { field: FieldInputProps<string> }) => (
 											<TextInput
@@ -106,40 +114,23 @@ export default function ChangeProfileSlugView() {
 									>
 										Save
 									</Button>
-									<Button
-										colorScheme={'red'}
-										isDisabled={!dirty}
-										onClick={() => {
-											setValues({ slug: loggedInSlug });
-										}}
-									>
-										Cancel
-									</Button>
-								</Wrap>
-								<Box flex={'auto'}>
-									<Text fontSize={'sm'}>
-										{dirty
-											? 'Save your changes to update your profile URL.'
-											: 'Your current profile URL is:'}
-									</Text>
-									<Box opacity={dirty ? 0.8 : 1}>
-										<Button
-											leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-											title={'Copy profile URL'}
-											onClick={onCopy}
-											isDisabled={!!dirty}
-											maxW={'100%'}
-											colorScheme={'yellow'}
-											overflow={'hidden'}
-										>
-											{profileUrl}
-										</Button>
-									</Box>
-								</Box>
-							</Form>
-						)}
-					</Formik>
-				</Box>
+								</Flex>
+								<Button
+									leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
+									title={'Copy profile URL'}
+									onClick={onCopy}
+									isDisabled={!!dirty}
+									maxW={'100%'}
+									colorScheme={'yellow'}
+									overflow={'hidden'}
+									opacity={dirty ? 0.8 : 1}
+								>
+									{profileUrl}
+								</Button>
+							</Box>
+						</Form>
+					)}
+				</Formik>
 			</Flex>
 		</Box>
 	);
