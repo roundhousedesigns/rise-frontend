@@ -72,66 +72,66 @@ export default function ChangeProfileSlugView() {
 
 	return (
 		<Box borderRadius={'lg'} w={'full'}>
-			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
-				<Formik
-					initialValues={{
-						slug: loggedInSlug,
-					}}
-					validationSchema={validationSchema}
-					onSubmit={handleSubmit}
-					enableReinitialize
-				>
-					{({ isValid, dirty, isSubmitting, errors, touched, setValues }) => (
-						<Form>
-							<Box>
-								<Heading variant={'contentSubtitle'}>Handle</Heading>
-								<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
-								<Flex flexWrap='wrap' justifyContent={'space-between'} gap={2} w='full'>
-									<Field name='slug'>
-										{({ field }: { field: FieldInputProps<string> }) => (
-											<TextInput
-												{...field}
-												maxW={'300px'}
-												label={'New profile tag'}
-												labelHidden
-												helperText={'Letters, numbers, dashes, and underscores.'}
-												my={0}
-												error={touched.slug && errors.slug}
-												isRequired
-												maxLength={20}
-												inputProps={{
-													pl: 2,
-												}}
-												flex={'1'}
-											/>
-										)}
-									</Field>
-									<Button
-										type={'submit'}
-										colorScheme={'green'}
-										isDisabled={!isValid || !dirty || isSubmitting}
-										isLoading={isSubmitting}
-									>
-										Save
-									</Button>
-								</Flex>
+			<Formik
+				initialValues={{
+					slug: loggedInSlug,
+				}}
+				validationSchema={validationSchema}
+				onSubmit={handleSubmit}
+				enableReinitialize
+			>
+				{({ isValid, dirty, isSubmitting, errors, touched, setValues }) => (
+					<Form>
+						<Box w='100%'>
+							<Heading variant={'contentSubtitle'}>Handle</Heading>
+							<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
+							<Flex flexWrap='wrap' justifyContent={'flex-start'} gap={2} w='full'>
+								<Field name='slug'>
+									{({ field }: { field: FieldInputProps<string> }) => (
+										<TextInput
+											{...field}
+											maxW={'300px'}
+											label={'New profile tag'}
+											labelHidden
+											helperText={'Letters, numbers, dashes, and underscores.'}
+											my={0}
+											error={touched.slug && errors.slug}
+											isRequired
+											maxLength={30}
+											inputProps={{
+												pl: 2,
+											}}
+											flex={'1'}
+										/>
+									)}
+								</Field>
+								<Button
+									type={'submit'}
+									colorScheme={'green'}
+									isDisabled={!isValid || !dirty || isSubmitting}
+									isLoading={isSubmitting}
+								>
+									Save
+								</Button>
+								<Spacer flex={{ base: '0 0 0', md: '1' }} />
 								<Button
 									leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
 									title={'Copy profile URL'}
 									onClick={onCopy}
+									mt={2}
 									isDisabled={!!dirty}
 									maxW={'100%'}
 									colorScheme={'yellow'}
 									overflow={'hidden'}
 									opacity={dirty ? 0.8 : 1}
 								>
-									{profileUrl}
+									Copy profile link
 								</Button>
-							</Box>
-						</Form>
-					)}
-				</Formik>
-			</Flex>
+							</Flex>
+						</Box>
+					</Form>
+				)}
+			</Formik>
 		</Box>
 	);
 }
