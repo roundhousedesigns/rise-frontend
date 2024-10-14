@@ -32,6 +32,11 @@ const variants = {
 			},
 		},
 	}),
+	important: definePartsStyle({
+		container: {
+			bgColor: 'brand.red',
+		},
+	}),
 };
 
 export default defineMultiStyleConfig({ baseStyle, variants });

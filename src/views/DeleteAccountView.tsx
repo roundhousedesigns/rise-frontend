@@ -9,6 +9,7 @@ import {
 	Divider,
 	useToast,
 	ButtonGroup,
+	Card,
 } from '@chakra-ui/react';
 import useViewer from '@queries/useViewer';
 import useDeleteOwnAccount from '@mutations/useDeleteOwnAccount';
@@ -48,11 +49,13 @@ export default function DeleteAccountView({ onClose }: { onClose: () => void }) 
 
 	return (
 		<>
-			<Text fontSize={'md'} lineHeight={'normal'}>
-				To completely delete your account, click the 'Delete my account' button. Otherwise, click
-				cancel. Your account and all data will be permanently deleted. You can re-register at any
-				time.
-			</Text>
+			<Card variant={'important'}>
+				<Text fontSize={'sm'} lineHeight={'tall'} m={0}>
+					To completely delete your account, click the 'Delete my account' button. Otherwise, click
+					cancel. Your account and all data will be permanently deleted. You can re-register at any
+					time.
+				</Text>
+			</Card>
 			<ButtonGroup mt={4}>
 				<Button colorScheme={'red'} onClick={handleDeleteOwnAccount}>
 					Delete my account
