@@ -1,16 +1,5 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import {
-	chakra,
-	Button,
-	Flex,
-	Box,
-	Text,
-	Link,
-	Divider,
-	useToast,
-	ButtonGroup,
-	Card,
-} from '@chakra-ui/react';
+import { useEffect } from 'react';
+import { Button, Text, useToast, ButtonGroup, Card } from '@chakra-ui/react';
 import useViewer from '@queries/useViewer';
 import useDeleteOwnAccount from '@mutations/useDeleteOwnAccount';
 import useLogout from '@mutations/useLogout';

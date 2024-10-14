@@ -7,8 +7,6 @@ import {
 	useClipboard,
 	useToast,
 	Heading,
-	Wrap,
-	ButtonGroup,
 } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
