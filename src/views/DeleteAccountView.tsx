@@ -41,7 +41,7 @@ export default function DeleteAccountView({ onClose }: { onClose: () => void }) 
 				logoutMutation().then(() => {
 					window.location.href = '/';
 				});
-			}, 3000);
+			}, 2000);
 		}
 	}, [deleteOwnAccountResult.data]);
 
