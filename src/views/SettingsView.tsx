@@ -2,11 +2,11 @@ import { Button, Text, useDisclosure, Container, Flex, Box, ButtonGroup } from '
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeEmailView from '@views/ChangeEmailView';
+import DeleteAccountView from '@views/DeleteAccountView';
 import SettingsSection from '@components/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
 import { SettingsModal } from '@components/SettingsModal';
-import DeleteAccountView from './DeleteAccountView';
 
 export default function SettingsView() {
 	const {
