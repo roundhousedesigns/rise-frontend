@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.3",
-    "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/react": "^2.9.3",
     "@choc-ui/chakra-autocomplete": "^5.5.1",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
