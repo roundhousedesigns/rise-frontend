@@ -1,7 +1,7 @@
-import { Box, Heading, StackItem } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 import HeadingCenterline from '@common/HeadingCenterline';
 
-// A StackItem with a title and optional centerline.
+// A custom Box (stack item) with a title and optional centerline.
 export default function ProfileStackItem({
 	title,
 	centerlineColor,

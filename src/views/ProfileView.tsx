@@ -12,7 +12,6 @@ import {
 	Tag,
 	List,
 	ListItem,
-	StackItem,
 	Link,
 	Button,
 	Wrap,

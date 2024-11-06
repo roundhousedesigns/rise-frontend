@@ -6,7 +6,6 @@ import {
 	Icon,
 	Text,
 	Stack,
-	StackItem,
 	Flex,
 	Spacer,
 	useToken,

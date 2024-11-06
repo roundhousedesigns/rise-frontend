@@ -9,7 +9,6 @@ import {
 	Text,
 	Stack,
 	Spinner,
-	StackItem,
 	Button,
 	ButtonGroup,
 	useToast,
