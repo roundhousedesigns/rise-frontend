@@ -6,7 +6,6 @@ import {
 	Icon,
 	Text,
 	Stack,
-	StackItem,
 	Flex,
 	Spacer,
 	useToken,
@@ -82,19 +81,19 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<form id={'search-candidates'} onSubmit={onSubmit}>
 					<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
 						<Fade in={!savedSearchId} unmountOnExit>
-							<StackItem>
+							<Box>
 								<Box maxW={'lg'}>
 									<DepartmentsAutocomplete />
 								</Box>
-							</StackItem>
+							</Box>
 						</Fade>
-						<StackItem>
+						<Box>
 							<Stack gap={8}>
-								<StackItem>
+								<Box>
 									<SearchFilterSection id={'filterDepartment'}>
 										<SearchFilterDepartment />
 									</SearchFilterSection>
-								</StackItem>
+								</Box>
 								<Fade in={!!departments.length} unmountOnExit>
 									<SearchFilterSection
 										id={'filterJobs'}
@@ -125,7 +124,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 									</SearchFilterSection>
 								</Fade>
 							</Stack>
-						</StackItem>
+						</Box>
 					</Stack>
 				</form>
 			</Box>

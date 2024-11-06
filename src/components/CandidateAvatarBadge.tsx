@@ -1,4 +1,5 @@
-import { As, AvatarBadge, Icon } from '@chakra-ui/react';
+import { AvatarBadge, Icon } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/system';
 import { FiCalendar } from 'react-icons/fi';
 
 interface Props {
