@@ -7,7 +7,6 @@ import {
 	useClipboard,
 	useToast,
 	Heading,
-	Wrap,
 } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
@@ -18,7 +17,7 @@ import TextInput from '@common/inputs/TextInput';
 export default function ChangeProfileUrlView() {
 	const [{ loggedInId: userId, loggedInSlug }] = useViewer();
 
-	const [slug, setSlug] = useState<string>('');
+	const [slug, setSlug] = useState<string>(loggedInSlug);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
 	const { onCopy, setValue: setCopyValue, hasCopied } = useClipboard('');
@@ -39,6 +38,8 @@ export default function ChangeProfileUrlView() {
 	// Whenever the loggedInSlug changes, update slug
 	useEffect(() => {
 		setSlug(loggedInSlug);
+
+		console.info('slug', slug);
 	}, [loggedInSlug]);
 
 	// Check if form is valid
@@ -92,17 +93,25 @@ export default function ChangeProfileUrlView() {
 
 	return (
 		<Box borderRadius={'lg'} w={'full'}>
-			<Flex mt={2} gap={8} alignItems={'center'} flexWrap={'wrap'} justifyContent={'space-between'}>
-				<Box flex={'1 0 auto'}>
+			<Flex
+				gap={{ base: 0, md: 4 }}
+				alignItems={'center'}
+				flexWrap={'wrap'}
+				justifyContent={'space-between'}
+			>
+				<Box>
 					<form onSubmit={handleSubmit}>
-						<Heading variant={'contentSubtitle'}>Handle</Heading>
-						<Text>Give yourself a memorable handle to make sharing your profile easy.</Text>
-						<Wrap>
+						<Heading variant={'contentSubtitle'}>Profile handle</Heading>
+						<Text fontSize='sm' lineHeight={'shorter'}>
+							Give yourself a memorable handle to make sharing your profile easy.
+						</Text>
+						<Flex gap={2} flexWrap={'wrap'} w='100%' alignItems={'flex-start'}>
 							<TextInput
 								value={slug}
 								name={'slug'}
 								id={'slug'}
 								maxW={'300px'}
+								mt={0}
 								label={'New profile tag'}
 								labelHidden
 								helperText={'Letters, numbers, dashes, and underscores.'}
@@ -123,32 +132,21 @@ export default function ChangeProfileUrlView() {
 							>
 								Save
 							</Button>
-							<Button
-								colorScheme={'red'}
-								isDisabled={!hasEditedSlug}
-								onClick={() => setSlug(loggedInSlug)}
-							>
-								Cancel
-							</Button>
-						</Wrap>
+						</Flex>
 					</form>
 				</Box>
-
-				<Box flex={'auto'}>
-					<Text fontSize={'sm'}>
-						{hasEditedSlug
-							? 'Save your changes to update your profile URL.'
-							: 'Your current profile URL is:'}
-					</Text>
+				<Box flex={'auto'} fontSize='sm'>
 					<Box opacity={hasEditedSlug ? 0.8 : 1}>
 						<Button
 							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-							title={'Copy profile URL'}
+							title={'Copy'}
 							onClick={onCopy}
+							size='sm'
+							aria-label='Copy profile URL'
 							isDisabled={!!hasEditedSlug}
 							maxW={'100%'}
-							colorScheme={'yellow'}
 							overflow={'hidden'}
+							colorScheme='yellow'
 						>
 							{profileUrl}
 						</Button>
