@@ -9,7 +9,6 @@ import {
 	Text,
 	Stack,
 	Spinner,
-	StackItem,
 	Button,
 	ButtonGroup,
 	useToast,
@@ -17,7 +16,6 @@ import {
 	Icon,
 	SimpleGrid,
 	Slide,
-	As,
 	Accordion,
 	AccordionItem,
 	AccordionButton,
@@ -29,6 +27,7 @@ import {
 	Input,
 	chakra,
 } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, FieldInputProps, FormikHelpers, FormikProps } from 'formik';
 import * as Yup from 'yup';

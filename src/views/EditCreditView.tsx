@@ -6,9 +6,9 @@ import {
 	Text,
 	Spinner,
 	Stack,
-	StackItem,
 	useToast,
 	ButtonGroup,
+	Box,
 } from '@chakra-ui/react';
 import { Formik, Form, Field, FieldInputProps, FormikHelpers, FormikProps } from 'formik';
 import * as Yup from 'yup';
@@ -368,7 +368,7 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 					<Divider />
 
 					<Stack direction={'column'} spacing={6} fontSize={'md'}>
-						<StackItem>
+						<Box>
 							<Heading as={'h4'} variant={'contentTitle'}>
 								Department
 								<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
@@ -396,10 +396,10 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 							{touched.positions?.departments && errors.positions?.departments && (
 								<Text color='red.500'>{errors.positions.departments}</Text>
 							)}
-						</StackItem>
+						</Box>
 
 						{values.positions.departments.length && !jobsLoading ? (
-							<StackItem>
+							<Box>
 								<Heading as={'h4'} variant={'contentTitle'}>
 									Position
 									<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
@@ -427,13 +427,13 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 										<Text color='red.500'>{errors.positions.jobs}</Text>
 									)}
 								</>
-							</StackItem>
+							</Box>
 						) : jobsLoading ? (
 							<Spinner />
 						) : null}
 
 						{values.positions.jobs.length && !relatedSkillsLoading ? (
-							<StackItem>
+							<Box>
 								<Heading as={'h4'} variant={'contentTitle'}>
 									Skills
 								</Heading>
@@ -457,7 +457,7 @@ export default function EditCreditView({ credit, onClose: closeModal }: Props) {
 										)}
 									</Field>
 								</>
-							</StackItem>
+							</Box>
 						) : relatedSkillsLoading ? (
 							<Spinner />
 						) : null}

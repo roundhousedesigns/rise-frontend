@@ -1,14 +1,4 @@
-import {
-	Card,
-	Heading,
-	Button,
-	Flex,
-	Spacer,
-	List,
-	ListItem,
-	Stack,
-	StackItem,
-} from '@chakra-ui/react';
+import { Card, Heading, Button, Flex, Spacer, List, ListItem, Stack, Box } from '@chakra-ui/react';
 import { FiEdit3, FiSearch, FiUser } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import useViewer from '@queries/useViewer';
@@ -22,7 +12,7 @@ export default function DashboardView() {
 
 	return (
 		<Stack direction='column'>
-			<StackItem as={Card}>
+			<Box as={Card}>
 				<Flex justifyContent='space-between' flexWrap='wrap' mb={2}>
 					<InlineIconText
 						icon={<FiSearch />}
@@ -46,10 +36,10 @@ export default function DashboardView() {
 						<Spacer />
 					</Flex>
 				</Flex>
-			</StackItem>
+			</Box>
 
 			{notices.length > 0 ? (
-				<StackItem>
+				<Box>
 					<Heading as='h2' variant='pageSubtitle'>
 						Updates
 					</Heading>
@@ -60,7 +50,7 @@ export default function DashboardView() {
 							</ListItem>
 						))}
 					</List>
-				</StackItem>
+				</Box>
 			) : null}
 		</Stack>
 	);

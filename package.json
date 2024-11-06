@@ -2,11 +2,12 @@
   "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "1.1.12-formik",
+  "version": "1.1.13-formik",
   "type": "module",
   "engines": {
     "node": ">=20.12.0"
   },
+  "packageManager": "yarn@1.22.22",
   "copyright": "Copyright (c) 2024 Maestra Music and Roundhouse Designs. All rights reserved.",
   "scripts": {
     "dev": "vite",
@@ -15,8 +16,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.3",
-    "@chakra-ui/react": "^2.8.2",
-    "@choc-ui/chakra-autocomplete": "^5.5.1",
+    "@chakra-ui/react": "^2.9.3",
+    "@chakra-ui/system": "^2.6.2",
+    "@choc-ui/chakra-autocomplete": "^5.6.3",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "apollo-upload-client": "^17.0.0",
@@ -32,7 +34,7 @@
     "react": "^18.2.0",
     "react-datepicker": "^6.9.0",
     "react-dom": "^18.2.0",
-    "react-dropzone": "^14.2.3",
+    "react-dropzone": "^14.2.7",
     "react-ga4": "^2.1.0",
     "react-google-recaptcha-v3": "^1.10.1",
     "react-icons": "^4.12.0",
@@ -56,6 +58,7 @@
     "@types/react-date-range": "^1.4.9",
     "@types/react-datepicker": "^6.2.0",
     "@types/react-dom": "^18.2.18",
+    "@types/yup": "^0.32.0",
     "@vitejs/plugin-react": "^4.0.4",
     "chance": "^1.1.9",
     "eslint": "^8.57.0",
