@@ -1,4 +1,4 @@
-import { Heading, StackItem } from '@chakra-ui/react';
+import { Box, Heading, StackItem } from '@chakra-ui/react';
 import HeadingCenterline from '@common/HeadingCenterline';
 
 // A StackItem with a title and optional centerline.
@@ -26,9 +26,9 @@ export default function ProfileStackItem({
 	};
 
 	return (
-		<StackItem mb={2} {...props}>
+		<Box mb={2} {...props}>
 			{title ? <SectionTitle /> : false}
 			{children}
-		</StackItem>
+		</Box>
 	);
 }

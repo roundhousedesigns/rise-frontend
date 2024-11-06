@@ -274,7 +274,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								width={'100%'}
 								lineHeight={1}
 							>
-								<StackItem display={'flex'} flexWrap={'wrap'}>
+								<Box display={'flex'} flexWrap={'wrap'}>
 									<Flex
 										justifyContent={{ base: 'center', md: 'space-between' }}
 										w={'full'}
@@ -301,7 +301,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										{isLargerThanMd ? <ShareStarButtons p={0} /> : null}
 									</Flex>
 									<ProfileSubtitle flex={'0 0 100%'} w={'full'} />
-								</StackItem>
+								</Box>
 
 								{locations && locations.length > 0 ? (
 									<ProfileStackItem title={'Works in'}>
@@ -352,7 +352,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								) : null}
 
 								{email || phone || website ? (
-									<StackItem my={1}>
+									<Box my={1}>
 										<Heading as={'h3'} variant={'contentTitle'}>
 											Contact
 										</Heading>
@@ -379,7 +379,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 												</ListItem>
 											) : null}
 										</List>
-									</StackItem>
+									</Box>
 								) : null}
 
 								{conflictRanges.length && !isLargerThanMd ? (

@@ -18,7 +18,6 @@ import {
 	SimpleGrid,
 	Slide,
 	Input,
-	As,
 	Accordion,
 	AccordionItem,
 	AccordionButton,
@@ -28,6 +27,7 @@ import {
 	Checkbox,
 	Collapse,
 } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import {
@@ -1027,7 +1027,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							)}
 							<ProfileStackItem title={'Contact'}>
 								<Stack direction={'column'}>
-									<StackItem
+									<Box
 										as={TextInput}
 										value={email}
 										leftElement={<Icon as={FiMail} />}
@@ -1043,7 +1043,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										onDebounceEnd={() => handleDebounceEnd('email')}
 									/>
 									{/* TODO Add checkbox for "use account email address" */}
-									<StackItem
+									<Box
 										as={TextInput}
 										value={phone}
 										leftElement={<Icon as={FiPhone} />}
@@ -1058,7 +1058,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										onDebounceStart={() => handleDebounceStart('phone')}
 										onDebounceEnd={() => handleDebounceEnd('phone')}
 									/>
-									<StackItem
+									<Box
 										as={TextInput}
 										value={website}
 										leftElement={<Icon as={FiLink} />}

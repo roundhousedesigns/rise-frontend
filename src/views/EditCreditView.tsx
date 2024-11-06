@@ -9,6 +9,7 @@ import {
 	StackItem,
 	useToast,
 	ButtonGroup,
+	Box,
 } from '@chakra-ui/react';
 import { CreditParams } from '@lib/types';
 import { Credit, WPItem } from '@lib/classes';
@@ -433,7 +434,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 			<Stack direction={'column'} spacing={6} fontSize={'md'}>
 				{/* TODO Make this required */}
-				<StackItem>
+				<Box>
 					<Heading as={'h4'} variant={'contentTitle'}>
 						Department
 						<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
@@ -449,9 +450,9 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 						}
 						handleChange={handleDepartmentsChange}
 					/>
-				</StackItem>
+				</Box>
 				{selectedDepartmentIds.length && !jobsLoading ? (
-					<StackItem>
+					<Box>
 						<Heading as={'h4'} variant={'contentTitle'}>
 							Position
 							<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
@@ -467,13 +468,13 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleJobsChange}
 							/>
 						</>
-					</StackItem>
+					</Box>
 				) : jobsLoading ? (
 					<Spinner />
 				) : null}
 
 				{selectedJobIds.length && !relatedSkillsLoading ? (
-					<StackItem>
+					<Box>
 						<Heading as={'h4'} variant={'contentTitle'}>
 							Skills
 						</Heading>
@@ -488,7 +489,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 								handleChange={handleSkillsChange}
 							/>
 						</>
-					</StackItem>
+					</Box>
 				) : relatedSkillsLoading ? (
 					<Spinner />
 				) : null}
