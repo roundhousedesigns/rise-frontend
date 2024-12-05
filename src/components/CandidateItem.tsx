@@ -37,6 +37,8 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 			{showToggle ? <StarToggleIcon id={id} isDisabled={loggedInId === id} /> : null}
 
 			<Card
+				role="article"
+				aria-labelledby={`candidate-${id}`}
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
@@ -70,12 +72,14 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 						mr={2}
 						src={image}
 						ignoreFallback={image ? true : false}
+						aria-label={candidate.fullName() || 'Profile picture'}
 					>
 						<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
 					</Avatar>
 					<Flex flex={'1'} alignItems={'center'} flexWrap={'wrap'}>
 						<Heading
 							as={'h3'}
+							id={`candidate-${id}`}
 							fontSize={'lg'}
 							fontWeight={'normal'}
 							textAlign={'left'}

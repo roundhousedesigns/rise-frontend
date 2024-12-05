@@ -41,7 +41,7 @@ export default function CandidateAvatarBadge({ reason }: Props): JSX.Element | n
 			color={badgeProps.color}
 			aria-label={badgeProps.label}
 		>
-			<Icon as={badgeProps.icon} boxSize={3} />
+			<Icon as={badgeProps.icon} boxSize={3} aria-label='hidden' />
 		</AvatarBadge>
 	);
 }
