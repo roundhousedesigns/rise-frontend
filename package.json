@@ -20,7 +20,7 @@
     "@chakra-ui/system": "^2.6.2",
     "@choc-ui/chakra-autocomplete": "^5.7.1",
     "@emotion/react": "^11.13.0",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/styled": "^11.13.5",
     "apollo-upload-client": "^17.0.0",
     "autosize": "^6.0.1",
     "check-password-strength": "^2.0.7",
