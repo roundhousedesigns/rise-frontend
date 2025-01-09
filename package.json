@@ -18,7 +18,7 @@
     "@apollo/client": "^3.11.3",
     "@chakra-ui/react": "^2.10.4",
     "@chakra-ui/system": "^2.6.2",
-    "@choc-ui/chakra-autocomplete": "^5.7.1",
+    "@choc-ui/chakra-autocomplete": "^5.8.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "apollo-upload-client": "^17.0.0",
