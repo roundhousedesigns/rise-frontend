@@ -11,6 +11,7 @@ import {
 	Spacer,
 	useDisclosure,
 	LightMode,
+	Flex,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProfileNoticeAlert } from '@lib/types';
@@ -70,21 +71,27 @@ export default function ProfileNotice({
 					colorScheme={colorScheme}
 					color={color}
 					variant={'subtle'}
-					fontSize={'md'}
+					fontSize={'sm'}
 					borderRadius={0}
-					py={1}
+					py={2}
 					my={0}
 					justifyContent={'space-between'}
 					{...props}
 				>
-					<Container maxW={'90vw'} display={'flex'} alignItems={'center'}>
-						<AlertIcon />
-						<AlertTitle>{title}</AlertTitle>
-						{description ? <AlertDescription>{description} </AlertDescription> : false}
+					<Container maxW={'90vw'}>
+						<Flex alignItems={'center'}>
+							<AlertIcon />
+							<AlertTitle lineHeight='unset'>{title}</AlertTitle>
+							{description ? (
+								<AlertDescription lineHeight='unset'>{description} </AlertDescription>
+							) : (
+								false
+							)}
 
-						{cta ? <CTA /> : <Spacer />}
+							{cta ? <CTA /> : <Spacer />}
 
-						<CloseButton onClick={handleCloseAlert} />
+							<CloseButton onClick={handleCloseAlert} />
+						</Flex>
 					</Container>
 				</Alert>
 			</LightMode>
@@ -97,7 +104,13 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		title: "You haven't added any professional credits.",
 		description: (
 			<>
-				<Link as={RouterLink} to={'/profile/edit'}>
+				<Link
+					as={RouterLink}
+					to={'/profile/edit'}
+					variant='dotted'
+					color='text.dark'
+					borderBottomColor={'blackAlpha.800'}
+				>
 					Add some credits
 				</Link>{' '}
 				to allow people to find you in the Directory!

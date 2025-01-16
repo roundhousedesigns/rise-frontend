@@ -20,6 +20,7 @@ export default function DarkModeToggle({
 	return (
 		<ToggleOptionSwitch
 			id={'darkMode'}
+			aria-label={`Switch to ${colorMode === 'dark' ? 'light' : 'dark'} mode`}
 			checked={colorMode === 'dark'}
 			callback={toggleColorMode}
 			label={'Theme'}

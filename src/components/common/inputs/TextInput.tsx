@@ -1,4 +1,12 @@
-import { ChangeEvent, forwardRef, ReactNode, useCallback, useState, useEffect } from 'react';
+import {
+	ChangeEvent,
+	forwardRef,
+	ReactNode,
+	useCallback,
+	useState,
+	useEffect,
+	useRef,
+} from 'react';
 import { debounce } from 'lodash';
 import {
 	Flex,
@@ -33,6 +41,8 @@ interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCha
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 	[prop: string]: any;
 	debounceTime?: number;
+	onDebounceStart?: () => void;
+	onDebounceEnd?: () => void;
 }
 
 const TextInput = forwardRef<HTMLInputElement, Props>(
@@ -54,15 +64,14 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 			inputProps,
 			onChange,
 			debounceTime,
+			onDebounceStart,
+			onDebounceEnd,
 			...props
 		},
 		forwardedRef
 	) => {
 		const inputVariant = variant ? variant : 'filled';
 
-		/**
-		 * Returns the box size based on the given size token.
-		 */
 		const boxSize = (): number | undefined => {
 			switch (sizeToken) {
 				case 'sm':
@@ -72,24 +81,34 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 				case 'lg':
 					return 12;
 			}
-
 			return undefined;
 		};
 
 		const [localValue, setLocalValue] = useState(value);
+		const isDebouncing = useRef(false);
 
-		const debouncedOnChange = useCallback(
-			debounce((value: string) => {
-				onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
-			}, debounceTime),
-			[onChange, name, debounceTime]
-		);
+		const handleDebouncedChange = (value: string) => {
+			onChange({ target: { name, value } } as ChangeEvent<HTMLInputElement>);
+			isDebouncing.current = false;
+			onDebounceEnd?.();
+		};
+
+		const debouncedOnChange = useCallback(debounce(handleDebouncedChange, debounceTime), [
+			onChange,
+			name,
+			debounceTime,
+			onDebounceEnd,
+		]);
 
 		const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 			const newValue = e.target.value;
 			setLocalValue(newValue);
 			if (debounceTime) {
-				debouncedOnChange(newValue);
+				if (!isDebouncing.current) {
+					isDebouncing.current = true;
+					onDebounceStart?.();
+				}
+				handleDebouncedChange(newValue);
 			} else {
 				onChange(e);
 			}
@@ -144,7 +163,6 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 					pt={1}
 					my={0}
 					alignItems={'top'}
-					gap={4}
 					justifyContent={'space-between'}
 				>
 					{label ? (
@@ -166,21 +184,20 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 						</FormLabel>
 					) : null}
 				</Flex>
-				<Wrap w={'full'} alignItems={'flex-start'} ml={2} opacity={0.9} fontStyle={'italic'}>
-					<FormHelperText my={0} flex={'1'} fontSize={'xs'} w={'full'}>
+				<Wrap w={'full'} alignItems={'flex-start'} opacity={0.9} fontStyle={'italic'}>
+					<FormHelperText my={0} flex={'1'} w={'full'}>
 						<Flex
 							w={'full'}
 							justifyContent={'space-between'}
 							alignItems={'center'}
 							lineHeight={'normal'}
-							fontSize={'xs'}
 						>
 							{error ? (
 								<FormErrorMessage fontWeight={'bold'} mt={0} flex={'1'} fontSize={'xs'}>
 									{error}
 								</FormErrorMessage>
 							) : helperText ? (
-								<Text m={0} variant={'helperText'}>
+								<Text m={0} variant={'helperText'} fontSize={'2xs'}>
 									{helperText}
 								</Text>
 							) : null}

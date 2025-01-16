@@ -1,4 +1,5 @@
-import { As, AvatarBadge, Icon } from '@chakra-ui/react';
+import { AvatarBadge, Icon } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/system';
 import { FiCalendar } from 'react-icons/fi';
 
 interface Props {
@@ -40,7 +41,7 @@ export default function CandidateAvatarBadge({ reason }: Props): JSX.Element | n
 			color={badgeProps.color}
 			aria-label={badgeProps.label}
 		>
-			<Icon as={badgeProps.icon} boxSize={3} />
+			<Icon as={badgeProps.icon} boxSize={3} aria-label='hidden' />
 		</AvatarBadge>
 	);
 }

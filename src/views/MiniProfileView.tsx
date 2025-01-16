@@ -5,7 +5,6 @@ import {
 	Stack,
 	Card,
 	Tag,
-	StackItem,
 	ButtonGroup,
 	Button,
 	Avatar,
@@ -83,11 +82,11 @@ export default function MiniProfileView({
 			</Box>
 			<Stack direction={'column'} lineHeight={1} w={'full'}>
 				{image ? (
-					<StackItem textAlign={'center'}>
+					<Box textAlign={'center'}>
 						<Avatar size={'superLg'} src={image} name={profile.fullName()} />
-					</StackItem>
+					</Box>
 				) : null}
-				<StackItem
+				<Box
 					flexWrap={'wrap'}
 					justifyContent={{ base: 'center', md: 'flex-start' }}
 					alignItems={'center'}
@@ -102,17 +101,17 @@ export default function MiniProfileView({
 							</Tag>
 						) : null}
 					</Flex>
-				</StackItem>
+				</Box>
 
 				{percentComplete > 30 || disableProfile ? (
 					<>
-						<StackItem as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
+						<Box as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
 
 						{percentComplete < 100 && !!image ? (
-							<StackItem as={RiseStar} textAlign={'center'} color={'brand.blue'} />
+							<Box as={RiseStar} textAlign={'center'} color={'brand.blue'} />
 						) : null}
 
-						<StackItem textAlign={'right'}>
+						<Box textAlign={'right'}>
 							{percentComplete < 100 ? <ProfilePercentComplete colorScheme={'blue'} /> : null}
 
 							<ButtonGroup size={'xs'} mt={2}>
@@ -135,7 +134,7 @@ export default function MiniProfileView({
 									Edit
 								</Button>
 							</ButtonGroup>
-						</StackItem>
+						</Box>
 					</>
 				) : (
 					<Button

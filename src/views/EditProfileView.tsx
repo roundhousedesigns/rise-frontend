@@ -9,7 +9,6 @@ import {
 	Text,
 	Stack,
 	Spinner,
-	StackItem,
 	Button,
 	ButtonGroup,
 	useToast,
@@ -18,7 +17,6 @@ import {
 	SimpleGrid,
 	Slide,
 	Input,
-	As,
 	Accordion,
 	AccordionItem,
 	AccordionButton,
@@ -28,6 +26,7 @@ import {
 	Checkbox,
 	Collapse,
 } from '@chakra-ui/react';
+import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import {
@@ -170,6 +169,21 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 	const [errorCode, setErrorCode] = useState<string>('');
 	const errorMessage = useErrorMessage(errorCode);
+
+	const [isAnyInputDebouncing, setIsAnyInputDebouncing] = useState(false);
+	const debouncingInputs = useRef(new Set<string>());
+
+	const handleDebounceStart = (inputName: string) => {
+		debouncingInputs.current.add(inputName);
+		setIsAnyInputDebouncing(true);
+	};
+
+	const handleDebounceEnd = (inputName: string) => {
+		debouncingInputs.current.delete(inputName);
+		if (debouncingInputs.current.size === 0) {
+			setIsAnyInputDebouncing(false);
+		}
+	};
 
 	useEffect(() => {
 		// Update the hasEditedProfile state when the editProfile changes.
@@ -584,44 +598,54 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		// Manual required field validation
-		if (!Boolean(locations.length)) {
-			toast({
-				title: 'Missing required field.',
-				description: 'Please select at least one work location.',
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-				position: 'bottom',
-			});
+		const submitForm = () => {
+			if (isAnyInputDebouncing) {
+				// If still debouncing, poll again
+				setTimeout(submitForm, 50);
+				return;
+			}
 
-			return;
-		}
-
-		updateProfileMutation(editProfile)
-			.then(() => {
-				navigate(`/profile/${loggedInSlug}`);
-			})
-			.then(() => {
+			// Manual required field validation
+			if (!Boolean(locations.length)) {
 				toast({
-					title: 'Updated!',
-					description: 'Your changes have been saved.',
-					status: 'success',
-					duration: 3000,
-					isClosable: true,
-					position: 'bottom',
-				});
-			})
-			.catch((err) => {
-				toast({
-					title: 'Oops!',
-					description: 'There was an error saving your profile: ' + err,
+					title: 'Missing required field.',
+					description: 'Please select at least one work location.',
 					status: 'error',
 					duration: 3000,
 					isClosable: true,
 					position: 'bottom',
 				});
-			});
+
+				return;
+			}
+
+			updateProfileMutation(editProfile)
+				.then(() => {
+					navigate(`/profile/${loggedInSlug}`);
+				})
+				.then(() => {
+					toast({
+						title: 'Updated!',
+						description: 'Your changes have been saved.',
+						status: 'success',
+						duration: 3000,
+						isClosable: true,
+						position: 'bottom',
+					});
+				})
+				.catch((err) => {
+					toast({
+						title: 'Oops!',
+						description: 'There was an error saving your profile: ' + err,
+						status: 'error',
+						duration: 3000,
+						isClosable: true,
+						position: 'bottom',
+					});
+				});
+		};
+
+		submitForm();
 	};
 
 	const handleEditCredit = (creditId: string) => {
@@ -924,6 +948,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										flex={'1'}
 										label={'First name'}
 										minW={'200px'}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('firstName')}
+										onDebounceEnd={() => handleDebounceEnd('firstName')}
 									/>
 									<TextInput
 										placeholder={'Last'}
@@ -934,6 +961,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										onChange={handleInputChange}
 										flex={'1'}
 										minW={'200px'}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('lastName')}
+										onDebounceEnd={() => handleDebounceEnd('lastName')}
 									/>
 									<TextInput
 										value={pronouns}
@@ -945,6 +975,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											size: 'md',
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('pronouns')}
+										onDebounceEnd={() => handleDebounceEnd('pronouns')}
 									/>
 								</Flex>
 							</ProfileStackItem>
@@ -962,6 +995,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('selfTitle')}
+										onDebounceEnd={() => handleDebounceEnd('selfTitle')}
 									/>
 									<TextInput
 										placeholder={'Home base'}
@@ -975,6 +1011,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('homebase')}
+										onDebounceEnd={() => handleDebounceEnd('homebase')}
 									/>
 								</Flex>
 							</ProfileStackItem>
@@ -987,7 +1026,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							)}
 							<ProfileStackItem title={'Contact'}>
 								<Stack direction={'column'}>
-									<StackItem
+									<Box
 										as={TextInput}
 										value={email}
 										leftElement={<Icon as={FiMail} />}
@@ -998,9 +1037,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('email')}
+										onDebounceEnd={() => handleDebounceEnd('email')}
 									/>
 									{/* TODO Add checkbox for "use account email address" */}
-									<StackItem
+									<Box
 										as={TextInput}
 										value={phone}
 										leftElement={<Icon as={FiPhone} />}
@@ -1011,8 +1053,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('phone')}
+										onDebounceEnd={() => handleDebounceEnd('phone')}
 									/>
-									<StackItem
+									<Box
 										as={TextInput}
 										value={website}
 										leftElement={<Icon as={FiLink} />}
@@ -1022,6 +1067,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										inputProps={{
 											tabIndex: 0,
 										}}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('website')}
+										onDebounceEnd={() => handleDebounceEnd('website')}
 									/>
 								</Stack>
 							</ProfileStackItem>
@@ -1046,6 +1094,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 											error={errorMessage}
 											onChange={handleInputChange}
 											mt={2}
+											debounceTime={300}
+											onDebounceStart={() => handleDebounceStart('languages')}
+											onDebounceEnd={() => handleDebounceEnd('languages')}
 										/>
 									</Collapse>
 								</>
@@ -1059,6 +1110,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://linkedin/in/yourprofile'}
 										name={'socials.linkedin'}
 										onChange={handleSocialInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('socials.linkedin')}
+										onDebounceEnd={() => handleDebounceEnd('socials.linkedin')}
 									/>
 									<TextInput
 										value={socials?.facebook}
@@ -1067,6 +1121,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://facebook.com/yourname'}
 										name={'socials.facebook'}
 										onChange={handleSocialInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('socials.facebook')}
+										onDebounceEnd={() => handleDebounceEnd('socials.facebook')}
 									/>
 									<TextInput
 										value={socials?.instagram}
@@ -1075,14 +1132,20 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'@handle'}
 										name={'socials.instagram'}
 										onChange={handleSocialInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('socials.instagram')}
+										onDebounceEnd={() => handleDebounceEnd('socials.instagram')}
 									/>
 									<TextInput
 										value={socials?.twitter}
-										leftElement={<Icon as={XIcon} />}
+										leftElement={<XIcon />}
 										label={'X/Twitter @handle'}
 										placeholder={'@handle'}
 										name={'socials.twitter'}
 										onChange={handleSocialInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('socials.twitter')}
+										onDebounceEnd={() => handleDebounceEnd('socials.twitter')}
 									/>
 								</SimpleGrid>
 							</ProfileStackItem>
@@ -1300,6 +1363,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							inputProps={{
 								rows: 10,
 							}}
+							debounceTime={300}
+							onDebounceStart={() => handleDebounceStart('description')}
+							onDebounceEnd={() => handleDebounceEnd('description')}
 						/>
 					</>
 				</ProfileStackItem>
@@ -1352,6 +1418,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 						inputProps={{
 							rows: 4,
 						}}
+						debounceTime={300}
+						onDebounceStart={() => handleDebounceStart('education')}
+						onDebounceEnd={() => handleDebounceEnd('education')}
 					/>
 				</ProfileStackItem>
 
@@ -1371,6 +1440,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://www.youtube.com/watch?v=M67E9mpwBpM'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('mediaVideo1')}
+										onDebounceEnd={() => handleDebounceEnd('mediaVideo1')}
 									/>
 									{mediaVideo1 ? (
 										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>
@@ -1390,6 +1462,9 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder={'https://www.youtube.com/watch?v=eR8YUj3C9lI'}
 										leftElement={<FiVideo />}
 										onChange={handleInputChange}
+										debounceTime={300}
+										onDebounceStart={() => handleDebounceStart('mediaVideo2')}
+										onDebounceEnd={() => handleDebounceEnd('mediaVideo2')}
 									/>
 									{mediaVideo2 ? (
 										<Box position={'relative'} paddingBottom={'56.25%'} w={'full'}>

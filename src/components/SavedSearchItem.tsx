@@ -3,7 +3,6 @@ import {
 	useDisclosure,
 	useToast,
 	Stack,
-	StackItem,
 	Flex,
 	Text,
 	Card,
@@ -225,7 +224,7 @@ export default function SavedSearchItem({
 		<Card p={0} my={0} {...props}>
 			<Flex justifyContent={'space-between'}>
 				<Stack w={'auto'} alignItems={'space-between'} p={2}>
-					<StackItem>
+					<Box>
 						<Flex alignItems={'flex-end'}>
 							<LinkWithIcon
 								onClick={handleEditTitleClick}
@@ -259,12 +258,12 @@ export default function SavedSearchItem({
 								)}
 							</LinkWithIcon>
 						</Flex>
-					</StackItem>
-					<StackItem as={Flex} w={'full'} justifyContent={'space-between'} flexWrap={'wrap'} gap={6}>
+					</Box>
+					<Box as={Flex} w={'full'} justifyContent={'space-between'} flexWrap={'wrap'} gap={6}>
 						<Skeleton isLoaded={!!terms.length}>
 							<SearchParamTags termIds={termIds} termItems={terms} flex={'1'} />
 						</Skeleton>
-					</StackItem>
+					</Box>
 				</Stack>
 				{id ? (
 					<Box p={2}>

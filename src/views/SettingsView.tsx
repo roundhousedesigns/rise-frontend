@@ -1,7 +1,8 @@
-import { Button, Link, Text, useDisclosure, Container, Flex, Box } from '@chakra-ui/react';
+import { Button, Text, useDisclosure, Container, Flex, Box, ButtonGroup } from '@chakra-ui/react';
 import ChangeProfileSlugView from '@views/ChangeProfileSlugView';
 import ChangePasswordView from '@views/ChangePasswordView';
 import ChangeEmailView from '@views/ChangeEmailView';
+import DeleteAccountView from '@views/DeleteAccountView';
 import SettingsSection from '@components/SettingsSection';
 import DisableProfileToggle from '@components/DisableProfileToggle';
 import DarkModeToggle from '@components/DarkModeToggle';
@@ -12,6 +13,12 @@ export default function SettingsView() {
 		isOpen: isOpenPassword,
 		onOpen: onOpenPassword,
 		onClose: onClosePassword,
+	} = useDisclosure();
+
+	const {
+		isOpen: isOpenDeleteAccount,
+		onOpen: onOpenDeleteAccount,
+		onClose: onCloseDeleteAccount,
 	} = useDisclosure();
 
 	const { isOpen: isOpenEmail, onOpen: onOpenEmail, onClose: onCloseEmail } = useDisclosure();
@@ -31,9 +38,9 @@ export default function SettingsView() {
 	return (
 		<Container maxW={'4xl'} pl={0} mx={0}>
 			<SettingsSection title={'Account'}>
-				<Flex gap={4}>
+				<Flex gap={2}>
 					<Box>
-						<Button onClick={handleEmailClick} colorScheme={'blue'}>
+						<Button onClick={handleEmailClick} colorScheme={'gray'}>
 							Change your email address
 						</Button>
 						<SettingsModal
@@ -46,7 +53,7 @@ export default function SettingsView() {
 					</Box>
 
 					<Box>
-						<Button onClick={handlePasswordClick} colorScheme={'blue'}>
+						<Button onClick={handlePasswordClick} colorScheme={'gray'}>
 							Change your password
 						</Button>
 						<SettingsModal
@@ -69,15 +76,23 @@ export default function SettingsView() {
 				<DarkModeToggle showHelperText={true} size={'lg'} />
 			</SettingsSection>
 
-			{/* TODO Setting: Close your account */}
 			<SettingsSection title={'Close your account'}>
-				<Text>
-					If you'd like to remove your account entirely, please email us at{' '}
-					<Link href={'mailto:support@risetheatre.org'} display={'inline'}>
-						support@risetheatre.org
-					</Link>{' '}
-					and let us know.
+				<Text m={0}>
+					If you'd like to remove your account entirely, please use the button below. You can always
+					re-register at any time.
 				</Text>
+				<ButtonGroup>
+					<Button colorScheme={'red'} onClick={onOpenDeleteAccount}>
+						Delete account
+					</Button>
+				</ButtonGroup>
+				<SettingsModal
+					title={'Delete your account'}
+					isOpen={isOpenDeleteAccount}
+					onClose={onCloseDeleteAccount}
+				>
+					<DeleteAccountView onClose={onCloseDeleteAccount} />
+				</SettingsModal>
 			</SettingsSection>
 		</Container>
 	);

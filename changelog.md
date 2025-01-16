@@ -3,7 +3,13 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.11-dashWidgetView] - Unreleased
+## \[1.1.13-dashWidgetView] - 2024-10-14
+
+- Add: Delete account confirmation button and confirmation dialog. **Requires backend version 1.1.10**
+- Improve: Remove 'cancel' button on profile slug change.
+- Improve: Fix alignments and spacing of profile slug change.
+- Improve: query name MUTATE_TOGGLE_SEARCH_ONLY -> MUTATE_TOGGLE_DISABLE_PROFILE
+- Improve: ProfileNotice padding and font sizing.
 
 - Add: Dashboard grid layout with widgets.
 - Add: Profile completion %.
