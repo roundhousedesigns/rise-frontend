@@ -5,10 +5,10 @@ interface Props {
 	[prop: string]: any;
 }
 
-const DashboardWidget = ({ children, ...props }: Props) => (
+const Widget = ({ children, ...props }: Props) => (
 	<Box m={0} {...props}>
 		{children}
 	</Box>
 );
 
-export default DashboardWidget;
+export default Widget;
