@@ -39,7 +39,8 @@ export default function SearchFilterDates() {
 	 */
 	const handleDateChange =
 		(targetId: string) =>
-		(date: Date): void => {
+		(date: Date | null): void => {
+			if (!date) return;
 			searchDispatch({
 				type: 'SET_FILTER',
 				payload: {

@@ -28,10 +28,10 @@ export default function DateRangePicker({
 	 * @param {[Date, Date]} dates - The array containing the start and end dates.
 	 * @return {void} No return value.
 	 */
-	const onChange = (dates: [Date, Date]) => {
+	const onChange = (dates: [Date | null, Date | null]) => {
 		const [start, end] = dates;
-		setNewStartDate(start);
-		setNewEndDate(end);
+		setNewStartDate(start || undefined);
+		setNewEndDate(end || undefined);
 	};
 
 	/**
@@ -91,7 +91,11 @@ export default function DateRangePicker({
 				)}
 				<>
 					<Spacer />
-					<Button onClick={handleSave} colorScheme={'blue'} isDisabled={!newStartDate || !newEndDate}>
+					<Button
+						onClick={handleSave}
+						colorScheme={'blue'}
+						isDisabled={!newStartDate || !newEndDate}
+					>
 						Save
 					</Button>
 				</>
