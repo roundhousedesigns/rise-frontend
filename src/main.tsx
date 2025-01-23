@@ -38,7 +38,7 @@ root.render(
 	<StrictMode>
 		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 		<GoogleReCaptchaProvider reCaptchaKey={VITE_RECAPTCHA_SITE_KEY}>
-			<BrowserRouter>
+			<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 				<ApolloProvider client={client}>
 					<ChakraProvider resetCSS={true} theme={theme}>
 						<Fonts />
