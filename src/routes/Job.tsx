@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import useJobs from '@queries/useJobs';
 import JobView from '@views/JobView';
 import Page from '@components/Page';
-import { Spinner } from '@chakra-ui/react';
 
 export default function Jobs() {
 	const params = useParams();
