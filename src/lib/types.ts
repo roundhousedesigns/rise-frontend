@@ -271,8 +271,9 @@ export interface ViewerData {
 /**
  * The data shape for a Job.
  */
-export interface Job {
+export interface JobParams {
 	id: number;
+	title: string;
 	companyName: string;
 	contactEmail: string;
 	contactName: string;

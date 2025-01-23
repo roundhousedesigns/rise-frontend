@@ -1,5 +1,6 @@
-import { Box, Text } from '@chakra-ui/react';
-import { Job } from '@lib/types';
+import { Box, Link, Text } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Job } from '@lib/classes';
 
 interface Props {
 	job: Job;
@@ -10,11 +11,16 @@ interface Props {
  * @returns {JSX.Element} The Props component.
  */
 export default function JobView({ job }: Props): JSX.Element | null {
-	const { contactEmail, contactName } = job || {};
+	const { companyName, contactEmail, contactName } = job || {};
 
 	return (
 		<Box>
-			<Text>{contactEmail}</Text>
+			<Text>{companyName}</Text>
+			<Text>
+				<Link as={RouterLink} to={`mailto:${contactEmail}`}>
+					{contactEmail}
+				</Link>
+			</Text>
 			<Text>{contactName}</Text>
 		</Box>
 	);

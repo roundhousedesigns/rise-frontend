@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
-import useJobs from '@queries/useJobs';
 import JobView from '@views/JobView';
+import useJobs from '@queries/useJobs';
 import Page from '@components/Page';
 
 export default function Jobs() {
@@ -8,7 +8,7 @@ export default function Jobs() {
 	const id = params.id ? params.id : '';
 	const [job, { loading }] = useJobs(parseInt(id));
 
-	const title = !job.length ? '' : job[0].companyName;
+	const title = !job.length ? '' : job[0].title;
 
 	return (
 		<Page title={title} loading={!!loading}>
