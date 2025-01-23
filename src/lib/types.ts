@@ -267,3 +267,13 @@ export interface ViewerData {
 	disableProfile?: boolean;
 	starredProfiles?: number[];
 }
+
+/**
+ * The data shape for a Job.
+ */
+export interface Job {
+	id: number;
+	companyName: string;
+	contactEmail: string;
+	contactName: string;
+}

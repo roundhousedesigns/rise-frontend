@@ -1,6 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 import { Box, Container } from '@chakra-ui/react';
-import LoggedIn from '@components/LoggedIn';
 import Dashboard from '@routes/Dashboard';
 import Login from '@routes/Login';
 import LostPassword from '@routes/LostPassword';
@@ -14,6 +13,10 @@ import Settings from '@routes/Settings';
 import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
+import Jobs from '@routes/Jobs';
+import Job from '@routes/Job';
+
+import LoggedIn from '@components/LoggedIn';
 
 export default function Main() {
 	const routes = useRoutes([
@@ -100,6 +103,14 @@ export default function Main() {
 		{
 			path: '/register',
 			element: <Register />,
+		},
+		{
+			path: '/jobs',
+			element: <Jobs />,
+		},
+		{
+			path: '/job/:id',
+			element: <Job />,
 		},
 		{
 			path: '*',
