@@ -1,13 +1,12 @@
 import { ReactNode } from 'react';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, FlexProps, Heading } from '@chakra-ui/react';
 import type { As } from '@chakra-ui/system';
 
 interface Props {
 	lineColor: string;
 	children: ReactNode;
 	headingAs?: As;
-	headingProps?: { [prop: string]: any };
-	[prop: string]: any;
+	headingProps?: BoxProps;
 }
 
 export default function HeadingCenterline({
@@ -16,7 +15,7 @@ export default function HeadingCenterline({
 	headingAs,
 	headingProps,
 	...props
-}: Props) {
+}: Props & FlexProps): JSX.Element {
 	return (
 		<Flex
 			alignItems={'center'}

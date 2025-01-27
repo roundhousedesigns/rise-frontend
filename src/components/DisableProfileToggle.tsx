@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Highlight, Text, useToast } from '@chakra-ui/react';
+import { FormControlProps, Highlight, Text, useToast } from '@chakra-ui/react';
 import { FiEyeOff, FiEye } from 'react-icons/fi';
 import { deleteCookie, setCookie } from '@lib/utils';
 import useViewer from '@queries/useViewer';
@@ -10,7 +10,6 @@ interface Props {
 	size?: string;
 	showLabel?: boolean;
 	showHelperText?: boolean;
-	[prop: string]: any;
 }
 
 export default function DisableProfileToggle({
@@ -18,7 +17,7 @@ export default function DisableProfileToggle({
 	showLabel,
 	showHelperText,
 	...props
-}: Props): JSX.Element {
+}: Props & FormControlProps): JSX.Element {
 	const [{ loggedInId, disableProfile }] = useViewer();
 	const {
 		toggleDisableProfileMutation,

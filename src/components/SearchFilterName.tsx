@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, Flex, Icon, Stack } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, Icon, Stack } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -10,11 +10,7 @@ import useSearchByName from '@queries/useSearchByName';
 import TextInput from '@common/inputs/TextInput';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
-interface Props {
-	[prop: string]: any;
-}
-
-export default function SearchFilterName({ ...props }: Props) {
+export default function SearchFilterName({ ...props }: BoxProps) {
 	const {
 		search: {
 			filters: { name },
@@ -48,9 +44,7 @@ export default function SearchFilterName({ ...props }: Props) {
 		});
 	}, [usersByName]);
 
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-	) => {
+	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		e.preventDefault();
 
 		const { value } = e.target;

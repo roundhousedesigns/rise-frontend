@@ -19,6 +19,8 @@ import {
 	InputLeftElement,
 	Text,
 	Wrap,
+	InputProps,
+	FormControlProps,
 } from '@chakra-ui/react';
 
 interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
@@ -35,17 +37,14 @@ interface Props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onCha
 	leftElement?: ReactNode;
 	maxLength?: number;
 	sizeToken?: string;
-	inputProps?: {
-		[prop: string]: any;
-	};
 	onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-	[prop: string]: any;
 	debounceTime?: number;
 	onDebounceStart?: () => void;
 	onDebounceEnd?: () => void;
+	inputProps?: InputProps;
 }
 
-const TextInput = forwardRef<HTMLInputElement, Props>(
+const TextInput = forwardRef<HTMLInputElement, Props & FormControlProps>(
 	(
 		{
 			label,
@@ -121,7 +120,7 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 		}, [debouncedOnChange]);
 
 		return (
-			<FormControl isRequired={isRequired} isInvalid={!!error} my={1} {...props}>
+			<FormControl isRequired={isRequired} isInvalid={!!error} my={1}>
 				<InputGroup position={'relative'}>
 					{leftElement && (
 						<InputLeftElement
@@ -158,13 +157,7 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 						</Flex>
 					) : null}
 				</InputGroup>
-				<Flex
-					direction={'row'}
-					pt={1}
-					my={0}
-					alignItems={'top'}
-					justifyContent={'space-between'}
-				>
+				<Flex direction={'row'} pt={1} my={0} alignItems={'top'} justifyContent={'space-between'}>
 					{label ? (
 						<FormLabel
 							ml={2}
@@ -185,7 +178,8 @@ const TextInput = forwardRef<HTMLInputElement, Props>(
 					) : null}
 				</Flex>
 				<Wrap w={'full'} alignItems={'flex-start'} opacity={0.9} fontStyle={'italic'}>
-					<FormHelperText my={0} flex={'1'} w={'full'}>
+					<FormHelperText my={0} ml={2} flex={'1'} w={'full'}>
+						{/* TODO: Validate on the fly */}
 						<Flex
 							w={'full'}
 							justifyContent={'space-between'}

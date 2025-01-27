@@ -277,4 +277,16 @@ export interface JobParams {
 	companyName: string;
 	contactEmail: string;
 	contactName: string;
+	address: string;
+	startDate: string;
+	instructions: string;
+	compensation?: string;
+	applicationUrl?: string;
+	applicationPhone?: string;
+	applicationEmail?: string;
+	description?: string;
+	isInternship?: boolean;
+	isUnionJob?: boolean;
+	endDate?: string;
+	phone?: string;
 }

@@ -14,7 +14,7 @@ import {
 	ButtonGroup,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiStar, FiFolder } from 'react-icons/fi';
+import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
@@ -94,7 +94,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{/* Not logged in */}
 					{!loggedInId ? (
-						<Link as={RouterLink} to={'https://risetheatre.org'} my={0} isExternal flex={'0 0 auto'}>
+						<Link
+							as={RouterLink}
+							to={'https://risetheatre.org'}
+							my={0}
+							isExternal
+							flex={'0 0 auto'}
+						>
 							<Image src={circleLogo} alt={'RISE icon'} loading={'eager'} h={12} />
 						</Link>
 					) : (
@@ -112,7 +118,16 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								size={'md'}
 							>
 								<TooltipIconButton
-									icon={<FiStar fill={starredProfiles && starredProfiles.length ? orange : 'none'} />}
+									icon={<FiBriefcase />}
+									label={'Jobs'}
+									as={RouterLink}
+									to={'/jobs'}
+								/>
+
+								<TooltipIconButton
+									icon={
+										<FiStar fill={starredProfiles && starredProfiles.length ? orange : 'none'} />
+									}
 									label={'Starred profiles'}
 									as={RouterLink}
 									to={'/stars'}

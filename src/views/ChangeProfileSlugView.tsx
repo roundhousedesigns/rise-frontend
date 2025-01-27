@@ -38,8 +38,6 @@ export default function ChangeProfileUrlView() {
 	// Whenever the loggedInSlug changes, update slug
 	useEffect(() => {
 		setSlug(loggedInSlug);
-
-		console.info('slug', slug);
 	}, [loggedInSlug]);
 
 	// Check if form is valid

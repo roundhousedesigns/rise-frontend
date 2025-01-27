@@ -1,16 +1,12 @@
-import { memo, useMemo } from 'react';
-import { chakra, Flex, useBreakpointValue } from '@chakra-ui/react';
+import { useMemo } from 'react';
+import { Box, BoxProps, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ParsedSearch } from '@lib/types';
 import { SearchFilterSet, WPPost } from '@lib/classes';
 import useSavedSearches from '@queries/useSavedSearches';
 import SavedSearchItem from '@components/SavedSearchItem';
-import { ParsedSearch } from '@/lib/types';
 
-interface Props {
-	[prop: string]: any;
-}
-
-export default function SavedSearchItemList({ ...props }: Props) {
+export default function SavedSearchItemList({ ...props }: BoxProps) {
 	const [savedSearches] = useSavedSearches();
 
 	const isLargerThanMd = useBreakpointValue(
@@ -22,8 +18,6 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	);
 
 	// TODO Maintain indexes when editing a saved search's name.
-
-	const SavedSearchItemMemo = memo(SavedSearchItem);
 
 	const parsedSearches: ParsedSearch[] = useMemo(() => {
 		return savedSearches
@@ -45,13 +39,13 @@ export default function SavedSearchItemList({ ...props }: Props) {
 	}, [savedSearches]);
 
 	return (
-		<chakra.div {...props}>
+		<Box {...props}>
 			{parsedSearches.length > 0 ? (
 				<Flex ml={0} px={0} maxW={'4xl'} justify-content={'center'} gap={2} flexWrap={'wrap'}>
 					<AnimatePresence>
 						{parsedSearches.map(({ id, title, filters }) => {
 							return (
-								<SavedSearchItemMemo
+								<SavedSearchItem
 									as={motion.div}
 									key={id}
 									initial={{ opacity: 1 }} // Initial opacity of 1 (fully visible)
@@ -70,6 +64,6 @@ export default function SavedSearchItemList({ ...props }: Props) {
 					</AnimatePresence>
 				</Flex>
 			) : null}
-		</chakra.div>
+		</Box>
 	);
 }

@@ -7,7 +7,6 @@ interface DatePickerButtonProps {
 	ariaLabel?: string;
 	value?: string;
 	onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-	[prop: string]: any;
 }
 
 const DatePickerButton = forwardRef<HTMLButtonElement, DatePickerButtonProps>(

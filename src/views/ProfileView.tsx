@@ -338,7 +338,11 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 
 								{partnerDirectories && partnerDirectories.length > 0 && partnerDirectoryTerms ? (
 									<ProfileStackItem title={'RISE Network Partner Directories'}>
-										<Flex alignItems={'center'} flexWrap={'nowrap'} justifyContent={'space-between'}>
+										<Flex
+											alignItems={'center'}
+											flexWrap={'nowrap'}
+											justifyContent={'space-between'}
+										>
 											<Icon as={FiStar} boxSize={4} flex={'0 0 auto'} />
 											<Wrap flex={'1'} pl={2} spacing={2}>
 												{selectedLinkableTerms({
@@ -473,7 +477,13 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 											return (
 												// Videos are unique, so we can just use the string as the key.
 												<Box key={video} position={'relative'} paddingBottom={'56.25%'}>
-													<Box position={'absolute'} top={0} left={0} width={'100%'} height={'100%'}>
+													<Box
+														position={'absolute'}
+														top={0}
+														left={0}
+														width={'100%'}
+														height={'100%'}
+													>
 														<ReactPlayer url={video} controls width={'100%'} height={'100%'} />
 													</Box>
 												</Box>

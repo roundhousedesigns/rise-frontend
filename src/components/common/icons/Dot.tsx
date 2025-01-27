@@ -1,13 +1,12 @@
-import { Icon } from '@chakra-ui/react';
+import { Icon, IconProps } from '@chakra-ui/react';
 
 interface Props {
-	[prop: string]: any;
 	pathProps?: {
 		[prop: string]: any;
 	};
 }
 
-export function Dot({ pathProps, ...props }: Props) {
+export function Dot({ pathProps, ...props }: Props & IconProps) {
 	return (
 		<Icon aria-label={'dot icon'} viewBox={'0 0 200 200'} m={1} {...props}>
 			<path

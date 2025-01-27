@@ -1,30 +1,26 @@
-import { ReactNode } from 'react';
-import { Icon, Flex, Link, Text, Spacer } from '@chakra-ui/react';
+import { ReactNode, MouseEventHandler } from 'react';
+import { Icon, Flex, Link, Text, Spacer, LinkProps, IconProps } from '@chakra-ui/react';
 
 interface Props {
 	href?: string;
-	onClick?: React.MouseEventHandler;
+	onClick?: MouseEventHandler;
 	icon: any;
 	iconSide?: 'left' | 'right';
 	isExternal?: boolean;
 	children: ReactNode;
-	iconProps?: {
-		[prop: string]: any;
-	};
-	[prop: string]: any;
+	iconProps?: IconProps;
 }
 
 export default function LinkWithIcon({
 	href,
 	onClick,
-	iconSide = 'left',
 	icon,
-	iconSize = 'sm',
+	iconSide = 'left',
 	isExternal,
 	children,
 	iconProps,
 	...props
-}: Props): JSX.Element {
+}: Props & LinkProps): JSX.Element {
 	return (
 		<Link
 			href={href ? href : undefined}

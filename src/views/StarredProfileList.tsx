@@ -1,5 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react';
-import { chakra, List, ListItem, Spinner } from '@chakra-ui/react';
+import { Box, BoxProps, List, ListItem, Spinner } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isEqual } from 'lodash';
 import { Candidate } from '@lib/classes';
@@ -10,10 +10,12 @@ import CandidateItem from '@components/CandidateItem';
 
 interface Props {
 	showToggle?: boolean;
-	[prop: string]: any;
 }
 
-export default function StarredProfileList({ showToggle, ...props }: Props): JSX.Element {
+export default function StarredProfileList({
+	showToggle,
+	...props
+}: Props & BoxProps): JSX.Element {
 	const [{ starredProfiles }] = useViewer();
 	const [profiles, { error, loading }] = useCandidates(starredProfiles ? starredProfiles : []);
 
@@ -46,7 +48,7 @@ export default function StarredProfileList({ showToggle, ...props }: Props): JSX
 	}, [profiles]);
 
 	return (
-		<chakra.div {...props}>
+		<Box {...props}>
 			{!error && !loading ? (
 				<List alignItems={'left'} h={'auto'} mt={2} w={'full'} spacing={4}>
 					<AnimatePresence>{renderedProfiles}</AnimatePresence>
@@ -58,6 +60,6 @@ export default function StarredProfileList({ showToggle, ...props }: Props): JSX
 			) : (
 				<></>
 			)}
-		</chakra.div>
+		</Box>
 	);
 }

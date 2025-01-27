@@ -137,7 +137,7 @@ export const hasProfileChanged = (editProfile: UserProfile, origProfile: UserPro
  * @param {UserProfile} profile The user profile to preprae.
  * @returns {Object} The prepared user profile.
  */
-export function prepareUserProfileForGraphQL(profile: UserProfile): object {
+export function prepareUserProfileForGQL(profile: UserProfile): object {
 	// Strip unwanted fields from the payload
 	const {
 		slug,

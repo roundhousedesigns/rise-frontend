@@ -9,6 +9,7 @@ import {
 	Button,
 	Avatar,
 	Box,
+	CardProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3 } from 'react-icons/fi';
@@ -24,7 +25,6 @@ import ProfilePercentComplete from '@components/ProfilePercentComplete';
 interface Props {
 	profile: UserProfile;
 	allowStar?: boolean;
-	[prop: string]: any;
 }
 
 /**
@@ -35,7 +35,7 @@ export default function MiniProfileView({
 	profile,
 	allowStar = true,
 	...props
-}: Props): JSX.Element {
+}: Props & CardProps): JSX.Element {
 	const [{ loggedInSlug, loggedInId, disableProfile }] = useViewer();
 
 	const { image, pronouns, selfTitle, homebase } = profile || {};

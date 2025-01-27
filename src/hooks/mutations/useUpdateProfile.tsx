@@ -4,7 +4,7 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { UserProfile } from '@lib/classes';
-import { prepareUserProfileForGraphQL } from '@lib/utils';
+import { prepareUserProfileForGQL } from '@lib/utils';
 import { QUERY_PROFILE } from '@queries/useUserProfile';
 
 const MUTATE_UPDATE_USER = gql`
@@ -24,7 +24,7 @@ const useUpdateProfile = () => {
 			variables: {
 				input: {
 					clientMutationId: 'updateProfileMutation',
-					profile: prepareUserProfileForGraphQL(profile),
+					profile: prepareUserProfileForGQL(profile),
 				},
 			},
 			refetchQueries: [{ query: QUERY_PROFILE, variables: { id: profile.id, author: profile.id } }],

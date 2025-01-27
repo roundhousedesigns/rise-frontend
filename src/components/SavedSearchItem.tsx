@@ -10,6 +10,7 @@ import {
 	Box,
 	Skeleton,
 	ButtonGroup,
+	CardProps,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
@@ -29,13 +30,15 @@ import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
+import { HTMLMotionProps } from 'framer-motion';
 
 interface Props {
-	id?: number;
+	id: number;
 	title?: string;
 	searchTerms: SearchFilterSet;
 	showControls?: boolean;
 	showSaveButton?: boolean;
+	// Using motion and Card props here, so let's not be stingy.
 	[prop: string]: any;
 }
 
@@ -46,7 +49,7 @@ export default function SavedSearchItem({
 	showControls = true,
 	showSaveButton = false,
 	...props
-}: Props) {
+}: Props): JSX.Element | null {
 	const [{ loggedInId }] = useViewer();
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {
@@ -160,7 +163,7 @@ export default function SavedSearchItem({
 			userId: loggedInId,
 			title,
 			filterSet: searchFilterSet.toQueryableFilterSet(),
-			id: saveNewSearch ? undefined : id,
+			id: saveNewSearch ? 0 : id,
 		})
 			.then((results) => {
 				const {
@@ -200,7 +203,7 @@ export default function SavedSearchItem({
 
 		if (!id) return;
 
-		deleteOwnSavedSearchMutation(id.toString(), loggedInId).then(() => {
+		deleteOwnSavedSearchMutation(id, loggedInId).then(() => {
 			deleteOnClose();
 
 			toast({
@@ -271,6 +274,7 @@ export default function SavedSearchItem({
 							<ButtonGroup size={'sm'}>
 								<TooltipIconButton
 									icon={<FiSearch />}
+									aria-label={'Load these filters'}
 									label={'Load these filters'}
 									colorScheme={'green'}
 									onClick={handleSearchClick}
@@ -279,6 +283,7 @@ export default function SavedSearchItem({
 								</TooltipIconButton>
 								<TooltipIconButton
 									icon={<FiDelete />}
+									aria-label={'Delete this search'}
 									label={'Delete this search'}
 									colorScheme={'red'}
 									onClick={deleteOnOpen}

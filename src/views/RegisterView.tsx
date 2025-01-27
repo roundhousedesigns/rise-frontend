@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, SetStateAction, useEffect, useState } from 'react';
 import {
-	chakra,
 	Button,
 	Box,
 	Stack,
@@ -13,12 +12,9 @@ import {
 	useToast,
 	Flex,
 	useMediaQuery,
-	Tooltip,
-	Icon,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { FiHelpCircle } from 'react-icons/fi';
 import { handleReCaptchaVerify } from '@lib/utils';
 import TextInput from '@common/inputs/TextInput';
 import useRegisterUser from '@mutations/useRegisterUser';
@@ -206,21 +202,8 @@ export default function RegisterView() {
 						id={'password'}
 						type={'password'}
 						variant={'filled'}
-						label={
-							<>
-								Password{' '}
-								<Tooltip
-									hasArrow
-									label={
-										'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
-									}
-								>
-									<chakra.span>
-										<Icon as={FiHelpCircle} />
-									</chakra.span>
-								</Tooltip>
-							</>
-						}
+						label={'Password'}
+						helperText='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
 						flex={1}
 						isRequired
 						error={errorCode && errorCode === 'password_too_weak' ? errorMessage : ''}

@@ -1,12 +1,11 @@
-import { Text, useColorMode, Highlight } from '@chakra-ui/react';
+import { Text, useColorMode, Highlight, FormControlProps } from '@chakra-ui/react';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
 interface Props {
 	size?: string;
 	showLabel?: boolean;
-	showHelper?: boolean;
-	[prop: string]: any;
+	showHelperText?: boolean;
 }
 
 export default function DarkModeToggle({
@@ -14,7 +13,7 @@ export default function DarkModeToggle({
 	showLabel = true,
 	showHelperText = true,
 	...props
-}: Props): JSX.Element {
+}: Props & FormControlProps): JSX.Element {
 	const { colorMode, toggleColorMode } = useColorMode();
 
 	return (

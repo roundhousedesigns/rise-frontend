@@ -1,11 +1,7 @@
-import { Flex, Heading, Button } from '@chakra-ui/react';
+import { Flex, FlexProps, Heading, Button } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
-interface Props {
-	[prop: string]: any;
-}
-
-export default function LoginLink({ ...props }: Props) {
+export default function LoginLink({ ...props }: FlexProps): JSX.Element {
 	return (
 		<Flex alignItems={'center'} textAlign={'right'} flexWrap={'wrap'} {...props}>
 			<Heading size={'sm'} mr={2} mb={0}>

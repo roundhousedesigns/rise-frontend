@@ -1,12 +1,11 @@
 import usePostContent from '@queries/usePostContent';
-import { Box, SkeletonText } from '@chakra-ui/react';
+import { Box, BoxProps, SkeletonText } from '@chakra-ui/react';
 
 interface Props {
 	postId: string | number;
-	[prop: string]: any;
 }
 
-export default function ContentView({ postId, ...props }: Props) {
+export default function ContentView({ postId, ...props }: Props & BoxProps) {
 	const [content, { contentLoading, contentError }] = usePostContent(postId);
 
 	return (

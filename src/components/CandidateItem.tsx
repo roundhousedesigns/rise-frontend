@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Card, Avatar, Text, Flex, Heading } from '@chakra-ui/react';
+import { Card, Avatar, Text, Flex, Heading, CardProps } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
@@ -11,10 +11,9 @@ import CandidateAvatarBadge from '@components/CandidateAvatarBadge';
 interface Props {
 	candidate: Candidate;
 	showToggle?: boolean;
-	[prop: string]: any;
 }
 
-const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
+const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardProps) => {
 	const { id, image, slug, selfTitle } = candidate || {};
 
 	const [profile] = useUserProfile(id ? id : 0);
@@ -37,25 +36,12 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props) => {
 			{showToggle ? <StarToggleIcon id={id} isDisabled={loggedInId === id} /> : null}
 
 			<Card
-				role="article"
+				role='article'
 				aria-labelledby={`candidate-${id}`}
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
-				py={3}
-				px={2}
-				mr={4}
-				my={0}
-				_dark={{
-					_hover: {
-						bg: 'gray.700',
-					},
-				}}
-				_light={{
-					_hover: {
-						bg: 'gray.200',
-					},
-				}}
+				variant={'listItem'}
 				{...props}
 			>
 				<Flex

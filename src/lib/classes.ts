@@ -291,10 +291,7 @@ export class Candidate extends User implements CandidateData, UserProfileParams 
  */
 export class SearchFilterSet implements SearchFilterSetParams {
 	[key: string]: any;
-	positions: {
-		departments?: string[];
-		jobs?: string[];
-	} = {
+	positions: { departments?: string[]; jobs?: string[] } = {
 		departments: [],
 		jobs: [],
 	};
@@ -493,6 +490,18 @@ export class Job implements JobParams {
 	companyName: string;
 	contactEmail: string;
 	contactName: string;
+	address: string;
+	startDate: string;
+	instructions: string;
+	compensation?: string;
+	applicationUrl?: string;
+	applicationPhone?: string;
+	applicationEmail?: string;
+	description?: string;
+	isInternship?: boolean;
+	isUnionJob?: boolean;
+	endDate?: string;
+	phone?: string;
 
 	constructor(params: JobParams) {
 		this.id = params.id;
@@ -500,6 +509,11 @@ export class Job implements JobParams {
 		this.companyName = params.companyName;
 		this.contactEmail = params.contactEmail;
 		this.contactName = params.contactName;
+		this.address = params.address;
+		this.startDate = params.startDate;
+		this.instructions = params.instructions;
+
+		Object.assign(this, params);
 	}
 }
 

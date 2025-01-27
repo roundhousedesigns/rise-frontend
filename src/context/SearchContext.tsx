@@ -11,7 +11,7 @@ interface SearchState {
 	searchWizardActive: boolean;
 	additionalFiltersActive: number[];
 	savedSearch: {
-		id?: number;
+		id: number;
 		filterSet: SearchFilterSet;
 	};
 	results: SearchResultCandidate[];

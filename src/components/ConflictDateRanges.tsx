@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import { List, ListItem, Flex, Divider } from '@chakra-ui/react';
+import { List, ListItem, Flex, Divider, ListProps } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { FiAlertCircle, FiCalendar, FiCheckCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
@@ -9,10 +9,12 @@ import WrapWithIcon from '@common/WrapWithIcon';
 
 interface Props {
 	conflictRanges: DateRange[];
-	[prop: string]: any;
 }
 
-export default function ConflictDateRanges({ conflictRanges, ...props }: Props): JSX.Element {
+export default function ConflictDateRanges({
+	conflictRanges,
+	...props
+}: Props & ListProps): JSX.Element {
 	if (isEmpty(conflictRanges)) {
 		return <></>;
 	}

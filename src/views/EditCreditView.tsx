@@ -191,7 +191,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 	};
 
 	const handleInputChange = (
-		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+		event: ChangeEvent<HTMLInputElement>
 	) => {
 		const { name, value } = event.target;
 

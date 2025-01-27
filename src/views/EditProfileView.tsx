@@ -25,6 +25,8 @@ import {
 	Card,
 	Checkbox,
 	Collapse,
+	ButtonProps,
+	BoxProps,
 } from '@chakra-ui/react';
 import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
@@ -358,13 +360,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	/**
 	 * Updates the input state in the edit profile reducer based on the provided event.
 	 *
-	 * @param {ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>} event - The event triggered by the input change.
+	 * @param {ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> | FormEvent<HTMLDivElement>} event - The event triggered by the input change.
 	 * @return {void} This function does not return anything.
 	 */
 	const handleInputChange = (
-		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> | FormEvent<HTMLDivElement>
 	) => {
-		const { name, value } = event.target;
+		// Ensure we're working with an event that has a target with name and value
+		if (!('target' in event) || !('name' in event.target) || !('value' in event.target)) return;
+
+		const { name, value } = event.target as { name: string; value: string };
 
 		editProfileDispatch({
 			type: 'UPDATE_INPUT',
@@ -410,10 +415,16 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		});
 	};
 
-	const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		if (!event || !event.target || !event.target.files) return;
+	const handleFileInputChange = (
+		event: ChangeEvent<HTMLInputElement> | FormEvent<HTMLButtonElement>
+	) => {
+		// Ensure we're working with the correct event type
+		if (!('files' in event.target)) return;
 
-		const { name, files, accept } = event.target;
+		const target = event.target as HTMLInputElement;
+		if (!target || !target.files) return;
+
+		const { name, files, accept } = target;
 
 		const file = files[0];
 		const maxSize = 2 * 1024 * 1024; // 2MB (adjust as necessary)
@@ -683,8 +694,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		icon?: JSX.Element;
 		label: string;
 		children?: JSX.Element | string;
-		[prop: string]: any;
-	}) => {
+	} & ButtonProps) => {
 		if (!field) return null;
 
 		return (
@@ -710,7 +720,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
 		<Box {...props}>
 			<Box>
-				<Heading variant={'contentTitle'} my={0}>
+				<Heading variant={'pageSubtitle'} my={0}>
 					Profile image
 				</Heading>
 				<Text fontSize={'sm'} m={0}>
@@ -764,6 +774,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		[prop: string]: any;
 	}
 
+	// TODO Move to component
 	const FileDropzone = ({
 		fieldName,
 		text,
@@ -771,7 +782,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		allowPdf = false,
 		iconProps,
 		...props
-	}: FileDropzoneProps) => {
+	}: FileDropzoneProps & BoxProps) => {
 		const [dragActive, setDragActive] = useState(false);
 
 		// handle drag events
@@ -957,7 +968,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										value={lastName}
 										name={'lastName'}
 										isRequired
-										label={'Last name'}
 										onChange={handleInputChange}
 										flex={'1'}
 										minW={'200px'}

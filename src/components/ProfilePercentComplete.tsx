@@ -1,8 +1,8 @@
-import { Text, Progress, Box } from '@chakra-ui/react';
+import { Text, Progress, Box, ProgressProps } from '@chakra-ui/react';
 import useViewer from '@queries/useViewer';
 import { useProfileCompletion } from '@hooks/hooks';
 
-const ProfilePercentComplete = ({ ...props }: { [prop: string]: any }) => {
+const ProfilePercentComplete = ({ ...props }: ProgressProps) => {
 	const [{ loggedInId }] = useViewer();
 	const percentComplete = useProfileCompletion(loggedInId);
 

@@ -1,22 +1,27 @@
 import { ChangeEvent, ReactNode, useCallback, useState, useEffect, useRef } from 'react';
 import { debounce } from 'lodash';
-import { FormControl, FormHelperText, FormLabel, Textarea } from '@chakra-ui/react';
+import {
+	FormControl,
+	FormControlProps,
+	FormHelperText,
+	FormLabel,
+	Textarea,
+	TextareaProps,
+} from '@chakra-ui/react';
 
 interface Props {
 	name: string;
 	label?: string;
+	labelHidden?: boolean;
 	helperText?: string;
 	placeholder?: string;
 	value?: string;
 	leftElement?: ReactNode;
 	onChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => void;
-	inputProps?: {
-		[prop: string]: any;
-	};
-	[prop: string]: any;
 	debounceTime?: number;
 	onDebounceStart?: () => void;
 	onDebounceEnd?: () => void;
+	inputProps?: TextareaProps;
 }
 
 /**
@@ -38,7 +43,7 @@ export default function TextareaInput({
 	onDebounceStart,
 	onDebounceEnd,
 	...props
-}: Props): JSX.Element {
+}: Props & FormControlProps): JSX.Element {
 	const [localValue, setLocalValue] = useState(value);
 	const isDebouncing = useRef(false);
 

@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
-import { useClipboard, useToast } from '@chakra-ui/react';
+import { useClipboard, useToast, ButtonProps } from '@chakra-ui/react';
 import { FiShare2 } from 'react-icons/fi';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 interface Props {
 	url: string;
-	[prop: string]: any;
 }
 
-export default function ShareButton({ url, ...props }: Props) {
+export default function ShareButton({ url, ...props }: Props & ButtonProps) {
 	const { onCopy, setValue, hasCopied } = useClipboard('');
 	const toast = useToast();
 

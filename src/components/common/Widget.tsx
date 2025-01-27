@@ -1,11 +1,10 @@
-import { Box } from '@chakra-ui/react';
+import { Box, BoxProps } from '@chakra-ui/react';
 
 interface Props {
 	children: JSX.Element;
-	[prop: string]: any;
 }
 
-const Widget = ({ children, ...props }: Props) => (
+const Widget = ({ children, ...props }: Props & BoxProps) => (
 	<Box m={0} {...props}>
 		{children}
 	</Box>

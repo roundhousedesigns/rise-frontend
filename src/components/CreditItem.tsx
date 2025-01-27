@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, KeyboardEvent } from 'react';
-import { Card, Heading, Text, Wrap, Box, Stack, Flex, Skeleton, Badge } from '@chakra-ui/react';
+import { Card, Heading, Text, Wrap, Box, Stack, Flex, Skeleton, Badge, BoxProps } from '@chakra-ui/react';
 import { Credit, WPItem } from '@lib/classes';
 import { decodeString, sortAndCompareArrays } from '@lib/utils';
 import useLazyTaxonomyTerms from '@queries/useLazyTaxonomyTerms';
@@ -13,9 +13,13 @@ interface Props {
 	credit: Credit;
 	isEditable?: boolean;
 	onClick?: () => void;
-	[prop: string]: any;
 }
-export default function CreditItem({ credit, isEditable, onClick, ...props }: Props): JSX.Element {
+export default function CreditItem({
+	credit,
+	isEditable,
+	onClick,
+	...props
+}: Props & BoxProps): JSX.Element {
 	const {
 		title,
 		jobTitle,

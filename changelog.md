@@ -3,7 +3,25 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
-## \[1.1.13-dashWidgetView] - 2024-10-14
+## [1.2-jobs] - Unmerged (branched from `1.2-dev`)
+
+- Add: Single Job route
+- Improve: `prepareUserProfileForGraphQL()` --> `prepareUserProfileForGQL()` for naming convention.
+- Improve: Update Props TS from Index Signature (e.g. `[key: string]: any;`) format to intersection types \(`Props & ListProps`\) where possible.
+- Improve: Minor styling tweaks
+
+- TODO: Jobs listing (in progress)
+- TODO: Jobs filtering and search
+- TODO: Single job layout
+- TODO: Job creation
+- TODO: Job edit
+- TODO: Job manage
+
+## \[1.2-dev] - Unreleased
+
+- Merge: 1.1.13-dashWidgetView
+
+## \[1.1.13-dashWidgetView] - (Up to) 2024-10-14
 
 - Add: Delete account confirmation button and confirmation dialog. **Requires backend version 1.1.10**
 - Improve: Remove 'cancel' button on profile slug change.

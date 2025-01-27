@@ -16,9 +16,7 @@ interface Props extends BoxProps {
 	name: string;
 	label: string;
 	labelVisuallyHidden?: boolean;
-	outerProps?: {
-		[prop: string]: any;
-	};
+	outerProps?: BoxProps;
 	handleChange: (name: string) => (value: string) => void;
 	styles?: any;
 }

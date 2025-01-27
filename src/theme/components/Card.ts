@@ -37,6 +37,24 @@ const variants = {
 			bgColor: 'brand.red',
 		},
 	}),
+	listItem: definePartsStyle({
+		container: {
+			px: 2,
+			py: 3,
+			my: 0,
+			mr: 4,
+			_dark: {
+				_hover: {
+					bg: 'gray.700',
+				},
+			},
+			_light: {
+				_hover: {
+					bg: 'gray.200',
+				},
+			},
+		},
+	}),
 };
 
 export default defineMultiStyleConfig({ baseStyle, variants });

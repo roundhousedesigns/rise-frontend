@@ -15,6 +15,7 @@ import {
 	Link,
 	Text,
 	useColorMode,
+	BoxProps,
 } from '@chakra-ui/react';
 import { FiZoomIn, FiDownload } from 'react-icons/fi';
 
@@ -22,7 +23,6 @@ interface ModalProps {
 	resumePreview: string;
 	resumeLink: string;
 	previewIcon?: boolean;
-	[prop: string]: any;
 }
 
 export default function ResumePreviewModal({
@@ -30,7 +30,7 @@ export default function ResumePreviewModal({
 	resumeLink,
 	previewIcon = true,
 	...props
-}: ModalProps) {
+}: ModalProps & BoxProps): JSX.Element | null {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode } = useColorMode();
 
@@ -104,7 +104,5 @@ export default function ResumePreviewModal({
 				</ModalContent>
 			</Modal>
 		</>
-	) : (
-		null
-	);
+	) : null;
 }

@@ -1,21 +1,27 @@
 import { ReactElement, JSXElementConstructor, useState } from 'react';
-import { Tooltip, IconButton, Box, useColorMode, useBreakpointValue } from '@chakra-ui/react';
+import {
+	Tooltip,
+	IconButton,
+	Box,
+	useColorMode,
+	useBreakpointValue,
+	TooltipProps,
+	IconButtonProps,
+} from '@chakra-ui/react';
 
 interface Props {
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
 	label: string;
+	tooltipProps?: TooltipProps;
 	isDisabled?: boolean;
-	tooltipProps?: {
-		[prop: string]: any;
-	};
 	[prop: string]: any;
 }
 
 export default function TooltipIconButton({
 	icon,
 	label,
-	isDisabled,
 	tooltipProps,
+	isDisabled,
 	...props
 }: Props) {
 	const [hovered, setHovered] = useState<boolean>(false);
@@ -47,7 +53,6 @@ export default function TooltipIconButton({
 					icon={icon}
 					variant={'solid'}
 					aria-label={label}
-					isDisabled={isDisabled}
 					pointerEvents={isDisabled ? 'none' : 'auto'}
 					{...props}
 				/>

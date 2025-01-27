@@ -1,11 +1,7 @@
-import { Wrap } from '@chakra-ui/react';
+import { Wrap, WrapProps } from '@chakra-ui/react';
 import WPItemBadgeListItem from '@common/WPItemBadgeListItem';
 
-interface Props {
-	[prop: string]: any;
-}
-
-export default function CreditsTagLegend({ ...props }: Props) {
+export default function CreditsTagLegend({ ...props }: WrapProps) {
 	return (
 		<Wrap {...props}>
 			<WPItemBadgeListItem colorScheme={'orange'} fontSize={'xs'}>

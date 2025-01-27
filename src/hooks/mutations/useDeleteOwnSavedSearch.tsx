@@ -17,12 +17,12 @@ const MUTATE_DELETE_CREDIT = gql`
 const useDeleteOwnSavedSearch = () => {
 	const [mutation, results] = useMutation(MUTATE_DELETE_CREDIT);
 
-	const deleteOwnSavedSearchMutation = (id: string, userId: number) => {
+	const deleteOwnSavedSearchMutation = (id: number, userId: number) => {
 		return mutation({
 			variables: {
 				input: {
 					clientMutationId: 'deleteOwnSavedSearchMutation',
-					id,
+					id: Number(id),
 					userId,
 				},
 			},

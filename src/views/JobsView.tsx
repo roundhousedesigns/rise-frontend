@@ -1,19 +1,22 @@
-import { Link, List, ListItem } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import useJobs from '@hooks/queries/useJobs';
+import { Job } from '@lib/classes';
+import JobsList from '@components/JobsList';
+import { Box, Flex, Stack } from '@chakra-ui/react';
 
-export default function JobsView() {
-	const [jobs, result] = useJobs();
-
+export default function JobsView({ jobs }: { jobs: Job[] }) {
 	return (
-		<List>
-			{jobs.map((job) => (
-				<ListItem key={job.id}>
-					<Link as={RouterLink} to={`/job/${job.id}`}>
-						{job.companyName}
-					</Link>
-				</ListItem>
-			))}
-		</List>
+		<Stack spacing={4} py={4}>
+			<Flex
+				w={'full'}
+				border={'1px solid gray'}
+				bg={'gray.500'}
+				h={'70px'}
+				textAlign={'center'}
+				alignItems={'center'}
+				justifyContent={'center'}
+			>
+				Search/Filter
+			</Flex>
+			<JobsList jobs={jobs} mt={2} />
+		</Stack>
 	);
 }

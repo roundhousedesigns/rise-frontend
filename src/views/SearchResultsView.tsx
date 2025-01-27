@@ -92,8 +92,8 @@ export default function SearchResultsView() {
 				<Box w={'auto'} display={'inline-block'} mt={4} maxW={'600px'}>
 					<SavedSearchItemMemo
 						searchTerms={filterSet}
-						id={savedSearchId ? savedSearchId : undefined}
-						title={savedSearchTitle ? savedSearchTitle : undefined}
+						id={savedSearchId ? savedSearchId : 0}
+						title={savedSearchTitle || undefined}
 						showControls={false}
 						showSaveButton
 						mb={1}

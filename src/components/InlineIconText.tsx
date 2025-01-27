@@ -1,18 +1,22 @@
 import { Fragment, ReactElement } from 'react';
-import { Text, IconButton } from '@chakra-ui/react';
+import { Text, IconButton, TextProps, IconButtonProps } from '@chakra-ui/react';
 
 interface Props {
 	text: string;
 	icon: ReactElement;
 	description: string;
 	query: string;
-	iconProps?: {
-		[prop: string]: any;
-	};
-	[prop: string]: any;
+	iconProps?: Partial<IconButtonProps>;
 }
 
-const InlineIconText = ({ text, icon, description, query, iconProps, ...props }: Props) => {
+const InlineIconText = ({
+	text,
+	icon,
+	description,
+	query,
+	iconProps,
+	...props
+}: Props & TextProps) => {
 	// Create a regex to match the query string as a whole word or phrase
 	const regex = new RegExp(`(\\b${query}\\b)`, 'gi');
 

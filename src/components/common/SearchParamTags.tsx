@@ -1,17 +1,19 @@
-import { Flex, Tag, TagLabel } from '@chakra-ui/react';
+import { Flex, FlexProps, Tag, TagLabel, TagProps } from '@chakra-ui/react';
 import { WPItem } from '@lib/classes';
 import { ReactNode } from 'react';
 
 interface Props {
 	termIds: number[];
 	termItems: WPItem[];
-	tagProps?: {
-		[prop: string]: any;
-	};
-	[prop: string]: any;
+	tagProps?: TagProps;
 }
 
-export default function SearchParamTags({ termIds, termItems, tagProps, ...props }: Props) {
+export default function SearchParamTags({
+	termIds,
+	termItems,
+	tagProps,
+	...props
+}: Props & FlexProps): JSX.Element | null {
 	if (!termIds.length || !termItems.length) return null;
 
 	const terms: WPItem[] = termIds.map(

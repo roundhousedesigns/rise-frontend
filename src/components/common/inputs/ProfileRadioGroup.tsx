@@ -1,4 +1,4 @@
-import { chakra, FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
+import { BoxProps, chakra, FormLabel, RadioGroup, Wrap } from '@chakra-ui/react';
 import RadioButton from '@common/inputs/RadioButton';
 
 interface Props {
@@ -11,7 +11,6 @@ interface Props {
 	groupButtons?: boolean;
 	defaultValue: string;
 	handleChange: (name: string) => (value: string) => void;
-	[prop: string]: any;
 }
 
 export default function ProfileRadioGroup({
@@ -22,7 +21,7 @@ export default function ProfileRadioGroup({
 	defaultValue,
 	handleChange,
 	...props
-}: Props) {
+}: Props & BoxProps): JSX.Element | null {
 	const handleToggleItem = (value: string) => {
 		handleChange(name)(value);
 	};

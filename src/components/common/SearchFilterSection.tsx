@@ -1,13 +1,17 @@
-import { Box, Heading } from '@chakra-ui/react';
+import { Box, BoxProps, Heading } from '@chakra-ui/react';
 
 interface Props {
 	id: string;
 	heading?: string;
 	children: JSX.Element;
-	[prop: string]: any;
 }
 
-export default function SearchFilterSection({ id, heading, children, ...props }: Props) {
+export default function SearchFilterSection({
+	id,
+	heading,
+	children,
+	...props
+}: Props & BoxProps): JSX.Element {
 	return (
 		<Box id={id} {...props}>
 			{heading ? (

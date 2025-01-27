@@ -12,6 +12,7 @@ import {
 	useDisclosure,
 	LightMode,
 	Flex,
+	AlertProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { ProfileNoticeAlert } from '@lib/types';
@@ -21,7 +22,6 @@ interface Props {
 	code: string;
 	status?: string;
 	dismissExpire?: number;
-	[prop: string]: any;
 }
 
 export default function ProfileNotice({
@@ -29,7 +29,7 @@ export default function ProfileNotice({
 	status = 'info',
 	dismissExpire = 30,
 	...props
-}: Props): JSX.Element {
+}: Props & AlertProps): JSX.Element {
 	const notice = profileNoticeAlerts[code];
 	const cookieName = `profile_notice_${code}_dismissed`;
 

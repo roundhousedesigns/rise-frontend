@@ -8,11 +8,7 @@ import {
 	Container,
 	Heading,
 	useToast,
-	chakra,
-	Icon,
-	Tooltip,
 } from '@chakra-ui/react';
-import { FiHelpCircle } from 'react-icons/fi';
 import TextInput from '@common/inputs/TextInput';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { ChangePasswordInput } from '@lib/types';
@@ -105,19 +101,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 							name={'newPassword'}
 							id={'newPassword'}
 							variant={'filled'}
-							label={
-								<>
-									Password{' '}
-									<Tooltip
-										hasArrow
-										label={'Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'}
-									>
-										<chakra.span>
-											<Icon as={FiHelpCircle} />
-										</chakra.span>
-									</Tooltip>
-								</>
-							}
+							label='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
 							error={errorCode}
 							isRequired
 							onChange={handleInputChange}

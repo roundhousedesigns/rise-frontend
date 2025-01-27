@@ -9,7 +9,6 @@ interface Props extends ButtonProps {
 	icon: ReactElement<any, string | JSXElementConstructor<any>>;
 	variant?: string;
 	children: ReactNode;
-	[prop: string]: any;
 }
 
 const ResponsiveButton = forwardRef<Props, 'div'>(

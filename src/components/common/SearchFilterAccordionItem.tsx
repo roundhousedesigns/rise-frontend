@@ -7,17 +7,16 @@ import {
 	AccordionPanel,
 	Box,
 	Text,
+	AccordionPanelProps,
+	AccordionButtonProps,
 } from '@chakra-ui/react';
 
 interface Props {
 	heading: string | JSX.Element;
-	headingProps?: {
-		[prop: string]: any;
-	};
-	panelProps?: {
-		[prop: string]: any;
-	};
+	headingProps?: Partial<AccordionButtonProps>;
+	panelProps?: Partial<AccordionPanelProps>;
 	children: ReactNode;
+	isDisabled?: boolean;
 	[prop: string]: any;
 }
 
@@ -26,6 +25,7 @@ export default function SearchFilterAccordionItem({
 	headingProps,
 	panelProps,
 	children,
+	isDisabled,
 	...props
 }: Props) {
 	const HeadingContent = (): JSX.Element =>
@@ -47,7 +47,7 @@ export default function SearchFilterAccordionItem({
 	return (
 		<AccordionItem {...props}>
 			<Heading as={'h3'} flex={'1'} my={0}>
-				<AccordionButton {...headingProps}>
+				<AccordionButton {...headingProps} disabled={isDisabled}>
 					<HeadingContent />
 					<AccordionIcon />
 				</AccordionButton>

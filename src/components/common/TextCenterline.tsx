@@ -1,12 +1,11 @@
 import { ReactNode } from 'react';
-import { Box, Divider } from '@chakra-ui/react';
+import { Box, BoxProps, Divider } from '@chakra-ui/react';
 
 interface Props {
 	children: ReactNode;
-	[prop: string]: any;
 }
 
-export default function TextCenterline({ children, ...props }: Props) {
+export default function TextCenterline({ children, ...props }: Props & BoxProps) {
 	return (
 		<Box position={'relative'} py={2} {...props}>
 			<Divider />
