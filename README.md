@@ -15,6 +15,7 @@ The front end portion of RISE is built using:
 ## Development Setup
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) (v20.12.0 or above)
 - [Yarn](https://yarnpkg.com/getting-started/install)
 - [nvm](https://github.com/nvm-sh/nvm) for Node version management
