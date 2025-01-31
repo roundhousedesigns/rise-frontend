@@ -1,9 +1,9 @@
-import { Box, Link, Text } from '@chakra-ui/react';
+import { Box, Heading, Link, Tag, Text, Wrap } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import parse from 'html-react-parser';
-import { Job } from '@lib/classes';
+import { JobPost } from '@lib/classes';
 interface Props {
-	job: Job;
+	job: JobPost;
 }
 
 /**
@@ -15,40 +15,107 @@ export default function JobView({ job }: Props): JSX.Element | null {
 		companyName,
 		contactEmail,
 		contactName,
-		address,
+		contactPhone,
+		companyAddress,
+		compensation,
 		instructions,
 		startDate,
 		endDate,
 		isInternship,
-		isUnionJob,
+		isUnion,
 		description,
 		applicationUrl,
 		applicationPhone,
 		applicationEmail,
 	} = job || {};
 
+	const parsedCompanyAddress = companyAddress ? parse(companyAddress) : '';
+
 	const parsedDescription = description ? parse(description) : '';
+
+	const parsedCompensation = compensation ? parse(compensation) : '';
+
 	const parsedInstructions = instructions ? parse(instructions) : '';
 
 	return (
 		<Box>
-			<Text>{companyName}</Text>
+			<Heading as='h2' fontSize='xl'>
+				{companyName}
+			</Heading>
+
+			{parsedCompanyAddress ? <Text whiteSpace={'pre-wrap'}>{parsedCompanyAddress}</Text> : null}
+
 			<Text>
+				<strong>{contactName}</strong>:{' '}
 				<Link as={RouterLink} to={`mailto:${contactEmail}`}>
 					{contactEmail}
-				</Link>
+				</Link>{' '}
+				{contactPhone ? (
+					<>
+						{' | '}
+						<Link as={RouterLink} to={`tel:${contactPhone}`}>
+							{contactPhone}
+						</Link>
+					</>
+				) : (
+					''
+				)}
 			</Text>
-			<Text>{contactName}</Text>
-			<Text>{address}</Text>
-			<Box>{parsedInstructions}</Box>
-			<Text>{startDate}</Text>
-			<Text>{endDate}</Text>
-			<Text>{isInternship}</Text>
-			<Text>{isUnionJob}</Text>
-			<Box>{parsedDescription}</Box>
-			<Text>{applicationUrl}</Text>
-			<Text>{applicationPhone}</Text>
-			<Text>{applicationEmail}</Text>
+
+			{parsedCompensation ? (
+				<Text whiteSpace={'pre-wrap'}>
+					<strong>Compensation</strong>:{parsedCompensation}
+				</Text>
+			) : null}
+
+			<Box>
+				<strong>How to apply:</strong> {parsedInstructions}
+			</Box>
+
+			<Text>
+				<strong>Start:</strong> {startDate}
+			</Text>
+
+			<Text>
+				<strong>End:</strong> {endDate}
+			</Text>
+
+			<Wrap>
+				{isInternship && (
+					<Tag colorScheme='yellow' size={'sm'}>
+						Internship
+					</Tag>
+				)}
+				{isUnion && (
+					<Tag colorScheme='red' size={'sm'}>
+						Union
+					</Tag>
+				)}
+			</Wrap>
+
+			<Box>
+				<strong>Description</strong>
+				<br />
+				{parsedDescription}
+			</Box>
+
+			{applicationUrl ? (
+				<Text>
+					<strong>Application URL</strong>: {applicationUrl}
+				</Text>
+			) : null}
+
+			{applicationPhone ? (
+				<Text>
+					<strong>Application Phone</strong>: {applicationPhone}
+				</Text>
+			) : null}
+
+			{applicationEmail ? (
+				<Text>
+					<strong>Application Email</strong>: {applicationEmail}
+				</Text>
+			) : null}
 		</Box>
 	);
 }

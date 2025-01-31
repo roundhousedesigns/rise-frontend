@@ -1,11 +1,11 @@
 /**
- * useJobs hook. Query to retrieve jobs.
+ * useJobPosts hook. Query to retrieve jobs.
  */
 
 import { omit } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
-import { Job } from '@lib/classes';
-import { JobParams } from '@@/src/lib/types';
+import { JobPost } from '@lib/classes';
+import { JobPostParams } from '@lib/types';
 
 // TODO update Job class props to match the query
 
@@ -15,27 +15,27 @@ export const QUERY_JOBS = gql`
 			nodes {
 				id: databaseId
 				companyName(format: RAW)
+				companyAddress(format: RAW)
 				contactEmail(format: RAW)
 				contactName(format: RAW)
-				applicationUrl
-				applicationPhone
-				applicationEmail
+				contactPhone(format: RAW)
+				startDate
 				description: content
 				compensation
 				isInternship
-				isUnionJob
+				isUnion
 				endDate
 				instructions(format: RAW)
-				address(format: RAW)
-				startDate
-				phone
+				applicationUrl
+				applicationPhone
+				applicationEmail
 				title
 			}
 		}
 	}
 `;
 
-const useJobs = (id: number = 0): [Job[], any] => {
+const useJobPosts = (id: number = 0): [JobPost[], any] => {
 	const result = useQuery(QUERY_JOBS, {
 		variables: { id },
 	});
@@ -43,8 +43,11 @@ const useJobs = (id: number = 0): [Job[], any] => {
 	if (!result?.data?.jobs?.nodes) {
 		return [[], omit(result, ['data'])];
 	}
-	const jobs: Job[] =
-		result?.data?.jobs?.nodes?.map((node: JobParams) => {
+
+	console.info('res', result?.data?.jobs?.nodes);
+
+	const jobs: JobPost[] =
+		result?.data?.jobs?.nodes?.map((node: JobPostParams) => {
 			const {
 				id,
 				title,
@@ -53,11 +56,11 @@ const useJobs = (id: number = 0): [Job[], any] => {
 				contactName,
 				compensation,
 				startDate,
-				address,
+				companyAddress,
 				instructions,
 			} = node;
 
-			const job = new Job({
+			const job = new JobPost({
 				id,
 				title,
 				companyName,
@@ -65,7 +68,7 @@ const useJobs = (id: number = 0): [Job[], any] => {
 				contactName,
 				compensation,
 				startDate,
-				address,
+				companyAddress,
 				instructions,
 			});
 
@@ -77,4 +80,4 @@ const useJobs = (id: number = 0): [Job[], any] => {
 	return [jobs, omit(result, ['data'])];
 };
 
-export default useJobs;
+export default useJobPosts;

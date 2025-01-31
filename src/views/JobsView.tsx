@@ -1,8 +1,8 @@
-import { Job } from '@lib/classes';
+import { JobPost } from '@lib/classes';
 import JobsList from '@components/JobsList';
 import { Box, Flex, Stack } from '@chakra-ui/react';
 
-export default function JobsView({ jobs }: { jobs: Job[] }) {
+export default function JobsView({ jobs }: { jobs: JobPost[] }) {
 	return (
 		<Stack spacing={4} py={4}>
 			<Flex
@@ -14,7 +14,7 @@ export default function JobsView({ jobs }: { jobs: Job[] }) {
 				alignItems={'center'}
 				justifyContent={'center'}
 			>
-				Search/Filter
+				~~ Search/Filter ~~
 			</Flex>
 			<JobsList jobs={jobs} mt={2} />
 		</Stack>

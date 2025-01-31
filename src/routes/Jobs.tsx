@@ -1,9 +1,9 @@
 import JobsView from '@views/JobsView';
-import useJobs from '@queries/useJobs';
+import useJobPosts from '@queries/useJobPosts';
 import Page from '@components/Page';
 
 export default function Jobs() {
-	const [jobs, { loading }] = useJobs();
+	const [jobs, { loading }] = useJobPosts();
 
 	return (
 		<Page title='Jobs' loading={loading}>

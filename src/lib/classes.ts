@@ -9,7 +9,7 @@ import {
 	CreditOutput,
 	DateRangeParams,
 	SearchFilterSetParams,
-	JobParams,
+	JobPostParams,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
 
@@ -484,14 +484,16 @@ export class Credit implements CreditParams {
 /**
  * A job.
  */
-export class Job implements JobParams {
+export class JobPost implements JobPostParams {
 	id: number;
 	title: string;
 	companyName: string;
-	contactEmail: string;
+	companyAddress: string;
 	contactName: string;
-	address: string;
+	contactEmail: string;
 	startDate: string;
+	endDate?: string;
+	contactPhone?: string;
 	instructions: string;
 	compensation?: string;
 	applicationUrl?: string;
@@ -499,17 +501,15 @@ export class Job implements JobParams {
 	applicationEmail?: string;
 	description?: string;
 	isInternship?: boolean;
-	isUnionJob?: boolean;
-	endDate?: string;
-	phone?: string;
+	isUnion?: boolean;
 
-	constructor(params: JobParams) {
+	constructor(params: JobPostParams) {
 		this.id = params.id;
 		this.title = params.title;
 		this.companyName = params.companyName;
+		this.companyAddress = params.companyAddress;
 		this.contactEmail = params.contactEmail;
 		this.contactName = params.contactName;
-		this.address = params.address;
 		this.startDate = params.startDate;
 		this.instructions = params.instructions;
 

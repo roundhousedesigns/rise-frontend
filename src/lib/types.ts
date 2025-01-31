@@ -271,14 +271,16 @@ export interface ViewerData {
 /**
  * The data shape for a Job.
  */
-export interface JobParams {
+export interface JobPostParams {
 	id: number;
 	title: string;
 	companyName: string;
-	contactEmail: string;
+	companyAddress: string;
 	contactName: string;
-	address: string;
+	contactEmail: string;
+	contactPhone?: string;
 	startDate: string;
+	endDate?: string;
 	instructions: string;
 	compensation?: string;
 	applicationUrl?: string;
@@ -286,7 +288,5 @@ export interface JobParams {
 	applicationEmail?: string;
 	description?: string;
 	isInternship?: boolean;
-	isUnionJob?: boolean;
-	endDate?: string;
-	phone?: string;
+	isUnion?: boolean;
 }

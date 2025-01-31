@@ -11,17 +11,18 @@ import {
 	Wrap,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Job } from '@lib/classes';
+import { JobPost } from '@lib/classes';
 
 interface Props {
-	jobs: Job[];
+	jobs: JobPost[];
 }
 
 export default function JobsList({ jobs, ...props }: Props & ListProps) {
 	return (
 		<List {...props}>
 			{jobs.map((job) => {
-				const { id, title, companyName, isInternship, isUnionJob, compensation } = job;
+				// TODO Move this to a new JobsListItem component.
+				const { id, title, companyName, isInternship, isUnion, compensation } = job;
 
 				const datesString = job.endDate
 					? `${job.startDate} - ${job.endDate}`
@@ -45,13 +46,15 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 											Internship
 										</Tag>
 									)}
-									{isUnionJob && (
+									{isUnion && (
 										<Tag colorScheme='red' size={'sm'}>
 											Union
 										</Tag>
 									)}
 								</Wrap>
+
 								{compensation ? <Text>{compensation}</Text> : ''}
+
 								<Text my={0}>{datesString}</Text>
 							</Stack>
 						</Card>
