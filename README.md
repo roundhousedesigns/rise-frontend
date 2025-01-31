@@ -8,33 +8,43 @@
 The front end portion of RISE is built using:
 
 - Vite
+- TypeScript
 - React
 - GraphQL
+- Chakra
 
 ## Development Setup
 
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v20.12.0 or above)
+- [Yarn](https://yarnpkg.com/getting-started/install)
+- [nvm](https://github.com/nvm-sh/nvm) for Node version management
+
 ### Node Setup
 
-1. Node v19.4.0 or above is required. We recommend using `nvm` to manage node
+1. Node v20.12.0 or above is required. We recommend using `nvm` to manage node
 versioning control. For help installing and using nvm, see [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)
-2. Install v19.4.0 of node with the command:
+2. Install v20.12.0 of node with the command:
 
-         nvm install 19.4.0
+         nvm install 20.12.0
 
-    Confim that v19.4.0 or above is running (an arrow will point to current version)
+    Confirm that v20.12.0 or above is running (an arrow will point to the current version)
     with the command:
 
          nvm ls
 
-    If an incorrect version is selected, change to v19.4.0 with the command:
+    If an incorrect version is selected, change to v20.12.0 with the command:
 
-         nvm use 19.4.0
+         nvm use 20.12.0
 
 ### Dev Setup
 
+*Note:* `dev` branch is currently out of date.  Use `v1.2-dev`
+
 1. Clone the dev branch with the command:
 
-        git clone -b dev git@github.com:roundhousedesigns/rise-frontend.git
+        git clone -b v1.2-dev git@github.com:roundhousedesigns/rise-frontend.git
 
 2. At the root of the project directory, run:
 
@@ -67,10 +77,10 @@ _Branch Naming Convention:_ Name a branch by name/ticket-name. For example: `mic
 
 ### How to make a pull request
 
-1. From your feature branch, run `git pull origin dev` and resolve any merge conflicts
+1. From your feature branch, run `git pull origin v1.2-dev` and resolve any merge conflicts
 
-2. After commiting and pushing your branch, click on a Pull requests tab on
-GitHub and create a draft pull request. Make sure to select "base:" as `dev`
+2. After committing and pushing your branch, click on a Pull requests tab on
+GitHub and create a draft pull request. Make sure to select "base:" as `v1.2-dev`
 and "compare:" as `<your-branch-name>`
 
    - In the comment section, document exactly what you did and why you did it.
@@ -84,4 +94,4 @@ Include screen capture and testing steps if applicable
 - `yarn preview` to serve a production preview
 
 ---
-Copyright (c) 2024 Maestra Music and Roundhouse Designs. All rights reserved.
+Copyright (c) 2024-2025 Maestra Music and Roundhouse Designs. All rights reserved.
