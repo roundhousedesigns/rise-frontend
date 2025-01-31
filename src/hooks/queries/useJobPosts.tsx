@@ -44,8 +44,6 @@ const useJobPosts = (id: number = 0): [JobPost[], any] => {
 		return [[], omit(result, ['data'])];
 	}
 
-	console.info('res', result?.data?.jobs?.nodes);
-
 	const jobs: JobPost[] =
 		result?.data?.jobs?.nodes?.map((node: JobPostParams) => {
 			const {
