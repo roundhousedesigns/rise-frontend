@@ -40,11 +40,11 @@ versioning control. For help installing and using nvm, see [NVM Install Guide](h
 
 ### Dev Setup
 
-*Note:* `dev` branch is currently out of date.  Use `v1.2-dev`
+*Note:* `dev` branch is now the `preview` branch. Use `v1.2-dev` as the base branch.
 
 1. Clone the dev branch with the command:
 
-        git clone -b v1.2-dev git@github.com:roundhousedesigns/rise-frontend.git
+        git checkout -b v1.2-dev git@github.com:roundhousedesigns/rise-frontend.git
 
 2. At the root of the project directory, run:
 
