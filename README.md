@@ -11,7 +11,7 @@ The front end portion of RISE is built using:
 - TypeScript
 - React
 - GraphQL
-- Chakra
+- Chakra UI
 
 ## Development Setup
 
@@ -25,30 +25,31 @@ The front end portion of RISE is built using:
 
 1.  Node v20.12.0 or above is required. We recommend using `nvm` to manage node
     versioning control. For help installing and using nvm, see [NVM Install Guide](https://www.freecodecamp.org/news/node-version-manager-nvm-install-guide/)
+
 2.  Install v20.12.0 of node with the command:
 
-         `nvm install 20.12.0`
+    `nvm install 20.12.0`
 
     Confirm that v20.12.0 or above is running (an arrow will point to the current version)
     with the command:
 
-         `nvm ls`
+    `nvm ls`
 
     If an incorrect version is selected, change to v20.12.0 with the command:
 
-         `nvm use 20.12.0`
+    `nvm use 20.12.0`
 
 ### Dev Setup
 
 _Note:_ The main `dev` branch is now the `preview` branch. Use `v1.2-dev` as the base branch.
 
-1.  Clone the `v1.2-dev` branch with the commands:
+1.  Clone the `v1.2-dev` branch with the command:
 
-        `git clone -b v1.2-dev git@github.com:roundhousedesigns/rise-frontend.git`
+    `git clone -b v1.2-dev git@github.com:roundhousedesigns/rise-frontend.git`
 
 2.  At the root of the project directory, run:
 
-         `yarn install`
+    `yarn install`
 
 ### Environment Variables Setup
 
@@ -63,30 +64,30 @@ _Note:_ The main `dev` branch is now the `preview` branch. Use `v1.2-dev` as the
 
     _Note:_ ask a team member for VITE_BACKEND_URL and VITE_RECAPTCHA_SITE_KEY specifics.
 
-### Development Workflow
+### Development Workflow for v1.2
 
-_Branch Naming Convention:_ Name a branch by base-branch/ticket-name. For example: `v1.2-dev/add-readme-steps`
+1.  Create a new feature branch from the `v1.2-dev` branch:
 
-1.  From the `v1.2-dev` branch, create a new feature branch:
-
-         `git checkout -b v1.2-dev/your-branch-name`
+    `git checkout v1.2-dev && git checkout -b <your-branch-name>`
 
 2.  To start local development, run:
 
-         yarn dev
+    `yarn dev`
 
-    and go to: http://localhost:3000
+    and go to: [http://localhost:3000](http://localhost:3000)
 
 ### How to make a pull request
 
-1. From your feature branch, run `git pull origin v1.2-dev` and resolve any merge conflicts
+1. Add a section to the top of the `changelog.md` file with the title of your branch and the changes you made.
 
-2. After committing and pushing your branch, click on a Pull requests tab on
+2. From your feature branch, run `git pull origin v1.2-dev` and resolve any merge conflicts
+
+3. After committing and pushing your branch, click on a Pull requests tab on
    GitHub and create a draft pull request. Make sure to select "base:" as `v1.2-dev`
    and "compare:" as `<your-branch-name>`
 
    - In the comment section, document exactly what you did and why you did it.
-     Include screen capture and testing steps if applicable
+   - Include screen capture and testing steps if applicable
    - Double check the diff
    - Make further changes locally, if any mistakes are found and commit again
 
