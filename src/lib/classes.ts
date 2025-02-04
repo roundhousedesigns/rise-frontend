@@ -501,6 +501,7 @@ export class JobPost implements JobPostParams {
 	applicationEmail?: string;
 	description?: string;
 	isInternship?: boolean;
+	isPaid?: boolean;
 	isUnion?: boolean;
 
 	constructor(params: JobPostParams) {

@@ -23,6 +23,7 @@ export const QUERY_JOBS = gql`
 				description: content
 				compensation
 				isInternship
+				isPaid
 				isUnion
 				endDate
 				instructions(format: RAW)

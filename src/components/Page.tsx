@@ -22,7 +22,7 @@ export default function Page({
 			<Spinner position={'relative'} top={12} />
 		</Center>
 	) : (
-		<Box mt={3} {...props}>
+		<Box mt={3} mb={4} {...props}>
 			{!!title || !!actions ? (
 				<Flex justifyContent={'space-between'} alignItems={'flex-end'} gap={2} flexWrap={'wrap'}>
 					{title ? (

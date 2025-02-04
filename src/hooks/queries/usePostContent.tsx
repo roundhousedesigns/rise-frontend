@@ -5,9 +5,6 @@ import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import parse from 'html-react-parser';
 
-// WordPress block styles
-import '@assets/css/wordpress.css';
-
 export const QUERY_CONTENT = gql`
 	query PostContentQuery($id: ID = "") {
 		page(id: $id, idType: DATABASE_ID) {

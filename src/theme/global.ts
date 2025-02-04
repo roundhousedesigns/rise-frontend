@@ -52,6 +52,7 @@ export const styles = {
 			},
 			a: {
 				textDecoration: 'underline',
+				color: 'brand.blue',
 			},
 		},
 	},
