@@ -16,9 +16,9 @@ import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
 import Partners from '@routes/Partners';
+import Partner from '@routes/Partner';
 
 import LoggedIn from '@components/LoggedIn';
-import Partner from '@@/src/routes/Partner';
 
 export default function Main() {
 	const routes = useRoutes([

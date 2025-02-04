@@ -1,5 +1,14 @@
 import { ReactNode } from 'react';
-import { Box, Heading, Text, Flex, Spinner, Center, BoxProps } from '@chakra-ui/react';
+import {
+	Box,
+	Heading,
+	Text,
+	Flex,
+	Spinner,
+	Center,
+	ContainerProps,
+	Container,
+} from '@chakra-ui/react';
 
 interface Props {
 	title?: string;
@@ -16,13 +25,13 @@ export default function Page({
 	loading,
 	children,
 	...props
-}: Props & BoxProps): JSX.Element {
+}: Props & ContainerProps): JSX.Element {
 	return loading ? (
 		<Center>
 			<Spinner position={'relative'} top={12} />
 		</Center>
 	) : (
-		<Box mt={3} mb={4} {...props}>
+		<Container maxWidth={'5xl'} mt={3} mb={4} {...props}>
 			{!!title || !!actions ? (
 				<Flex justifyContent={'space-between'} alignItems={'flex-end'} gap={2} flexWrap={'wrap'}>
 					{title ? (
@@ -46,6 +55,6 @@ export default function Page({
 			) : null}
 
 			{children}
-		</Box>
+		</Container>
 	);
 }

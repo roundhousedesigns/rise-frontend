@@ -25,7 +25,7 @@ import {
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
-import ContentView from '@views/ContentView';
+import PageView from '@views/PageView';
 import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
@@ -211,7 +211,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 					</DrawerHeader>
 					<DrawerBody py={0} pb={2}>
 						<Box textAlign={'center'}>
-							<ContentView postId={'12238'} mt={0} pt={0} />
+							<PageView postId={'12238'} mt={0} pt={0} />
 							<Button
 								as={Link}
 								href={'https://risetheatre.org'}

@@ -20,7 +20,7 @@ import TextInput from '@common/inputs/TextInput';
 import useRegisterUser from '@mutations/useRegisterUser';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
 import { RegisterUserInput } from '@lib/types';
-import usePostContent from '@queries/usePostContent';
+import usePage from '@queries/usePage';
 import BackToLoginButton from '@common/BackToLoginButton';
 import RequiredAsterisk from '@common/RequiredAsterisk';
 
@@ -40,7 +40,7 @@ export default function RegisterView() {
 	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
-	const [content, { contentLoading, contentError }] = usePostContent('576');
+	const [page, { pageLoading, pageError }] = usePage('576');
 
 	const passwordStrength = useValidatePassword(password);
 
@@ -131,12 +131,12 @@ export default function RegisterView() {
 
 	return (
 		<>
-			{contentLoading ? (
+			{pageLoading ? (
 				<Spinner />
-			) : contentError ? (
+			) : pageError ? (
 				'Error loading content'
-			) : content ? (
-				<Box my={4}>{content}</Box>
+			) : page ? (
+				<Box my={4}>{page.content}</Box>
 			) : (
 				false
 			)}

@@ -1,12 +1,11 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Container, Text } from '@chakra-ui/react';
 import parse from 'html-react-parser';
 import { WPPost } from '@lib/classes';
 
 export default function NetworkPartnerView({ partner }: { partner: WPPost }) {
 	return (
-		<Box>
-			<Text>{partner.title}</Text>
+		<Container maxW={'3xl'}>
 			<Text>{parse(partner.content || '')}</Text>
-		</Box>
+		</Container>
 	);
 }

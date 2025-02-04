@@ -20,7 +20,7 @@ export default function App() {
 	const headerRef = useRef(null);
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
 
-	const [wpGlobalStylesheet, wpGlobalStylesheetResult] = useWp();
+	const [wpGlobalStylesheet] = useWp();
 
 	useEffect(() => {
 		if (wpGlobalStylesheet) {
