@@ -14,7 +14,7 @@ import {
 	ButtonGroup,
 	useToken,
 } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase } from 'react-icons/fi';
+import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiLink } from 'react-icons/fi';
 import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
 import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
@@ -117,6 +117,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								justifyContent={'flex-end'}
 								size={'md'}
 							>
+								<TooltipIconButton
+									icon={<FiLink />}
+									label={'Network Partners'}
+									as={RouterLink}
+									to={'/partners'}
+								/>
+
 								<TooltipIconButton
 									icon={<FiBriefcase />}
 									label={'Jobs'}
