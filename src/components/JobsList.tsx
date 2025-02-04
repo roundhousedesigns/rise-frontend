@@ -22,7 +22,7 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 		<List {...props}>
 			{jobs.map((job) => {
 				// TODO Move this to a new JobsListItem component.
-				const { id, title, companyName, isInternship, isUnion, compensation } = job;
+				const { id, title, companyName, isInternship, isPaid, isUnion, compensation } = job;
 
 				const datesString = job.endDate
 					? `${job.startDate} - ${job.endDate}`
@@ -44,6 +44,11 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 									{isInternship && (
 										<Tag colorScheme='yellow' size={'sm'}>
 											Internship
+										</Tag>
+									)}
+									{isPaid && (
+										<Tag colorScheme='green' size={'sm'}>
+											Paid
 										</Tag>
 									)}
 									{isUnion && (

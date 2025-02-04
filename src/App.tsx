@@ -10,12 +10,29 @@ import Header from '@layout/Header';
 import Main from '@layout/Main';
 import Footer from '@layout/Footer';
 
+// Hooks
+import useWp from '@hooks/queries/useWp';
+
 export default function App() {
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
 
 	// Get the header height so we can offset the main content
 	const headerRef = useRef(null);
 	const [headerHeight, setHeaderHeight] = useState<number>(0);
+
+	const [wpGlobalStylesheet, wpGlobalStylesheetResult] = useWp();
+
+	useEffect(() => {
+		if (wpGlobalStylesheet) {
+			const styleElement = document.createElement('style');
+			styleElement.innerHTML = wpGlobalStylesheet;
+			document.head.appendChild(styleElement);
+
+			return () => {
+				document.head.removeChild(styleElement);
+			};
+		}
+	}, [wpGlobalStylesheet]);
 
 	useEffect(() => {
 		const observer = new ResizeObserver((entries) => {

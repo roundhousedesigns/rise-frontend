@@ -1,7 +1,30 @@
-import { Box, Heading, Link, Tag, Text, Wrap } from '@chakra-ui/react';
+import {
+	Box,
+	Card,
+	Flex,
+	Heading,
+	Link,
+	Stack,
+	Tag,
+	Text,
+	Wrap,
+	Button,
+	ButtonGroup,
+} from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { JobPost } from '@lib/classes';
+import HeadingCenterline from '../components/common/HeadingCenterline';
+import WrapWithIcon from '../components/common/WrapWithIcon';
+import {
+	FiCalendar,
+	FiDollarSign,
+	FiMail,
+	FiMap,
+	FiPhone,
+	FiUser,
+	FiExternalLink,
+} from 'react-icons/fi';
 interface Props {
 	job: JobPost;
 }
@@ -39,83 +62,115 @@ export default function JobView({ job }: Props): JSX.Element | null {
 
 	return (
 		<Box>
-			<Heading as='h2' fontSize='xl'>
-				{companyName}
-			</Heading>
-
-			{parsedCompanyAddress ? <Text whiteSpace={'pre-wrap'}>{parsedCompanyAddress}</Text> : null}
-
-			<Text>
-				<strong>{contactName}</strong>:{' '}
-				<Link as={RouterLink} to={`mailto:${contactEmail}`}>
-					{contactEmail}
-				</Link>{' '}
-				{contactPhone ? (
-					<>
-						{' | '}
-						<Link as={RouterLink} to={`tel:${contactPhone}`}>
-							{contactPhone}
-						</Link>
-					</>
-				) : (
-					''
-				)}
-			</Text>
-
-			{parsedCompensation ? (
-				<Text whiteSpace={'pre-wrap'}>
-					<strong>Compensation</strong>:{parsedCompensation}
-				</Text>
-			) : null}
-
-			<Box>
-				<strong>How to apply:</strong> {parsedInstructions}
-			</Box>
-
-			<Text>
-				<strong>Start:</strong> {startDate}
-			</Text>
-
-			<Text>
-				<strong>End:</strong> {endDate}
-			</Text>
-
 			<Wrap>
-				{isInternship && (
-					<Tag colorScheme='yellow' size={'sm'}>
-						Internship
-					</Tag>
-				)}
-				{isUnion && (
-					<Tag colorScheme='red' size={'sm'}>
-						Union
-					</Tag>
-				)}
+				<Heading as='h2' fontSize='xl' my={0}>
+					{companyName}
+				</Heading>
+				<Flex alignItems={'center'} gap={2}>
+					{isInternship && (
+						<Tag colorScheme='yellow' size={'sm'}>
+							Internship
+						</Tag>
+					)}
+					{isUnion && (
+						<Tag colorScheme='red' size={'sm'}>
+							Union
+						</Tag>
+					)}
+				</Flex>
 			</Wrap>
 
-			<Box>
-				<strong>Description</strong>
-				<br />
-				{parsedDescription}
-			</Box>
+			<Stack gap={6}>
+				<Flex gap={4} flexWrap={'wrap'}>
+					<Card gap={0}>
+						{parsedCompanyAddress ? (
+							<>
+								<WrapWithIcon icon={FiMap}>
+									<Tag size={'lg'} whiteSpace={'pre-wrap'} px={2} py={1}>
+										{parsedCompanyAddress}
+									</Tag>
+								</WrapWithIcon>
+								<WrapWithIcon icon={FiCalendar}>
+									<Tag colorScheme='green'>{`${startDate}${endDate ? ` - ${endDate}` : ''}`}</Tag>
+								</WrapWithIcon>
+							</>
+						) : null}
+					</Card>
 
-			{applicationUrl ? (
-				<Text>
-					<strong>Application URL</strong>: {applicationUrl}
-				</Text>
-			) : null}
+					<Card flex={1}>
+						<Stack gap={2}>
+							<WrapWithIcon icon={FiUser} my={0}>
+								{contactName}
+							</WrapWithIcon>
 
-			{applicationPhone ? (
-				<Text>
-					<strong>Application Phone</strong>: {applicationPhone}
-				</Text>
-			) : null}
+							<WrapWithIcon icon={FiMail} my={0}>
+								<Link as={RouterLink} to={`mailto:${contactEmail}`} my={0}>
+									{contactEmail}
+								</Link>
+							</WrapWithIcon>
 
-			{applicationEmail ? (
-				<Text>
-					<strong>Application Email</strong>: {applicationEmail}
-				</Text>
-			) : null}
+							{contactPhone && (
+								<WrapWithIcon icon={FiPhone} my={0}>
+									<Link as={RouterLink} to={`tel:${contactPhone}`} my={0}>
+										{contactPhone}
+									</Link>
+								</WrapWithIcon>
+							)}
+
+							{parsedCompensation && (
+								<WrapWithIcon icon={FiDollarSign} my={0}>
+									<Text whiteSpace={'pre-wrap'} my={0}>
+										{parsedCompensation}
+									</Text>
+								</WrapWithIcon>
+							)}
+						</Stack>
+					</Card>
+				</Flex>
+
+				<Box>
+					<HeadingCenterline lineColor='brand.orange'>Job Description</HeadingCenterline>
+					<Box className='wp-post-content'>{parsedDescription}</Box>
+				</Box>
+
+				<Box>
+					<HeadingCenterline lineColor='brand.blue'>How to apply</HeadingCenterline>
+
+					{parsedInstructions ? <Text>{parsedInstructions}</Text> : null}
+
+					<ButtonGroup colorScheme='blue'>
+						{applicationUrl ? (
+							<Button
+								as={'a'}
+								href={applicationUrl}
+								leftIcon={<FiExternalLink />}
+								size={'md'}
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								Apply Online
+							</Button>
+						) : null}
+
+						{applicationPhone ? (
+							<Button as={'a'} href={`tel:${applicationPhone}`} leftIcon={<FiPhone />} size={'md'}>
+								Call to Apply: {applicationPhone}
+							</Button>
+						) : null}
+
+						{applicationEmail ? (
+							<Button
+								as={'a'}
+								href={`mailto:${applicationEmail}`}
+								leftIcon={<FiMail />}
+								size={'md'}
+							>
+								Email to Apply: {applicationEmail}
+							</Button>
+						) : null}
+					</ButtonGroup>
+				</Box>
+			</Stack>
 		</Box>
 	);
 }
