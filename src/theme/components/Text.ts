@@ -29,6 +29,11 @@ const variants = {
 			color: 'text.dark',
 		},
 	}),
+	postExcerpt: defineStyle({
+		fontSize: 'md',
+		lineHeight: 'normal',
+		m: 0,
+	}),
 };
 
 export default defineStyleConfig({

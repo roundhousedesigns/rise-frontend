@@ -32,6 +32,8 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 	if (loading) return <Spinner />;
 	if (error) return <ErrorAlert message={error.message} />;
 
+	console.info(partners);
+
 	return (
 		<SimpleGrid as={List} spacing={4} columns={{ base: 1, md: 3 }} {...props}>
 			<AnimatePresence>
@@ -65,10 +67,11 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 												borderColor={
 													[yellow, green, red, orange, blue][Math.floor(Math.random() * 5)]
 												}
+												mb={4}
 											/>
 										</Box>
 									)}
-									{partner.excerpt && <Text>{parse(partner.excerpt)}</Text>}
+									{partner.excerpt && <Text variant={'postExcerpt'}>{parse(partner.excerpt)}</Text>}
 								</Link>
 							</Stack>
 						</Card>

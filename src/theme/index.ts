@@ -26,7 +26,7 @@ import radioTheme from '@theme/components/Radio';
 import spinnerTheme from '@theme/components/Spinner';
 import textTheme from '@theme/components/Text';
 import tooltipTheme from '@theme/components/Tooltip';
-
+import containerTheme from '@theme/components/Container';
 // Config
 const config = {
 	initialColorMode: 'dark',
@@ -57,6 +57,7 @@ const overrides = {
 		Spinner: spinnerTheme,
 		Text: textTheme,
 		Tooltip: tooltipTheme,
+		Container: containerTheme,
 	},
 };
 

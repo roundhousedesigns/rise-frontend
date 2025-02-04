@@ -51,8 +51,10 @@ export const styles = {
 				},
 			},
 			a: {
-				textDecoration: 'underline',
-				color: 'brand.blue',
+				'&:not(.wp-block-button__link), &:not(.wp-element-button)': {
+					textDecoration: 'underline',
+					color: 'brand.blue',
+				},
 			},
 		},
 	},

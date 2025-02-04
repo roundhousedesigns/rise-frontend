@@ -19,9 +19,8 @@ export const QUERY_NETWORK_PARTNERS = gql`
 						title
 					}
 				}
-				externalUrl
-				excerpt
-				content
+				excerpt(format: RAW)
+				content(format: RAW)
 			}
 		}
 	}
@@ -44,7 +43,7 @@ const useNetworkPartners = (id: number = 0): [WPPost[], any] => {
 
 	const preparedPartners =
 		result.data?.networkPartners.nodes.map((partner: any) => {
-			const { id, slug, title, featuredImage, externalUrl, excerpt, content } = partner;
+			const { id, slug, title, featuredImage, excerpt, content } = partner;
 
 			return new WPPost({
 				id,
@@ -55,7 +54,6 @@ const useNetworkPartners = (id: number = 0): [WPPost[], any] => {
 					srcSet: featuredImage?.node?.srcSet,
 					title: featuredImage?.node?.title,
 				}),
-				externalUrl,
 				excerpt,
 				content,
 			});
