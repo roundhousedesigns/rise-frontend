@@ -1,6 +1,5 @@
 import {
 	Box,
-	ListProps,
 	List,
 	ListItem,
 	Spinner,
@@ -9,6 +8,9 @@ import {
 	Text,
 	Link,
 	Stack,
+	SimpleGrid,
+	SimpleGridProps,
+	useToken,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -16,14 +18,22 @@ import parse from 'html-react-parser';
 import useNetworkPartners from '@queries/useNetworkPartners';
 import ErrorAlert from '@common/ErrorAlert';
 
-export default function NetworkPartnerList({ ...props }: ListProps): JSX.Element {
+export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.Element {
 	const [partners, { loading, error }] = useNetworkPartners();
+
+	const [yellow, green, red, orange, blue] = useToken('colors', [
+		'brand.yellow',
+		'brand.green',
+		'brand.red',
+		'brand.orange',
+		'brand.blue',
+	]);
 
 	if (loading) return <Spinner />;
 	if (error) return <ErrorAlert message={error.message} />;
 
 	return (
-		<List spacing={4} {...props}>
+		<SimpleGrid as={List} spacing={4} columns={{ base: 1, md: 3 }} {...props}>
 			<AnimatePresence>
 				{partners.map((partner) => (
 					<ListItem
@@ -51,6 +61,10 @@ export default function NetworkPartnerList({ ...props }: ListProps): JSX.Element
 												alt={`Logo for ${partner.title || ''}`}
 												borderRadius='md'
 												objectFit='cover'
+												border='2px solid'
+												borderColor={
+													[yellow, green, red, orange, blue][Math.floor(Math.random() * 5)]
+												}
 											/>
 										</Box>
 									)}
@@ -61,6 +75,6 @@ export default function NetworkPartnerList({ ...props }: ListProps): JSX.Element
 					</ListItem>
 				))}
 			</AnimatePresence>
-		</List>
+		</SimpleGrid>
 	);
 }
