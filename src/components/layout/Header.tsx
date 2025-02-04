@@ -27,6 +27,7 @@ import ProfileNotices from '@common/ProfileNotices';
 import { Dot } from '@common/icons/Dot';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
+import RiseStar from '../common/icons/RiseStar';
 
 const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
@@ -169,10 +170,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								)}
 							</ButtonGroup>
 							{isLargerThanMd ? (
-								<Dot
-									boxSize={1}
-									pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
-								/>
+								<RiseStar color={{ _dark: 'brand.orange', _light: 'brand.blue' }} />
 							) : null}
 							<ButtonGroup
 								color={'text.light'}
