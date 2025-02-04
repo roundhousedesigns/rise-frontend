@@ -15,8 +15,10 @@ import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
+import Partners from '@routes/Partners';
 
 import LoggedIn from '@components/LoggedIn';
+import Partner from '@@/src/routes/Partner';
 
 export default function Main() {
 	const routes = useRoutes([
@@ -73,6 +75,22 @@ export default function Main() {
 			element: (
 				<LoggedIn>
 					<SavedSearches />
+				</LoggedIn>
+			),
+		},
+		{
+			path: '/partners',
+			element: (
+				<LoggedIn>
+					<Partners />
+				</LoggedIn>
+			),
+		},
+		{
+			path: '/partners/:slug',
+			element: (
+				<LoggedIn>
+					<Partner />
 				</LoggedIn>
 			),
 		},

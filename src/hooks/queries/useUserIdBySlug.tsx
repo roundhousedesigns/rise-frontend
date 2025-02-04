@@ -1,5 +1,5 @@
 /**
- * useUserIdBySlug hook. Query to retrieve one User by database ID.
+ * useUserIdBySlug hook. Query to get a User ID by its slug (meta: `user_slug`).
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -12,9 +12,9 @@ const QUERY_USER_ID = gql`
 `;
 
 /**
- * Query to retrieve a User ID by its slug (meta: `user_slug`)
+ * Query to get a User ID by its slug
  *
- * @param {id} User ID
+ * @param {string} slug The slug of the User.
  * @returns A tuple of a prepared data object and a query result object.
  */
 const useUserIdBySlug = (slug: string): [number | null, any] => {

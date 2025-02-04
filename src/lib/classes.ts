@@ -10,6 +10,7 @@ import {
 	DateRangeParams,
 	SearchFilterSetParams,
 	JobPostParams,
+	WPAttachmentParams,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
 
@@ -602,6 +603,7 @@ export class WPPost extends WPItem {
 	title?: string;
 	excerpt?: string;
 	content?: string;
+	featuredImage?: WPAttachment;
 
 	constructor(params: WPItemParams) {
 		super(params);
@@ -611,5 +613,19 @@ export class WPPost extends WPItem {
 		this.title = params.title ? unescape(params.title) : undefined;
 		this.excerpt = params.excerpt ? unescape(params.excerpt) : undefined;
 		this.content = params.content ? unescape(params.content) : undefined;
+		this.featuredImage = params.featuredImage ? new WPAttachment(params.featuredImage) : undefined;
+	}
+}
+
+/**
+ * A WordPress attachment.
+ */
+export class WPAttachment extends WPItem {
+	srcSet: string;
+
+	constructor(params: WPAttachmentParams) {
+		super(params);
+
+		this.srcSet = params.srcSet;
 	}
 }

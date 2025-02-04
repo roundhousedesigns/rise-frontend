@@ -16,6 +16,15 @@ export interface WPItemParams {
 }
 
 /**
+ * The data shape for generic WordPress attachment input.
+ */
+export interface WPAttachmentParams {
+	id: number;
+	srcSet: string;
+	title?: string;
+}
+
+/**
  * The data shape for User input.
  */
 export interface UserParams {
