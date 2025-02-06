@@ -27,10 +27,10 @@ const variants = {
 	centerline: defineStyle({
 		size: 'lg',
 		_light: {
-			bg: 'gray.50',
+			bg: 'bg.light',
 		},
 		_dark: {
-			bg: 'gray.900',
+			bg: 'bg.dark',
 			color: 'text.light',
 		},
 		display: 'inline',

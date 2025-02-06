@@ -13,6 +13,8 @@ import {
 interface Props {
 	title?: string;
 	description?: string | JSX.Element;
+	fullWidthTemplate?: boolean;
+	titleContainerWidth?: string;
 	actions?: ReactNode;
 	loading?: boolean;
 	children: ReactNode;
@@ -23,17 +25,40 @@ export default function Page({
 	description,
 	actions,
 	loading,
+	fullWidthTemplate,
+	titleContainerWidth,
 	children,
 	...props
 }: Props & ContainerProps): JSX.Element {
+	const fullWidthTitleProps = {
+		maxWidth: titleContainerWidth || '5xl',
+		mx: 'auto',
+	};
+
 	return loading ? (
 		<Center>
 			<Spinner position={'relative'} top={12} />
 		</Center>
 	) : (
-		<Container maxWidth={'5xl'} mt={3} mb={4} {...props}>
+		<Container
+			maxWidth={fullWidthTemplate ? 'full' : '5xl'}
+			pt={fullWidthTemplate ? 4 : 0}
+			px={0}
+			mx={'auto'}
+			mt={fullWidthTemplate ? 0 : 3}
+			mb={4}
+			{...props}
+		>
 			{!!title || !!actions ? (
-				<Flex justifyContent={'space-between'} alignItems={'flex-end'} gap={2} flexWrap={'wrap'}>
+				<Flex
+					justifyContent={'space-between'}
+					alignItems={'flex-end'}
+					gap={2}
+					flexWrap={'wrap'}
+					m={0}
+					p={0}
+					{...(fullWidthTemplate ? fullWidthTitleProps : {})}
+				>
 					{title ? (
 						<Heading variant={'pageTitle'} as={'h1'} my={0} lineHeight={'normal'}>
 							{title}

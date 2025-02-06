@@ -7,6 +7,10 @@ export const colors = {
 		light: '#fff',
 		dark: '#000',
 	},
+	bg: {
+		light: '#F7FAFC',
+		dark: '#171923',
+	},
 	brand: {
 		yellow: '#C9DB58',
 		green: '#274F42',

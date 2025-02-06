@@ -3,7 +3,14 @@ import Page from '@components/Page';
 
 export default function Partners() {
 	return (
-		<Page title={'Network Partners'}>
+		<Page
+			maxW='none'
+			fullWidthTemplate={true}
+			titleContainerWidth={'5xl'}
+			bgColor={'brand.blue'}
+			title='Network Partners'
+		>
+			{/* We're setting the title in the NetworkPartnersView component for layout reasons. */}
 			<NetworkPartnersView />
 		</Page>
 	);

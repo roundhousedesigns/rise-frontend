@@ -56,19 +56,19 @@ export default function App() {
 			<Box
 				minH={'-webkit-fill-available'}
 				_dark={{
-					bg: 'gray.900',
+					bg: 'bg.dark',
 					color: 'text.light',
 				}}
 				_light={{
-					bg: 'gray.50',
+					bg: 'bg.light',
 					color: 'text.dark',
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
 					<Stack h={'100vh'} w={'full'} overflow={'auto'} justifyContent={'space-between'} gap={0}>
 						<Header ref={headerRef} />
-						<Box h={'auto'} w={'full'} paddingTop={`${headerHeight}px`}>
-							<Main />
+						<Box h={'auto'} w={'full'} /* paddingTop={`${headerHeight}px`} */>
+							<Main pt={`${headerHeight}px`} />
 						</Box>
 						<Spacer />
 						<Footer />

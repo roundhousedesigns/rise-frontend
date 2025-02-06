@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import { Box, Container } from '@chakra-ui/react';
+import { Box, BoxProps, Container } from '@chakra-ui/react';
 import Dashboard from '@routes/Dashboard';
 import Login from '@routes/Login';
 import LostPassword from '@routes/LostPassword';
@@ -20,7 +20,7 @@ import Partner from '@routes/Partner';
 
 import LoggedIn from '@components/LoggedIn';
 
-export default function Main() {
+export default function Main({ ...props }: BoxProps) {
 	const routes = useRoutes([
 		{
 			path: '/',
@@ -146,8 +146,9 @@ export default function Main() {
 			justifyContent={'center'}
 			alignItems={'center'}
 			flex={'1 1 auto'}
+			{...props}
 		>
-			<Container w={'full'} maxW={'6xl'} px={{ base: 4, md: 8 }} pb={4}>
+			<Container w={'full'} maxW={'none'} pt={0} pb={4} px={0}>
 				{routes}
 			</Container>
 		</Box>

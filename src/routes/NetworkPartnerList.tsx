@@ -11,6 +11,8 @@ import {
 	SimpleGrid,
 	SimpleGridProps,
 	useToken,
+	Heading,
+	useColorMode,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -21,21 +23,21 @@ import ErrorAlert from '@common/ErrorAlert';
 export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.Element {
 	const [partners, { loading, error }] = useNetworkPartners();
 
-	const [yellow, green, red, orange, blue] = useToken('colors', [
-		'brand.yellow',
-		'brand.green',
-		'brand.red',
-		'brand.orange',
-		'brand.blue',
-	]);
+	const [blue] = useToken('colors', ['brand.blue']);
+	const { colorMode } = useColorMode();
 
 	if (loading) return <Spinner />;
 	if (error) return <ErrorAlert message={error.message} />;
 
-	console.info(partners);
-
 	return (
-		<SimpleGrid as={List} spacing={4} columns={{ base: 1, md: 3 }} {...props}>
+		<SimpleGrid
+			as={List}
+			spacing={4}
+			columns={{ base: 1, md: 3 }}
+			maxWidth='5xl'
+			mx='auto'
+			{...props}
+		>
 			<AnimatePresence>
 				{partners.map((partner) => (
 					<ListItem
@@ -64,14 +66,24 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 												borderRadius='md'
 												objectFit='cover'
 												border='2px solid'
-												borderColor={
-													[yellow, green, red, orange, blue][Math.floor(Math.random() * 5)]
-												}
+												borderColor={blue}
 												mb={4}
 											/>
 										</Box>
 									)}
-									{partner.excerpt && <Text variant={'postExcerpt'}>{parse(partner.excerpt)}</Text>}
+									<Heading
+										as={'h3'}
+										variant={'contentSubtitle'}
+										color='brand.blue'
+										textAlign={'center'}
+									>
+										{partner.title}
+									</Heading>
+									{partner.excerpt && (
+										<Text variant={'postExcerpt'} textAlign={'center'}>
+											{parse(partner.excerpt)}
+										</Text>
+									)}
 								</Link>
 							</Stack>
 						</Card>
