@@ -7,12 +7,10 @@ import {
 	Image,
 	Text,
 	Link,
-	Stack,
 	SimpleGrid,
 	SimpleGridProps,
 	useToken,
 	Heading,
-	useColorMode,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -24,20 +22,12 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 	const [partners, { loading, error }] = useNetworkPartners();
 
 	const [blue] = useToken('colors', ['brand.blue']);
-	const { colorMode } = useColorMode();
 
 	if (loading) return <Spinner />;
 	if (error) return <ErrorAlert message={error.message} />;
 
 	return (
-		<SimpleGrid
-			as={List}
-			spacing={4}
-			columns={{ base: 1, md: 3 }}
-			maxWidth='5xl'
-			mx='auto'
-			{...props}
-		>
+		<SimpleGrid as={List} spacing={6} minChildWidth='300px' maxWidth='5xl' mx='auto' {...props}>
 			<AnimatePresence>
 				{partners.map((partner) => (
 					<ListItem
@@ -47,25 +37,34 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 					>
-						<Card variant='listItem' p={4}>
-							<Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
-								<Link
-									as={RouterLink}
-									to={`/partners/${partner.slug}`}
-									textDecoration='none'
-									_hover={{ textDecoration: 'none' }}
-									color='inherit'
-									title={partner.title}
-									rel='bookmark'
-								>
+						<Link
+							as={RouterLink}
+							to={`/partners/${partner.slug}`}
+							textDecoration='none'
+							_hover={{ textDecoration: 'none' }}
+							color={'inherit'}
+							title={partner.title}
+							rel={'bookmark'}
+						>
+							<Card
+								variant='listItem'
+								pt={4}
+								pb={5}
+								px={4}
+								mx={0}
+								_light={{ bg: 'gray.100', color: 'text.dark', _hover: { bg: 'gray.600' } }}
+								_dark={{ bg: 'gray.700', color: 'text.light', _hover: { bg: 'gray.300' } }}
+								transition='background-color 150ms ease'
+							>
+								<Box>
 									{partner.featuredImage && (
 										<Box flex='0 0 200px'>
 											<Image
 												srcSet={partner.featuredImage.srcSet}
 												alt={`Logo for ${partner.title || ''}`}
-												borderRadius='md'
-												objectFit='cover'
-												border='2px solid'
+												borderRadius={'md'}
+												objectFit={'cover'}
+												border={'4px solid'}
 												borderColor={blue}
 												mb={4}
 											/>
@@ -84,9 +83,9 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 											{parse(partner.excerpt)}
 										</Text>
 									)}
-								</Link>
-							</Stack>
-						</Card>
+								</Box>
+							</Card>
+						</Link>
 					</ListItem>
 				))}
 			</AnimatePresence>

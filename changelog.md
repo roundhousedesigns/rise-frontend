@@ -15,6 +15,7 @@ with 1.0.0beta.
 - Improve: Minor styling tweaks
 - Improve: Make WP Post retrieval more robust. `ContentView` --> is now `PageView` and `usePostContent` is now `usePage`, which returns a `WPPost` item. This pattern can be reused for other post types!
 - Improve: Use the Rise 'star' glyph more liberally.
+- Improve: Global style fixes (ahhh branch drift......)
 
 - TODO: Jobs listing (in progress)
 - TODO: Jobs filtering and search

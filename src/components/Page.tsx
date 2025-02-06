@@ -8,6 +8,7 @@ import {
 	Center,
 	ContainerProps,
 	Container,
+	HeadingProps,
 } from '@chakra-ui/react';
 
 interface Props {
@@ -18,6 +19,7 @@ interface Props {
 	actions?: ReactNode;
 	loading?: boolean;
 	children: ReactNode;
+	titleProps?: HeadingProps;
 }
 
 export default function Page({
@@ -28,6 +30,7 @@ export default function Page({
 	fullWidthTemplate,
 	titleContainerWidth,
 	children,
+	titleProps,
 	...props
 }: Props & ContainerProps): JSX.Element {
 	const fullWidthTitleProps = {
@@ -60,7 +63,14 @@ export default function Page({
 					{...(fullWidthTemplate ? fullWidthTitleProps : {})}
 				>
 					{title ? (
-						<Heading variant={'pageTitle'} as={'h1'} my={0} lineHeight={'normal'}>
+						<Heading
+							variant={'pageTitle'}
+							as={'h1'}
+							my={0}
+							pl={4}
+							lineHeight={'normal'}
+							{...titleProps}
+						>
 							{title}
 						</Heading>
 					) : null}
