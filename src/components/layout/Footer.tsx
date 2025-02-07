@@ -38,8 +38,7 @@ export default function Footer() {
 						<FooterLink href={'https://risetheatre.org/privacy-policy'}>Privacy Policy</FooterLink>
 					</Flex>
 					<Text>
-						Site and Directory by{' '}
-						<FooterLink href={'https://roundhouse-designs.com'}>Roundhouse Designs</FooterLink>
+						<FooterLink href={'https://roundhouse-designs.com'}>Made by Roundhouse Designs</FooterLink>
 					</Text>
 				</Container>
 			</Box>
