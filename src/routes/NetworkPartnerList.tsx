@@ -73,9 +73,9 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 												alt={`Logo for ${partner.title || ''}`}
 												borderRadius='md'
 												objectFit='cover'
-												border={'3px solid'}
-												_light={{ borderColor: 'brand.blue' }}
-												_dark={{ borderColor: 'brand.yellow' }}
+												border={'1px solid'}
+												_light={{ borderColor: 'gray.200' }}
+												_dark={{ borderColor: 'gray.700' }}
 												mb={4}
 											/>
 										</Box>
