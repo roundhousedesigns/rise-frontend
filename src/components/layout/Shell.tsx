@@ -15,7 +15,6 @@ interface Props {
 	title?: string;
 	description?: string | JSX.Element;
 	fullWidthTemplate?: boolean;
-	titleContainerWidth?: string;
 	actions?: ReactNode;
 	loading?: boolean;
 	children: ReactNode;
@@ -28,13 +27,12 @@ export default function Shell({
 	actions,
 	loading,
 	fullWidthTemplate,
-	titleContainerWidth,
 	children,
 	titleProps,
 	...props
 }: Props & ContainerProps): JSX.Element {
 	const fullWidthTitleProps = {
-		maxWidth: titleContainerWidth || '5xl',
+		maxWidth: '5xl',
 		mx: 'auto',
 	};
 
@@ -69,6 +67,7 @@ export default function Shell({
 							my={0}
 							px={4}
 							lineHeight='normal'
+							w='full'
 							{...titleProps}
 						>
 							{title}
