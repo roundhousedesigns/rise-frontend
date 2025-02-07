@@ -54,8 +54,18 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 								mx={0}
 								border='1px solid'
 								borderColor='gray.200'
-								_light={{ bg: 'gray.100', color: 'text.dark', _hover: { bg: 'gray.200' } }}
-								_dark={{ bg: 'gray.700', color: 'text.light', _hover: { bg: 'gray.600' } }}
+								_light={{
+									bg: 'gray.100',
+									color: 'text.dark',
+									borderColor: 'gray.200',
+									_hover: { bg: 'gray.200' },
+								}}
+								_dark={{
+									bg: 'gray.700',
+									color: 'text.light',
+									borderColor: 'gray.600',
+									_hover: { bg: 'gray.600' },
+								}}
 								transition='background-color 150ms ease'
 							>
 								<Box>
@@ -66,8 +76,9 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 												alt={`Logo for ${partner.title || ''}`}
 												borderRadius={'md'}
 												objectFit={'cover'}
-												border={'4px solid'}
-												borderColor={blue}
+												border={'3px solid'}
+												_light={{ borderColor: 'brand.blue' }}
+												_dark={{ borderColor: 'brand.yellow' }}
 												mb={4}
 											/>
 										</Box>
