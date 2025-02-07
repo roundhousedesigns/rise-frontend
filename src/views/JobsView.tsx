@@ -1,6 +1,6 @@
 import { JobPost } from '@lib/classes';
 import JobsList from '@components/JobsList';
-import { Box, Flex, Stack } from '@chakra-ui/react';
+import { Flex, Stack } from '@chakra-ui/react';
 
 export default function JobsView({ jobs }: { jobs: JobPost[] }) {
 	return (
