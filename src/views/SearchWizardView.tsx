@@ -9,6 +9,7 @@ import {
 	Flex,
 	Spacer,
 	useToken,
+	chakra,
 } from '@chakra-ui/react';
 import { SearchContext } from '@context/SearchContext';
 import SearchFilterAccordionItem from '@common/SearchFilterAccordionItem';
@@ -78,7 +79,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				pointerEvents={name ? 'none' : 'auto'}
 				transition={'opacity 250ms ease'}
 			>
-				<form id={'search-candidates'} onSubmit={onSubmit}>
+				<chakra.form id={'search-candidates'} onSubmit={onSubmit}>
 					<Stack gap={6} mt={searchWizardActive ? 0 : 2} mb={4}>
 						<Fade in={!savedSearchId} unmountOnExit>
 							<Box>
@@ -103,7 +104,10 @@ export default function SearchWizardView({ onSubmit }: Props) {
 									</SearchFilterSection>
 								</Fade>
 								<Fade in={!!departments.length && !!jobs.length} unmountOnExit>
-									<SearchFilterSection id='filterSkills' heading={'What skills are you looking for?'}>
+									<SearchFilterSection
+										id='filterSkills'
+										heading={'What skills are you looking for?'}
+									>
 										<SearchFilterSkills />
 									</SearchFilterSection>
 								</Fade>
@@ -126,7 +130,7 @@ export default function SearchWizardView({ onSubmit }: Props) {
 							</Stack>
 						</Box>
 					</Stack>
-				</form>
+				</chakra.form>
 			</Box>
 
 			<Spacer />
@@ -141,7 +145,11 @@ export default function SearchWizardView({ onSubmit }: Props) {
 				<SearchFilterAccordionItem
 					heading={
 						<Flex alignItems='center'>
-							<Icon as={FiFolder} fill={savedSearches?.length > 0 ? orange : 'transparent'} mr={2} />
+							<Icon
+								as={FiFolder}
+								fill={savedSearches?.length > 0 ? orange : 'transparent'}
+								mr={2}
+							/>
 							<Text as='span' my={0}>
 								Saved Searches
 							</Text>

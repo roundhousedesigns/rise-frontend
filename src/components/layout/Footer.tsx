@@ -1,11 +1,7 @@
 import { ReactNode } from 'react';
-import pkgJSON from '@@/package.json';
-import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
+import { Text, Link, Box, Container, LightMode, Flex } from '@chakra-ui/react';
 import useFrontendSetting from '@queries/useFrontendSetting';
 import RiseStar from '@common/icons/RiseStar';
-import DevMode from '@dev/DevMode';
-
-const __APP_VERSION__ = `v${pkgJSON.version}`;
 
 interface FooterLinkProps {
 	href?: string;
@@ -28,29 +24,23 @@ export default function Footer() {
 
 	return (
 		<LightMode>
-			<Box w='full' py={4} alignItems='center' bgColor={'brand.orange'} fontSize='sm'>
-				<Container maxW='6xl' textAlign='center'>
+			<Box w='full' py={4} bgColor={'brand.orange'} fontSize='md'>
+				<Container maxW='5xl' textAlign='center'>
 					<Text align='center'>{footerNotice}</Text>
-					<Text>
+					<Flex justifyContent='center' alignItems='center'>
 						&copy; {year}{' '}
 						<FooterLink href={'https://maestramusic.org'}>Maestra Music Inc.</FooterLink>
-						<RiseStar />
+						<RiseStar fontSize='xs' />
 						<FooterLink href={'https://risetheatre.org/terms-conditions'}>
 							Terms & Conditions
 						</FooterLink>
-						<RiseStar />
+						<RiseStar fontSize='xs' />
 						<FooterLink href={'https://risetheatre.org/privacy-policy'}>Privacy Policy</FooterLink>
-					</Text>
+					</Flex>
 					<Text>
-						By <FooterLink href={'https://roundhouse-designs.com'}>Roundhouse Designs</FooterLink>
+						Site and Directory by{' '}
+						<FooterLink href={'https://roundhouse-designs.com'}>Roundhouse Designs</FooterLink>
 					</Text>
-
-					<DevMode>
-						<Box p={2} bgColor={'brand.green'} fontSize='sm'>
-							<Text fontWeight='bold'>Development Branch</Text>
-							<Text>{__APP_VERSION__}</Text>
-						</Box>
-					</DevMode>
 				</Container>
 			</Box>
 		</LightMode>

@@ -8,6 +8,7 @@ import {
 	Container,
 	Heading,
 	useToast,
+	chakra,
 } from '@chakra-ui/react';
 import TextInput from '@common/inputs/TextInput';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
@@ -94,7 +95,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 			</Heading>
 
 			<Box mt={2}>
-				<form onSubmit={handleSubmit}>
+				<chakra.form onSubmit={handleSubmit}>
 					<Stack direction='row' spacing={6}>
 						<TextInput
 							value={newPassword}
@@ -136,7 +137,7 @@ export default function ResetPasswordView({ token, login }: Props) {
 						</Button>
 						<FormErrorMessage mt={0}>{errorMessage}</FormErrorMessage>
 					</Box>
-				</form>
+				</chakra.form>
 			</Box>
 		</Container>
 	);

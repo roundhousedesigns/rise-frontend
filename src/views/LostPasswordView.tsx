@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
-import { Button, Text, Flex, Container, Heading, Box, useToast } from '@chakra-ui/react';
+import { Button, Text, Flex, Container, Heading, Box, useToast, chakra } from '@chakra-ui/react';
 
 import TextInput from '@common/inputs/TextInput';
 import useSendPasswordResetEmail from '@mutations/useSendPasswordResetEmail';
@@ -65,7 +65,7 @@ export default function LoginView() {
 				Please enter your email address, and we'll send you a link to reset your password.
 			</Text>
 			<Box my={4}>
-				<form onSubmit={handleSubmit}>
+				<chakra.form onSubmit={handleSubmit}>
 					<Flex gap={2}>
 						<TextInput
 							value={username}
@@ -82,7 +82,7 @@ export default function LoginView() {
 							Submit
 						</Button>
 					</Flex>
-				</form>
+				</chakra.form>
 			</Box>
 		</Container>
 	);

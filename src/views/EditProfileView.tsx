@@ -27,6 +27,7 @@ import {
 	Collapse,
 	ButtonProps,
 	BoxProps,
+	chakra,
 } from '@chakra-ui/react';
 import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
@@ -924,7 +925,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	};
 
 	return editProfile ? (
-		<form id={'edit-profile'} onSubmit={handleSubmit}>
+		<chakra.form id={'edit-profile'} onSubmit={handleSubmit}>
 			<Stack direction='column' flexWrap='nowrap' gap={4} position='relative'>
 				<ProfileStackItem mt={4} mb={0}>
 					<Accordion allowToggle>
@@ -1543,6 +1544,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 					Save Changes
 				</Button>
 			</Slide>
-		</form>
+		</chakra.form>
 	) : null;
 }

@@ -7,6 +7,7 @@ import {
 	useClipboard,
 	useToast,
 	Heading,
+	chakra,
 } from '@chakra-ui/react';
 import { FiCheck, FiCopy } from 'react-icons/fi';
 import { useErrorMessage, useProfileUrl, useValidateProfileSlug } from '@hooks/hooks';
@@ -98,7 +99,7 @@ export default function ChangeProfileUrlView() {
 				justifyContent={'space-between'}
 			>
 				<Box>
-					<form onSubmit={handleSubmit}>
+					<chakra.form onSubmit={handleSubmit}>
 						<Heading variant='contentSubtitle'>Profile handle</Heading>
 						<Text fontSize='sm' lineHeight='shorter'>
 							Give yourself a memorable handle to make sharing your profile easy.
@@ -131,7 +132,7 @@ export default function ChangeProfileUrlView() {
 								Save
 							</Button>
 						</Flex>
-					</form>
+					</chakra.form>
 				</Box>
 				<Box flex='auto' fontSize='sm'>
 					<Box opacity={hasEditedSlug ? 0.8 : 1}>

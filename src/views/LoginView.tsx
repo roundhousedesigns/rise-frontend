@@ -21,6 +21,7 @@ import {
 	Stack,
 	useMediaQuery,
 	DrawerHeader,
+	chakra,
 } from '@chakra-ui/react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
@@ -103,7 +104,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							<Divider my={4} />
 							<Box flex={'1 1 auto'}>
 								{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
-								<form onSubmit={handleLoginSubmit}>
+								<chakra.form onSubmit={handleLoginSubmit}>
 									<TextInput
 										value={credentials.login}
 										name='login'
@@ -165,7 +166,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 											Join Now
 										</Button>
 									</Box>
-								</form>
+								</chakra.form>
 							</Box>
 						</Box>
 					</Box>

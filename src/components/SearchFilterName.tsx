@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
-import { Box, BoxProps, Flex, Icon, Stack } from '@chakra-ui/react';
+import { Box, BoxProps, Flex, Icon, Stack, chakra } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { isEqual } from 'lodash';
 import { FiSearch, FiXCircle } from 'react-icons/fi';
@@ -86,7 +86,7 @@ export default function SearchFilterName({ ...props }: BoxProps) {
 
 	return (
 		<Box {...props}>
-			<form id={'search-by-name'} onSubmit={handleSubmit}>
+			<chakra.form id={'search-by-name'} onSubmit={handleSubmit}>
 				<Flex gap={2} justifyContent={'space-between'} maxW='lg'>
 					<TextInput
 						placeholder='Name'
@@ -126,7 +126,7 @@ export default function SearchFilterName({ ...props }: BoxProps) {
 						/>
 					</Stack>
 				</Flex>
-			</form>
+			</chakra.form>
 		</Box>
 	);
 }

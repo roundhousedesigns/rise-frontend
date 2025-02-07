@@ -10,6 +10,7 @@ import {
 	FormLabel,
 	Button,
 	Text,
+	chakra,
 } from '@chakra-ui/react';
 import { FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import { SearchFilterSet } from '@lib/classes';
@@ -102,7 +103,7 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 						Give this search a short, descriptive name to easily run it again.
 					</Text>
 
-					<form id={'rename-search'} onSubmit={handleSave}>
+					<chakra.form id={'rename-search'} onSubmit={handleSave}>
 						<FormControl>
 							<FormLabel
 								aria-label='Name'
@@ -132,7 +133,7 @@ export default function EditSavedSearchModal({ id, title, searchTerms, isOpen, o
 						<Button onClick={handleEditOnClose} colorScheme='red' isDisabled={saveLoading}>
 							Cancel
 						</Button>
-					</form>
+					</chakra.form>
 				</ModalBody>
 			</ModalContent>
 		</Modal>

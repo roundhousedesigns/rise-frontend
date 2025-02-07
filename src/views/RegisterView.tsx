@@ -12,6 +12,7 @@ import {
 	useToast,
 	Flex,
 	useMediaQuery,
+	chakra,
 } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
@@ -146,7 +147,7 @@ export default function RegisterView() {
 			<Heading as='h2' variant='contentTitle'>
 				Create an account
 			</Heading>
-			<form onSubmit={handleSubmit}>
+			<chakra.form onSubmit={handleSubmit}>
 				<Stack direction='row' spacing={6}>
 					<TextInput
 						value={firstName}
@@ -289,7 +290,7 @@ export default function RegisterView() {
 					</Box>
 					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent={'flex-end'} />}
 				</Flex>
-			</form>
+			</chakra.form>
 		</>
 	);
 }

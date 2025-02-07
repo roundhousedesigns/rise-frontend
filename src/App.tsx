@@ -3,15 +3,19 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Spacer, Stack, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Stack, Text, chakra, useDisclosure } from '@chakra-ui/react';
+import pkgJSON from '@@/package.json';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import Header from '@layout/Header';
 import Main from '@layout/Main';
 import Footer from '@layout/Footer';
 
+const __APP_VERSION__ = `v${pkgJSON.version}`;
+
 // Hooks
 import useWp from '@hooks/queries/useWp';
+import DevMode from './dev/DevMode';
 
 export default function App() {
 	const { isOpen: drawerIsOpen, onOpen: openDrawer, onClose: closeDrawer } = useDisclosure();
@@ -74,6 +78,24 @@ export default function App() {
 						<Footer />
 					</Stack>
 				</SearchDrawerContext.Provider>
+				<DevMode>
+					<Flex
+						w='100vw'
+						position='fixed'
+						bottom={0}
+						left={0}
+						justifyContent='center'
+						alignItems='center'
+						gap={2}
+						m={0}
+						px={4}
+						bgColor='brand.blue'
+						fontSize='2xs'
+					>
+						<Text>Development Branch:</Text>
+						<chakra.code>{__APP_VERSION__}</chakra.code>
+					</Flex>
+				</DevMode>
 			</Box>
 		</SearchContextProvider>
 	);

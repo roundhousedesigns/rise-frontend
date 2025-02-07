@@ -1,5 +1,5 @@
 import { ChangeEvent, useRef } from 'react';
-import { Button, ButtonProps, VisuallyHidden } from '@chakra-ui/react';
+import { Button, ButtonProps, VisuallyHidden, chakra } from '@chakra-ui/react';
 
 interface Props {
 	fieldName: string;
@@ -42,7 +42,7 @@ export default function FileUploadButton({
 		>
 			{children}
 			<VisuallyHidden>
-				<input
+				<chakra.input
 					ref={fileInputRef}
 					type='file'
 					name={fieldName}
