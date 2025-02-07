@@ -364,7 +364,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	 * @return {void} This function does not return anything.
 	 */
 	const handleInputChange = (
-		event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement> | FormEvent<HTMLDivElement>
+		event:
+			| ChangeEvent<HTMLInputElement>
+			| ChangeEvent<HTMLTextAreaElement>
+			| FormEvent<HTMLDivElement>
 	) => {
 		// Ensure we're working with an event that has a target with name and value
 		if (!('target' in event) || !('name' in event.target) || !('value' in event.target)) return;
@@ -422,7 +425,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		if (!('files' in event.target)) return;
 
 		const target = event.target as HTMLInputElement;
-		if (!target || !target.files) return;
+		if (!target.files) return;
 
 		const { name, files, accept } = target;
 

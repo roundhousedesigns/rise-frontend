@@ -1,13 +1,13 @@
 import JobsView from '@views/JobsView';
 import useJobPosts from '@queries/useJobPosts';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 
 export default function Jobs() {
 	const [jobs, { loading }] = useJobPosts();
 
 	return (
-		<Page title='Jobs' loading={loading}>
+		<Shell title='Jobs' loading={loading}>
 			<JobsView jobs={jobs} />
-		</Page>
+		</Shell>
 	);
 }

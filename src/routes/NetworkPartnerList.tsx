@@ -9,7 +9,6 @@ import {
 	Link,
 	SimpleGrid,
 	SimpleGridProps,
-	useToken,
 	Heading,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -20,8 +19,6 @@ import ErrorAlert from '@common/ErrorAlert';
 
 export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.Element {
 	const [partners, { loading, error }] = useNetworkPartners();
-
-	const [blue] = useToken('colors', ['brand.blue']);
 
 	if (loading) return <Spinner />;
 	if (error) return <ErrorAlert message={error.message} />;

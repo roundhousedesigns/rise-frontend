@@ -6,7 +6,7 @@ import useUserIdBySlug from '@queries/useUserIdBySlug';
 import useUserProfile from '@queries/useUserProfile';
 import ProfileView from '@views/ProfileView';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 
 export default function Profile(): JSX.Element {
 	const [{ loggedInId, loggedInSlug }] = useViewer();
@@ -33,13 +33,13 @@ export default function Profile(): JSX.Element {
 	);
 
 	return (
-		<Page
+		<Shell
 			title={profileIsLoggedInUser ? 'My Profile' : ''}
 			actions={<PageActions />}
 			loading={loading}
 			pb={8}
 		>
 			{profile ? <ProfileView profile={profile} allowStar={loggedInId !== userId} /> : false}
-		</Page>
+		</Shell>
 	);
 }

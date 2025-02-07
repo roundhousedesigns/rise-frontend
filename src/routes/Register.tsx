@@ -1,5 +1,5 @@
 import { useMediaQuery } from '@chakra-ui/react';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import RegisterView from '@views/RegisterView';
 import BackToLoginButton from '@common/BackToLoginButton';
 
@@ -8,8 +8,8 @@ export default function Register() {
 	const Button = () => (isLargerThanMd ? <BackToLoginButton /> : <></>);
 
 	return (
-		<Page title={'Join the Directory'} actions={<Button />}>
+		<Shell title={'Join the Directory'} actions={<Button />}>
 			<RegisterView />
-		</Page>
+		</Shell>
 	);
 }

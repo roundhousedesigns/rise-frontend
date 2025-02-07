@@ -11,10 +11,8 @@ export default function NetworkPartnersView() {
 	]);
 	const { colorMode } = useColorMode();
 
-	console.log(light, dark, blue, yellow);
-
 	return (
-		<>
+		<Box w={'100vw'} position='relative' left='-1rem'>
 			<Box
 				position='relative'
 				width='full'
@@ -63,6 +61,6 @@ export default function NetworkPartnersView() {
 					<NetworkPartnerList />
 				</Container>
 			</Box>
-		</>
+		</Box>
 	);
 }

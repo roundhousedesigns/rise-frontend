@@ -1,10 +1,10 @@
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import LostPasswordView from '@views/LostPasswordView';
 
 export default function LostPassword() {
 	return (
-		<Page>
+		<Shell>
 			<LostPasswordView />
-		</Page>
+		</Shell>
 	);
 }

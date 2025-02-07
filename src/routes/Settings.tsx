@@ -1,10 +1,10 @@
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import SettingsView from '@views/SettingsView';
 
 export default function Settings() {
 	return (
-		<Page title={'Settings'}>
+		<Shell title={'Settings'}>
 			<SettingsView />
-		</Page>
+		</Shell>
 	);
 }

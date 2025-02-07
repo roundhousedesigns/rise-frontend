@@ -6,7 +6,6 @@ import {
 	useColorMode,
 	useBreakpointValue,
 	TooltipProps,
-	IconButtonProps,
 } from '@chakra-ui/react';
 
 interface Props {

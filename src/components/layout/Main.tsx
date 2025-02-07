@@ -17,6 +17,7 @@ import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
 import Partners from '@routes/Partners';
 import Partner from '@routes/Partner';
+import Page from '@routes/Page';
 
 import LoggedIn from '@components/LoggedIn';
 
@@ -129,6 +130,10 @@ export default function Main({ ...props }: BoxProps) {
 		{
 			path: '/job/:id',
 			element: <Job />,
+		},
+		{
+			path: '/:slug',
+			element: <Page />,
 		},
 		{
 			path: '*',

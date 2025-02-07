@@ -1,16 +1,18 @@
 /**
- * usePage hook. Query a post's (or page, CPT, etc) content by ID.
+ * usePageById hook. Query a post's (or page, CPT, etc) content by ID.
  */
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
 import { WPPost } from '@lib/classes';
 
-const QUERY_PAGE = gql`
-	query PageQuery($id: ID = "") {
-		page(id: $id, idType: DATABASE_ID) {
-			id: databaseId
-			title
-			content
+const QUERY_PAGES = gql`
+	query PagesQuery($id: Int) {
+		pages(where: { id: $id }) {
+			nodes {
+				id: databaseId
+				title
+				content(format: RENDERED)
+			}
 		}
 	}
 `;
@@ -21,18 +23,18 @@ const QUERY_PAGE = gql`
  * @param {id} Post ID
  * @returns A tuple of a WPPost object and a query result object.
  */
-const usePage = (id: number | string): [WPPost | null, any] => {
-	const result = useQuery(QUERY_PAGE, {
+const usePageById = (id: number): [WPPost | null, any] => {
+	const result = useQuery(QUERY_PAGES, {
 		variables: {
 			id,
 		},
 	});
 
-	if (!result.data?.page) {
+	if (!result.data?.pages) {
 		return [null, omit(result, ['data'])];
 	}
 
-	const { id: postId, title, content } = result.data.page;
+	const { id: postId, title, content } = result.data.pages.nodes[0];
 
 	const post = new WPPost({
 		id: postId,
@@ -44,4 +46,4 @@ const usePage = (id: number | string): [WPPost | null, any] => {
 	return [post, omit(result, ['data'])];
 };
 
-export default usePage;
+export default usePageById;

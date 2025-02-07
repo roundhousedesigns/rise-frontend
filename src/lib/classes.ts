@@ -604,6 +604,7 @@ export class WPPost extends WPItem {
 	title?: string;
 	excerpt?: string;
 	content?: string;
+	uri?: string;
 	featuredImage?: WPAttachment;
 
 	constructor(params: WPItemParams) {
@@ -614,6 +615,7 @@ export class WPPost extends WPItem {
 		this.title = params.title ? unescape(params.title) : undefined;
 		this.excerpt = params.excerpt ? unescape(params.excerpt) : undefined;
 		this.content = params.content ? unescape(params.content) : undefined;
+		this.uri = params.uri ? params.uri : undefined;
 		this.featuredImage = params.featuredImage ? new WPAttachment(params.featuredImage) : undefined;
 	}
 }

@@ -19,8 +19,8 @@ import { handleReCaptchaVerify } from '@lib/utils';
 import TextInput from '@common/inputs/TextInput';
 import useRegisterUser from '@mutations/useRegisterUser';
 import { useErrorMessage, useValidatePassword } from '@hooks/hooks';
+import usePageById from '@queries/usePageById';
 import { RegisterUserInput } from '@lib/types';
-import usePage from '@queries/usePage';
 import BackToLoginButton from '@common/BackToLoginButton';
 import RequiredAsterisk from '@common/RequiredAsterisk';
 
@@ -40,7 +40,7 @@ export default function RegisterView() {
 	const [passwordStrongEnough, setPasswordStrongEnough] = useState<boolean>(false);
 	const [formIsValid, setFormIsValid] = useState<boolean>(false);
 	const [errorCode, setErrorCode] = useState<string>('');
-	const [page, { pageLoading, pageError }] = usePage('576');
+	const [page, { pageLoading, pageError }] = usePageById(576);
 
 	const passwordStrength = useValidatePassword(password);
 

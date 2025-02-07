@@ -1,10 +1,10 @@
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import SearchResultsView from '@views/SearchResultsView';
 
 export default function Search() {
 	return (
-		<Page title={'Search Results'}>
+		<Shell title={'Search Results'}>
 			<SearchResultsView />
-		</Page>
+		</Shell>
 	);
 }

@@ -22,7 +22,7 @@ interface Props {
 	titleProps?: HeadingProps;
 }
 
-export default function Page({
+export default function Shell({
 	title,
 	description,
 	actions,
@@ -67,7 +67,7 @@ export default function Page({
 							variant={'pageTitle'}
 							as={'h1'}
 							my={0}
-							pl={4}
+							px={4}
 							lineHeight={'normal'}
 							{...titleProps}
 						>
@@ -89,7 +89,9 @@ export default function Page({
 				</Text>
 			) : null}
 
-			{children}
+			<Box px={4} mx={'auto'}>
+				{children}
+			</Box>
 		</Container>
 	);
 }

@@ -1,11 +1,11 @@
 import { Box, Heading } from '@chakra-ui/react';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import DashboardView from '@views/DashboardView';
 import LoggedIn from '@components/LoggedIn';
 
 export default function Notfound() {
 	return (
-		<Page>
+		<Shell>
 			<Heading variant={'pageTitle'} as={'h2'}>
 				404, friend.
 			</Heading>
@@ -17,6 +17,6 @@ export default function Notfound() {
 					<DashboardView />
 				</LoggedIn>
 			</Box>
-		</Page>
+		</Shell>
 	);
 }

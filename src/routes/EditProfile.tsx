@@ -5,7 +5,7 @@ import { EditProfileContextProvider } from '@context/EditProfileContext';
 import useViewer from '@queries/useViewer';
 import useUserProfile from '@queries/useUserProfile';
 import EditProfileView from '@views/EditProfileView';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import ErrorAlert from '@common/ErrorAlert';
 
 const JumpToCreditsButton = forwardRef<HTMLButtonElement, {}>((props, ref) => {
@@ -38,7 +38,7 @@ export default function EditProfile() {
 	const PageActions = () => <JumpToCreditsButton ref={ref} />;
 
 	return (
-		<Page title={'Update Profile'} actions={<PageActions />}>
+		<Shell title={'Update Profile'} actions={<PageActions />}>
 			<EditProfileContextProvider initialState={profile}>
 				{profile && !loading && !error ? (
 					<EditProfileView profile={profile} />
@@ -50,6 +50,6 @@ export default function EditProfile() {
 					''
 				)}
 			</EditProfileContextProvider>
-		</Page>
+		</Shell>
 	);
 }

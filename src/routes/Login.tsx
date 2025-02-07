@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import LoginView from '@views/LoginView';
 import useViewer from '@queries/useViewer';
 
@@ -20,8 +20,8 @@ export default function Login() {
 	});
 
 	return (
-		<Page title={'Sign in to RISE'}>
+		<Shell title={'Sign in to RISE'}>
 			<LoginView alert={alert ? alert : ''} alertStatus={alertStatus ? alertStatus : ''} />
-		</Page>
+		</Shell>
 	);
 }

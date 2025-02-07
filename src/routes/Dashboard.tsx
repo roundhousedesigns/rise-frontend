@@ -1,10 +1,10 @@
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import DashboardView from '@views/DashboardView';
 
 export default function Dashboard() {
 	return (
-		<Page>
+		<Shell>
 			<DashboardView />
-		</Page>
+		</Shell>
 	);
 }

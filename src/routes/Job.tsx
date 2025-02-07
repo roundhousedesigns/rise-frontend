@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import JobView from '@views/JobView';
 import useJobPosts from '@queries/useJobPosts';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 
 export default function Jobs() {
 	const params = useParams();
@@ -11,8 +11,8 @@ export default function Jobs() {
 	const title = !job.length ? '' : job[0].title;
 
 	return (
-		<Page title={title} loading={!!loading}>
+		<Shell title={title} loading={!!loading}>
 			<JobView job={job[0]} />
-		</Page>
+		</Shell>
 	);
 }

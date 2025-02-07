@@ -1,7 +1,7 @@
 import { Link, Button } from '@chakra-ui/react';
 import { FiFlag } from 'react-icons/fi';
 import PageView from '../views/PageView';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 
 export default function Help() {
 	const EmailButton = () => (
@@ -17,8 +17,8 @@ export default function Help() {
 	);
 
 	return (
-		<Page title={'Help'} actions={<EmailButton />}>
+		<Shell title={'Help'} actions={<EmailButton />}>
 			<PageView postId={'959'} />
-		</Page>
+		</Shell>
 	);
 }

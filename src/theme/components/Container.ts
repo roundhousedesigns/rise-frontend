@@ -4,7 +4,6 @@ const variants = {
 	pageContent: defineStyle(() => {
 		return {
 			maxWidth: '5xl',
-			mt: 4,
 			pt: 4,
 			px: 0,
 		};

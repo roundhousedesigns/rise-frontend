@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { Text } from '@chakra-ui/react';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 import ResetPasswordView from '@views/ResetPasswordView';
 
 export default function ResetPassword() {
@@ -10,12 +10,12 @@ export default function ResetPassword() {
 	const login = params.get('login');
 
 	return (
-		<Page>
+		<Shell>
 			{key && login ? (
 				<ResetPasswordView token={key} login={login} />
 			) : (
 				<Text size={'md'}>Invalid password reset link.</Text>
 			)}
-		</Page>
+		</Shell>
 	);
 }

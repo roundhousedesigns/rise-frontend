@@ -15,7 +15,7 @@ const QUERY_NETWORK_PARTNER_ID = gql`
  * Query to get a NetworkPartner ID by its slug
  *
  * @param {string} slug The slug of the NetworkPartner.
- * @returns A tuple of a prepared data object and a query result object.
+ * @returns A tuple of the networkPartner ID and a query result object.
  */
 const useNetworkPartnerIdBySlug = (slug: string): [number | null, any] => {
 	const result = useQuery(QUERY_NETWORK_PARTNER_ID, {
@@ -26,7 +26,7 @@ const useNetworkPartnerIdBySlug = (slug: string): [number | null, any] => {
 
 	const { networkPartnerIdBySlug: networkPartnerId } = result.data || {};
 
-	return [networkPartnerId, omit(result, ['data'])];
+	return [Number(networkPartnerId), omit(result, ['data'])];
 };
 
 export default useNetworkPartnerIdBySlug;

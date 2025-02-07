@@ -170,7 +170,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								)}
 							</ButtonGroup>
 							{isLargerThanMd ? (
-								<RiseStar color={{ _dark: 'brand.orange', _light: 'brand.blue' }} />
+								<RiseStar _dark={{ color: 'brand.orange' }} _light={{ color: 'brand.blue' }} />
 							) : null}
 							<ButtonGroup
 								color={'text.light'}

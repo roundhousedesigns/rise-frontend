@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import useNetworkPartnerIdBySlug from '@queries/useNetworkPartnerIdBySlug';
 import useNetworkPartners from '@queries/useNetworkPartners';
 import NetworkPartnerView from '@views/NetworkPartnerView';
-import Page from '@components/Page';
+import Shell from '@layout/Shell';
 
 export default function Partner() {
 	const params = useParams();
@@ -13,8 +13,8 @@ export default function Partner() {
 	const title = !networkPartners.length ? '' : networkPartners[0].title;
 
 	return (
-		<Page title={title} loading={!!loading}>
+		<Shell title={title} loading={!!loading}>
 			<NetworkPartnerView partner={networkPartners[0]} />
-		</Page>
+		</Shell>
 	);
 }
