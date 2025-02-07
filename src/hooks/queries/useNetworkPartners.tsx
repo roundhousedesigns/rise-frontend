@@ -7,7 +7,7 @@ import { WPAttachment, WPPost } from '@lib/classes';
 
 export const QUERY_NETWORK_PARTNERS = gql`
 	query QueryNetworkPartners($id: Int = 0) {
-		networkPartners(where: { id: $id }) {
+		networkPartners(where: { id: $id }, last: 999) {
 			nodes {
 				id: databaseId
 				slug
@@ -20,7 +20,7 @@ export const QUERY_NETWORK_PARTNERS = gql`
 					}
 				}
 				excerpt(format: RAW)
-				content(format: RAW)
+				content(format: RENDERED)
 			}
 		}
 	}

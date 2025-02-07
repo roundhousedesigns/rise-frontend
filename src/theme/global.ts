@@ -37,6 +37,12 @@ export const styles = {
 			fontSize: '3rem',
 		},
 		'.wp-post-content': {
+			a: {
+				'&:not(.wp-block-button__link), &:not(.wp-element-button)': {
+					textDecoration: 'underline',
+					color: 'brand.blue',
+				},
+			},
 			p: {
 				marginTop: '1em',
 				marginBottom: '1em',
@@ -50,10 +56,9 @@ export const styles = {
 					marginBottom: 0,
 				},
 			},
-			a: {
-				'&:not(.wp-block-button__link), &:not(.wp-element-button)': {
-					textDecoration: 'underline',
-					color: 'brand.blue',
+			'.wp-block-group': {
+				'*': {
+					flex: 1,
 				},
 			},
 		},

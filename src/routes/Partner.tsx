@@ -1,20 +1,20 @@
 import { useParams } from 'react-router-dom';
 import useNetworkPartnerIdBySlug from '@queries/useNetworkPartnerIdBySlug';
-import useNetworkPartners from '@queries/useNetworkPartners';
-import NetworkPartnerView from '@views/NetworkPartnerView';
 import Shell from '@layout/Shell';
+import NetworkPartnerView from '../views/NetworkPartnerView';
 
 export default function Partner() {
 	const params = useParams();
 	const slug = params.slug ? params.slug : '';
-	const [networkPartnerId] = useNetworkPartnerIdBySlug(slug);
-	const [networkPartners, { loading }] = useNetworkPartners(networkPartnerId || 0);
+	const [networkPartnerId, { loading }] = useNetworkPartnerIdBySlug(slug);
 
-	const title = !networkPartners.length ? '' : networkPartners[0].title;
+	console.info('Partner', slug);
 
 	return (
-		<Shell title={title} loading={!!loading}>
-			<NetworkPartnerView partner={networkPartners[0]} />
+		<Shell loading={!!loading} fullWidthTemplate>
+			{networkPartnerId && (
+				<NetworkPartnerView postId={networkPartnerId} titleProps={{ textAlign: 'center' }} />
+			)}
 		</Shell>
 	);
 }
