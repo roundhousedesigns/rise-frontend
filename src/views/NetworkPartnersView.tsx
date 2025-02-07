@@ -42,7 +42,7 @@ export default function NetworkPartnersView() {
 						w='4xl'
 						bg={blue}
 						textAlign={'center'}
-						fontSize={'lg'}
+						fontSize={'xl'}
 						maxW='full'
 					/>
 				</Box>
