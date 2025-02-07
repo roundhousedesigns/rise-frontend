@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import pkgJSON from '@@/package.json';
 import { Text, Link, Box, Container, LightMode } from '@chakra-ui/react';
 import useFrontendSetting from '@queries/useFrontendSetting';
+import RiseStar from '@common/icons/RiseStar';
 import DevMode from '@dev/DevMode';
-import { Dot } from '@common/icons/Dot';
 
 const __APP_VERSION__ = `v${pkgJSON.version}`;
 
@@ -34,11 +34,11 @@ export default function Footer() {
 					<Text>
 						&copy; {year}{' '}
 						<FooterLink href={'https://maestramusic.org'}>Maestra Music Inc.</FooterLink>
-						<Dot boxSize={1} />
+						<RiseStar />
 						<FooterLink href={'https://risetheatre.org/terms-conditions'}>
 							Terms & Conditions
 						</FooterLink>
-						<Dot boxSize={1} />
+						<RiseStar />
 						<FooterLink href={'https://risetheatre.org/privacy-policy'}>Privacy Policy</FooterLink>
 					</Text>
 					<Text>

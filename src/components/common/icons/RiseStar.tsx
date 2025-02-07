@@ -1,9 +1,9 @@
-import { chakra, CircleProps } from '@chakra-ui/react';
+import { Circle, CircleProps } from '@chakra-ui/react';
 
 const RiseStar = ({ ...props }: CircleProps) => (
-	<chakra.span px={2} {...props}>
+	<Circle height='auto' width='auto' px={1} lineHeight='normal' title='separator' {...props}>
 		✺
-	</chakra.span>
+	</Circle>
 );
 
 export default RiseStar;

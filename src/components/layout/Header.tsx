@@ -24,7 +24,6 @@ import useViewer from '@queries/useViewer';
 import useUserProfile from '@queries/useUserProfile';
 import useSavedSearches from '@queries/useSavedSearches';
 import ProfileNotices from '@common/ProfileNotices';
-import { Dot } from '@common/icons/Dot';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 import RiseStar from '../common/icons/RiseStar';
@@ -41,7 +40,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, light] = useToken('colors', ['orange.300', 'text.light']);
+	const [orange, blue, gray, textLight, textDark] = useToken('colors', [
+		'brand.orange',
+		'brand.blue',
+		'gray.400',
+		'text.light',
+		'text.dark',
+	]);
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
@@ -54,17 +59,21 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		openDrawer();
 	};
 
+	const StarSeparator = () => (
+		<RiseStar fontSize='sm' color={gray} />
+	);
+
 	return (
 		<Box
 			ref={ref}
 			id={'header'}
 			w={'full'}
-			bg={'text.dark'}
-			color={'text.light'}
+			bg={textDark}
+			color={textLight}
 			position={'fixed'}
 			top={'0'}
 			borderBottomWidth={2}
-			borderBottomColor={'text.light'}
+			borderBottomColor={textLight}
 			zIndex={1000}
 		>
 			<Container centerContent w={'full'} maxW={'9xl'} p={2}>
@@ -169,9 +178,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									false
 								)}
 							</ButtonGroup>
-							{isLargerThanMd ? (
-								<RiseStar _dark={{ color: 'brand.orange' }} _light={{ color: 'brand.blue' }} />
-							) : null}
+							{isLargerThanMd ? <StarSeparator /> : null}
 							<ButtonGroup
 								color={'text.light'}
 								mx={2}
@@ -197,15 +204,11 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								) : null}
 							</ButtonGroup>
 
-							{isLargerThanMd ? (
-								<Dot
-									boxSize={1}
-									pathProps={{ fill: 'transparent', stroke: light, strokeWidth: 8 }}
-									mr={3}
-								/>
-							) : null}
+							{isLargerThanMd ? <StarSeparator /> : null}
 
-							<MainMenu />
+							<Box ml={1.5}>
+								<MainMenu />
+							</Box>
 						</Flex>
 					) : (
 						false
