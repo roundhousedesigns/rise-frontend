@@ -14,20 +14,20 @@ export default function PersonalIconLinks({ socials, ...props }: Props & FlexPro
 	return (
 		<Flex gap={4} {...props}>
 			{linkedin && (
-				<SocialIcon label={'LinkedIn'} name={'linkedin'} value={linkedin} icon={<FiLinkedin />} />
+				<SocialIcon label='LinkedIn' name='linkedin' value={linkedin} icon={<FiLinkedin />} />
 			)}
 			{facebook && (
-				<SocialIcon label={'Facebook'} name={'facebook'} value={facebook} icon={<FiFacebook />} />
+				<SocialIcon label='Facebook' name='facebook' value={facebook} icon={<FiFacebook />} />
 			)}
 
 			{twitter && (
-				<SocialIcon label={'X/Twitter'} name={'twitter'} value={twitter} icon={<XIcon />} />
+				<SocialIcon label={'X/Twitter'} name='twitter' value={twitter} icon={<XIcon />} />
 			)}
 
 			{instagram && (
 				<SocialIcon
-					label={'Instagram'}
-					name={'instagram'}
+					label='Instagram'
+					name='instagram'
 					value={instagram}
 					icon={<FiInstagram />}
 				/>

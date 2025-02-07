@@ -14,7 +14,7 @@ export default function WrapWithIcon({
 	...props
 }: Props & BoxProps): JSX.Element {
 	return (
-		<chakra.div display={'flex'} my={2} alignItems={'center'} {...props}>
+		<chakra.div display='flex' my={2} alignItems='center' {...props}>
 			{icon ? <Icon as={icon} mr={2} {...iconProps} /> : null}
 			{children}
 		</chakra.div>

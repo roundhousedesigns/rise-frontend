@@ -20,7 +20,7 @@ export default function ProfileStackItem({
 				{title}
 			</HeadingCenterline>
 		) : (
-			<Heading as={'h3'} variant={'pageSubtitle'}>
+			<Heading as='h3' variant='pageSubtitle'>
 				{title}
 			</Heading>
 		);

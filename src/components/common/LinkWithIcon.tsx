@@ -25,22 +25,22 @@ export default function LinkWithIcon({
 		<Link
 			href={href ? href : undefined}
 			onClick={onClick ? onClick : undefined}
-			fontWeight={'medium'}
+			fontWeight='medium'
 			display={'inline-block'}
-			variant={'dotted'}
+			variant='dotted'
 			isExternal={!!isExternal}
 			my={0}
 			{...props}
 		>
 			<Flex
-				alignItems={'center'}
+				alignItems='center'
 				flexDirection={iconSide === 'left' ? 'row' : 'row-reverse'}
 				justifyContent={'flex-start'}
 				gap={0}
-				w={'auto'}
+				w='auto'
 			>
-				<Icon as={icon} pos={'relative'} mr={2} {...iconProps} />
-				<Text as={'span'} m={0} lineHeight={'normal'} display={'block'}>
+				<Icon as={icon} pos='relative' mr={2} {...iconProps} />
+				<Text as='span' m={0} lineHeight='normal' display='block'>
 					{children}
 				</Text>
 				<Spacer />

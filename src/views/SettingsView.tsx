@@ -36,11 +36,11 @@ export default function SettingsView() {
 	};
 
 	return (
-		<Container maxW={'4xl'} pl={0} mx={0}>
-			<SettingsSection title={'Account'}>
+		<Container maxW='4xl' pl={0} mx={0}>
+			<SettingsSection title='Account'>
 				<Flex gap={2}>
 					<Box>
-						<Button onClick={handleEmailClick} colorScheme={'gray'}>
+						<Button onClick={handleEmailClick} colorScheme='gray'>
 							Change your email address
 						</Button>
 						<SettingsModal
@@ -53,7 +53,7 @@ export default function SettingsView() {
 					</Box>
 
 					<Box>
-						<Button onClick={handlePasswordClick} colorScheme={'gray'}>
+						<Button onClick={handlePasswordClick} colorScheme='gray'>
 							Change your password
 						</Button>
 						<SettingsModal
@@ -67,13 +67,13 @@ export default function SettingsView() {
 				</Flex>
 			</SettingsSection>
 
-			<SettingsSection title={'Profile'}>
+			<SettingsSection title='Profile'>
 				<ChangeProfileSlugView />
 			</SettingsSection>
 
-			<SettingsSection title={'Options'}>
-				<DisableProfileToggle showHelperText={true} size={'lg'} />
-				<DarkModeToggle showHelperText={true} size={'lg'} />
+			<SettingsSection title='Options'>
+				<DisableProfileToggle showHelperText={true} size='lg' />
+				<DarkModeToggle showHelperText={true} size='lg' />
 			</SettingsSection>
 
 			<SettingsSection title={'Close your account'}>
@@ -82,7 +82,7 @@ export default function SettingsView() {
 					re-register at any time.
 				</Text>
 				<ButtonGroup>
-					<Button colorScheme={'red'} onClick={onOpenDeleteAccount}>
+					<Button colorScheme='red' onClick={onOpenDeleteAccount}>
 						Delete account
 					</Button>
 				</ButtonGroup>

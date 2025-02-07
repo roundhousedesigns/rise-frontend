@@ -18,15 +18,15 @@ export default function HeadingCenterline({
 }: Props & FlexProps): JSX.Element {
 	return (
 		<Flex
-			alignItems={'center'}
-			w={'full'}
+			alignItems='center'
+			w='full'
 			h={'max-content'}
-			pos={'relative'}
-			textAlign={'left'}
+			pos='relative'
+			textAlign='left'
 			{...props}
 		>
-			<Box h={'6px'} top={'38%'} bgColor={lineColor} pos={'absolute'} w={'full'} zIndex={'1'}></Box>
-			<Heading as={headingAs ? headingAs : 'h3'} variant={'centerline'} {...headingProps}>
+			<Box h='6px' top={'38%'} bgColor={lineColor} pos='absolute' w='full' zIndex='1'></Box>
+			<Heading as={headingAs ? headingAs : 'h3'} variant='centerline' {...headingProps}>
 				{children}
 			</Heading>
 		</Flex>

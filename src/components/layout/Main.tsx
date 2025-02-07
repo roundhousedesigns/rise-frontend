@@ -143,17 +143,17 @@ export default function Main({ ...props }: BoxProps) {
 
 	return (
 		<Box
-			id={'main'}
-			w={'full'}
-			h={'auto'}
+			id='main'
+			w='full'
+			h='auto'
 			py={2}
-			background={'none'}
-			justifyContent={'center'}
-			alignItems={'center'}
+			background='none'
+			justifyContent='center'
+			alignItems='center'
 			flex={'1 1 auto'}
 			{...props}
 		>
-			<Container w={'full'} maxW={'none'} pt={0} pb={4} px={0}>
+			<Container w='full' maxW='none' pt={0} pb={4} px={0}>
 				{routes}
 			</Container>
 		</Box>

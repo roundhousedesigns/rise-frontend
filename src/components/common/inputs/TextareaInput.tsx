@@ -93,12 +93,12 @@ export default function TextareaInput({
 	return (
 		<FormControl {...props}>
 			<Textarea
-				variant={'filled'}
+				variant='filled'
 				placeholder={placeholder}
 				focusBorderColor={'blue.200'}
 				value={localValue ? localValue : ''}
 				name={name}
-				resize={'vertical'}
+				resize='vertical'
 				onChange={handleChange}
 				isDisabled={props.isDisabled}
 				{...inputProps}

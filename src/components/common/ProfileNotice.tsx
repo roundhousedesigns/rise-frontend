@@ -67,19 +67,19 @@ export default function ProfileNotice({
 		<Collapse in={isVisible} unmountOnExit>
 			<LightMode>
 				<Alert
-					status={'warning'}
+					status='warning'
 					colorScheme={colorScheme}
 					color={color}
-					variant={'subtle'}
-					fontSize={'sm'}
+					variant='subtle'
+					fontSize='sm'
 					borderRadius={0}
 					py={2}
 					my={0}
 					justifyContent={'space-between'}
 					{...props}
 				>
-					<Container maxW={'90vw'}>
-						<Flex alignItems={'center'}>
+					<Container maxW='90vw'>
+						<Flex alignItems='center'>
 							<AlertIcon />
 							<AlertTitle lineHeight='unset'>{title}</AlertTitle>
 							{description ? (
@@ -121,7 +121,7 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		title: 'Your profile is currently hidden.',
 		description: (
 			<>
-				<Link as={RouterLink} to={'/settings'} color={'text.dark'} textDecorationColor={'initial'}>
+				<Link as={RouterLink} to={'/settings'} color={'text.dark'} textDecorationColor='initial'>
 					Take your profile public
 				</Link>{' '}
 				to appear in searches.

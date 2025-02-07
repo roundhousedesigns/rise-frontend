@@ -39,9 +39,9 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 							to={`/partners/${partner.slug}`}
 							textDecoration='none'
 							_hover={{ textDecoration: 'none' }}
-							color={'inherit'}
+							color='inherit'
 							title={partner.title}
-							rel={'bookmark'}
+							rel='bookmark'
 						>
 							<Card
 								variant='listItem'
@@ -71,8 +71,8 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 											<Image
 												srcSet={partner.featuredImage.srcSet}
 												alt={`Logo for ${partner.title || ''}`}
-												borderRadius={'md'}
-												objectFit={'cover'}
+												borderRadius='md'
+												objectFit='cover'
 												border={'3px solid'}
 												_light={{ borderColor: 'brand.blue' }}
 												_dark={{ borderColor: 'brand.yellow' }}
@@ -81,15 +81,15 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 										</Box>
 									)}
 									<Heading
-										as={'h3'}
-										variant={'contentSubtitle'}
+										as='h3'
+										variant='contentSubtitle'
 										color='brand.blue'
-										textAlign={'center'}
+										textAlign='center'
 									>
 										{partner.title}
 									</Heading>
 									{partner.excerpt && (
-										<Text variant={'postExcerpt'} textAlign={'center'}>
+										<Text variant='postExcerpt' textAlign='center'>
 											{parse(partner.excerpt)}
 										</Text>
 									)}

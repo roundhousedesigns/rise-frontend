@@ -53,7 +53,7 @@ export default function EditableTextareaInput({
 				{...styles}
 				{...inputProps}
 			>
-				<EditablePreview minHeight={28} w={'full'} whiteSpace={'pre-wrap'} />
+				<EditablePreview minHeight={28} w='full' whiteSpace={'pre-wrap'} />
 				<EditableTextarea minHeight={28} rows={20} ref={ref} p={2} />
 			</Editable>
 		</FormControl>

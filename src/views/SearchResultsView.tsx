@@ -71,11 +71,11 @@ export default function SearchResultsView() {
 
 	const ConflictDateLegend = () => {
 		return jobDates && jobDates.startDate ? (
-			<Flex justifyContent={'flex-start'} alignItems={'center'} gap={1} mb={4} mt={0} ml={12}>
+			<Flex justifyContent={'flex-start'} alignItems='center' gap={1} mb={4} mt={0} ml={12}>
 				<InlineIconText
 					text={'badge = Possible scheduling conflict'}
 					icon={<FiCalendar />}
-					query={'badge'}
+					query='badge'
 					description={'Scheduling conflict'}
 				/>
 			</Flex>
@@ -89,7 +89,7 @@ export default function SearchResultsView() {
 	return (
 		<>
 			{results.length > 0 ? (
-				<Box w={'auto'} display={'inline-block'} mt={4} maxW={'600px'}>
+				<Box w='auto' display={'inline-block'} mt={4} maxW='600px'>
 					<SavedSearchItemMemo
 						searchTerms={filterSet}
 						id={savedSearchId ? savedSearchId : 0}
@@ -99,7 +99,7 @@ export default function SearchResultsView() {
 						mb={1}
 						width={'100%'}
 					/>
-					<Text variant={'helperText'} fontSize={'2xs'} m={0}>
+					<Text variant='helperText' fontSize='2xs' m={0}>
 						<Link as={RouterLink} to={'/searches'} m={0}>
 							Manage your saved searches
 						</Link>
@@ -111,19 +111,19 @@ export default function SearchResultsView() {
 
 			{resultsCount > 0 ? (
 				<>
-					<TextCenterline fontSize={'xl'}>{resultsString()}</TextCenterline>
+					<TextCenterline fontSize='xl'>{resultsString()}</TextCenterline>
 					{jobDates && jobDates.startDate ? <ConflictDateLegend /> : false}
 				</>
 			) : resultsCount === 0 && searchWizardActive ? (
-				<Text fontSize={'sm'}>No results.</Text>
+				<Text fontSize='sm'>No results.</Text>
 			) : (
-				<Text fontSize={'sm'}>Your search results will appear here after you Search.</Text>
+				<Text fontSize='sm'>Your search results will appear here after you Search.</Text>
 			)}
 
 			<CandidateList userIds={orderedResults} inOrder={true} />
 
 			{resultsCount > 100 ? (
-				<Text fontSize={'sm'} mt={6} ml={16} pl={2} color={'gray.500'}>
+				<Text fontSize='sm' mt={6} ml={16} pl={2} color={'gray.500'}>
 					Only showing the first 100 results. Try refining your search!
 				</Text>
 			) : null}

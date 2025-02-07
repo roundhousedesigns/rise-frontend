@@ -15,7 +15,7 @@ const DatePickerButton = forwardRef<HTMLButtonElement, DatePickerButtonProps>(
 			onClick={onClick}
 			leftIcon={<FiCalendar />}
 			ref={ref}
-			variant={'searchFilter'}
+			variant='searchFilter'
 			aria-label={ariaLabel ? ariaLabel : defaultText}
 			{...props}
 		>

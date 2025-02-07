@@ -30,7 +30,7 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 
 				return (
 					<ListItem key={id}>
-						<Card variant={'listItem'} as={RouterLink} to={`/job/${job.id}`}>
+						<Card variant='listItem' as={RouterLink} to={`/job/${job.id}`}>
 							<Stack gap={2}>
 								<Heading as='h3' fontSize='3xl' my={0}>
 									<Text as='span' mr={4}>
@@ -42,17 +42,17 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 								</Heading>
 								<Wrap>
 									{isInternship && (
-										<Tag colorScheme='yellow' size={'sm'}>
+										<Tag colorScheme='yellow' size='sm'>
 											Internship
 										</Tag>
 									)}
 									{isPaid && (
-										<Tag colorScheme='green' size={'sm'}>
+										<Tag colorScheme='green' size='sm'>
 											Paid
 										</Tag>
 									)}
 									{isUnion && (
-										<Tag colorScheme='red' size={'sm'}>
+										<Tag colorScheme='red' size='sm'>
 											Union
 										</Tag>
 									)}

@@ -7,6 +7,7 @@ with 1.0.0beta.
 
 - Change: `<Page>` is now `<Shell>` so we can call WP static pages "Pages."
 - Improve: Page and template structure and styling.
+- Improve: Stop using silly `prop={'some-string'}` notation. Just do normal quotes: `prop='some-string'`.
 
 ## [1.2-network-partners] Unmerged (branched from `1.2-dev`)
 

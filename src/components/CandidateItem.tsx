@@ -32,7 +32,7 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 		conflictRanges && jobDates && jobDates.startDate ? jobDates.hasConflict(conflictRanges) : false;
 
 	return id ? (
-		<Flex alignItems={'center'}>
+		<Flex alignItems='center'>
 			{showToggle ? <StarToggleIcon id={id} isDisabled={loggedInId === id} /> : null}
 
 			<Card
@@ -41,18 +41,18 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 				flex={1}
 				as={RouterLink}
 				to={`/profile/${slug}`}
-				variant={'listItem'}
+				variant='listItem'
 				{...props}
 			>
 				<Flex
-					direction={'row'}
+					direction='row'
 					justifyContent={'flex-start'}
-					alignItems={'center'}
+					alignItems='center'
 					flexWrap={{ base: 'wrap', md: 'nowrap' }}
 					gap={{ base: 'initial', md: 0 }}
 				>
 					<Avatar
-						size={'md'}
+						size='md'
 						name={candidate.fullName()}
 						flex={'0 0 auto'}
 						mr={2}
@@ -62,13 +62,13 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 					>
 						<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
 					</Avatar>
-					<Flex flex={'1'} alignItems={'center'} flexWrap={'wrap'}>
+					<Flex flex='1' alignItems='center' flexWrap='wrap'>
 						<Heading
-							as={'h3'}
+							as='h3'
 							id={`candidate-${id}`}
-							fontSize={'lg'}
-							fontWeight={'normal'}
-							textAlign={'left'}
+							fontSize='lg'
+							fontWeight='normal'
+							textAlign='left'
 							flex={{ base: '0 0 100%', md: '1' }}
 							mt={0}
 							mb={{ base: '4px', md: 0 }}
@@ -80,7 +80,7 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 							ml={{ base: '0 !important', lg: 'initial' }}
 							my={0}
 							lineHeight={{ base: 'normal' }}
-							fontSize={'sm'}
+							fontSize='sm'
 							noOfLines={2}
 							flex={{ base: '0 0 100%', md: '1' }} // '1'}
 							style={{ hyphens: 'auto' }}

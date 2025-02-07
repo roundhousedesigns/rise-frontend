@@ -17,7 +17,7 @@ export default function DashboardView__Widgets() {
 	const [profile, { loading }] = useUserProfile(loggedInId);
 
 	return (
-		<Grid templateColumns={{ base: '1fr', md: '1fr 2fr' }} gap={8} w={'full'} maxW={'none'}>
+		<Grid templateColumns={{ base: '1fr', md: '1fr 2fr' }} gap={8} w='full' maxW='none'>
 			<GridItem as={Stack} spacing={6} id={'dashboard-secondary'}>
 				<Widget>
 					{profile ? (
@@ -31,7 +31,7 @@ export default function DashboardView__Widgets() {
 				{savedSearches?.length ? (
 					<Widget>
 						<>
-							<Heading as={'h2'} variant={'contentTitle'}>
+							<Heading as='h2' variant='contentTitle'>
 								Saved Searches
 							</Heading>
 							<SavedSearchItemList />
@@ -43,7 +43,7 @@ export default function DashboardView__Widgets() {
 				{notices.length > 0 ? (
 					<Widget>
 						<>
-							<Heading as={'h2'} hidden>
+							<Heading as='h2' hidden>
 								News
 							</Heading>
 							<List spacing={4}>
@@ -60,7 +60,7 @@ export default function DashboardView__Widgets() {
 				{starredProfiles?.length ? (
 					<Widget>
 						<>
-							<Heading as={'h2'} variant={'contentTitle'}>
+							<Heading as='h2' variant='contentTitle'>
 								Following
 							</Heading>
 							<StarredProfileList showToggle={false} />

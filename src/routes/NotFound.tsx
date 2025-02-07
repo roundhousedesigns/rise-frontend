@@ -6,11 +6,11 @@ import LoggedIn from '@components/LoggedIn';
 export default function Notfound() {
 	return (
 		<Shell>
-			<Heading variant={'pageTitle'} as={'h2'}>
+			<Heading variant='pageTitle' as='h2'>
 				404, friend.
 			</Heading>
 			<Box>
-				<Heading variant={'contentTitle'}>
+				<Heading variant='contentTitle'>
 					We couldn't find that page.
 				</Heading>
 				<LoggedIn hideOnly={true}>

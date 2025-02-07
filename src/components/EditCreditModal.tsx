@@ -9,7 +9,7 @@ interface Props {
 
 export default function EditCreditModal({ isOpen, onClose, creditId }: Props): JSX.Element {
 	return (
-		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior={'outside'} size={'3xl'}>
+		<Modal isOpen={isOpen} onClose={onClose} scrollBehavior='outside' size='3xl'>
 			<ModalOverlay />F
 			<ModalContent>
 				<ModalBody px={8} pb={4}>

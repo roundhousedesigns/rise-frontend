@@ -50,7 +50,7 @@ export default function StarredProfileList({
 	return (
 		<Box {...props}>
 			{!error && !loading ? (
-				<List alignItems={'left'} h={'auto'} mt={2} w={'full'} spacing={4}>
+				<List alignItems='left' h='auto' mt={2} w='full' spacing={4}>
 					<AnimatePresence>{renderedProfiles}</AnimatePresence>
 				</List>
 			) : loading ? (

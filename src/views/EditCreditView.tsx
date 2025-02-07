@@ -300,20 +300,20 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	const EditCreditButtons = memo(() => {
 		return (
-			<ButtonGroup size={'md'}>
+			<ButtonGroup size='md'>
 				<TooltipIconButton
-					type={'submit'}
+					type='submit'
 					isLoading={updateCreditLoading}
 					onClick={handleSubmit}
 					icon={<FiCheck />}
-					label={'Save'}
-					colorScheme={'green'}
+					label='Save'
+					colorScheme='green'
 					isDisabled={!requirementsMet || updateCreditLoading}
 				/>
 				<TooltipIconButton
 					icon={<FiX />}
 					label={'Cancel changes'}
-					colorScheme={'red'}
+					colorScheme='red'
 					onClick={handleCancel}
 					isDisabled={updateCreditLoading}
 				/>
@@ -323,8 +323,8 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 	return (
 		<>
-			<Flex flex={'1'} justifyContent={'space-between'} py={2} mb={2}>
-				<Heading as={'h3'} size={'lg'} lineHeight={'base'}>
+			<Flex flex='1' justifyContent={'space-between'} py={2} mb={2}>
+				<Heading as='h3' size='lg' lineHeight='base'>
 					Edit Credit
 				</Heading>
 				<EditCreditButtons />
@@ -332,7 +332,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 			<Flex gap={4}>
 				<TextInput
-					name={'title'}
+					name='title'
 					label={'Company/Production Name'}
 					value={title}
 					isRequired
@@ -341,7 +341,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				/>
 
 				<TextInput
-					name={'jobTitle'}
+					name='jobTitle'
 					label={'Job/Position Title'}
 					isRequired
 					value={jobTitle}
@@ -350,30 +350,30 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				/>
 			</Flex>
 
-			<Flex justifyContent={'space-between'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
+			<Flex justifyContent={'space-between'} w='full' gap={4} flexWrap='wrap' mt={1}>
 				<TextInput
-					name={'workStart'}
+					name='workStart'
 					label={'Start year'}
 					isRequired
 					value={workStart}
 					onChange={handleInputChange}
-					flex={'1'}
+					flex='1'
 					debounceTime={300}
 				/>
 
 				<TextInput
-					name={'workEnd'}
+					name='workEnd'
 					label={'End year'}
 					value={!workCurrent ? workEnd : ''}
 					isDisabled={workCurrent}
 					onChange={handleInputChange}
-					flex={'1'}
+					flex='1'
 					debounceTime={300}
 				/>
 
 				<ProfileRadioGroup
 					defaultValue={workCurrent ? 'true' : 'false'}
-					name={'workCurrent'}
+					name='workCurrent'
 					label={'Currently working here'}
 					items={[
 						{ label: 'Yes', value: 'true' },
@@ -383,32 +383,32 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				/>
 			</Flex>
 
-			<Flex justifyContent={'space-between'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
+			<Flex justifyContent={'space-between'} w='full' gap={4} flexWrap='wrap' mt={1}>
 				<TextInput
-					name={'venue'}
-					label={'Venue'}
+					name='venue'
+					label='Venue'
 					value={venue}
 					onChange={handleInputChange}
 					isRequired
-					flex={'1'}
+					flex='1'
 					debounceTime={300}
 				/>
 
 				<TextInput
-					name={'jobLocation'}
+					name='jobLocation'
 					label={'Job Location'}
 					value={jobLocation}
 					isRequired
 					onChange={handleInputChange}
-					flex={'1'}
+					flex='1'
 					debounceTime={300}
 				/>
 			</Flex>
 
-			<Flex justifyContent={'flex-start'} w={'full'} gap={4} flexWrap={'wrap'} mt={1}>
+			<Flex justifyContent={'flex-start'} w='full' gap={4} flexWrap='wrap' mt={1}>
 				<ProfileRadioGroup
 					defaultValue={intern ? 'true' : 'false'}
-					name={'intern'}
+					name='intern'
 					label={`This ${workCurrent ? 'is' : 'was'} an internship`}
 					items={[
 						{ label: 'Yes', value: 'true' },
@@ -419,7 +419,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 				<ProfileRadioGroup
 					defaultValue={fellow ? 'true' : 'false'}
-					name={'fellow'}
+					name='fellow'
 					label={`This ${workCurrent ? 'is' : 'was'} a fellowship`}
 					items={[
 						{ label: 'Yes', value: 'true' },
@@ -431,16 +431,16 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 			<Divider />
 
-			<Stack direction={'column'} spacing={6} fontSize={'md'}>
+			<Stack direction='column' spacing={6} fontSize='md'>
 				{/* TODO Make this required */}
 				<Box>
-					<Heading as={'h4'} variant={'contentTitle'}>
+					<Heading as='h4' variant='contentTitle'>
 						Department
-						<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
+						<RequiredAsterisk fontSize='md' position='relative' top={-1} />
 					</Heading>
 					<Text>Select all department(s) you worked under.</Text>
 					<ProfileCheckboxGroup
-						name={'departments'}
+						name='departments'
 						items={allDepartments}
 						checked={
 							selectedDepartmentIds
@@ -452,14 +452,14 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 				</Box>
 				{selectedDepartmentIds.length && !jobsLoading ? (
 					<Box>
-						<Heading as={'h4'} variant={'contentTitle'}>
+						<Heading as='h4' variant='contentTitle'>
 							Position
-							<RequiredAsterisk fontSize={'md'} position={'relative'} top={-1} />
+							<RequiredAsterisk fontSize='md' position='relative' top={-1} />
 						</Heading>
 						<>
 							<Text>Select all jobs you held on this project.</Text>
 							<ProfileCheckboxGroup
-								name={'jobs'}
+								name='jobs'
 								items={jobs}
 								checked={
 									selectedJobIds ? selectedJobIds.map((item: number) => item.toString()) : []
@@ -474,13 +474,13 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 
 				{selectedJobIds.length && !relatedSkillsLoading ? (
 					<Box>
-						<Heading as={'h4'} variant={'contentTitle'}>
+						<Heading as='h4' variant='contentTitle'>
 							Skills
 						</Heading>
 						<>
 							<Text>Select any skills used on this job.</Text>
 							<ProfileCheckboxGroup
-								name={'skills'}
+								name='skills'
 								items={skills}
 								checked={
 									selectedSkills ? selectedSkills.map((item: number) => item.toString()) : []

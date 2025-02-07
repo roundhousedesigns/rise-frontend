@@ -48,7 +48,7 @@ export default function MiniProfileView({
 	const ProfileSubtitle = ({ ...props }: any) => {
 		const SelfTitle = () => {
 			return (
-				<Text as={'span'} textDecoration={'underline'}>
+				<Text as='span' textDecoration='underline'>
 					{selfTitle}
 				</Text>
 			);
@@ -56,14 +56,14 @@ export default function MiniProfileView({
 
 		const HomeBase = () => {
 			return (
-				<Text as={'span'} textDecoration={'underline'}>
+				<Text as='span' textDecoration='underline'>
 					{homebase}
 				</Text>
 			);
 		};
 
 		return (
-			<Heading size={'md'} mt={2} fontWeight={'medium'} {...props}>
+			<Heading size='md' mt={2} fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -76,27 +76,27 @@ export default function MiniProfileView({
 	};
 
 	return profile ? (
-		<Card px={4} align={'center'} {...props}>
-			<Box position={'absolute'} top={2} right={2}>
+		<Card px={4} align='center' {...props}>
+			<Box position='absolute' top={2} right={2}>
 				{percentComplete > 30 && !disableProfile ? <ShareButton url={profileUrl} /> : null}
 			</Box>
-			<Stack direction={'column'} lineHeight={1} w={'full'}>
+			<Stack direction='column' lineHeight={1} w='full'>
 				{image ? (
-					<Box textAlign={'center'}>
-						<Avatar size={'superLg'} src={image} name={profile.fullName()} />
+					<Box textAlign='center'>
+						<Avatar size='superLg' src={image} name={profile.fullName()} />
 					</Box>
 				) : null}
 				<Box
-					flexWrap={'wrap'}
+					flexWrap='wrap'
 					justifyContent={{ base: 'center', md: 'flex-start' }}
-					alignItems={'center'}
+					alignItems='center'
 				>
-					<Flex justifyContent={'center'} flexWrap={'wrap'} gap={2}>
-						<Heading size={'lg'} m={0} fontWeight={'bold'} lineHeight={'none'}>
+					<Flex justifyContent='center' flexWrap='wrap' gap={2}>
+						<Heading size='lg' m={0} fontWeight='bold' lineHeight='none'>
 							{profile.fullName()}
 						</Heading>
 						{pronouns ? (
-							<Tag colorScheme={'blue'} size={'md'}>
+							<Tag colorScheme='blue' size='md'>
 								{pronouns}
 							</Tag>
 						) : null}
@@ -105,21 +105,21 @@ export default function MiniProfileView({
 
 				{percentComplete > 30 || disableProfile ? (
 					<>
-						<Box as={ProfileSubtitle} textAlign={'center'} fontSize={'md'} my={0} />
+						<Box as={ProfileSubtitle} textAlign='center' fontSize='md' my={0} />
 
 						{percentComplete < 100 && !!image ? (
-							<Box as={RiseStar} textAlign={'center'} color={'brand.blue'} />
+							<Box as={RiseStar} textAlign='center' color={'brand.blue'} />
 						) : null}
 
-						<Box textAlign={'right'}>
-							{percentComplete < 100 ? <ProfilePercentComplete colorScheme={'blue'} /> : null}
+						<Box textAlign='right'>
+							{percentComplete < 100 ? <ProfilePercentComplete colorScheme='blue' /> : null}
 
-							<ButtonGroup size={'xs'} mt={2}>
+							<ButtonGroup size='xs' mt={2}>
 								<Button
 									as={RouterLink}
 									leftIcon={<FiUser />}
 									to={`/profile/${loggedInSlug}`}
-									colorScheme={'blue'}
+									colorScheme='blue'
 									my={0}
 								>
 									View
@@ -128,7 +128,7 @@ export default function MiniProfileView({
 									as={RouterLink}
 									leftIcon={<FiEdit3 />}
 									to={'/profile/edit'}
-									colorScheme={'green'}
+									colorScheme='green'
 									my={0}
 								>
 									Edit
@@ -141,7 +141,7 @@ export default function MiniProfileView({
 						as={RouterLink}
 						leftIcon={<FiEdit3 />}
 						to={'/profile/edit'}
-						colorScheme={'orange'}
+						colorScheme='orange'
 						my={2}
 					>
 						Create Your Profile

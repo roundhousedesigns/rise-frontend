@@ -66,14 +66,14 @@ export default function JobView({ job }: Props): JSX.Element | null {
 				<Heading as='h2' fontSize='xl' my={0}>
 					{companyName}
 				</Heading>
-				<Flex alignItems={'center'} gap={2}>
+				<Flex alignItems='center' gap={2}>
 					{isInternship && (
-						<Tag colorScheme='yellow' size={'sm'}>
+						<Tag colorScheme='yellow' size='sm'>
 							Internship
 						</Tag>
 					)}
 					{isUnion && (
-						<Tag colorScheme='red' size={'sm'}>
+						<Tag colorScheme='red' size='sm'>
 							Union
 						</Tag>
 					)}
@@ -81,12 +81,12 @@ export default function JobView({ job }: Props): JSX.Element | null {
 			</Wrap>
 
 			<Stack gap={6}>
-				<Flex gap={4} flexWrap={'wrap'}>
+				<Flex gap={4} flexWrap='wrap'>
 					<Card gap={0}>
 						{parsedCompanyAddress ? (
 							<>
 								<WrapWithIcon icon={FiMap}>
-									<Tag size={'lg'} whiteSpace={'pre-wrap'} px={2} py={1}>
+									<Tag size='lg' whiteSpace={'pre-wrap'} px={2} py={1}>
 										{parsedCompanyAddress}
 									</Tag>
 								</WrapWithIcon>
@@ -141,10 +141,10 @@ export default function JobView({ job }: Props): JSX.Element | null {
 					<ButtonGroup colorScheme='blue'>
 						{applicationUrl ? (
 							<Button
-								as={'a'}
+								as='a'
 								href={applicationUrl}
 								leftIcon={<FiExternalLink />}
-								size={'md'}
+								size='md'
 								target='_blank'
 								rel='noopener noreferrer'
 							>
@@ -153,17 +153,17 @@ export default function JobView({ job }: Props): JSX.Element | null {
 						) : null}
 
 						{applicationPhone ? (
-							<Button as={'a'} href={`tel:${applicationPhone}`} leftIcon={<FiPhone />} size={'md'}>
+							<Button as='a' href={`tel:${applicationPhone}`} leftIcon={<FiPhone />} size='md'>
 								Call to Apply: {applicationPhone}
 							</Button>
 						) : null}
 
 						{applicationEmail ? (
 							<Button
-								as={'a'}
+								as='a'
 								href={`mailto:${applicationEmail}`}
 								leftIcon={<FiMail />}
-								size={'md'}
+								size='md'
 							>
 								Email to Apply: {applicationEmail}
 							</Button>

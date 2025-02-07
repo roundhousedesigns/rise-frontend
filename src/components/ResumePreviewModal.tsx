@@ -36,17 +36,17 @@ export default function ResumePreviewModal({
 
 	return resumePreview && resumeLink ? (
 		<>
-			<Box pos={'relative'} {...props}>
+			<Box pos='relative' {...props}>
 				{previewIcon ? (
 					<Flex
 						bg={'blackAlpha.300'}
-						pos={'absolute'}
-						w={'full'}
-						h={'full'}
-						alignItems={'center'}
-						justifyContent={'center'}
+						pos='absolute'
+						w='full'
+						h='full'
+						alignItems='center'
+						justifyContent='center'
 						onClick={onOpen}
-						cursor={'pointer'}
+						cursor='pointer'
 						transition={'all 200ms ease'}
 						color={'whiteAlpha.800'}
 						_hover={{
@@ -62,13 +62,13 @@ export default function ResumePreviewModal({
 				<Image
 					src={resumePreview}
 					alt={'Resume preview'}
-					w={'full'}
-					h={'auto'}
-					loading={'eager'}
-					fit={'cover'}
+					w='full'
+					h='auto'
+					loading='eager'
+					fit='cover'
 					onClick={previewIcon ? undefined : onOpen}
 					cursor={previewIcon ? undefined : 'pointer'}
-					borderRadius={'md'}
+					borderRadius='md'
 				/>
 			</Box>
 
@@ -81,18 +81,18 @@ export default function ResumePreviewModal({
 						<Image
 							src={resumePreview}
 							alt={`Profile picture`}
-							loading={'eager'}
-							fit={'cover'}
-							borderRadius={'md'}
-							w={'full'}
+							loading='eager'
+							fit='cover'
+							borderRadius='md'
+							w='full'
 						/>
-						<Text fontSize={'sm'}>Previewing the first page only.</Text>
+						<Text fontSize='sm'>Previewing the first page only.</Text>
 					</ModalBody>
 
 					<ModalFooter>
 						<Button
 							leftIcon={<FiDownload />}
-							colorScheme={'green'}
+							colorScheme='green'
 							as={Link}
 							href={resumeLink}
 							my={0}

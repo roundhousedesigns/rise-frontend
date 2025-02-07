@@ -41,7 +41,7 @@ export default function SavedSearchItemList({ ...props }: BoxProps) {
 	return (
 		<Box {...props}>
 			{parsedSearches.length > 0 ? (
-				<Flex ml={0} px={0} maxW={'4xl'} justify-content={'center'} gap={2} flexWrap={'wrap'}>
+				<Flex ml={0} px={0} maxW='4xl' justify-content='center' gap={2} flexWrap='wrap'>
 					<AnimatePresence>
 						{parsedSearches.map(({ id, title, filters }) => {
 							return (

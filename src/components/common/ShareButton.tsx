@@ -48,6 +48,6 @@ export default function ShareButton({ url, ...props }: Props & ButtonProps) {
 	}, [hasCopied]);
 
 	return (
-		<TooltipIconButton label={'Share'} icon={<FiShare2 />} onClick={handleShareClick} {...props} />
+		<TooltipIconButton label='Share' icon={<FiShare2 />} onClick={handleShareClick} {...props} />
 	);
 }

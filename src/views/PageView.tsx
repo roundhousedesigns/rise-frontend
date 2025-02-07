@@ -16,8 +16,8 @@ export default function PageView({ postId, pageObject, ...props }: Props & Conta
 	const content = page?.content ? parse(page.content) : null;
 
 	return (
-		<Container variant={'pageContent'} className={'wp-post-content'} {...props}>
-			<Heading as={'h1'}>{page?.title}</Heading>
+		<Container variant='pageContent' className={'wp-post-content'} {...props}>
+			<Heading as='h1'>{page?.title}</Heading>
 			{content}
 		</Container>
 	);

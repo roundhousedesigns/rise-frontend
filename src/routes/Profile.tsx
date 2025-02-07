@@ -19,14 +19,14 @@ export default function Profile(): JSX.Element {
 	const [profile, { loading }] = useUserProfile(userId);
 
 	const PageActions = () => (
-		<ButtonGroup size={'md'} alignItems={'center'}>
+		<ButtonGroup size='md' alignItems='center'>
 			{profileIsLoggedInUser && (
 				<TooltipIconButton
 					label={'Edit profile'}
 					icon={<FiEdit3 />}
 					as={RouterLink}
 					to={'/profile/edit'}
-					colorScheme={'green'}
+					colorScheme='green'
 				/>
 			)}
 		</ButtonGroup>

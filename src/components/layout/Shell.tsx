@@ -40,14 +40,14 @@ export default function Shell({
 
 	return loading ? (
 		<Center>
-			<Spinner position={'relative'} top={12} />
+			<Spinner position='relative' top={12} />
 		</Center>
 	) : (
 		<Container
 			maxWidth={fullWidthTemplate ? 'full' : '5xl'}
 			pt={fullWidthTemplate ? 4 : 0}
 			px={0}
-			mx={'auto'}
+			mx='auto'
 			mt={fullWidthTemplate ? 0 : 3}
 			mb={4}
 			{...props}
@@ -57,18 +57,18 @@ export default function Shell({
 					justifyContent={'space-between'}
 					alignItems={'flex-end'}
 					gap={2}
-					flexWrap={'wrap'}
+					flexWrap='wrap'
 					m={0}
 					p={0}
 					{...(fullWidthTemplate ? fullWidthTitleProps : {})}
 				>
 					{title ? (
 						<Heading
-							variant={'pageTitle'}
-							as={'h1'}
+							variant='pageTitle'
+							as='h1'
 							my={0}
 							px={4}
-							lineHeight={'normal'}
+							lineHeight='normal'
 							{...titleProps}
 						>
 							{title}
@@ -76,7 +76,7 @@ export default function Shell({
 					) : null}
 
 					{actions ? (
-						<Flex flexWrap={'wrap'} gap={2} justifyContent={'flex-end'}>
+						<Flex flexWrap='wrap' gap={2} justifyContent={'flex-end'}>
 							{actions}
 						</Flex>
 					) : null}
@@ -84,12 +84,12 @@ export default function Shell({
 			) : null}
 
 			{description ? (
-				<Text as={Box} ml={1} fontSize={'sm'}>
+				<Text as={Box} ml={1} fontSize='sm'>
 					{description}
 				</Text>
 			) : null}
 
-			<Box px={4} mx={'auto'}>
+			<Box px={4} mx='auto'>
 				{children}
 			</Box>
 		</Container>

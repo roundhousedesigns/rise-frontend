@@ -90,25 +90,25 @@ export default function ChangeProfileUrlView() {
 	};
 
 	return (
-		<Box borderRadius={'lg'} w={'full'}>
+		<Box borderRadius='lg' w='full'>
 			<Flex
 				gap={{ base: 0, md: 4 }}
-				alignItems={'center'}
-				flexWrap={'wrap'}
+				alignItems='center'
+				flexWrap='wrap'
 				justifyContent={'space-between'}
 			>
 				<Box>
 					<form onSubmit={handleSubmit}>
-						<Heading variant={'contentSubtitle'}>Profile handle</Heading>
-						<Text fontSize='sm' lineHeight={'shorter'}>
+						<Heading variant='contentSubtitle'>Profile handle</Heading>
+						<Text fontSize='sm' lineHeight='shorter'>
 							Give yourself a memorable handle to make sharing your profile easy.
 						</Text>
-						<Flex gap={2} flexWrap={'wrap'} w='100%' alignItems={'flex-start'}>
+						<Flex gap={2} flexWrap='wrap' w='100%' alignItems={'flex-start'}>
 							<TextInput
 								value={slug}
-								name={'slug'}
-								id={'slug'}
-								maxW={'300px'}
+								name='slug'
+								id='slug'
+								maxW='300px'
 								mt={0}
 								label={'New profile tag'}
 								labelHidden
@@ -120,11 +120,11 @@ export default function ChangeProfileUrlView() {
 								inputProps={{
 									pl: 2,
 								}}
-								flex={'1'}
+								flex='1'
 							/>
 							<Button
-								type={'submit'}
-								colorScheme={'green'}
+								type='submit'
+								colorScheme='green'
 								isDisabled={!formIsValid || submitLoading || !hasEditedSlug}
 								isLoading={submitLoading}
 							>
@@ -133,17 +133,17 @@ export default function ChangeProfileUrlView() {
 						</Flex>
 					</form>
 				</Box>
-				<Box flex={'auto'} fontSize='sm'>
+				<Box flex='auto' fontSize='sm'>
 					<Box opacity={hasEditedSlug ? 0.8 : 1}>
 						<Button
 							leftIcon={hasCopied ? <FiCheck /> : <FiCopy />}
-							title={'Copy'}
+							title='Copy'
 							onClick={onCopy}
 							size='sm'
 							aria-label='Copy profile URL'
 							isDisabled={!!hasEditedSlug}
 							maxW={'100%'}
-							overflow={'hidden'}
+							overflow='hidden'
 							colorScheme='yellow'
 						>
 							{profileUrl}

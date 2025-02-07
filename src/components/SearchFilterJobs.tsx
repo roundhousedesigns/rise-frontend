@@ -32,7 +32,7 @@ export default function SearchFilterJobs() {
 	return (
 		<Box>
 			{!loading && !error ? (
-				<CheckboxGroup value={jobs} onChange={handleToggleTerm} size={'sm'}>
+				<CheckboxGroup value={jobs} onChange={handleToggleTerm} size='sm'>
 					<Wrap>
 						{jobItems.map((term: WPItem) => (
 							<CheckboxButton key={term.id} value={term.id.toString()}>

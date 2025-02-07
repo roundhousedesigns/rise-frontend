@@ -12,7 +12,7 @@ export default function NetworkPartnersView() {
 	const { colorMode } = useColorMode();
 
 	return (
-		<Box w={'100vw'} position='relative' left='-1rem'>
+		<Box w='100vw' position='relative' left='-1rem'>
 			<Box
 				position='relative'
 				width='full'
@@ -39,8 +39,8 @@ export default function NetworkPartnersView() {
 						pb={20}
 						w='4xl'
 						bg={blue}
-						textAlign={'center'}
-						fontSize={'xl'}
+						textAlign='center'
+						fontSize='xl'
 						maxW='full'
 					/>
 				</Box>

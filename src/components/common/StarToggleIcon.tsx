@@ -64,7 +64,7 @@ export default function StarToggleIcon({ id, ...props }: Props) {
 					)
 				}
 				cursor={loading ? 'default !important' : 'pointer'}
-				borderRadius={'full'}
+				borderRadius='full'
 				label={isStarred ? 'Unstar this profile' : 'Star this profile'}
 				onClick={isStarred ? onOpenConfirmation : updateStarredProfilesHandler}
 				mx={2}

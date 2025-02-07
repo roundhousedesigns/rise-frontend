@@ -8,8 +8,8 @@ export default function StarredProfiles() {
 		<InlineIconText
 			icon={<FiStar />}
 			text={'Click the star button next to a profile to pin or unpin it.'}
-			query={'star'}
-			description={'star'}
+			query='star'
+			description='star'
 		/>
 	);
 

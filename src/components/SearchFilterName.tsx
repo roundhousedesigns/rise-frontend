@@ -87,39 +87,39 @@ export default function SearchFilterName({ ...props }: BoxProps) {
 	return (
 		<Box {...props}>
 			<form id={'search-by-name'} onSubmit={handleSubmit}>
-				<Flex gap={2} justifyContent={'space-between'} maxW={'lg'}>
+				<Flex gap={2} justifyContent={'space-between'} maxW='lg'>
 					<TextInput
-						placeholder={'Name'}
+						placeholder='Name'
 						leftElement={<Icon as={FiSearch} />}
-						name={'name'}
+						name='name'
 						label={'Search by name'}
 						labelHidden
 						value={name}
-						sizeToken={'sm'}
+						sizeToken='sm'
 						onChange={handleInputChange}
 						flex={'1 0 60%'}
 					/>
 
 					<Stack
-						direction={'row'}
+						direction='row'
 						w={name ? 'auto' : 0}
-						overflow={'hidden'}
+						overflow='hidden'
 						transition={'width 250ms ease, opacity 250ms ease'}
 					>
 						<TooltipIconButton
 							icon={<FiXCircle />}
 							onClick={handleClear}
 							label={'Clear name'}
-							colorScheme={'orange'}
-							size={'sm'}
+							colorScheme='orange'
+							size='sm'
 							isDisabled={!name || loading}
 						/>
 						<TooltipIconButton
-							label={'Search'}
-							colorScheme={'green'}
-							type={'submit'}
+							label='Search'
+							colorScheme='green'
+							type='submit'
 							form={'search-by-name'}
-							size={'sm'}
+							size='sm'
 							isDisabled={!name}
 							isLoading={loading}
 							icon={<FiSearch />}

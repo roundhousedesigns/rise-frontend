@@ -55,9 +55,9 @@ export default function ToggleOptionSwitch({
 	};
 
 	return (
-		<FormControl display={'flex'} alignItems={'center'} position={'relative'} {...props}>
+		<FormControl display='flex' alignItems='center' position='relative' {...props}>
 			{iconLeft ? (
-				<Icon as={iconLeft as As} boxSize={sizeProps.iconBoxSize} p={1} color={'inherit'} />
+				<Icon as={iconLeft as As} boxSize={sizeProps.iconBoxSize} p={1} color='inherit' />
 			) : (
 				false
 			)}
@@ -65,7 +65,7 @@ export default function ToggleOptionSwitch({
 				id={id}
 				onChange={handleChange}
 				isChecked={toggleState}
-				color={'inherit'}
+				color='inherit'
 				mx={1}
 				colorScheme={colorScheme}
 				aria-label={label}
@@ -77,12 +77,12 @@ export default function ToggleOptionSwitch({
 					htmlFor={id}
 					visibility={showLabel ? 'visible' : 'hidden'}
 					my={0}
-					fontWeight={'bold'}
+					fontWeight='bold'
 				>
 					{label}
 				</FormLabel>
 				{children ? (
-					<FormHelperText my={0} fontStyle={'italic'}>
+					<FormHelperText my={0} fontStyle='italic'>
 						{children}
 					</FormHelperText>
 				) : (

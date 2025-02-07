@@ -8,17 +8,17 @@ export default function Help() {
 		<Button
 			as={Link}
 			href={'mailto:support@risetheatre.org'}
-			colorScheme={'red'}
+			colorScheme='red'
 			leftIcon={<FiFlag />}
-			size={'sm'}
+			size='sm'
 		>
 			Contact Support
 		</Button>
 	);
 
 	return (
-		<Shell title={'Help'} actions={<EmailButton />}>
-			<PageView postId={'959'} />
+		<Shell title='Help' actions={<EmailButton />}>
+			<PageView postId='959' />
 		</Shell>
 	);
 }

@@ -19,7 +19,7 @@ export default function DeleteCreditButton({ handleDeleteCredit, id }: Props): J
 	return (
 		<>
 			<TooltipIconButton
-				colorScheme={'red'}
+				colorScheme='red'
 				icon={<FiTrash2 />}
 				label={'Delete Credit'}
 				onClick={onOpen}

@@ -51,14 +51,14 @@ export default function MainMenu() {
 	return (
 		<Menu>
 			<MenuButton
-				aria-label={'Menu'}
+				aria-label='Menu'
 				as={IconButton}
-				borderRadius={'full'}
-				colorScheme={'yellow'}
+				borderRadius='full'
+				colorScheme='yellow'
 				icon={<FiMenu />}
-				size={'sm'}
+				size='sm'
 			/>
-			<MenuList zIndex={'100'} color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
+			<MenuList zIndex='100' color={colorMode === 'dark' ? 'text.light' : 'text.dark'}>
 				{!isLargerThanMd ? (
 					<MenuOptionGroup>
 						<MenuItem as={RouterLink} to={`/profile/${loggedInSlug}`} icon={<FiHome />}>
@@ -98,14 +98,14 @@ export default function MainMenu() {
 					Help
 				</MenuItem>
 				<MenuDivider />
-				<Flex mx={2} justifyContent={'space-between'} alignItems={'center'}>
+				<Flex mx={2} justifyContent={'space-between'} alignItems='center'>
 					<DarkModeToggle showLabel={false} showHelperText={false} />
 					<IconButton
-						aria-label={'Logout'}
+						aria-label='Logout'
 						icon={<FiLogOut />}
 						boxSize={8}
 						onClick={logout}
-						variant={'ghost'}
+						variant='ghost'
 					/>
 				</Flex>
 			</MenuList>

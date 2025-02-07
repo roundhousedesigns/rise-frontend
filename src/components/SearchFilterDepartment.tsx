@@ -39,11 +39,11 @@ export default function SearchFilterDepartment() {
 	}, [departments]);
 
 	return !loading && !error ? (
-		<Box id={'filterDepartment'}>
-			<Heading as={'h3'} variant={'searchFilterTitle'} mb={4}>
+		<Box id='filterDepartment'>
+			<Heading as='h3' variant='searchFilterTitle' mb={4}>
 				{savedSearchId ? 'Browse' : 'Or, browse'} by department:
 			</Heading>
-			<RadioGroup onChange={handleToggleTerm} value={departmentId} size={'sm'}>
+			<RadioGroup onChange={handleToggleTerm} value={departmentId} size='sm'>
 				<Wrap>
 					{data.map((term: WPItem) => {
 						return (

@@ -38,18 +38,18 @@ export default function DeleteAccountView({ onClose }: { onClose: () => void }) 
 
 	return (
 		<>
-			<Card variant={'important'}>
-				<Text fontSize={'sm'} lineHeight={'tall'} m={0}>
+			<Card variant='important'>
+				<Text fontSize='sm' lineHeight='tall' m={0}>
 					To completely delete your account, click the 'Delete my account' button. Otherwise, click
 					cancel. Your account and all data will be permanently deleted. You can re-register at any
 					time.
 				</Text>
 			</Card>
 			<ButtonGroup mt={4}>
-				<Button colorScheme={'red'} onClick={handleDeleteOwnAccount}>
+				<Button colorScheme='red' onClick={handleDeleteOwnAccount}>
 					Delete my account
 				</Button>
-				<Button colorScheme={'gray'} onClick={onClose}>
+				<Button colorScheme='gray' onClick={onClose}>
 					Cancel
 				</Button>
 			</ButtonGroup>

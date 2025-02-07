@@ -6,8 +6,8 @@ export default function NetworkPartnerView({ partner }: { partner: WPPost }) {
 	const { content } = partner;
 
 	return (
-		<Container variant={'pageContent'} className={'wp-post-content'}>
-			<Text variant={'postExcerpt'}>{parse(content || '')}</Text>
+		<Container variant='pageContent' className={'wp-post-content'}>
+			<Text variant='postExcerpt'>{parse(content || '')}</Text>
 		</Container>
 	);
 }

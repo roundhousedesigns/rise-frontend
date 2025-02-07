@@ -33,7 +33,7 @@ export default function LoggedIn({ hideOnly, children }: Props): JSX.Element {
 	) : showContent ? (
 		<>{children}</>
 	) : (
-		<Container p={0} mt={8} maxW={'4xl'}>
+		<Container p={0} mt={8} maxW='4xl'>
 			<LoginView signInTitle={true} />
 		</Container>
 	);

@@ -76,13 +76,13 @@ export default function ChangePasswordView() {
 	};
 
 	return (
-		<chakra.form onSubmit={handleSubmit} mt={3} w={'full'}>
+		<chakra.form onSubmit={handleSubmit} mt={3} w='full'>
 			<Box my={4}>
 				<TextInput
 					value={currentPassword}
-					name={'currentPassword'}
-					id={'currentPassword'}
-					variant={'filled'}
+					name='currentPassword'
+					id='currentPassword'
+					variant='filled'
 					label={'Current password'}
 					isRequired
 					onChange={handleInputChange}
@@ -94,23 +94,23 @@ export default function ChangePasswordView() {
 				/>
 			</Box>
 			<Card _dark={{ bgColor: 'gray.800' }} my={8} gap={6}>
-				<Flex alignItems={'center'} mx={'auto'} gap={6} lineHeight={'normal'} fontSize={'xs'} pt={1}>
-					<Text m={0} fontStyle={'italic'}>
+				<Flex alignItems='center' mx='auto' gap={6} lineHeight='normal' fontSize='xs' pt={1}>
+					<Text m={0} fontStyle='italic'>
 						Passwords must have at least:
 					</Text>
-					<List listStyleType={'disc'}>
+					<List listStyleType='disc'>
 						<ListItem>one lowercase letter</ListItem>
 						<ListItem>one uppercase letter</ListItem>
 						<ListItem>one one number</ListItem>
 						<ListItem>one special character.</ListItem>
 					</List>
 				</Flex>
-				<Flex gap={6} flexWrap={'wrap'}>
+				<Flex gap={6} flexWrap='wrap'>
 					<TextInput
 						value={newPassword}
-						name={'newPassword'}
-						id={'newPassword'}
-						variant={'filled'}
+						name='newPassword'
+						id='newPassword'
+						variant='filled'
 						label={'New password'}
 						isRequired
 						onChange={handleInputChange}
@@ -119,7 +119,7 @@ export default function ChangePasswordView() {
 								? errorMessage
 								: ''
 						}
-						flex={'1'}
+						flex='1'
 						inputProps={{
 							type: 'password',
 							autoComplete: 'new-password',
@@ -127,10 +127,10 @@ export default function ChangePasswordView() {
 					/>
 					<TextInput
 						value={confirmPassword}
-						name={'confirmPassword'}
-						id={'confirmPassword'}
-						type={'password'}
-						variant={'filled'}
+						name='confirmPassword'
+						id='confirmPassword'
+						type='password'
+						variant='filled'
 						label={'Confirm your new password'}
 						isRequired
 						error={
@@ -147,8 +147,8 @@ export default function ChangePasswordView() {
 			</Card>
 			<Box mt={4}>
 				<Button
-					type={'submit'}
-					colorScheme={'orange'}
+					type='submit'
+					colorScheme='orange'
 					isDisabled={!formIsValid || submitLoading}
 					isLoading={!!submitLoading}
 				>

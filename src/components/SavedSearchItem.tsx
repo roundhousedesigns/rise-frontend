@@ -226,19 +226,19 @@ export default function SavedSearchItem({
 	return terms && terms.length > 0 ? (
 		<Card p={0} my={0} {...props}>
 			<Flex justifyContent={'space-between'}>
-				<Stack w={'auto'} alignItems={'space-between'} p={2}>
+				<Stack w='auto' alignItems={'space-between'} p={2}>
 					<Box>
 						<Flex alignItems={'flex-end'}>
 							<LinkWithIcon
 								onClick={handleEditTitleClick}
 								icon={FiEdit2}
-								fontSize={'lg'}
+								fontSize='lg'
 								mb={1}
 								flex={1}
-								iconSide={'left'}
-								color={'inherit'}
-								borderBottomWidth={'2px'}
-								borderBottomStyle={'dotted'}
+								iconSide='left'
+								color='inherit'
+								borderBottomWidth='2px'
+								borderBottomStyle='dotted'
 								textDecoration={'none !important'}
 								transition={'border 150ms ease'}
 								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
@@ -255,28 +255,28 @@ export default function SavedSearchItem({
 								{title ? (
 									title
 								) : (
-									<Text as={'span'} opacity={'0.5'} lineHeight={'normal'}>
+									<Text as='span' opacity={'0.5'} lineHeight='normal'>
 										Save this search
 									</Text>
 								)}
 							</LinkWithIcon>
 						</Flex>
 					</Box>
-					<Box as={Flex} w={'full'} justifyContent={'space-between'} flexWrap={'wrap'} gap={6}>
+					<Box as={Flex} w='full' justifyContent={'space-between'} flexWrap='wrap' gap={6}>
 						<Skeleton isLoaded={!!terms.length}>
-							<SearchParamTags termIds={termIds} termItems={terms} flex={'1'} />
+							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
 						</Skeleton>
 					</Box>
 				</Stack>
 				{id ? (
 					<Box p={2}>
 						{showControls ? (
-							<ButtonGroup size={'sm'}>
+							<ButtonGroup size='sm'>
 								<TooltipIconButton
 									icon={<FiSearch />}
 									aria-label={'Load these filters'}
 									label={'Load these filters'}
-									colorScheme={'green'}
+									colorScheme='green'
 									onClick={handleSearchClick}
 								>
 									Search
@@ -285,33 +285,33 @@ export default function SavedSearchItem({
 									icon={<FiDelete />}
 									aria-label={'Delete this search'}
 									label={'Delete this search'}
-									colorScheme={'red'}
+									colorScheme='red'
 									onClick={deleteOnOpen}
 								>
 									Delete
 								</TooltipIconButton>
 							</ButtonGroup>
 						) : savedSearchFiltersChanged ? (
-							<Stack textAlign={'center'}>
+							<Stack textAlign='center'>
 								<Button
-									colorScheme={'yellow'}
+									colorScheme='yellow'
 									leftIcon={<FiSave />}
 									aria-label={'Update saved filters'}
 									title={'Update saved filters'}
 									onClick={handleUpdateClick}
-									size={'sm'}
+									size='sm'
 									isLoading={saveLoading && whichButtonClicked === 'update'}
 									isDisabled={saveLoading}
 								>
 									Update
 								</Button>
 								<Button
-									colorScheme={'blue'}
+									colorScheme='blue'
 									leftIcon={<FiPlusCircle />}
 									aria-label={'Update saved filters'}
 									title={'Update saved filters'}
 									onClick={handleSaveNewSearchClick}
-									size={'sm'}
+									size='sm'
 									isLoading={saveLoading && whichButtonClicked === 'new'}
 									isDisabled={saveLoading}
 								>

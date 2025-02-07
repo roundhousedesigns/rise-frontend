@@ -6,7 +6,7 @@ export default function Partners() {
 		<Shell
 			maxW='none'
 			fullWidthTemplate={true}
-			titleContainerWidth={'5xl'}
+			titleContainerWidth='5xl'
 			bgColor={'brand.blue'}
 			titleProps={{ color: 'text.light' }}
 		>

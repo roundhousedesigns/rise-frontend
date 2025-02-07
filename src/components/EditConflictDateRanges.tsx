@@ -74,14 +74,14 @@ export default function EditConflictDateRanges() {
 
 	return (
 		<>
-			<Heading variant={'contentTitle'}>Scheduling Conflicts</Heading>
-			<Text fontSize={'sm'} my={0}>
+			<Heading variant='contentTitle'>Scheduling Conflicts</Heading>
+			<Text fontSize='sm' my={0}>
 				Add your conflict dates here. These will appear on your profile, but will not affect your
 				appearance in search results.
 			</Text>
 			<Divider />
 			<Spacer />
-			<List flexDirection={'column'} spacing={0}>
+			<List flexDirection='column' spacing={0}>
 				{sortedDateRanges && sortedDateRanges.length ? (
 					<AnimatePresence>
 						{sortedDateRanges.map((conflictRange) => (
@@ -92,18 +92,18 @@ export default function EditConflictDateRanges() {
 								animate={{ opacity: 1 }} // Animate to opacity of 1 (fully visible)
 								exit={{ opacity: 0 }} // Animate to opacity of 0 (completely transparent)
 							>
-								<Flex alignItems={'center'} justifyContent={'flex-start'} gap={2}>
+								<Flex alignItems='center' justifyContent={'flex-start'} gap={2}>
 									<Link
 										href={'#'}
-										variant={'dotted'}
-										lineHeight={'normal'}
+										variant='dotted'
+										lineHeight='normal'
 										px={0}
-										flex={'auto'}
-										maxW={'full'}
-										bg={'none'}
-										height={'auto'}
+										flex='auto'
+										maxW='full'
+										bg='none'
+										height='auto'
 										w={'100%'}
-										borderRadius={'none'}
+										borderRadius='none'
 										onClick={() => handleEditDateRange(conflictRange)}
 									>
 										{conflictRange.toString('long')}
@@ -111,10 +111,10 @@ export default function EditConflictDateRanges() {
 									<Spacer />
 									<TooltipIconButton
 										icon={<FiDelete />}
-										size={'sm'}
+										size='sm'
 										label={'Remove date range'}
 										onClick={() => handleDeleteDateRange(conflictRange)}
-										colorScheme={'red'}
+										colorScheme='red'
 									/>
 								</Flex>
 							</ListItem>
@@ -123,7 +123,7 @@ export default function EditConflictDateRanges() {
 				) : (
 					false
 				)}
-				<Button onClick={() => handleEditDateRange()} leftIcon={<FiPlus />} size={'sm'} mt={2}>
+				<Button onClick={() => handleEditDateRange()} leftIcon={<FiPlus />} size='sm' mt={2}>
 					Add Dates
 				</Button>
 				<EditConflictDateRangeModal

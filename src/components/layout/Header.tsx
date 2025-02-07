@@ -66,34 +66,34 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 	return (
 		<Box
 			ref={ref}
-			id={'header'}
-			w={'full'}
+			id='header'
+			w='full'
 			bg={textDark}
 			color={textLight}
-			position={'fixed'}
-			top={'0'}
+			position='fixed'
+			top='0'
 			borderBottomWidth={2}
 			borderBottomColor={textLight}
 			zIndex={1000}
 		>
-			<Container centerContent w={'full'} maxW={'9xl'} p={2}>
-				<Flex w={'full'} justifyContent={'space-between'} align={'center'}>
+			<Container centerContent w='full' maxW='9xl' p={2}>
+				<Flex w='full' justifyContent={'space-between'} align='center'>
 					<Link
 						as={RouterLink}
 						to={'/'}
 						my={0}
-						w={'auto'}
-						display={'block'}
+						w='auto'
+						display='block'
 						maxW={{ base: '50%', md: '350px' }}
-						position={'relative'}
+						position='relative'
 					>
 						<Image
 							src={logo}
 							alt={'RISE logo'}
-							loading={'eager'}
-							h={'auto'}
-							position={'relative'}
-							display={'block'}
+							loading='eager'
+							h='auto'
+							position='relative'
+							display='block'
 							ml={{ base: 1, md: 4 }}
 							pr={3}
 							mt={1}
@@ -111,7 +111,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 							isExternal
 							flex={'0 0 auto'}
 						>
-							<Image src={circleLogo} alt={'RISE icon'} loading={'eager'} h={12} />
+							<Image src={circleLogo} alt={'RISE icon'} loading='eager' h={12} />
 						</Link>
 					) : (
 						false
@@ -119,13 +119,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 					{/* Logged in */}
 					{loggedInId ? (
-						<Flex alignItems={'center'} gap={0}>
+						<Flex alignItems='center' gap={0}>
 							<ButtonGroup
 								color={'text.light'}
 								mx={{ base: 0, md: 2 }}
 								flex={'1 0 auto'}
 								justifyContent={'flex-end'}
-								size={'md'}
+								size='md'
 							>
 								<TooltipIconButton
 									icon={<FiLink />}
@@ -136,7 +136,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 								<TooltipIconButton
 									icon={<FiBriefcase />}
-									label={'Jobs'}
+									label='Jobs'
 									as={RouterLink}
 									to={'/jobs'}
 								/>
@@ -165,9 +165,9 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 											<Badge
 												py={1}
 												px={2}
-												borderRadius={'full'}
-												variant={'subtle'}
-												colorScheme={'orange'}
+												borderRadius='full'
+												variant='subtle'
+												colorScheme='orange'
 											>
 												{results.length}
 											</Badge>
@@ -184,13 +184,13 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								mx={2}
 								flex={'1 0 auto'}
 								justifyContent={'flex-end'}
-								size={'md'}
+								size='md'
 							>
 								<TooltipIconButton
 									icon={<FiSearch />}
 									onClick={handleDrawerOpen}
-									label={'Search'}
-									colorScheme={'green'}
+									label='Search'
+									colorScheme='green'
 								/>
 
 								{isLargerThanMd ? (
@@ -198,7 +198,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 										icon={<FiUser />}
 										as={RouterLink}
 										label={'My Profile'}
-										colorScheme={'blue'}
+										colorScheme='blue'
 										to={`/profile/${loggedInSlug}`}
 									/>
 								) : null}

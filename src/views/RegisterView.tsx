@@ -143,17 +143,17 @@ export default function RegisterView() {
 
 			<Divider my={6} />
 
-			<Heading as={'h2'} variant={'contentTitle'}>
+			<Heading as='h2' variant='contentTitle'>
 				Create an account
 			</Heading>
 			<form onSubmit={handleSubmit}>
-				<Stack direction={'row'} spacing={6}>
+				<Stack direction='row' spacing={6}>
 					<TextInput
 						value={firstName}
-						name={'firstName'}
+						name='firstName'
 						isRequired
 						onChange={handleInputChange}
-						flex={'1'}
+						flex='1'
 						label={'First name'}
 						inputProps={{
 							size: 'xl',
@@ -163,10 +163,10 @@ export default function RegisterView() {
 					/>
 					<TextInput
 						value={lastName}
-						name={'lastName'}
+						name='lastName'
 						isRequired
 						onChange={handleInputChange}
-						flex={'1'}
+						flex='1'
 						label={'Last name'}
 						inputProps={{
 							size: 'xl',
@@ -177,10 +177,10 @@ export default function RegisterView() {
 				</Stack>
 				<TextInput
 					value={email}
-					name={'email'}
-					id={'email'}
-					type={'email'}
-					variant={'filled'}
+					name='email'
+					id='email'
+					type='email'
+					variant='filled'
 					label={'Email address'}
 					error={
 						errorCode !== 'password_too_weak' && errorCode !== 'password_mismatch' && errorCode
@@ -195,14 +195,14 @@ export default function RegisterView() {
 						tabIndex: 3,
 					}}
 				/>
-				<Stack direction={'row'} spacing={6} flexWrap={'wrap'}>
+				<Stack direction='row' spacing={6} flexWrap='wrap'>
 					<TextInput
 						value={password}
-						name={'password'}
-						id={'password'}
-						type={'password'}
-						variant={'filled'}
-						label={'Password'}
+						name='password'
+						id='password'
+						type='password'
+						variant='filled'
+						label='Password'
 						helperText='Passwords must have at least one lowercase letter, one uppercase letter, one number, and one special character.'
 						flex={1}
 						isRequired
@@ -217,10 +217,10 @@ export default function RegisterView() {
 					/>
 					<TextInput
 						value={confirmPassword}
-						name={'confirmPassword'}
-						id={'confirmPassword'}
-						type={'password'}
-						variant={'filled'}
+						name='confirmPassword'
+						id='confirmPassword'
+						type='password'
+						variant='filled'
 						label={'Confirm your password'}
 						flex={1}
 						isRequired
@@ -240,14 +240,14 @@ export default function RegisterView() {
 					alignItems={'flex-end'}
 					mt={2}
 					flex={'0 0 auto'}
-					flexWrap={'wrap'}
+					flexWrap='wrap'
 					gap={8}
 				>
 					<Box mt={4} pr={8}>
 						<FormControl>
 							<Checkbox
-								size={'sm'}
-								w={'full'}
+								size='sm'
+								w='full'
 								isRequired
 								onChange={() => setOfAge(!ofAge)}
 								tabIndex={6}
@@ -258,8 +258,8 @@ export default function RegisterView() {
 						</FormControl>
 						<FormControl>
 							<Checkbox
-								size={'sm'}
-								w={'full'}
+								size='sm'
+								w='full'
 								isRequired
 								onChange={() => setTermsAccepted(!termsAccepted)}
 								tabIndex={7}
@@ -277,8 +277,8 @@ export default function RegisterView() {
 							</Checkbox>
 						</FormControl>
 						<Button
-							type={'submit'}
-							colorScheme={'orange'}
+							type='submit'
+							colorScheme='orange'
 							isDisabled={!formIsValid || submitLoading}
 							mt={4}
 							tabIndex={8}
@@ -287,7 +287,7 @@ export default function RegisterView() {
 							Create account
 						</Button>
 					</Box>
-					{!isLargerThanMd && <BackToLoginButton width={'full'} justifyContent={'flex-end'} />}
+					{!isLargerThanMd && <BackToLoginButton width='full' justifyContent={'flex-end'} />}
 				</Flex>
 			</form>
 		</>

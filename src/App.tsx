@@ -65,9 +65,9 @@ export default function App() {
 				}}
 			>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Stack h={'100vh'} w={'full'} overflow={'auto'} justifyContent={'space-between'} gap={0}>
+					<Stack h='100vh' w='full' overflow='auto' justifyContent={'space-between'} gap={0}>
 						<Header ref={headerRef} />
-						<Box h={'auto'} w={'full'} /* paddingTop={`${headerHeight}px`} */>
+						<Box h='auto' w='full' /* paddingTop={`${headerHeight}px`} */>
 							<Main pt={`${headerHeight}px`} />
 						</Box>
 						<Spacer />

@@ -37,7 +37,7 @@ export default function ConfirmActionDialog({
 		<AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
 			<AlertDialogOverlay>
 				<AlertDialogContent>
-					<AlertDialogHeader fontSize={'lg'} fontWeight={'bold'}>
+					<AlertDialogHeader fontSize='lg' fontWeight='bold'>
 						{headerText}
 					</AlertDialogHeader>
 

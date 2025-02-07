@@ -18,11 +18,11 @@ export default function DarkModeToggle({
 
 	return (
 		<ToggleOptionSwitch
-			id={'darkMode'}
+			id='darkMode'
 			aria-label={`Switch to ${colorMode === 'dark' ? 'light' : 'dark'} mode`}
 			checked={colorMode === 'dark'}
 			callback={toggleColorMode}
-			label={'Theme'}
+			label='Theme'
 			iconLeft={FiSun}
 			iconRight={FiMoon}
 			size={size}
@@ -38,7 +38,7 @@ const Subtext = ({ colorMode }: { colorMode: string }) => {
 	const text = colorMode === 'dark' ? 'Dark mode' : 'Light mode';
 
 	return (
-		<Text as={'span'}>
+		<Text as='span'>
 			<Highlight query={[colorMode]} styles={{ bg: 'brand.yellow', px: 1 }}>
 				{text}
 			</Highlight>

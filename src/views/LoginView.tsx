@@ -87,17 +87,17 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	return (
 		<>
 			<Box>
-				<Flex alignItems={'center'} gap={8} flexWrap={'wrap'}>
-					<Box flex={'1'}>
-						<Box maxWidth={'md'}>
+				<Flex alignItems='center' gap={8} flexWrap='wrap'>
+					<Box flex='1'>
+						<Box maxWidth='md'>
 							{signInTitle ? (
-								<Heading variant={'pageTitle'} as={'h1'} my={0} lineHeight={'normal'}>
+								<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
 									Sign in to RISE
 								</Heading>
 							) : (
 								false
 							)}
-							<Text fontSize={'lg'}>
+							<Text fontSize='lg'>
 								You'll need an account to create a profile or to search for candidates.
 							</Text>
 							<Divider my={4} />
@@ -106,9 +106,9 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								<form onSubmit={handleLoginSubmit}>
 									<TextInput
 										value={credentials.login}
-										name={'login'}
-										label={'Email'}
-										autoComplete={'username'}
+										name='login'
+										label='Email'
+										autoComplete='username'
 										isRequired
 										onChange={handleInputChange}
 										error={
@@ -123,8 +123,8 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 									/>
 									<TextInput
 										value={credentials.password}
-										name={'password'}
-										label={'Password'}
+										name='password'
+										label='Password'
 										isRequired
 										onChange={handleInputChange}
 										error={errorCode === 'incorrect_password' ? errorMessage : ''}
@@ -136,31 +136,31 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 									/>
 									<Flex
 										gap={4}
-										alignItems={'center'}
+										alignItems='center'
 										justifyContent={'space-between'}
 										mt={4}
-										flexWrap={'wrap'}
+										flexWrap='wrap'
 									>
-										<Button type={'submit'} colorScheme={'blue'} px={6} isLoading={!!submitLoading}>
+										<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
 											Sign In
 										</Button>
-										<Link as={RouterLink} to={'/lost-password'} fontSize={'sm'}>
+										<Link as={RouterLink} to={'/lost-password'} fontSize='sm'>
 											Lost your password?
 										</Link>
 									</Flex>
 									<Box id={'recaptcha-badge'} />
 									<Divider />
-									<Box textAlign={'center'} flex={'1'}>
-										<Heading variant={'pageSubtitle'} fontSize={'xl'}>
+									<Box textAlign='center' flex='1'>
+										<Heading variant='pageSubtitle' fontSize='xl'>
 											Don't have an account?
 										</Heading>
 										<Button
 											as={RouterLink}
 											to={'/register'}
 											borderRadius={{ base: 'md', md: 'lg' }}
-											colorScheme={'green'}
+											colorScheme='green'
 											color={'text.dark'}
-											size={'lg'}
+											size='lg'
 										>
 											Join Now
 										</Button>
@@ -170,9 +170,9 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 						</Box>
 					</Box>
 					{!isLargerThanMd ? <Divider my={0} /> : false}
-					<Box textAlign={'center'} flex={'1'} pb={2}>
-						<Stack textAlign={'center'} gap={6}>
-							<Heading as={'h2'} my={0} fontSize={{ base: '2xl', md: '3xl' }}>
+					<Box textAlign='center' flex='1' pb={2}>
+						<Stack textAlign='center' gap={6}>
+							<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
 								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
 									Find your next project
 								</Highlight>
@@ -182,7 +182,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 								</Highlight>
 							</Heading>
 							<Box>
-								<Button onClick={onOpen} size={'xxl'} colorScheme={'yellow'}>
+								<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
 									{`What is RISE? ${decodeString('&raquo;')}`}
 								</Button>
 							</Box>
@@ -191,7 +191,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				</Flex>
 			</Box>
 			<Drawer
-				placement={'right'}
+				placement='right'
 				size={{ base: 'full', md: 'md' }}
 				onClose={onClose}
 				closeOnEsc={true}
@@ -199,25 +199,25 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 				isFullHeight={false}
 			>
 				<DrawerOverlay />
-				<DrawerContent display={'flex'} flexDirection={'column'} height={'100%'}>
-					<DrawerHeader pt={2} pb={1} px={2} textAlign={'right'}>
+				<DrawerContent display='flex' flexDirection='column' height={'100%'}>
+					<DrawerHeader pt={2} pb={1} px={2} textAlign='right'>
 						<IconButton
 							onClick={onClose}
-							borderRadius={'full'}
-							fontSize={'xl'}
+							borderRadius='full'
+							fontSize='xl'
 							icon={<FiX />}
-							aria-label={'Close'}
+							aria-label='Close'
 						/>
 					</DrawerHeader>
 					<DrawerBody py={0} pb={2}>
-						<Box textAlign={'center'}>
-							<PageView postId={'12238'} mt={0} pt={0} />
+						<Box textAlign='center'>
+							<PageView postId='12238' mt={0} pt={0} />
 							<Button
 								as={Link}
 								href={'https://risetheatre.org'}
 								isExternal
-								colorScheme={'yellow'}
-								size={'lg'}
+								colorScheme='yellow'
+								size='lg'
 								mt={6}
 								mb={24}
 							>

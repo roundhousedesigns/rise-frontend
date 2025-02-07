@@ -15,7 +15,7 @@ interface FooterLinkProps {
 
 function FooterLink({ href, children }: FooterLinkProps): JSX.Element {
 	return (
-		<Link href={href} color={'inherit'} isExternal>
+		<Link href={href} color='inherit' isExternal>
 			{children}
 		</Link>
 	);
@@ -28,9 +28,9 @@ export default function Footer() {
 
 	return (
 		<LightMode>
-			<Box w={'full'} py={4} alignItems={'center'} bgColor={'brand.orange'} fontSize={'sm'}>
-				<Container maxW={'6xl'} textAlign={'center'}>
-					<Text align={'center'}>{footerNotice}</Text>
+			<Box w='full' py={4} alignItems='center' bgColor={'brand.orange'} fontSize='sm'>
+				<Container maxW='6xl' textAlign='center'>
+					<Text align='center'>{footerNotice}</Text>
 					<Text>
 						&copy; {year}{' '}
 						<FooterLink href={'https://maestramusic.org'}>Maestra Music Inc.</FooterLink>
@@ -46,8 +46,8 @@ export default function Footer() {
 					</Text>
 
 					<DevMode>
-						<Box p={2} bgColor={'brand.green'} fontSize={'sm'}>
-							<Text fontWeight={'bold'}>Development Branch</Text>
+						<Box p={2} bgColor={'brand.green'} fontSize='sm'>
+							<Text fontWeight='bold'>Development Branch</Text>
 							<Text>{__APP_VERSION__}</Text>
 						</Box>
 					</DevMode>

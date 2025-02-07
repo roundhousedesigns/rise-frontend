@@ -12,7 +12,7 @@ export default function CheckboxButton({
 	...props
 }: Props & CheckboxProps): ReactElement {
 	return (
-		<Checkbox value={value} variant={'buttonStyle'} position={'relative'} {...props}>
+		<Checkbox value={value} variant='buttonStyle' position='relative' {...props}>
 			<Box pl={1}>{children}</Box>
 		</Checkbox>
 	);

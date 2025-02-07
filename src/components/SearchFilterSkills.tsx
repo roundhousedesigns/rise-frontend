@@ -34,7 +34,7 @@ export default function SearchFilterSkills(): JSX.Element {
 		<>
 			<Skeleton isLoaded={data?.length > 0 && !loading && !error}>
 				<Box>
-					<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm} size={'sm'}>
+					<CheckboxGroup defaultValue={skills} onChange={handleToggleTerm} size='sm'>
 						<Wrap>
 							{data?.map((term: WPItem) => (
 								<CheckboxButton key={term.id} value={term.id.toString()}>
