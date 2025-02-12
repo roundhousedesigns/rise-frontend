@@ -4,6 +4,7 @@ import NotFound from '@routes/NotFound';
 import Shell from '@layout/Shell';
 import PageView from '@views/PageView';
 import LoggedIn from '@components/LoggedIn';
+import SEO from '@components/SEO';
 
 export default function Page() {
 	const params = useParams();
@@ -13,6 +14,7 @@ export default function Page() {
 
 	return (
 		<Shell loading={loading} fullWidthTemplate>
+			<SEO slug={slug} />
 			{page && page.id !== 0 ? (
 				page.status === 'publish' ? (
 					<PageView postId={page.id} />
