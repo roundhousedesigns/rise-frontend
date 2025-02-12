@@ -1,7 +1,7 @@
-import { PagesFunction, Response } from '@cloudflare/workers-types';
+import type { PagesFunction, EventContext } from '@cloudflare/workers-types';
 import { render } from '../dist/entry-server';
 
-export const onRequest: PagesFunction = async ({ request }): Promise<Response> => {
+export const onRequest = (async ({ request }: EventContext<unknown, any, unknown>) => {
 	try {
 		const url = new URL(request.url);
 		const { html } = await render(url.pathname, {});
@@ -10,8 +10,8 @@ export const onRequest: PagesFunction = async ({ request }): Promise<Response> =
 			headers: {
 				'content-type': 'text/html;charset=UTF-8',
 			},
-		});
+		}) as Response & { webSocket: null };
 	} catch (error) {
-		return new Response('Server Error', { status: 500 });
+		return new Response('Server Error', { status: 500 }) as Response & { webSocket: null };
 	}
-};
+}) as unknown as PagesFunction;
