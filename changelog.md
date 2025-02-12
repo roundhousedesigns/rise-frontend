@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## [1.2-seo] Unmerged (branched from `1.2-dev`)
+
+- Change: Set permissions on static (website) pages to public, not requiring login.
+
 ## [1.2-structure] Unmerged (branched from `1.2-dev`)
 
 - Change: `<Page>` is now `<Shell>` so we can call WP static pages "Pages."

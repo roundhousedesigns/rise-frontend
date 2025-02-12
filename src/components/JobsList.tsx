@@ -4,7 +4,6 @@ import {
 	List,
 	ListItem,
 	ListProps,
-	Spacer,
 	Stack,
 	Tag,
 	Text,

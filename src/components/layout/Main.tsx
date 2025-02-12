@@ -125,11 +125,19 @@ export default function Main({ ...props }: BoxProps) {
 		},
 		{
 			path: '/jobs',
-			element: <Jobs />,
+			element: (
+				<LoggedIn>
+					<Jobs />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '/job/:id',
-			element: <Job />,
+			element: (
+				<LoggedIn>
+					<Job />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '/:slug',
