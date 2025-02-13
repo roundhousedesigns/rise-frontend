@@ -42,12 +42,12 @@ export default function Shell({
 		</Center>
 	) : (
 		<Container
-			maxWidth={fullWidthTemplate ? 'full' : '5xl'}
+			maxWidth={fullWidthTemplate ? 'full' : '4xl'}
 			pt={fullWidthTemplate ? 4 : 0}
-			px={0}
-			mx='auto'
-			mt={fullWidthTemplate ? 0 : 3}
+			px={4}
+			mt={fullWidthTemplate ? 0 : 6}
 			mb={4}
+			mx='auto'
 			{...props}
 		>
 			{!!title || !!actions ? (
@@ -57,28 +57,32 @@ export default function Shell({
 					gap={2}
 					flexWrap='wrap'
 					m={0}
-					p={0}
+					py={0}
+					pb={1}
+					px={0}
+					borderBottom='1px solid'
+					borderColor='gray.200'
 					{...(fullWidthTemplate ? fullWidthTitleProps : {})}
 				>
-					{title ? (
+					{title && (
 						<Heading
 							variant='pageTitle'
 							as='h1'
 							my={0}
-							px={4}
+							p={0}
 							lineHeight='normal'
-							w='full'
+							textAlign='left'
 							{...titleProps}
 						>
 							{title}
 						</Heading>
-					) : null}
+					)}
 
-					{actions ? (
+					{actions && (
 						<Flex flexWrap='wrap' gap={2} justifyContent={'flex-end'}>
 							{actions}
 						</Flex>
-					) : null}
+					)}
 				</Flex>
 			) : null}
 
@@ -88,7 +92,7 @@ export default function Shell({
 				</Text>
 			) : null}
 
-			<Box px={4} mx='auto'>
+			<Box px={0} mx='auto'>
 				{children}
 			</Box>
 		</Container>

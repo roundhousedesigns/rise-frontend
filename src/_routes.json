@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/reset-password",
+    "/profile",
+    "/profile/*",
+    "/profile/edit",
+    "/results",
+    "/results/*",
+    "/starred",
+    "/stars",
+    "/searches",
+    "/partners",
+    "/partners/*",
+    "/settings",
+    "/jobs",
+    "/job/*"
+  ]
+}

@@ -2,6 +2,7 @@ import type { PagesFunction, EventContext } from '@cloudflare/workers-types';
 import { render } from '../dist/entry-server';
 
 export const onRequest = (async ({ request }: EventContext<unknown, any, unknown>) => {
+	console.log('onRequest', request);
 	try {
 		const url = new URL(request.url);
 		const { html } = await render(url.pathname, {});
