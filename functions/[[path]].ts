@@ -15,7 +15,7 @@ export const onRequest = (async ({ request }: EventContext<unknown, any, unknown
 			throw new Error('Render function not found');
 		}
 
-		const { html, initialState } = await render(url.pathname, {});
+		const { html, initialState } = await render(url.pathname);
 
 		if (!html) {
 			console.error('❌ No HTML returned from render');

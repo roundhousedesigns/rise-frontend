@@ -2,47 +2,45 @@ import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 interface SEOProps {
-	slug?: string;
+	id?: number;
 }
 
 const GET_SEO_DATA = gql`
-	query GetSEOData($slug: String) {
-		page(where: { name: $slug }) {
-			nodes {
-				seo {
-					title
-					metaDesc
-					metaKeywords
-					metaRobotsNoindex
-					metaRobotsNofollow
-					opengraphTitle
-					opengraphDescription
-					opengraphImage {
-						sourceUrl
-					}
-					twitterTitle
-					twitterDescription
-					twitterImage {
-						sourceUrl
-					}
-					canonical
+	query GetSEOData($id: ID!) {
+		page(id: $id, idType: DATABASE_ID) {
+			seo {
+				title
+				metaDesc
+				metaKeywords
+				metaRobotsNoindex
+				metaRobotsNofollow
+				opengraphTitle
+				opengraphDescription
+				opengraphImage {
+					sourceUrl
 				}
+				twitterTitle
+				twitterDescription
+				twitterImage {
+					sourceUrl
+				}
+				canonical
 			}
 		}
 	}
 `;
 
-export default function SEO({ slug }: SEOProps) {
+export default function SEO({ id }: SEOProps) {
 	const { data } = useQuery(GET_SEO_DATA, {
-		variables: { slug },
-		skip: !slug,
+		variables: { id },
+		skip: !id,
 		ssr: true,
 		onError: (error) => {
 			console.error('❌ SEO query error:', error);
 		},
 		onCompleted: (data) => {
 			console.log('✅ SEO query completed:', data);
-		}
+		},
 	});
 
 	const seoData = data?.page?.nodes?.[0]?.seo;

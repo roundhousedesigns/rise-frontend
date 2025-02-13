@@ -4,6 +4,7 @@
     "/*"
   ],
   "exclude": [
+    "/",
     "/reset-password",
     "/profile",
     "/profile/*",

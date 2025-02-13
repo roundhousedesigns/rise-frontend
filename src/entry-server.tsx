@@ -6,7 +6,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import App from './App';
 import theme from '@theme/index';
 
-export async function render(url: string, context: any) {
+export async function render(url: string) {
 	console.log('🚀 SSR rendering path:', url);
 
 	try {
@@ -17,7 +17,7 @@ export async function render(url: string, context: any) {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-			}
+			},
 		});
 
 		console.log('🔗 GraphQL endpoint:', import.meta.env.VITE_BACKEND_URL);

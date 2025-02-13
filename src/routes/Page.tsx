@@ -14,11 +14,12 @@ export default function Page() {
 
 	return (
 		<Shell loading={loading} fullWidthTemplate>
-			<SEO slug={slug} />
-
 			{page && page.id !== 0 ? (
 				page.status === 'publish' ? (
-					<PageView postId={page.id} />
+					<>
+						<SEO id={page.id} />
+						<PageView postId={page.id} />
+					</>
 				) : (
 					<LoggedIn>
 						<PageView postId={page.id} />
