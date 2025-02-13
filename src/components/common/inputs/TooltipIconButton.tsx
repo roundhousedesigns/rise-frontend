@@ -31,7 +31,7 @@ export default function TooltipIconButton({
 			base: false,
 			md: true,
 		},
-		{ ssr: false }
+		{ ssr: true }
 	);
 
 	return (

@@ -18,7 +18,7 @@ const ResponsiveButton = forwardRef<Props, 'div'>(
 				base: false,
 				md: true,
 			},
-			{ ssr: false }
+			{ ssr: true }
 		);
 
 		return isFullSize ? (

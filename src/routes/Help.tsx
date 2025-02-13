@@ -18,7 +18,7 @@ const EmailButton = () => (
 export default function Help() {
 	return (
 		<Shell title='Help' actions={<EmailButton />}>
-			<PageView postId='959' showTitle={false} />
+			<PageView postId={959} showTitle={false} />
 		</Shell>
 	);
 }

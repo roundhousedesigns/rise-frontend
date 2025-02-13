@@ -59,13 +59,21 @@ export function socialLink(network: string, value: string): string {
  * @param {string} str The string to decode.
  * @returns {string} The decoded string.
  */
-export function decodeString(str: string): string {
-	let txt = document.createElement('textarea');
-
-	txt.innerHTML = str;
-
-	return txt.value;
-}
+export const decodeString = (str: string): string => {
+	if (typeof document !== 'undefined') {
+		// Client-side
+		const txt = document.createElement('textarea');
+		txt.innerHTML = str;
+		return txt.value;
+	}
+	// Server-side
+	return str.replace(/&raquo;/g, '»')
+			  .replace(/&laquo;/g, '«')
+			  .replace(/&quot;/g, '"')
+			  .replace(/&amp;/g, '&')
+			  .replace(/&lt;/g, '<')
+			  .replace(/&gt;/g, '>');
+};
 
 /**
  * Convert a string to a boolean. Strictly accepts case-insensitive "true" or "false".

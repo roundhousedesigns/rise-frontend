@@ -69,7 +69,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 			base: false,
 			md: true,
 		},
-		{ ssr: false }
+		{ ssr: true }
 	);
 
 	const profileUrl = useProfileUrl(slug);

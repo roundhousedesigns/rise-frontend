@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import {
@@ -24,7 +24,7 @@ import {
 	chakra,
 } from '@chakra-ui/react';
 import { FiExternalLink, FiX } from 'react-icons/fi';
-import { decodeString, handleReCaptchaVerify } from '@lib/utils';
+import { handleReCaptchaVerify, decodeString } from '@lib/utils';
 import { LoginInput } from '@lib/types';
 import PageView from '@views/PageView';
 import { useErrorMessage } from '@hooks/hooks';
@@ -44,8 +44,9 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 		reCaptchaToken: '',
 	});
 	const [errorCode, setErrorCode] = useState<string>('');
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)', { ssr: true });
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [buttonText, setButtonText] = useState('What is RISE? »');
 
 	const {
 		loginMutation,
@@ -54,6 +55,12 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
 	const errorMessage = useErrorMessage(errorCode);
+
+	useEffect(() => {
+		if (typeof window !== 'undefined') {
+			setButtonText(decodeString('What is RISE? &raquo;'));
+		}
+	}, []);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -184,7 +191,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 							</Heading>
 							<Box>
 								<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
-									{`What is RISE? ${decodeString('&raquo;')}`}
+									{buttonText}
 								</Button>
 							</Box>
 						</Stack>

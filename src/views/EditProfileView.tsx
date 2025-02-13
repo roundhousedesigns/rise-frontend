@@ -148,7 +148,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 	const [creditsSorted, setCreditsSorted] = useState<Credit[]>([]);
 	const [hasEditedCreditOrder, setHasEditedCreditOrder] = useState<boolean>(false);
 
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)', { ssr: true });
 
 	const {
 		uploadFileMutation,

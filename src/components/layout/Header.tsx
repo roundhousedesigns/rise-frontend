@@ -40,9 +40,8 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, blue, gray, textLight, textDark] = useToken('colors', [
+	const [orange, gray, textLight, textDark] = useToken('colors', [
 		'brand.orange',
-		'brand.blue',
 		'gray.400',
 		'text.light',
 		'text.dark',
@@ -52,7 +51,7 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 			base: false,
 			md: true,
 		},
-		{ ssr: false }
+		{ ssr: true }
 	);
 
 	const handleDrawerOpen = () => {

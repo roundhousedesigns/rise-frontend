@@ -32,9 +32,21 @@ const usePageBySlug = (slug: string | undefined): [WPPost | null, any] => {
 			name: slug,
 		},
 		skip: !slug,
+		ssr: true,
+		onError: (error) => {
+			console.error('❌ usePageBySlug query error:', error);
+		},
+		onCompleted: (data) => {
+			console.log('✅ usePageBySlug query completed:', data);
+		}
 	});
 
-	const { id, title, content, uri, status } = result.data?.pages.nodes[0] || {};
+	if (!result.data?.pages?.nodes?.[0]) {
+		console.log('⚠️ No data found for slug:', slug);
+		return [null, omit(result, ['data'])];
+	}
+
+	const { id, title, content, uri, status } = result.data.pages.nodes[0];
 
 	const preparedPage = new WPPost({
 		id,

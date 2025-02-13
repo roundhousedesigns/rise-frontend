@@ -25,6 +25,8 @@ export default defineConfig({
 				'entry-server': './src/entry-server.tsx',
 			},
 		},
+		assetsDir: 'assets',
+		manifest: true,
 		chunkSizeWarningLimit: 1400,
 	},
 	resolve: {

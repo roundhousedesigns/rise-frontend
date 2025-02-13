@@ -6,7 +6,7 @@ import { omit } from 'lodash';
 import { WPPost } from '@lib/classes';
 
 const QUERY_PAGES = gql`
-	query PagesQuery($id: Int) {
+	query PagesQuery($id: Int!) {
 		pages(where: { id: $id }) {
 			nodes {
 				id: databaseId
@@ -24,13 +24,22 @@ const QUERY_PAGES = gql`
  * @returns A tuple of a WPPost object and a query result object.
  */
 const usePageById = (id: number): [WPPost | null, any] => {
+	console.log('🔍 usePageById called with id:', id);
+
 	const result = useQuery(QUERY_PAGES, {
-		variables: {
-			id,
+		variables: { id },
+		skip: !id,
+		ssr: true,
+		onError: (error) => {
+			console.error('❌ usePageById query error:', error);
 		},
+		onCompleted: (data) => {
+			console.log('✅ usePageById query completed:', data);
+		}
 	});
 
-	if (!result.data?.pages) {
+	if (!result.data?.pages?.nodes?.[0]) {
+		console.log('⚠️ No data found for id:', id);
 		return [null, omit(result, ['data'])];
 	}
 

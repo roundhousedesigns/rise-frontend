@@ -4,7 +4,7 @@ import RegisterView from '@views/RegisterView';
 import BackToLoginButton from '@common/BackToLoginButton';
 
 export default function Register() {
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)', { ssr: true });
 	const Button = () => (isLargerThanMd ? <BackToLoginButton /> : <></>);
 
 	return (

@@ -14,7 +14,7 @@ export default function SavedSearchItemList({ ...props }: BoxProps) {
 			base: false,
 			md: true,
 		},
-		{ ssr: false }
+		{ ssr: true }
 	);
 
 	// TODO Maintain indexes when editing a saved search's name.

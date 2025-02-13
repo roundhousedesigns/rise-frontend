@@ -7,7 +7,6 @@
     "/reset-password",
     "/profile",
     "/profile/*",
-    "/profile/edit",
     "/results",
     "/results/*",
     "/starred",

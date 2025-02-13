@@ -1,5 +1,6 @@
 # Local
 .env
+.dev.vars
 
 # Dependencies
 /node_modules

@@ -36,12 +36,20 @@ export default function SEO({ slug }: SEOProps) {
 	const { data } = useQuery(GET_SEO_DATA, {
 		variables: { slug },
 		skip: !slug,
+		ssr: true,
+		onError: (error) => {
+			console.error('❌ SEO query error:', error);
+		},
+		onCompleted: (data) => {
+			console.log('✅ SEO query completed:', data);
+		}
 	});
 
 	const seoData = data?.page?.nodes?.[0]?.seo;
 
+	// Only run document modifications on client-side
 	useEffect(() => {
-		if (!seoData) return;
+		if (typeof window === 'undefined' || !seoData) return;
 
 		// Update meta tags
 		document.title = seoData.title;

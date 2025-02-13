@@ -47,7 +47,7 @@ export default function RegisterView() {
 
 	const { executeRecaptcha } = useGoogleReCaptcha();
 
-	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)', { ssr: true });
 
 	const {
 		registerUserMutation,

@@ -35,7 +35,7 @@ export default function MainMenu() {
 			base: false,
 			md: true,
 		},
-		{ ssr: false }
+		{ ssr: true }
 	);
 	const { colorMode } = useColorMode();
 
