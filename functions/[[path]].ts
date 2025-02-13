@@ -1,5 +1,25 @@
 import type { PagesFunction, EventContext } from '@cloudflare/workers-types';
 import { render } from '../dist/entry-server';
+import { isPublicRoute } from '../src/lib/routeUtils';
+
+// Base HTML template with proper asset references
+const getBaseHtml = (content: string = '', initialState: string = '') => `
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/svg+xml" href="/assets/images/rise-favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content="RISE Theatre Directory" />
+		<title>RISE Theatre Directory</title>
+		${initialState ? `<script>window.__APOLLO_STATE__=${initialState}</script>` : ''}
+	</head>
+	<body>
+		<div id="root">${content}</div>
+		<script type="module" src="/assets/index.js"></script>
+	</body>
+</html>
+`;
 
 export const onRequest = (async ({ request }: EventContext<unknown, any, unknown>) => {
 	const url = new URL(request.url);
@@ -9,7 +29,20 @@ export const onRequest = (async ({ request }: EventContext<unknown, any, unknown
 	});
 
 	try {
-		// Add error boundary around render
+		// Only use SSR for public routes
+		if (!isPublicRoute(url.pathname)) {
+			// Return the client-side app shell for non-public routes
+			return new Response(
+				getBaseHtml(),
+				{
+					headers: {
+						'content-type': 'text/html;charset=UTF-8',
+					},
+				}
+			) as Response & { webSocket: null };
+		}
+
+		// SSR for public routes
 		if (!render) {
 			console.error('❌ Render function not found');
 			throw new Error('Render function not found');
@@ -23,15 +56,7 @@ export const onRequest = (async ({ request }: EventContext<unknown, any, unknown
 		}
 
 		return new Response(
-			`<!DOCTYPE html>
-			<html>
-				<head>
-					<script>window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')}</script>
-				</head>
-				<body>
-					<div id="root">${html}</div>
-				</body>
-			</html>`,
+			getBaseHtml(html, JSON.stringify(initialState).replace(/</g, '\\u003c')),
 			{
 				headers: {
 					'content-type': 'text/html;charset=UTF-8',
@@ -40,21 +65,12 @@ export const onRequest = (async ({ request }: EventContext<unknown, any, unknown
 		) as Response & { webSocket: null };
 	} catch (error) {
 		console.error('🔥 Server error:', error);
-		// Return a more detailed error page
 		return new Response(
-			`
-			<!DOCTYPE html>
-			<html>
-				<head>
-					<title>Server Error</title>
-				</head>
-				<body>
-					<h1>Server Error</h1>
-					<pre>${error instanceof Error ? error.message : 'Unknown error'}</pre>
-					<pre>${error instanceof Error ? error.stack : ''}</pre>
-				</body>
-			</html>
-		`,
+			getBaseHtml(`
+				<h1>Server Error</h1>
+				<pre>${error instanceof Error ? error.message : 'Unknown error'}</pre>
+				<pre>${error instanceof Error ? error.stack : ''}</pre>
+			`),
 			{
 				status: 500,
 				headers: {
