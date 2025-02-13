@@ -1,6 +1,7 @@
 # Local
 .env
 .dev.vars
+.wrangler
 
 # Dependencies
 /node_modules
