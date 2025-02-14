@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
@@ -21,6 +21,11 @@ export default defineConfig({
 			},
 		},
 		chunkSizeWarningLimit: 1400,
+	},
+	ssr: {
+		// Config for SSR-specific build
+		target: 'webworker',
+		noExternal: ['@apollo/client', '@chakra-ui/react', 'react-google-recaptcha-v3'],
 	},
 	resolve: {
 		alias: [
@@ -63,7 +68,7 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/hooks/queries', import.meta.url)),
 			},
 			{
-				find : '@mutations',
+				find: '@mutations',
 				replacement: fileURLToPath(new URL('./src/hooks/mutations', import.meta.url)),
 			},
 			{
@@ -77,6 +82,10 @@ export default defineConfig({
 			{
 				find: '@views',
 				replacement: fileURLToPath(new URL('./src/views', import.meta.url)),
+			},
+			{
+				find: '@server',
+				replacement: fileURLToPath(new URL('./dist/server', import.meta.url)),
 			},
 		],
 	},

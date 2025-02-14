@@ -6,6 +6,7 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/svg+xml" href="/assets/images/rise-favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- TODO Pull description from the backend -->
 		<meta
 			name="description"
 			content="RISE Theatre Directory is a national personnel directory created to promote visibility of individuals who work backstage, behind-the-scenes, and in support of theater making. The directory is a public service tool, available to all, created with the knowledge that amplification is particularly powerful for those who are often overlooked, including but not limited to people of color, women, trans, nonbinary, deaf, and disabled theatre professionals. RISE Theatre Directory allows these professionals to be discovered and identified for employment and opportunities by producers, general managers, theaters and various employers. Membership is free for professionals across more than 120+ job categories."
@@ -14,7 +15,7 @@
 	</head>
 
 	<body>
-		<div id="root"></div>
-		<script type="module" src="/src/main.tsx"></script>
+		<div id="root"><!--ssr-outlet--></div>
+		<script type="module" src="/src/entry-client.tsx"></script>
 	</body>
 </html>
