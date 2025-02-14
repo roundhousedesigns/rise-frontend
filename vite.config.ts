@@ -8,6 +8,8 @@ export default defineConfig({
 		port: 3000,
 	},
 	build: {
+		minify: false,
+		sourcemap: true,
 		rollupOptions: {
 			makeAbsoluteExternalsRelative: true,
 			preserveEntrySignatures: 'strict',
@@ -23,9 +25,26 @@ export default defineConfig({
 		chunkSizeWarningLimit: 1400,
 	},
 	ssr: {
-		// Config for SSR-specific build
 		target: 'webworker',
-		noExternal: ['@apollo/client', '@chakra-ui/react', 'react-google-recaptcha-v3'],
+		noExternal: [
+			'@apollo/client',
+			'@chakra-ui/react',
+			'@chakra-ui/hooks',
+			'@chakra-ui/system',
+			'@chakra-ui/theme-tools',
+			'@chakra-ui/utils',
+			'@chakra-ui/theme',
+			'@emotion/react',
+			'@emotion/styled',
+			'@emotion/serialize',
+			'@emotion/utils',
+			'@emotion/hash',
+			'@emotion/unitless',
+			'@emotion/memoize',
+			'@emotion/is-prop-valid',
+			'framer-motion',
+			'react-google-recaptcha-v3',
+		],
 	},
 	resolve: {
 		alias: [

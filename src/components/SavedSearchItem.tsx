@@ -10,7 +10,6 @@ import {
 	Box,
 	Skeleton,
 	ButtonGroup,
-	CardProps,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';

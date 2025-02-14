@@ -1,0 +1,17 @@
+name = "rise-theatre-directory"
+compatibility_date = "2024-02-14"
+main = "functions/[[path]].js"
+
+[site]
+bucket = "./dist/client"
+
+[build]
+command = "yarn build"
+
+[dev]
+port = 3000
+local_protocol = "http"
+
+[pages]
+directory = "dist/client"
+include = ["dist/server"]

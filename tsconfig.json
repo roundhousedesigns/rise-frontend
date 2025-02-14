@@ -70,7 +70,8 @@
   },
   "include": [
     "src",
-    "testSetup.ts"
+    "testSetup.ts",
+    "src/types/global.d.ts"
   ],
   "references": [
     {
