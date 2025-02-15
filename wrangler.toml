@@ -11,7 +11,3 @@ command = "yarn build"
 [dev]
 port = 3000
 local_protocol = "http"
-
-[pages]
-directory = "dist/client"
-include = ["dist/server"]

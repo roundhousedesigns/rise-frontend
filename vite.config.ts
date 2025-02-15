@@ -29,22 +29,24 @@ export default defineConfig({
 		noExternal: [
 			'@apollo/client',
 			'@chakra-ui/react',
-			'@chakra-ui/hooks',
 			'@chakra-ui/system',
 			'@chakra-ui/theme-tools',
-			'@chakra-ui/utils',
-			'@chakra-ui/theme',
+			'@chakra-ui/hooks',
+			'@chakra-ui/styled-system',
 			'@emotion/react',
 			'@emotion/styled',
-			'@emotion/serialize',
-			'@emotion/utils',
-			'@emotion/hash',
-			'@emotion/unitless',
-			'@emotion/memoize',
+			'@emotion/cache',
+			'@emotion/server',
 			'@emotion/is-prop-valid',
+			'@emotion/utils',
 			'framer-motion',
-			'react-google-recaptcha-v3',
+			'react-google-recaptcha-v3'
 		],
+		external: [
+			'react',
+			'react-dom',
+			'react-router-dom'
+		]
 	},
 	resolve: {
 		alias: [

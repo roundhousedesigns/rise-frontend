@@ -4,20 +4,21 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q;
 import { jsx as jsx$1, jsxs, Fragment } from "react/jsx-runtime";
 import * as React$1 from "react";
-import React__default, { createContext as createContext$1, useState, useRef, useEffect, useCallback, useMemo, useContext, useId as useId$1, useLayoutEffect, Children, isValidElement as isValidElement$1, forwardRef as forwardRef$1, useReducer, createElement, useInsertionEffect, cloneElement, memo, useSyncExternalStore as useSyncExternalStore$1, Fragment as Fragment$1, StrictMode } from "react";
+import React__default, { useRef, useEffect, useCallback, useState, useId as useId$1, useLayoutEffect, useMemo, forwardRef as forwardRef$1, useContext, createContext, useReducer, createElement, useInsertionEffect, cloneElement, Children, isValidElement as isValidElement$1, memo, useSyncExternalStore as useSyncExternalStore$1, Fragment as Fragment$1, StrictMode } from "react";
 import ReactDOMServer, { renderToStaticMarkup } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server.mjs";
 import { createUploadLink } from "apollo-upload-client";
-import { accordionAnatomy, alertAnatomy, avatarAnatomy, breadcrumbAnatomy, cardAnatomy, checkboxAnatomy, drawerAnatomy, editableAnatomy, formAnatomy, formErrorAnatomy, inputAnatomy, listAnatomy, menuAnatomy, modalAnatomy, numberInputAnatomy, popoverAnatomy, progressAnatomy, radioAnatomy, selectAnatomy, sliderAnatomy, statAnatomy, switchAnatomy, tableAnatomy, tabsAnatomy, tagAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, defineStyle, cssVar as cssVar$1, defineCssVars, defineStyleConfig, calc as calc$1, toCSSVar, css as css$2, propNames, isStyleProp, resolveStyleConfig, omitThemingProps, layoutPropNames, getCSSVar } from "@chakra-ui/styled-system";
-import { toHex, transparentize as transparentize$1, parseToRgba } from "color2k";
-import mergeWith from "lodash.mergewith";
-import createCache from "@emotion/cache";
-import _extends from "@babel/runtime/helpers/esm/extends";
+import { accordionAnatomy, alertAnatomy, avatarAnatomy, cardAnatomy, checkboxAnatomy, editableAnatomy, inputAnatomy, menuAnatomy, radioAnatomy } from "@chakra-ui/anatomy";
+import { theme as theme$1, isChakraTheme } from "@chakra-ui/theme";
+import { getOwnerWindow, getActiveElement, isTabbable, isObject, mergeWith, runIfFn, toMediaQueryString, omit, pick, walkObject, analyzeBreakpoints, isBrowser as isBrowser$2, createContext as createContext$1, memoizedGet as memoizedGet$1, interopDefault, splitProps, assignAfter, compact as compact$1, cx, callAllHandlers, warn, dataAttr, ariaAttr, callAll, isArray as isArray$1, getAllFocusable, mapResponsive, getValidChildren, breakpoints, arrayToObjectNotation, lazyDisclosure, split, getScrollParent } from "@chakra-ui/utils";
+import { StyleSheet } from "@emotion/sheet";
+import { stringify as stringify$1, rulesheet, middleware, RULESET, combine, match, serialize, copy as copy$1, replace, WEBKIT, MOZ, MS, KEYFRAMES, DECLARATION, compile, dealloc, alloc, hash, charat, strlen, indexof, next, token, from, peek, delimit, slice, position as position$1 } from "stylis";
 import weakMemoize from "@emotion/weak-memoize";
+import memoize$1 from "@emotion/memoize";
+import _extends from "@babel/runtime/helpers/esm/extends";
+import { serializeStyles } from "@emotion/serialize";
 import { useInsertionEffectAlwaysWithSyncFallback, useInsertionEffectWithLayoutFallback } from "@emotion/use-insertion-effect-with-fallbacks";
 import "@babel/runtime/helpers/extends";
 import "hoist-non-react-statics";
@@ -35,6 +36,7 @@ import { gql } from "graphql-tag";
 import isEqual from "react-fast-compare";
 import { invariant as invariant$2, warning } from "hey-listen";
 import { trackFocusVisible } from "@zag-js/focus-visible";
+import { createContext as createContext$2 } from "@chakra-ui/utils/context";
 import { createPopper } from "@popperjs/core";
 import { createPortal } from "react-dom";
 import { hideOthers } from "aria-hidden";
@@ -50,183 +52,12 @@ import { visit, BREAK, Kind, print as print$1, isSelectionNode } from "graphql";
 import { Observable } from "zen-observable-ts";
 import "symbol-observable";
 import { Trie } from "@wry/trie";
-import { wrap as wrap$1, Slot, dep } from "optimism";
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-var s = function() {
-  return s = Object.assign || function(e) {
-    for (var t, r = 1, o = arguments.length; r < o; r++)
-      for (var n in t = arguments[r])
-        Object.prototype.hasOwnProperty.call(t, n) && (e[n] = t[n]);
-    return e;
-  }, s.apply(this, arguments);
-};
-var f, p = function(e) {
-  var t;
-  e ? function(e2) {
-    if (e2)
-      for (; e2.lastChild; )
-        e2.lastChild.remove();
-  }("string" == typeof e ? document.getElementById(e) : e) : (t = document.querySelector(".grecaptcha-badge")) && t.parentNode && document.body.removeChild(t.parentNode);
-}, d = function(e, t) {
-  p(t), window.___grecaptcha_cfg = void 0;
-  var r = document.querySelector("#" + e);
-  r && r.remove(), function() {
-    var e2 = document.querySelector('script[src^="https://www.gstatic.com/recaptcha/releases"]');
-    e2 && e2.remove();
-  }();
-}, y = function(e) {
-  var t = e.render, r = e.onLoadCallbackName, o = e.language, n = e.onLoad, a = e.useRecaptchaNet, c = e.useEnterprise, i = e.scriptProps, s2 = void 0 === i ? {} : i, u = s2.nonce, l = void 0 === u ? "" : u, f2 = s2.defer, p2 = void 0 !== f2 && f2, d2 = s2.async, y2 = void 0 !== d2 && d2, m2 = s2.id, v2 = void 0 === m2 ? "" : m2, b = s2.appendTo, h2 = v2 || "google-recaptcha-v3";
-  if (function(e2) {
-    return !!document.querySelector("#" + e2);
-  }(h2))
-    n();
-  else {
-    var g2 = function(e2) {
-      return "https://www." + (e2.useRecaptchaNet ? "recaptcha.net" : "google.com") + "/recaptcha/" + (e2.useEnterprise ? "enterprise.js" : "api.js");
-    }({ useEnterprise: c, useRecaptchaNet: a }), S = document.createElement("script");
-    S.id = h2, S.src = g2 + "?render=" + t + ("explicit" === t ? "&onload=" + r : "") + (o ? "&hl=" + o : ""), l && (S.nonce = l), S.defer = !!p2, S.async = !!y2, S.onload = n, ("body" === b ? document.body : document.getElementsByTagName("head")[0]).appendChild(S);
-  }
-}, m = function(e) {
-  "undefined" != typeof process && !!process.env && false || console.warn(e);
-};
-!function(e) {
-  e.SCRIPT_NOT_AVAILABLE = "Recaptcha script is not available";
-}(f || (f = {}));
-var v = createContext$1({ executeRecaptcha: function() {
-  throw Error("GoogleReCaptcha Context has not yet been implemented, if you are using useGoogleReCaptcha hook, make sure the hook is called inside component wrapped by GoogleRecaptchaProvider");
-} });
-v.Consumer;
-function h(t) {
-  var i = t.reCaptchaKey, u = t.useEnterprise, l = void 0 !== u && u, p2 = t.useRecaptchaNet, b = void 0 !== p2 && p2, h2 = t.scriptProps, g2 = t.language, S = t.container, w2 = t.children, $2 = useState(null), C2 = $2[0], P2 = $2[1], x2 = useRef(i), E2 = JSON.stringify(h2), R2 = JSON.stringify(null == S ? void 0 : S.parameters);
-  useEffect(function() {
-    if (i) {
-      var e = (null == h2 ? void 0 : h2.id) || "google-recaptcha-v3", t2 = (null == h2 ? void 0 : h2.onLoadCallbackName) || "onRecaptchaLoadCallback";
-      window[t2] = function() {
-        var e2 = l ? window.grecaptcha.enterprise : window.grecaptcha, t3 = s({ badge: "inline", size: "invisible", sitekey: i }, (null == S ? void 0 : S.parameters) || {});
-        x2.current = e2.render(null == S ? void 0 : S.element, t3);
-      };
-      return y({ render: (null == S ? void 0 : S.element) ? "explicit" : i, onLoadCallbackName: t2, useEnterprise: l, useRecaptchaNet: b, scriptProps: h2, language: g2, onLoad: function() {
-        if (window && window.grecaptcha) {
-          var e2 = l ? window.grecaptcha.enterprise : window.grecaptcha;
-          e2.ready(function() {
-            P2(e2);
-          });
-        } else
-          m("<GoogleRecaptchaProvider /> " + f.SCRIPT_NOT_AVAILABLE);
-      }, onError: function() {
-        m("Error loading google recaptcha script");
-      } }), function() {
-        d(e, null == S ? void 0 : S.element);
-      };
-    }
-    m("<GoogleReCaptchaProvider /> recaptcha key not provided");
-  }, [l, b, E2, R2, g2, i, null == S ? void 0 : S.element]);
-  var M2 = useCallback(function(e) {
-    if (!C2 || !C2.execute)
-      throw new Error("<GoogleReCaptchaProvider /> Google Recaptcha has not been loaded");
-    return C2.execute(x2.current, { action: e });
-  }, [C2, x2]), N2 = useMemo(function() {
-    return { executeRecaptcha: C2 ? M2 : void 0, container: null == S ? void 0 : S.element };
-  }, [M2, C2, null == S ? void 0 : S.element]);
-  return React__default.createElement(v.Provider, { value: N2 }, w2);
-}
-var g = function() {
-  return useContext(v);
-};
-function w(e, t) {
-  return e(t = { exports: {} }, t.exports), t.exports;
-  /** @license React v16.13.1
-   * react-is.production.min.js
-   *
-   * Copyright (c) Facebook, Inc. and its affiliates.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-}
-var $ = "function" == typeof Symbol && Symbol.for, C = $ ? Symbol.for("react.element") : 60103, P = $ ? Symbol.for("react.portal") : 60106, x = $ ? Symbol.for("react.fragment") : 60107, E = $ ? Symbol.for("react.strict_mode") : 60108, R = $ ? Symbol.for("react.profiler") : 60114, M = $ ? Symbol.for("react.provider") : 60109, N = $ ? Symbol.for("react.context") : 60110, O = $ ? Symbol.for("react.async_mode") : 60111, _ = $ ? Symbol.for("react.concurrent_mode") : 60111, T = $ ? Symbol.for("react.forward_ref") : 60112, j = $ ? Symbol.for("react.suspense") : 60113, L = $ ? Symbol.for("react.suspense_list") : 60120, k = $ ? Symbol.for("react.memo") : 60115, F = $ ? Symbol.for("react.lazy") : 60116, A = $ ? Symbol.for("react.block") : 60121, V = $ ? Symbol.for("react.fundamental") : 60117, z = $ ? Symbol.for("react.responder") : 60118, G = $ ? Symbol.for("react.scope") : 60119;
-function I(e) {
-  if ("object" == typeof e && null !== e) {
-    var t = e.$$typeof;
-    switch (t) {
-      case C:
-        switch (e = e.type) {
-          case O:
-          case _:
-          case x:
-          case R:
-          case E:
-          case j:
-            return e;
-          default:
-            switch (e = e && e.$$typeof) {
-              case N:
-              case T:
-              case F:
-              case k:
-              case M:
-                return e;
-              default:
-                return t;
-            }
-        }
-      case P:
-        return t;
-    }
-  }
-}
-function D(e) {
-  return I(e) === _;
-}
-var q = { AsyncMode: O, ConcurrentMode: _, ContextConsumer: N, ContextProvider: M, Element: C, ForwardRef: T, Fragment: x, Lazy: F, Memo: k, Portal: P, Profiler: R, StrictMode: E, Suspense: j, isAsyncMode: function(e) {
-  return D(e) || I(e) === O;
-}, isConcurrentMode: D, isContextConsumer: function(e) {
-  return I(e) === N;
-}, isContextProvider: function(e) {
-  return I(e) === M;
-}, isElement: function(e) {
-  return "object" == typeof e && null !== e && e.$$typeof === C;
-}, isForwardRef: function(e) {
-  return I(e) === T;
-}, isFragment: function(e) {
-  return I(e) === x;
-}, isLazy: function(e) {
-  return I(e) === F;
-}, isMemo: function(e) {
-  return I(e) === k;
-}, isPortal: function(e) {
-  return I(e) === P;
-}, isProfiler: function(e) {
-  return I(e) === R;
-}, isStrictMode: function(e) {
-  return I(e) === E;
-}, isSuspense: function(e) {
-  return I(e) === j;
-}, isValidElementType: function(e) {
-  return "string" == typeof e || "function" == typeof e || e === x || e === _ || e === R || e === E || e === j || e === L || "object" == typeof e && null !== e && (e.$$typeof === F || e.$$typeof === k || e.$$typeof === M || e.$$typeof === N || e.$$typeof === T || e.$$typeof === V || e.$$typeof === z || e.$$typeof === G || e.$$typeof === A);
-}, typeOf: I }, B = w(function(e, t) {
-}), J = (B.AsyncMode, B.ConcurrentMode, B.ContextConsumer, B.ContextProvider, B.Element, B.ForwardRef, B.Fragment, B.Lazy, B.Memo, B.Portal, B.Profiler, B.StrictMode, B.Suspense, B.isAsyncMode, B.isConcurrentMode, B.isContextConsumer, B.isContextProvider, B.isElement, B.isForwardRef, B.isFragment, B.isLazy, B.isMemo, B.isPortal, B.isProfiler, B.isStrictMode, B.isSuspense, B.isValidElementType, B.typeOf, w(function(e) {
-  e.exports = q;
-})), H = { $$typeof: true, compare: true, defaultProps: true, displayName: true, propTypes: true, type: true }, Q = {};
-Q[J.ForwardRef] = { $$typeof: true, render: true, defaultProps: true, displayName: true, propTypes: true }, Q[J.Memo] = H;
+import { wrap as wrap$2, Slot, dep } from "optimism";
 var version$1 = "3.12.6";
 function maybe(thunk) {
   try {
     return thunk();
-  } catch (_a2) {
+  } catch (_a) {
   }
 }
 var global$1 = maybe(function() {
@@ -247,25 +78,25 @@ maybe(function() {
   return maybe.constructor("return this")();
 });
 var prefixCounts = /* @__PURE__ */ new Map();
-function makeUniqueId(prefix) {
-  var count = prefixCounts.get(prefix) || 1;
-  prefixCounts.set(prefix, count + 1);
-  return "".concat(prefix, ":").concat(count, ":").concat(Math.random().toString(36).slice(2));
+function makeUniqueId(prefix2) {
+  var count = prefixCounts.get(prefix2) || 1;
+  prefixCounts.set(prefix2, count + 1);
+  return "".concat(prefix2, ":").concat(count, ":").concat(Math.random().toString(36).slice(2));
 }
-function stringifyForDisplay(value, space) {
-  if (space === void 0) {
-    space = 0;
+function stringifyForDisplay(value, space2) {
+  if (space2 === void 0) {
+    space2 = 0;
   }
   var undefId = makeUniqueId("stringifyForDisplay");
   return JSON.stringify(value, function(key, value2) {
     return value2 === void 0 ? undefId : value2;
-  }, space).split(JSON.stringify(undefId)).join("<undefined>");
+  }, space2).split(JSON.stringify(undefId)).join("<undefined>");
 }
-function wrap(fn) {
+function wrap$1(fn) {
   return function(message) {
     var args = [];
-    for (var _i2 = 1; _i2 < arguments.length; _i2++) {
-      args[_i2 - 1] = arguments[_i2];
+    for (var _i = 1; _i < arguments.length; _i++) {
+      args[_i - 1] = arguments[_i];
     }
     if (typeof message === "number") {
       var arg0 = message;
@@ -280,22 +111,22 @@ function wrap(fn) {
 }
 var invariant = Object.assign(function invariant2(condition, message) {
   var args = [];
-  for (var _i2 = 2; _i2 < arguments.length; _i2++) {
-    args[_i2 - 2] = arguments[_i2];
+  for (var _i = 2; _i < arguments.length; _i++) {
+    args[_i - 2] = arguments[_i];
   }
   if (!condition) {
     invariant$1(condition, getHandledErrorMsg(message, args) || getFallbackErrorMsg(message, args));
   }
 }, {
-  debug: wrap(invariant$1.debug),
-  log: wrap(invariant$1.log),
-  warn: wrap(invariant$1.warn),
-  error: wrap(invariant$1.error)
+  debug: wrap$1(invariant$1.debug),
+  log: wrap$1(invariant$1.log),
+  warn: wrap$1(invariant$1.warn),
+  error: wrap$1(invariant$1.error)
 });
 function newInvariantError(message) {
   var optionalParams = [];
-  for (var _i2 = 1; _i2 < arguments.length; _i2++) {
-    optionalParams[_i2 - 1] = arguments[_i2];
+  for (var _i = 1; _i < arguments.length; _i++) {
+    optionalParams[_i - 1] = arguments[_i];
   }
   return new InvariantError(getHandledErrorMsg(message, optionalParams) || getFallbackErrorMsg(message, optionalParams));
 }
@@ -306,7 +137,7 @@ function stringify(arg) {
   }
   try {
     return stringifyForDisplay(arg, 2).slice(0, 1e3);
-  } catch (_a2) {
+  } catch (_a) {
     return "<non-serializable>";
   }
 }
@@ -330,13 +161,13 @@ function getFallbackErrorMsg(message, messageArgs) {
     args: messageArgs.map(stringify)
   })));
 }
-function shouldInclude(_a2, variables) {
-  var directives = _a2.directives;
+function shouldInclude(_a, variables) {
+  var directives = _a.directives;
   if (!directives || !directives.length) {
     return true;
   }
-  return getInclusionDirectives(directives).every(function(_a3) {
-    var directive = _a3.directive, ifArgument = _a3.ifArgument;
+  return getInclusionDirectives(directives).every(function(_a2) {
+    var directive = _a2.directive, ifArgument = _a2.ifArgument;
     var evaledValue = false;
     if (ifArgument.value.kind === "Variable") {
       evaledValue = variables && variables[ifArgument.value.name.value];
@@ -362,8 +193,8 @@ function hasDirectives(names, root, all) {
 function hasClientExports(document2) {
   return document2 && hasDirectives(["client", "export"], document2, true);
 }
-function isInclusionDirective(_a2) {
-  var value = _a2.name.value;
+function isInclusionDirective(_a) {
+  var value = _a.name.value;
   return value === "skip" || value === "include";
 }
 function getInclusionDirectives(directives) {
@@ -385,16 +216,16 @@ function getInclusionDirectives(directives) {
   return result;
 }
 function getFragmentMaskMode(fragment) {
-  var _a2, _b2;
-  var directive = (_a2 = fragment.directives) === null || _a2 === void 0 ? void 0 : _a2.find(function(_a3) {
-    var name2 = _a3.name;
+  var _a, _b;
+  var directive = (_a = fragment.directives) === null || _a === void 0 ? void 0 : _a.find(function(_a2) {
+    var name2 = _a2.name;
     return name2.value === "unmask";
   });
   if (!directive) {
     return "mask";
   }
-  var modeArg = (_b2 = directive.arguments) === null || _b2 === void 0 ? void 0 : _b2.find(function(_a3) {
-    var name2 = _a3.name;
+  var modeArg = (_b = directive.arguments) === null || _b === void 0 ? void 0 : _b.find(function(_a2) {
+    var name2 = _a2.name;
     return name2.value === "mode";
   });
   if (globalThis.__DEV__ !== false) {
@@ -555,8 +386,8 @@ var AutoCleanedStrongCache = function(max, dispose) {
 var cacheSizeSymbol = Symbol.for("apollo.cacheSize");
 var cacheSizes = __assign({}, global$1[cacheSizeSymbol]);
 var globalCaches = {};
-function registerGlobalCache(name2, getSize2) {
-  globalCaches[name2] = getSize2;
+function registerGlobalCache(name2, getSize) {
+  globalCaches[name2] = getSize;
 }
 var getApolloClientMemoryInternals = globalThis.__DEV__ !== false ? _getApolloClientMemoryInternals : void 0;
 var getInMemoryCacheMemoryInternals = globalThis.__DEV__ !== false ? _getInMemoryCacheMemoryInternals : void 0;
@@ -578,8 +409,8 @@ function getCurrentCacheSizes() {
     "inMemoryCache.executeSelectionSet": 5e4,
     "inMemoryCache.executeSubSelectedArray": 1e4
   };
-  return Object.fromEntries(Object.entries(defaults).map(function(_a2) {
-    var k2 = _a2[0], v2 = _a2[1];
+  return Object.fromEntries(Object.entries(defaults).map(function(_a) {
+    var k2 = _a[0], v2 = _a[1];
     return [
       k2,
       cacheSizes[k2] || v2
@@ -587,15 +418,15 @@ function getCurrentCacheSizes() {
   }));
 }
 function _getApolloClientMemoryInternals() {
-  var _a2, _b2, _c2, _d2, _e2;
+  var _a, _b, _c, _d, _e;
   if (!(globalThis.__DEV__ !== false))
     throw new Error("only supported in development mode");
   return {
     limits: getCurrentCacheSizes(),
-    sizes: __assign({ print: (_a2 = globalCaches.print) === null || _a2 === void 0 ? void 0 : _a2.call(globalCaches), parser: (_b2 = globalCaches.parser) === null || _b2 === void 0 ? void 0 : _b2.call(globalCaches), canonicalStringify: (_c2 = globalCaches.canonicalStringify) === null || _c2 === void 0 ? void 0 : _c2.call(globalCaches), links: linkInfo(this.link), queryManager: {
+    sizes: __assign({ print: (_a = globalCaches.print) === null || _a === void 0 ? void 0 : _a.call(globalCaches), parser: (_b = globalCaches.parser) === null || _b === void 0 ? void 0 : _b.call(globalCaches), canonicalStringify: (_c = globalCaches.canonicalStringify) === null || _c === void 0 ? void 0 : _c.call(globalCaches), links: linkInfo(this.link), queryManager: {
       getDocumentInfo: this["queryManager"]["transformCache"].size,
       documentTransforms: transformInfo(this["queryManager"].documentTransform)
-    } }, (_e2 = (_d2 = this.cache).getMemoryInternals) === null || _e2 === void 0 ? void 0 : _e2.call(_d2))
+    } }, (_e = (_d = this.cache).getMemoryInternals) === null || _e === void 0 ? void 0 : _e.call(_d))
   };
 }
 function _getApolloCacheMemoryInternals() {
@@ -626,20 +457,20 @@ function getWrapperInformation(f2) {
 function isDefined(value) {
   return value != null;
 }
-function transformInfo(transform) {
-  return recurseTransformInfo(transform).map(function(cache2) {
+function transformInfo(transform2) {
+  return recurseTransformInfo(transform2).map(function(cache2) {
     return { cache: cache2 };
   });
 }
-function recurseTransformInfo(transform) {
-  return transform ? __spreadArray(__spreadArray([
-    getWrapperInformation(transform === null || transform === void 0 ? void 0 : transform["performWork"])
-  ], recurseTransformInfo(transform === null || transform === void 0 ? void 0 : transform["left"]), true), recurseTransformInfo(transform === null || transform === void 0 ? void 0 : transform["right"]), true).filter(isDefined) : [];
+function recurseTransformInfo(transform2) {
+  return transform2 ? __spreadArray(__spreadArray([
+    getWrapperInformation(transform2 === null || transform2 === void 0 ? void 0 : transform2["performWork"])
+  ], recurseTransformInfo(transform2 === null || transform2 === void 0 ? void 0 : transform2["left"]), true), recurseTransformInfo(transform2 === null || transform2 === void 0 ? void 0 : transform2["right"]), true).filter(isDefined) : [];
 }
 function linkInfo(link) {
-  var _a2;
+  var _a;
   return link ? __spreadArray(__spreadArray([
-    (_a2 = link === null || link === void 0 ? void 0 : link.getMemoryInternals) === null || _a2 === void 0 ? void 0 : _a2.call(link)
+    (_a = link === null || link === void 0 ? void 0 : link.getMemoryInternals) === null || _a === void 0 ? void 0 : _a.call(link)
   ], linkInfo(link === null || link === void 0 ? void 0 : link.left), true), linkInfo(link === null || link === void 0 ? void 0 : link.right), true).filter(isDefined) : [];
 }
 var canonicalStringify = Object.assign(function canonicalStringify2(value) {
@@ -758,8 +589,8 @@ function storeKeyNameFromField(field, variables) {
     field.directives.forEach(function(directive) {
       directivesObj[directive.name.value] = {};
       if (directive.arguments) {
-        directive.arguments.forEach(function(_a2) {
-          var name2 = _a2.name, value = _a2.value;
+        directive.arguments.forEach(function(_a) {
+          var name2 = _a.name, value = _a.value;
           return valueToObjectRepresentation(directivesObj[directive.name.value], name2, value, variables);
         });
       }
@@ -768,8 +599,8 @@ function storeKeyNameFromField(field, variables) {
   var argObj = null;
   if (field.arguments && field.arguments.length) {
     argObj = {};
-    field.arguments.forEach(function(_a2) {
-      var name2 = _a2.name, value = _a2.value;
+    field.arguments.forEach(function(_a) {
+      var name2 = _a.name, value = _a.value;
       return valueToObjectRepresentation(argObj, name2, value, variables);
     });
   }
@@ -817,17 +648,17 @@ var getStoreKeyName = Object.assign(function(fieldName, args, directives) {
   }
   return completeFieldName;
 }, {
-  setStringify: function(s2) {
+  setStringify: function(s) {
     var previous = storeKeyNameStringify;
-    storeKeyNameStringify = s2;
+    storeKeyNameStringify = s;
     return previous;
   }
 });
 function argumentsObjectFromField(field, variables) {
   if (field.arguments && field.arguments.length) {
     var argObj_1 = {};
-    field.arguments.forEach(function(_a2) {
-      var name2 = _a2.name, value = _a2.value;
+    field.arguments.forEach(function(_a) {
+      var name2 = _a.name, value = _a.value;
       return valueToObjectRepresentation(argObj_1, name2, value, variables);
     });
     return argObj_1;
@@ -839,8 +670,8 @@ function resultKeyNameFromField(field) {
 }
 function getTypenameFromResult(result, selectionSet, fragmentMap) {
   var fragments;
-  for (var _i2 = 0, _a2 = selectionSet.selections; _i2 < _a2.length; _i2++) {
-    var selection = _a2[_i2];
+  for (var _i = 0, _a = selectionSet.selections; _i < _a.length; _i++) {
+    var selection = _a[_i];
     if (isField(selection)) {
       if (selection.name.value === "__typename") {
         return result[resultKeyNameFromField(selection)];
@@ -855,8 +686,8 @@ function getTypenameFromResult(result, selectionSet, fragmentMap) {
     return result.__typename;
   }
   if (fragments) {
-    for (var _b2 = 0, fragments_1 = fragments; _b2 < fragments_1.length; _b2++) {
-      var selection = fragments_1[_b2];
+    for (var _b = 0, fragments_1 = fragments; _b < fragments_1.length; _b++) {
+      var selection = fragments_1[_b];
       var typename = getTypenameFromResult(result, getFragmentFromSelection(selection, fragmentMap).selectionSet, fragmentMap);
       if (typeof typename === "string") {
         return typename;
@@ -872,8 +703,8 @@ function isInlineFragment(selection) {
 }
 function checkDocument(doc) {
   invariant(doc && doc.kind === "Document", 88);
-  var operations = doc.definitions.filter(function(d2) {
-    return d2.kind !== "FragmentDefinition";
+  var operations = doc.definitions.filter(function(d) {
+    return d.kind !== "FragmentDefinition";
   }).map(function(definition) {
     if (definition.kind !== "OperationDefinition") {
       throw newInvariantError(89, definition.kind);
@@ -916,8 +747,8 @@ function getFragmentDefinition(doc) {
 function getMainDefinition(queryDoc) {
   checkDocument(queryDoc);
   var fragmentDefinition;
-  for (var _i2 = 0, _a2 = queryDoc.definitions; _i2 < _a2.length; _i2++) {
-    var definition = _a2[_i2];
+  for (var _i = 0, _a = queryDoc.definitions; _i < _a.length; _i++) {
+    var definition = _a[_i];
     if (definition.kind === "OperationDefinition") {
       var operation = definition.operation;
       if (operation === "query" || operation === "mutation" || operation === "subscription") {
@@ -951,12 +782,12 @@ function identity(document2) {
 var DocumentTransform = (
   /** @class */
   function() {
-    function DocumentTransform2(transform, options) {
+    function DocumentTransform2(transform2, options) {
       if (options === void 0) {
         options = /* @__PURE__ */ Object.create(null);
       }
       this.resultCache = canUseWeakSet ? /* @__PURE__ */ new WeakSet() : /* @__PURE__ */ new Set();
-      this.transform = transform;
+      this.transform = transform2;
       if (options.getCacheKey) {
         this.getCacheKey = options.getCacheKey;
       }
@@ -986,7 +817,7 @@ var DocumentTransform = (
       var _this = this;
       if (this.cached) {
         var stableCacheKeys_1 = new Trie(canUseWeakMap);
-        this.performWork = wrap$1(DocumentTransform2.prototype.performWork.bind(this), {
+        this.performWork = wrap$2(DocumentTransform2.prototype.performWork.bind(this), {
           makeCacheKey: function(document2) {
             var cacheKeys = _this.getCacheKey(document2);
             if (cacheKeys) {
@@ -1049,7 +880,7 @@ if (globalThis.__DEV__ !== false) {
     return printCache ? printCache.size : 0;
   });
 }
-var isArray$1 = Array.isArray;
+var isArray = Array.isArray;
 function isNonEmptyArray(value) {
   return Array.isArray(value) && value.length > 0;
 }
@@ -1117,8 +948,8 @@ function removeDirectivesFromDocument(directives, doc) {
   var getInUseByOperationName = makeInUseGetterFunction("");
   var getInUseByFragmentName = makeInUseGetterFunction("");
   var getInUse = function(ancestors) {
-    for (var p2 = 0, ancestor = void 0; p2 < ancestors.length && (ancestor = ancestors[p2]); ++p2) {
-      if (isArray$1(ancestor))
+    for (var p = 0, ancestor = void 0; p < ancestors.length && (ancestor = ancestors[p]); ++p) {
+      if (isArray(ancestor))
         continue;
       if (ancestor.kind === Kind.OPERATION_DEFINITION) {
         return getInUseByOperationName(ancestor.name && ancestor.name.value);
@@ -1302,8 +1133,8 @@ var addTypenameToDocument = Object.assign(function(doc) {
           return;
         }
         var field = parent;
-        if (isField(field) && field.directives && field.directives.some(function(d2) {
-          return d2.name.value === "export";
+        if (isField(field) && field.directives && field.directives.some(function(d) {
+          return d.name.value === "export";
         })) {
           return;
         }
@@ -1347,8 +1178,8 @@ function addNonReactiveToNamedFragments(document2) {
   checkDocument(document2);
   return visit(document2, {
     FragmentSpread: function(node) {
-      var _a2;
-      if ((_a2 = node.directives) === null || _a2 === void 0 ? void 0 : _a2.some(function(directive) {
+      var _a;
+      if ((_a = node.directives) === null || _a === void 0 ? void 0 : _a.some(function(directive) {
         return directive.name.value === "unmask";
       })) {
         return;
@@ -1365,8 +1196,8 @@ function addNonReactiveToNamedFragments(document2) {
 var hasOwnProperty$4 = Object.prototype.hasOwnProperty;
 function mergeDeep() {
   var sources = [];
-  for (var _i2 = 0; _i2 < arguments.length; _i2++) {
-    sources[_i2] = arguments[_i2];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    sources[_i] = arguments[_i];
   }
   return mergeDeepArray(sources);
 }
@@ -1398,8 +1229,8 @@ var DeepMerger = (
     DeepMerger2.prototype.merge = function(target, source) {
       var _this = this;
       var context = [];
-      for (var _i2 = 2; _i2 < arguments.length; _i2++) {
-        context[_i2 - 2] = arguments[_i2];
+      for (var _i = 2; _i < arguments.length; _i++) {
+        context[_i - 2] = arguments[_i];
       }
       if (isNonNullObject(source) && isNonNullObject(target)) {
         Object.keys(source).forEach(function(sourceKey) {
@@ -1615,7 +1446,7 @@ var Concast = (
           }
         },
         complete: function() {
-          var _a2 = _this, sub = _a2.sub, _b2 = _a2.sources, sources2 = _b2 === void 0 ? [] : _b2;
+          var _a = _this, sub = _a.sub, _b = _a.sources, sources2 = _b === void 0 ? [] : _b;
           if (sub !== null) {
             var value = sources2.shift();
             if (!value) {
@@ -1728,8 +1559,8 @@ function mergeIncrementalData(prevResult, result) {
   var mergedData = prevResult;
   var merger = new DeepMerger();
   if (isExecutionPatchIncrementalResult(result) && isNonEmptyArray(result.incremental)) {
-    result.incremental.forEach(function(_a2) {
-      var data = _a2.data, path = _a2.path;
+    result.incremental.forEach(function(_a) {
+      var data = _a.data, path = _a.path;
       for (var i = path.length - 1; i >= 0; --i) {
         var key = path[i];
         var isNumericKey = !isNaN(+key);
@@ -1757,10 +1588,10 @@ function getGraphQLErrorsFromResult(result) {
   }
   return graphQLErrors;
 }
-function compact$1() {
+function compact() {
   var objects = [];
-  for (var _i2 = 0; _i2 < arguments.length; _i2++) {
-    objects[_i2] = arguments[_i2];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    objects[_i] = arguments[_i];
   }
   var result = /* @__PURE__ */ Object.create(null);
   objects.forEach(function(obj) {
@@ -1776,8 +1607,8 @@ function compact$1() {
   return result;
 }
 function mergeOptions(defaults, options) {
-  return compact$1(defaults, options, options.variables && {
-    variables: compact$1(__assign(__assign({}, defaults && defaults.variables), options.variables))
+  return compact(defaults, options, options.variables && {
+    variables: compact(__assign(__assign({}, defaults && defaults.variables), options.variables))
   });
 }
 function fromError(errorValue) {
@@ -1801,8 +1632,8 @@ function validateOperation(operation) {
     "extensions",
     "context"
   ];
-  for (var _i2 = 0, _a2 = Object.keys(operation); _i2 < _a2.length; _i2++) {
-    var key = _a2[_i2];
+  for (var _i = 0, _a = Object.keys(operation); _i < _a.length; _i++) {
+    var key = _a[_i];
     if (OPERATION_FIELDS.indexOf(key) < 0) {
       throw newInvariantError(46, key);
     }
@@ -1811,11 +1642,11 @@ function validateOperation(operation) {
 }
 function createOperation(starting, operation) {
   var context = __assign({}, starting);
-  var setContext = function(next) {
-    if (typeof next === "function") {
-      context = __assign(__assign({}, context), next(context));
+  var setContext = function(next2) {
+    if (typeof next2 === "function") {
+      context = __assign(__assign({}, context), next2(context));
     } else {
-      context = __assign(__assign({}, context), next);
+      context = __assign(__assign({}, context), next2);
     }
   };
   var getContext = function() {
@@ -1882,8 +1713,8 @@ var ApolloLink = (
     ApolloLink2.from = function(links) {
       if (links.length === 0)
         return ApolloLink2.empty();
-      return links.map(toLink).reduce(function(x2, y2) {
-        return x2.concat(y2);
+      return links.map(toLink).reduce(function(x2, y) {
+        return x2.concat(y);
       });
     };
     ApolloLink2.split = function(test2, left, right) {
@@ -1930,8 +1761,8 @@ var ApolloLink = (
     ApolloLink2.prototype.split = function(test2, left, right) {
       return this.concat(ApolloLink2.split(test2, left, right || new ApolloLink2(passthrough)));
     };
-    ApolloLink2.prototype.concat = function(next) {
-      return ApolloLink2.concat(this, next);
+    ApolloLink2.prototype.concat = function(next2) {
+      return ApolloLink2.concat(this, next2);
     };
     ApolloLink2.prototype.request = function(operation, forward) {
       throw newInvariantError(39);
@@ -1952,15 +1783,15 @@ var ApolloLink = (
 );
 var execute = ApolloLink.execute;
 function asyncIterator(source) {
-  var _a2;
+  var _a;
   var iterator = source[Symbol.asyncIterator]();
-  return _a2 = {
+  return _a = {
     next: function() {
       return iterator.next();
     }
-  }, _a2[Symbol.asyncIterator] = function() {
+  }, _a[Symbol.asyncIterator] = function() {
     return this;
-  }, _a2;
+  }, _a;
 }
 function nodeStreamIterator(stream) {
   var cleanup = null;
@@ -2125,8 +1956,8 @@ var ApolloError = (
   /** @class */
   function(_super) {
     __extends(ApolloError2, _super);
-    function ApolloError2(_a2) {
-      var graphQLErrors = _a2.graphQLErrors, protocolErrors = _a2.protocolErrors, clientErrors = _a2.clientErrors, networkError = _a2.networkError, errorMessage = _a2.errorMessage, extraInfo = _a2.extraInfo;
+    function ApolloError2(_a) {
+      var graphQLErrors = _a.graphQLErrors, protocolErrors = _a.protocolErrors, clientErrors = _a.clientErrors, networkError = _a.networkError, errorMessage = _a.errorMessage, extraInfo = _a.extraInfo;
       var _this = _super.call(this, errorMessage) || this;
       _this.name = "ApolloError";
       _this.graphQLErrors = graphQLErrors || [];
@@ -2149,30 +1980,30 @@ var ApolloError = (
 var hasOwnProperty$3 = Object.prototype.hasOwnProperty;
 function readMultipartBody(response, nextValue) {
   return __awaiter(this, void 0, void 0, function() {
-    var decoder, contentType, delimiter, boundaryVal, boundary, buffer, iterator, running, _a2, value, done, chunk, searchFrom, bi, message, i, headers, contentType_1, body, result, next;
-    var _b2, _c2;
-    var _d2;
-    return __generator(this, function(_e2) {
-      switch (_e2.label) {
+    var decoder, contentType, delimiter, boundaryVal, boundary, buffer, iterator, running, _a, value, done, chunk, searchFrom, bi, message, i, headers, contentType_1, body, result, next2;
+    var _b, _c;
+    var _d;
+    return __generator(this, function(_e) {
+      switch (_e.label) {
         case 0:
           if (TextDecoder === void 0) {
             throw new Error("TextDecoder must be defined in the environment: please import a polyfill.");
           }
           decoder = new TextDecoder("utf-8");
-          contentType = (_d2 = response.headers) === null || _d2 === void 0 ? void 0 : _d2.get("content-type");
+          contentType = (_d = response.headers) === null || _d === void 0 ? void 0 : _d.get("content-type");
           delimiter = "boundary=";
           boundaryVal = (contentType === null || contentType === void 0 ? void 0 : contentType.includes(delimiter)) ? contentType === null || contentType === void 0 ? void 0 : contentType.substring((contentType === null || contentType === void 0 ? void 0 : contentType.indexOf(delimiter)) + delimiter.length).replace(/['"]/g, "").replace(/\;(.*)/gm, "").trim() : "-";
           boundary = "\r\n--".concat(boundaryVal);
           buffer = "";
           iterator = responseIterator(response);
           running = true;
-          _e2.label = 1;
+          _e.label = 1;
         case 1:
           if (!running)
             return [3, 3];
           return [4, iterator.next()];
         case 2:
-          _a2 = _e2.sent(), value = _a2.value, done = _a2.done;
+          _a = _e.sent(), value = _a.value, done = _a.done;
           chunk = typeof value === "string" ? value : decoder.decode(value);
           searchFrom = buffer.length - boundary.length + 1;
           running = !done;
@@ -2180,10 +2011,10 @@ function readMultipartBody(response, nextValue) {
           bi = buffer.indexOf(boundary, searchFrom);
           while (bi > -1) {
             message = void 0;
-            _b2 = [
+            _b = [
               buffer.slice(0, bi),
               buffer.slice(bi + boundary.length)
-            ], message = _b2[0], buffer = _b2[1];
+            ], message = _b[0], buffer = _b[1];
             i = message.indexOf("\r\n\r\n");
             headers = parseHeaders(message.slice(0, i));
             contentType_1 = headers["content-type"];
@@ -2195,7 +2026,7 @@ function readMultipartBody(response, nextValue) {
               result = parseJsonBody(response, body);
               if (Object.keys(result).length > 1 || "data" in result || "incremental" in result || "errors" in result || "payload" in result) {
                 if (isApolloPayloadResult(result)) {
-                  next = {};
+                  next2 = {};
                   if ("payload" in result) {
                     if (Object.keys(result).length === 1 && result.payload === null) {
                       return [
@@ -2203,12 +2034,12 @@ function readMultipartBody(response, nextValue) {
                         /*return*/
                       ];
                     }
-                    next = __assign({}, result.payload);
+                    next2 = __assign({}, result.payload);
                   }
                   if ("errors" in result) {
-                    next = __assign(__assign({}, next), { extensions: __assign(__assign({}, "extensions" in next ? next.extensions : null), (_c2 = {}, _c2[PROTOCOL_ERRORS_SYMBOL] = result.errors, _c2)) });
+                    next2 = __assign(__assign({}, next2), { extensions: __assign(__assign({}, "extensions" in next2 ? next2.extensions : null), (_c = {}, _c[PROTOCOL_ERRORS_SYMBOL] = result.errors, _c)) });
                   }
-                  nextValue(next);
+                  nextValue(next2);
                 } else {
                   nextValue(result);
                 }
@@ -2289,10 +2120,10 @@ function parseAndCheckHttpResponse(operations) {
     });
   };
 }
-var serializeFetchParameter = function(p2, label) {
+var serializeFetchParameter = function(p, label) {
   var serialized;
   try {
-    serialized = JSON.stringify(p2);
+    serialized = JSON.stringify(p);
   } catch (e) {
     var parseError = newInvariantError(42, label, e.message);
     parseError.parseError = e;
@@ -2335,8 +2166,8 @@ var defaultPrinter = function(ast, printer) {
 };
 function selectHttpOptionsAndBodyInternal(operation, printer) {
   var configs = [];
-  for (var _i2 = 2; _i2 < arguments.length; _i2++) {
-    configs[_i2 - 2] = arguments[_i2];
+  for (var _i = 2; _i < arguments.length; _i++) {
+    configs[_i - 2] = arguments[_i];
   }
   var options = {};
   var http = {};
@@ -2444,7 +2275,7 @@ var createHttpLink = function(linkOptions) {
   if (linkOptions === void 0) {
     linkOptions = {};
   }
-  var _a2 = linkOptions.uri, uri = _a2 === void 0 ? "/graphql" : _a2, preferredFetch = linkOptions.fetch, _b2 = linkOptions.print, print2 = _b2 === void 0 ? defaultPrinter : _b2, includeExtensions = linkOptions.includeExtensions, preserveHeaderCase = linkOptions.preserveHeaderCase, useGETForQueries = linkOptions.useGETForQueries, _c2 = linkOptions.includeUnusedVariables, includeUnusedVariables = _c2 === void 0 ? false : _c2, requestOptions = __rest(linkOptions, ["uri", "fetch", "print", "includeExtensions", "preserveHeaderCase", "useGETForQueries", "includeUnusedVariables"]);
+  var _a = linkOptions.uri, uri = _a === void 0 ? "/graphql" : _a, preferredFetch = linkOptions.fetch, _b = linkOptions.print, print2 = _b === void 0 ? defaultPrinter : _b, includeExtensions = linkOptions.includeExtensions, preserveHeaderCase = linkOptions.preserveHeaderCase, useGETForQueries = linkOptions.useGETForQueries, _c = linkOptions.includeUnusedVariables, includeUnusedVariables = _c === void 0 ? false : _c, requestOptions = __rest(linkOptions, ["uri", "fetch", "print", "includeExtensions", "preserveHeaderCase", "useGETForQueries", "includeUnusedVariables"]);
   if (globalThis.__DEV__ !== false) {
     checkFetcher(preferredFetch || backupFetch);
   }
@@ -2459,7 +2290,7 @@ var createHttpLink = function(linkOptions) {
     var context = operation.getContext();
     var clientAwarenessHeaders = {};
     if (context.clientAwareness) {
-      var _a3 = context.clientAwareness, name_1 = _a3.name, version2 = _a3.version;
+      var _a2 = context.clientAwareness, name_1 = _a2.name, version2 = _a2.version;
       if (name_1) {
         clientAwarenessHeaders["apollographql-client-name"] = name_1;
       }
@@ -2481,7 +2312,7 @@ var createHttpLink = function(linkOptions) {
       }
       operation.query = transformedQuery;
     }
-    var _b3 = selectHttpOptionsAndBodyInternal(operation, print2, fallbackHttpConfig, linkConfig, contextConfig), options = _b3.options, body = _b3.body;
+    var _b2 = selectHttpOptionsAndBodyInternal(operation, print2, fallbackHttpConfig, linkConfig, contextConfig), options = _b2.options, body = _b2.body;
     if (body.variables && !includeUnusedVariables) {
       body.variables = filterOperationVariables(body.variables, operation.query);
     }
@@ -2490,11 +2321,11 @@ var createHttpLink = function(linkOptions) {
       controller = new AbortController();
       options.signal = controller.signal;
     }
-    var definitionIsMutation = function(d2) {
-      return d2.kind === "OperationDefinition" && d2.operation === "mutation";
+    var definitionIsMutation = function(d) {
+      return d.kind === "OperationDefinition" && d.operation === "mutation";
     };
-    var definitionIsSubscription = function(d2) {
-      return d2.kind === "OperationDefinition" && d2.operation === "subscription";
+    var definitionIsSubscription = function(d) {
+      return d.kind === "OperationDefinition" && d.operation === "subscription";
     };
     var isSubscription = definitionIsSubscription(getMainDefinition(operation.query));
     var hasDefer = hasDirectives(["defer"], operation.query);
@@ -2515,7 +2346,7 @@ var createHttpLink = function(linkOptions) {
       options.headers.accept = acceptHeader;
     }
     if (options.method === "GET") {
-      var _c3 = rewriteURIForGET(chosenURI, body), newURI = _c3.newURI, parseError = _c3.parseError;
+      var _c2 = rewriteURIForGET(chosenURI, body), newURI = _c2.newURI, parseError = _c2.parseError;
       if (parseError) {
         return fromError(parseError);
       }
@@ -2533,9 +2364,9 @@ var createHttpLink = function(linkOptions) {
       }) || backupFetch;
       var observerNext = observer.next.bind(observer);
       currentFetch(chosenURI, options).then(function(response) {
-        var _a4;
+        var _a3;
         operation.setContext({ response });
-        var ctype = (_a4 = response.headers) === null || _a4 === void 0 ? void 0 : _a4.get("content-type");
+        var ctype = (_a3 = response.headers) === null || _a3 === void 0 ? void 0 : _a3.get("content-type");
         if (ctype !== null && /^multipart\/mixed/i.test(ctype)) {
           return readMultipartBody(response, observerNext);
         } else {
@@ -2570,9 +2401,9 @@ var HttpLink = (
     return HttpLink2;
   }(ApolloLink)
 );
-function equalByQuery(query, _a2, _b2, variables) {
-  var aData = _a2.data, aRest = __rest(_a2, ["data"]);
-  var bData = _b2.data, bRest = __rest(_b2, ["data"]);
+function equalByQuery(query, _a, _b, variables) {
+  var aData = _a.data, aRest = __rest(_a, ["data"]);
+  var bData = _b.data, bRest = __rest(_b, ["data"]);
   return equal(aRest, bRest) && equalBySelectionSet(getMainDefinition(query).selectionSet, aData, bData, {
     fragmentMap: createFragmentMap(getFragmentDefinitions(query)),
     variables
@@ -2669,12 +2500,12 @@ function getMutableTarget(data, mutableTargets) {
   return mutableTarget;
 }
 function maskSelectionSet(data, selectionSet, context, migration, path) {
-  var _a2;
+  var _a;
   var knownChanged = context.knownChanged;
   var memo2 = getMutableTarget(data, context.mutableTargets);
   if (Array.isArray(data)) {
-    for (var _i2 = 0, _b2 = Array.from(data.entries()); _i2 < _b2.length; _i2++) {
-      var _c2 = _b2[_i2], index = _c2[0], item = _c2[1];
+    for (var _i = 0, _b = Array.from(data.entries()); _i < _b.length; _i++) {
+      var _c = _b[_i], index = _c[0], item = _c[1];
       if (item === null) {
         memo2[index] = null;
         continue;
@@ -2687,8 +2518,8 @@ function maskSelectionSet(data, selectionSet, context, migration, path) {
     }
     return knownChanged.has(memo2) ? memo2 : data;
   }
-  for (var _d2 = 0, _e2 = selectionSet.selections; _d2 < _e2.length; _d2++) {
-    var selection = _e2[_d2];
+  for (var _d = 0, _e = selectionSet.selections; _d < _e.length; _d++) {
+    var selection = _e[_d];
     var value = void 0;
     if (migration) {
       knownChanged.add(memo2);
@@ -2714,7 +2545,7 @@ function maskSelectionSet(data, selectionSet, context, migration, path) {
         // or it has a `get` descriptor, not a `value` descriptor
         // => it is a warning accessor and we can overwrite it
         // with another accessor
-        !((_a2 = Object.getOwnPropertyDescriptor(memo2, keyName)) === null || _a2 === void 0 ? void 0 : _a2.value)) {
+        !((_a = Object.getOwnPropertyDescriptor(memo2, keyName)) === null || _a === void 0 ? void 0 : _a.value)) {
           Object.defineProperty(memo2, keyName, getAccessorWarningDescriptor(keyName, value, path || "", context.operationName, context.operationType));
         } else {
           delete memo2[keyName];
@@ -2729,9 +2560,9 @@ function maskSelectionSet(data, selectionSet, context, migration, path) {
       var fragmentName = selection.name.value;
       var fragment = context.fragmentMap[fragmentName] || (context.fragmentMap[fragmentName] = context.cache.lookupFragment(fragmentName));
       invariant(fragment, 47, fragmentName);
-      var mode2 = getFragmentMaskMode(selection);
-      if (mode2 !== "mask") {
-        value = maskSelectionSet(data, fragment.selectionSet, context, mode2 === "migrate", path);
+      var mode = getFragmentMaskMode(selection);
+      if (mode !== "mask") {
+        value = maskSelectionSet(data, fragment.selectionSet, context, mode === "migrate", path);
       }
     }
     if (knownChanged.has(value)) {
@@ -2804,7 +2635,7 @@ function maskFragment(data, document2, cache2, fragmentName) {
   });
 }
 function maskOperation(data, document2, cache2) {
-  var _a2;
+  var _a;
   if (!cache2.fragmentMatches) {
     if (globalThis.__DEV__ !== false) {
       warnOnImproperCacheImplementation();
@@ -2818,7 +2649,7 @@ function maskOperation(data, document2, cache2) {
   }
   return maskDefinition(data, definition.selectionSet, {
     operationType: definition.operation,
-    operationName: (_a2 = definition.name) === null || _a2 === void 0 ? void 0 : _a2.value,
+    operationName: (_a = definition.name) === null || _a === void 0 ? void 0 : _a.value,
     fragmentMap: createFragmentMap(getFragmentDefinitions(document2)),
     cache: cache2,
     mutableTargets: new MapImpl(),
@@ -2830,7 +2661,7 @@ var ApolloCache = (
   function() {
     function ApolloCache2() {
       this.assumeImmutableResults = false;
-      this.getFragmentDoc = wrap$1(getFragmentQueryDocument, {
+      this.getFragmentDoc = wrap$2(getFragmentQueryDocument, {
         max: cacheSizes["cache.fragmentQueryDocuments"] || 1e3,
         cache: WeakCache
       });
@@ -2873,9 +2704,9 @@ var ApolloCache = (
     };
     ApolloCache2.prototype.watchFragment = function(options) {
       var _this = this;
-      var fragment = options.fragment, fragmentName = options.fragmentName, from = options.from, _a2 = options.optimistic, optimistic = _a2 === void 0 ? true : _a2, otherOptions = __rest(options, ["fragment", "fragmentName", "from", "optimistic"]);
+      var fragment = options.fragment, fragmentName = options.fragmentName, from2 = options.from, _a = options.optimistic, optimistic = _a === void 0 ? true : _a, otherOptions = __rest(options, ["fragment", "fragmentName", "from", "optimistic"]);
       var query = this.getFragmentDoc(fragment, fragmentName);
-      var id2 = typeof from === "undefined" || typeof from === "string" ? from : this.identify(from);
+      var id2 = typeof from2 === "undefined" || typeof from2 === "string" ? from2 : this.identify(from2);
       var dataMasking = !!options[Symbol.for("apollo.dataMasking")];
       if (globalThis.__DEV__ !== false) {
         var actualFragmentName = fragmentName || getFragmentDefinition(fragment).name.value;
@@ -2914,15 +2745,15 @@ var ApolloCache = (
       }
       return this.read(__assign(__assign({}, options), { query: this.getFragmentDoc(options.fragment, options.fragmentName), rootId: options.id, optimistic }));
     };
-    ApolloCache2.prototype.writeQuery = function(_a2) {
-      var id2 = _a2.id, data = _a2.data, options = __rest(_a2, ["id", "data"]);
+    ApolloCache2.prototype.writeQuery = function(_a) {
+      var id2 = _a.id, data = _a.data, options = __rest(_a, ["id", "data"]);
       return this.write(Object.assign(options, {
         dataId: id2 || "ROOT_QUERY",
         result: data
       }));
     };
-    ApolloCache2.prototype.writeFragment = function(_a2) {
-      var id2 = _a2.id, data = _a2.data, fragment = _a2.fragment, fragmentName = _a2.fragmentName, options = __rest(_a2, ["id", "data", "fragment", "fragmentName"]);
+    ApolloCache2.prototype.writeFragment = function(_a) {
+      var id2 = _a.id, data = _a.data, fragment = _a.fragment, fragmentName = _a.fragmentName, options = __rest(_a, ["id", "data", "fragment", "fragmentName"]);
       return this.write(Object.assign(options, {
         query: this.getFragmentDoc(fragment, fragmentName),
         dataId: id2,
@@ -2964,7 +2795,7 @@ var MissingFieldError = (
   function(_super) {
     __extends(MissingFieldError2, _super);
     function MissingFieldError2(message, path, query, variables) {
-      var _a2;
+      var _a;
       var _this = _super.call(this, message) || this;
       _this.message = message;
       _this.path = path;
@@ -2973,7 +2804,7 @@ var MissingFieldError = (
       if (Array.isArray(_this.path)) {
         _this.missing = _this.message;
         for (var i = _this.path.length - 1; i >= 0; --i) {
-          _this.missing = (_a2 = {}, _a2[_this.path[i]] = _this.missing, _a2);
+          _this.missing = (_a = {}, _a[_this.path[i]] = _this.missing, _a);
         }
       } else {
         _this.missing = _this.path;
@@ -2988,8 +2819,8 @@ var hasOwn$1 = Object.prototype.hasOwnProperty;
 function isNullish(value) {
   return value === null || value === void 0;
 }
-function defaultDataIdFromObject(_a2, context) {
-  var __typename = _a2.__typename, id2 = _a2.id, _id = _a2._id;
+function defaultDataIdFromObject(_a, context) {
+  var __typename = _a.__typename, id2 = _a.id, _id = _a._id;
   if (typeof __typename === "string") {
     if (context) {
       context.keyObject = !isNullish(id2) ? { id: id2 } : !isNullish(_id) ? { _id } : void 0;
@@ -3011,7 +2842,7 @@ var defaultConfig = {
   canonizeResults: false
 };
 function normalizeConfig(config2) {
-  return compact$1(defaultConfig, config2);
+  return compact(defaultConfig, config2);
 }
 function shouldCanonizeResults(config2) {
   var value = config2.canonizeResults;
@@ -3022,12 +2853,12 @@ function getTypenameFromStoreObject(store, objectOrReference) {
 }
 var TypeOrFieldNameRegExp = /^[_a-z][_0-9a-z]*/i;
 function fieldNameFromStoreName(storeFieldName) {
-  var match = storeFieldName.match(TypeOrFieldNameRegExp);
-  return match ? match[0] : storeFieldName;
+  var match2 = storeFieldName.match(TypeOrFieldNameRegExp);
+  return match2 ? match2[0] : storeFieldName;
 }
 function selectionSetMatchesResult(selectionSet, result, variables) {
   if (isNonNullObject(result)) {
-    return isArray$1(result) ? result.every(function(item) {
+    return isArray(result) ? result.every(function(item) {
       return selectionSetMatchesResult(selectionSet, item, variables);
     }) : selectionSet.selections.every(function(field) {
       if (isField(field) && shouldInclude(field, variables)) {
@@ -3040,7 +2871,7 @@ function selectionSetMatchesResult(selectionSet, result, variables) {
   return false;
 }
 function storeValueIsStoreObject(value) {
-  return isNonNullObject(value) && !isReference(value) && !isArray$1(value);
+  return isNonNullObject(value) && !isReference(value) && !isArray(value);
 }
 function makeProcessedFieldsMerger() {
   return new DeepMerger();
@@ -3188,10 +3019,10 @@ var EntityStore = (
           isReference,
           toReference: this.toReference,
           canRead: this.canRead,
-          readField: function(fieldNameOrOptions, from) {
+          readField: function(fieldNameOrOptions, from2) {
             return _this.policies.readField(typeof fieldNameOrOptions === "string" ? {
               fieldName: fieldNameOrOptions,
-              from: from || makeReference(dataId)
+              from: from2 || makeReference(dataId)
             } : fieldNameOrOptions, { store: _this });
           }
         };
@@ -3224,8 +3055,8 @@ var EntityStore = (
                   } else if (Array.isArray(newValue)) {
                     var seenReference = false;
                     var someNonReference = void 0;
-                    for (var _i2 = 0, newValue_1 = newValue; _i2 < newValue_1.length; _i2++) {
-                      var value = newValue_1[_i2];
+                    for (var _i = 0, newValue_1 = newValue; _i < newValue_1.length; _i++) {
+                      var value = newValue_1[_i];
                       if (isReference(value)) {
                         seenReference = true;
                         if (checkReference(value))
@@ -3268,12 +3099,12 @@ var EntityStore = (
       return false;
     };
     EntityStore2.prototype.delete = function(dataId, fieldName, args) {
-      var _a2;
+      var _a;
       var storeObject = this.lookup(dataId);
       if (storeObject) {
         var typename = this.getFieldValue(storeObject, "__typename");
         var storeFieldName = fieldName && args ? this.policies.getStoreFieldName({ typename, fieldName, args }) : fieldName;
-        return this.modify(dataId, storeFieldName ? (_a2 = {}, _a2[storeFieldName] = delModifier, _a2) : delModifier);
+        return this.modify(dataId, storeFieldName ? (_a = {}, _a[storeFieldName] = delModifier, _a) : delModifier);
       }
       return false;
     };
@@ -3459,8 +3290,8 @@ function maybeDependOnExistenceOfEntity(store, entityId) {
     /** @class */
     function(_super) {
       __extends(Root2, _super);
-      function Root2(_a2) {
-        var policies = _a2.policies, _b2 = _a2.resultCaching, resultCaching = _b2 === void 0 ? true : _b2, seed = _a2.seed;
+      function Root2(_a) {
+        var policies = _a.policies, _b = _a.resultCaching, resultCaching = _b === void 0 ? true : _b, seed = _a.seed;
         var _this = _super.call(this, policies, new CacheGroup(resultCaching)) || this;
         _this.stump = new Stump(_this);
         _this.storageTrie = new Trie(canUseWeakMap);
@@ -3536,11 +3367,11 @@ var Layer = (
       return hasOwn$1.call(this.data, dataId) ? __assign(__assign({}, fromParent), _super.prototype.findChildRefIds.call(this, dataId)) : fromParent;
     };
     Layer2.prototype.getStorage = function() {
-      var p2 = this.parent;
-      while (p2.parent)
-        p2 = p2.parent;
-      return p2.getStorage.apply(
-        p2,
+      var p = this.parent;
+      while (p.parent)
+        p = p.parent;
+      return p.getStorage.apply(
+        p,
         // @ts-expect-error
         arguments
       );
@@ -3575,7 +3406,7 @@ function supportsResultCaching(store) {
 }
 function shallowCopy(value) {
   if (isNonNullObject(value)) {
-    return isArray$1(value) ? value.slice(0) : __assign({ __proto__: Object.getPrototypeOf(value) }, value);
+    return isArray(value) ? value.slice(0) : __assign({ __proto__: Object.getPrototypeOf(value) }, value);
   }
   return value;
 }
@@ -3681,17 +3512,17 @@ var StoreReader = (
     function StoreReader2(config2) {
       var _this = this;
       this.knownResults = new (canUseWeakMap ? WeakMap : Map)();
-      this.config = compact$1(config2, {
+      this.config = compact(config2, {
         addTypename: config2.addTypename !== false,
         canonizeResults: shouldCanonizeResults(config2)
       });
       this.canon = config2.canon || new ObjectCanon();
-      this.executeSelectionSet = wrap$1(function(options) {
-        var _a2;
+      this.executeSelectionSet = wrap$2(function(options) {
+        var _a;
         var canonizeResults = options.context.canonizeResults;
         var peekArgs = execSelectionSetKeyArgs(options);
         peekArgs[3] = !canonizeResults;
-        var other = (_a2 = _this.executeSelectionSet).peek.apply(_a2, peekArgs);
+        var other = (_a = _this.executeSelectionSet).peek.apply(_a, peekArgs);
         if (other) {
           if (canonizeResults) {
             return __assign(__assign({}, other), {
@@ -3715,13 +3546,13 @@ var StoreReader = (
           }
         }
       });
-      this.executeSubSelectedArray = wrap$1(function(options) {
+      this.executeSubSelectedArray = wrap$2(function(options) {
         maybeDependOnExistenceOfEntity(options.context.store, options.enclosingRef.__ref);
         return _this.execSubSelectedArrayImpl(options);
       }, {
         max: this.config.resultCacheMaxSize || cacheSizes["inMemoryCache.executeSubSelectedArray"] || 1e4,
-        makeCacheKey: function(_a2) {
-          var field = _a2.field, array = _a2.array, context = _a2.context;
+        makeCacheKey: function(_a) {
+          var field = _a.field, array = _a.array, context = _a.context;
           if (supportsResultCaching(context.store)) {
             return context.store.makeCacheKey(field, array, context.varString);
           }
@@ -3731,8 +3562,8 @@ var StoreReader = (
     StoreReader2.prototype.resetCanon = function() {
       this.canon = new ObjectCanon();
     };
-    StoreReader2.prototype.diffQueryAgainstStore = function(_a2) {
-      var store = _a2.store, query = _a2.query, _b2 = _a2.rootId, rootId = _b2 === void 0 ? "ROOT_QUERY" : _b2, variables = _a2.variables, _c2 = _a2.returnPartialData, returnPartialData = _c2 === void 0 ? true : _c2, _d2 = _a2.canonizeResults, canonizeResults = _d2 === void 0 ? this.config.canonizeResults : _d2;
+    StoreReader2.prototype.diffQueryAgainstStore = function(_a) {
+      var store = _a.store, query = _a.query, _b = _a.rootId, rootId = _b === void 0 ? "ROOT_QUERY" : _b, variables = _a.variables, _c = _a.returnPartialData, returnPartialData = _c === void 0 ? true : _c, _d = _a.canonizeResults, canonizeResults = _d === void 0 ? this.config.canonizeResults : _d;
       var policies = this.config.cache.policies;
       variables = __assign(__assign({}, getDefaultValues(getQueryDefinition(query))), variables);
       var rootRef = makeReference(rootId);
@@ -3774,9 +3605,9 @@ var StoreReader = (
       }
       return false;
     };
-    StoreReader2.prototype.execSelectionSetImpl = function(_a2) {
+    StoreReader2.prototype.execSelectionSetImpl = function(_a) {
       var _this = this;
-      var selectionSet = _a2.selectionSet, objectOrReference = _a2.objectOrReference, enclosingRef = _a2.enclosingRef, context = _a2.context;
+      var selectionSet = _a.selectionSet, objectOrReference = _a.objectOrReference, enclosingRef = _a.enclosingRef, context = _a.context;
       if (isReference(objectOrReference) && !context.policies.rootTypenamesById[objectOrReference.__ref] && !context.store.has(objectOrReference.__ref)) {
         return {
           result: this.canon.empty,
@@ -3792,15 +3623,15 @@ var StoreReader = (
         objectsToMerge.push({ __typename: typename });
       }
       function handleMissing(result2, resultName) {
-        var _a3;
+        var _a2;
         if (result2.missing) {
-          missing = missingMerger.merge(missing, (_a3 = {}, _a3[resultName] = result2.missing, _a3));
+          missing = missingMerger.merge(missing, (_a2 = {}, _a2[resultName] = result2.missing, _a2));
         }
         return result2.result;
       }
       var workSet = new Set(selectionSet.selections);
       workSet.forEach(function(selection) {
-        var _a3, _b2;
+        var _a2, _b;
         if (!shouldInclude(selection, variables))
           return;
         if (isField(selection)) {
@@ -3813,9 +3644,9 @@ var StoreReader = (
           var resultName = resultKeyNameFromField(selection);
           if (fieldValue === void 0) {
             if (!addTypenameToDocument.added(selection)) {
-              missing = missingMerger.merge(missing, (_a3 = {}, _a3[resultName] = "Can't find field '".concat(selection.name.value, "' on ").concat(isReference(objectOrReference) ? objectOrReference.__ref + " object" : "object " + JSON.stringify(objectOrReference, null, 2)), _a3));
+              missing = missingMerger.merge(missing, (_a2 = {}, _a2[resultName] = "Can't find field '".concat(selection.name.value, "' on ").concat(isReference(objectOrReference) ? objectOrReference.__ref + " object" : "object " + JSON.stringify(objectOrReference, null, 2)), _a2));
             }
-          } else if (isArray$1(fieldValue)) {
+          } else if (isArray(fieldValue)) {
             if (fieldValue.length > 0) {
               fieldValue = handleMissing(_this.executeSubSelectedArray({
                 field: selection,
@@ -3837,7 +3668,7 @@ var StoreReader = (
             }), resultName);
           }
           if (fieldValue !== void 0) {
-            objectsToMerge.push((_b2 = {}, _b2[resultName] = fieldValue, _b2));
+            objectsToMerge.push((_b = {}, _b[resultName] = fieldValue, _b));
           }
         } else {
           var fragment = getFragmentFromSelection(selection, context.lookupFragment);
@@ -3857,15 +3688,15 @@ var StoreReader = (
       }
       return frozen;
     };
-    StoreReader2.prototype.execSubSelectedArrayImpl = function(_a2) {
+    StoreReader2.prototype.execSubSelectedArrayImpl = function(_a) {
       var _this = this;
-      var field = _a2.field, array = _a2.array, enclosingRef = _a2.enclosingRef, context = _a2.context;
+      var field = _a.field, array = _a.array, enclosingRef = _a.enclosingRef, context = _a.context;
       var missing;
       var missingMerger = new DeepMerger();
       function handleMissing(childResult, i) {
-        var _a3;
+        var _a2;
         if (childResult.missing) {
-          missing = missingMerger.merge(missing, (_a3 = {}, _a3[i] = childResult.missing, _a3));
+          missing = missingMerger.merge(missing, (_a2 = {}, _a2[i] = childResult.missing, _a2));
         }
         return childResult.result;
       }
@@ -3876,7 +3707,7 @@ var StoreReader = (
         if (item === null) {
           return null;
         }
-        if (isArray$1(item)) {
+        if (isArray(item)) {
           return handleMissing(_this.executeSubSelectedArray({
             field,
             array: item,
@@ -4009,8 +3840,8 @@ function lookupSpecifierInfo(spec) {
 function keyFieldsFnFromSpecifier(specifier) {
   var info = lookupSpecifierInfo(specifier);
   return info.keyFieldsFn || (info.keyFieldsFn = function(object, context) {
-    var extract = function(from, key) {
-      return context.readField(key, from);
+    var extract = function(from2, key) {
+      return context.readField(key, from2);
     };
     var keyObject = context.keyObject = collectSpecifierPaths(specifier, function(schemaKeyPath) {
       var extracted = extractKeyPath(
@@ -4032,18 +3863,18 @@ function keyFieldsFnFromSpecifier(specifier) {
 }
 function keyArgsFnFromSpecifier(specifier) {
   var info = lookupSpecifierInfo(specifier);
-  return info.keyArgsFn || (info.keyArgsFn = function(args, _a2) {
-    var field = _a2.field, variables = _a2.variables, fieldName = _a2.fieldName;
+  return info.keyArgsFn || (info.keyArgsFn = function(args, _a) {
+    var field = _a.field, variables = _a.variables, fieldName = _a.fieldName;
     var collected = collectSpecifierPaths(specifier, function(keyPath) {
       var firstKey = keyPath[0];
       var firstChar = firstKey.charAt(0);
       if (firstChar === "@") {
         if (field && isNonEmptyArray(field.directives)) {
           var directiveName_1 = firstKey.slice(1);
-          var d2 = field.directives.find(function(d3) {
-            return d3.name.value === directiveName_1;
+          var d = field.directives.find(function(d2) {
+            return d2.name.value === directiveName_1;
           });
-          var directiveArgs = d2 && argumentsObjectFromField(d2, variables);
+          var directiveArgs = d && argumentsObjectFromField(d, variables);
           return directiveArgs && extractKeyPath(
             directiveArgs,
             // If keyPath.length === 1, this code calls extractKeyPath with an
@@ -4077,11 +3908,11 @@ function keyArgsFnFromSpecifier(specifier) {
 function collectSpecifierPaths(specifier, extractor) {
   var merger = new DeepMerger();
   return getSpecifierPaths(specifier).reduce(function(collected, path) {
-    var _a2;
+    var _a;
     var toMerge = extractor(path);
     if (toMerge !== void 0) {
       for (var i = path.length - 1; i >= 0; --i) {
-        toMerge = (_a2 = {}, _a2[path[i]] = toMerge, _a2);
+        toMerge = (_a = {}, _a[path[i]] = toMerge, _a);
       }
       collected = merger.merge(collected, toMerge);
     }
@@ -4093,15 +3924,15 @@ function getSpecifierPaths(spec) {
   if (!info.paths) {
     var paths_1 = info.paths = [];
     var currentPath_1 = [];
-    spec.forEach(function(s2, i) {
-      if (isArray$1(s2)) {
-        getSpecifierPaths(s2).forEach(function(p2) {
-          return paths_1.push(currentPath_1.concat(p2));
+    spec.forEach(function(s, i) {
+      if (isArray(s)) {
+        getSpecifierPaths(s).forEach(function(p) {
+          return paths_1.push(currentPath_1.concat(p));
         });
         currentPath_1.length = 0;
       } else {
-        currentPath_1.push(s2);
-        if (!isArray$1(spec[i + 1])) {
+        currentPath_1.push(s);
+        if (!isArray(spec[i + 1])) {
           paths_1.push(currentPath_1.slice(0));
           currentPath_1.length = 0;
         }
@@ -4115,16 +3946,16 @@ function extractKey(object, key) {
 }
 function extractKeyPath(object, path, extract) {
   extract = extract || extractKey;
-  return normalize$1(path.reduce(function reducer(obj, key) {
-    return isArray$1(obj) ? obj.map(function(child) {
+  return normalize$2(path.reduce(function reducer(obj, key) {
+    return isArray(obj) ? obj.map(function(child) {
       return reducer(child, key);
     }) : obj && extract(obj, key);
   }, object));
 }
-function normalize$1(value) {
+function normalize$2(value) {
   if (isNonNullObject(value)) {
-    if (isArray$1(value)) {
-      return value.map(normalize$1);
+    if (isArray(value)) {
+      return value.map(normalize$2);
     }
     return collectSpecifierPaths(Object.keys(value).sort(), function(path) {
       return extractKeyPath(value, path);
@@ -4141,8 +3972,8 @@ var nullKeyFieldsFn = function() {
 var simpleKeyArgsFn = function(_args, context) {
   return context.fieldName;
 };
-var mergeTrueFn = function(existing, incoming, _a2) {
-  var mergeObjects = _a2.mergeObjects;
+var mergeTrueFn = function(existing, incoming, _a) {
+  var mergeObjects = _a.mergeObjects;
   return mergeObjects(existing, incoming);
 };
 var mergeFalseFn = function(_2, incoming) {
@@ -4173,9 +4004,9 @@ var Policies = (
       }
     }
     Policies2.prototype.identify = function(object, partialContext) {
-      var _a2;
+      var _a;
       var policies = this;
-      var typename = partialContext && (partialContext.typename || ((_a2 = partialContext.storeObject) === null || _a2 === void 0 ? void 0 : _a2.__typename)) || object.__typename;
+      var typename = partialContext && (partialContext.typename || ((_a = partialContext.storeObject) === null || _a === void 0 ? void 0 : _a.__typename)) || object.__typename;
       if (typename === this.rootTypenamesById.ROOT_QUERY) {
         return ["ROOT_QUERY"];
       }
@@ -4193,7 +4024,7 @@ var Policies = (
       disableWarningsSlot.withValue(true, function() {
         while (keyFn) {
           var specifierOrId = keyFn(__assign(__assign({}, object), storeObject), context);
-          if (isArray$1(specifierOrId)) {
+          if (isArray(specifierOrId)) {
             keyFn = keyFieldsFnFromSpecifier(specifierOrId);
           } else {
             id2 = specifierOrId;
@@ -4207,7 +4038,7 @@ var Policies = (
     Policies2.prototype.addTypePolicies = function(typePolicies) {
       var _this = this;
       Object.keys(typePolicies).forEach(function(typename) {
-        var _a2 = typePolicies[typename], queryType = _a2.queryType, mutationType = _a2.mutationType, subscriptionType = _a2.subscriptionType, incoming = __rest(_a2, ["queryType", "mutationType", "subscriptionType"]);
+        var _a = typePolicies[typename], queryType = _a.queryType, mutationType = _a.mutationType, subscriptionType = _a.subscriptionType, incoming = __rest(_a, ["queryType", "mutationType", "subscriptionType"]);
         if (queryType)
           _this.setRootTypename("Query", typename);
         if (mutationType)
@@ -4225,12 +4056,12 @@ var Policies = (
       var _this = this;
       var existing = this.getTypePolicy(typename);
       var keyFields = incoming.keyFields, fields = incoming.fields;
-      function setMerge(existing2, merge) {
-        existing2.merge = typeof merge === "function" ? merge : merge === true ? mergeTrueFn : merge === false ? mergeFalseFn : existing2.merge;
+      function setMerge(existing2, merge2) {
+        existing2.merge = typeof merge2 === "function" ? merge2 : merge2 === true ? mergeTrueFn : merge2 === false ? mergeFalseFn : existing2.merge;
       }
       setMerge(existing, incoming.merge);
       existing.keyFn = // Pass false to disable normalization for this typename.
-      keyFields === false ? nullKeyFieldsFn : isArray$1(keyFields) ? keyFieldsFnFromSpecifier(keyFields) : typeof keyFields === "function" ? keyFields : existing.keyFn;
+      keyFields === false ? nullKeyFieldsFn : isArray(keyFields) ? keyFieldsFnFromSpecifier(keyFields) : typeof keyFields === "function" ? keyFields : existing.keyFn;
       if (fields) {
         Object.keys(fields).forEach(function(fieldName) {
           var existing2 = _this.getFieldPolicy(typename, fieldName, true);
@@ -4238,14 +4069,14 @@ var Policies = (
           if (typeof incoming2 === "function") {
             existing2.read = incoming2;
           } else {
-            var keyArgs = incoming2.keyArgs, read = incoming2.read, merge = incoming2.merge;
+            var keyArgs = incoming2.keyArgs, read = incoming2.read, merge2 = incoming2.merge;
             existing2.keyFn = // Pass false to disable argument-based differentiation of
             // field identities.
-            keyArgs === false ? simpleKeyArgsFn : isArray$1(keyArgs) ? keyArgsFnFromSpecifier(keyArgs) : typeof keyArgs === "function" ? keyArgs : existing2.keyFn;
+            keyArgs === false ? simpleKeyArgsFn : isArray(keyArgs) ? keyArgsFnFromSpecifier(keyArgs) : typeof keyArgs === "function" ? keyArgs : existing2.keyFn;
             if (typeof read === "function") {
               existing2.read = read;
             }
-            setMerge(existing2, merge);
+            setMerge(existing2, merge2);
           }
           if (existing2.read && existing2.merge) {
             existing2.keyFn = existing2.keyFn || simpleKeyArgsFn;
@@ -4274,8 +4105,8 @@ var Policies = (
         _this.getSupertypeSet(supertype, true);
         possibleTypes[supertype].forEach(function(subtype) {
           _this.getSupertypeSet(subtype, true).add(supertype);
-          var match = subtype.match(TypeOrFieldNameRegExp);
-          if (!match || match[0] !== subtype) {
+          var match2 = subtype.match(TypeOrFieldNameRegExp);
+          if (!match2 || match2[0] !== subtype) {
             _this.fuzzySubtypes.set(subtype, new RegExp(subtype));
           }
         });
@@ -4302,7 +4133,7 @@ var Policies = (
         }
         if (supertypes_1 && supertypes_1.size) {
           supertypes_1.forEach(function(supertype) {
-            var _a2 = _this.getTypePolicy(supertype), fields = _a2.fields, rest = __rest(_a2, ["fields"]);
+            var _a = _this.getTypePolicy(supertype), fields = _a.fields, rest = __rest(_a, ["fields"]);
             Object.assign(policy_1, rest);
             Object.assign(policy_1.fields, fields);
           });
@@ -4371,8 +4202,8 @@ var Policies = (
             needToCheckFuzzySubtypes = false;
             checkingFuzzySubtypes = true;
             this.fuzzySubtypes.forEach(function(regExp, fuzzyString) {
-              var match = typename.match(regExp);
-              if (match && match[0] === typename) {
+              var match2 = typename.match(regExp);
+              if (match2 && match2[0] === typename) {
                 maybeEnqueue_1(fuzzyString);
               }
             });
@@ -4400,7 +4231,7 @@ var Policies = (
         var args = argsFromFieldSpecifier(fieldSpec);
         while (keyFn) {
           var specifierOrString = keyFn(args, context);
-          if (isArray$1(specifierOrString)) {
+          if (isArray(specifierOrString)) {
             keyFn = keyArgsFnFromSpecifier(specifierOrString);
           } else {
             storeFieldName = specifierOrString || fieldName;
@@ -4448,25 +4279,25 @@ var Policies = (
     };
     Policies2.prototype.getMergeFunction = function(parentTypename, fieldName, childTypename) {
       var policy = this.getFieldPolicy(parentTypename, fieldName, false);
-      var merge = policy && policy.merge;
-      if (!merge && childTypename) {
+      var merge2 = policy && policy.merge;
+      if (!merge2 && childTypename) {
         policy = this.getTypePolicy(childTypename);
-        merge = policy && policy.merge;
+        merge2 = policy && policy.merge;
       }
-      return merge;
+      return merge2;
     };
-    Policies2.prototype.runMergeFunction = function(existing, incoming, _a2, context, storage) {
-      var field = _a2.field, typename = _a2.typename, merge = _a2.merge;
-      if (merge === mergeTrueFn) {
+    Policies2.prototype.runMergeFunction = function(existing, incoming, _a, context, storage) {
+      var field = _a.field, typename = _a.typename, merge2 = _a.merge;
+      if (merge2 === mergeTrueFn) {
         return makeMergeObjectsFunction(context.store)(existing, incoming);
       }
-      if (merge === mergeFalseFn) {
+      if (merge2 === mergeFalseFn) {
         return incoming;
       }
       if (context.overwrite) {
         existing = void 0;
       }
-      return merge(existing, incoming, makeFieldFunctionOptions(
+      return merge2(existing, incoming, makeFieldFunctionOptions(
         this,
         // Unlike options.readField for read functions, we do not fall
         // back to the current object if no foreignObjOrRef is provided,
@@ -4497,7 +4328,7 @@ function makeFieldFunctionOptions(policies, objectOrReference, fieldSpec, contex
   var storeFieldName = policies.getStoreFieldName(fieldSpec);
   var fieldName = fieldNameFromStoreName(storeFieldName);
   var variables = fieldSpec.variables || context.variables;
-  var _a2 = context.store, toReference = _a2.toReference, canRead = _a2.canRead;
+  var _a = context.store, toReference = _a.toReference, canRead = _a.canRead;
   return {
     args: argsFromFieldSpecifier(fieldSpec),
     field: fieldSpec.field || null,
@@ -4516,7 +4347,7 @@ function makeFieldFunctionOptions(policies, objectOrReference, fieldSpec, contex
   };
 }
 function normalizeReadFieldOptions(readFieldArgs, objectOrReference, variables) {
-  var fieldNameOrOptions = readFieldArgs[0], from = readFieldArgs[1], argc = readFieldArgs.length;
+  var fieldNameOrOptions = readFieldArgs[0], from2 = readFieldArgs[1], argc = readFieldArgs.length;
   var options;
   if (typeof fieldNameOrOptions === "string") {
     options = {
@@ -4524,7 +4355,7 @@ function normalizeReadFieldOptions(readFieldArgs, objectOrReference, variables) 
       // Default to objectOrReference only when no second argument was
       // passed for the from parameter, not when undefined is explicitly
       // passed as the second argument.
-      from: argc > 1 ? from : objectOrReference
+      from: argc > 1 ? from2 : objectOrReference
     };
   } else {
     options = __assign({}, fieldNameOrOptions);
@@ -4542,7 +4373,7 @@ function normalizeReadFieldOptions(readFieldArgs, objectOrReference, variables) 
 }
 function makeMergeObjectsFunction(store) {
   return function mergeObjects(existing, incoming) {
-    if (isArray$1(existing) || isArray$1(incoming)) {
+    if (isArray(existing) || isArray(incoming)) {
       throw newInvariantError(9);
     }
     if (isNonNullObject(existing) && isNonNullObject(incoming)) {
@@ -4583,9 +4414,9 @@ var StoreWriter = (
       this.reader = reader;
       this.fragments = fragments;
     }
-    StoreWriter2.prototype.writeToStore = function(store, _a2) {
+    StoreWriter2.prototype.writeToStore = function(store, _a) {
       var _this = this;
-      var query = _a2.query, result = _a2.result, dataId = _a2.dataId, variables = _a2.variables, overwrite = _a2.overwrite;
+      var query = _a.query, result = _a.result, dataId = _a.dataId, variables = _a.variables, overwrite = _a.overwrite;
       var operationDefinition = getOperationDefinition(query);
       var merger = makeProcessedFieldsMerger();
       variables = __assign(__assign({}, getDefaultValues(operationDefinition)), variables);
@@ -4602,8 +4433,8 @@ var StoreWriter = (
       if (!isReference(ref)) {
         throw newInvariantError(12, result);
       }
-      context.incomingById.forEach(function(_a3, dataId2) {
-        var storeObject = _a3.storeObject, mergeTree = _a3.mergeTree, fieldNodeSet = _a3.fieldNodeSet;
+      context.incomingById.forEach(function(_a2, dataId2) {
+        var storeObject = _a2.storeObject, mergeTree = _a2.mergeTree, fieldNodeSet = _a2.fieldNodeSet;
         var entityRef = makeReference(dataId2);
         if (mergeTree && mergeTree.map.size) {
           var applied = _this.applyMerges(mergeTree, entityRef, storeObject, context);
@@ -4637,9 +4468,9 @@ var StoreWriter = (
       store.retain(ref.__ref);
       return ref;
     };
-    StoreWriter2.prototype.processSelectionSet = function(_a2) {
+    StoreWriter2.prototype.processSelectionSet = function(_a) {
       var _this = this;
-      var dataId = _a2.dataId, result = _a2.result, selectionSet = _a2.selectionSet, context = _a2.context, mergeTree = _a2.mergeTree;
+      var dataId = _a.dataId, result = _a.result, selectionSet = _a.selectionSet, context = _a.context, mergeTree = _a.mergeTree;
       var policies = this.cache.policies;
       var incoming = /* @__PURE__ */ Object.create(null);
       var typename = dataId && policies.rootTypenamesById[dataId] || getTypenameFromResult(result, selectionSet, context.fragmentMap) || dataId && context.store.get(dataId, "__typename");
@@ -4669,7 +4500,7 @@ var StoreWriter = (
         context,
         typename
       ).forEach(function(context2, field) {
-        var _a3;
+        var _a2;
         var resultFieldKey = resultKeyNameFromField(field);
         var value = result[resultFieldKey];
         fieldNodeSet.add(field);
@@ -4693,18 +4524,18 @@ var StoreWriter = (
           if (field.selectionSet && (isReference(incomingValue) || storeValueIsStoreObject(incomingValue))) {
             childTypename = readField("__typename", incomingValue);
           }
-          var merge = policies.getMergeFunction(typename, field.name.value, childTypename);
-          if (merge) {
+          var merge2 = policies.getMergeFunction(typename, field.name.value, childTypename);
+          if (merge2) {
             childTree.info = {
               // TODO Check compatibility against any existing childTree.field?
               field,
               typename,
-              merge
+              merge: merge2
             };
           } else {
             maybeRecycleChildMergeTree(mergeTree, storeFieldName);
           }
-          incoming = context2.merge(incoming, (_a3 = {}, _a3[storeFieldName] = incomingValue, _a3));
+          incoming = context2.merge(incoming, (_a2 = {}, _a2[storeFieldName] = incomingValue, _a2));
         } else if (globalThis.__DEV__ !== false && !context2.clientOnly && !context2.deferred && !addTypenameToDocument.added(field) && // If the field has a read function, it may be a synthetic field or
         // provide a default value, so its absence from the written data should
         // not be cause for alarm.
@@ -4713,13 +4544,13 @@ var StoreWriter = (
         }
       });
       try {
-        var _b2 = policies.identify(result, {
+        var _b = policies.identify(result, {
           typename,
           selectionSet,
           fragmentMap: context.fragmentMap,
           storeObject: incoming,
           readField
-        }), id2 = _b2[0], keyObject = _b2[1];
+        }), id2 = _b[0], keyObject = _b[1];
         dataId = dataId || id2;
         if (keyObject) {
           incoming = context.merge(incoming, keyObject);
@@ -4763,7 +4594,7 @@ var StoreWriter = (
       if (!field.selectionSet || value === null) {
         return globalThis.__DEV__ !== false ? cloneDeep(value) : value;
       }
-      if (isArray$1(value)) {
+      if (isArray(value)) {
         return value.map(function(item, i) {
           var value2 = _this.processFieldValue(item, field, context, getChildMergeTree(mergeTree, i));
           maybeRecycleChildMergeTree(mergeTree, i);
@@ -4840,14 +4671,14 @@ var StoreWriter = (
       return fieldMap;
     };
     StoreWriter2.prototype.applyMerges = function(mergeTree, existing, incoming, context, getStorageArgs) {
-      var _a2;
+      var _a;
       var _this = this;
       if (mergeTree.map.size && !isReference(incoming)) {
         var e_1 = (
           // Items in the same position in different arrays are not
           // necessarily related to each other, so when incoming is an array
           // we process its elements as if there was no existing data.
-          !isArray$1(incoming) && // Likewise, existing must be either a Reference or a StoreObject
+          !isArray(incoming) && // Likewise, existing must be either a Reference or a StoreObject
           // in order for its fields to be safe to merge with the fields of
           // the incoming object.
           (isReference(existing) || storeValueIsStoreObject(existing)) ? existing : void 0
@@ -4857,8 +4688,8 @@ var StoreWriter = (
           getStorageArgs = [isReference(e_1) ? e_1.__ref : e_1];
         }
         var changedFields_1;
-        var getValue_1 = function(from, name2) {
-          return isArray$1(from) ? typeof name2 === "number" ? from[name2] : void 0 : context.store.getFieldValue(from, String(name2));
+        var getValue_1 = function(from2, name2) {
+          return isArray(from2) ? typeof name2 === "number" ? from2[name2] : void 0 : context.store.getFieldValue(from2, String(name2));
         };
         mergeTree.map.forEach(function(childTree, storeFieldName) {
           var eVal = getValue_1(e_1, storeFieldName);
@@ -4878,14 +4709,14 @@ var StoreWriter = (
           }
         });
         if (changedFields_1) {
-          incoming = isArray$1(i_1) ? i_1.slice(0) : __assign({}, i_1);
+          incoming = isArray(i_1) ? i_1.slice(0) : __assign({}, i_1);
           changedFields_1.forEach(function(value, name2) {
             incoming[name2] = value;
           });
         }
       }
       if (mergeTree.info) {
-        return this.cache.policies.runMergeFunction(existing, incoming, mergeTree.info, context, getStorageArgs && (_a2 = context.store).getStorage.apply(_a2, getStorageArgs));
+        return this.cache.policies.runMergeFunction(existing, incoming, mergeTree.info, context, getStorageArgs && (_a = context.store).getStorage.apply(_a, getStorageArgs));
       }
       return incoming;
     };
@@ -4893,8 +4724,8 @@ var StoreWriter = (
   }()
 );
 var emptyMergeTreePool = [];
-function getChildMergeTree(_a2, name2) {
-  var map = _a2.map;
+function getChildMergeTree(_a, name2) {
+  var map = _a.map;
   if (!map.has(name2)) {
     map.set(name2, emptyMergeTreePool.pop() || { map: /* @__PURE__ */ new Map() });
   }
@@ -4924,8 +4755,8 @@ function mergeMergeTrees(left, right) {
 function mergeTreeIsEmpty(tree) {
   return !tree || !(tree.info || tree.map.size);
 }
-function maybeRecycleChildMergeTree(_a2, name2) {
-  var map = _a2.map;
+function maybeRecycleChildMergeTree(_a, name2) {
+  var map = _a.map;
   var childTree = map.get(name2);
   if (childTree && mergeTreeIsEmpty(childTree)) {
     emptyMergeTreePool.push(childTree);
@@ -4960,7 +4791,7 @@ function warnAboutDataLoss(existingRef, incomingObj, storeFieldName, store) {
     return;
   warnings.add(typeDotName);
   var childTypenames = [];
-  if (!isArray$1(existing) && !isArray$1(incoming)) {
+  if (!isArray(existing) && !isArray(incoming)) {
     [existing, incoming].forEach(function(child) {
       var typename = store.getFieldValue(child, "__typename");
       if (typeof typename === "string" && !childTypenames.includes(typename)) {
@@ -5015,7 +4846,7 @@ var InMemoryCache = (
         canon: resetResultIdentities ? void 0 : previousReader && previousReader.canon,
         fragments
       }), fragments);
-      this.maybeBroadcastWatch = wrap$1(function(c, options) {
+      this.maybeBroadcastWatch = wrap$2(function(c, options) {
         return _this.broadcastWatch(c, options);
       }, {
         max: this.config.resultCacheMaxSize || cacheSizes["inMemoryCache.maybeBroadcastWatch"] || 5e3,
@@ -5054,7 +4885,7 @@ var InMemoryCache = (
       return (optimistic ? this.optimisticData : this.data).extract();
     };
     InMemoryCache2.prototype.read = function(options) {
-      var _a2 = options.returnPartialData, returnPartialData = _a2 === void 0 ? false : _a2;
+      var _a = options.returnPartialData, returnPartialData = _a === void 0 ? false : _a;
       try {
         return this.storeReader.diffQueryAgainstStore(__assign(__assign({}, options), { store: options.optimistic ? this.optimisticData : this.data, config: this.config, returnPartialData })).result || null;
       } catch (e) {
@@ -5108,11 +4939,11 @@ var InMemoryCache = (
       };
     };
     InMemoryCache2.prototype.gc = function(options) {
-      var _a2;
+      var _a;
       canonicalStringify.reset();
       print.reset();
       this.addTypenameTransform.resetCache();
-      (_a2 = this.config.fragments) === null || _a2 === void 0 ? void 0 : _a2.resetCaches();
+      (_a = this.config.fragments) === null || _a === void 0 ? void 0 : _a.resetCaches();
       var ids = this.optimisticData.gc();
       if (options && !this.txCount) {
         if (options.resetResultCache) {
@@ -5178,10 +5009,10 @@ var InMemoryCache = (
     };
     InMemoryCache2.prototype.batch = function(options) {
       var _this = this;
-      var update = options.update, _a2 = options.optimistic, optimistic = _a2 === void 0 ? true : _a2, removeOptimistic = options.removeOptimistic, onWatchUpdated = options.onWatchUpdated;
+      var update = options.update, _a = options.optimistic, optimistic = _a === void 0 ? true : _a, removeOptimistic = options.removeOptimistic, onWatchUpdated = options.onWatchUpdated;
       var updateResult;
       var perform = function(layer) {
-        var _a3 = _this, data = _a3.data, optimisticData = _a3.optimisticData;
+        var _a2 = _this, data = _a2.data, optimisticData = _a2.optimisticData;
         ++_this.txCount;
         if (layer) {
           _this.data = _this.optimisticData = layer;
@@ -5242,8 +5073,8 @@ var InMemoryCache = (
       return this.policies.fragmentMatches(fragment, typename);
     };
     InMemoryCache2.prototype.lookupFragment = function(fragmentName) {
-      var _a2;
-      return ((_a2 = this.config.fragments) === null || _a2 === void 0 ? void 0 : _a2.lookup(fragmentName)) || null;
+      var _a;
+      return ((_a = this.config.fragments) === null || _a === void 0 ? void 0 : _a.lookup(fragmentName)) || null;
     };
     InMemoryCache2.prototype.broadcastWatches = function(options) {
       var _this = this;
@@ -5302,15 +5133,15 @@ var ObservableQuery = (
   /** @class */
   function(_super) {
     __extends(ObservableQuery2, _super);
-    function ObservableQuery2(_a2) {
-      var queryManager = _a2.queryManager, queryInfo = _a2.queryInfo, options = _a2.options;
+    function ObservableQuery2(_a) {
+      var queryManager = _a.queryManager, queryInfo = _a.queryInfo, options = _a.options;
       var _this = _super.call(this, function(observer) {
         try {
           var subObserver = observer._subscription._observer;
           if (subObserver && !subObserver.error) {
             subObserver.error = defaultSubscriptionObserverErrorCallback;
           }
-        } catch (_a3) {
+        } catch (_a2) {
         }
         var first = !_this.observers.size;
         _this.observers.add(observer);
@@ -5338,8 +5169,8 @@ var ObservableQuery = (
       _this.isTornDown = false;
       _this.subscribeToMore = _this.subscribeToMore.bind(_this);
       _this.maskResult = _this.maskResult.bind(_this);
-      var _b2 = queryManager.defaultOptions.watchQuery, _c2 = _b2 === void 0 ? {} : _b2, _d2 = _c2.fetchPolicy, defaultFetchPolicy = _d2 === void 0 ? "cache-first" : _d2;
-      var _e2 = options.fetchPolicy, fetchPolicy = _e2 === void 0 ? defaultFetchPolicy : _e2, _f2 = options.initialFetchPolicy, initialFetchPolicy = _f2 === void 0 ? fetchPolicy === "standby" ? defaultFetchPolicy : fetchPolicy : _f2;
+      var _b = queryManager.defaultOptions.watchQuery, _c = _b === void 0 ? {} : _b, _d = _c.fetchPolicy, defaultFetchPolicy = _d === void 0 ? "cache-first" : _d;
+      var _e = options.fetchPolicy, fetchPolicy = _e === void 0 ? defaultFetchPolicy : _e, _f = options.initialFetchPolicy, initialFetchPolicy = _f === void 0 ? fetchPolicy === "standby" ? defaultFetchPolicy : fetchPolicy : _f;
       _this.options = __assign(__assign({}, options), {
         // Remember the initial options.fetchPolicy so we can revert back to this
         // policy when variables change. This information can also be specified
@@ -5406,7 +5237,7 @@ var ObservableQuery = (
       var lastResult = this.getLastResult(true);
       var networkStatus = this.queryInfo.networkStatus || lastResult && lastResult.networkStatus || NetworkStatus.ready;
       var result = __assign(__assign({}, lastResult), { loading: isNetworkRequestInFlight(networkStatus), networkStatus });
-      var _a2 = this.options.fetchPolicy, fetchPolicy = _a2 === void 0 ? "cache-first" : _a2;
+      var _a = this.options.fetchPolicy, fetchPolicy = _a === void 0 ? "cache-first" : _a;
       if (
         // These fetch policies should never deliver data from the cache, unless
         // redelivering a previously delivered result.
@@ -5481,7 +5312,7 @@ var ObservableQuery = (
       this.queryManager.resetErrors(this.queryId);
     };
     ObservableQuery2.prototype.refetch = function(variables) {
-      var _a2;
+      var _a;
       var reobserveOptions = {
         // Always disable polling for refetches.
         pollInterval: 0
@@ -5496,14 +5327,14 @@ var ObservableQuery = (
       }
       if (globalThis.__DEV__ !== false && variables && hasOwnProperty$2.call(variables, "variables")) {
         var queryDef = getQueryDefinition(this.query);
-        var vars2 = queryDef.variableDefinitions;
-        if (!vars2 || !vars2.some(function(v2) {
+        var vars = queryDef.variableDefinitions;
+        if (!vars || !vars.some(function(v2) {
           return v2.variable.name.value === "variables";
         })) {
           globalThis.__DEV__ !== false && invariant.warn(
             21,
             variables,
-            ((_a2 = queryDef.name) === null || _a2 === void 0 ? void 0 : _a2.value) || queryDef
+            ((_a = queryDef.name) === null || _a === void 0 ? void 0 : _a.value) || queryDef
           );
         }
       }
@@ -5596,8 +5427,8 @@ var ObservableQuery = (
         next: function(subscriptionData) {
           var updateQuery = options.updateQuery;
           if (updateQuery) {
-            _this.updateQuery(function(previous, _a2) {
-              var variables = _a2.variables;
+            _this.updateQuery(function(previous, _a) {
+              var variables = _a.variables;
               return updateQuery(previous, {
                 subscriptionData,
                 variables
@@ -5624,7 +5455,7 @@ var ObservableQuery = (
       return this.reobserve(newOptions);
     };
     ObservableQuery2.prototype.silentSetOptions = function(newOptions) {
-      var mergedOptions = compact$1(this.options, newOptions || {});
+      var mergedOptions = compact(this.options, newOptions || {});
       assign(this.options, mergedOptions);
     };
     ObservableQuery2.prototype.setVariables = function(variables) {
@@ -5671,7 +5502,7 @@ var ObservableQuery = (
     };
     ObservableQuery2.prototype.applyNextFetchPolicy = function(reason, options) {
       if (options.nextFetchPolicy) {
-        var _a2 = options.fetchPolicy, fetchPolicy = _a2 === void 0 ? "cache-first" : _a2, _b2 = options.initialFetchPolicy, initialFetchPolicy = _b2 === void 0 ? fetchPolicy : _b2;
+        var _a = options.fetchPolicy, fetchPolicy = _a === void 0 ? "cache-first" : _a, _b = options.initialFetchPolicy, initialFetchPolicy = _b === void 0 ? fetchPolicy : _b;
         if (fetchPolicy === "standby")
           ;
         else if (typeof options.nextFetchPolicy === "function") {
@@ -5698,7 +5529,7 @@ var ObservableQuery = (
       if (this.queryManager.ssrMode) {
         return;
       }
-      var _a2 = this, pollingInfo = _a2.pollingInfo, pollInterval = _a2.options.pollInterval;
+      var _a = this, pollingInfo = _a.pollingInfo, pollInterval = _a.options.pollInterval;
       if (!pollInterval || !this.hasObservers()) {
         if (pollingInfo) {
           clearTimeout(pollingInfo.timeout);
@@ -5713,9 +5544,9 @@ var ObservableQuery = (
       var info = pollingInfo || (this.pollingInfo = {});
       info.interval = pollInterval;
       var maybeFetch = function() {
-        var _a3, _b2;
+        var _a2, _b;
         if (_this.pollingInfo) {
-          if (!isNetworkRequestInFlight(_this.queryInfo.networkStatus) && !((_b2 = (_a3 = _this.options).skipPollAttempt) === null || _b2 === void 0 ? void 0 : _b2.call(_a3))) {
+          if (!isNetworkRequestInFlight(_this.queryInfo.networkStatus) && !((_b = (_a2 = _this.options).skipPollAttempt) === null || _b === void 0 ? void 0 : _b.call(_a2))) {
             _this.reobserve({
               // Most fetchPolicy options don't make sense to use in a polling context, as
               // users wouldn't want to be polling the cache directly. However, network-only and
@@ -5762,7 +5593,7 @@ var ObservableQuery = (
       );
       var oldVariables = this.options.variables;
       var oldFetchPolicy = this.options.fetchPolicy;
-      var mergedOptions = compact$1(this.options, newOptions || {});
+      var mergedOptions = compact(this.options, newOptions || {});
       var options = useDisposableConcast ? (
         // Disposable Concast fetches receive a shallow copy of this.options
         // (merged with newOptions), leaving this.options unmodified.
@@ -5791,7 +5622,7 @@ var ObservableQuery = (
         }
       };
       var variables = options.variables && __assign({}, options.variables);
-      var _a2 = this.fetch(options, newNetworkStatus, query), concast = _a2.concast, fromLink = _a2.fromLink;
+      var _a = this.fetch(options, newNetworkStatus, query), concast = _a.concast, fromLink = _a.fromLink;
       var observer = {
         next: function(result) {
           if (equal$1(_this.variables, variables)) {
@@ -5824,8 +5655,8 @@ var ObservableQuery = (
     };
     ObservableQuery2.prototype.resubscribeAfterError = function() {
       var args = [];
-      for (var _i2 = 0; _i2 < arguments.length; _i2++) {
-        args[_i2] = arguments[_i2];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
       }
       var last = this.last;
       this.resetLastResults();
@@ -5894,7 +5725,7 @@ var ObservableQuery = (
 );
 fixObservableSubclass(ObservableQuery);
 function reobserveCacheFirst(obsQuery) {
-  var _a2 = obsQuery.options, fetchPolicy = _a2.fetchPolicy, nextFetchPolicy = _a2.nextFetchPolicy;
+  var _a = obsQuery.options, fetchPolicy = _a.fetchPolicy, nextFetchPolicy = _a.nextFetchPolicy;
   if (fetchPolicy === "cache-and-network" || fetchPolicy === "network-only") {
     return obsQuery.reobserve({
       fetchPolicy: "cache-first",
@@ -6018,7 +5849,7 @@ var QueryInfo = (
       } : void 0;
     };
     QueryInfo2.prototype.getDiffOptions = function(variables) {
-      var _a2;
+      var _a;
       if (variables === void 0) {
         variables = this.variables;
       }
@@ -6027,14 +5858,14 @@ var QueryInfo = (
         variables,
         returnPartialData: true,
         optimistic: true,
-        canonizeResults: (_a2 = this.observableQuery) === null || _a2 === void 0 ? void 0 : _a2.options.canonizeResults
+        canonizeResults: (_a = this.observableQuery) === null || _a === void 0 ? void 0 : _a.options.canonizeResults
       };
     };
     QueryInfo2.prototype.setDiff = function(diff) {
       var _this = this;
-      var _a2;
+      var _a;
       var oldDiff = this.lastDiff && this.lastDiff.diff;
-      if (diff && !diff.complete && ((_a2 = this.observableQuery) === null || _a2 === void 0 ? void 0 : _a2.getLastError())) {
+      if (diff && !diff.complete && ((_a = this.observableQuery) === null || _a === void 0 ? void 0 : _a.getLastError())) {
         return;
       }
       this.updateLastDiff(diff);
@@ -6267,13 +6098,13 @@ var QueryManager = (
       });
       this.fetchCancelFns.clear();
     };
-    QueryManager2.prototype.mutate = function(_a2) {
-      return __awaiter(this, arguments, void 0, function(_b2) {
+    QueryManager2.prototype.mutate = function(_a) {
+      return __awaiter(this, arguments, void 0, function(_b) {
         var mutationId, hasClientExports2, mutationStoreValue, isOptimistic, self2;
-        var _c2, _d2;
-        var mutation = _b2.mutation, variables = _b2.variables, optimisticResponse = _b2.optimisticResponse, updateQueries = _b2.updateQueries, _e2 = _b2.refetchQueries, refetchQueries = _e2 === void 0 ? [] : _e2, _f2 = _b2.awaitRefetchQueries, awaitRefetchQueries = _f2 === void 0 ? false : _f2, updateWithProxyFn = _b2.update, onQueryUpdated = _b2.onQueryUpdated, _g2 = _b2.fetchPolicy, fetchPolicy = _g2 === void 0 ? ((_c2 = this.defaultOptions.mutate) === null || _c2 === void 0 ? void 0 : _c2.fetchPolicy) || "network-only" : _g2, _h2 = _b2.errorPolicy, errorPolicy = _h2 === void 0 ? ((_d2 = this.defaultOptions.mutate) === null || _d2 === void 0 ? void 0 : _d2.errorPolicy) || "none" : _h2, keepRootFields = _b2.keepRootFields, context = _b2.context;
-        return __generator(this, function(_j2) {
-          switch (_j2.label) {
+        var _c, _d;
+        var mutation = _b.mutation, variables = _b.variables, optimisticResponse = _b.optimisticResponse, updateQueries = _b.updateQueries, _e = _b.refetchQueries, refetchQueries = _e === void 0 ? [] : _e, _f = _b.awaitRefetchQueries, awaitRefetchQueries = _f === void 0 ? false : _f, updateWithProxyFn = _b.update, onQueryUpdated = _b.onQueryUpdated, _g = _b.fetchPolicy, fetchPolicy = _g === void 0 ? ((_c = this.defaultOptions.mutate) === null || _c === void 0 ? void 0 : _c.fetchPolicy) || "network-only" : _g, _h = _b.errorPolicy, errorPolicy = _h === void 0 ? ((_d = this.defaultOptions.mutate) === null || _d === void 0 ? void 0 : _d.errorPolicy) || "none" : _h, keepRootFields = _b.keepRootFields, context = _b.context;
+        return __generator(this, function(_j) {
+          switch (_j.label) {
             case 0:
               invariant(mutation, 28);
               invariant(fetchPolicy === "network-only" || fetchPolicy === "no-cache", 29);
@@ -6285,8 +6116,8 @@ var QueryManager = (
                 return [3, 2];
               return [4, this.localState.addExportedVariables(mutation, variables, context)];
             case 1:
-              variables = _j2.sent();
-              _j2.label = 2;
+              variables = _j.sent();
+              _j.label = 2;
             case 2:
               mutationStoreValue = this.mutationStore && (this.mutationStore[mutationId] = {
                 mutation,
@@ -6416,20 +6247,20 @@ var QueryManager = (
         }
         var updateQueries_1 = mutation.updateQueries;
         if (updateQueries_1) {
-          this.queries.forEach(function(_a2, queryId) {
-            var observableQuery = _a2.observableQuery;
+          this.queries.forEach(function(_a, queryId) {
+            var observableQuery = _a.observableQuery;
             var queryName = observableQuery && observableQuery.queryName;
             if (!queryName || !hasOwnProperty$1.call(updateQueries_1, queryName)) {
               return;
             }
             var updater = updateQueries_1[queryName];
-            var _b2 = _this.queries.get(queryId), document2 = _b2.document, variables = _b2.variables;
-            var _c2 = cache2.diff({
+            var _b = _this.queries.get(queryId), document2 = _b.document, variables = _b.variables;
+            var _c = cache2.diff({
               query: document2,
               variables,
               returnPartialData: true,
               optimistic: false
-            }), currentQueryResult = _c2.result, complete = _c2.complete;
+            }), currentQueryResult = _c.result, complete = _c.complete;
             if (complete && currentQueryResult) {
               var nextQueryResult = updater(currentQueryResult, {
                 mutationResult: result,
@@ -6491,8 +6322,8 @@ var QueryManager = (
             if (!skipCache && !mutation.keepRootFields && isFinalResult) {
               cache3.modify({
                 id: "ROOT_MUTATION",
-                fields: function(value, _a2) {
-                  var fieldName = _a2.fieldName, DELETE2 = _a2.DELETE;
+                fields: function(value, _a) {
+                  var fieldName = _a.fieldName, DELETE2 = _a.DELETE;
                   return fieldName === "__typename" ? value : DELETE2;
                 }
               });
@@ -6699,8 +6530,8 @@ var QueryManager = (
           }
         });
       }
-      this.queries.forEach(function(_a2, queryId) {
-        var oq = _a2.observableQuery, document2 = _a2.document;
+      this.queries.forEach(function(_a, queryId) {
+        var oq = _a.observableQuery, document2 = _a.document;
         if (oq) {
           if (include === "all") {
             queries.set(queryId, oq);
@@ -6773,7 +6604,7 @@ var QueryManager = (
     QueryManager2.prototype.startGraphQLSubscription = function(options) {
       var _this = this;
       var query = options.query, variables = options.variables;
-      var fetchPolicy = options.fetchPolicy, _a2 = options.errorPolicy, errorPolicy = _a2 === void 0 ? "none" : _a2, _b2 = options.context, context = _b2 === void 0 ? {} : _b2, _c2 = options.extensions, extensions = _c2 === void 0 ? {} : _c2;
+      var fetchPolicy = options.fetchPolicy, _a = options.errorPolicy, errorPolicy = _a === void 0 ? "none" : _a, _b = options.context, context = _b === void 0 ? {} : _b, _c = options.extensions, extensions = _c === void 0 ? {} : _c;
       query = this.transform(query);
       variables = this.getVariables(query, variables);
       var makeObservable = function(variables2) {
@@ -6850,14 +6681,14 @@ var QueryManager = (
     };
     QueryManager2.prototype.getObservableFromLink = function(query, context, variables, extensions, deduplication) {
       var _this = this;
-      var _a2;
+      var _a;
       if (deduplication === void 0) {
-        deduplication = (_a2 = context === null || context === void 0 ? void 0 : context.queryDeduplication) !== null && _a2 !== void 0 ? _a2 : this.queryDeduplication;
+        deduplication = (_a = context === null || context === void 0 ? void 0 : context.queryDeduplication) !== null && _a !== void 0 ? _a : this.queryDeduplication;
       }
       var observable;
-      var _b2 = this.getDocumentInfo(query), serverQuery = _b2.serverQuery, clientQuery = _b2.clientQuery;
+      var _b = this.getDocumentInfo(query), serverQuery = _b.serverQuery, clientQuery = _b.clientQuery;
       if (serverQuery) {
-        var _c2 = this, inFlightLinkObservables_1 = _c2.inFlightLinkObservables, link = _c2.link;
+        var _c = this, inFlightLinkObservables_1 = _c.inFlightLinkObservables, link = _c.link;
         var operation = {
           query: serverQuery,
           variables,
@@ -6949,7 +6780,7 @@ var QueryManager = (
       var variables = this.getVariables(query, options.variables);
       var queryInfo = this.getQuery(queryId);
       var defaults = this.defaultOptions.watchQuery;
-      var _a2 = options.fetchPolicy, fetchPolicy = _a2 === void 0 ? defaults && defaults.fetchPolicy || "cache-first" : _a2, _b2 = options.errorPolicy, errorPolicy = _b2 === void 0 ? defaults && defaults.errorPolicy || "none" : _b2, _c2 = options.returnPartialData, returnPartialData = _c2 === void 0 ? false : _c2, _d2 = options.notifyOnNetworkStatusChange, notifyOnNetworkStatusChange = _d2 === void 0 ? false : _d2, _e2 = options.context, context = _e2 === void 0 ? {} : _e2;
+      var _a = options.fetchPolicy, fetchPolicy = _a === void 0 ? defaults && defaults.fetchPolicy || "cache-first" : _a, _b = options.errorPolicy, errorPolicy = _b === void 0 ? defaults && defaults.errorPolicy || "none" : _b, _c = options.returnPartialData, returnPartialData = _c === void 0 ? false : _c, _d = options.notifyOnNetworkStatusChange, notifyOnNetworkStatusChange = _d === void 0 ? false : _d, _e = options.context, context = _e === void 0 ? {} : _e;
       var normalized = Object.assign({}, options, {
         query,
         variables,
@@ -6999,9 +6830,9 @@ var QueryManager = (
         fromLink: containsDataFromLink
       };
     };
-    QueryManager2.prototype.refetchQueries = function(_a2) {
+    QueryManager2.prototype.refetchQueries = function(_a) {
       var _this = this;
-      var updateCache = _a2.updateCache, include = _a2.include, _b2 = _a2.optimistic, optimistic = _b2 === void 0 ? false : _b2, _c2 = _a2.removeOptimistic, removeOptimistic = _c2 === void 0 ? optimistic ? makeUniqueId("refetchQueries") : void 0 : _c2, onQueryUpdated = _a2.onQueryUpdated;
+      var updateCache = _a.updateCache, include = _a.include, _b = _a.optimistic, optimistic = _b === void 0 ? false : _b, _c = _a.removeOptimistic, removeOptimistic = _c === void 0 ? optimistic ? makeUniqueId("refetchQueries") : void 0 : _c, onQueryUpdated = _a.onQueryUpdated;
       var includedQueriesById = /* @__PURE__ */ new Map();
       if (include) {
         this.getObservableQueries(include).forEach(function(oq, queryId) {
@@ -7075,8 +6906,8 @@ var QueryManager = (
         });
       }
       if (includedQueriesById.size) {
-        includedQueriesById.forEach(function(_a3, queryId) {
-          var oq = _a3.oq, lastDiff = _a3.lastDiff, diff = _a3.diff;
+        includedQueriesById.forEach(function(_a2, queryId) {
+          var oq = _a2.oq, lastDiff = _a2.lastDiff, diff = _a2.diff;
           var result;
           if (onQueryUpdated) {
             if (!diff) {
@@ -7103,17 +6934,17 @@ var QueryManager = (
       return results2;
     };
     QueryManager2.prototype.maskOperation = function(options) {
-      var _a2, _b2, _c2;
+      var _a, _b, _c;
       var document2 = options.document, data = options.data;
       if (globalThis.__DEV__ !== false) {
         var fetchPolicy = options.fetchPolicy, id2 = options.id;
-        var operationType = (_a2 = getOperationDefinition(document2)) === null || _a2 === void 0 ? void 0 : _a2.operation;
-        var operationId = ((_b2 = operationType === null || operationType === void 0 ? void 0 : operationType[0]) !== null && _b2 !== void 0 ? _b2 : "o") + id2;
+        var operationType = (_a = getOperationDefinition(document2)) === null || _a === void 0 ? void 0 : _a.operation;
+        var operationId = ((_b = operationType === null || operationType === void 0 ? void 0 : operationType[0]) !== null && _b !== void 0 ? _b : "o") + id2;
         if (this.dataMasking && fetchPolicy === "no-cache" && !isFullyUnmaskedOperation(document2) && !this.noCacheWarningsByQueryId.has(operationId)) {
           this.noCacheWarningsByQueryId.add(operationId);
           globalThis.__DEV__ !== false && invariant.warn(
             37,
-            (_c2 = getOperationName(document2)) !== null && _c2 !== void 0 ? _c2 : "Unnamed ".concat(operationType !== null && operationType !== void 0 ? operationType : "operation")
+            (_c = getOperationName(document2)) !== null && _c !== void 0 ? _c : "Unnamed ".concat(operationType !== null && operationType !== void 0 ? operationType : "operation")
           );
         }
       }
@@ -7123,9 +6954,9 @@ var QueryManager = (
       var data = options.data, fragment = options.fragment, fragmentName = options.fragmentName;
       return this.dataMasking ? maskFragment(data, fragment, this.cache, fragmentName) : data;
     };
-    QueryManager2.prototype.fetchQueryByPolicy = function(queryInfo, _a2, networkStatus) {
+    QueryManager2.prototype.fetchQueryByPolicy = function(queryInfo, _a, networkStatus) {
       var _this = this;
-      var query = _a2.query, variables = _a2.variables, fetchPolicy = _a2.fetchPolicy, refetchWritePolicy = _a2.refetchWritePolicy, errorPolicy = _a2.errorPolicy, returnPartialData = _a2.returnPartialData, context = _a2.context, notifyOnNetworkStatusChange = _a2.notifyOnNetworkStatusChange;
+      var query = _a.query, variables = _a.variables, fetchPolicy = _a.fetchPolicy, refetchWritePolicy = _a.refetchWritePolicy, errorPolicy = _a.errorPolicy, returnPartialData = _a.returnPartialData, context = _a.context, notifyOnNetworkStatusChange = _a.notifyOnNetworkStatusChange;
       var oldNetworkStatus = queryInfo.networkStatus;
       queryInfo.init({
         document: query,
@@ -7248,8 +7079,8 @@ var QueryManager = (
 var LocalState = (
   /** @class */
   function() {
-    function LocalState2(_a2) {
-      var cache2 = _a2.cache, client = _a2.client, resolvers = _a2.resolvers, fragmentMatcher = _a2.fragmentMatcher;
+    function LocalState2(_a) {
+      var cache2 = _a.cache, client = _a.client, resolvers = _a.resolvers, fragmentMatcher = _a.fragmentMatcher;
       this.selectionsToResolveCache = /* @__PURE__ */ new WeakMap();
       this.cache = cache2;
       if (client) {
@@ -7280,10 +7111,10 @@ var LocalState = (
     LocalState2.prototype.getResolvers = function() {
       return this.resolvers || {};
     };
-    LocalState2.prototype.runResolvers = function(_a2) {
-      return __awaiter(this, arguments, void 0, function(_b2) {
-        var document2 = _b2.document, remoteResult = _b2.remoteResult, context = _b2.context, variables = _b2.variables, _c2 = _b2.onlyRunForcedResolvers, onlyRunForcedResolvers = _c2 === void 0 ? false : _c2;
-        return __generator(this, function(_d2) {
+    LocalState2.prototype.runResolvers = function(_a) {
+      return __awaiter(this, arguments, void 0, function(_b) {
+        var document2 = _b.document, remoteResult = _b.remoteResult, context = _b.context, variables = _b.variables, _c = _b.onlyRunForcedResolvers, onlyRunForcedResolvers = _c === void 0 ? false : _c;
+        return __generator(this, function(_d) {
           if (document2) {
             return [2, this.resolveDocument(document2, remoteResult.data, context, variables, this.fragmentMatcher, onlyRunForcedResolvers).then(function(localResult) {
               return __assign(__assign({}, remoteResult), { data: localResult.result });
@@ -7328,7 +7159,7 @@ var LocalState = (
         if (context === void 0) {
           context = {};
         }
-        return __generator(this, function(_a2) {
+        return __generator(this, function(_a) {
           if (document2) {
             return [2, this.resolveDocument(document2, this.buildRootValueFromCache(document2, variables) || {}, this.prepareContext(context), variables).then(function(data) {
               return __assign(__assign({}, variables), data.exportedVariables);
@@ -7366,7 +7197,7 @@ var LocalState = (
     };
     LocalState2.prototype.resolveDocument = function(document_1, rootValue_1) {
       return __awaiter(this, arguments, void 0, function(document2, rootValue, context, variables, fragmentMatcher, onlyRunForcedResolvers) {
-        var mainDefinition, fragments, fragmentMap, selectionsToResolve, definitionOperation, defaultOperationType, _a2, cache2, client, execContext, isClientFieldDescendant;
+        var mainDefinition, fragments, fragmentMap, selectionsToResolve, definitionOperation, defaultOperationType, _a, cache2, client, execContext, isClientFieldDescendant;
         if (context === void 0) {
           context = {};
         }
@@ -7381,14 +7212,14 @@ var LocalState = (
         if (onlyRunForcedResolvers === void 0) {
           onlyRunForcedResolvers = false;
         }
-        return __generator(this, function(_b2) {
+        return __generator(this, function(_b) {
           mainDefinition = getMainDefinition(document2);
           fragments = getFragmentDefinitions(document2);
           fragmentMap = createFragmentMap(fragments);
           selectionsToResolve = this.collectSelectionsToResolve(mainDefinition, fragmentMap);
           definitionOperation = mainDefinition.operation;
           defaultOperationType = definitionOperation ? definitionOperation.charAt(0).toUpperCase() + definitionOperation.slice(1) : "Query";
-          _a2 = this, cache2 = _a2.cache, client = _a2.client;
+          _a = this, cache2 = _a.cache, client = _a.client;
           execContext = {
             fragmentMap,
             context: __assign(__assign({}, context), { cache: cache2, client }),
@@ -7413,13 +7244,13 @@ var LocalState = (
       return __awaiter(this, void 0, void 0, function() {
         var fragmentMap, context, variables, resultsToMerge, execute2;
         var _this = this;
-        return __generator(this, function(_a2) {
+        return __generator(this, function(_a) {
           fragmentMap = execContext.fragmentMap, context = execContext.context, variables = execContext.variables;
           resultsToMerge = [rootValue];
           execute2 = function(selection) {
             return __awaiter(_this, void 0, void 0, function() {
               var fragment, typeCondition;
-              return __generator(this, function(_a3) {
+              return __generator(this, function(_a2) {
                 if (!isClientFieldDescendant && !execContext.selectionsToResolve.has(selection)) {
                   return [
                     2
@@ -7434,9 +7265,9 @@ var LocalState = (
                 }
                 if (isField(selection)) {
                   return [2, this.resolveField(selection, isClientFieldDescendant, rootValue, execContext).then(function(fieldResult) {
-                    var _a4;
+                    var _a3;
                     if (typeof fieldResult !== "undefined") {
-                      resultsToMerge.push((_a4 = {}, _a4[resultKeyNameFromField(selection)] = fieldResult, _a4));
+                      resultsToMerge.push((_a3 = {}, _a3[resultKeyNameFromField(selection)] = fieldResult, _a3));
                     }
                   })];
                 }
@@ -7471,7 +7302,7 @@ var LocalState = (
       return __awaiter(this, void 0, void 0, function() {
         var variables, fieldName, aliasedFieldName, aliasUsed, defaultResult, resultPromise, resolverType, resolverMap, resolve;
         var _this = this;
-        return __generator(this, function(_a2) {
+        return __generator(this, function(_a) {
           if (!rootValue) {
             return [2, null];
           }
@@ -7501,7 +7332,7 @@ var LocalState = (
             }
           }
           return [2, resultPromise.then(function(result) {
-            var _a3, _b2;
+            var _a2, _b;
             if (result === void 0) {
               result = defaultResult;
             }
@@ -7522,9 +7353,9 @@ var LocalState = (
             if (result == null) {
               return result;
             }
-            var isClientField = (_b2 = (_a3 = field.directives) === null || _a3 === void 0 ? void 0 : _a3.some(function(d2) {
-              return d2.name.value === "client";
-            })) !== null && _b2 !== void 0 ? _b2 : false;
+            var isClientField = (_b = (_a2 = field.directives) === null || _a2 === void 0 ? void 0 : _a2.some(function(d) {
+              return d.name.value === "client";
+            })) !== null && _b !== void 0 ? _b : false;
             if (Array.isArray(result)) {
               return _this.resolveSubSelectedArray(field, isClientFieldDescendant || isClientField, result, execContext);
             }
@@ -7599,13 +7430,13 @@ var ApolloClient = (
   function() {
     function ApolloClient2(options) {
       var _this = this;
-      var _a2;
+      var _a;
       this.resetStoreCallbacks = [];
       this.clearStoreCallbacks = [];
       if (!options.cache) {
         throw newInvariantError(16);
       }
-      var uri = options.uri, credentials = options.credentials, headers = options.headers, cache2 = options.cache, documentTransform = options.documentTransform, _b2 = options.ssrMode, ssrMode = _b2 === void 0 ? false : _b2, _c2 = options.ssrForceFetchDelay, ssrForceFetchDelay = _c2 === void 0 ? 0 : _c2, connectToDevTools = options.connectToDevTools, _d2 = options.queryDeduplication, queryDeduplication = _d2 === void 0 ? true : _d2, defaultOptions2 = options.defaultOptions, defaultContext = options.defaultContext, _e2 = options.assumeImmutableResults, assumeImmutableResults = _e2 === void 0 ? cache2.assumeImmutableResults : _e2, resolvers = options.resolvers, typeDefs = options.typeDefs, fragmentMatcher = options.fragmentMatcher, clientAwarenessName = options.name, clientAwarenessVersion = options.version, devtools = options.devtools, dataMasking = options.dataMasking;
+      var uri = options.uri, credentials = options.credentials, headers = options.headers, cache2 = options.cache, documentTransform = options.documentTransform, _b = options.ssrMode, ssrMode = _b === void 0 ? false : _b, _c = options.ssrForceFetchDelay, ssrForceFetchDelay = _c === void 0 ? 0 : _c, connectToDevTools = options.connectToDevTools, _d = options.queryDeduplication, queryDeduplication = _d === void 0 ? true : _d, defaultOptions2 = options.defaultOptions, defaultContext = options.defaultContext, _e = options.assumeImmutableResults, assumeImmutableResults = _e === void 0 ? cache2.assumeImmutableResults : _e, resolvers = options.resolvers, typeDefs = options.typeDefs, fragmentMatcher = options.fragmentMatcher, clientAwarenessName = options.name, clientAwarenessVersion = options.version, devtools = options.devtools, dataMasking = options.dataMasking;
       var link = options.link;
       if (!link) {
         link = uri ? new HttpLink({ uri, credentials, headers }) : ApolloLink.empty();
@@ -7616,7 +7447,7 @@ var ApolloClient = (
       this.queryDeduplication = queryDeduplication;
       this.defaultOptions = defaultOptions2 || /* @__PURE__ */ Object.create(null);
       this.typeDefs = typeDefs;
-      this.devtoolsConfig = __assign(__assign({}, devtools), { enabled: (_a2 = devtools === null || devtools === void 0 ? void 0 : devtools.enabled) !== null && _a2 !== void 0 ? _a2 : connectToDevTools });
+      this.devtoolsConfig = __assign(__assign({}, devtools), { enabled: (_a = devtools === null || devtools === void 0 ? void 0 : devtools.enabled) !== null && _a !== void 0 ? _a : connectToDevTools });
       if (this.devtoolsConfig.enabled === void 0) {
         this.devtoolsConfig.enabled = globalThis.__DEV__ !== false;
       }
@@ -7759,8 +7590,8 @@ var ApolloClient = (
       return this.cache.readQuery(options, optimistic);
     };
     ApolloClient2.prototype.watchFragment = function(options) {
-      var _a2;
-      return this.cache.watchFragment(__assign(__assign({}, options), (_a2 = {}, _a2[Symbol.for("apollo.dataMasking")] = this.queryManager.dataMasking, _a2)));
+      var _a;
+      return this.cache.watchFragment(__assign(__assign({}, options), (_a = {}, _a[Symbol.for("apollo.dataMasking")] = this.queryManager.dataMasking, _a)));
     };
     ApolloClient2.prototype.readFragment = function(options, optimistic) {
       if (optimistic === void 0) {
@@ -7906,8 +7737,8 @@ function getApolloContext() {
   }
   return context;
 }
-var ApolloProvider = function(_a2) {
-  var client = _a2.client, children = _a2.children;
+var ApolloProvider = function(_a) {
+  var client = _a.client, children = _a.children;
   var ApolloContext = getApolloContext();
   var parentContext = React.useContext(ApolloContext);
   var context = React.useMemo(function() {
@@ -7936,9 +7767,9 @@ var useSyncExternalStore = realHook || function(subscribe, getSnapshot, getServe
     didWarnUncachedGetSnapshot = true;
     globalThis.__DEV__ !== false && invariant.error(68);
   }
-  var _a2 = React.useState({
+  var _a = React.useState({
     inst: { value, getSnapshot }
-  }), inst = _a2[0].inst, forceUpdate = _a2[1];
+  }), inst = _a[0].inst, forceUpdate = _a[1];
   if (canUseLayoutEffect) {
     React.useLayoutEffect(function() {
       Object.assign(inst, { value, getSnapshot });
@@ -7961,11 +7792,11 @@ var useSyncExternalStore = realHook || function(subscribe, getSnapshot, getServe
   }, [subscribe]);
   return value;
 };
-function checkIfSnapshotChanged(_a2) {
-  var value = _a2.value, getSnapshot = _a2.getSnapshot;
+function checkIfSnapshotChanged(_a) {
+  var value = _a.value, getSnapshot = _a.getSnapshot;
   try {
     return value !== getSnapshot();
-  } catch (_b2) {
+  } catch (_b) {
     return true;
   }
 }
@@ -8007,8 +7838,8 @@ function parser(document2) {
   var queries = [];
   var mutations = [];
   var subscriptions = [];
-  for (var _i2 = 0, _a2 = document2.definitions; _i2 < _a2.length; _i2++) {
-    var x2 = _a2[_i2];
+  for (var _i = 0, _a = document2.definitions; _i < _a.length; _i++) {
+    var x2 = _a[_i];
     if (x2.kind === "FragmentDefinition") {
       fragments.push(x2);
       continue;
@@ -8091,14 +7922,14 @@ function useQuery(query, options) {
   return wrapHook("useQuery", _useQuery, useApolloClient(options && options.client))(query, options);
 }
 function _useQuery(query, options) {
-  var _a2 = useQueryInternals(query, options), result = _a2.result, obsQueryFields = _a2.obsQueryFields;
+  var _a = useQueryInternals(query, options), result = _a.result, obsQueryFields = _a.obsQueryFields;
   return React.useMemo(function() {
     return __assign(__assign({}, result), obsQueryFields);
   }, [result, obsQueryFields]);
 }
 function useInternalState(client, query, options, renderPromises, makeWatchQueryOptions) {
   function createInternalState(previous) {
-    var _a3;
+    var _a2;
     verifyDocumentType(query, DocumentType.Query);
     var internalState2 = {
       client,
@@ -8112,16 +7943,16 @@ function useInternalState(client, query, options, renderPromises, makeWatchQuery
       resultData: {
         // Reuse previousData from previous InternalState (if any) to provide
         // continuity of previousData even if/when the query or client changes.
-        previousData: (_a3 = previous === null || previous === void 0 ? void 0 : previous.resultData.current) === null || _a3 === void 0 ? void 0 : _a3.data
+        previousData: (_a2 = previous === null || previous === void 0 ? void 0 : previous.resultData.current) === null || _a2 === void 0 ? void 0 : _a2.data
       }
     };
     return internalState2;
   }
-  var _a2 = React.useState(createInternalState), internalState = _a2[0], updateInternalState = _a2[1];
+  var _a = React.useState(createInternalState), internalState = _a[0], updateInternalState = _a[1];
   function onQueryExecuted(watchQueryOptions) {
-    var _a3;
-    var _b2;
-    Object.assign(internalState.observable, (_a3 = {}, _a3[lastWatchOptions] = watchQueryOptions, _a3));
+    var _a2;
+    var _b;
+    Object.assign(internalState.observable, (_a2 = {}, _a2[lastWatchOptions] = watchQueryOptions, _a2));
     var resultData = internalState.resultData;
     updateInternalState(__assign(__assign({}, internalState), {
       // might be a different query
@@ -8129,7 +7960,7 @@ function useInternalState(client, query, options, renderPromises, makeWatchQuery
       resultData: Object.assign(resultData, {
         // We need to modify the previous `resultData` object as we rely on the
         // object reference in other places
-        previousData: ((_b2 = resultData.current) === null || _b2 === void 0 ? void 0 : _b2.data) || resultData.previousData,
+        previousData: ((_b = resultData.current) === null || _b === void 0 ? void 0 : _b.data) || resultData.previousData,
         current: void 0
       })
     }));
@@ -8149,7 +7980,7 @@ function useQueryInternals(query, options) {
   var ssrAllowed = options.ssr !== false && !options.skip;
   var partialRefetch = options.partialRefetch;
   var makeWatchQueryOptions = createMakeWatchQueryOptions(client, query, options, isSyncSSR);
-  var _a2 = useInternalState(client, query, options, renderPromises, makeWatchQueryOptions), _b2 = _a2[0], observable = _b2.observable, resultData = _b2.resultData, onQueryExecuted = _a2[1];
+  var _a = useInternalState(client, query, options, renderPromises, makeWatchQueryOptions), _b = _a[0], observable = _b.observable, resultData = _b.resultData, onQueryExecuted = _a[1];
   var watchQueryOptions = makeWatchQueryOptions(observable);
   useResubscribeIfNecessary(
     resultData,
@@ -8260,23 +8091,23 @@ function useRegisterSSRObservable(observable, renderPromises, ssrAllowed) {
   }
 }
 function useResubscribeIfNecessary(resultData, observable, client, options, watchQueryOptions) {
-  var _a2;
+  var _a;
   if (observable[lastWatchOptions] && !equal$1(observable[lastWatchOptions], watchQueryOptions)) {
     observable.reobserve(getObsQueryOptions(observable, client, options, watchQueryOptions));
-    resultData.previousData = ((_a2 = resultData.current) === null || _a2 === void 0 ? void 0 : _a2.data) || resultData.previousData;
+    resultData.previousData = ((_a = resultData.current) === null || _a === void 0 ? void 0 : _a.data) || resultData.previousData;
     resultData.current = void 0;
   }
   observable[lastWatchOptions] = watchQueryOptions;
 }
-function createMakeWatchQueryOptions(client, query, _a2, isSyncSSR) {
-  if (_a2 === void 0) {
-    _a2 = {};
+function createMakeWatchQueryOptions(client, query, _a, isSyncSSR) {
+  if (_a === void 0) {
+    _a = {};
   }
-  var skip = _a2.skip;
-  _a2.ssr;
-  _a2.onCompleted;
-  _a2.onError;
-  var defaultOptions2 = _a2.defaultOptions, otherOptions = __rest(_a2, ["skip", "ssr", "onCompleted", "onError", "defaultOptions"]);
+  var skip = _a.skip;
+  _a.ssr;
+  _a.onCompleted;
+  _a.onError;
+  var defaultOptions2 = _a.defaultOptions, otherOptions = __rest(_a, ["skip", "ssr", "onCompleted", "onError", "defaultOptions"]);
   return function(observable) {
     var watchQueryOptions = Object.assign(otherOptions, { query });
     if (isSyncSSR && (watchQueryOptions.fetchPolicy === "network-only" || watchQueryOptions.fetchPolicy === "cache-and-network")) {
@@ -8302,7 +8133,7 @@ function getObsQueryOptions(observable, client, queryHookOptions, watchQueryOpti
   if (queryHookOptions.defaultOptions) {
     toMerge.push(queryHookOptions.defaultOptions);
   }
-  toMerge.push(compact$1(observable && observable.options, watchQueryOptions));
+  toMerge.push(compact(observable && observable.options, watchQueryOptions));
   return toMerge.reduce(mergeOptions);
 }
 function setResult(nextResult, resultData, observable, client, partialRefetch, forceUpdate, callbacks) {
@@ -8339,8 +8170,8 @@ function getCurrentResult(resultData, observable, callbacks, partialRefetch, cli
   return resultData.current;
 }
 function getDefaultFetchPolicy(queryHookDefaultOptions, clientDefaultOptions) {
-  var _a2;
-  return (queryHookDefaultOptions === null || queryHookDefaultOptions === void 0 ? void 0 : queryHookDefaultOptions.fetchPolicy) || ((_a2 = clientDefaultOptions === null || clientDefaultOptions === void 0 ? void 0 : clientDefaultOptions.watchQuery) === null || _a2 === void 0 ? void 0 : _a2.fetchPolicy) || "cache-first";
+  var _a;
+  return (queryHookDefaultOptions === null || queryHookDefaultOptions === void 0 ? void 0 : queryHookDefaultOptions.fetchPolicy) || ((_a = clientDefaultOptions === null || clientDefaultOptions === void 0 ? void 0 : clientDefaultOptions.watchQuery) === null || _a === void 0 ? void 0 : _a.fetchPolicy) || "cache-first";
 }
 function toApolloError(result) {
   return isNonEmptyArray(result.errors) ? new ApolloError({ graphQLErrors: result.errors }) : result.error;
@@ -8392,16 +8223,16 @@ var EAGER_METHODS = [
   "subscribeToMore"
 ];
 function useLazyQuery(query, options) {
-  var _a2;
+  var _a;
   var execOptionsRef = React.useRef(void 0);
   var optionsRef = React.useRef(void 0);
   var queryRef = React.useRef(void 0);
   var merged = mergeOptions(options, execOptionsRef.current || {});
-  var document2 = (_a2 = merged === null || merged === void 0 ? void 0 : merged.query) !== null && _a2 !== void 0 ? _a2 : query;
+  var document2 = (_a = merged === null || merged === void 0 ? void 0 : merged.query) !== null && _a !== void 0 ? _a : query;
   optionsRef.current = options;
   queryRef.current = document2;
   var queryHookOptions = __assign(__assign({}, merged), { skip: !execOptionsRef.current });
-  var _b2 = useQueryInternals(document2, queryHookOptions), obsQueryFields = _b2.obsQueryFields, useQueryResult = _b2.result, client = _b2.client, resultData = _b2.resultData, observable = _b2.observable, onQueryExecuted = _b2.onQueryExecuted;
+  var _b = useQueryInternals(document2, queryHookOptions), obsQueryFields = _b.obsQueryFields, useQueryResult = _b.result, client = _b.client, resultData = _b.resultData, observable = _b.observable, onQueryExecuted = _b.onQueryExecuted;
   var initialFetchPolicy = observable.options.initialFetchPolicy || getDefaultFetchPolicy(queryHookOptions.defaultOptions, client.defaultOptions);
   var forceUpdateState = React.useReducer(function(tick) {
     return tick + 1;
@@ -8418,8 +8249,8 @@ function useLazyQuery(query, options) {
         return method.apply(this, arguments);
       };
     };
-    for (var _i2 = 0, EAGER_METHODS_1 = EAGER_METHODS; _i2 < EAGER_METHODS_1.length; _i2++) {
-      var key = EAGER_METHODS_1[_i2];
+    for (var _i = 0, EAGER_METHODS_1 = EAGER_METHODS; _i < EAGER_METHODS_1.length; _i++) {
+      var key = EAGER_METHODS_1[_i];
       _loop_1(key);
     }
     return eagerMethods2;
@@ -8454,8 +8285,8 @@ function useLazyQuery(query, options) {
   });
   var stableExecute = React.useCallback(function() {
     var args = [];
-    for (var _i2 = 0; _i2 < arguments.length; _i2++) {
-      args[_i2] = arguments[_i2];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
     }
     return executeRef.current.apply(executeRef, args);
   }, []);
@@ -8484,11 +8315,11 @@ function executeQuery(resultData, observable, client, currentQuery, options, onQ
 function useMutation(mutation, options) {
   var client = useApolloClient(options === null || options === void 0 ? void 0 : options.client);
   verifyDocumentType(mutation, DocumentType.Mutation);
-  var _a2 = React.useState({
+  var _a = React.useState({
     called: false,
     loading: false,
     client
-  }), result = _a2[0], setResult2 = _a2[1];
+  }), result = _a[0], setResult2 = _a[1];
   var ref = React.useRef({
     result,
     mutationId: 0,
@@ -8504,7 +8335,7 @@ function useMutation(mutation, options) {
     if (executeOptions === void 0) {
       executeOptions = {};
     }
-    var _a3 = ref.current, options2 = _a3.options, mutation2 = _a3.mutation;
+    var _a2 = ref.current, options2 = _a2.options, mutation2 = _a2.mutation;
     var baseOptions = __assign(__assign({}, options2), { mutation: mutation2 });
     var client2 = executeOptions.client || ref.current.client;
     if (!ref.current.result.loading && !baseOptions.ignoreResults && ref.current.isMounted) {
@@ -8519,10 +8350,10 @@ function useMutation(mutation, options) {
     var mutationId = ++ref.current.mutationId;
     var clientOptions = mergeOptions(baseOptions, executeOptions);
     return client2.mutate(clientOptions).then(function(response) {
-      var _a4, _b2;
+      var _a3, _b;
       var data = response.data, errors = response.errors;
       var error = errors && errors.length > 0 ? new ApolloError({ graphQLErrors: errors }) : void 0;
-      var onError = executeOptions.onError || ((_a4 = ref.current.options) === null || _a4 === void 0 ? void 0 : _a4.onError);
+      var onError = executeOptions.onError || ((_a3 = ref.current.options) === null || _a3 === void 0 ? void 0 : _a3.onError);
       if (error && onError) {
         onError(error, clientOptions);
       }
@@ -8538,13 +8369,13 @@ function useMutation(mutation, options) {
           setResult2(ref.current.result = result_1);
         }
       }
-      var onCompleted = executeOptions.onCompleted || ((_b2 = ref.current.options) === null || _b2 === void 0 ? void 0 : _b2.onCompleted);
+      var onCompleted = executeOptions.onCompleted || ((_b = ref.current.options) === null || _b === void 0 ? void 0 : _b.onCompleted);
       if (!error) {
         onCompleted === null || onCompleted === void 0 ? void 0 : onCompleted(response.data, clientOptions);
       }
       return response;
     }).catch(function(error) {
-      var _a4;
+      var _a3;
       if (mutationId === ref.current.mutationId && ref.current.isMounted) {
         var result_2 = {
           loading: false,
@@ -8557,7 +8388,7 @@ function useMutation(mutation, options) {
           setResult2(ref.current.result = result_2);
         }
       }
-      var onError = executeOptions.onError || ((_a4 = ref.current.options) === null || _a4 === void 0 ? void 0 : _a4.onError);
+      var onError = executeOptions.onError || ((_a3 = ref.current.options) === null || _a3 === void 0 ? void 0 : _a3.onError);
       if (onError) {
         onError(error, clientOptions);
         return { data: void 0, errors: error };
@@ -8585,66 +8416,14 @@ function useMutation(mutation, options) {
   }, []);
   return [execute2, __assign({ reset }, result)];
 }
-function isHTMLElement$2(el) {
-  return el != null && typeof el == "object" && "nodeType" in el && el.nodeType === Node.ELEMENT_NODE;
-}
-function isHiddenElement$1(element) {
-  if (element.parentElement && isHiddenElement$1(element.parentElement))
-    return true;
-  return element.hidden;
-}
-function isContentEditableElement$1(element) {
-  const value = element.getAttribute("contenteditable");
-  return value !== "false" && value != null;
-}
-function isDisabledElement$1(element) {
-  return Boolean(element.getAttribute("disabled")) === true || Boolean(element.getAttribute("aria-disabled")) === true;
-}
-function getOwnerWindow(node) {
-  var _a2;
-  return ((_a2 = getOwnerDocument$2(node)) == null ? void 0 : _a2.defaultView) ?? window;
-}
-function getOwnerDocument$2(node) {
-  return isHTMLElement$2(node) ? node.ownerDocument : document;
-}
-function getActiveElement(node) {
-  return getOwnerDocument$2(node).activeElement;
-}
-const hasTabIndex$1 = (element) => element.hasAttribute("tabindex");
-const hasNegativeTabIndex = (element) => hasTabIndex$1(element) && element.tabIndex === -1;
-function isFocusable$1(element) {
-  if (!isHTMLElement$2(element) || isHiddenElement$1(element) || isDisabledElement$1(element)) {
-    return false;
-  }
-  const { localName } = element;
-  const focusableTags = ["input", "select", "textarea", "button"];
-  if (focusableTags.indexOf(localName) >= 0)
-    return true;
-  const others = {
-    a: () => element.hasAttribute("href"),
-    audio: () => element.hasAttribute("controls"),
-    video: () => element.hasAttribute("controls")
-  };
-  if (localName in others) {
-    return others[localName]();
-  }
-  if (isContentEditableElement$1(element))
-    return true;
-  return hasTabIndex$1(element);
-}
-function isTabbable(element) {
-  if (!element)
-    return false;
-  return isHTMLElement$2(element) && isFocusable$1(element) && !hasNegativeTabIndex(element);
-}
 function useCallbackRef(callback, deps = []) {
   const callbackRef = useRef(callback);
   useEffect(() => {
     callbackRef.current = callback;
   });
   return useCallback((...args) => {
-    var _a2;
-    return (_a2 = callbackRef.current) == null ? void 0 : _a2.call(callbackRef, ...args);
+    var _a;
+    return (_a = callbackRef.current) == null ? void 0 : _a.call(callbackRef, ...args);
   }, deps);
 }
 function useEventListener(target, event, handler, options) {
@@ -8684,10 +8463,10 @@ function useAnimationState(props) {
   return {
     present: !hidden,
     onComplete() {
-      var _a2;
+      var _a;
       const win = getOwnerWindow(ref.current);
       const evt = new win.CustomEvent("animationend", { bubbles: true });
-      (_a2 = ref.current) == null ? void 0 : _a2.dispatchEvent(evt);
+      (_a = ref.current) == null ? void 0 : _a.dispatchEvent(evt);
     }
   };
 }
@@ -8732,7 +8511,7 @@ function useControllableState(props) {
     value: valueProp,
     defaultValue,
     onChange,
-    shouldUpdate = (prev, next) => prev !== next
+    shouldUpdate = (prev, next2) => prev !== next2
   } = props;
   const onChangeProp = useCallbackRef(onChange);
   const shouldUpdateProp = useCallbackRef(shouldUpdate);
@@ -8740,9 +8519,9 @@ function useControllableState(props) {
   const controlled = valueProp !== void 0;
   const value = controlled ? valueProp : uncontrolledState;
   const setValue = useCallbackRef(
-    (next) => {
-      const setter = next;
-      const nextValue = typeof next === "function" ? setter(value) : next;
+    (next2) => {
+      const setter = next2;
+      const nextValue = typeof next2 === "function" ? setter(value) : next2;
       if (!shouldUpdateProp(value, nextValue)) {
         return;
       }
@@ -8794,8 +8573,8 @@ function useDisclosure(props = {}) {
       "aria-expanded": isOpen,
       "aria-controls": id2,
       onClick(event) {
-        var _a2;
-        (_a2 = props2.onClick) == null ? void 0 : _a2.call(props2, event);
+        var _a;
+        (_a = props2.onClick) == null ? void 0 : _a.call(props2, event);
         onToggle();
       }
     };
@@ -8818,14 +8597,14 @@ function useDisclosure(props = {}) {
   };
 }
 const useSafeLayoutEffect$2 = Boolean(globalThis == null ? void 0 : globalThis.document) ? useLayoutEffect : useEffect;
-const useUpdateEffect = (effect, deps) => {
+const useUpdateEffect = (effect2, deps) => {
   const renderCycleRef = useRef(false);
   const effectCycleRef = useRef(false);
   useEffect(() => {
     const isMounted = renderCycleRef.current;
     const shouldRun = isMounted && effectCycleRef.current;
     if (shouldRun) {
-      return effect();
+      return effect2();
     }
     effectCycleRef.current = true;
   }, deps);
@@ -8870,17 +8649,17 @@ function useFocusOnHide(containerRef, options) {
     }
   }, [shouldFocus, containerRef, focusRef]);
 }
-function useId(idProp, prefix) {
+function useId(idProp, prefix2) {
   const id2 = useId$1();
   return useMemo(
-    () => idProp || [prefix, id2].filter(Boolean).join("-"),
-    [idProp, prefix, id2]
+    () => idProp || [prefix2, id2].filter(Boolean).join("-"),
+    [idProp, prefix2, id2]
   );
 }
 function useIds$1(idProp, ...prefixes) {
   const id2 = useId(idProp);
   return useMemo(() => {
-    return prefixes.map((prefix) => `${prefix}-${id2}`);
+    return prefixes.map((prefix2) => `${prefix2}-${id2}`);
   }, [id2, prefixes]);
 }
 function assignRef(ref, value) {
@@ -8913,29 +8692,29 @@ function useOutsideClick(props) {
     isPointerDown: false,
     ignoreEmulatedMouseEvents: false
   });
-  const state = stateRef.current;
+  const state2 = stateRef.current;
   useEffect(() => {
     if (!enabled)
       return;
     const onPointerDown = (e) => {
       if (isValidEvent(e, ref)) {
-        state.isPointerDown = true;
+        state2.isPointerDown = true;
       }
     };
     const onMouseUp = (event) => {
-      if (state.ignoreEmulatedMouseEvents) {
-        state.ignoreEmulatedMouseEvents = false;
+      if (state2.ignoreEmulatedMouseEvents) {
+        state2.ignoreEmulatedMouseEvents = false;
         return;
       }
-      if (state.isPointerDown && handler && isValidEvent(event, ref)) {
-        state.isPointerDown = false;
+      if (state2.isPointerDown && handler && isValidEvent(event, ref)) {
+        state2.isPointerDown = false;
         savedHandler(event);
       }
     };
     const onTouchEnd = (event) => {
-      state.ignoreEmulatedMouseEvents = true;
-      if (handler && state.isPointerDown && isValidEvent(event, ref)) {
-        state.isPointerDown = false;
+      state2.ignoreEmulatedMouseEvents = true;
+      if (handler && state2.isPointerDown && isValidEvent(event, ref)) {
+        state2.isPointerDown = false;
         savedHandler(event);
       }
     };
@@ -8950,17 +8729,17 @@ function useOutsideClick(props) {
       doc.removeEventListener("touchstart", onPointerDown, true);
       doc.removeEventListener("touchend", onTouchEnd, true);
     };
-  }, [handler, ref, savedHandler, state, enabled]);
+  }, [handler, ref, savedHandler, state2, enabled]);
 }
 function isValidEvent(event, ref) {
-  var _a2, _b2;
-  const target = ((_a2 = event.composedPath) == null ? void 0 : _a2.call(event)[0]) ?? event.target;
+  var _a, _b;
+  const target = ((_a = event.composedPath) == null ? void 0 : _a.call(event)[0]) ?? event.target;
   if (target) {
     const doc = getOwnerDocument$1(target);
     if (!doc.contains(target))
       return false;
   }
-  return !((_b2 = ref.current) == null ? void 0 : _b2.contains(target));
+  return !((_b = ref.current) == null ? void 0 : _b.contains(target));
 }
 function getOwnerDocument$1(node) {
   return (node == null ? void 0 : node.ownerDocument) ?? document;
@@ -8988,295 +8767,954 @@ function useTimeout(callback, delay2) {
     };
   }, [delay2, fn]);
 }
-const { definePartsStyle: definePartsStyle$y, defineMultiStyleConfig: defineMultiStyleConfig$y } = createMultiStyleConfigHelpers(accordionAnatomy.keys);
-const baseStyleContainer$4 = defineStyle({
-  borderTopWidth: "1px",
-  borderColor: "inherit",
-  _last: {
-    borderBottomWidth: "1px"
-  }
-});
-const baseStyleButton$1 = defineStyle({
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  fontSize: "md",
-  _focusVisible: {
-    boxShadow: "outline"
-  },
-  _hover: {
-    bg: "blackAlpha.50"
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed"
-  },
-  px: "4",
-  py: "2"
-});
-const baseStylePanel = defineStyle({
-  pt: "2",
-  px: "4",
-  pb: "5"
-});
-const baseStyleIcon$6 = defineStyle({
-  fontSize: "1.25em"
-});
-const baseStyle$U = definePartsStyle$y({
-  container: baseStyleContainer$4,
-  button: baseStyleButton$1,
-  panel: baseStylePanel,
-  icon: baseStyleIcon$6
-});
-const accordionTheme$1 = defineMultiStyleConfig$y({ baseStyle: baseStyle$U });
-const isEmptyObject = (obj) => Object.keys(obj).length === 0;
-function get$1(obj, key, def, p2, undef) {
-  key = key.split ? key.split(".") : key;
-  for (p2 = 0; p2 < key.length; p2++) {
-    obj = obj ? obj[key[p2]] : undef;
-  }
-  return obj === undef ? def : obj;
-}
-const getColor = (theme2, color2, fallback) => {
-  const hex2 = get$1(theme2, `colors.${color2}`, color2);
-  try {
-    toHex(hex2);
-    return hex2;
-  } catch {
-    return fallback ?? "#000000";
-  }
+const state = {
+  open: (str, post) => `${str}[data-open], ${str}[open], ${str}[data-state=open] ${post}`,
+  closed: (str, post) => `${str}[data-closed], ${str}[data-state=closed] ${post}`,
+  hover: (str, post) => `${str}:hover ${post}, ${str}[data-hover] ${post}`,
+  focus: (str, post) => `${str}:focus ${post}, ${str}[data-focus] ${post}`,
+  focusVisible: (str, post) => `${str}:focus-visible ${post}`,
+  focusWithin: (str, post) => `${str}:focus-within ${post}`,
+  active: (str, post) => `${str}:active ${post}, ${str}[data-active] ${post}`,
+  disabled: (str, post) => `${str}:disabled ${post}, ${str}[data-disabled] ${post}`,
+  invalid: (str, post) => `${str}:invalid ${post}, ${str}[data-invalid] ${post}`,
+  checked: (str, post) => `${str}:checked ${post}, ${str}[data-checked] ${post}`,
+  indeterminate: (str, post) => `${str}:indeterminate ${post}, ${str}[aria-checked=mixed] ${post}, ${str}[data-indeterminate] ${post}`,
+  readOnly: (str, post) => `${str}:read-only ${post}, ${str}[readonly] ${post}, ${str}[data-read-only] ${post}`,
+  expanded: (str, post) => `${str}:read-only ${post}, ${str}[aria-expanded=true] ${post}, ${str}[data-expanded] ${post}`,
+  placeholderShown: (str, post) => `${str}:placeholder-shown ${post}`
 };
-const getBrightness = (color2) => {
-  const [r, g2, b] = parseToRgba(color2);
-  return (r * 299 + g2 * 587 + b * 114) / 1e3;
+const toGroup = (fn) => merge((v2) => fn(v2, "&"), "[role=group]", "[data-group]", ".group");
+const toPeer = (fn) => merge((v2) => fn(v2, "~ &"), "[data-peer]", ".peer");
+const merge = (fn, ...selectors) => selectors.map(fn).join(", ");
+const pseudoSelectors = {
+  /**
+   * Styles for CSS selector `&:hover`
+   */
+  _hover: "&:hover, &[data-hover]",
+  /**
+   * Styles for CSS Selector `&:active`
+   */
+  _active: "&:active, &[data-active]",
+  /**
+   * Styles for CSS selector `&:focus`
+   *
+   */
+  _focus: "&:focus, &[data-focus]",
+  /**
+   * Styles for the highlighted state.
+   */
+  _highlighted: "&[data-highlighted]",
+  /**
+   * Styles to apply when a child of this element has received focus
+   * - CSS Selector `&:focus-within`
+   */
+  _focusWithin: "&:focus-within, &[data-focus-within]",
+  /**
+   * Styles to apply when this element has received focus via tabbing
+   * - CSS Selector `&:focus-visible`
+   */
+  _focusVisible: "&:focus-visible, &[data-focus-visible]",
+  /**
+   * Styles to apply when this element is disabled. The passed styles are applied to these CSS selectors:
+   * - `&[aria-disabled=true]`
+   * - `&:disabled`
+   * - `&[data-disabled]`
+   * - `&[disabled]`
+   */
+  _disabled: "&:disabled, &[disabled], &[aria-disabled=true], &[data-disabled]",
+  /**
+   * Styles for CSS Selector `&:readonly`
+   */
+  _readOnly: "&[aria-readonly=true], &[readonly], &[data-readonly]",
+  /**
+   * Styles for CSS selector `&::before`
+   *
+   * NOTE:When using this, ensure the `content` is wrapped in a backtick.
+   * @example
+   * ```jsx
+   * <Box _before={{content:`""` }}/>
+   * ```
+   */
+  _before: "&::before",
+  /**
+   * Styles for CSS selector `&::after`
+   *
+   * NOTE:When using this, ensure the `content` is wrapped in a backtick.
+   * @example
+   * ```jsx
+   * <Box _after={{content:`""` }}/>
+   * ```
+   */
+  _after: "&::after",
+  /**
+   * Styles for CSS selector `&:empty`
+   */
+  _empty: "&:empty, &[data-empty]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-expanded` is `true`
+   * - CSS selector `&[aria-expanded=true]`
+   */
+  _expanded: "&[aria-expanded=true], &[data-expanded], &[data-state=expanded]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-checked` is `true`
+   * - CSS selector `&[aria-checked=true]`
+   */
+  _checked: "&[aria-checked=true], &[data-checked], &[data-state=checked]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-grabbed` is `true`
+   * - CSS selector `&[aria-grabbed=true]`
+   */
+  _grabbed: "&[aria-grabbed=true], &[data-grabbed]",
+  /**
+   * Styles for CSS Selector `&[aria-pressed=true]`
+   * Typically used to style the current "pressed" state of toggle buttons
+   */
+  _pressed: "&[aria-pressed=true], &[data-pressed]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-invalid` is `true`
+   * - CSS selector `&[aria-invalid=true]`
+   */
+  _invalid: "&[aria-invalid=true], &[data-invalid]",
+  /**
+   * Styles for the valid state
+   * - CSS selector `&[data-valid], &[data-state=valid]`
+   */
+  _valid: "&[data-valid], &[data-state=valid]",
+  /**
+   * Styles for CSS Selector `&[aria-busy=true]` or `&[data-loading=true]`.
+   * Useful for styling loading states
+   */
+  _loading: "&[data-loading], &[aria-busy=true]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-selected` is `true`
+   *
+   * - CSS selector `&[aria-selected=true]`
+   */
+  _selected: "&[aria-selected=true], &[data-selected]",
+  /**
+   * Styles for CSS Selector `[hidden=true]`
+   */
+  _hidden: "&[hidden], &[data-hidden]",
+  /**
+   * Styles for CSS Selector `&:-webkit-autofill`
+   */
+  _autofill: "&:-webkit-autofill",
+  /**
+   * Styles for CSS Selector `&:nth-child(even)`
+   */
+  _even: "&:nth-of-type(even)",
+  /**
+   * Styles for CSS Selector `&:nth-child(odd)`
+   */
+  _odd: "&:nth-of-type(odd)",
+  /**
+   * Styles for CSS Selector `&:first-of-type`
+   */
+  _first: "&:first-of-type",
+  /**
+   * Styles for CSS selector `&::first-letter`
+   *
+   * NOTE: This selector is only applied for block-level elements and not preceded by an image or table.
+   * @example
+   * ```jsx
+   * <Text _firstLetter={{ textDecoration: 'underline' }}>Once upon a time</Text>
+   * ```
+   */
+  _firstLetter: "&::first-letter",
+  /**
+   * Styles for CSS Selector `&:last-of-type`
+   */
+  _last: "&:last-of-type",
+  /**
+   * Styles for CSS Selector `&:not(:first-of-type)`
+   */
+  _notFirst: "&:not(:first-of-type)",
+  /**
+   * Styles for CSS Selector `&:not(:last-of-type)`
+   */
+  _notLast: "&:not(:last-of-type)",
+  /**
+   * Styles for CSS Selector `&:visited`
+   */
+  _visited: "&:visited",
+  /**
+   * Used to style the active link in a navigation
+   * Styles for CSS Selector `&[aria-current=page]`
+   */
+  _activeLink: "&[aria-current=page]",
+  /**
+   * Used to style the current step within a process
+   * Styles for CSS Selector `&[aria-current=step]`
+   */
+  _activeStep: "&[aria-current=step]",
+  /**
+   * Styles to apply when the ARIA attribute `aria-checked` is `mixed`
+   * - CSS selector `&[aria-checked=mixed]`
+   */
+  _indeterminate: "&:indeterminate, &[aria-checked=mixed], &[data-indeterminate], &[data-state=indeterminate]",
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is open
+   */
+  _groupOpen: toGroup(state.open),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is closed
+   */
+  _groupClosed: toGroup(state.closed),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is hovered
+   */
+  _groupHover: toGroup(state.hover),
+  /**
+   * Styles to apply when a sibling element with `.peer` or `data-peer` is hovered
+   */
+  _peerHover: toPeer(state.hover),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is focused
+   */
+  _groupFocus: toGroup(state.focus),
+  /**
+   * Styles to apply when a sibling element with `.peer` or `data-peer` is focused
+   */
+  _peerFocus: toPeer(state.focus),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` has visible focus
+   */
+  _groupFocusVisible: toGroup(state.focusVisible),
+  /**
+   * Styles to apply when a sibling element with `.peer`or `data-peer` has visible focus
+   */
+  _peerFocusVisible: toPeer(state.focusVisible),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is active
+   */
+  _groupActive: toGroup(state.active),
+  /**
+   * Styles to apply when a sibling element with `.peer` or `data-peer` is active
+   */
+  _peerActive: toPeer(state.active),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is disabled
+   */
+  _groupDisabled: toGroup(state.disabled),
+  /**
+   *  Styles to apply when a sibling element with `.peer` or `data-peer` is disabled
+   */
+  _peerDisabled: toPeer(state.disabled),
+  /**
+   *  Styles to apply when a parent element with `.group`, `data-group` or `role=group` is invalid
+   */
+  _groupInvalid: toGroup(state.invalid),
+  /**
+   *  Styles to apply when a sibling element with `.peer` or `data-peer` is invalid
+   */
+  _peerInvalid: toPeer(state.invalid),
+  /**
+   * Styles to apply when a parent element with `.group`, `data-group` or `role=group` is checked
+   */
+  _groupChecked: toGroup(state.checked),
+  /**
+   * Styles to apply when a sibling element with `.peer` or `data-peer` is checked
+   */
+  _peerChecked: toPeer(state.checked),
+  /**
+   *  Styles to apply when a parent element with `.group`, `data-group` or `role=group` has focus within
+   */
+  _groupFocusWithin: toGroup(state.focusWithin),
+  /**
+   *  Styles to apply when a sibling element with `.peer` or `data-peer` has focus within
+   */
+  _peerFocusWithin: toPeer(state.focusWithin),
+  /**
+   * Styles to apply when a sibling element with `.peer` or `data-peer` has placeholder shown
+   */
+  _peerPlaceholderShown: toPeer(state.placeholderShown),
+  /**
+   * Styles for CSS Selector `&::placeholder`.
+   */
+  _placeholder: "&::placeholder, &[data-placeholder]",
+  /**
+   * Styles for CSS Selector `&:placeholder-shown`.
+   */
+  _placeholderShown: "&:placeholder-shown, &[data-placeholder-shown]",
+  /**
+   * Styles for CSS Selector `&:fullscreen`.
+   */
+  _fullScreen: "&:fullscreen, &[data-fullscreen]",
+  /**
+   * Styles for CSS Selector `&::selection`
+   */
+  _selection: "&::selection",
+  /**
+   * Styles for CSS Selector `[dir=rtl] &`
+   * It is applied when a parent element or this element has `dir="rtl"`
+   */
+  _rtl: "[dir=rtl] &, &[dir=rtl]",
+  /**
+   * Styles for CSS Selector `[dir=ltr] &`
+   * It is applied when a parent element or this element has `dir="ltr"`
+   */
+  _ltr: "[dir=ltr] &, &[dir=ltr]",
+  /**
+   * Styles for CSS Selector `@media (prefers-color-scheme: dark)`
+   * It is used when the user has requested the system use a light or dark color theme.
+   */
+  _mediaDark: "@media (prefers-color-scheme: dark)",
+  /**
+   * Styles for CSS Selector `@media (prefers-reduced-motion: reduce)`
+   * It is used when the user has requested the system to reduce the amount of animations.
+   */
+  _mediaReduceMotion: "@media (prefers-reduced-motion: reduce)",
+  /**
+   * Styles for when `data-theme` is applied to any parent of
+   * this component or element.
+   */
+  _dark: ".chakra-ui-dark &:not([data-theme]),[data-theme=dark] &:not([data-theme]),&[data-theme=dark]",
+  /**
+   * Styles for when `data-theme` is applied to any parent of
+   * this component or element.
+   */
+  _light: ".chakra-ui-light &:not([data-theme]),[data-theme=light] &:not([data-theme]),&[data-theme=light]",
+  /**
+   * Styles for the CSS Selector `&[data-orientation=horizontal]`
+   */
+  _horizontal: "&[data-orientation=horizontal]",
+  /**
+   * Styles for the CSS Selector `&[data-orientation=vertical]`
+   */
+  _vertical: "&[data-orientation=vertical]",
+  /**
+   * Styles for the CSS Selector `&[data-open], &[open], &[data-state=open]`
+   */
+  _open: "&[data-open], &[open], &[data-state=open]",
+  /**
+   * Styles for the CSS Selector `&[data-closed], &[data-state=closed]`
+   */
+  _closed: "&[data-closed], &[data-state=closed]",
+  /**
+   * Styles for the CSS Selector `&[data-complete]`
+   */
+  _complete: "&[data-complete]",
+  /**
+   * Styles for the CSS Selector `&[data-incomplete]`
+   */
+  _incomplete: "&[data-incomplete]",
+  /**
+   * Styles for the CSS Selector `&[data-current]`
+   */
+  _current: "&[data-current]"
 };
-const tone = (color2) => (theme2) => {
-  const hex2 = getColor(theme2, color2);
-  const brightness = getBrightness(hex2);
-  const isDark2 = brightness < 128;
-  return isDark2 ? "dark" : "light";
+const pseudoPropNames = Object.keys(
+  pseudoSelectors
+);
+const isImportant = (value) => /!(important)?$/.test(value);
+const withoutImportant = (value) => typeof value === "string" ? value.replace(/!(important)?$/, "").trim() : value;
+const tokenToCSSVar = (scale2, value) => (theme2) => {
+  const valueStr = String(value);
+  const important = isImportant(valueStr);
+  const valueWithoutImportant = withoutImportant(valueStr);
+  const key = scale2 ? `${scale2}.${valueWithoutImportant}` : valueWithoutImportant;
+  let transformed = isObject(theme2.__cssMap) && key in theme2.__cssMap ? theme2.__cssMap[key].varRef : value;
+  transformed = withoutImportant(transformed);
+  return important ? `${transformed} !important` : transformed;
 };
-const isDark = (color2) => (theme2) => tone(color2)(theme2) === "dark";
-const transparentize = (color2, opacity) => (theme2) => {
-  const raw = getColor(theme2, color2);
-  return transparentize$1(raw, 1 - opacity);
-};
-function generateStripe(size2 = "1rem", color2 = "rgba(255, 255, 255, 0.15)") {
-  return {
-    backgroundImage: `linear-gradient(
-    45deg,
-    ${color2} 25%,
-    transparent 25%,
-    transparent 50%,
-    ${color2} 50%,
-    ${color2} 75%,
-    transparent 75%,
-    transparent
-  )`,
-    backgroundSize: `${size2} ${size2}`
-  };
-}
-const randomHex = () => `#${Math.floor(Math.random() * 16777215).toString(16).padEnd(6, "0")}`;
-function randomColor(opts) {
-  const fallback = randomHex();
-  if (!opts || isEmptyObject(opts)) {
-    return fallback;
-  }
-  if (opts.string && opts.colors) {
-    return randomColorFromList(opts.string, opts.colors);
-  }
-  if (opts.string && !opts.colors) {
-    return randomColorFromString(opts.string);
-  }
-  if (opts.colors && !opts.string) {
-    return randomFromList(opts.colors);
-  }
-  return fallback;
-}
-function randomColorFromString(str) {
-  let hash = 0;
-  if (str.length === 0)
-    return hash.toString();
-  for (let i = 0; i < str.length; i += 1) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    hash = hash & hash;
-  }
-  let color2 = "#";
-  for (let j2 = 0; j2 < 3; j2 += 1) {
-    const value = hash >> j2 * 8 & 255;
-    color2 += `00${value.toString(16)}`.substr(-2);
-  }
-  return color2;
-}
-function randomColorFromList(str, list) {
-  let index = 0;
-  if (str.length === 0)
-    return list[0];
-  for (let i = 0; i < str.length; i += 1) {
-    index = str.charCodeAt(i) + ((index << 5) - index);
-    index = index & index;
-  }
-  index = (index % list.length + list.length) % list.length;
-  return list[index];
-}
-function randomFromList(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
-function mode(light, dark) {
-  return (props) => props.colorMode === "dark" ? dark : light;
-}
-function orient(options) {
-  const { orientation, vertical, horizontal } = options;
-  if (!orientation)
-    return {};
-  return orientation === "vertical" ? vertical : horizontal;
-}
-function isHTMLElement$1(el) {
-  return el != null && typeof el == "object" && "nodeType" in el && el.nodeType === Node.ELEMENT_NODE;
-}
-function isBrowser$2() {
-  return Boolean(globalThis == null ? void 0 : globalThis.document);
-}
-function isHiddenElement(element) {
-  if (element.parentElement && isHiddenElement(element.parentElement))
-    return true;
-  return element.hidden;
-}
-function isContentEditableElement(element) {
-  const value = element.getAttribute("contenteditable");
-  return value !== "false" && value != null;
-}
-function isDisabledElement(element) {
-  return Boolean(element.getAttribute("disabled")) === true || Boolean(element.getAttribute("aria-disabled")) === true;
-}
-function assignAfter(target, ...sources) {
-  if (target == null) {
-    throw new TypeError("Cannot convert undefined or null to object");
-  }
-  const result = { ...target };
-  for (const nextSource of sources) {
-    if (nextSource == null)
-      continue;
-    for (const nextKey in nextSource) {
-      if (!Object.prototype.hasOwnProperty.call(nextSource, nextKey))
-        continue;
-      if (nextKey in result)
-        delete result[nextKey];
-      result[nextKey] = nextSource[nextKey];
+function createTransform(options) {
+  const { scale: scale2, transform: transform2, compose } = options;
+  const fn = (value, theme2) => {
+    const _value = tokenToCSSVar(scale2, value)(theme2);
+    let result = (transform2 == null ? void 0 : transform2(_value, theme2)) ?? _value;
+    if (compose) {
+      result = compose(result, theme2);
     }
-  }
-  return result;
-}
-const dataAttr = (condition) => condition ? "" : void 0;
-const ariaAttr = (condition) => condition ? true : void 0;
-function isArray(value) {
-  return Array.isArray(value);
-}
-function isObject(value) {
-  const type2 = typeof value;
-  return value != null && (type2 === "object" || type2 === "function") && !isArray(value);
-}
-function callAll(...fns) {
-  return function mergedFn(...args) {
-    fns.forEach((fn) => fn == null ? void 0 : fn(...args));
+    return result;
   };
+  return fn;
 }
-function callAllHandlers(...fns) {
-  return function func(event) {
-    fns.some((fn) => {
-      fn == null ? void 0 : fn(event);
-      return event == null ? void 0 : event.defaultPrevented;
+const pipe$2 = (...fns) => (v2) => fns.reduce((a, b) => b(a), v2);
+function toConfig(scale2, transform2) {
+  return (property) => {
+    const result = { property, scale: scale2 };
+    result.transform = createTransform({
+      scale: scale2,
+      transform: transform2
     });
+    return result;
   };
 }
-function getValidChildren(children) {
-  return Children.toArray(children).filter(
-    (child) => isValidElement$1(child)
-  );
-}
-function compact(object) {
-  const clone = Object.assign({}, object);
-  for (let key in clone) {
-    if (clone[key] === void 0)
-      delete clone[key];
-  }
-  return clone;
-}
-function getErrorMessage(hook, provider) {
-  return `${hook} returned \`undefined\`. Seems you forgot to wrap component within ${provider}`;
-}
-function createContext(options = {}) {
-  const {
-    name: name2,
-    strict = true,
-    hookName = "useContext",
-    providerName = "Provider",
-    errorMessage,
-    defaultValue
-  } = options;
-  const Context = createContext$1(defaultValue);
-  Context.displayName = name2;
-  function useContext$1() {
-    var _a2;
-    const context = useContext(Context);
-    if (!context && strict) {
-      const error = new Error(
-        errorMessage ?? getErrorMessage(hookName, providerName)
-      );
-      error.name = "ContextError";
-      (_a2 = Error.captureStackTrace) == null ? void 0 : _a2.call(Error, error, useContext$1);
-      throw error;
-    }
-    return context;
-  }
-  return [Context.Provider, useContext$1, Context];
-}
-const cx = (...classNames2) => classNames2.filter(Boolean).join(" ");
-const hasTabIndex = (element) => element.hasAttribute("tabindex");
-function isFocusable(element) {
-  if (!isHTMLElement$1(element) || isHiddenElement(element) || isDisabledElement(element)) {
-    return false;
-  }
-  const { localName } = element;
-  const focusableTags = ["input", "select", "textarea", "button"];
-  if (focusableTags.indexOf(localName) >= 0)
-    return true;
-  const others = {
-    a: () => element.hasAttribute("href"),
-    audio: () => element.hasAttribute("controls"),
-    video: () => element.hasAttribute("controls")
+const getRtl = ({ rtl, ltr }) => (theme2) => theme2.direction === "rtl" ? rtl : ltr;
+function logical(options) {
+  const { property, scale: scale2, transform: transform2 } = options;
+  return {
+    scale: scale2,
+    property: getRtl(property),
+    transform: scale2 ? createTransform({
+      scale: scale2,
+      compose: transform2
+    }) : transform2
   };
-  if (localName in others) {
-    return others[localName]();
-  }
-  if (isContentEditableElement(element))
-    return true;
-  return hasTabIndex(element);
 }
-const focusableElList = [
-  "input:not(:disabled):not([disabled])",
-  "select:not(:disabled):not([disabled])",
-  "textarea:not(:disabled):not([disabled])",
-  "embed",
-  "iframe",
-  "object",
-  "a[href]",
-  "area[href]",
-  "button:not(:disabled):not([disabled])",
-  "[tabindex]",
-  "audio[controls]",
-  "video[controls]",
-  "*[tabindex]:not([aria-disabled])",
-  "*[contenteditable]"
+const transformTemplate = [
+  "rotate(var(--chakra-rotate, 0))",
+  "scaleX(var(--chakra-scale-x, 1))",
+  "scaleY(var(--chakra-scale-y, 1))",
+  "skewX(var(--chakra-skew-x, 0))",
+  "skewY(var(--chakra-skew-y, 0))"
 ];
-const focusableElSelector = focusableElList.join();
-const isVisible = (el) => el.offsetWidth > 0 && el.offsetHeight > 0;
-function getAllFocusable(container2) {
-  const focusableEls = Array.from(
-    container2.querySelectorAll(focusableElSelector)
-  );
-  focusableEls.unshift(container2);
-  return focusableEls.filter((el) => isFocusable(el) && isVisible(el));
+function getTransformTemplate() {
+  return [
+    "translateX(var(--chakra-translate-x, 0))",
+    "translateY(var(--chakra-translate-y, 0))",
+    ...transformTemplate
+  ].join(" ");
 }
+function getTransformGpuTemplate() {
+  return [
+    "translate3d(var(--chakra-translate-x, 0), var(--chakra-translate-y, 0), 0)",
+    ...transformTemplate
+  ].join(" ");
+}
+const filterTemplate = {
+  "--chakra-blur": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-brightness": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-contrast": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-grayscale": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-hue-rotate": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-invert": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-saturate": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-sepia": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-drop-shadow": "var(--chakra-empty,/*!*/ /*!*/)",
+  filter: [
+    "var(--chakra-blur)",
+    "var(--chakra-brightness)",
+    "var(--chakra-contrast)",
+    "var(--chakra-grayscale)",
+    "var(--chakra-hue-rotate)",
+    "var(--chakra-invert)",
+    "var(--chakra-saturate)",
+    "var(--chakra-sepia)",
+    "var(--chakra-drop-shadow)"
+  ].join(" ")
+};
+const backdropFilterTemplate = {
+  backdropFilter: [
+    "var(--chakra-backdrop-blur)",
+    "var(--chakra-backdrop-brightness)",
+    "var(--chakra-backdrop-contrast)",
+    "var(--chakra-backdrop-grayscale)",
+    "var(--chakra-backdrop-hue-rotate)",
+    "var(--chakra-backdrop-invert)",
+    "var(--chakra-backdrop-opacity)",
+    "var(--chakra-backdrop-saturate)",
+    "var(--chakra-backdrop-sepia)"
+  ].join(" "),
+  "--chakra-backdrop-blur": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-brightness": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-contrast": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-grayscale": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-hue-rotate": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-invert": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-opacity": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-saturate": "var(--chakra-empty,/*!*/ /*!*/)",
+  "--chakra-backdrop-sepia": "var(--chakra-empty,/*!*/ /*!*/)"
+};
+function getRingTemplate(value) {
+  return {
+    "--chakra-ring-offset-shadow": `var(--chakra-ring-inset) 0 0 0 var(--chakra-ring-offset-width) var(--chakra-ring-offset-color)`,
+    "--chakra-ring-shadow": `var(--chakra-ring-inset) 0 0 0 calc(var(--chakra-ring-width) + var(--chakra-ring-offset-width)) var(--chakra-ring-color)`,
+    "--chakra-ring-width": value,
+    boxShadow: [
+      `var(--chakra-ring-offset-shadow)`,
+      `var(--chakra-ring-shadow)`,
+      `var(--chakra-shadow, 0 0 #0000)`
+    ].join(", ")
+  };
+}
+const flexDirectionTemplate = {
+  "row-reverse": {
+    space: "--chakra-space-x-reverse",
+    divide: "--chakra-divide-x-reverse"
+  },
+  "column-reverse": {
+    space: "--chakra-space-y-reverse",
+    divide: "--chakra-divide-y-reverse"
+  }
+};
+const directionMap = {
+  "to-t": "to top",
+  "to-tr": "to top right",
+  "to-r": "to right",
+  "to-br": "to bottom right",
+  "to-b": "to bottom",
+  "to-bl": "to bottom left",
+  "to-l": "to left",
+  "to-tl": "to top left"
+};
+const valueSet = new Set(Object.values(directionMap));
+const globalSet = /* @__PURE__ */ new Set([
+  "none",
+  "-moz-initial",
+  "inherit",
+  "initial",
+  "revert",
+  "unset"
+]);
+const trimSpace = (str) => str.trim();
+function parseGradient(value, theme2) {
+  if (value == null || globalSet.has(value))
+    return value;
+  const prevent = isCSSFunction(value) || globalSet.has(value);
+  if (!prevent)
+    return `url('${value}')`;
+  const regex = /(^[a-z-A-Z]+)\((.*)\)/g;
+  const results2 = regex.exec(value);
+  const type2 = results2 == null ? void 0 : results2[1];
+  const values = results2 == null ? void 0 : results2[2];
+  if (!type2 || !values)
+    return value;
+  const _type = type2.includes("-gradient") ? type2 : `${type2}-gradient`;
+  const [maybeDirection, ...stops] = values.split(",").map(trimSpace).filter(Boolean);
+  if ((stops == null ? void 0 : stops.length) === 0)
+    return value;
+  const direction = maybeDirection in directionMap ? directionMap[maybeDirection] : maybeDirection;
+  stops.unshift(direction);
+  const _values = stops.map((stop) => {
+    if (valueSet.has(stop))
+      return stop;
+    const firstStop = stop.indexOf(" ");
+    const [_color, _stop] = firstStop !== -1 ? [stop.substr(0, firstStop), stop.substr(firstStop + 1)] : [stop];
+    const _stopOrFunc = isCSSFunction(_stop) ? _stop : _stop && _stop.split(" ");
+    const key = `colors.${_color}`;
+    const color2 = key in theme2.__cssMap ? theme2.__cssMap[key].varRef : _color;
+    return _stopOrFunc ? [
+      color2,
+      ...Array.isArray(_stopOrFunc) ? _stopOrFunc : [_stopOrFunc]
+    ].join(" ") : color2;
+  });
+  return `${_type}(${_values.join(", ")})`;
+}
+const isCSSFunction = (value) => {
+  return typeof value === "string" && value.includes("(") && value.includes(")");
+};
+const gradientTransform = (value, theme2) => parseGradient(value, theme2 ?? {});
+function isCssVar$1(value) {
+  return /^var\(--.+\)$/.test(value);
+}
+const analyzeCSSValue = (value) => {
+  const num = parseFloat(value.toString());
+  const unit = value.toString().replace(String(num), "");
+  return { unitless: !unit, value: num, unit };
+};
+const wrap = (str) => (value) => `${str}(${value})`;
+const transformFunctions = {
+  filter(value) {
+    return value !== "auto" ? value : filterTemplate;
+  },
+  backdropFilter(value) {
+    return value !== "auto" ? value : backdropFilterTemplate;
+  },
+  ring(value) {
+    return getRingTemplate(transformFunctions.px(value));
+  },
+  bgClip(value) {
+    return value === "text" ? { color: "transparent", backgroundClip: "text" } : { backgroundClip: value };
+  },
+  transform(value) {
+    if (value === "auto")
+      return getTransformTemplate();
+    if (value === "auto-gpu")
+      return getTransformGpuTemplate();
+    return value;
+  },
+  vh(value) {
+    return value === "$100vh" ? "var(--chakra-vh)" : value;
+  },
+  px(value) {
+    if (value == null)
+      return value;
+    const { unitless } = analyzeCSSValue(value);
+    return unitless || typeof value === "number" ? `${value}px` : value;
+  },
+  fraction(value) {
+    return !(typeof value === "number") || value > 1 ? value : `${value * 100}%`;
+  },
+  float(value, theme2) {
+    const map = { left: "right", right: "left" };
+    return theme2.direction === "rtl" ? map[value] : value;
+  },
+  degree(value) {
+    if (isCssVar$1(value) || value == null)
+      return value;
+    const unitless = typeof value === "string" && !value.endsWith("deg");
+    return typeof value === "number" || unitless ? `${value}deg` : value;
+  },
+  gradient: gradientTransform,
+  blur: wrap("blur"),
+  opacity: wrap("opacity"),
+  brightness: wrap("brightness"),
+  contrast: wrap("contrast"),
+  dropShadow: wrap("drop-shadow"),
+  grayscale: wrap("grayscale"),
+  hueRotate: (value) => wrap("hue-rotate")(transformFunctions.degree(value)),
+  invert: wrap("invert"),
+  saturate: wrap("saturate"),
+  sepia: wrap("sepia"),
+  bgImage(value) {
+    if (value == null)
+      return value;
+    const prevent = isCSSFunction(value) || globalSet.has(value);
+    return !prevent ? `url(${value})` : value;
+  },
+  outline(value) {
+    const isNoneOrZero = String(value) === "0" || String(value) === "none";
+    return value !== null && isNoneOrZero ? { outline: "2px solid transparent", outlineOffset: "2px" } : { outline: value };
+  },
+  flexDirection(value) {
+    const { space: space2, divide: divide2 } = flexDirectionTemplate[value] ?? {};
+    const result = { flexDirection: value };
+    if (space2)
+      result[space2] = 1;
+    if (divide2)
+      result[divide2] = 1;
+    return result;
+  }
+};
+const t = {
+  borderWidths: toConfig("borderWidths"),
+  borderStyles: toConfig("borderStyles"),
+  colors: toConfig("colors"),
+  borders: toConfig("borders"),
+  gradients: toConfig("gradients", transformFunctions.gradient),
+  radii: toConfig("radii", transformFunctions.px),
+  space: toConfig("space", pipe$2(transformFunctions.vh, transformFunctions.px)),
+  spaceT: toConfig("space", pipe$2(transformFunctions.vh, transformFunctions.px)),
+  degreeT(property) {
+    return { property, transform: transformFunctions.degree };
+  },
+  prop(property, scale2, transform2) {
+    return {
+      property,
+      scale: scale2,
+      ...scale2 && {
+        transform: createTransform({ scale: scale2, transform: transform2 })
+      }
+    };
+  },
+  propT(property, transform2) {
+    return { property, transform: transform2 };
+  },
+  sizes: toConfig("sizes", pipe$2(transformFunctions.vh, transformFunctions.px)),
+  sizesT: toConfig("sizes", pipe$2(transformFunctions.vh, transformFunctions.fraction)),
+  shadows: toConfig("shadows"),
+  logical,
+  blur: toConfig("blur", transformFunctions.blur)
+};
+const background = {
+  background: t.colors("background"),
+  backgroundColor: t.colors("backgroundColor"),
+  backgroundImage: t.gradients("backgroundImage"),
+  backgroundSize: true,
+  backgroundPosition: true,
+  backgroundRepeat: true,
+  backgroundAttachment: true,
+  backgroundClip: { transform: transformFunctions.bgClip },
+  bgSize: t.prop("backgroundSize"),
+  bgPosition: t.prop("backgroundPosition"),
+  bg: t.colors("background"),
+  bgColor: t.colors("backgroundColor"),
+  bgPos: t.prop("backgroundPosition"),
+  bgRepeat: t.prop("backgroundRepeat"),
+  bgAttachment: t.prop("backgroundAttachment"),
+  bgGradient: t.gradients("backgroundImage"),
+  bgClip: { transform: transformFunctions.bgClip }
+};
+Object.assign(background, {
+  bgImage: background.backgroundImage,
+  bgImg: background.backgroundImage
+});
+const border = {
+  border: t.borders("border"),
+  borderWidth: t.borderWidths("borderWidth"),
+  borderStyle: t.borderStyles("borderStyle"),
+  borderColor: t.colors("borderColor"),
+  borderRadius: t.radii("borderRadius"),
+  borderTop: t.borders("borderTop"),
+  borderBlockStart: t.borders("borderBlockStart"),
+  borderTopLeftRadius: t.radii("borderTopLeftRadius"),
+  borderStartStartRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: "borderTopLeftRadius",
+      rtl: "borderTopRightRadius"
+    }
+  }),
+  borderEndStartRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: "borderBottomLeftRadius",
+      rtl: "borderBottomRightRadius"
+    }
+  }),
+  borderTopRightRadius: t.radii("borderTopRightRadius"),
+  borderStartEndRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: "borderTopRightRadius",
+      rtl: "borderTopLeftRadius"
+    }
+  }),
+  borderEndEndRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: "borderBottomRightRadius",
+      rtl: "borderBottomLeftRadius"
+    }
+  }),
+  borderRight: t.borders("borderRight"),
+  borderInlineEnd: t.borders("borderInlineEnd"),
+  borderBottom: t.borders("borderBottom"),
+  borderBlockEnd: t.borders("borderBlockEnd"),
+  borderBottomLeftRadius: t.radii("borderBottomLeftRadius"),
+  borderBottomRightRadius: t.radii("borderBottomRightRadius"),
+  borderLeft: t.borders("borderLeft"),
+  borderInlineStart: {
+    property: "borderInlineStart",
+    scale: "borders"
+  },
+  borderInlineStartRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: ["borderTopLeftRadius", "borderBottomLeftRadius"],
+      rtl: ["borderTopRightRadius", "borderBottomRightRadius"]
+    }
+  }),
+  borderInlineEndRadius: t.logical({
+    scale: "radii",
+    property: {
+      ltr: ["borderTopRightRadius", "borderBottomRightRadius"],
+      rtl: ["borderTopLeftRadius", "borderBottomLeftRadius"]
+    }
+  }),
+  borderX: t.borders(["borderLeft", "borderRight"]),
+  borderInline: t.borders("borderInline"),
+  borderY: t.borders(["borderTop", "borderBottom"]),
+  borderBlock: t.borders("borderBlock"),
+  borderTopWidth: t.borderWidths("borderTopWidth"),
+  borderBlockStartWidth: t.borderWidths("borderBlockStartWidth"),
+  borderTopColor: t.colors("borderTopColor"),
+  borderBlockStartColor: t.colors("borderBlockStartColor"),
+  borderTopStyle: t.borderStyles("borderTopStyle"),
+  borderBlockStartStyle: t.borderStyles("borderBlockStartStyle"),
+  borderBottomWidth: t.borderWidths("borderBottomWidth"),
+  borderBlockEndWidth: t.borderWidths("borderBlockEndWidth"),
+  borderBottomColor: t.colors("borderBottomColor"),
+  borderBlockEndColor: t.colors("borderBlockEndColor"),
+  borderBottomStyle: t.borderStyles("borderBottomStyle"),
+  borderBlockEndStyle: t.borderStyles("borderBlockEndStyle"),
+  borderLeftWidth: t.borderWidths("borderLeftWidth"),
+  borderInlineStartWidth: t.borderWidths("borderInlineStartWidth"),
+  borderLeftColor: t.colors("borderLeftColor"),
+  borderInlineStartColor: t.colors("borderInlineStartColor"),
+  borderLeftStyle: t.borderStyles("borderLeftStyle"),
+  borderInlineStartStyle: t.borderStyles("borderInlineStartStyle"),
+  borderRightWidth: t.borderWidths("borderRightWidth"),
+  borderInlineEndWidth: t.borderWidths("borderInlineEndWidth"),
+  borderRightColor: t.colors("borderRightColor"),
+  borderInlineEndColor: t.colors("borderInlineEndColor"),
+  borderRightStyle: t.borderStyles("borderRightStyle"),
+  borderInlineEndStyle: t.borderStyles("borderInlineEndStyle"),
+  borderTopRadius: t.radii(["borderTopLeftRadius", "borderTopRightRadius"]),
+  borderBottomRadius: t.radii([
+    "borderBottomLeftRadius",
+    "borderBottomRightRadius"
+  ]),
+  borderLeftRadius: t.radii(["borderTopLeftRadius", "borderBottomLeftRadius"]),
+  borderRightRadius: t.radii([
+    "borderTopRightRadius",
+    "borderBottomRightRadius"
+  ])
+};
+Object.assign(border, {
+  rounded: border.borderRadius,
+  roundedTop: border.borderTopRadius,
+  roundedTopLeft: border.borderTopLeftRadius,
+  roundedTopRight: border.borderTopRightRadius,
+  roundedTopStart: border.borderStartStartRadius,
+  roundedTopEnd: border.borderStartEndRadius,
+  roundedBottom: border.borderBottomRadius,
+  roundedBottomLeft: border.borderBottomLeftRadius,
+  roundedBottomRight: border.borderBottomRightRadius,
+  roundedBottomStart: border.borderEndStartRadius,
+  roundedBottomEnd: border.borderEndEndRadius,
+  roundedLeft: border.borderLeftRadius,
+  roundedRight: border.borderRightRadius,
+  roundedStart: border.borderInlineStartRadius,
+  roundedEnd: border.borderInlineEndRadius,
+  borderStart: border.borderInlineStart,
+  borderEnd: border.borderInlineEnd,
+  borderTopStartRadius: border.borderStartStartRadius,
+  borderTopEndRadius: border.borderStartEndRadius,
+  borderBottomStartRadius: border.borderEndStartRadius,
+  borderBottomEndRadius: border.borderEndEndRadius,
+  borderStartRadius: border.borderInlineStartRadius,
+  borderEndRadius: border.borderInlineEndRadius,
+  borderStartWidth: border.borderInlineStartWidth,
+  borderEndWidth: border.borderInlineEndWidth,
+  borderStartColor: border.borderInlineStartColor,
+  borderEndColor: border.borderInlineEndColor,
+  borderStartStyle: border.borderInlineStartStyle,
+  borderEndStyle: border.borderInlineEndStyle
+});
+const color$1 = {
+  color: t.colors("color"),
+  textColor: t.colors("color"),
+  fill: t.colors("fill"),
+  stroke: t.colors("stroke"),
+  accentColor: t.colors("accentColor"),
+  textFillColor: t.colors("textFillColor")
+};
+const flexbox = {
+  alignItems: true,
+  alignContent: true,
+  justifyItems: true,
+  justifyContent: true,
+  flexWrap: true,
+  flexDirection: { transform: transformFunctions.flexDirection },
+  flex: true,
+  flexFlow: true,
+  flexGrow: true,
+  flexShrink: true,
+  flexBasis: t.sizes("flexBasis"),
+  justifySelf: true,
+  alignSelf: true,
+  order: true,
+  placeItems: true,
+  placeContent: true,
+  placeSelf: true,
+  gap: t.space("gap"),
+  rowGap: t.space("rowGap"),
+  columnGap: t.space("columnGap")
+};
+Object.assign(flexbox, {
+  flexDir: flexbox.flexDirection
+});
+const layout = {
+  width: t.sizesT("width"),
+  inlineSize: t.sizesT("inlineSize"),
+  height: t.sizes("height"),
+  blockSize: t.sizes("blockSize"),
+  boxSize: t.sizes(["width", "height"]),
+  minWidth: t.sizes("minWidth"),
+  minInlineSize: t.sizes("minInlineSize"),
+  minHeight: t.sizes("minHeight"),
+  minBlockSize: t.sizes("minBlockSize"),
+  maxWidth: t.sizes("maxWidth"),
+  maxInlineSize: t.sizes("maxInlineSize"),
+  maxHeight: t.sizes("maxHeight"),
+  maxBlockSize: t.sizes("maxBlockSize"),
+  overflow: true,
+  overflowX: true,
+  overflowY: true,
+  overscrollBehavior: true,
+  overscrollBehaviorX: true,
+  overscrollBehaviorY: true,
+  display: true,
+  aspectRatio: true,
+  hideFrom: {
+    scale: "breakpoints",
+    transform: (value, theme2) => {
+      var _a, _b;
+      const breakpoint = ((_b = (_a = theme2.__breakpoints) == null ? void 0 : _a.get(value)) == null ? void 0 : _b.minW) ?? value;
+      const mq = `@media screen and (min-width: ${breakpoint})`;
+      return { [mq]: { display: "none" } };
+    }
+  },
+  hideBelow: {
+    scale: "breakpoints",
+    transform: (value, theme2) => {
+      var _a, _b;
+      const breakpoint = ((_b = (_a = theme2.__breakpoints) == null ? void 0 : _a.get(value)) == null ? void 0 : _b._minW) ?? value;
+      const mq = `@media screen and (max-width: ${breakpoint})`;
+      return { [mq]: { display: "none" } };
+    }
+  },
+  verticalAlign: true,
+  boxSizing: true,
+  boxDecorationBreak: true,
+  float: t.propT("float", transformFunctions.float),
+  objectFit: true,
+  objectPosition: true,
+  visibility: true,
+  isolation: true
+};
+Object.assign(layout, {
+  w: layout.width,
+  h: layout.height,
+  minW: layout.minWidth,
+  maxW: layout.maxWidth,
+  minH: layout.minHeight,
+  maxH: layout.maxHeight,
+  overscroll: layout.overscrollBehavior,
+  overscrollX: layout.overscrollBehaviorX,
+  overscrollY: layout.overscrollBehaviorY
+});
+const filter$1 = {
+  filter: { transform: transformFunctions.filter },
+  blur: t.blur("--chakra-blur"),
+  brightness: t.propT("--chakra-brightness", transformFunctions.brightness),
+  contrast: t.propT("--chakra-contrast", transformFunctions.contrast),
+  hueRotate: t.propT("--chakra-hue-rotate", transformFunctions.hueRotate),
+  invert: t.propT("--chakra-invert", transformFunctions.invert),
+  saturate: t.propT("--chakra-saturate", transformFunctions.saturate),
+  dropShadow: t.propT("--chakra-drop-shadow", transformFunctions.dropShadow),
+  backdropFilter: { transform: transformFunctions.backdropFilter },
+  backdropBlur: t.blur("--chakra-backdrop-blur"),
+  backdropBrightness: t.propT(
+    "--chakra-backdrop-brightness",
+    transformFunctions.brightness
+  ),
+  backdropContrast: t.propT("--chakra-backdrop-contrast", transformFunctions.contrast),
+  backdropHueRotate: t.propT(
+    "--chakra-backdrop-hue-rotate",
+    transformFunctions.hueRotate
+  ),
+  backdropInvert: t.propT("--chakra-backdrop-invert", transformFunctions.invert),
+  backdropSaturate: t.propT("--chakra-backdrop-saturate", transformFunctions.saturate)
+};
+const ring = {
+  ring: { transform: transformFunctions.ring },
+  ringColor: t.colors("--chakra-ring-color"),
+  ringOffset: t.prop("--chakra-ring-offset-width"),
+  ringOffsetColor: t.colors("--chakra-ring-offset-color"),
+  ringInset: t.prop("--chakra-ring-inset")
+};
+const interactivity = {
+  appearance: true,
+  cursor: true,
+  resize: true,
+  userSelect: true,
+  pointerEvents: true,
+  outline: { transform: transformFunctions.outline },
+  outlineOffset: true,
+  outlineColor: t.colors("outlineColor")
+};
+const grid = {
+  gridGap: t.space("gridGap"),
+  gridColumnGap: t.space("gridColumnGap"),
+  gridRowGap: t.space("gridRowGap"),
+  gridColumn: true,
+  gridRow: true,
+  gridAutoFlow: true,
+  gridAutoColumns: true,
+  gridColumnStart: true,
+  gridColumnEnd: true,
+  gridRowStart: true,
+  gridRowEnd: true,
+  gridAutoRows: true,
+  gridTemplate: true,
+  gridTemplateColumns: true,
+  gridTemplateRows: true,
+  gridTemplateAreas: true,
+  gridArea: true
+};
 function get(obj, path, fallback, index) {
   const key = typeof path === "string" ? path.split(".") : [path];
   for (index = 0; index < key.length; index += 1) {
@@ -9286,7 +9724,7 @@ function get(obj, path, fallback, index) {
   }
   return obj === void 0 ? fallback : obj;
 }
-const memoize$1 = (fn) => {
+const memoize = (fn) => {
   const cache2 = /* @__PURE__ */ new WeakMap();
   const memoizedFn = (obj, path, fallback, index) => {
     if (typeof obj === "undefined") {
@@ -9305,139 +9743,524 @@ const memoize$1 = (fn) => {
   };
   return memoizedFn;
 };
-const memoizedGet = memoize$1(get);
-const interopDefault = (mod) => mod.default || mod;
-function lazyDisclosure(options) {
-  const { wasSelected, enabled, isSelected, mode: mode2 = "unmount" } = options;
-  if (!enabled)
-    return true;
-  if (isSelected)
-    return true;
-  if (mode2 === "keepMounted" && wasSelected)
-    return true;
-  return false;
-}
-function omit(object, keysToOmit = []) {
-  const clone = Object.assign({}, object);
-  for (const key of keysToOmit) {
-    if (key in clone) {
-      delete clone[key];
-    }
-  }
-  return clone;
-}
-function pick(object, keysToPick) {
+const memoizedGet = memoize(get);
+const srOnly = {
+  border: "0px",
+  clip: "rect(0, 0, 0, 0)",
+  width: "1px",
+  height: "1px",
+  margin: "-1px",
+  padding: "0px",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  position: "absolute"
+};
+const srFocusable = {
+  position: "static",
+  width: "auto",
+  height: "auto",
+  clip: "auto",
+  padding: "0",
+  margin: "0",
+  overflow: "visible",
+  whiteSpace: "normal"
+};
+const getWithPriority = (theme2, key, styles2) => {
   const result = {};
-  for (const key of keysToPick) {
-    if (key in object) {
-      result[key] = object[key];
-    }
+  const obj = memoizedGet(theme2, key, {});
+  for (const prop in obj) {
+    const isInStyles = prop in styles2 && styles2[prop] != null;
+    if (!isInStyles)
+      result[prop] = obj[prop];
   }
   return result;
-}
-const breakpoints$1 = Object.freeze([
-  "base",
-  "sm",
-  "md",
-  "lg",
-  "xl",
-  "2xl"
-]);
-function mapResponsive(prop, mapper) {
-  if (Array.isArray(prop)) {
-    return prop.map((item) => item === null ? null : mapper(item));
-  }
-  if (isObject(prop)) {
-    return Object.keys(prop).reduce((result, key) => {
-      result[key] = mapper(prop[key]);
-      return result;
-    }, {});
-  }
-  if (prop != null) {
-    return mapper(prop);
-  }
-  return null;
-}
-function arrayToObjectNotation(values, bps = breakpoints$1) {
-  const result = {};
-  values.forEach((value, index) => {
-    const key = bps[index];
-    if (value == null)
-      return;
-    result[key] = value;
-  });
-  return result;
-}
-const isFunction$2 = (value) => typeof value === "function";
-function runIfFn$1(valueOrFn, ...args) {
-  return isFunction$2(valueOrFn) ? valueOrFn(...args) : valueOrFn;
-}
-function isScrollParent(el) {
-  const win = el.ownerDocument.defaultView || window;
-  const { overflow, overflowX, overflowY } = win.getComputedStyle(el);
-  return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
-}
-function getParent(el) {
-  if (el.localName === "html")
-    return el;
-  return el.assignedSlot || el.parentElement || el.ownerDocument.documentElement;
-}
-function getScrollParent(el) {
-  if (["html", "body", "#document"].includes(el.localName)) {
-    return el.ownerDocument.body;
-  }
-  if (isHTMLElement$1(el) && isScrollParent(el)) {
-    return el;
-  }
-  return getScrollParent(getParent(el));
-}
-function split(object, keys) {
-  const picked = {};
-  const omitted2 = {};
-  for (const [key, value] of Object.entries(object)) {
-    if (keys.includes(key))
-      picked[key] = value;
-    else
-      omitted2[key] = value;
-  }
-  return [picked, omitted2];
-}
-function splitProps(props, ...keys) {
-  const descriptors = Object.getOwnPropertyDescriptors(props);
-  const dKeys = Object.keys(descriptors);
-  const split2 = (k2) => {
-    const clone = {};
-    for (let i = 0; i < k2.length; i++) {
-      const key = k2[i];
-      if (descriptors[key]) {
-        Object.defineProperty(clone, key, descriptors[key]);
-        delete descriptors[key];
-      }
+};
+const others = {
+  srOnly: {
+    transform(value) {
+      if (value === true)
+        return srOnly;
+      if (value === "focusable")
+        return srFocusable;
+      return {};
     }
-    return clone;
-  };
-  const fn = (key) => split2(Array.isArray(key) ? key : dKeys.filter(key));
-  return keys.map(fn).concat(split2(dKeys));
-}
-const warn = (options) => {
-  const { condition, message } = options;
-  if (condition && false) {
-    console.warn(message);
+  },
+  layerStyle: {
+    processResult: true,
+    transform: (value, theme2, styles2) => getWithPriority(theme2, `layerStyles.${value}`, styles2)
+  },
+  textStyle: {
+    processResult: true,
+    transform: (value, theme2, styles2) => getWithPriority(theme2, `textStyles.${value}`, styles2)
+  },
+  apply: {
+    processResult: true,
+    transform: (value, theme2, styles2) => getWithPriority(theme2, value, styles2)
   }
 };
-function toRef(operand) {
+const position = {
+  position: true,
+  pos: t.prop("position"),
+  zIndex: t.prop("zIndex", "zIndices"),
+  inset: t.spaceT("inset"),
+  insetX: t.spaceT(["left", "right"]),
+  insetInline: t.spaceT("insetInline"),
+  insetY: t.spaceT(["top", "bottom"]),
+  insetBlock: t.spaceT("insetBlock"),
+  top: t.spaceT("top"),
+  insetBlockStart: t.spaceT("insetBlockStart"),
+  bottom: t.spaceT("bottom"),
+  insetBlockEnd: t.spaceT("insetBlockEnd"),
+  left: t.spaceT("left"),
+  insetInlineStart: t.logical({
+    scale: "space",
+    property: { ltr: "left", rtl: "right" }
+  }),
+  right: t.spaceT("right"),
+  insetInlineEnd: t.logical({
+    scale: "space",
+    property: { ltr: "right", rtl: "left" }
+  })
+};
+Object.assign(position, {
+  insetStart: position.insetInlineStart,
+  insetEnd: position.insetInlineEnd
+});
+const effect = {
+  boxShadow: t.shadows("boxShadow"),
+  mixBlendMode: true,
+  blendMode: t.prop("mixBlendMode"),
+  backgroundBlendMode: true,
+  bgBlendMode: t.prop("backgroundBlendMode"),
+  opacity: true
+};
+Object.assign(effect, {
+  shadow: effect.boxShadow
+});
+const space = {
+  margin: t.spaceT("margin"),
+  marginTop: t.spaceT("marginTop"),
+  marginBlockStart: t.spaceT("marginBlockStart"),
+  marginRight: t.spaceT("marginRight"),
+  marginInlineEnd: t.spaceT("marginInlineEnd"),
+  marginBottom: t.spaceT("marginBottom"),
+  marginBlockEnd: t.spaceT("marginBlockEnd"),
+  marginLeft: t.spaceT("marginLeft"),
+  marginInlineStart: t.spaceT("marginInlineStart"),
+  marginX: t.spaceT(["marginInlineStart", "marginInlineEnd"]),
+  marginInline: t.spaceT("marginInline"),
+  marginY: t.spaceT(["marginTop", "marginBottom"]),
+  marginBlock: t.spaceT("marginBlock"),
+  padding: t.space("padding"),
+  paddingTop: t.space("paddingTop"),
+  paddingBlockStart: t.space("paddingBlockStart"),
+  paddingRight: t.space("paddingRight"),
+  paddingBottom: t.space("paddingBottom"),
+  paddingBlockEnd: t.space("paddingBlockEnd"),
+  paddingLeft: t.space("paddingLeft"),
+  paddingInlineStart: t.space("paddingInlineStart"),
+  paddingInlineEnd: t.space("paddingInlineEnd"),
+  paddingX: t.space(["paddingInlineStart", "paddingInlineEnd"]),
+  paddingInline: t.space("paddingInline"),
+  paddingY: t.space(["paddingTop", "paddingBottom"]),
+  paddingBlock: t.space("paddingBlock")
+};
+Object.assign(space, {
+  m: space.margin,
+  mt: space.marginTop,
+  mr: space.marginRight,
+  me: space.marginInlineEnd,
+  marginEnd: space.marginInlineEnd,
+  mb: space.marginBottom,
+  ml: space.marginLeft,
+  ms: space.marginInlineStart,
+  marginStart: space.marginInlineStart,
+  mx: space.marginX,
+  my: space.marginY,
+  p: space.padding,
+  pt: space.paddingTop,
+  py: space.paddingY,
+  px: space.paddingX,
+  pb: space.paddingBottom,
+  pl: space.paddingLeft,
+  ps: space.paddingInlineStart,
+  paddingStart: space.paddingInlineStart,
+  pr: space.paddingRight,
+  pe: space.paddingInlineEnd,
+  paddingEnd: space.paddingInlineEnd
+});
+const scroll = {
+  scrollBehavior: true,
+  scrollSnapAlign: true,
+  scrollSnapStop: true,
+  scrollSnapType: true,
+  // scroll margin
+  scrollMargin: t.spaceT("scrollMargin"),
+  scrollMarginTop: t.spaceT("scrollMarginTop"),
+  scrollMarginBottom: t.spaceT("scrollMarginBottom"),
+  scrollMarginLeft: t.spaceT("scrollMarginLeft"),
+  scrollMarginRight: t.spaceT("scrollMarginRight"),
+  scrollMarginX: t.spaceT(["scrollMarginLeft", "scrollMarginRight"]),
+  scrollMarginY: t.spaceT(["scrollMarginTop", "scrollMarginBottom"]),
+  // scroll padding
+  scrollPadding: t.spaceT("scrollPadding"),
+  scrollPaddingTop: t.spaceT("scrollPaddingTop"),
+  scrollPaddingBottom: t.spaceT("scrollPaddingBottom"),
+  scrollPaddingLeft: t.spaceT("scrollPaddingLeft"),
+  scrollPaddingRight: t.spaceT("scrollPaddingRight"),
+  scrollPaddingX: t.spaceT(["scrollPaddingLeft", "scrollPaddingRight"]),
+  scrollPaddingY: t.spaceT(["scrollPaddingTop", "scrollPaddingBottom"])
+};
+const typography = {
+  fontFamily: t.prop("fontFamily", "fonts"),
+  fontSize: t.prop("fontSize", "fontSizes", transformFunctions.px),
+  fontWeight: t.prop("fontWeight", "fontWeights"),
+  lineHeight: t.prop("lineHeight", "lineHeights"),
+  letterSpacing: t.prop("letterSpacing", "letterSpacings"),
+  textAlign: true,
+  fontStyle: true,
+  textIndent: true,
+  wordBreak: true,
+  overflowWrap: true,
+  textOverflow: true,
+  textTransform: true,
+  whiteSpace: true,
+  isTruncated: {
+    transform(value) {
+      if (value === true) {
+        return {
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap"
+        };
+      }
+    }
+  },
+  noOfLines: {
+    static: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      display: "-webkit-box",
+      WebkitBoxOrient: "vertical",
+      //@ts-ignore
+      WebkitLineClamp: "var(--chakra-line-clamp)"
+    },
+    property: "--chakra-line-clamp"
+  }
+};
+const textDecoration = {
+  textDecorationColor: t.colors("textDecorationColor"),
+  textDecoration: true,
+  textDecor: { property: "textDecoration" },
+  textDecorationLine: true,
+  textDecorationStyle: true,
+  textDecorationThickness: true,
+  textUnderlineOffset: true,
+  textShadow: t.shadows("textShadow")
+};
+const transform = {
+  clipPath: true,
+  transform: t.propT("transform", transformFunctions.transform),
+  transformOrigin: true,
+  translateX: t.spaceT("--chakra-translate-x"),
+  translateY: t.spaceT("--chakra-translate-y"),
+  skewX: t.degreeT("--chakra-skew-x"),
+  skewY: t.degreeT("--chakra-skew-y"),
+  scaleX: t.prop("--chakra-scale-x"),
+  scaleY: t.prop("--chakra-scale-y"),
+  scale: t.prop(["--chakra-scale-x", "--chakra-scale-y"]),
+  rotate: t.degreeT("--chakra-rotate")
+};
+const list = {
+  listStyleType: true,
+  listStylePosition: true,
+  listStylePos: t.prop("listStylePosition"),
+  listStyleImage: true,
+  listStyleImg: t.prop("listStyleImage")
+};
+const transition = {
+  transition: true,
+  transitionDelay: true,
+  animation: true,
+  willChange: true,
+  transitionDuration: t.prop("transitionDuration", "transition.duration"),
+  transitionProperty: t.prop("transitionProperty", "transition.property"),
+  transitionTimingFunction: t.prop(
+    "transitionTimingFunction",
+    "transition.easing"
+  )
+};
+const systemProps = mergeWith(
+  {},
+  background,
+  border,
+  color$1,
+  flexbox,
+  layout,
+  filter$1,
+  ring,
+  interactivity,
+  grid,
+  others,
+  position,
+  effect,
+  space,
+  scroll,
+  typography,
+  textDecoration,
+  transform,
+  list,
+  transition
+);
+const layoutSystem = Object.assign({}, space, layout, flexbox, grid, position);
+const layoutPropNames = Object.keys(
+  layoutSystem
+);
+const propNames = [...Object.keys(systemProps), ...pseudoPropNames];
+const styleProps = { ...systemProps, ...pseudoSelectors };
+const isStyleProp = (prop) => prop in styleProps;
+const expandResponsive = (styles2) => (theme2) => {
+  if (!theme2.__breakpoints)
+    return styles2;
+  const { isResponsive, toArrayValue, media: medias } = theme2.__breakpoints;
+  const computedStyles = {};
+  for (const key in styles2) {
+    let value = runIfFn(styles2[key], theme2);
+    if (value == null)
+      continue;
+    value = isObject(value) && isResponsive(value) ? toArrayValue(value) : value;
+    if (!Array.isArray(value)) {
+      computedStyles[key] = value;
+      continue;
+    }
+    const queries = value.slice(0, medias.length).length;
+    for (let index = 0; index < queries; index += 1) {
+      const media = medias == null ? void 0 : medias[index];
+      if (!media) {
+        computedStyles[key] = value[index];
+        continue;
+      }
+      computedStyles[media] = computedStyles[media] || {};
+      if (value[index] == null) {
+        continue;
+      }
+      computedStyles[media][key] = value[index];
+    }
+  }
+  return computedStyles;
+};
+function splitByComma(value) {
+  const chunks = [];
+  let chunk = "";
+  let inParens = false;
+  for (let i = 0; i < value.length; i++) {
+    const char = value[i];
+    if (char === "(") {
+      inParens = true;
+      chunk += char;
+    } else if (char === ")") {
+      inParens = false;
+      chunk += char;
+    } else if (char === "," && !inParens) {
+      chunks.push(chunk);
+      chunk = "";
+    } else {
+      chunk += char;
+    }
+  }
+  chunk = chunk.trim();
+  if (chunk) {
+    chunks.push(chunk);
+  }
+  return chunks;
+}
+function isCssVar(value) {
+  return /^var\(--.+\)$/.test(value);
+}
+const isCSSVariableTokenValue = (key, value) => key.startsWith("--") && typeof value === "string" && !isCssVar(value);
+const resolveTokenValue = (theme2, value) => {
+  if (value == null)
+    return value;
+  const getVar = (val) => {
+    var _a, _b;
+    return (_b = (_a = theme2.__cssMap) == null ? void 0 : _a[val]) == null ? void 0 : _b.varRef;
+  };
+  const getValue = (val) => getVar(val) ?? val;
+  const [tokenValue, fallbackValue] = splitByComma(value);
+  value = getVar(tokenValue) ?? getValue(fallbackValue) ?? getValue(value);
+  return value;
+};
+function getCss(options) {
+  const { configs = {}, pseudos = {}, theme: theme2 } = options;
+  const css2 = (stylesOrFn, nested = false) => {
+    var _a;
+    const _styles = runIfFn(stylesOrFn, theme2);
+    const styles2 = expandResponsive(_styles)(theme2);
+    let computedStyles = {};
+    for (let key in styles2) {
+      const valueOrFn = styles2[key];
+      let value = runIfFn(valueOrFn, theme2);
+      if (key in pseudos) {
+        key = pseudos[key];
+      }
+      if (isCSSVariableTokenValue(key, value)) {
+        value = resolveTokenValue(theme2, value);
+      }
+      let config2 = configs[key];
+      if (config2 === true) {
+        config2 = { property: key };
+      }
+      if (isObject(value)) {
+        computedStyles[key] = computedStyles[key] ?? {};
+        computedStyles[key] = mergeWith(
+          {},
+          computedStyles[key],
+          css2(value, true)
+        );
+        continue;
+      }
+      let rawValue = ((_a = config2 == null ? void 0 : config2.transform) == null ? void 0 : _a.call(config2, value, theme2, _styles)) ?? value;
+      rawValue = (config2 == null ? void 0 : config2.processResult) ? css2(rawValue, true) : rawValue;
+      const configProperty = runIfFn(config2 == null ? void 0 : config2.property, theme2);
+      if (!nested && (config2 == null ? void 0 : config2.static)) {
+        const staticStyles = runIfFn(config2.static, theme2);
+        computedStyles = mergeWith({}, computedStyles, staticStyles);
+      }
+      if (configProperty && Array.isArray(configProperty)) {
+        for (const property of configProperty) {
+          computedStyles[property] = rawValue;
+        }
+        continue;
+      }
+      if (configProperty) {
+        if (configProperty === "&" && isObject(rawValue)) {
+          computedStyles = mergeWith({}, computedStyles, rawValue);
+        } else {
+          computedStyles[configProperty] = rawValue;
+        }
+        continue;
+      }
+      if (isObject(rawValue)) {
+        computedStyles = mergeWith({}, computedStyles, rawValue);
+        continue;
+      }
+      computedStyles[key] = rawValue;
+    }
+    return computedStyles;
+  };
+  return css2;
+}
+const css$2 = (styles2) => (theme2) => {
+  const cssFn = getCss({
+    theme: theme2,
+    pseudos: pseudoSelectors,
+    configs: systemProps
+  });
+  return cssFn(styles2);
+};
+function defineStyle(styles2) {
+  return styles2;
+}
+function defineStyleConfig(config2) {
+  return config2;
+}
+function createMultiStyleConfigHelpers(parts) {
+  return {
+    definePartsStyle(config2) {
+      return config2;
+    },
+    defineMultiStyleConfig(config2) {
+      return { parts, ...config2 };
+    }
+  };
+}
+function getCSSVar(theme2, scale2, value) {
+  var _a, _b;
+  return ((_b = (_a = theme2.__cssMap) == null ? void 0 : _a[`${scale2}.${value}`]) == null ? void 0 : _b.varRef) ?? value;
+}
+function normalize$1(value, toArray) {
+  if (Array.isArray(value))
+    return value;
+  if (isObject(value))
+    return toArray(value);
+  if (value != null)
+    return [value];
+}
+function getNextIndex$1(values, i) {
+  for (let j2 = i + 1; j2 < values.length; j2++) {
+    if (values[j2] != null)
+      return j2;
+  }
+  return -1;
+}
+function createResolver(theme2) {
+  const breakpointUtil = theme2.__breakpoints;
+  return function resolver(config2, prop, value, props) {
+    var _a, _b;
+    if (!breakpointUtil)
+      return;
+    const result = {};
+    const normalized = normalize$1(value, breakpointUtil.toArrayValue);
+    if (!normalized)
+      return result;
+    const len = normalized.length;
+    const isSingle = len === 1;
+    const isMultipart = !!config2.parts;
+    for (let i = 0; i < len; i++) {
+      const key = breakpointUtil.details[i];
+      const nextKey = breakpointUtil.details[getNextIndex$1(normalized, i)];
+      const query = toMediaQueryString(key.minW, nextKey == null ? void 0 : nextKey._minW);
+      const styles2 = runIfFn((_a = config2[prop]) == null ? void 0 : _a[normalized[i]], props);
+      if (!styles2)
+        continue;
+      if (isMultipart) {
+        (_b = config2.parts) == null ? void 0 : _b.forEach((part) => {
+          mergeWith(result, {
+            [part]: isSingle ? styles2[part] : { [query]: styles2[part] }
+          });
+        });
+        continue;
+      }
+      if (!isMultipart) {
+        if (isSingle)
+          mergeWith(result, styles2);
+        else
+          result[query] = styles2;
+        continue;
+      }
+      result[query] = styles2;
+    }
+    return result;
+  };
+}
+function resolveStyleConfig(config2) {
+  return (props) => {
+    const { variant, size, theme: theme2 } = props;
+    const recipe = createResolver(theme2);
+    return mergeWith(
+      {},
+      runIfFn(config2.baseStyle ?? {}, props),
+      recipe(config2, "sizes", size, props),
+      recipe(config2, "variants", variant, props)
+    );
+  };
+}
+function omitThemingProps(props) {
+  return omit(props, ["styleConfig", "size", "variant", "colorScheme"]);
+}
+function resolveReference(operand) {
   if (isObject(operand) && operand.reference) {
     return operand.reference;
   }
   return String(operand);
 }
-const toExpr = (operator, ...operands) => operands.map(toRef).join(` ${operator} `).replace(/calc/g, "");
-const add = (...operands) => `calc(${toExpr("+", ...operands)})`;
-const subtract = (...operands) => `calc(${toExpr("-", ...operands)})`;
-const multiply = (...operands) => `calc(${toExpr("*", ...operands)})`;
-const divide = (...operands) => `calc(${toExpr("/", ...operands)})`;
+const toExpression = (operator, ...operands) => operands.map(resolveReference).join(` ${operator} `).replace(/calc/g, "");
+const add = (...operands) => `calc(${toExpression("+", ...operands)})`;
+const subtract = (...operands) => `calc(${toExpression("-", ...operands)})`;
+const multiply = (...operands) => `calc(${toExpression("*", ...operands)})`;
+const divide = (...operands) => `calc(${toExpression("/", ...operands)})`;
 const negate = (x2) => {
-  const value = toRef(x2);
+  const value = resolveReference(x2);
   if (value != null && !Number.isNaN(parseFloat(value))) {
     return String(value).startsWith("-") ? String(value).slice(1) : `-${value}`;
   }
@@ -9460,3399 +10283,504 @@ const calc = Object.assign(
     negate
   }
 );
-function isDecimal(value) {
-  return !Number.isInteger(parseFloat(value.toString()));
-}
 function replaceWhiteSpace(value, replaceValue = "-") {
   return value.replace(/\s+/g, replaceValue);
 }
 function escape(value) {
   const valueStr = replaceWhiteSpace(value.toString());
-  if (valueStr.includes("\\."))
+  return escapeSymbol(escapeDot(valueStr));
+}
+function escapeDot(value) {
+  if (value.includes("\\."))
     return value;
-  return isDecimal(value) ? valueStr.replace(".", `\\.`) : value;
+  const isDecimal = !Number.isInteger(parseFloat(value.toString()));
+  return isDecimal ? value.replace(".", `\\.`) : value;
 }
-function addPrefix(value, prefix = "") {
-  return [prefix, escape(value)].filter(Boolean).join("-");
+function escapeSymbol(value) {
+  return value.replace(/[!-,/:-@[-^`{-~]/g, "\\$&");
 }
-function toVarRef(name2, fallback) {
-  return `var(${escape(name2)}${fallback ? `, ${fallback}` : ""})`;
+function addPrefix(value, prefix2 = "") {
+  return [prefix2, value].filter(Boolean).join("-");
 }
-function toVar$1(value, prefix = "") {
-  return `--${addPrefix(value, prefix)}`;
+function toVarReference(name2, fallback) {
+  return `var(${name2}${fallback ? `, ${fallback}` : ""})`;
 }
-function cssVar(name2, options) {
-  const cssVariable = toVar$1(name2, options == null ? void 0 : options.prefix);
+function toVarDefinition(value, prefix2 = "") {
+  return escape(`--${addPrefix(value, prefix2)}`);
+}
+function cssVar(name2, fallback, cssVarPrefix) {
+  const cssVariable = toVarDefinition(name2, cssVarPrefix);
   return {
     variable: cssVariable,
-    reference: toVarRef(cssVariable, getFallback(options == null ? void 0 : options.fallback))
+    reference: toVarReference(cssVariable, fallback)
   };
 }
-function getFallback(fallback) {
-  if (typeof fallback === "string")
-    return fallback;
-  return fallback == null ? void 0 : fallback.reference;
-}
-const { definePartsStyle: definePartsStyle$x, defineMultiStyleConfig: defineMultiStyleConfig$x } = createMultiStyleConfigHelpers(alertAnatomy.keys);
-const $fg$5 = cssVar$1("alert-fg");
-const $bg$f = cssVar$1("alert-bg");
-const baseStyle$T = definePartsStyle$x({
-  container: {
-    bg: $bg$f.reference,
-    px: "4",
-    py: "3"
-  },
-  title: {
-    fontWeight: "bold",
-    lineHeight: "6",
-    marginEnd: "2"
-  },
-  description: {
-    lineHeight: "6"
-  },
-  icon: {
-    color: $fg$5.reference,
-    flexShrink: 0,
-    marginEnd: "3",
-    w: "5",
-    h: "6"
-  },
-  spinner: {
-    color: $fg$5.reference,
-    flexShrink: 0,
-    marginEnd: "3",
-    w: "5",
-    h: "5"
-  }
-});
-function getBg(props) {
-  const { theme: theme2, colorScheme: c } = props;
-  const darkBg = transparentize(`${c}.200`, 0.16)(theme2);
-  return {
-    light: `colors.${c}.100`,
-    dark: darkBg
-  };
-}
-const variantSubtle$1 = definePartsStyle$x((props) => {
-  const { colorScheme: c } = props;
-  const bg = getBg(props);
-  return {
-    container: {
-      [$fg$5.variable]: `colors.${c}.600`,
-      [$bg$f.variable]: bg.light,
-      _dark: {
-        [$fg$5.variable]: `colors.${c}.200`,
-        [$bg$f.variable]: bg.dark
-      }
-    }
-  };
-});
-const variantLeftAccent = definePartsStyle$x((props) => {
-  const { colorScheme: c } = props;
-  const bg = getBg(props);
-  return {
-    container: {
-      [$fg$5.variable]: `colors.${c}.600`,
-      [$bg$f.variable]: bg.light,
-      _dark: {
-        [$fg$5.variable]: `colors.${c}.200`,
-        [$bg$f.variable]: bg.dark
-      },
-      paddingStart: "3",
-      borderStartWidth: "4px",
-      borderStartColor: $fg$5.reference
-    }
-  };
-});
-const variantTopAccent = definePartsStyle$x((props) => {
-  const { colorScheme: c } = props;
-  const bg = getBg(props);
-  return {
-    container: {
-      [$fg$5.variable]: `colors.${c}.600`,
-      [$bg$f.variable]: bg.light,
-      _dark: {
-        [$fg$5.variable]: `colors.${c}.200`,
-        [$bg$f.variable]: bg.dark
-      },
-      pt: "2",
-      borderTopWidth: "4px",
-      borderTopColor: $fg$5.reference
-    }
-  };
-});
-const variantSolid$3 = definePartsStyle$x((props) => {
-  const { colorScheme: c } = props;
-  return {
-    container: {
-      [$fg$5.variable]: `colors.white`,
-      [$bg$f.variable]: `colors.${c}.600`,
-      _dark: {
-        [$fg$5.variable]: `colors.gray.900`,
-        [$bg$f.variable]: `colors.${c}.200`
-      },
-      color: $fg$5.reference
-    }
-  };
-});
-const variants$p = {
-  subtle: variantSubtle$1,
-  "left-accent": variantLeftAccent,
-  "top-accent": variantTopAccent,
-  solid: variantSolid$3
-};
-const alertTheme$1 = defineMultiStyleConfig$x({
-  baseStyle: baseStyle$T,
-  variants: variants$p,
-  defaultProps: {
-    variant: "subtle",
-    colorScheme: "blue"
-  }
-});
-const spacing = {
-  px: "1px",
-  0.5: "0.125rem",
-  1: "0.25rem",
-  1.5: "0.375rem",
-  2: "0.5rem",
-  2.5: "0.625rem",
-  3: "0.75rem",
-  3.5: "0.875rem",
-  4: "1rem",
-  5: "1.25rem",
-  6: "1.5rem",
-  7: "1.75rem",
-  8: "2rem",
-  9: "2.25rem",
-  10: "2.5rem",
-  12: "3rem",
-  14: "3.5rem",
-  16: "4rem",
-  20: "5rem",
-  24: "6rem",
-  28: "7rem",
-  32: "8rem",
-  36: "9rem",
-  40: "10rem",
-  44: "11rem",
-  48: "12rem",
-  52: "13rem",
-  56: "14rem",
-  60: "15rem",
-  64: "16rem",
-  72: "18rem",
-  80: "20rem",
-  96: "24rem"
-};
-const largeSizes = {
-  max: "max-content",
-  min: "min-content",
-  full: "100%",
-  "3xs": "14rem",
-  "2xs": "16rem",
-  xs: "20rem",
-  sm: "24rem",
-  md: "28rem",
-  lg: "32rem",
-  xl: "36rem",
-  "2xl": "42rem",
-  "3xl": "48rem",
-  "4xl": "56rem",
-  "5xl": "64rem",
-  "6xl": "72rem",
-  "7xl": "80rem",
-  "8xl": "90rem",
-  prose: "60ch"
-};
-const container = {
-  sm: "640px",
-  md: "768px",
-  lg: "1024px",
-  xl: "1280px"
-};
-const sizes$p = {
-  ...spacing,
-  ...largeSizes,
-  container
-};
-const isFunction$1 = (value) => typeof value === "function";
-function runIfFn(valueOrFn, ...args) {
-  return isFunction$1(valueOrFn) ? valueOrFn(...args) : valueOrFn;
-}
-const { definePartsStyle: definePartsStyle$w, defineMultiStyleConfig: defineMultiStyleConfig$w } = createMultiStyleConfigHelpers(avatarAnatomy.keys);
-const $border$3 = cssVar$1("avatar-border-color");
-const $bg$e = cssVar$1("avatar-bg");
-const $fs = cssVar$1("avatar-font-size");
-const $size$4 = cssVar$1("avatar-size");
-const baseStyleBadge = defineStyle({
-  borderRadius: "full",
-  border: "0.2em solid",
-  borderColor: $border$3.reference,
-  [$border$3.variable]: "white",
-  _dark: {
-    [$border$3.variable]: "colors.gray.800"
-  }
-});
-const baseStyleExcessLabel = defineStyle({
-  bg: $bg$e.reference,
-  fontSize: $fs.reference,
-  width: $size$4.reference,
-  height: $size$4.reference,
-  lineHeight: "1",
-  [$bg$e.variable]: "colors.gray.200",
-  _dark: {
-    [$bg$e.variable]: "colors.whiteAlpha.400"
-  }
-});
-const baseStyleContainer$3 = defineStyle((props) => {
-  const { name: name2, theme: theme2 } = props;
-  const bg = name2 ? randomColor({ string: name2 }) : "colors.gray.400";
-  const isBgDark = isDark(bg)(theme2);
-  let color2 = "white";
-  if (!isBgDark)
-    color2 = "gray.800";
-  return {
-    bg: $bg$e.reference,
-    fontSize: $fs.reference,
-    color: color2,
-    borderColor: $border$3.reference,
-    verticalAlign: "top",
-    width: $size$4.reference,
-    height: $size$4.reference,
-    "&:not([data-loaded])": {
-      [$bg$e.variable]: bg
-    },
-    [$border$3.variable]: "colors.white",
-    _dark: {
-      [$border$3.variable]: "colors.gray.800"
-    }
-  };
-});
-const baseStyleLabel$4 = defineStyle({
-  fontSize: $fs.reference,
-  lineHeight: "1"
-});
-const baseStyle$S = definePartsStyle$w((props) => ({
-  badge: runIfFn(baseStyleBadge, props),
-  excessLabel: runIfFn(baseStyleExcessLabel, props),
-  container: runIfFn(baseStyleContainer$3, props),
-  label: baseStyleLabel$4
-}));
-function getSize$3(size2) {
-  const themeSize = size2 !== "100%" ? sizes$p[size2] : void 0;
-  return definePartsStyle$w({
-    container: {
-      [$size$4.variable]: themeSize ?? size2,
-      [$fs.variable]: `calc(${themeSize ?? size2} / 2.5)`
-    },
-    excessLabel: {
-      [$size$4.variable]: themeSize ?? size2,
-      [$fs.variable]: `calc(${themeSize ?? size2} / 2.5)`
-    }
-  });
-}
-const sizes$o = {
-  "2xs": getSize$3(4),
-  xs: getSize$3(6),
-  sm: getSize$3(8),
-  md: getSize$3(12),
-  lg: getSize$3(16),
-  xl: getSize$3(24),
-  "2xl": getSize$3(32),
-  full: getSize$3("100%")
-};
-const avatarTheme$1 = defineMultiStyleConfig$w({
-  baseStyle: baseStyle$S,
-  sizes: sizes$o,
-  defaultProps: {
-    size: "md"
-  }
-});
-const vars = defineCssVars("badge", ["bg", "color", "shadow"]);
-const baseStyle$R = defineStyle({
-  px: 1,
-  textTransform: "uppercase",
-  fontSize: "xs",
-  borderRadius: "sm",
-  fontWeight: "bold",
-  bg: vars.bg.reference,
-  color: vars.color.reference,
-  boxShadow: vars.shadow.reference
-});
-const variantSolid$2 = defineStyle((props) => {
-  const { colorScheme: c, theme: theme2 } = props;
-  const dark = transparentize(`${c}.500`, 0.6)(theme2);
-  return {
-    [vars.bg.variable]: `colors.${c}.500`,
-    [vars.color.variable]: `colors.white`,
-    _dark: {
-      [vars.bg.variable]: dark,
-      [vars.color.variable]: `colors.whiteAlpha.800`
-    }
-  };
-});
-const variantSubtle = defineStyle((props) => {
-  const { colorScheme: c, theme: theme2 } = props;
-  const darkBg = transparentize(`${c}.200`, 0.16)(theme2);
-  return {
-    [vars.bg.variable]: `colors.${c}.100`,
-    [vars.color.variable]: `colors.${c}.800`,
-    _dark: {
-      [vars.bg.variable]: darkBg,
-      [vars.color.variable]: `colors.${c}.200`
-    }
-  };
-});
-const variantOutline$2 = defineStyle((props) => {
-  const { colorScheme: c, theme: theme2 } = props;
-  const darkColor = transparentize(`${c}.200`, 0.8)(theme2);
-  return {
-    [vars.color.variable]: `colors.${c}.500`,
-    _dark: {
-      [vars.color.variable]: darkColor
-    },
-    [vars.shadow.variable]: `inset 0 0 0px 1px ${vars.color.reference}`
-  };
-});
-const variants$o = {
-  solid: variantSolid$2,
-  subtle: variantSubtle,
-  outline: variantOutline$2
-};
-const badgeTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$R,
-  variants: variants$o,
-  defaultProps: {
-    variant: "subtle",
-    colorScheme: "gray"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$v, definePartsStyle: definePartsStyle$v } = createMultiStyleConfigHelpers(breadcrumbAnatomy.keys);
-const $decor = cssVar$1("breadcrumb-link-decor");
-const baseStyleLink = defineStyle({
-  transitionProperty: "common",
-  transitionDuration: "fast",
-  transitionTimingFunction: "ease-out",
-  outline: "none",
-  color: "inherit",
-  textDecoration: $decor.reference,
-  [$decor.variable]: "none",
-  "&:not([aria-current=page])": {
-    cursor: "pointer",
-    _hover: {
-      [$decor.variable]: "underline"
-    },
-    _focusVisible: {
-      boxShadow: "outline"
-    }
-  }
-});
-const baseStyle$Q = definePartsStyle$v({
-  link: baseStyleLink
-});
-const breadcrumbTheme = defineMultiStyleConfig$v({
-  baseStyle: baseStyle$Q
-});
-const baseStyle$P = defineStyle({
-  lineHeight: "1.2",
-  borderRadius: "md",
-  fontWeight: "semibold",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  _focusVisible: {
-    boxShadow: "outline"
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed",
-    boxShadow: "none"
-  },
-  _hover: {
-    _disabled: {
-      bg: "initial"
-    }
-  }
-});
-const variantGhost = defineStyle((props) => {
-  const { colorScheme: c, theme: theme2 } = props;
-  if (c === "gray") {
-    return {
-      color: mode(`gray.800`, `whiteAlpha.900`)(props),
-      _hover: {
-        bg: mode(`gray.100`, `whiteAlpha.200`)(props)
-      },
-      _active: { bg: mode(`gray.200`, `whiteAlpha.300`)(props) }
-    };
-  }
-  const darkHoverBg = transparentize(`${c}.200`, 0.12)(theme2);
-  const darkActiveBg = transparentize(`${c}.200`, 0.24)(theme2);
-  return {
-    color: mode(`${c}.600`, `${c}.200`)(props),
-    bg: "transparent",
-    _hover: {
-      bg: mode(`${c}.50`, darkHoverBg)(props)
-    },
-    _active: {
-      bg: mode(`${c}.100`, darkActiveBg)(props)
-    }
-  };
-});
-const variantOutline$1 = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  const borderColor = mode(`gray.200`, `whiteAlpha.300`)(props);
-  return {
-    border: "1px solid",
-    borderColor: c === "gray" ? borderColor : "currentColor",
-    ".chakra-button__group[data-attached][data-orientation=horizontal] > &:not(:last-of-type)": { marginEnd: "-1px" },
-    ".chakra-button__group[data-attached][data-orientation=vertical] > &:not(:last-of-type)": { marginBottom: "-1px" },
-    ...runIfFn(variantGhost, props)
-  };
-});
-const accessibleColorMap = {
-  yellow: {
-    bg: "yellow.400",
-    color: "black",
-    hoverBg: "yellow.500",
-    activeBg: "yellow.600"
-  },
-  cyan: {
-    bg: "cyan.400",
-    color: "black",
-    hoverBg: "cyan.500",
-    activeBg: "cyan.600"
-  }
-};
-const variantSolid$1 = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  if (c === "gray") {
-    const bg2 = mode(`gray.100`, `whiteAlpha.200`)(props);
-    return {
-      bg: bg2,
-      color: mode(`gray.800`, `whiteAlpha.900`)(props),
-      _hover: {
-        bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-        _disabled: {
-          bg: bg2
-        }
-      },
-      _active: { bg: mode(`gray.300`, `whiteAlpha.400`)(props) }
-    };
-  }
-  const {
-    bg = `${c}.500`,
-    color: color2 = "white",
-    hoverBg = `${c}.600`,
-    activeBg = `${c}.700`
-  } = accessibleColorMap[c] ?? {};
-  const background = mode(bg, `${c}.200`)(props);
-  return {
-    bg: background,
-    color: mode(color2, `gray.800`)(props),
-    _hover: {
-      bg: mode(hoverBg, `${c}.300`)(props),
-      _disabled: {
-        bg: background
-      }
-    },
-    _active: { bg: mode(activeBg, `${c}.400`)(props) }
-  };
-});
-const variantLink = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  return {
-    padding: 0,
-    height: "auto",
-    lineHeight: "normal",
-    verticalAlign: "baseline",
-    color: mode(`${c}.500`, `${c}.200`)(props),
-    _hover: {
-      textDecoration: "underline",
-      _disabled: {
-        textDecoration: "none"
-      }
-    },
-    _active: {
-      color: mode(`${c}.700`, `${c}.500`)(props)
-    }
-  };
-});
-const variantUnstyled$2 = defineStyle({
-  bg: "none",
-  color: "inherit",
-  display: "inline",
-  lineHeight: "inherit",
-  m: "0",
-  p: "0"
-});
-const variants$n = {
-  ghost: variantGhost,
-  outline: variantOutline$1,
-  solid: variantSolid$1,
-  link: variantLink,
-  unstyled: variantUnstyled$2
-};
-const sizes$n = {
-  lg: defineStyle({
-    h: "12",
-    minW: "12",
-    fontSize: "lg",
-    px: "6"
-  }),
-  md: defineStyle({
-    h: "10",
-    minW: "10",
-    fontSize: "md",
-    px: "4"
-  }),
-  sm: defineStyle({
-    h: "8",
-    minW: "8",
-    fontSize: "sm",
-    px: "3"
-  }),
-  xs: defineStyle({
-    h: "6",
-    minW: "6",
-    fontSize: "xs",
-    px: "2"
-  })
-};
-const buttonTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$P,
-  variants: variants$n,
-  sizes: sizes$n,
-  defaultProps: {
-    variant: "solid",
-    size: "md",
-    colorScheme: "gray"
-  }
-});
-const { definePartsStyle: definePartsStyle$u, defineMultiStyleConfig: defineMultiStyleConfig$u } = createMultiStyleConfigHelpers(cardAnatomy.keys);
-const $bg$d = cssVar$1("card-bg");
-const $padding$1 = cssVar$1("card-padding");
-const $shadow$3 = cssVar$1("card-shadow");
-const $radius = cssVar$1("card-radius");
-const $border$2 = cssVar$1("card-border-width", "0");
-const $borderColor = cssVar$1("card-border-color");
-const baseStyle$O = definePartsStyle$u({
-  container: {
-    [$bg$d.variable]: "colors.chakra-body-bg",
-    backgroundColor: $bg$d.reference,
-    boxShadow: $shadow$3.reference,
-    borderRadius: $radius.reference,
-    color: "chakra-body-text",
-    borderWidth: $border$2.reference,
-    borderColor: $borderColor.reference
-  },
-  body: {
-    padding: $padding$1.reference,
-    flex: "1 1 0%"
-  },
-  header: {
-    padding: $padding$1.reference
-  },
-  footer: {
-    padding: $padding$1.reference
-  }
-});
-const sizes$m = {
-  sm: definePartsStyle$u({
-    container: {
-      [$radius.variable]: "radii.base",
-      [$padding$1.variable]: "space.3"
-    }
-  }),
-  md: definePartsStyle$u({
-    container: {
-      [$radius.variable]: "radii.md",
-      [$padding$1.variable]: "space.5"
-    }
-  }),
-  lg: definePartsStyle$u({
-    container: {
-      [$radius.variable]: "radii.xl",
-      [$padding$1.variable]: "space.7"
-    }
-  })
-};
-const variants$m = {
-  elevated: definePartsStyle$u({
-    container: {
-      [$shadow$3.variable]: "shadows.base",
-      _dark: {
-        [$bg$d.variable]: "colors.gray.700"
-      }
-    }
-  }),
-  outline: definePartsStyle$u({
-    container: {
-      [$border$2.variable]: "1px",
-      [$borderColor.variable]: "colors.chakra-border-color"
-    }
-  }),
-  filled: definePartsStyle$u({
-    container: {
-      [$bg$d.variable]: "colors.chakra-subtle-bg"
-    }
-  }),
-  unstyled: {
-    body: {
-      [$padding$1.variable]: 0
-    },
-    header: {
-      [$padding$1.variable]: 0
-    },
-    footer: {
-      [$padding$1.variable]: 0
-    }
-  }
-};
-const cardTheme$1 = defineMultiStyleConfig$u({
-  baseStyle: baseStyle$O,
-  variants: variants$m,
-  sizes: sizes$m,
-  defaultProps: {
-    variant: "elevated",
-    size: "md"
-  }
-});
-const { definePartsStyle: definePartsStyle$t, defineMultiStyleConfig: defineMultiStyleConfig$t } = createMultiStyleConfigHelpers(checkboxAnatomy.keys);
-const $size$3 = cssVar$1("checkbox-size");
-const baseStyleControl$1 = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  return {
-    w: $size$3.reference,
-    h: $size$3.reference,
-    transitionProperty: "box-shadow",
-    transitionDuration: "normal",
-    border: "2px solid",
-    borderRadius: "sm",
-    borderColor: "inherit",
-    color: "white",
-    _checked: {
-      bg: mode(`${c}.500`, `${c}.200`)(props),
-      borderColor: mode(`${c}.500`, `${c}.200`)(props),
-      color: mode("white", "gray.900")(props),
-      _hover: {
-        bg: mode(`${c}.600`, `${c}.300`)(props),
-        borderColor: mode(`${c}.600`, `${c}.300`)(props)
-      },
-      _disabled: {
-        borderColor: mode("gray.200", "transparent")(props),
-        bg: mode("gray.200", "whiteAlpha.300")(props),
-        color: mode("gray.500", "whiteAlpha.500")(props)
-      }
-    },
-    _indeterminate: {
-      bg: mode(`${c}.500`, `${c}.200`)(props),
-      borderColor: mode(`${c}.500`, `${c}.200`)(props),
-      color: mode("white", "gray.900")(props)
-    },
-    _disabled: {
-      bg: mode("gray.100", "whiteAlpha.100")(props),
-      borderColor: mode("gray.100", "transparent")(props)
-    },
-    _focusVisible: {
-      boxShadow: "outline"
-    },
-    _invalid: {
-      borderColor: mode("red.500", "red.300")(props)
-    }
-  };
-});
-const baseStyleContainer$2 = defineStyle({
-  _disabled: { cursor: "not-allowed" }
-});
-const baseStyleLabel$3 = defineStyle({
-  userSelect: "none",
-  _disabled: { opacity: 0.4 }
-});
-const baseStyleIcon$5 = defineStyle({
-  transitionProperty: "transform",
-  transitionDuration: "normal"
-});
-const baseStyle$N = definePartsStyle$t((props) => ({
-  icon: baseStyleIcon$5,
-  container: baseStyleContainer$2,
-  control: runIfFn(baseStyleControl$1, props),
-  label: baseStyleLabel$3
-}));
-const sizes$l = {
-  sm: definePartsStyle$t({
-    control: { [$size$3.variable]: "sizes.3" },
-    label: { fontSize: "sm" },
-    icon: { fontSize: "3xs" }
-  }),
-  md: definePartsStyle$t({
-    control: { [$size$3.variable]: "sizes.4" },
-    label: { fontSize: "md" },
-    icon: { fontSize: "2xs" }
-  }),
-  lg: definePartsStyle$t({
-    control: { [$size$3.variable]: "sizes.5" },
-    label: { fontSize: "lg" },
-    icon: { fontSize: "2xs" }
-  })
-};
-const checkboxTheme$1 = defineMultiStyleConfig$t({
-  baseStyle: baseStyle$N,
-  sizes: sizes$l,
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const $size$2 = cssVar("close-button-size");
-const $bg$c = cssVar("close-button-bg");
-const baseStyle$M = defineStyle({
-  w: [$size$2.reference],
-  h: [$size$2.reference],
-  borderRadius: "md",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed",
-    boxShadow: "none"
-  },
-  _hover: {
-    [$bg$c.variable]: "colors.blackAlpha.100",
-    _dark: {
-      [$bg$c.variable]: "colors.whiteAlpha.100"
-    }
-  },
-  _active: {
-    [$bg$c.variable]: "colors.blackAlpha.200",
-    _dark: {
-      [$bg$c.variable]: "colors.whiteAlpha.200"
-    }
-  },
-  _focusVisible: {
-    boxShadow: "outline"
-  },
-  bg: $bg$c.reference
-});
-const sizes$k = {
-  lg: defineStyle({
-    [$size$2.variable]: "sizes.10",
-    fontSize: "md"
-  }),
-  md: defineStyle({
-    [$size$2.variable]: "sizes.8",
-    fontSize: "xs"
-  }),
-  sm: defineStyle({
-    [$size$2.variable]: "sizes.6",
-    fontSize: "2xs"
-  })
-};
-const closeButtonTheme = defineStyleConfig({
-  baseStyle: baseStyle$M,
-  sizes: sizes$k,
-  defaultProps: {
-    size: "md"
-  }
-});
-const { variants: variants$l, defaultProps } = badgeTheme$1;
-const baseStyle$L = defineStyle({
-  fontFamily: "mono",
-  fontSize: "sm",
-  px: "0.2em",
-  borderRadius: "sm",
-  bg: vars.bg.reference,
-  color: vars.color.reference,
-  boxShadow: vars.shadow.reference
-});
-const codeTheme = defineStyleConfig({
-  baseStyle: baseStyle$L,
-  variants: variants$l,
-  defaultProps
-});
-const baseStyle$K = defineStyle({
-  w: "100%",
-  mx: "auto",
-  maxW: "prose",
-  px: "4"
-});
-const containerTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$K
-});
-const baseStyle$J = defineStyle({
-  opacity: 0.6,
-  borderColor: "inherit"
-});
-const variantSolid = defineStyle({
-  borderStyle: "solid"
-});
-const variantDashed = defineStyle({
-  borderStyle: "dashed"
-});
-const variants$k = {
-  solid: variantSolid,
-  dashed: variantDashed
-};
-const dividerTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$J,
-  variants: variants$k,
-  defaultProps: {
-    variant: "solid"
-  }
-});
-const { definePartsStyle: definePartsStyle$s, defineMultiStyleConfig: defineMultiStyleConfig$s } = createMultiStyleConfigHelpers(drawerAnatomy.keys);
-const $bg$b = cssVar$1("drawer-bg");
-const $bs = cssVar$1("drawer-box-shadow");
-function getSize$2(value) {
-  if (value === "full") {
-    return definePartsStyle$s({
-      dialog: { maxW: "100vw", h: "100vh" }
-    });
-  }
-  return definePartsStyle$s({
-    dialog: { maxW: value }
-  });
-}
-const baseStyleOverlay$1 = defineStyle({
-  bg: "blackAlpha.600",
-  zIndex: "modal"
-});
-const baseStyleDialogContainer$1 = defineStyle({
-  display: "flex",
-  zIndex: "modal",
-  justifyContent: "center"
-});
-const baseStyleDialog$1 = defineStyle((props) => {
-  const { isFullHeight } = props;
-  return {
-    ...isFullHeight && { height: "100vh" },
-    zIndex: "modal",
-    maxH: "100vh",
-    color: "inherit",
-    [$bg$b.variable]: "colors.white",
-    [$bs.variable]: "shadows.lg",
-    _dark: {
-      [$bg$b.variable]: "colors.gray.700",
-      [$bs.variable]: "shadows.dark-lg"
-    },
-    bg: $bg$b.reference,
-    boxShadow: $bs.reference
-  };
-});
-const baseStyleHeader$2 = defineStyle({
-  px: "6",
-  py: "4",
-  fontSize: "xl",
-  fontWeight: "semibold"
-});
-const baseStyleCloseButton$3 = defineStyle({
-  position: "absolute",
-  top: "2",
-  insetEnd: "3"
-});
-const baseStyleBody$2 = defineStyle({
-  px: "6",
-  py: "2",
-  flex: "1",
-  overflow: "auto"
-});
-const baseStyleFooter$2 = defineStyle({
-  px: "6",
-  py: "4"
-});
-const baseStyle$I = definePartsStyle$s((props) => ({
-  overlay: baseStyleOverlay$1,
-  dialogContainer: baseStyleDialogContainer$1,
-  dialog: runIfFn(baseStyleDialog$1, props),
-  header: baseStyleHeader$2,
-  closeButton: baseStyleCloseButton$3,
-  body: baseStyleBody$2,
-  footer: baseStyleFooter$2
-}));
-const sizes$j = {
-  xs: getSize$2("xs"),
-  sm: getSize$2("md"),
-  md: getSize$2("lg"),
-  lg: getSize$2("2xl"),
-  xl: getSize$2("4xl"),
-  full: getSize$2("full")
-};
-const drawerTheme = defineMultiStyleConfig$s({
-  baseStyle: baseStyle$I,
-  sizes: sizes$j,
-  defaultProps: {
-    size: "xs"
-  }
-});
-const { definePartsStyle: definePartsStyle$r, defineMultiStyleConfig: defineMultiStyleConfig$r } = createMultiStyleConfigHelpers(editableAnatomy.keys);
-const baseStylePreview = defineStyle({
-  borderRadius: "md",
-  py: "1",
-  transitionProperty: "common",
-  transitionDuration: "normal"
-});
-const baseStyleInput = defineStyle({
-  borderRadius: "md",
-  py: "1",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  width: "full",
-  _focusVisible: { boxShadow: "outline" },
-  _placeholder: { opacity: 0.6 }
-});
-const baseStyleTextarea = defineStyle({
-  borderRadius: "md",
-  py: "1",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  width: "full",
-  _focusVisible: { boxShadow: "outline" },
-  _placeholder: { opacity: 0.6 }
-});
-const baseStyle$H = definePartsStyle$r({
-  preview: baseStylePreview,
-  input: baseStyleInput,
-  textarea: baseStyleTextarea
-});
-const editableTheme$1 = defineMultiStyleConfig$r({
-  baseStyle: baseStyle$H
-});
-const { definePartsStyle: definePartsStyle$q, defineMultiStyleConfig: defineMultiStyleConfig$q } = createMultiStyleConfigHelpers(formAnatomy.keys);
-const $fg$4 = cssVar$1("form-control-color");
-const baseStyleRequiredIndicator = defineStyle({
-  marginStart: "1",
-  [$fg$4.variable]: "colors.red.500",
-  _dark: {
-    [$fg$4.variable]: "colors.red.300"
-  },
-  color: $fg$4.reference
-});
-const baseStyleHelperText = defineStyle({
-  mt: "2",
-  [$fg$4.variable]: "colors.gray.600",
-  _dark: {
-    [$fg$4.variable]: "colors.whiteAlpha.600"
-  },
-  color: $fg$4.reference,
-  lineHeight: "normal",
-  fontSize: "sm"
-});
-const baseStyle$G = definePartsStyle$q({
-  container: {
-    width: "100%",
-    position: "relative"
-  },
-  requiredIndicator: baseStyleRequiredIndicator,
-  helperText: baseStyleHelperText
-});
-const formTheme = defineMultiStyleConfig$q({
-  baseStyle: baseStyle$G
-});
-const { definePartsStyle: definePartsStyle$p, defineMultiStyleConfig: defineMultiStyleConfig$p } = createMultiStyleConfigHelpers(formErrorAnatomy.keys);
-const $fg$3 = cssVar$1("form-error-color");
-const baseStyleText = defineStyle({
-  [$fg$3.variable]: `colors.red.500`,
-  _dark: {
-    [$fg$3.variable]: `colors.red.300`
-  },
-  color: $fg$3.reference,
-  mt: "2",
-  fontSize: "sm",
-  lineHeight: "normal"
-});
-const baseStyleIcon$4 = defineStyle({
-  marginEnd: "0.5em",
-  [$fg$3.variable]: `colors.red.500`,
-  _dark: {
-    [$fg$3.variable]: `colors.red.300`
-  },
-  color: $fg$3.reference
-});
-const baseStyle$F = definePartsStyle$p({
-  text: baseStyleText,
-  icon: baseStyleIcon$4
-});
-const formErrorTheme = defineMultiStyleConfig$p({
-  baseStyle: baseStyle$F
-});
-const baseStyle$E = defineStyle({
-  fontSize: "md",
-  marginEnd: "3",
-  mb: "2",
-  fontWeight: "medium",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  opacity: 1,
-  _disabled: {
-    opacity: 0.4
-  }
-});
-const formLabelTheme = defineStyleConfig({
-  baseStyle: baseStyle$E
-});
-const baseStyle$D = defineStyle({
-  fontFamily: "heading",
-  fontWeight: "bold"
-});
-const sizes$i = {
-  "4xl": defineStyle({
-    fontSize: ["6xl", null, "7xl"],
-    lineHeight: 1
-  }),
-  "3xl": defineStyle({
-    fontSize: ["5xl", null, "6xl"],
-    lineHeight: 1
-  }),
-  "2xl": defineStyle({
-    fontSize: ["4xl", null, "5xl"],
-    lineHeight: [1.2, null, 1]
-  }),
-  xl: defineStyle({
-    fontSize: ["3xl", null, "4xl"],
-    lineHeight: [1.33, null, 1.2]
-  }),
-  lg: defineStyle({
-    fontSize: ["2xl", null, "3xl"],
-    lineHeight: [1.33, null, 1.2]
-  }),
-  md: defineStyle({
-    fontSize: "xl",
-    lineHeight: 1.2
-  }),
-  sm: defineStyle({
-    fontSize: "md",
-    lineHeight: 1.2
-  }),
-  xs: defineStyle({
-    fontSize: "sm",
-    lineHeight: 1.2
-  })
-};
-const headingTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$D,
-  sizes: sizes$i,
-  defaultProps: {
-    size: "xl"
-  }
-});
-const { definePartsStyle: definePartsStyle$o, defineMultiStyleConfig: defineMultiStyleConfig$o } = createMultiStyleConfigHelpers(inputAnatomy.keys);
-const $height$1 = cssVar$1("input-height");
-const $fontSize$1 = cssVar$1("input-font-size");
-const $padding = cssVar$1("input-padding");
-const $borderRadius = cssVar$1("input-border-radius");
-const baseStyle$C = definePartsStyle$o({
-  addon: {
-    height: $height$1.reference,
-    fontSize: $fontSize$1.reference,
-    px: $padding.reference,
-    borderRadius: $borderRadius.reference
-  },
-  field: {
-    width: "100%",
-    height: $height$1.reference,
-    fontSize: $fontSize$1.reference,
-    px: $padding.reference,
-    borderRadius: $borderRadius.reference,
-    minWidth: 0,
-    outline: 0,
-    position: "relative",
-    appearance: "none",
-    transitionProperty: "common",
-    transitionDuration: "normal",
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed"
-    }
-  }
-});
-const size = {
-  lg: defineStyle({
-    [$fontSize$1.variable]: "fontSizes.lg",
-    [$padding.variable]: "space.4",
-    [$borderRadius.variable]: "radii.md",
-    [$height$1.variable]: "sizes.12"
-  }),
-  md: defineStyle({
-    [$fontSize$1.variable]: "fontSizes.md",
-    [$padding.variable]: "space.4",
-    [$borderRadius.variable]: "radii.md",
-    [$height$1.variable]: "sizes.10"
-  }),
-  sm: defineStyle({
-    [$fontSize$1.variable]: "fontSizes.sm",
-    [$padding.variable]: "space.3",
-    [$borderRadius.variable]: "radii.sm",
-    [$height$1.variable]: "sizes.8"
-  }),
-  xs: defineStyle({
-    [$fontSize$1.variable]: "fontSizes.xs",
-    [$padding.variable]: "space.2",
-    [$borderRadius.variable]: "radii.sm",
-    [$height$1.variable]: "sizes.6"
-  })
-};
-const sizes$h = {
-  lg: definePartsStyle$o({
-    field: size.lg,
-    group: size.lg
-  }),
-  md: definePartsStyle$o({
-    field: size.md,
-    group: size.md
-  }),
-  sm: definePartsStyle$o({
-    field: size.sm,
-    group: size.sm
-  }),
-  xs: definePartsStyle$o({
-    field: size.xs,
-    group: size.xs
-  })
-};
-function getDefaults(props) {
-  const { focusBorderColor: fc, errorBorderColor: ec } = props;
-  return {
-    focusBorderColor: fc || mode("blue.500", "blue.300")(props),
-    errorBorderColor: ec || mode("red.500", "red.300")(props)
-  };
-}
-const variantOutline = definePartsStyle$o((props) => {
-  const { theme: theme2 } = props;
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props);
-  return {
-    field: {
-      border: "1px solid",
-      borderColor: "inherit",
-      bg: "inherit",
-      _hover: {
-        borderColor: mode("gray.300", "whiteAlpha.400")(props)
-      },
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all"
-      },
-      _invalid: {
-        borderColor: getColor(theme2, ec),
-        boxShadow: `0 0 0 1px ${getColor(theme2, ec)}`
-      },
-      _focusVisible: {
-        zIndex: 1,
-        borderColor: getColor(theme2, fc),
-        boxShadow: `0 0 0 1px ${getColor(theme2, fc)}`
-      }
-    },
-    addon: {
-      border: "1px solid",
-      borderColor: mode("inherit", "whiteAlpha.50")(props),
-      bg: mode("gray.100", "whiteAlpha.300")(props)
-    }
-  };
-});
-const variantFilled = definePartsStyle$o((props) => {
-  const { theme: theme2 } = props;
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props);
-  return {
-    field: {
-      border: "2px solid",
-      borderColor: "transparent",
-      bg: mode("gray.100", "whiteAlpha.50")(props),
-      _hover: {
-        bg: mode("gray.200", "whiteAlpha.100")(props)
-      },
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all"
-      },
-      _invalid: {
-        borderColor: getColor(theme2, ec)
-      },
-      _focusVisible: {
-        bg: "transparent",
-        borderColor: getColor(theme2, fc)
-      }
-    },
-    addon: {
-      border: "2px solid",
-      borderColor: "transparent",
-      bg: mode("gray.100", "whiteAlpha.50")(props)
-    }
-  };
-});
-const variantFlushed = definePartsStyle$o((props) => {
-  const { theme: theme2 } = props;
-  const { focusBorderColor: fc, errorBorderColor: ec } = getDefaults(props);
-  return {
-    field: {
-      borderBottom: "1px solid",
-      borderColor: "inherit",
-      borderRadius: "0",
-      px: "0",
-      bg: "transparent",
-      _readOnly: {
-        boxShadow: "none !important",
-        userSelect: "all"
-      },
-      _invalid: {
-        borderColor: getColor(theme2, ec),
-        boxShadow: `0px 1px 0px 0px ${getColor(theme2, ec)}`
-      },
-      _focusVisible: {
-        borderColor: getColor(theme2, fc),
-        boxShadow: `0px 1px 0px 0px ${getColor(theme2, fc)}`
-      }
-    },
-    addon: {
-      borderBottom: "2px solid",
-      borderColor: "inherit",
-      borderRadius: "0",
-      px: "0",
-      bg: "transparent"
-    }
-  };
-});
-const variantUnstyled$1 = definePartsStyle$o({
-  field: {
-    bg: "transparent",
-    px: "0",
-    height: "auto"
-  },
-  addon: {
-    bg: "transparent",
-    px: "0",
-    height: "auto"
-  }
-});
-const variants$j = {
-  outline: variantOutline,
-  filled: variantFilled,
-  flushed: variantFlushed,
-  unstyled: variantUnstyled$1
-};
-const inputTheme$1 = defineMultiStyleConfig$o({
-  baseStyle: baseStyle$C,
-  sizes: sizes$h,
-  variants: variants$j,
-  defaultProps: {
-    size: "md",
-    variant: "outline"
-  }
-});
-const $bg$a = cssVar$1("kbd-bg");
-const baseStyle$B = defineStyle({
-  [$bg$a.variable]: "colors.gray.100",
-  _dark: {
-    [$bg$a.variable]: "colors.whiteAlpha.100"
-  },
-  bg: $bg$a.reference,
-  borderRadius: "md",
-  borderWidth: "1px",
-  borderBottomWidth: "3px",
-  fontSize: "0.8em",
-  fontWeight: "bold",
-  lineHeight: "normal",
-  px: "0.4em",
-  whiteSpace: "nowrap"
-});
-const kbdTheme = defineStyleConfig({
-  baseStyle: baseStyle$B
-});
-const baseStyle$A = defineStyle({
-  transitionProperty: "common",
-  transitionDuration: "fast",
-  transitionTimingFunction: "ease-out",
-  cursor: "pointer",
-  textDecoration: "none",
-  outline: "none",
-  color: "inherit",
-  _hover: {
-    textDecoration: "underline"
-  },
-  _focusVisible: {
-    boxShadow: "outline"
-  }
-});
-const linkTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$A
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$n, definePartsStyle: definePartsStyle$n } = createMultiStyleConfigHelpers(listAnatomy.keys);
-const baseStyleIcon$3 = defineStyle({
-  marginEnd: "2",
-  display: "inline",
-  verticalAlign: "text-bottom"
-});
-const baseStyle$z = definePartsStyle$n({
-  icon: baseStyleIcon$3
-});
-const listTheme = defineMultiStyleConfig$n({
-  baseStyle: baseStyle$z
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$m, definePartsStyle: definePartsStyle$m } = createMultiStyleConfigHelpers(menuAnatomy.keys);
-const $bg$9 = cssVar$1("menu-bg");
-const $shadow$2 = cssVar$1("menu-shadow");
-const baseStyleList = defineStyle({
-  [$bg$9.variable]: "#fff",
-  [$shadow$2.variable]: "shadows.sm",
-  _dark: {
-    [$bg$9.variable]: "colors.gray.700",
-    [$shadow$2.variable]: "shadows.dark-lg"
-  },
-  color: "inherit",
-  minW: "3xs",
-  py: "2",
-  zIndex: "dropdown",
-  borderRadius: "md",
-  borderWidth: "1px",
-  bg: $bg$9.reference,
-  boxShadow: $shadow$2.reference
-});
-const baseStyleItem = defineStyle({
-  py: "1.5",
-  px: "3",
-  transitionProperty: "background",
-  transitionDuration: "ultra-fast",
-  transitionTimingFunction: "ease-in",
-  _focus: {
-    [$bg$9.variable]: "colors.gray.100",
-    _dark: {
-      [$bg$9.variable]: "colors.whiteAlpha.100"
-    }
-  },
-  _active: {
-    [$bg$9.variable]: "colors.gray.200",
-    _dark: {
-      [$bg$9.variable]: "colors.whiteAlpha.200"
-    }
-  },
-  _expanded: {
-    [$bg$9.variable]: "colors.gray.100",
-    _dark: {
-      [$bg$9.variable]: "colors.whiteAlpha.100"
-    }
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed"
-  },
-  bg: $bg$9.reference
-});
-const baseStyleGroupTitle = defineStyle({
-  mx: 4,
-  my: 2,
-  fontWeight: "semibold",
-  fontSize: "sm"
-});
-const baseStyleIcon$2 = defineStyle({
-  display: "inline-flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flexShrink: 0
-});
-const baseStyleCommand = defineStyle({
-  opacity: 0.6
-});
-const baseStyleDivider = defineStyle({
-  border: 0,
-  borderBottom: "1px solid",
-  borderColor: "inherit",
-  my: "2",
-  opacity: 0.6
-});
-const baseStyleButton = defineStyle({
-  transitionProperty: "common",
-  transitionDuration: "normal"
-});
-const baseStyle$y = definePartsStyle$m({
-  button: baseStyleButton,
-  list: baseStyleList,
-  item: baseStyleItem,
-  groupTitle: baseStyleGroupTitle,
-  icon: baseStyleIcon$2,
-  command: baseStyleCommand,
-  divider: baseStyleDivider
-});
-const menuTheme$1 = defineMultiStyleConfig$m({
-  baseStyle: baseStyle$y
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$l, definePartsStyle: definePartsStyle$l } = createMultiStyleConfigHelpers(modalAnatomy.keys);
-const $bg$8 = cssVar$1("modal-bg");
-const $shadow$1 = cssVar$1("modal-shadow");
-const baseStyleOverlay = defineStyle({
-  bg: "blackAlpha.600",
-  zIndex: "modal"
-});
-const baseStyleDialogContainer = defineStyle((props) => {
-  const { isCentered, scrollBehavior } = props;
-  return {
-    display: "flex",
-    zIndex: "modal",
-    justifyContent: "center",
-    alignItems: isCentered ? "center" : "flex-start",
-    overflow: scrollBehavior === "inside" ? "hidden" : "auto",
-    overscrollBehaviorY: "none"
-  };
-});
-const baseStyleDialog = defineStyle((props) => {
-  const { isCentered, scrollBehavior } = props;
-  return {
-    borderRadius: "md",
-    color: "inherit",
-    my: isCentered ? "auto" : "16",
-    mx: isCentered ? "auto" : void 0,
-    zIndex: "modal",
-    maxH: scrollBehavior === "inside" ? "calc(100% - 7.5rem)" : void 0,
-    [$bg$8.variable]: "colors.white",
-    [$shadow$1.variable]: "shadows.lg",
-    _dark: {
-      [$bg$8.variable]: "colors.gray.700",
-      [$shadow$1.variable]: "shadows.dark-lg"
-    },
-    bg: $bg$8.reference,
-    boxShadow: $shadow$1.reference
-  };
-});
-const baseStyleHeader$1 = defineStyle({
-  px: "6",
-  py: "4",
-  fontSize: "xl",
-  fontWeight: "semibold"
-});
-const baseStyleCloseButton$2 = defineStyle({
-  position: "absolute",
-  top: "2",
-  insetEnd: "3"
-});
-const baseStyleBody$1 = defineStyle((props) => {
-  const { scrollBehavior } = props;
-  return {
-    px: "6",
-    py: "2",
-    flex: "1",
-    overflow: scrollBehavior === "inside" ? "auto" : void 0
-  };
-});
-const baseStyleFooter$1 = defineStyle({
-  px: "6",
-  py: "4"
-});
-const baseStyle$x = definePartsStyle$l((props) => ({
-  overlay: baseStyleOverlay,
-  dialogContainer: runIfFn(baseStyleDialogContainer, props),
-  dialog: runIfFn(baseStyleDialog, props),
-  header: baseStyleHeader$1,
-  closeButton: baseStyleCloseButton$2,
-  body: runIfFn(baseStyleBody$1, props),
-  footer: baseStyleFooter$1
-}));
-function getSize$1(value) {
-  if (value === "full") {
-    return definePartsStyle$l({
-      dialog: {
-        maxW: "100vw",
-        minH: "$100vh",
-        my: "0",
-        borderRadius: "0"
-      }
-    });
-  }
-  return definePartsStyle$l({
-    dialog: { maxW: value }
-  });
-}
-const sizes$g = {
-  xs: getSize$1("xs"),
-  sm: getSize$1("sm"),
-  md: getSize$1("md"),
-  lg: getSize$1("lg"),
-  xl: getSize$1("xl"),
-  "2xl": getSize$1("2xl"),
-  "3xl": getSize$1("3xl"),
-  "4xl": getSize$1("4xl"),
-  "5xl": getSize$1("5xl"),
-  "6xl": getSize$1("6xl"),
-  full: getSize$1("full")
-};
-const modalTheme = defineMultiStyleConfig$l({
-  baseStyle: baseStyle$x,
-  sizes: sizes$g,
-  defaultProps: { size: "md" }
-});
-const typography = {
-  letterSpacings: {
-    tighter: "-0.05em",
-    tight: "-0.025em",
-    normal: "0",
-    wide: "0.025em",
-    wider: "0.05em",
-    widest: "0.1em"
-  },
-  lineHeights: {
-    normal: "normal",
-    none: 1,
-    shorter: 1.25,
-    short: 1.375,
-    base: 1.5,
-    tall: 1.625,
-    taller: "2",
-    "3": ".75rem",
-    "4": "1rem",
-    "5": "1.25rem",
-    "6": "1.5rem",
-    "7": "1.75rem",
-    "8": "2rem",
-    "9": "2.25rem",
-    "10": "2.5rem"
-  },
-  fontWeights: {
-    hairline: 100,
-    thin: 200,
-    light: 300,
-    normal: 400,
-    medium: 500,
-    semibold: 600,
-    bold: 700,
-    extrabold: 800,
-    black: 900
-  },
-  fonts: {
-    heading: `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
-    body: `-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
-    mono: `SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace`
-  },
-  fontSizes: {
-    "3xs": "0.45rem",
-    "2xs": "0.625rem",
-    xs: "0.75rem",
-    sm: "0.875rem",
-    md: "1rem",
-    lg: "1.125rem",
-    xl: "1.25rem",
-    "2xl": "1.5rem",
-    "3xl": "1.875rem",
-    "4xl": "2.25rem",
-    "5xl": "3rem",
-    "6xl": "3.75rem",
-    "7xl": "4.5rem",
-    "8xl": "6rem",
-    "9xl": "8rem"
-  }
-};
-const { defineMultiStyleConfig: defineMultiStyleConfig$k, definePartsStyle: definePartsStyle$k } = createMultiStyleConfigHelpers(numberInputAnatomy.keys);
-const $stepperWidth = cssVar("number-input-stepper-width");
-const $inputPadding = cssVar("number-input-input-padding");
-const inputPaddingValue = calc($stepperWidth).add("0.5rem").toString();
-const $bg$7 = cssVar("number-input-bg");
-const $fg$2 = cssVar("number-input-color");
-const $border$1 = cssVar("number-input-border-color");
-const baseStyleRoot$1 = defineStyle({
-  [$stepperWidth.variable]: "sizes.6",
-  [$inputPadding.variable]: inputPaddingValue
-});
-const baseStyleField$1 = defineStyle(
-  (props) => {
-    var _a2;
-    return ((_a2 = runIfFn(inputTheme$1.baseStyle, props)) == null ? void 0 : _a2.field) ?? {};
-  }
-);
-const baseStyleStepperGroup = defineStyle({
-  width: $stepperWidth.reference
-});
-const baseStyleStepper = defineStyle({
-  borderStart: "1px solid",
-  borderStartColor: $border$1.reference,
-  color: $fg$2.reference,
-  bg: $bg$7.reference,
-  [$fg$2.variable]: "colors.chakra-body-text",
-  [$border$1.variable]: "colors.chakra-border-color",
-  _dark: {
-    [$fg$2.variable]: "colors.whiteAlpha.800",
-    [$border$1.variable]: "colors.whiteAlpha.300"
-  },
-  _active: {
-    [$bg$7.variable]: "colors.gray.200",
-    _dark: {
-      [$bg$7.variable]: "colors.whiteAlpha.300"
-    }
-  },
-  _disabled: {
-    opacity: 0.4,
-    cursor: "not-allowed"
-  }
-});
-const baseStyle$w = definePartsStyle$k((props) => ({
-  root: baseStyleRoot$1,
-  field: runIfFn(baseStyleField$1, props) ?? {},
-  stepperGroup: baseStyleStepperGroup,
-  stepper: baseStyleStepper
-}));
-function getSize(size2) {
-  var _a2, _b2;
-  const sizeStyle = (_a2 = inputTheme$1.sizes) == null ? void 0 : _a2[size2];
-  const radius = {
-    lg: "md",
-    md: "md",
-    sm: "sm",
-    xs: "sm"
-  };
-  const _fontSize = ((_b2 = sizeStyle.field) == null ? void 0 : _b2.fontSize) ?? "md";
-  const fontSize = typography.fontSizes[_fontSize];
-  return definePartsStyle$k({
-    field: {
-      ...sizeStyle.field,
-      paddingInlineEnd: $inputPadding.reference,
-      verticalAlign: "top"
-    },
-    stepper: {
-      fontSize: calc(fontSize).multiply(0.75).toString(),
-      _first: {
-        borderTopEndRadius: radius[size2]
-      },
-      _last: {
-        borderBottomEndRadius: radius[size2],
-        mt: "-1px",
-        borderTopWidth: 1
-      }
-    }
-  });
-}
-const sizes$f = {
-  xs: getSize("xs"),
-  sm: getSize("sm"),
-  md: getSize("md"),
-  lg: getSize("lg")
-};
-const numberInputTheme = defineMultiStyleConfig$k({
-  baseStyle: baseStyle$w,
-  sizes: sizes$f,
-  variants: inputTheme$1.variants,
-  defaultProps: inputTheme$1.defaultProps
-});
-const baseStyle$v = defineStyle({
-  ...(_a = inputTheme$1.baseStyle) == null ? void 0 : _a.field,
-  textAlign: "center"
-});
-const sizes$e = {
-  lg: defineStyle({
-    fontSize: "lg",
-    w: 12,
-    h: 12,
-    borderRadius: "md"
-  }),
-  md: defineStyle({
-    fontSize: "md",
-    w: 10,
-    h: 10,
-    borderRadius: "md"
-  }),
-  sm: defineStyle({
-    fontSize: "sm",
-    w: 8,
-    h: 8,
-    borderRadius: "sm"
-  }),
-  xs: defineStyle({
-    fontSize: "xs",
-    w: 6,
-    h: 6,
-    borderRadius: "sm"
-  })
-};
-const variants$i = {
-  outline: defineStyle(
-    (props) => {
-      var _a2, _b2;
-      return ((_b2 = runIfFn((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.outline, props)) == null ? void 0 : _b2.field) ?? {};
-    }
-  ),
-  flushed: defineStyle(
-    (props) => {
-      var _a2, _b2;
-      return ((_b2 = runIfFn((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.flushed, props)) == null ? void 0 : _b2.field) ?? {};
-    }
-  ),
-  filled: defineStyle(
-    (props) => {
-      var _a2, _b2;
-      return ((_b2 = runIfFn((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.filled, props)) == null ? void 0 : _b2.field) ?? {};
-    }
-  ),
-  unstyled: ((_b = inputTheme$1.variants) == null ? void 0 : _b.unstyled.field) ?? {}
-};
-const pinInputTheme = defineStyleConfig({
-  baseStyle: baseStyle$v,
-  sizes: sizes$e,
-  variants: variants$i,
-  defaultProps: inputTheme$1.defaultProps
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$j, definePartsStyle: definePartsStyle$j } = createMultiStyleConfigHelpers(popoverAnatomy.keys);
-const $popperBg = cssVar("popper-bg");
-const $arrowBg$1 = cssVar("popper-arrow-bg");
-const $arrowShadowColor = cssVar("popper-arrow-shadow-color");
-const baseStylePopper = defineStyle({
-  zIndex: "popover"
-});
-const baseStyleContent = defineStyle({
-  [$popperBg.variable]: `colors.white`,
-  bg: $popperBg.reference,
-  [$arrowBg$1.variable]: $popperBg.reference,
-  [$arrowShadowColor.variable]: `colors.gray.200`,
-  _dark: {
-    [$popperBg.variable]: `colors.gray.700`,
-    [$arrowShadowColor.variable]: `colors.whiteAlpha.300`
-  },
-  width: "xs",
-  border: "1px solid",
-  borderColor: "inherit",
-  borderRadius: "md",
-  boxShadow: "sm",
-  zIndex: "inherit",
-  _focusVisible: {
-    outline: 0,
-    boxShadow: "outline"
-  }
-});
-const baseStyleHeader = defineStyle({
-  px: 3,
-  py: 2,
-  borderBottomWidth: "1px"
-});
-const baseStyleBody = defineStyle({
-  px: 3,
-  py: 2
-});
-const baseStyleFooter = defineStyle({
-  px: 3,
-  py: 2,
-  borderTopWidth: "1px"
-});
-const baseStyleCloseButton$1 = defineStyle({
-  position: "absolute",
-  borderRadius: "md",
-  top: 1,
-  insetEnd: 2,
-  padding: 2
-});
-const baseStyle$u = definePartsStyle$j({
-  popper: baseStylePopper,
-  content: baseStyleContent,
-  header: baseStyleHeader,
-  body: baseStyleBody,
-  footer: baseStyleFooter,
-  closeButton: baseStyleCloseButton$1
-});
-const popoverTheme = defineMultiStyleConfig$j({
-  baseStyle: baseStyle$u
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$i, definePartsStyle: definePartsStyle$i } = createMultiStyleConfigHelpers(progressAnatomy.keys);
-const filledStyle = defineStyle((props) => {
-  const { colorScheme: c, theme: t, isIndeterminate, hasStripe } = props;
-  const stripeStyle = mode(
-    generateStripe(),
-    generateStripe("1rem", "rgba(0,0,0,0.1)")
-  )(props);
-  const bgColor = mode(`${c}.500`, `${c}.200`)(props);
-  const gradient = `linear-gradient(
-    to right,
-    transparent 0%,
-    ${getColor(t, bgColor)} 50%,
-    transparent 100%
-  )`;
-  const addStripe = !isIndeterminate && hasStripe;
-  return {
-    ...addStripe && stripeStyle,
-    ...isIndeterminate ? { bgImage: gradient } : { bgColor }
-  };
-});
-const baseStyleLabel$2 = defineStyle({
-  lineHeight: "1",
-  fontSize: "0.25em",
-  fontWeight: "bold",
-  color: "white"
-});
-const baseStyleTrack$2 = defineStyle((props) => {
-  return {
-    bg: mode("gray.100", "whiteAlpha.300")(props)
-  };
-});
-const baseStyleFilledTrack$1 = defineStyle((props) => {
-  return {
-    transitionProperty: "common",
-    transitionDuration: "slow",
-    ...filledStyle(props)
-  };
-});
-const baseStyle$t = definePartsStyle$i((props) => ({
-  label: baseStyleLabel$2,
-  filledTrack: baseStyleFilledTrack$1(props),
-  track: baseStyleTrack$2(props)
-}));
-const sizes$d = {
-  xs: definePartsStyle$i({
-    track: { h: "1" }
-  }),
-  sm: definePartsStyle$i({
-    track: { h: "2" }
-  }),
-  md: definePartsStyle$i({
-    track: { h: "3" }
-  }),
-  lg: definePartsStyle$i({
-    track: { h: "4" }
-  })
-};
-const progressTheme = defineMultiStyleConfig$i({
-  sizes: sizes$d,
-  baseStyle: baseStyle$t,
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$h, definePartsStyle: definePartsStyle$h } = createMultiStyleConfigHelpers(radioAnatomy.keys);
-const baseStyleControl = defineStyle((props) => {
-  var _a2;
-  const controlStyle = (_a2 = runIfFn(checkboxTheme$1.baseStyle, props)) == null ? void 0 : _a2.control;
-  return {
-    ...controlStyle,
-    borderRadius: "full",
-    _checked: {
-      ...controlStyle == null ? void 0 : controlStyle["_checked"],
-      _before: {
-        content: `""`,
-        display: "inline-block",
-        pos: "relative",
-        w: "50%",
-        h: "50%",
-        borderRadius: "50%",
-        bg: "currentColor"
-      }
-    }
-  };
-});
-const baseStyle$s = definePartsStyle$h((props) => {
-  var _a2, _b2;
-  return {
-    label: (_a2 = checkboxTheme$1.baseStyle) == null ? void 0 : _a2.call(checkboxTheme$1, props).label,
-    container: (_b2 = checkboxTheme$1.baseStyle) == null ? void 0 : _b2.call(checkboxTheme$1, props).container,
-    control: baseStyleControl(props)
-  };
-});
-const sizes$c = {
-  md: definePartsStyle$h({
-    control: { w: "4", h: "4" },
-    label: { fontSize: "md" }
-  }),
-  lg: definePartsStyle$h({
-    control: { w: "5", h: "5" },
-    label: { fontSize: "lg" }
-  }),
-  sm: definePartsStyle$h({
-    control: { width: "3", height: "3" },
-    label: { fontSize: "sm" }
-  })
-};
-const radioTheme$1 = defineMultiStyleConfig$h({
-  baseStyle: baseStyle$s,
-  sizes: sizes$c,
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$g, definePartsStyle: definePartsStyle$g } = createMultiStyleConfigHelpers(selectAnatomy.keys);
-const $bg$6 = cssVar$1("select-bg");
-const baseStyleField = defineStyle({
-  ...(_c = inputTheme$1.baseStyle) == null ? void 0 : _c.field,
-  appearance: "none",
-  paddingBottom: "1px",
-  lineHeight: "normal",
-  bg: $bg$6.reference,
-  [$bg$6.variable]: "colors.white",
-  _dark: {
-    [$bg$6.variable]: "colors.gray.700"
-  },
-  "> option, > optgroup": {
-    bg: $bg$6.reference
-  }
-});
-const baseStyleIcon$1 = defineStyle({
-  width: "6",
-  height: "100%",
-  insetEnd: "2",
-  position: "relative",
-  color: "currentColor",
-  fontSize: "xl",
-  _disabled: {
-    opacity: 0.5
-  }
-});
-const baseStyle$r = definePartsStyle$g({
-  field: baseStyleField,
-  icon: baseStyleIcon$1
-});
-const iconSpacing = defineStyle({
-  paddingInlineEnd: "8"
-});
-const sizes$b = {
-  lg: {
-    ...(_d = inputTheme$1.sizes) == null ? void 0 : _d.lg,
-    field: {
-      ...(_e = inputTheme$1.sizes) == null ? void 0 : _e.lg.field,
-      ...iconSpacing
-    }
-  },
-  md: {
-    ...(_f = inputTheme$1.sizes) == null ? void 0 : _f.md,
-    field: {
-      ...(_g = inputTheme$1.sizes) == null ? void 0 : _g.md.field,
-      ...iconSpacing
-    }
-  },
-  sm: {
-    ...(_h = inputTheme$1.sizes) == null ? void 0 : _h.sm,
-    field: {
-      ...(_i = inputTheme$1.sizes) == null ? void 0 : _i.sm.field,
-      ...iconSpacing
-    }
-  },
-  xs: {
-    ...(_j = inputTheme$1.sizes) == null ? void 0 : _j.xs,
-    field: {
-      ...(_k = inputTheme$1.sizes) == null ? void 0 : _k.xs.field,
-      ...iconSpacing
-    },
-    icon: {
-      insetEnd: "1"
-    }
-  }
-};
-const selectTheme = defineMultiStyleConfig$g({
-  baseStyle: baseStyle$r,
-  sizes: sizes$b,
-  variants: inputTheme$1.variants,
-  defaultProps: inputTheme$1.defaultProps
-});
-const $startColor$1 = cssVar$1("skeleton-start-color");
-const $endColor$1 = cssVar$1("skeleton-end-color");
-const baseStyle$q = defineStyle({
-  [$startColor$1.variable]: "colors.gray.100",
-  [$endColor$1.variable]: "colors.gray.400",
-  _dark: {
-    [$startColor$1.variable]: "colors.gray.800",
-    [$endColor$1.variable]: "colors.gray.600"
-  },
-  background: $startColor$1.reference,
-  borderColor: $endColor$1.reference,
-  opacity: 0.7,
-  borderRadius: "sm"
-});
-const skeletonTheme = defineStyleConfig({
-  baseStyle: baseStyle$q
-});
-const $bg$5 = cssVar$1("skip-link-bg");
-const baseStyle$p = defineStyle({
-  borderRadius: "md",
-  fontWeight: "semibold",
-  _focusVisible: {
-    boxShadow: "outline",
-    padding: "4",
-    position: "fixed",
-    top: "6",
-    insetStart: "6",
-    [$bg$5.variable]: "colors.white",
-    _dark: {
-      [$bg$5.variable]: "colors.gray.700"
-    },
-    bg: $bg$5.reference
-  }
-});
-const skipLinkTheme = defineStyleConfig({
-  baseStyle: baseStyle$p
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$f, definePartsStyle: definePartsStyle$f } = createMultiStyleConfigHelpers(sliderAnatomy.keys);
-const $thumbSize = cssVar$1("slider-thumb-size");
-const $trackSize = cssVar$1("slider-track-size");
-const $bg$4 = cssVar$1("slider-bg");
-const baseStyleContainer$1 = defineStyle((props) => {
-  const { orientation } = props;
-  return {
-    display: "inline-block",
-    position: "relative",
-    cursor: "pointer",
-    _disabled: {
-      opacity: 0.6,
-      cursor: "default",
-      pointerEvents: "none"
-    },
-    ...orient({
-      orientation,
-      vertical: {
-        h: "100%",
-        px: calc$1($thumbSize.reference).divide(2).toString()
-      },
-      horizontal: {
-        w: "100%",
-        py: calc$1($thumbSize.reference).divide(2).toString()
-      }
-    })
-  };
-});
-const baseStyleTrack$1 = defineStyle((props) => {
-  const orientationStyles = orient({
-    orientation: props.orientation,
-    horizontal: { h: $trackSize.reference },
-    vertical: { w: $trackSize.reference }
-  });
-  return {
-    ...orientationStyles,
-    overflow: "hidden",
-    borderRadius: "sm",
-    [$bg$4.variable]: "colors.gray.200",
-    _dark: {
-      [$bg$4.variable]: "colors.whiteAlpha.200"
-    },
-    _disabled: {
-      [$bg$4.variable]: "colors.gray.300",
-      _dark: {
-        [$bg$4.variable]: "colors.whiteAlpha.300"
-      }
-    },
-    bg: $bg$4.reference
-  };
-});
-const baseStyleThumb$1 = defineStyle((props) => {
-  const { orientation } = props;
-  const orientationStyle = orient({
-    orientation,
-    vertical: {
-      left: "50%",
-      transform: `translateX(-50%)`,
-      _active: {
-        transform: `translateX(-50%) scale(1.15)`
-      }
-    },
-    horizontal: {
-      top: "50%",
-      transform: `translateY(-50%)`,
-      _active: {
-        transform: `translateY(-50%) scale(1.15)`
-      }
-    }
-  });
-  return {
-    ...orientationStyle,
-    w: $thumbSize.reference,
-    h: $thumbSize.reference,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    outline: 0,
-    zIndex: 1,
-    borderRadius: "full",
-    bg: "white",
-    boxShadow: "base",
-    border: "1px solid",
-    borderColor: "transparent",
-    transitionProperty: "transform",
-    transitionDuration: "normal",
-    _focusVisible: {
-      boxShadow: "outline"
-    },
-    _disabled: {
-      bg: "gray.300"
-    }
-  };
-});
-const baseStyleFilledTrack = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  return {
-    width: "inherit",
-    height: "inherit",
-    [$bg$4.variable]: `colors.${c}.500`,
-    _dark: {
-      [$bg$4.variable]: `colors.${c}.200`
-    },
-    bg: $bg$4.reference
-  };
-});
-const baseStyle$o = definePartsStyle$f((props) => ({
-  container: baseStyleContainer$1(props),
-  track: baseStyleTrack$1(props),
-  thumb: baseStyleThumb$1(props),
-  filledTrack: baseStyleFilledTrack(props)
-}));
-const sizeLg = definePartsStyle$f({
-  container: {
-    [$thumbSize.variable]: `sizes.4`,
-    [$trackSize.variable]: `sizes.1`
-  }
-});
-const sizeMd = definePartsStyle$f({
-  container: {
-    [$thumbSize.variable]: `sizes.3.5`,
-    [$trackSize.variable]: `sizes.1`
-  }
-});
-const sizeSm = definePartsStyle$f({
-  container: {
-    [$thumbSize.variable]: `sizes.2.5`,
-    [$trackSize.variable]: `sizes.0.5`
-  }
-});
-const sizes$a = {
-  lg: sizeLg,
-  md: sizeMd,
-  sm: sizeSm
-};
-const sliderTheme = defineMultiStyleConfig$f({
-  baseStyle: baseStyle$o,
-  sizes: sizes$a,
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const $size$1 = cssVar("spinner-size");
-const baseStyle$n = defineStyle({
-  width: [$size$1.reference],
-  height: [$size$1.reference]
-});
-const sizes$9 = {
-  xs: defineStyle({
-    [$size$1.variable]: "sizes.3"
-  }),
-  sm: defineStyle({
-    [$size$1.variable]: "sizes.4"
-  }),
-  md: defineStyle({
-    [$size$1.variable]: "sizes.6"
-  }),
-  lg: defineStyle({
-    [$size$1.variable]: "sizes.8"
-  }),
-  xl: defineStyle({
-    [$size$1.variable]: "sizes.12"
-  })
-};
-const spinnerTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$n,
-  sizes: sizes$9,
-  defaultProps: {
-    size: "md"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$e, definePartsStyle: definePartsStyle$e } = createMultiStyleConfigHelpers(statAnatomy.keys);
-const baseStyleLabel$1 = defineStyle({
-  fontWeight: "medium"
-});
-const baseStyleHelpText = defineStyle({
-  opacity: 0.8,
-  marginBottom: "2"
-});
-const baseStyleNumber = defineStyle({
-  verticalAlign: "baseline",
-  fontWeight: "semibold"
-});
-const baseStyleIcon = defineStyle({
-  marginEnd: 1,
-  w: "3.5",
-  h: "3.5",
-  verticalAlign: "middle"
-});
-const baseStyle$m = definePartsStyle$e({
-  container: {},
-  label: baseStyleLabel$1,
-  helpText: baseStyleHelpText,
-  number: baseStyleNumber,
-  icon: baseStyleIcon
-});
-const sizes$8 = {
-  md: definePartsStyle$e({
-    label: { fontSize: "sm" },
-    helpText: { fontSize: "sm" },
-    number: { fontSize: "2xl" }
-  })
-};
-const statTheme = defineMultiStyleConfig$e({
-  baseStyle: baseStyle$m,
-  sizes: sizes$8,
-  defaultProps: {
-    size: "md"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$d, definePartsStyle: definePartsStyle$d } = createMultiStyleConfigHelpers([
-  "stepper",
-  "step",
-  "title",
-  "description",
-  "indicator",
-  "separator",
-  "icon",
-  "number"
-]);
-const $size = cssVar$1("stepper-indicator-size");
-const $iconSize = cssVar$1("stepper-icon-size");
-const $titleFontSize = cssVar$1("stepper-title-font-size");
-const $descFontSize = cssVar$1("stepper-description-font-size");
-const $accentColor = cssVar$1("stepper-accent-color");
-const baseStyle$l = definePartsStyle$d(({ colorScheme: c }) => ({
-  stepper: {
-    display: "flex",
-    justifyContent: "space-between",
-    gap: "4",
-    "&[data-orientation=vertical]": {
-      flexDirection: "column",
-      alignItems: "flex-start"
-    },
-    "&[data-orientation=horizontal]": {
-      flexDirection: "row",
-      alignItems: "center"
-    },
-    [$accentColor.variable]: `colors.${c}.500`,
-    _dark: {
-      [$accentColor.variable]: `colors.${c}.200`
-    }
-  },
-  title: {
-    fontSize: $titleFontSize.reference,
-    fontWeight: "medium"
-  },
-  description: {
-    fontSize: $descFontSize.reference,
-    color: "chakra-subtle-text"
-  },
-  number: {
-    fontSize: $titleFontSize.reference
-  },
-  step: {
-    flexShrink: 0,
-    position: "relative",
-    display: "flex",
-    gap: "2",
-    "&[data-orientation=horizontal]": {
-      alignItems: "center"
-    },
-    flex: "1",
-    "&:last-of-type:not([data-stretch])": {
-      flex: "initial"
-    }
-  },
-  icon: {
-    flexShrink: 0,
-    width: $iconSize.reference,
-    height: $iconSize.reference
-  },
-  indicator: {
-    flexShrink: 0,
-    borderRadius: "full",
-    width: $size.reference,
-    height: $size.reference,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    "&[data-status=active]": {
-      borderWidth: "2px",
-      borderColor: $accentColor.reference
-    },
-    "&[data-status=complete]": {
-      bg: $accentColor.reference,
-      color: "chakra-inverse-text"
-    },
-    "&[data-status=incomplete]": {
-      borderWidth: "2px"
-    }
-  },
-  separator: {
-    bg: "chakra-border-color",
-    flex: "1",
-    "&[data-status=complete]": {
-      bg: $accentColor.reference
-    },
-    "&[data-orientation=horizontal]": {
-      width: "100%",
-      height: "2px",
-      marginStart: "2"
-    },
-    "&[data-orientation=vertical]": {
-      width: "2px",
-      position: "absolute",
-      height: "100%",
-      maxHeight: `calc(100% - ${$size.reference} - 8px)`,
-      top: `calc(${$size.reference} + 4px)`,
-      insetStart: `calc(${$size.reference} / 2 - 1px)`
-    }
-  }
-}));
-const stepperTheme = defineMultiStyleConfig$d({
-  baseStyle: baseStyle$l,
-  sizes: {
-    xs: definePartsStyle$d({
-      stepper: {
-        [$size.variable]: "sizes.4",
-        [$iconSize.variable]: "sizes.3",
-        [$titleFontSize.variable]: "fontSizes.xs",
-        [$descFontSize.variable]: "fontSizes.xs"
-      }
-    }),
-    sm: definePartsStyle$d({
-      stepper: {
-        [$size.variable]: "sizes.6",
-        [$iconSize.variable]: "sizes.4",
-        [$titleFontSize.variable]: "fontSizes.sm",
-        [$descFontSize.variable]: "fontSizes.xs"
-      }
-    }),
-    md: definePartsStyle$d({
-      stepper: {
-        [$size.variable]: "sizes.8",
-        [$iconSize.variable]: "sizes.5",
-        [$titleFontSize.variable]: "fontSizes.md",
-        [$descFontSize.variable]: "fontSizes.sm"
-      }
-    }),
-    lg: definePartsStyle$d({
-      stepper: {
-        [$size.variable]: "sizes.10",
-        [$iconSize.variable]: "sizes.6",
-        [$titleFontSize.variable]: "fontSizes.lg",
-        [$descFontSize.variable]: "fontSizes.md"
-      }
-    })
-  },
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$c, definePartsStyle: definePartsStyle$c } = createMultiStyleConfigHelpers(switchAnatomy.keys);
-const $width = cssVar("switch-track-width");
-const $height = cssVar("switch-track-height");
-const $diff = cssVar("switch-track-diff");
-const diffValue = calc.subtract($width, $height);
-const $translateX = cssVar("switch-thumb-x");
-const $bg$3 = cssVar("switch-bg");
-const baseStyleTrack = defineStyle((props) => {
-  const { colorScheme: c } = props;
-  return {
-    borderRadius: "full",
-    p: "0.5",
-    width: [$width.reference],
-    height: [$height.reference],
-    transitionProperty: "common",
-    transitionDuration: "fast",
-    [$bg$3.variable]: "colors.gray.300",
-    _dark: {
-      [$bg$3.variable]: "colors.whiteAlpha.400"
-    },
-    _focusVisible: {
-      boxShadow: "outline"
-    },
-    _disabled: {
-      opacity: 0.4,
-      cursor: "not-allowed"
-    },
-    _checked: {
-      [$bg$3.variable]: `colors.${c}.500`,
-      _dark: {
-        [$bg$3.variable]: `colors.${c}.200`
-      }
-    },
-    bg: $bg$3.reference
-  };
-});
-const baseStyleThumb = defineStyle({
-  bg: "white",
-  transitionProperty: "transform",
-  transitionDuration: "normal",
-  borderRadius: "inherit",
-  width: [$height.reference],
-  height: [$height.reference],
-  _checked: {
-    transform: `translateX(${$translateX.reference})`
-  }
-});
-const baseStyle$k = definePartsStyle$c((props) => ({
-  container: {
-    [$diff.variable]: diffValue,
-    [$translateX.variable]: $diff.reference,
-    _rtl: {
-      [$translateX.variable]: calc($diff).negate().toString()
-    }
-  },
-  track: baseStyleTrack(props),
-  thumb: baseStyleThumb
-}));
-const sizes$7 = {
-  sm: definePartsStyle$c({
-    container: {
-      [$width.variable]: "1.375rem",
-      [$height.variable]: "sizes.3"
-    }
-  }),
-  md: definePartsStyle$c({
-    container: {
-      [$width.variable]: "1.875rem",
-      [$height.variable]: "sizes.4"
-    }
-  }),
-  lg: definePartsStyle$c({
-    container: {
-      [$width.variable]: "2.875rem",
-      [$height.variable]: "sizes.6"
-    }
-  })
-};
-const switchTheme = defineMultiStyleConfig$c({
-  baseStyle: baseStyle$k,
-  sizes: sizes$7,
-  defaultProps: {
-    size: "md",
-    colorScheme: "blue"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$b, definePartsStyle: definePartsStyle$b } = createMultiStyleConfigHelpers(tableAnatomy.keys);
-const baseStyle$j = definePartsStyle$b({
-  table: {
-    fontVariantNumeric: "lining-nums tabular-nums",
-    borderCollapse: "collapse",
-    width: "full"
-  },
-  th: {
-    fontFamily: "heading",
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: "wider",
-    textAlign: "start"
-  },
-  td: {
-    textAlign: "start"
-  },
-  caption: {
-    mt: 4,
-    fontFamily: "heading",
-    textAlign: "center",
-    fontWeight: "medium"
-  }
-});
-const numericStyles = defineStyle({
-  "&[data-is-numeric=true]": {
-    textAlign: "end"
-  }
-});
-const variantSimple = definePartsStyle$b((props) => {
-  const { colorScheme: c } = props;
-  return {
-    th: {
-      color: mode("gray.600", "gray.400")(props),
-      borderBottom: "1px",
-      borderColor: mode(`${c}.100`, `${c}.700`)(props),
-      ...numericStyles
-    },
-    td: {
-      borderBottom: "1px",
-      borderColor: mode(`${c}.100`, `${c}.700`)(props),
-      ...numericStyles
-    },
-    caption: {
-      color: mode("gray.600", "gray.100")(props)
-    },
-    tfoot: {
-      tr: {
-        "&:last-of-type": {
-          th: { borderBottomWidth: 0 }
-        }
-      }
-    }
-  };
-});
-const variantStripe = definePartsStyle$b((props) => {
-  const { colorScheme: c } = props;
-  return {
-    th: {
-      color: mode("gray.600", "gray.400")(props),
-      borderBottom: "1px",
-      borderColor: mode(`${c}.100`, `${c}.700`)(props),
-      ...numericStyles
-    },
-    td: {
-      borderBottom: "1px",
-      borderColor: mode(`${c}.100`, `${c}.700`)(props),
-      ...numericStyles
-    },
-    caption: {
-      color: mode("gray.600", "gray.100")(props)
-    },
-    tbody: {
-      tr: {
-        "&:nth-of-type(odd)": {
-          "th, td": {
-            borderBottomWidth: "1px",
-            borderColor: mode(`${c}.100`, `${c}.700`)(props)
-          },
-          td: {
-            background: mode(`${c}.100`, `${c}.700`)(props)
-          }
-        }
-      }
-    },
-    tfoot: {
-      tr: {
-        "&:last-of-type": {
-          th: { borderBottomWidth: 0 }
-        }
-      }
-    }
-  };
-});
-const variants$h = {
-  simple: variantSimple,
-  striped: variantStripe,
-  unstyled: defineStyle({})
-};
-const sizes$6 = {
-  sm: definePartsStyle$b({
-    th: {
-      px: "4",
-      py: "1",
-      lineHeight: "4",
-      fontSize: "xs"
-    },
-    td: {
-      px: "4",
-      py: "2",
-      fontSize: "sm",
-      lineHeight: "4"
-    },
-    caption: {
-      px: "4",
-      py: "2",
-      fontSize: "xs"
-    }
-  }),
-  md: definePartsStyle$b({
-    th: {
-      px: "6",
-      py: "3",
-      lineHeight: "4",
-      fontSize: "xs"
-    },
-    td: {
-      px: "6",
-      py: "4",
-      lineHeight: "5"
-    },
-    caption: {
-      px: "6",
-      py: "2",
-      fontSize: "sm"
-    }
-  }),
-  lg: definePartsStyle$b({
-    th: {
-      px: "8",
-      py: "4",
-      lineHeight: "5",
-      fontSize: "sm"
-    },
-    td: {
-      px: "8",
-      py: "5",
-      lineHeight: "6"
-    },
-    caption: {
-      px: "6",
-      py: "2",
-      fontSize: "md"
-    }
-  })
-};
-const tableTheme = defineMultiStyleConfig$b({
-  baseStyle: baseStyle$j,
-  variants: variants$h,
-  sizes: sizes$6,
-  defaultProps: {
-    variant: "simple",
-    size: "md",
-    colorScheme: "gray"
-  }
-});
-const $fg$1 = cssVar$1("tabs-color");
-const $bg$2 = cssVar$1("tabs-bg");
-const $border = cssVar$1("tabs-border-color");
-const { defineMultiStyleConfig: defineMultiStyleConfig$a, definePartsStyle: definePartsStyle$a } = createMultiStyleConfigHelpers(tabsAnatomy.keys);
-const baseStyleRoot = defineStyle((props) => {
-  const { orientation } = props;
-  return {
-    display: orientation === "vertical" ? "flex" : "block"
-  };
-});
-const baseStyleTab = defineStyle((props) => {
-  const { isFitted } = props;
-  return {
-    flex: isFitted ? 1 : void 0,
-    transitionProperty: "common",
-    transitionDuration: "normal",
-    _focusVisible: {
-      zIndex: 1,
-      boxShadow: "outline"
-    },
-    _disabled: {
-      cursor: "not-allowed",
-      opacity: 0.4
-    }
-  };
-});
-const baseStyleTablist = defineStyle((props) => {
-  const { align = "start", orientation } = props;
-  const alignments = {
-    end: "flex-end",
-    center: "center",
-    start: "flex-start"
-  };
-  return {
-    justifyContent: alignments[align],
-    flexDirection: orientation === "vertical" ? "column" : "row"
-  };
-});
-const baseStyleTabpanel = defineStyle({
-  p: 4
-});
-const baseStyle$i = definePartsStyle$a((props) => ({
-  root: baseStyleRoot(props),
-  tab: baseStyleTab(props),
-  tablist: baseStyleTablist(props),
-  tabpanel: baseStyleTabpanel
-}));
-const sizes$5 = {
-  sm: definePartsStyle$a({
-    tab: {
-      py: 1,
-      px: 4,
-      fontSize: "sm"
-    }
-  }),
-  md: definePartsStyle$a({
-    tab: {
-      fontSize: "md",
-      py: 2,
-      px: 4
-    }
-  }),
-  lg: definePartsStyle$a({
-    tab: {
-      fontSize: "lg",
-      py: 3,
-      px: 4
-    }
-  })
-};
-const variantLine = definePartsStyle$a((props) => {
-  const { colorScheme: c, orientation } = props;
-  const isVertical = orientation === "vertical";
-  const borderProp = isVertical ? "borderStart" : "borderBottom";
-  const marginProp = isVertical ? "marginStart" : "marginBottom";
-  return {
-    tablist: {
-      [borderProp]: "2px solid",
-      borderColor: "inherit"
-    },
-    tab: {
-      [borderProp]: "2px solid",
-      borderColor: "transparent",
-      [marginProp]: "-2px",
-      _selected: {
-        [$fg$1.variable]: `colors.${c}.600`,
-        _dark: {
-          [$fg$1.variable]: `colors.${c}.300`
-        },
-        borderColor: "currentColor"
-      },
-      _active: {
-        [$bg$2.variable]: "colors.gray.200",
-        _dark: {
-          [$bg$2.variable]: "colors.whiteAlpha.300"
-        }
-      },
-      _disabled: {
-        _active: { bg: "none" }
-      },
-      color: $fg$1.reference,
-      bg: $bg$2.reference
-    }
-  };
-});
-const variantEnclosed = definePartsStyle$a((props) => {
-  const { colorScheme: c } = props;
-  return {
-    tab: {
-      borderTopRadius: "md",
-      border: "1px solid",
-      borderColor: "transparent",
-      mb: "-1px",
-      [$border.variable]: "transparent",
-      _selected: {
-        [$fg$1.variable]: `colors.${c}.600`,
-        [$border.variable]: `colors.white`,
-        _dark: {
-          [$fg$1.variable]: `colors.${c}.300`,
-          [$border.variable]: `colors.gray.800`
-        },
-        borderColor: "inherit",
-        borderBottomColor: $border.reference
-      },
-      color: $fg$1.reference
-    },
-    tablist: {
-      mb: "-1px",
-      borderBottom: "1px solid",
-      borderColor: "inherit"
-    }
-  };
-});
-const variantEnclosedColored = definePartsStyle$a((props) => {
-  const { colorScheme: c } = props;
-  return {
-    tab: {
-      border: "1px solid",
-      borderColor: "inherit",
-      [$bg$2.variable]: "colors.gray.50",
-      _dark: {
-        [$bg$2.variable]: "colors.whiteAlpha.50"
-      },
-      mb: "-1px",
-      _notLast: {
-        marginEnd: "-1px"
-      },
-      _selected: {
-        [$bg$2.variable]: "colors.white",
-        [$fg$1.variable]: `colors.${c}.600`,
-        _dark: {
-          [$bg$2.variable]: "colors.gray.800",
-          [$fg$1.variable]: `colors.${c}.300`
-        },
-        borderColor: "inherit",
-        borderTopColor: "currentColor",
-        borderBottomColor: "transparent"
-      },
-      color: $fg$1.reference,
-      bg: $bg$2.reference
-    },
-    tablist: {
-      mb: "-1px",
-      borderBottom: "1px solid",
-      borderColor: "inherit"
-    }
-  };
-});
-const variantSoftRounded = definePartsStyle$a((props) => {
-  const { colorScheme: c, theme: theme2 } = props;
-  return {
-    tab: {
-      borderRadius: "full",
-      fontWeight: "semibold",
-      color: "gray.600",
-      _selected: {
-        color: getColor(theme2, `${c}.700`),
-        bg: getColor(theme2, `${c}.100`)
-      }
-    }
-  };
-});
-const variantSolidRounded = definePartsStyle$a((props) => {
-  const { colorScheme: c } = props;
-  return {
-    tab: {
-      borderRadius: "full",
-      fontWeight: "semibold",
-      [$fg$1.variable]: "colors.gray.600",
-      _dark: {
-        [$fg$1.variable]: "inherit"
-      },
-      _selected: {
-        [$fg$1.variable]: "colors.white",
-        [$bg$2.variable]: `colors.${c}.600`,
-        _dark: {
-          [$fg$1.variable]: "colors.gray.800",
-          [$bg$2.variable]: `colors.${c}.300`
-        }
-      },
-      color: $fg$1.reference,
-      bg: $bg$2.reference
-    }
-  };
-});
-const variantUnstyled = definePartsStyle$a({});
-const variants$g = {
-  line: variantLine,
-  enclosed: variantEnclosed,
-  "enclosed-colored": variantEnclosedColored,
-  "soft-rounded": variantSoftRounded,
-  "solid-rounded": variantSolidRounded,
-  unstyled: variantUnstyled
-};
-const tabsTheme = defineMultiStyleConfig$a({
-  baseStyle: baseStyle$i,
-  sizes: sizes$5,
-  variants: variants$g,
-  defaultProps: {
-    size: "md",
-    variant: "line",
-    colorScheme: "blue"
-  }
-});
-const { defineMultiStyleConfig: defineMultiStyleConfig$9, definePartsStyle: definePartsStyle$9 } = createMultiStyleConfigHelpers(tagAnatomy.keys);
-const $bg$1 = cssVar$1("tag-bg");
-const $color = cssVar$1("tag-color");
-const $shadow = cssVar$1("tag-shadow");
-const $minH = cssVar$1("tag-min-height");
-const $minW = cssVar$1("tag-min-width");
-const $fontSize = cssVar$1("tag-font-size");
-const $paddingX = cssVar$1("tag-padding-inline");
-const baseStyleContainer = defineStyle({
-  fontWeight: "medium",
-  lineHeight: 1.2,
-  outline: 0,
-  [$color.variable]: vars.color.reference,
-  [$bg$1.variable]: vars.bg.reference,
-  [$shadow.variable]: vars.shadow.reference,
-  color: $color.reference,
-  bg: $bg$1.reference,
-  boxShadow: $shadow.reference,
-  borderRadius: "md",
-  minH: $minH.reference,
-  minW: $minW.reference,
-  fontSize: $fontSize.reference,
-  px: $paddingX.reference,
-  _focusVisible: {
-    [$shadow.variable]: "shadows.outline"
-  }
-});
-const baseStyleLabel = defineStyle({
-  lineHeight: 1.2,
-  overflow: "visible"
-});
-const baseStyleCloseButton = defineStyle({
-  fontSize: "lg",
-  w: "5",
-  h: "5",
-  transitionProperty: "common",
-  transitionDuration: "normal",
-  borderRadius: "full",
-  marginStart: "1.5",
-  marginEnd: "-1",
-  opacity: 0.5,
-  _disabled: {
-    opacity: 0.4
-  },
-  _focusVisible: {
-    boxShadow: "outline",
-    bg: "rgba(0, 0, 0, 0.14)"
-  },
-  _hover: {
-    opacity: 0.8
-  },
-  _active: {
-    opacity: 1
-  }
-});
-const baseStyle$h = definePartsStyle$9({
-  container: baseStyleContainer,
-  label: baseStyleLabel,
-  closeButton: baseStyleCloseButton
-});
-const sizes$4 = {
-  sm: definePartsStyle$9({
-    container: {
-      [$minH.variable]: "sizes.5",
-      [$minW.variable]: "sizes.5",
-      [$fontSize.variable]: "fontSizes.xs",
-      [$paddingX.variable]: "space.2"
-    },
-    closeButton: {
-      marginEnd: "-2px",
-      marginStart: "0.35rem"
-    }
-  }),
-  md: definePartsStyle$9({
-    container: {
-      [$minH.variable]: "sizes.6",
-      [$minW.variable]: "sizes.6",
-      [$fontSize.variable]: "fontSizes.sm",
-      [$paddingX.variable]: "space.2"
-    }
-  }),
-  lg: definePartsStyle$9({
-    container: {
-      [$minH.variable]: "sizes.8",
-      [$minW.variable]: "sizes.8",
-      [$fontSize.variable]: "fontSizes.md",
-      [$paddingX.variable]: "space.3"
-    }
-  })
-};
-const variants$f = {
-  subtle: definePartsStyle$9((props) => {
-    var _a2;
-    return {
-      container: (_a2 = badgeTheme$1.variants) == null ? void 0 : _a2.subtle(props)
-    };
-  }),
-  solid: definePartsStyle$9((props) => {
-    var _a2;
-    return {
-      container: (_a2 = badgeTheme$1.variants) == null ? void 0 : _a2.solid(props)
-    };
-  }),
-  outline: definePartsStyle$9((props) => {
-    var _a2;
-    return {
-      container: (_a2 = badgeTheme$1.variants) == null ? void 0 : _a2.outline(props)
-    };
-  })
-};
-const tagTheme = defineMultiStyleConfig$9({
-  variants: variants$f,
-  baseStyle: baseStyle$h,
-  sizes: sizes$4,
-  defaultProps: {
-    size: "md",
-    variant: "subtle",
-    colorScheme: "gray"
-  }
-});
-const baseStyle$g = defineStyle({
-  ...(_l = inputTheme$1.baseStyle) == null ? void 0 : _l.field,
-  paddingY: "2",
-  minHeight: "20",
-  lineHeight: "short",
-  verticalAlign: "top"
-});
-const variants$e = {
-  outline: defineStyle(
-    (props) => {
-      var _a2;
-      return ((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.outline(props).field) ?? {};
-    }
-  ),
-  flushed: defineStyle(
-    (props) => {
-      var _a2;
-      return ((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.flushed(props).field) ?? {};
-    }
-  ),
-  filled: defineStyle(
-    (props) => {
-      var _a2;
-      return ((_a2 = inputTheme$1.variants) == null ? void 0 : _a2.filled(props).field) ?? {};
-    }
-  ),
-  unstyled: ((_m = inputTheme$1.variants) == null ? void 0 : _m.unstyled.field) ?? {}
-};
-const sizes$3 = {
-  xs: ((_n = inputTheme$1.sizes) == null ? void 0 : _n.xs.field) ?? {},
-  sm: ((_o = inputTheme$1.sizes) == null ? void 0 : _o.sm.field) ?? {},
-  md: ((_p = inputTheme$1.sizes) == null ? void 0 : _p.md.field) ?? {},
-  lg: ((_q = inputTheme$1.sizes) == null ? void 0 : _q.lg.field) ?? {}
-};
-const textareaTheme = defineStyleConfig({
-  baseStyle: baseStyle$g,
-  sizes: sizes$3,
-  variants: variants$e,
-  defaultProps: {
-    size: "md",
-    variant: "outline"
-  }
-});
-const $bg = cssVar("tooltip-bg");
-const $fg = cssVar("tooltip-fg");
-const $arrowBg = cssVar("popper-arrow-bg");
-const baseStyle$f = defineStyle({
-  bg: $bg.reference,
-  color: $fg.reference,
-  [$bg.variable]: "colors.gray.700",
-  [$fg.variable]: "colors.whiteAlpha.900",
-  _dark: {
-    [$bg.variable]: "colors.gray.300",
-    [$fg.variable]: "colors.gray.900"
-  },
-  [$arrowBg.variable]: $bg.reference,
-  px: "2",
-  py: "0.5",
-  borderRadius: "sm",
-  fontWeight: "medium",
-  fontSize: "sm",
-  boxShadow: "md",
-  maxW: "xs",
-  zIndex: "tooltip"
-});
-const tooltipTheme$1 = defineStyleConfig({
-  baseStyle: baseStyle$f
-});
-const components = {
-  Accordion: accordionTheme$1,
-  Alert: alertTheme$1,
-  Avatar: avatarTheme$1,
-  Badge: badgeTheme$1,
-  Breadcrumb: breadcrumbTheme,
-  Button: buttonTheme$1,
-  Checkbox: checkboxTheme$1,
-  CloseButton: closeButtonTheme,
-  Code: codeTheme,
-  Container: containerTheme$1,
-  Divider: dividerTheme$1,
-  Drawer: drawerTheme,
-  Editable: editableTheme$1,
-  Form: formTheme,
-  FormError: formErrorTheme,
-  FormLabel: formLabelTheme,
-  Heading: headingTheme$1,
-  Input: inputTheme$1,
-  Kbd: kbdTheme,
-  Link: linkTheme$1,
-  List: listTheme,
-  Menu: menuTheme$1,
-  Modal: modalTheme,
-  NumberInput: numberInputTheme,
-  PinInput: pinInputTheme,
-  Popover: popoverTheme,
-  Progress: progressTheme,
-  Radio: radioTheme$1,
-  Select: selectTheme,
-  Skeleton: skeletonTheme,
-  SkipLink: skipLinkTheme,
-  Slider: sliderTheme,
-  Spinner: spinnerTheme$1,
-  Stat: statTheme,
-  Switch: switchTheme,
-  Table: tableTheme,
-  Tabs: tabsTheme,
-  Tag: tagTheme,
-  Textarea: textareaTheme,
-  Tooltip: tooltipTheme$1,
-  Card: cardTheme$1,
-  Stepper: stepperTheme
-};
-const borders$1 = {
-  none: 0,
-  "1px": "1px solid",
-  "2px": "2px solid",
-  "4px": "4px solid",
-  "8px": "8px solid"
-};
-const breakpoints = {
-  base: "0em",
-  sm: "30em",
-  md: "48em",
-  lg: "62em",
-  xl: "80em",
-  "2xl": "96em"
-};
-const colors$1 = {
-  transparent: "transparent",
-  current: "currentColor",
-  black: "#000000",
-  white: "#FFFFFF",
-  whiteAlpha: {
-    50: "rgba(255, 255, 255, 0.04)",
-    100: "rgba(255, 255, 255, 0.06)",
-    200: "rgba(255, 255, 255, 0.08)",
-    300: "rgba(255, 255, 255, 0.16)",
-    400: "rgba(255, 255, 255, 0.24)",
-    500: "rgba(255, 255, 255, 0.36)",
-    600: "rgba(255, 255, 255, 0.48)",
-    700: "rgba(255, 255, 255, 0.64)",
-    800: "rgba(255, 255, 255, 0.80)",
-    900: "rgba(255, 255, 255, 0.92)"
-  },
-  blackAlpha: {
-    50: "rgba(0, 0, 0, 0.04)",
-    100: "rgba(0, 0, 0, 0.06)",
-    200: "rgba(0, 0, 0, 0.08)",
-    300: "rgba(0, 0, 0, 0.16)",
-    400: "rgba(0, 0, 0, 0.24)",
-    500: "rgba(0, 0, 0, 0.36)",
-    600: "rgba(0, 0, 0, 0.48)",
-    700: "rgba(0, 0, 0, 0.64)",
-    800: "rgba(0, 0, 0, 0.80)",
-    900: "rgba(0, 0, 0, 0.92)"
-  },
-  gray: {
-    50: "#F7FAFC",
-    100: "#EDF2F7",
-    200: "#E2E8F0",
-    300: "#CBD5E0",
-    400: "#A0AEC0",
-    500: "#718096",
-    600: "#4A5568",
-    700: "#2D3748",
-    800: "#1A202C",
-    900: "#171923"
-  },
-  red: {
-    50: "#FFF5F5",
-    100: "#FED7D7",
-    200: "#FEB2B2",
-    300: "#FC8181",
-    400: "#F56565",
-    500: "#E53E3E",
-    600: "#C53030",
-    700: "#9B2C2C",
-    800: "#822727",
-    900: "#63171B"
-  },
-  orange: {
-    50: "#FFFAF0",
-    100: "#FEEBC8",
-    200: "#FBD38D",
-    300: "#F6AD55",
-    400: "#ED8936",
-    500: "#DD6B20",
-    600: "#C05621",
-    700: "#9C4221",
-    800: "#7B341E",
-    900: "#652B19"
-  },
-  yellow: {
-    50: "#FFFFF0",
-    100: "#FEFCBF",
-    200: "#FAF089",
-    300: "#F6E05E",
-    400: "#ECC94B",
-    500: "#D69E2E",
-    600: "#B7791F",
-    700: "#975A16",
-    800: "#744210",
-    900: "#5F370E"
-  },
-  green: {
-    50: "#F0FFF4",
-    100: "#C6F6D5",
-    200: "#9AE6B4",
-    300: "#68D391",
-    400: "#48BB78",
-    500: "#38A169",
-    600: "#2F855A",
-    700: "#276749",
-    800: "#22543D",
-    900: "#1C4532"
-  },
-  teal: {
-    50: "#E6FFFA",
-    100: "#B2F5EA",
-    200: "#81E6D9",
-    300: "#4FD1C5",
-    400: "#38B2AC",
-    500: "#319795",
-    600: "#2C7A7B",
-    700: "#285E61",
-    800: "#234E52",
-    900: "#1D4044"
-  },
-  blue: {
-    50: "#ebf8ff",
-    100: "#bee3f8",
-    200: "#90cdf4",
-    300: "#63b3ed",
-    400: "#4299e1",
-    500: "#3182ce",
-    600: "#2b6cb0",
-    700: "#2c5282",
-    800: "#2a4365",
-    900: "#1A365D"
-  },
-  cyan: {
-    50: "#EDFDFD",
-    100: "#C4F1F9",
-    200: "#9DECF9",
-    300: "#76E4F7",
-    400: "#0BC5EA",
-    500: "#00B5D8",
-    600: "#00A3C4",
-    700: "#0987A0",
-    800: "#086F83",
-    900: "#065666"
-  },
-  purple: {
-    50: "#FAF5FF",
-    100: "#E9D8FD",
-    200: "#D6BCFA",
-    300: "#B794F4",
-    400: "#9F7AEA",
-    500: "#805AD5",
-    600: "#6B46C1",
-    700: "#553C9A",
-    800: "#44337A",
-    900: "#322659"
-  },
-  pink: {
-    50: "#FFF5F7",
-    100: "#FED7E2",
-    200: "#FBB6CE",
-    300: "#F687B3",
-    400: "#ED64A6",
-    500: "#D53F8C",
-    600: "#B83280",
-    700: "#97266D",
-    800: "#702459",
-    900: "#521B41"
-  }
-};
-const radii = {
-  none: "0",
-  sm: "0.125rem",
-  base: "0.25rem",
-  md: "0.375rem",
-  lg: "0.5rem",
-  xl: "0.75rem",
-  "2xl": "1rem",
-  "3xl": "1.5rem",
-  full: "9999px"
-};
-const shadows = {
-  xs: "0 0 0 1px rgba(0, 0, 0, 0.05)",
-  sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
-  base: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
-  md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-  lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-  xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-  "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
-  outline: "0 0 0 3px rgba(66, 153, 225, 0.6)",
-  inner: "inset 0 2px 4px 0 rgba(0,0,0,0.06)",
-  none: "none",
-  "dark-lg": "rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 5px 10px, rgba(0, 0, 0, 0.4) 0px 15px 40px"
-};
-const transitionProperty = {
-  common: "background-color, border-color, color, fill, stroke, opacity, box-shadow, transform",
-  colors: "background-color, border-color, color, fill, stroke",
-  dimensions: "width, height",
-  position: "left, right, top, bottom",
-  background: "background-color, background-image, background-position"
-};
-const transitionTimingFunction = {
-  "ease-in": "cubic-bezier(0.4, 0, 1, 1)",
-  "ease-out": "cubic-bezier(0, 0, 0.2, 1)",
-  "ease-in-out": "cubic-bezier(0.4, 0, 0.2, 1)"
-};
-const transitionDuration = {
-  "ultra-fast": "50ms",
-  faster: "100ms",
-  fast: "150ms",
-  normal: "200ms",
-  slow: "300ms",
-  slower: "400ms",
-  "ultra-slow": "500ms"
-};
-const transition = {
-  property: transitionProperty,
-  easing: transitionTimingFunction,
-  duration: transitionDuration
-};
-const zIndices = {
-  hide: -1,
-  auto: "auto",
-  base: 0,
-  docked: 10,
-  dropdown: 1e3,
-  sticky: 1100,
-  banner: 1200,
-  overlay: 1300,
-  modal: 1400,
-  popover: 1500,
-  skipLink: 1600,
-  toast: 1700,
-  tooltip: 1800
-};
-const blur = {
-  none: 0,
-  sm: "4px",
-  base: "8px",
-  md: "12px",
-  lg: "16px",
-  xl: "24px",
-  "2xl": "40px",
-  "3xl": "64px"
-};
-const foundations = {
-  breakpoints,
-  zIndices,
-  radii,
-  blur,
-  colors: colors$1,
-  ...typography,
-  sizes: sizes$p,
-  shadows,
-  space: spacing,
-  borders: borders$1,
-  transition
-};
-const semanticTokens = {
-  colors: {
-    "chakra-body-text": { _light: "gray.800", _dark: "whiteAlpha.900" },
-    "chakra-body-bg": { _light: "white", _dark: "gray.800" },
-    "chakra-border-color": { _light: "gray.200", _dark: "whiteAlpha.300" },
-    "chakra-inverse-text": { _light: "white", _dark: "gray.800" },
-    "chakra-subtle-bg": { _light: "gray.100", _dark: "gray.700" },
-    "chakra-subtle-text": { _light: "gray.600", _dark: "gray.400" },
-    "chakra-placeholder-color": { _light: "gray.500", _dark: "whiteAlpha.400" }
-  }
-};
-const styles$1 = {
-  global: {
-    body: {
-      fontFamily: "body",
-      color: "chakra-body-text",
-      bg: "chakra-body-bg",
-      transitionProperty: "background-color",
-      transitionDuration: "normal",
-      lineHeight: "base"
-    },
-    "*::placeholder": {
-      color: "chakra-placeholder-color"
-    },
-    "*, *::before, &::after": {
-      borderColor: "chakra-border-color"
-    }
-  }
-};
-const requiredChakraThemeKeys = [
-  "borders",
-  "breakpoints",
+const tokens = [
   "colors",
-  "components",
-  "config",
-  "direction",
+  "borders",
+  "borderWidths",
+  "borderStyles",
   "fonts",
   "fontSizes",
   "fontWeights",
+  "gradients",
   "letterSpacings",
   "lineHeights",
   "radii",
+  "space",
   "shadows",
   "sizes",
-  "space",
-  "styles",
+  "zIndices",
   "transition",
-  "zIndices"
+  "blur",
+  "breakpoints"
 ];
-function isChakraTheme(unit) {
-  if (!isObject(unit)) {
-    return false;
-  }
-  return requiredChakraThemeKeys.every(
-    (propertyName) => Object.prototype.hasOwnProperty.call(unit, propertyName)
-  );
+function extractTokens(theme2) {
+  const _tokens = tokens;
+  return pick(theme2, _tokens);
 }
-const direction = "ltr";
-const config$1 = {
-  useSystemColorMode: false,
-  initialColorMode: "light",
-  cssVarPrefix: "chakra"
+function extractSemanticTokens(theme2) {
+  return theme2.semanticTokens;
+}
+function omitVars(rawTheme) {
+  const { __cssMap, __cssVars, __breakpoints, ...cleanTheme } = rawTheme;
+  return cleanTheme;
+}
+function flattenTokens(theme2) {
+  const tokens2 = extractTokens(theme2);
+  const semanticTokens = extractSemanticTokens(theme2);
+  const isSemanticCondition = (key) => (
+    // @ts-ignore
+    pseudoPropNames.includes(key) || "default" === key
+  );
+  const result = {};
+  walkObject(tokens2, (value, path) => {
+    if (value == null)
+      return;
+    result[path.join(".")] = { isSemantic: false, value };
+  });
+  walkObject(
+    semanticTokens,
+    (value, path) => {
+      if (value == null)
+        return;
+      result[path.join(".")] = { isSemantic: true, value };
+    },
+    {
+      stop: (value) => Object.keys(value).every(isSemanticCondition)
+    }
+  );
+  return result;
+}
+function tokenToCssVar(token2, prefix2) {
+  return cssVar(String(token2).replace(/\./g, "-"), void 0, prefix2);
+}
+function createThemeVars(theme2) {
+  var _a;
+  const flatTokens = flattenTokens(theme2);
+  const cssVarPrefix = (_a = theme2.config) == null ? void 0 : _a.cssVarPrefix;
+  let cssVars2 = {};
+  const cssMap = {};
+  function lookupToken(token2, maybeToken) {
+    const scale2 = String(token2).split(".")[0];
+    const withScale = [scale2, maybeToken].join(".");
+    const resolvedTokenValue = flatTokens[withScale];
+    if (!resolvedTokenValue)
+      return maybeToken;
+    const { reference } = tokenToCssVar(withScale, cssVarPrefix);
+    return reference;
+  }
+  for (const [token2, tokenValue] of Object.entries(flatTokens)) {
+    const { isSemantic, value } = tokenValue;
+    const { variable, reference } = tokenToCssVar(token2, cssVarPrefix);
+    if (!isSemantic) {
+      if (token2.startsWith("space")) {
+        const keys = token2.split(".");
+        const [firstKey, ...referenceKeys] = keys;
+        const negativeLookupKey = `${firstKey}.-${referenceKeys.join(".")}`;
+        const negativeValue = calc.negate(value);
+        const negatedReference = calc.negate(reference);
+        cssMap[negativeLookupKey] = {
+          value: negativeValue,
+          var: variable,
+          varRef: negatedReference
+        };
+      }
+      cssVars2[variable] = value;
+      cssMap[token2] = {
+        value,
+        var: variable,
+        varRef: reference
+      };
+      continue;
+    }
+    const normalizedValue = isObject(value) ? value : { default: value };
+    cssVars2 = mergeWith(
+      cssVars2,
+      Object.entries(normalizedValue).reduce(
+        (acc, [conditionAlias, conditionValue]) => {
+          if (!conditionValue)
+            return acc;
+          const tokenReference = lookupToken(token2, `${conditionValue}`);
+          if (conditionAlias === "default") {
+            acc[variable] = tokenReference;
+            return acc;
+          }
+          const conditionSelector = (pseudoSelectors == null ? void 0 : pseudoSelectors[conditionAlias]) ?? conditionAlias;
+          acc[conditionSelector] = { [variable]: tokenReference };
+          return acc;
+        },
+        {}
+      )
+    );
+    cssMap[token2] = {
+      value: reference,
+      var: variable,
+      varRef: reference
+    };
+  }
+  return {
+    cssVars: cssVars2,
+    cssMap
+  };
+}
+function toCSSVar(rawTheme) {
+  const theme2 = omitVars(rawTheme);
+  const {
+    /**
+     * This is more like a dictionary of tokens users will type `green.500`,
+     * and their equivalent css variable.
+     */
+    cssMap,
+    /**
+     * The extracted css variables will be stored here, and used in
+     * the emotion's <Global/> component to attach variables to `:root`
+     */
+    cssVars: cssVars2
+  } = createThemeVars(theme2);
+  const defaultCssVars = {
+    "--chakra-ring-inset": "var(--chakra-empty,/*!*/ /*!*/)",
+    "--chakra-ring-offset-width": "0px",
+    "--chakra-ring-offset-color": "#fff",
+    "--chakra-ring-color": "rgba(66, 153, 225, 0.6)",
+    "--chakra-ring-offset-shadow": "0 0 #0000",
+    "--chakra-ring-shadow": "0 0 #0000",
+    "--chakra-space-x-reverse": "0",
+    "--chakra-space-y-reverse": "0"
+  };
+  Object.assign(theme2, {
+    __cssVars: { ...defaultCssVars, ...cssVars2 },
+    __cssMap: cssMap,
+    __breakpoints: analyzeBreakpoints(theme2.breakpoints)
+  });
+  return theme2;
+}
+var identifierWithPointTracking = function identifierWithPointTracking2(begin, points, index) {
+  var previous = 0;
+  var character = 0;
+  while (true) {
+    previous = character;
+    character = peek();
+    if (previous === 38 && character === 12) {
+      points[index] = 1;
+    }
+    if (token(character)) {
+      break;
+    }
+    next();
+  }
+  return slice(begin, position$1);
 };
-const theme$1 = {
-  semanticTokens,
-  direction,
-  ...foundations,
-  components,
-  styles: styles$1,
-  config: config$1
+var toRules = function toRules2(parsed, points) {
+  var index = -1;
+  var character = 44;
+  do {
+    switch (token(character)) {
+      case 0:
+        if (character === 38 && peek() === 12) {
+          points[index] = 1;
+        }
+        parsed[index] += identifierWithPointTracking(position$1 - 1, points, index);
+        break;
+      case 2:
+        parsed[index] += delimit(character);
+        break;
+      case 4:
+        if (character === 44) {
+          parsed[++index] = peek() === 58 ? "&\f" : "";
+          points[index] = parsed[index].length;
+          break;
+        }
+      default:
+        parsed[index] += from(character);
+    }
+  } while (character = next());
+  return parsed;
+};
+var getRules = function getRules2(value, points) {
+  return dealloc(toRules(alloc(value), points));
+};
+var fixedElements = /* @__PURE__ */ new WeakMap();
+var compat = function compat2(element) {
+  if (element.type !== "rule" || !element.parent || // positive .length indicates that this rule contains pseudo
+  // negative .length indicates that this rule has been already prefixed
+  element.length < 1) {
+    return;
+  }
+  var value = element.value;
+  var parent = element.parent;
+  var isImplicitRule = element.column === parent.column && element.line === parent.line;
+  while (parent.type !== "rule") {
+    parent = parent.parent;
+    if (!parent)
+      return;
+  }
+  if (element.props.length === 1 && value.charCodeAt(0) !== 58 && !fixedElements.get(parent)) {
+    return;
+  }
+  if (isImplicitRule) {
+    return;
+  }
+  fixedElements.set(element, true);
+  var points = [];
+  var rules = getRules(value, points);
+  var parentRules = parent.props;
+  for (var i = 0, k2 = 0; i < rules.length; i++) {
+    for (var j2 = 0; j2 < parentRules.length; j2++, k2++) {
+      element.props[k2] = points[i] ? rules[i].replace(/&\f/g, parentRules[j2]) : parentRules[j2] + " " + rules[i];
+    }
+  }
+};
+var removeLabel = function removeLabel2(element) {
+  if (element.type === "decl") {
+    var value = element.value;
+    if (
+      // charcode for l
+      value.charCodeAt(0) === 108 && // charcode for b
+      value.charCodeAt(2) === 98
+    ) {
+      element["return"] = "";
+      element.value = "";
+    }
+  }
+};
+function prefix(value, length) {
+  switch (hash(value, length)) {
+    case 5103:
+      return WEBKIT + "print-" + value + value;
+    case 5737:
+    case 4201:
+    case 3177:
+    case 3433:
+    case 1641:
+    case 4457:
+    case 2921:
+    case 5572:
+    case 6356:
+    case 5844:
+    case 3191:
+    case 6645:
+    case 3005:
+    case 6391:
+    case 5879:
+    case 5623:
+    case 6135:
+    case 4599:
+    case 4855:
+    case 4215:
+    case 6389:
+    case 5109:
+    case 5365:
+    case 5621:
+    case 3829:
+      return WEBKIT + value + value;
+    case 5349:
+    case 4246:
+    case 4810:
+    case 6968:
+    case 2756:
+      return WEBKIT + value + MOZ + value + MS + value + value;
+    case 6828:
+    case 4268:
+      return WEBKIT + value + MS + value + value;
+    case 6165:
+      return WEBKIT + value + MS + "flex-" + value + value;
+    case 5187:
+      return WEBKIT + value + replace(value, /(\w+).+(:[^]+)/, WEBKIT + "box-$1$2" + MS + "flex-$1$2") + value;
+    case 5443:
+      return WEBKIT + value + MS + "flex-item-" + replace(value, /flex-|-self/, "") + value;
+    case 4675:
+      return WEBKIT + value + MS + "flex-line-pack" + replace(value, /align-content|flex-|-self/, "") + value;
+    case 5548:
+      return WEBKIT + value + MS + replace(value, "shrink", "negative") + value;
+    case 5292:
+      return WEBKIT + value + MS + replace(value, "basis", "preferred-size") + value;
+    case 6060:
+      return WEBKIT + "box-" + replace(value, "-grow", "") + WEBKIT + value + MS + replace(value, "grow", "positive") + value;
+    case 4554:
+      return WEBKIT + replace(value, /([^-])(transform)/g, "$1" + WEBKIT + "$2") + value;
+    case 6187:
+      return replace(replace(replace(value, /(zoom-|grab)/, WEBKIT + "$1"), /(image-set)/, WEBKIT + "$1"), value, "") + value;
+    case 5495:
+    case 3959:
+      return replace(value, /(image-set\([^]*)/, WEBKIT + "$1$`$1");
+    case 4968:
+      return replace(replace(value, /(.+:)(flex-)?(.*)/, WEBKIT + "box-pack:$3" + MS + "flex-pack:$3"), /s.+-b[^;]+/, "justify") + WEBKIT + value + value;
+    case 4095:
+    case 3583:
+    case 4068:
+    case 2532:
+      return replace(value, /(.+)-inline(.+)/, WEBKIT + "$1$2") + value;
+    case 8116:
+    case 7059:
+    case 5753:
+    case 5535:
+    case 5445:
+    case 5701:
+    case 4933:
+    case 4677:
+    case 5533:
+    case 5789:
+    case 5021:
+    case 4765:
+      if (strlen(value) - 1 - length > 6)
+        switch (charat(value, length + 1)) {
+          case 109:
+            if (charat(value, length + 4) !== 45)
+              break;
+          case 102:
+            return replace(value, /(.+:)(.+)-([^]+)/, "$1" + WEBKIT + "$2-$3$1" + MOZ + (charat(value, length + 3) == 108 ? "$3" : "$2-$3")) + value;
+          case 115:
+            return ~indexof(value, "stretch") ? prefix(replace(value, "stretch", "fill-available"), length) + value : value;
+        }
+      break;
+    case 4949:
+      if (charat(value, length + 1) !== 115)
+        break;
+    case 6444:
+      switch (charat(value, strlen(value) - 3 - (~indexof(value, "!important") && 10))) {
+        case 107:
+          return replace(value, ":", ":" + WEBKIT) + value;
+        case 101:
+          return replace(value, /(.+:)([^;!]+)(;|!.+)?/, "$1" + WEBKIT + (charat(value, 14) === 45 ? "inline-" : "") + "box$3$1" + WEBKIT + "$2$3$1" + MS + "$2box$3") + value;
+      }
+      break;
+    case 5936:
+      switch (charat(value, length + 11)) {
+        case 114:
+          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, "tb") + value;
+        case 108:
+          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, "tb-rl") + value;
+        case 45:
+          return WEBKIT + value + MS + replace(value, /[svh]\w+-[tblr]{2}/, "lr") + value;
+      }
+      return WEBKIT + value + MS + value + value;
+  }
+  return value;
+}
+var prefixer = function prefixer2(element, index, children, callback) {
+  if (element.length > -1) {
+    if (!element["return"])
+      switch (element.type) {
+        case DECLARATION:
+          element["return"] = prefix(element.value, element.length);
+          break;
+        case KEYFRAMES:
+          return serialize([copy$1(element, {
+            value: replace(element.value, "@", "@" + WEBKIT)
+          })], callback);
+        case RULESET:
+          if (element.length)
+            return combine(element.props, function(value) {
+              switch (match(value, /(::plac\w+|:read-\w+)/)) {
+                case ":read-only":
+                case ":read-write":
+                  return serialize([copy$1(element, {
+                    props: [replace(value, /:(read-\w+)/, ":" + MOZ + "$1")]
+                  })], callback);
+                case "::placeholder":
+                  return serialize([copy$1(element, {
+                    props: [replace(value, /:(plac\w+)/, ":" + WEBKIT + "input-$1")]
+                  }), copy$1(element, {
+                    props: [replace(value, /:(plac\w+)/, ":" + MOZ + "$1")]
+                  }), copy$1(element, {
+                    props: [replace(value, /:(plac\w+)/, MS + "input-$1")]
+                  })], callback);
+              }
+              return "";
+            });
+      }
+  }
+};
+var defaultStylisPlugins = [prefixer];
+var createCache = function createCache2(options) {
+  var key = options.key;
+  if (key === "css") {
+    var ssrStyles = document.querySelectorAll("style[data-emotion]:not([data-s])");
+    Array.prototype.forEach.call(ssrStyles, function(node) {
+      var dataEmotionAttribute = node.getAttribute("data-emotion");
+      if (dataEmotionAttribute.indexOf(" ") === -1) {
+        return;
+      }
+      document.head.appendChild(node);
+      node.setAttribute("data-s", "");
+    });
+  }
+  var stylisPlugins = options.stylisPlugins || defaultStylisPlugins;
+  var inserted = {};
+  var container;
+  var nodesToHydrate = [];
+  {
+    container = options.container || document.head;
+    Array.prototype.forEach.call(
+      // this means we will ignore elements which don't have a space in them which
+      // means that the style elements we're looking at are only Emotion 11 server-rendered style elements
+      document.querySelectorAll('style[data-emotion^="' + key + ' "]'),
+      function(node) {
+        var attrib = node.getAttribute("data-emotion").split(" ");
+        for (var i = 1; i < attrib.length; i++) {
+          inserted[attrib[i]] = true;
+        }
+        nodesToHydrate.push(node);
+      }
+    );
+  }
+  var _insert;
+  var omnipresentPlugins = [compat, removeLabel];
+  {
+    var currentSheet;
+    var finalizingPlugins = [stringify$1, rulesheet(function(rule) {
+      currentSheet.insert(rule);
+    })];
+    var serializer = middleware(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
+    var stylis = function stylis2(styles2) {
+      return serialize(compile(styles2), serializer);
+    };
+    _insert = function insert(selector, serialized, sheet, shouldCache) {
+      currentSheet = sheet;
+      stylis(selector ? selector + "{" + serialized.styles + "}" : serialized.styles);
+      if (shouldCache) {
+        cache2.inserted[serialized.name] = true;
+      }
+    };
+  }
+  var cache2 = {
+    key,
+    sheet: new StyleSheet({
+      key,
+      container,
+      nonce: options.nonce,
+      speedy: options.speedy,
+      prepend: options.prepend,
+      insertionPoint: options.insertionPoint
+    }),
+    nonce: options.nonce,
+    inserted,
+    registered: {},
+    insert: _insert
+  };
+  cache2.sheet.hydrate(nodesToHydrate);
+  return cache2;
 };
 var isBrowser$1 = true;
 function getRegisteredStyles(registered, registeredStyles, classNames2) {
@@ -12894,264 +10822,6 @@ var insertStyles = function insertStyles2(cache2, serialized, isStringTag) {
     } while (current !== void 0);
   }
 };
-function murmur2(str) {
-  var h2 = 0;
-  var k2, i = 0, len = str.length;
-  for (; len >= 4; ++i, len -= 4) {
-    k2 = str.charCodeAt(i) & 255 | (str.charCodeAt(++i) & 255) << 8 | (str.charCodeAt(++i) & 255) << 16 | (str.charCodeAt(++i) & 255) << 24;
-    k2 = /* Math.imul(k, m): */
-    (k2 & 65535) * 1540483477 + ((k2 >>> 16) * 59797 << 16);
-    k2 ^= /* k >>> r: */
-    k2 >>> 24;
-    h2 = /* Math.imul(k, m): */
-    (k2 & 65535) * 1540483477 + ((k2 >>> 16) * 59797 << 16) ^ /* Math.imul(h, m): */
-    (h2 & 65535) * 1540483477 + ((h2 >>> 16) * 59797 << 16);
-  }
-  switch (len) {
-    case 3:
-      h2 ^= (str.charCodeAt(i + 2) & 255) << 16;
-    case 2:
-      h2 ^= (str.charCodeAt(i + 1) & 255) << 8;
-    case 1:
-      h2 ^= str.charCodeAt(i) & 255;
-      h2 = /* Math.imul(h, m): */
-      (h2 & 65535) * 1540483477 + ((h2 >>> 16) * 59797 << 16);
-  }
-  h2 ^= h2 >>> 13;
-  h2 = /* Math.imul(h, m): */
-  (h2 & 65535) * 1540483477 + ((h2 >>> 16) * 59797 << 16);
-  return ((h2 ^ h2 >>> 15) >>> 0).toString(36);
-}
-var unitlessKeys = {
-  animationIterationCount: 1,
-  aspectRatio: 1,
-  borderImageOutset: 1,
-  borderImageSlice: 1,
-  borderImageWidth: 1,
-  boxFlex: 1,
-  boxFlexGroup: 1,
-  boxOrdinalGroup: 1,
-  columnCount: 1,
-  columns: 1,
-  flex: 1,
-  flexGrow: 1,
-  flexPositive: 1,
-  flexShrink: 1,
-  flexNegative: 1,
-  flexOrder: 1,
-  gridRow: 1,
-  gridRowEnd: 1,
-  gridRowSpan: 1,
-  gridRowStart: 1,
-  gridColumn: 1,
-  gridColumnEnd: 1,
-  gridColumnSpan: 1,
-  gridColumnStart: 1,
-  msGridRow: 1,
-  msGridRowSpan: 1,
-  msGridColumn: 1,
-  msGridColumnSpan: 1,
-  fontWeight: 1,
-  lineHeight: 1,
-  opacity: 1,
-  order: 1,
-  orphans: 1,
-  scale: 1,
-  tabSize: 1,
-  widows: 1,
-  zIndex: 1,
-  zoom: 1,
-  WebkitLineClamp: 1,
-  // SVG-related properties
-  fillOpacity: 1,
-  floodOpacity: 1,
-  stopOpacity: 1,
-  strokeDasharray: 1,
-  strokeDashoffset: 1,
-  strokeMiterlimit: 1,
-  strokeOpacity: 1,
-  strokeWidth: 1
-};
-function memoize(fn) {
-  var cache2 = /* @__PURE__ */ Object.create(null);
-  return function(arg) {
-    if (cache2[arg] === void 0)
-      cache2[arg] = fn(arg);
-    return cache2[arg];
-  };
-}
-var isDevelopment$2 = false;
-var hyphenateRegex = /[A-Z]|^ms/g;
-var animationRegex = /_EMO_([^_]+?)_([^]*?)_EMO_/g;
-var isCustomProperty = function isCustomProperty2(property) {
-  return property.charCodeAt(1) === 45;
-};
-var isProcessableValue = function isProcessableValue2(value) {
-  return value != null && typeof value !== "boolean";
-};
-var processStyleName = /* @__PURE__ */ memoize(function(styleName) {
-  return isCustomProperty(styleName) ? styleName : styleName.replace(hyphenateRegex, "-$&").toLowerCase();
-});
-var processStyleValue = function processStyleValue2(key, value) {
-  switch (key) {
-    case "animation":
-    case "animationName": {
-      if (typeof value === "string") {
-        return value.replace(animationRegex, function(match, p1, p2) {
-          cursor = {
-            name: p1,
-            styles: p2,
-            next: cursor
-          };
-          return p1;
-        });
-      }
-    }
-  }
-  if (unitlessKeys[key] !== 1 && !isCustomProperty(key) && typeof value === "number" && value !== 0) {
-    return value + "px";
-  }
-  return value;
-};
-var noComponentSelectorMessage = "Component selectors can only be used in conjunction with @emotion/babel-plugin, the swc Emotion plugin, or another Emotion-aware compiler transform.";
-function handleInterpolation(mergedProps, registered, interpolation) {
-  if (interpolation == null) {
-    return "";
-  }
-  var componentSelector = interpolation;
-  if (componentSelector.__emotion_styles !== void 0) {
-    return componentSelector;
-  }
-  switch (typeof interpolation) {
-    case "boolean": {
-      return "";
-    }
-    case "object": {
-      var keyframes2 = interpolation;
-      if (keyframes2.anim === 1) {
-        cursor = {
-          name: keyframes2.name,
-          styles: keyframes2.styles,
-          next: cursor
-        };
-        return keyframes2.name;
-      }
-      var serializedStyles = interpolation;
-      if (serializedStyles.styles !== void 0) {
-        var next = serializedStyles.next;
-        if (next !== void 0) {
-          while (next !== void 0) {
-            cursor = {
-              name: next.name,
-              styles: next.styles,
-              next: cursor
-            };
-            next = next.next;
-          }
-        }
-        var styles2 = serializedStyles.styles + ";";
-        return styles2;
-      }
-      return createStringFromObject(mergedProps, registered, interpolation);
-    }
-    case "function": {
-      if (mergedProps !== void 0) {
-        var previousCursor = cursor;
-        var result = interpolation(mergedProps);
-        cursor = previousCursor;
-        return handleInterpolation(mergedProps, registered, result);
-      }
-      break;
-    }
-  }
-  var asString = interpolation;
-  if (registered == null) {
-    return asString;
-  }
-  var cached = registered[asString];
-  return cached !== void 0 ? cached : asString;
-}
-function createStringFromObject(mergedProps, registered, obj) {
-  var string = "";
-  if (Array.isArray(obj)) {
-    for (var i = 0; i < obj.length; i++) {
-      string += handleInterpolation(mergedProps, registered, obj[i]) + ";";
-    }
-  } else {
-    for (var key in obj) {
-      var value = obj[key];
-      if (typeof value !== "object") {
-        var asString = value;
-        if (registered != null && registered[asString] !== void 0) {
-          string += key + "{" + registered[asString] + "}";
-        } else if (isProcessableValue(asString)) {
-          string += processStyleName(key) + ":" + processStyleValue(key, asString) + ";";
-        }
-      } else {
-        if (key === "NO_COMPONENT_SELECTOR" && isDevelopment$2) {
-          throw new Error(noComponentSelectorMessage);
-        }
-        if (Array.isArray(value) && typeof value[0] === "string" && (registered == null || registered[value[0]] === void 0)) {
-          for (var _i2 = 0; _i2 < value.length; _i2++) {
-            if (isProcessableValue(value[_i2])) {
-              string += processStyleName(key) + ":" + processStyleValue(key, value[_i2]) + ";";
-            }
-          }
-        } else {
-          var interpolated = handleInterpolation(mergedProps, registered, value);
-          switch (key) {
-            case "animation":
-            case "animationName": {
-              string += processStyleName(key) + ":" + interpolated + ";";
-              break;
-            }
-            default: {
-              string += key + "{" + interpolated + "}";
-            }
-          }
-        }
-      }
-    }
-  }
-  return string;
-}
-var labelPattern = /label:\s*([^\s;{]+)\s*(;|$)/g;
-var cursor;
-function serializeStyles(args, registered, mergedProps) {
-  if (args.length === 1 && typeof args[0] === "object" && args[0] !== null && args[0].styles !== void 0) {
-    return args[0];
-  }
-  var stringMode = true;
-  var styles2 = "";
-  cursor = void 0;
-  var strings = args[0];
-  if (strings == null || strings.raw === void 0) {
-    stringMode = false;
-    styles2 += handleInterpolation(mergedProps, registered, strings);
-  } else {
-    var asTemplateStringsArr = strings;
-    styles2 += asTemplateStringsArr[0];
-  }
-  for (var i = 1; i < args.length; i++) {
-    styles2 += handleInterpolation(mergedProps, registered, args[i]);
-    if (stringMode) {
-      var templateStringsArr = strings;
-      styles2 += templateStringsArr[i];
-    }
-  }
-  labelPattern.lastIndex = 0;
-  var identifierName = "";
-  var match;
-  while ((match = labelPattern.exec(styles2)) !== null) {
-    identifierName += "-" + match[1];
-  }
-  var name2 = murmur2(styles2) + identifierName;
-  return {
-    name: name2,
-    styles: styles2,
-    next: cursor
-  };
-}
 var isDevelopment$1 = false;
 var EmotionCacheContext = /* @__PURE__ */ React$1.createContext(
   // we're doing this to avoid preconstruct's dead code elimination in this one case
@@ -13328,7 +10998,7 @@ function keyframes$1() {
     }
   };
 }
-const ColorModeContext = createContext$1({});
+const ColorModeContext = createContext({});
 ColorModeContext.displayName = "ColorModeContext";
 function useColorMode() {
   const context = useContext(ColorModeContext);
@@ -13816,12 +11486,12 @@ function CSSVars({ root = ":host, :root" }) {
   const selector = [root, `[data-theme]`].join(",");
   return /* @__PURE__ */ jsx$1(Global, { styles: (theme2) => ({ [selector]: theme2.__cssVars }) });
 }
-createContext({
+createContext$1({
   name: "StylesContext",
   errorMessage: "useStyles: `styles` is undefined. Seems you forgot to wrap the components in `<StylesProvider />` "
 });
 function createStylesContext(componentName) {
-  return createContext({
+  return createContext$1({
     name: `${componentName}StylesContext`,
     errorMessage: `useStyles: "styles" is undefined. Seems you forgot to wrap the components in "<${componentName} />" `
   });
@@ -13832,8 +11502,8 @@ function GlobalStyle() {
     Global,
     {
       styles: (theme2) => {
-        const styleObjectOrFn = memoizedGet(theme2, "styles.global");
-        const globalStyles = runIfFn$1(styleObjectOrFn, { theme: theme2, colorMode });
+        const styleObjectOrFn = memoizedGet$1(theme2, "styles.global");
+        const globalStyles = runIfFn(styleObjectOrFn, { theme: theme2, colorMode });
         if (!globalStyles)
           return void 0;
         const styles2 = css$2(globalStyles)(theme2);
@@ -13842,7 +11512,7 @@ function GlobalStyle() {
     }
   );
 }
-const [PortalManagerContextProvider, usePortalManager] = createContext({
+const [PortalManagerContextProvider, usePortalManager] = createContext$1({
   strict: false,
   name: "PortalManagerContext"
 });
@@ -13851,7 +11521,7 @@ function PortalManager(props) {
   return /* @__PURE__ */ jsx$1(PortalManagerContextProvider, { value: { zIndex }, children });
 }
 PortalManager.displayName = "PortalManager";
-const EnvironmentContext = createContext$1({
+const EnvironmentContext = createContext({
   getDocument() {
     return document;
   },
@@ -13877,12 +11547,12 @@ function EnvironmentProvider(props) {
       return environmentProp;
     return {
       getDocument: () => {
-        var _a2;
-        return ((_a2 = ref.current) == null ? void 0 : _a2.ownerDocument) ?? document;
+        var _a;
+        return ((_a = ref.current) == null ? void 0 : _a.ownerDocument) ?? document;
       },
       getWindow: () => {
-        var _a2;
-        return ((_a2 = ref.current) == null ? void 0 : _a2.ownerDocument.defaultView) ?? window;
+        var _a;
+        return ((_a = ref.current) == null ? void 0 : _a.ownerDocument.defaultView) ?? window;
       }
     };
   }, [environmentProp]);
@@ -13927,19 +11597,19 @@ const Provider = (props) => {
     }
   ) });
 };
-const MotionConfigContext = createContext$1({
-  transformPagePoint: (p2) => p2,
+const MotionConfigContext = createContext({
+  transformPagePoint: (p) => p,
   isStatic: false,
   reducedMotion: "never"
 });
-const MotionContext = createContext$1({});
+const MotionContext = createContext({});
 function useVisualElementContext() {
   return useContext(MotionContext).visualElement;
 }
-const PresenceContext = createContext$1(null);
+const PresenceContext = createContext(null);
 const isBrowser = typeof document !== "undefined";
 const useIsomorphicLayoutEffect = isBrowser ? useLayoutEffect : useEffect;
-const LazyContext = createContext$1({ strict: false });
+const LazyContext = createContext({ strict: false });
 function useVisualElement(Component, visualState, props, createVisualElement) {
   const parent = useVisualElementContext();
   const lazyContext = useContext(LazyContext);
@@ -14102,7 +11772,7 @@ function useProjectionId() {
     }
   });
 }
-const LayoutGroupContext = createContext$1({});
+const LayoutGroupContext = createContext({});
 class VisualElementHandler extends React__default.Component {
   /**
    * Update visual element props as soon as we know this update is going to be commited.
@@ -14119,7 +11789,7 @@ class VisualElementHandler extends React__default.Component {
     return this.props.children;
   }
 }
-const SwitchLayoutGroupContext = createContext$1({});
+const SwitchLayoutGroupContext = createContext({});
 const motionComponentSymbol = Symbol.for("motionComponentSymbol");
 function createMotionComponent({ preloadedFeatures, createVisualElement, projectionNodeConstructor, useRender, useVisualState, Component }) {
   preloadedFeatures && loadFeatures(preloadedFeatures);
@@ -14263,8 +11933,8 @@ const transformPropOrder = [
   "skewY"
 ];
 const transformProps = new Set(transformPropOrder);
-function isForcedMotionValue(key, { layout, layoutId }) {
-  return transformProps.has(key) || key.startsWith("origin") || (layout || layoutId !== void 0) && (!!scaleCorrectors[key] || key === "opacity");
+function isForcedMotionValue(key, { layout: layout2, layoutId }) {
+  return transformProps.has(key) || key.startsWith("origin") || (layout2 || layoutId !== void 0) && (!!scaleCorrectors[key] || key === "opacity");
 }
 const isMotionValue = (value) => !!(value === null || value === void 0 ? void 0 : value.getVelocity);
 const translateAlias = {
@@ -14274,18 +11944,18 @@ const translateAlias = {
   transformPerspective: "perspective"
 };
 const sortTransformProps = (a, b) => transformPropOrder.indexOf(a) - transformPropOrder.indexOf(b);
-function buildTransform({ transform, transformKeys: transformKeys2 }, { enableHardwareAcceleration = true, allowTransformNone = true }, transformIsDefault, transformTemplate) {
+function buildTransform({ transform: transform2, transformKeys: transformKeys2 }, { enableHardwareAcceleration = true, allowTransformNone = true }, transformIsDefault, transformTemplate2) {
   let transformString = "";
   transformKeys2.sort(sortTransformProps);
   for (const key of transformKeys2) {
-    transformString += `${translateAlias[key] || key}(${transform[key]}) `;
+    transformString += `${translateAlias[key] || key}(${transform2[key]}) `;
   }
-  if (enableHardwareAcceleration && !transform.z) {
+  if (enableHardwareAcceleration && !transform2.z) {
     transformString += "translateZ(0)";
   }
   transformString = transformString.trim();
-  if (transformTemplate) {
-    transformString = transformTemplate(transform, transformIsDefault ? "" : transformString);
+  if (transformTemplate2) {
+    transformString = transformTemplate2(transform2, transformIsDefault ? "" : transformString);
   } else if (allowTransformNone && transformIsDefault) {
     transformString = "none";
   }
@@ -14403,8 +12073,8 @@ const numberValueTypes = {
   strokeOpacity: alpha,
   numOctaves: int
 };
-function buildHTMLStyles(state, latestValues, options, transformTemplate) {
-  const { style, vars: vars2, transform, transformKeys: transformKeys2, transformOrigin: transformOrigin2 } = state;
+function buildHTMLStyles(state2, latestValues, options, transformTemplate2) {
+  const { style, vars, transform: transform2, transformKeys: transformKeys2, transformOrigin: transformOrigin2 } = state2;
   transformKeys2.length = 0;
   let hasTransform2 = false;
   let hasTransformOrigin = false;
@@ -14412,14 +12082,14 @@ function buildHTMLStyles(state, latestValues, options, transformTemplate) {
   for (const key in latestValues) {
     const value = latestValues[key];
     if (isCSSVariable$1(key)) {
-      vars2[key] = value;
+      vars[key] = value;
       continue;
     }
     const valueType = numberValueTypes[key];
     const valueAsType = getValueAsType(value, valueType);
     if (transformProps.has(key)) {
       hasTransform2 = true;
-      transform[key] = valueAsType;
+      transform2[key] = valueAsType;
       transformKeys2.push(key);
       if (!transformIsNone)
         continue;
@@ -14433,8 +12103,8 @@ function buildHTMLStyles(state, latestValues, options, transformTemplate) {
     }
   }
   if (!latestValues.transform) {
-    if (hasTransform2 || transformTemplate) {
-      style.transform = buildTransform(state, options, transformIsNone, transformTemplate);
+    if (hasTransform2 || transformTemplate2) {
+      style.transform = buildTransform(state2, options, transformIsNone, transformTemplate2);
     } else if (style.transform) {
       style.transform = "none";
     }
@@ -14458,11 +12128,11 @@ function copyRawValuesOnly(target, source, props) {
     }
   }
 }
-function useInitialMotionValues({ transformTemplate }, visualState, isStatic) {
+function useInitialMotionValues({ transformTemplate: transformTemplate2 }, visualState, isStatic) {
   return useMemo(() => {
-    const state = createHtmlRenderState();
-    buildHTMLStyles(state, visualState, { enableHardwareAcceleration: !isStatic }, transformTemplate);
-    return Object.assign({}, state.vars, state.style);
+    const state2 = createHtmlRenderState();
+    buildHTMLStyles(state2, visualState, { enableHardwareAcceleration: !isStatic }, transformTemplate2);
+    return Object.assign({}, state2.vars, state2.style);
   }, [visualState]);
 }
 function useStyle(props, visualState, isStatic) {
@@ -14528,7 +12198,7 @@ function loadExternalIsValidProp(isValidProp) {
 }
 try {
   loadExternalIsValidProp(require("@emotion/is-prop-valid").default);
-} catch (_a2) {
+} catch (_a) {
 }
 function filterProps(props, isDom, forwardMotionProps) {
   const filteredProps = {};
@@ -14542,8 +12212,8 @@ function filterProps(props, isDom, forwardMotionProps) {
   }
   return filteredProps;
 }
-function calcOrigin$1(origin, offset, size2) {
-  return typeof origin === "string" ? origin : px.transform(offset + size2 * origin);
+function calcOrigin$1(origin, offset, size) {
+  return typeof origin === "string" ? origin : px.transform(offset + size * origin);
 }
 function calcSVGTransformOrigin(dimensions, originX, originY) {
   const pxOriginX = calcOrigin$1(originX, dimensions.x, dimensions.width);
@@ -14558,15 +12228,15 @@ const camelKeys = {
   offset: "strokeDashoffset",
   array: "strokeDasharray"
 };
-function buildSVGPath(attrs, length, spacing2 = 1, offset = 0, useDashCase = true) {
+function buildSVGPath(attrs, length, spacing = 1, offset = 0, useDashCase = true) {
   attrs.pathLength = 1;
   const keys = useDashCase ? dashKeys : camelKeys;
   attrs[keys.offset] = px.transform(-offset);
   const pathLength = px.transform(length);
-  const pathSpacing = px.transform(spacing2);
+  const pathSpacing = px.transform(spacing);
   attrs[keys.array] = `${pathLength} ${pathSpacing}`;
 }
-function buildSVGAttrs(state, {
+function buildSVGAttrs(state2, {
   attrX,
   attrY,
   originX,
@@ -14576,17 +12246,17 @@ function buildSVGAttrs(state, {
   pathOffset = 0,
   // This is object creation, which we try to avoid per-frame.
   ...latest
-}, options, isSVGTag2, transformTemplate) {
-  buildHTMLStyles(state, latest, options, transformTemplate);
+}, options, isSVGTag2, transformTemplate2) {
+  buildHTMLStyles(state2, latest, options, transformTemplate2);
   if (isSVGTag2) {
-    if (state.style.viewBox) {
-      state.attrs.viewBox = state.style.viewBox;
+    if (state2.style.viewBox) {
+      state2.attrs.viewBox = state2.style.viewBox;
     }
     return;
   }
-  state.attrs = state.style;
-  state.style = {};
-  const { attrs, style, dimensions } = state;
+  state2.attrs = state2.style;
+  state2.style = {};
+  const { attrs, style, dimensions } = state2;
   if (attrs.transform) {
     if (dimensions)
       style.transform = attrs.transform;
@@ -14610,11 +12280,11 @@ const createSvgRenderState = () => ({
 const isSVGTag = (tag) => typeof tag === "string" && tag.toLowerCase() === "svg";
 function useSVGProps(props, visualState, _isStatic, Component) {
   const visualProps = useMemo(() => {
-    const state = createSvgRenderState();
-    buildSVGAttrs(state, visualState, { enableHardwareAcceleration: false }, isSVGTag(Component), props.transformTemplate);
+    const state2 = createSvgRenderState();
+    buildSVGAttrs(state2, visualState, { enableHardwareAcceleration: false }, isSVGTag(Component), props.transformTemplate);
     return {
-      ...state.attrs,
-      style: { ...state.style }
+      ...state2.attrs,
+      style: { ...state2.style }
     };
   }, [visualState]);
   if (props.style) {
@@ -14647,10 +12317,10 @@ function createUseRender(forwardMotionProps = false) {
   return useRender;
 }
 const camelToDash = (str) => str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-function renderHTML(element, { style, vars: vars2 }, styleProp, projection) {
+function renderHTML(element, { style, vars }, styleProp, projection) {
   Object.assign(element.style, style, projection && projection.getProjectionStyles(styleProp));
-  for (const key in vars2) {
-    element.style.setProperty(key, vars2[key]);
+  for (const key in vars) {
+    element.style.setProperty(key, vars[key]);
   }
 }
 const camelCaseAttributes = /* @__PURE__ */ new Set([
@@ -14730,14 +12400,14 @@ function resolveMotionValue(value) {
   return isCustomValue(unwrappedValue) ? unwrappedValue.toValue() : unwrappedValue;
 }
 function makeState({ scrapeMotionValuesFromProps: scrapeMotionValuesFromProps2, createRenderState, onMount }, props, context, presenceContext) {
-  const state = {
+  const state2 = {
     latestValues: makeLatestValues(props, context, presenceContext, scrapeMotionValuesFromProps2),
     renderState: createRenderState()
   };
   if (onMount) {
-    state.mount = (instance) => onMount(props, instance, state);
+    state2.mount = (instance) => onMount(props, instance, state2);
   }
-  return state;
+  return state2;
 }
 const makeUseVisualState = (config2) => (props, isStatic) => {
   const context = useContext(MotionContext);
@@ -14764,8 +12434,8 @@ function makeLatestValues(props, context, presenceContext, scrapeMotionValues) {
   isInitialAnimationBlocked = isInitialAnimationBlocked || initial === false;
   const variantToSet = isInitialAnimationBlocked ? animate2 : initial;
   if (variantToSet && typeof variantToSet !== "boolean" && !isAnimationControls(variantToSet)) {
-    const list = Array.isArray(variantToSet) ? variantToSet : [variantToSet];
-    list.forEach((definition) => {
+    const list2 = Array.isArray(variantToSet) ? variantToSet : [variantToSet];
+    list2.forEach((definition) => {
       const resolved = resolveVariantFromProps(props, definition);
       if (!resolved)
         return;
@@ -14978,19 +12648,19 @@ function useTapGesture({ onTap, onTapStart, onTapCancel, whileTap, visualElement
     return !isDragActive();
   }
   function onPointerUp(event, info) {
-    var _a2, _b2, _c2, _d2;
+    var _a, _b, _c, _d;
     if (!checkPointerEnd())
       return;
-    !isNodeOrChild(visualElement.current, event.target) ? (_b2 = (_a2 = visualElement.getProps()).onTapCancel) === null || _b2 === void 0 ? void 0 : _b2.call(_a2, event, info) : (_d2 = (_c2 = visualElement.getProps()).onTap) === null || _d2 === void 0 ? void 0 : _d2.call(_c2, event, info);
+    !isNodeOrChild(visualElement.current, event.target) ? (_b = (_a = visualElement.getProps()).onTapCancel) === null || _b === void 0 ? void 0 : _b.call(_a, event, info) : (_d = (_c = visualElement.getProps()).onTap) === null || _d === void 0 ? void 0 : _d.call(_c, event, info);
   }
   function onPointerCancel(event, info) {
-    var _a2, _b2;
+    var _a, _b;
     if (!checkPointerEnd())
       return;
-    (_b2 = (_a2 = visualElement.getProps()).onTapCancel) === null || _b2 === void 0 ? void 0 : _b2.call(_a2, event, info);
+    (_b = (_a = visualElement.getProps()).onTapCancel) === null || _b === void 0 ? void 0 : _b.call(_a, event, info);
   }
   const startPress = useCallback((event, info) => {
-    var _a2;
+    var _a;
     removePointerEndListener();
     if (isPressing.current)
       return;
@@ -15000,7 +12670,7 @@ function useTapGesture({ onTap, onTapStart, onTapCancel, whileTap, visualElement
     if (latestProps.whileTap && visualElement.animationState) {
       visualElement.animationState.setActive(AnimationType.Tap, true);
     }
-    (_a2 = latestProps.onTapStart) === null || _a2 === void 0 ? void 0 : _a2.call(latestProps, event, info);
+    (_a = latestProps.onTapStart) === null || _a === void 0 ? void 0 : _a.call(latestProps, event, info);
   }, [Boolean(onTapStart), visualElement]);
   usePointerEvent(visualElement, "pointerdown", hasPressListeners ? startPress : void 0, eventOptions);
   useUnmountEffect(removePointerEndListener);
@@ -15036,21 +12706,21 @@ function observeIntersection(element, options, callback) {
   };
 }
 function useViewport({ visualElement, whileInView, onViewportEnter, onViewportLeave, viewport = {} }) {
-  const state = useRef({
+  const state2 = useRef({
     hasEnteredView: false,
     isInView: false
   });
   let shouldObserve = Boolean(whileInView || onViewportEnter || onViewportLeave);
-  if (viewport.once && state.current.hasEnteredView)
+  if (viewport.once && state2.current.hasEnteredView)
     shouldObserve = false;
   const useObserver = typeof IntersectionObserver === "undefined" ? useMissingIntersectionObserver : useIntersectionObserver;
-  useObserver(shouldObserve, state.current, visualElement, viewport);
+  useObserver(shouldObserve, state2.current, visualElement, viewport);
 }
 const thresholdNames = {
   some: 0,
   all: 1
 };
-function useIntersectionObserver(shouldObserve, state, visualElement, { root, margin: rootMargin, amount = "some", once }) {
+function useIntersectionObserver(shouldObserve, state2, visualElement, { root, margin: rootMargin, amount = "some", once }) {
   useEffect(() => {
     if (!shouldObserve || !visualElement.current)
       return;
@@ -15061,13 +12731,13 @@ function useIntersectionObserver(shouldObserve, state, visualElement, { root, ma
     };
     const intersectionCallback = (entry) => {
       const { isIntersecting } = entry;
-      if (state.isInView === isIntersecting)
+      if (state2.isInView === isIntersecting)
         return;
-      state.isInView = isIntersecting;
-      if (once && !isIntersecting && state.hasEnteredView) {
+      state2.isInView = isIntersecting;
+      if (once && !isIntersecting && state2.hasEnteredView) {
         return;
       } else if (isIntersecting) {
-        state.hasEnteredView = true;
+        state2.hasEnteredView = true;
       }
       if (visualElement.animationState) {
         visualElement.animationState.setActive(AnimationType.InView, isIntersecting);
@@ -15079,12 +12749,12 @@ function useIntersectionObserver(shouldObserve, state, visualElement, { root, ma
     return observeIntersection(visualElement.current, options, intersectionCallback);
   }, [shouldObserve, root, rootMargin, amount]);
 }
-function useMissingIntersectionObserver(shouldObserve, state, visualElement, { fallback = true }) {
+function useMissingIntersectionObserver(shouldObserve, state2, visualElement, { fallback = true }) {
   useEffect(() => {
     if (!shouldObserve || !fallback)
       return;
     requestAnimationFrame(() => {
-      state.hasEnteredView = true;
+      state2.hasEnteredView = true;
       const { onViewportEnter } = visualElement.getProps();
       onViewportEnter && onViewportEnter(null);
       if (visualElement.animationState) {
@@ -15119,14 +12789,14 @@ function useIsPresent() {
 function isPresent(context) {
   return context === null ? true : context.isPresent;
 }
-function shallowCompare(next, prev) {
+function shallowCompare(next2, prev) {
   if (!Array.isArray(prev))
     return false;
   const prevLength = prev.length;
-  if (prevLength !== next.length)
+  if (prevLength !== next2.length)
     return false;
   for (let i = 0; i < prevLength; i++) {
-    if (prev[i] !== next[i])
+    if (prev[i] !== next2[i])
       return false;
   }
   return true;
@@ -15220,10 +12890,10 @@ const steps = stepsOrder.reduce((acc, key) => {
 }, {});
 const sync = stepsOrder.reduce((acc, key) => {
   const step = steps[key];
-  acc[key] = (process2, keepAlive = false, immediate = false) => {
+  acc[key] = (process, keepAlive = false, immediate = false) => {
     if (!runNextFrame)
       startLoop();
-    return step.schedule(process2, keepAlive, immediate);
+    return step.schedule(process, keepAlive, immediate);
   };
   return acc;
 }, {});
@@ -15639,8 +13309,8 @@ const color = {
 const colorToken = "${c}";
 const numberToken = "${n}";
 function test(v2) {
-  var _a2, _b2;
-  return isNaN(v2) && isString(v2) && (((_a2 = v2.match(floatRegex)) === null || _a2 === void 0 ? void 0 : _a2.length) || 0) + (((_b2 = v2.match(colorRegex)) === null || _b2 === void 0 ? void 0 : _b2.length) || 0) > 0;
+  var _a, _b;
+  return isNaN(v2) && isString(v2) && (((_a = v2.match(floatRegex)) === null || _a === void 0 ? void 0 : _a.length) || 0) + (((_b = v2.match(colorRegex)) === null || _b === void 0 ? void 0 : _b.length) || 0) > 0;
 }
 function analyseComplexValue(v2) {
   if (typeof v2 === "number")
@@ -15724,11 +13394,11 @@ const defaultValueTypes = {
 };
 const getDefaultValueType = (key) => defaultValueTypes[key];
 function getAnimatableNone(key, value) {
-  var _a2;
+  var _a;
   let defaultValueType = getDefaultValueType(key);
   if (defaultValueType !== filter)
     defaultValueType = complex;
-  return (_a2 = defaultValueType.getAnimatableNone) === null || _a2 === void 0 ? void 0 : _a2.call(defaultValueType, value);
+  return (_a = defaultValueType.getAnimatableNone) === null || _a === void 0 ? void 0 : _a.call(defaultValueType, value);
 }
 const testValueType = (v2) => (type2) => type2.test(v2);
 const auto = {
@@ -15770,7 +13440,7 @@ function setTarget(visualElement, definition) {
   }
 }
 function checkTargetForNewValues(visualElement, target, origin) {
-  var _a2, _b2;
+  var _a, _b;
   const newValueKeys = Object.keys(target).filter((key) => !visualElement.hasValue(key));
   const numNewValues = newValueKeys.length;
   if (!numNewValues)
@@ -15783,7 +13453,7 @@ function checkTargetForNewValues(visualElement, target, origin) {
       value = targetValue[0];
     }
     if (value === null) {
-      value = (_b2 = (_a2 = origin[key]) !== null && _a2 !== void 0 ? _a2 : visualElement.readValue(key)) !== null && _b2 !== void 0 ? _b2 : target[key];
+      value = (_b = (_a = origin[key]) !== null && _a !== void 0 ? _a : visualElement.readValue(key)) !== null && _b !== void 0 ? _b : target[key];
     }
     if (value === void 0 || value === null)
       continue;
@@ -15807,11 +13477,11 @@ function getOriginFromTransition(key, transition2) {
   return valueTransition.from;
 }
 function getOrigin(target, transition2, visualElement) {
-  var _a2;
+  var _a;
   const origin = {};
   for (const key in target) {
     const transitionOrigin = getOriginFromTransition(key, transition2);
-    origin[key] = transitionOrigin !== void 0 ? transitionOrigin : (_a2 = visualElement.getValue(key)) === null || _a2 === void 0 ? void 0 : _a2.get();
+    origin[key] = transitionOrigin !== void 0 ? transitionOrigin : (_a = visualElement.getValue(key)) === null || _a === void 0 ? void 0 : _a.get();
   }
   return origin;
 }
@@ -15824,24 +13494,24 @@ const secondsToMilliseconds = (seconds) => seconds * 1e3;
 const instantAnimationState = {
   current: false
 };
-const mirrorEasing = (easing) => (p2) => p2 <= 0.5 ? easing(2 * p2) / 2 : (2 - easing(2 * (1 - p2))) / 2;
-const reverseEasing = (easing) => (p2) => 1 - easing(1 - p2);
-const easeIn = (p2) => p2 * p2;
+const mirrorEasing = (easing) => (p) => p <= 0.5 ? easing(2 * p) / 2 : (2 - easing(2 * (1 - p))) / 2;
+const reverseEasing = (easing) => (p) => 1 - easing(1 - p);
+const easeIn = (p) => p * p;
 const easeOut = reverseEasing(easeIn);
 const easeInOut = mirrorEasing(easeIn);
-const mix = (from, to, progress2) => -progress2 * from + progress2 * to + from;
-function hueToRgb(p2, q2, t) {
-  if (t < 0)
-    t += 1;
-  if (t > 1)
-    t -= 1;
-  if (t < 1 / 6)
-    return p2 + (q2 - p2) * 6 * t;
-  if (t < 1 / 2)
+const mix = (from2, to, progress2) => -progress2 * from2 + progress2 * to + from2;
+function hueToRgb(p, q2, t2) {
+  if (t2 < 0)
+    t2 += 1;
+  if (t2 > 1)
+    t2 -= 1;
+  if (t2 < 1 / 6)
+    return p + (q2 - p) * 6 * t2;
+  if (t2 < 1 / 2)
     return q2;
-  if (t < 2 / 3)
-    return p2 + (q2 - p2) * (2 / 3 - t) * 6;
-  return p2;
+  if (t2 < 2 / 3)
+    return p + (q2 - p) * (2 / 3 - t2) * 6;
+  return p;
 }
 function hslaToRgba({ hue, saturation, lightness, alpha: alpha2 }) {
   hue /= 360;
@@ -15854,10 +13524,10 @@ function hslaToRgba({ hue, saturation, lightness, alpha: alpha2 }) {
     red = green = blue = lightness;
   } else {
     const q2 = lightness < 0.5 ? lightness * (1 + saturation) : lightness + saturation - lightness * saturation;
-    const p2 = 2 * lightness - q2;
-    red = hueToRgb(p2, q2, hue + 1 / 3);
-    green = hueToRgb(p2, q2, hue);
-    blue = hueToRgb(p2, q2, hue - 1 / 3);
+    const p = 2 * lightness - q2;
+    red = hueToRgb(p, q2, hue + 1 / 3);
+    green = hueToRgb(p, q2, hue);
+    blue = hueToRgb(p, q2, hue - 1 / 3);
   }
   return {
     red: Math.round(red * 255),
@@ -15866,8 +13536,8 @@ function hslaToRgba({ hue, saturation, lightness, alpha: alpha2 }) {
     alpha: alpha2
   };
 }
-const mixLinearColor = (from, to, v2) => {
-  const fromExpo = from * from;
+const mixLinearColor = (from2, to, v2) => {
+  const fromExpo = from2 * from2;
   return Math.sqrt(Math.max(0, v2 * (to * to - fromExpo) + fromExpo));
 };
 const colorTypes = [hex, rgba, hsla];
@@ -15881,8 +13551,8 @@ function asRGBA(color2) {
   }
   return model;
 }
-const mixColor = (from, to) => {
-  const fromRGBA = asRGBA(from);
+const mixColor = (from2, to) => {
+  const fromRGBA = asRGBA(from2);
   const toRGBA = asRGBA(to);
   const blended = { ...fromRGBA };
   return (v2) => {
@@ -15902,10 +13572,10 @@ function getMixer(origin, target) {
     return mixComplex(origin, target);
   }
 }
-const mixArray = (from, to) => {
-  const output = [...from];
+const mixArray = (from2, to) => {
+  const output = [...from2];
   const numValues = output.length;
-  const blendValue = from.map((fromThis, i) => getMixer(fromThis, to[i]));
+  const blendValue = from2.map((fromThis, i) => getMixer(fromThis, to[i]));
   return (v2) => {
     for (let i = 0; i < numValues; i++) {
       output[i] = blendValue[i](v2);
@@ -15937,14 +13607,14 @@ const mixComplex = (origin, target) => {
     return pipe$1(mixArray(originStats.values, targetStats.values), template);
   } else {
     warning(true, `Complex values '${origin}' and '${target}' too different to mix. Ensure all colors are of the same type, and that each contains the same quantity of number and color values. Falling back to instant transition.`);
-    return (p2) => `${p2 > 0 ? target : origin}`;
+    return (p) => `${p > 0 ? target : origin}`;
   }
 };
-const progress$1 = (from, to, value) => {
-  const toFromDifference = to - from;
-  return toFromDifference === 0 ? 1 : (value - from) / toFromDifference;
+const progress$1 = (from2, to, value) => {
+  const toFromDifference = to - from2;
+  return toFromDifference === 0 ? 1 : (value - from2) / toFromDifference;
 };
-const mixNumber = (from, to) => (p2) => mix(from, to, p2);
+const mixNumber = (from2, to) => (p) => mix(from2, to, p);
 function detectMixerFactory(v2) {
   if (typeof v2 === "number") {
     return mixNumber;
@@ -15999,7 +13669,7 @@ function interpolate(input, output, { clamp: isClamp = true, ease, mixer } = {})
   return isClamp ? (v2) => interpolator(clamp(input[0], input[inputLength - 1], v2)) : interpolator;
 }
 const noop = (any) => any;
-const calcBezier = (t, a1, a2) => (((1 - 3 * a2 + 3 * a1) * t + (3 * a2 - 6 * a1)) * t + 3 * a1) * t;
+const calcBezier = (t2, a1, a2) => (((1 - 3 * a2 + 3 * a1) * t2 + (3 * a2 - 6 * a1)) * t2 + 3 * a1) * t2;
 const subdivisionPrecision = 1e-7;
 const subdivisionMaxIterations = 12;
 function binarySubdivide(x2, lowerBound, upperBound, mX1, mX2) {
@@ -16021,15 +13691,15 @@ function cubicBezier(mX1, mY1, mX2, mY2) {
   if (mX1 === mY1 && mX2 === mY2)
     return noop;
   const getTForX = (aX) => binarySubdivide(aX, 0, 1, mX1, mX2);
-  return (t) => t === 0 || t === 1 ? t : calcBezier(getTForX(t), mY1, mY2);
+  return (t2) => t2 === 0 || t2 === 1 ? t2 : calcBezier(getTForX(t2), mY1, mY2);
 }
-const circIn = (p2) => 1 - Math.sin(Math.acos(p2));
+const circIn = (p) => 1 - Math.sin(Math.acos(p));
 const circOut = reverseEasing(circIn);
 const circInOut = mirrorEasing(circOut);
 const backOut = cubicBezier(0.33, 1.53, 0.69, 0.99);
 const backIn = reverseEasing(backOut);
 const backInOut = mirrorEasing(backIn);
-const anticipate = (p2) => (p2 *= 2) < 1 ? 0.5 * backIn(p2) : 0.5 * (2 - Math.pow(2, -10 * (p2 - 1)));
+const anticipate = (p) => (p *= 2) < 1 ? 0.5 * backIn(p) : 0.5 * (2 - Math.pow(2, -10 * (p - 1)));
 const easingLookup = {
   linear: noop,
   easeIn,
@@ -16070,7 +13740,7 @@ function convertOffsetToTimes(offset, duration) {
 function keyframes({ keyframes: keyframeValues, ease = easeInOut, times, duration = 300 }) {
   keyframeValues = [...keyframeValues];
   const easingFunctions = isEasingArray(ease) ? ease.map(easingDefinitionToFunction) : easingDefinitionToFunction(ease);
-  const state = {
+  const state2 = {
     done: false,
     value: keyframeValues[0]
   };
@@ -16087,10 +13757,10 @@ function keyframes({ keyframes: keyframeValues, ease = easeInOut, times, duratio
   }
   let interpolator = createInterpolator();
   return {
-    next: (t) => {
-      state.value = interpolator(t);
-      state.done = t >= duration;
-      return state;
+    next: (t2) => {
+      state2.value = interpolator(t2);
+      state2.done = t2 >= duration;
+      return state2;
     },
     flipTarget: () => {
       keyframeValues.reverse();
@@ -16122,12 +13792,12 @@ function findSpring({ duration = 800, bounce = 0.25, velocity = 0, mass = 1 }) {
     derivative = (undampedFreq2) => {
       const exponentialDecay = undampedFreq2 * dampingRatio;
       const delta = exponentialDecay * duration;
-      const d2 = delta * velocity + velocity;
+      const d = delta * velocity + velocity;
       const e = Math.pow(dampingRatio, 2) * Math.pow(undampedFreq2, 2) * duration;
       const f2 = Math.exp(-delta);
       const g2 = calcAngularFreq(Math.pow(undampedFreq2, 2), dampingRatio);
       const factor = -envelope(undampedFreq2) + safeMin > 0 ? -1 : 1;
-      return factor * ((d2 - e) * f2) / g2;
+      return factor * ((d - e) * f2) / g2;
     };
   } else {
     envelope = (undampedFreq2) => {
@@ -16200,7 +13870,7 @@ const velocitySampleDuration = 5;
 function spring({ keyframes: keyframes2, restDelta, restSpeed, ...options }) {
   let origin = keyframes2[0];
   let target = keyframes2[keyframes2.length - 1];
-  const state = { done: false, value: origin };
+  const state2 = { done: false, value: origin };
   const { stiffness, damping, mass, velocity, duration, isResolvedFromDuration } = getSpringOptions(options);
   let resolveSpring = zero;
   let initialVelocity = velocity ? -(velocity / 1e3) : 0;
@@ -16213,43 +13883,43 @@ function spring({ keyframes: keyframes2, restDelta, restSpeed, ...options }) {
     restDelta || (restDelta = isGranularScale ? 5e-3 : 0.5);
     if (dampingRatio < 1) {
       const angularFreq = calcAngularFreq(undampedAngularFreq, dampingRatio);
-      resolveSpring = (t) => {
-        const envelope = Math.exp(-dampingRatio * undampedAngularFreq * t);
-        return target - envelope * ((initialVelocity + dampingRatio * undampedAngularFreq * initialDelta) / angularFreq * Math.sin(angularFreq * t) + initialDelta * Math.cos(angularFreq * t));
+      resolveSpring = (t2) => {
+        const envelope = Math.exp(-dampingRatio * undampedAngularFreq * t2);
+        return target - envelope * ((initialVelocity + dampingRatio * undampedAngularFreq * initialDelta) / angularFreq * Math.sin(angularFreq * t2) + initialDelta * Math.cos(angularFreq * t2));
       };
     } else if (dampingRatio === 1) {
-      resolveSpring = (t) => target - Math.exp(-undampedAngularFreq * t) * (initialDelta + (initialVelocity + undampedAngularFreq * initialDelta) * t);
+      resolveSpring = (t2) => target - Math.exp(-undampedAngularFreq * t2) * (initialDelta + (initialVelocity + undampedAngularFreq * initialDelta) * t2);
     } else {
       const dampedAngularFreq = undampedAngularFreq * Math.sqrt(dampingRatio * dampingRatio - 1);
-      resolveSpring = (t) => {
-        const envelope = Math.exp(-dampingRatio * undampedAngularFreq * t);
-        const freqForT = Math.min(dampedAngularFreq * t, 300);
+      resolveSpring = (t2) => {
+        const envelope = Math.exp(-dampingRatio * undampedAngularFreq * t2);
+        const freqForT = Math.min(dampedAngularFreq * t2, 300);
         return target - envelope * ((initialVelocity + dampingRatio * undampedAngularFreq * initialDelta) * Math.sinh(freqForT) + dampedAngularFreq * initialDelta * Math.cosh(freqForT)) / dampedAngularFreq;
       };
     }
   }
   createSpring();
   return {
-    next: (t) => {
-      const current = resolveSpring(t);
+    next: (t2) => {
+      const current = resolveSpring(t2);
       if (!isResolvedFromDuration) {
         let currentVelocity = initialVelocity;
-        if (t !== 0) {
+        if (t2 !== 0) {
           if (dampingRatio < 1) {
-            const prevT = Math.max(0, t - velocitySampleDuration);
-            currentVelocity = velocityPerSecond(current - resolveSpring(prevT), t - prevT);
+            const prevT = Math.max(0, t2 - velocitySampleDuration);
+            currentVelocity = velocityPerSecond(current - resolveSpring(prevT), t2 - prevT);
           } else {
             currentVelocity = 0;
           }
         }
         const isBelowVelocityThreshold = Math.abs(currentVelocity) <= restSpeed;
         const isBelowDisplacementThreshold = Math.abs(target - current) <= restDelta;
-        state.done = isBelowVelocityThreshold && isBelowDisplacementThreshold;
+        state2.done = isBelowVelocityThreshold && isBelowDisplacementThreshold;
       } else {
-        state.done = t >= duration;
+        state2.done = t2 >= duration;
       }
-      state.value = state.done ? target : current;
-      return state;
+      state2.value = state2.done ? target : current;
+      return state2;
     },
     flipTarget: () => {
       initialVelocity = -initialVelocity;
@@ -16274,18 +13944,18 @@ function decay({
   modifyTarget
 }) {
   const origin = keyframes2[0];
-  const state = { done: false, value: origin };
+  const state2 = { done: false, value: origin };
   let amplitude = power * velocity;
   const ideal = origin + amplitude;
   const target = modifyTarget === void 0 ? ideal : modifyTarget(ideal);
   if (target !== ideal)
     amplitude = target - origin;
   return {
-    next: (t) => {
-      const delta = -amplitude * Math.exp(-t / timeConstant);
-      state.done = !(delta > restDelta || delta < -restDelta);
-      state.value = state.done ? target : target + delta;
-      return state;
+    next: (t2) => {
+      const delta = -amplitude * Math.exp(-t2 / timeConstant);
+      state2.done = !(delta > restDelta || delta < -restDelta);
+      state2.value = state2.done ? target : target + delta;
+      return state2;
     },
     flipTarget: () => {
     }
@@ -16314,7 +13984,7 @@ const framesync = (update) => {
   };
 };
 function animate$1({ duration, driver = framesync, elapsed = 0, repeat: repeatMax = 0, repeatType = "loop", repeatDelay = 0, keyframes: keyframes$12, autoplay = true, onPlay, onStop, onComplete, onRepeat, onUpdate, type: type2 = "keyframes", ...options }) {
-  var _a2, _b2;
+  var _a, _b;
   const initialElapsed = elapsed;
   let driverControls;
   let repeatCount = 0;
@@ -16325,8 +13995,8 @@ function animate$1({ duration, driver = framesync, elapsed = 0, repeat: repeatMa
   const animator = types[keyframes$12.length > 2 ? "keyframes" : type2] || keyframes;
   const origin = keyframes$12[0];
   const target = keyframes$12[keyframes$12.length - 1];
-  let state = { done: false, value: origin };
-  if ((_b2 = (_a2 = animator).needsInterpolation) === null || _b2 === void 0 ? void 0 : _b2.call(_a2, origin, target)) {
+  let state2 = { done: false, value: origin };
+  if ((_b = (_a = animator).needsInterpolation) === null || _b === void 0 ? void 0 : _b.call(_a, origin, target)) {
     interpolateFromNumber = interpolate([0, 100], [origin, target], {
       clamp: false
     });
@@ -16359,12 +14029,12 @@ function animate$1({ duration, driver = framesync, elapsed = 0, repeat: repeatMa
       delta = -delta;
     elapsed += delta;
     if (!isComplete) {
-      state = animation.next(Math.max(0, elapsed));
+      state2 = animation.next(Math.max(0, elapsed));
       if (interpolateFromNumber)
-        state.value = interpolateFromNumber(state.value);
-      isComplete = isForwardPlayback ? state.done : elapsed <= 0;
+        state2.value = interpolateFromNumber(state2.value);
+      isComplete = isForwardPlayback ? state2.done : elapsed <= 0;
     }
-    onUpdate && onUpdate(state.value);
+    onUpdate && onUpdate(state2.value);
     if (isComplete) {
       if (repeatCount === 0) {
         computedDuration = computedDuration !== void 0 ? computedDuration : elapsed;
@@ -16402,26 +14072,26 @@ function animate$1({ duration, driver = framesync, elapsed = 0, repeat: repeatMa
      * repeats are handled correctly. Ideally in the future we will replace
      * that method with this, once repeat calculations are pure.
      */
-    set currentTime(t) {
+    set currentTime(t2) {
       elapsed = initialElapsed;
-      update(t);
+      update(t2);
     },
     /**
      * animate() can't yet be sampled for time, instead it
      * consumes time. So to sample it we have to run a low
      * temporal-resolution version.
      */
-    sample: (t) => {
+    sample: (t2) => {
       elapsed = initialElapsed;
       const sampleResolution = duration && typeof duration === "number" ? Math.max(duration * 0.5, 50) : 50;
       let sampleElapsed = 0;
       update(0);
-      while (sampleElapsed <= t) {
-        const remaining = t - sampleElapsed;
+      while (sampleElapsed <= t2) {
+        const remaining = t2 - sampleElapsed;
         update(Math.min(remaining, sampleResolution));
         sampleElapsed += sampleResolution;
       }
-      return state;
+      return state2;
     }
   };
 }
@@ -16430,7 +14100,7 @@ function isWaapiSupportedEasing(easing) {
   Array.isArray(easing) || // Bezier curve
   typeof easing === "string" && supportedWaapiEasing[easing];
 }
-const cubicBezierAsString = ([a, b, c, d2]) => `cubic-bezier(${a}, ${b}, ${c}, ${d2})`;
+const cubicBezierAsString = ([a, b, c, d]) => `cubic-bezier(${a}, ${b}, ${c}, ${d})`;
 const supportedWaapiEasing = {
   linear: "linear",
   ease: "ease",
@@ -16484,16 +14154,16 @@ function createAcceleratedAnimation(value, valueName, { onUpdate, onComplete, ..
     if (options.repeat === Infinity)
       return;
     const sampleAnimation = animate$1({ ...options, elapsed: 0 });
-    let state = { done: false, value: keyframes2[0] };
+    let state2 = { done: false, value: keyframes2[0] };
     const pregeneratedKeyframes = [];
-    let t = 0;
-    while (!state.done && t < 2e4) {
-      state = sampleAnimation.sample(t);
-      pregeneratedKeyframes.push(state.value);
-      t += sampleDelta;
+    let t2 = 0;
+    while (!state2.done && t2 < 2e4) {
+      state2 = sampleAnimation.sample(t2);
+      pregeneratedKeyframes.push(state2.value);
+      t2 += sampleDelta;
     }
     keyframes2 = pregeneratedKeyframes;
-    duration = t - sampleDelta;
+    duration = t2 - sampleDelta;
     ease = "linear";
   }
   const animation = animateStyle(value.owner.current, valueName, keyframes2, {
@@ -16519,8 +14189,8 @@ function createAcceleratedAnimation(value, valueName, { onUpdate, onComplete, ..
     get currentTime() {
       return animation.currentTime || 0;
     },
-    set currentTime(t) {
-      animation.currentTime = t;
+    set currentTime(t2) {
+      animation.currentTime = t2;
     },
     stop: () => {
       const { currentTime } = animation;
@@ -16572,9 +14242,9 @@ function inertia({ keyframes: keyframes2, velocity = 0, min, max, power = 0.8, t
       ...options,
       driver,
       onUpdate: (v2) => {
-        var _a2;
+        var _a;
         onUpdate === null || onUpdate === void 0 ? void 0 : onUpdate(v2);
-        (_a2 = options.onUpdate) === null || _a2 === void 0 ? void 0 : _a2.call(options, v2);
+        (_a = options.onUpdate) === null || _a === void 0 ? void 0 : _a.call(options, v2);
       },
       onComplete,
       onStop
@@ -16682,7 +14352,7 @@ const isAnimatable = (key, value) => {
   }
   return false;
 };
-function isTransitionDefined({ when, delay: _delay, delayChildren, staggerChildren, staggerDirection, repeat, repeatType, repeatDelay, from, elapsed, ...transition2 }) {
+function isTransitionDefined({ when, delay: _delay, delayChildren, staggerChildren, staggerDirection, repeat, repeatType, repeatDelay, from: from2, elapsed, ...transition2 }) {
   return !!Object.keys(transition2).length;
 }
 function isZero(value) {
@@ -16781,14 +14451,14 @@ function animateVisualElement(visualElement, definition, options = {}) {
   return animation.then(() => visualElement.notify("AnimationComplete", definition));
 }
 function animateVariant(visualElement, variant, options = {}) {
-  var _a2;
+  var _a;
   const resolved = resolveVariant(visualElement, variant, options.custom);
   let { transition: transition2 = visualElement.getDefaultTransition() || {} } = resolved || {};
   if (options.transitionOverride) {
     transition2 = options.transitionOverride;
   }
   const getAnimation = resolved ? () => animateTarget(visualElement, resolved, options) : () => Promise.resolve();
-  const getChildAnimations = ((_a2 = visualElement.variantChildren) === null || _a2 === void 0 ? void 0 : _a2.size) ? (forwardDelay = 0) => {
+  const getChildAnimations = ((_a = visualElement.variantChildren) === null || _a === void 0 ? void 0 : _a.size) ? (forwardDelay = 0) => {
     const { delayChildren = 0, staggerChildren, staggerDirection } = transition2;
     return animateChildren(visualElement, variant, delayChildren + forwardDelay, staggerChildren, staggerDirection, options);
   } : () => Promise.resolve();
@@ -16801,13 +14471,13 @@ function animateVariant(visualElement, variant, options = {}) {
   }
 }
 function animateTarget(visualElement, definition, { delay: delay2 = 0, transitionOverride, type: type2 } = {}) {
-  var _a2;
+  var _a;
   let { transition: transition2 = visualElement.getDefaultTransition(), transitionEnd, ...target } = visualElement.makeTargetAnimatable(definition);
   const willChange = visualElement.getValue("willChange");
   if (transitionOverride)
     transition2 = transitionOverride;
   const animations2 = [];
-  const animationTypeState = type2 && ((_a2 = visualElement.animationState) === null || _a2 === void 0 ? void 0 : _a2.getState()[type2]);
+  const animationTypeState = type2 && ((_a = visualElement.animationState) === null || _a === void 0 ? void 0 : _a.getState()[type2]);
   for (const key in target) {
     const value = visualElement.getValue(key);
     const valueTarget = target[key];
@@ -16869,7 +14539,7 @@ function animateList(visualElement) {
 }
 function createAnimationState(visualElement) {
   let animate2 = animateList(visualElement);
-  const state = createState();
+  const state2 = createState();
   let isInitialRender = true;
   const buildResolvedTypeValues = (acc, definition) => {
     const resolved = resolveVariant(visualElement, definition);
@@ -16891,7 +14561,7 @@ function createAnimationState(visualElement) {
     let removedVariantIndex = Infinity;
     for (let i = 0; i < numAnimationTypes; i++) {
       const type2 = reversePriorityOrder[i];
-      const typeState = state[type2];
+      const typeState = state2[type2];
       const prop = props[type2] !== void 0 ? props[type2] : context[type2];
       const propIsVariant = isVariantLabel(prop);
       const activeDelta = type2 === changedActiveType ? typeState.isActive : null;
@@ -16929,23 +14599,23 @@ function createAnimationState(visualElement) {
         typeState.needsAnimating[key] = true;
       };
       for (const key in allKeys) {
-        const next = resolvedValues[key];
+        const next2 = resolvedValues[key];
         const prev = prevResolvedValues[key];
         if (encounteredKeys.hasOwnProperty(key))
           continue;
-        if (next !== prev) {
-          if (isKeyframesTarget(next) && isKeyframesTarget(prev)) {
-            if (!shallowCompare(next, prev) || variantDidChange) {
+        if (next2 !== prev) {
+          if (isKeyframesTarget(next2) && isKeyframesTarget(prev)) {
+            if (!shallowCompare(next2, prev) || variantDidChange) {
               markToAnimate(key);
             } else {
               typeState.protectedKeys[key] = true;
             }
-          } else if (next !== void 0) {
+          } else if (next2 !== void 0) {
             markToAnimate(key);
           } else {
             removedKeys.add(key);
           }
-        } else if (next !== void 0 && removedKeys.has(key)) {
+        } else if (next2 !== void 0 && removedKeys.has(key)) {
           markToAnimate(key);
         } else {
           typeState.protectedKeys[key] = true;
@@ -16984,17 +14654,17 @@ function createAnimationState(visualElement) {
     return shouldAnimate ? animate2(animations2) : Promise.resolve();
   }
   function setActive(type2, isActive, options) {
-    var _a2;
-    if (state[type2].isActive === isActive)
+    var _a;
+    if (state2[type2].isActive === isActive)
       return Promise.resolve();
-    (_a2 = visualElement.variantChildren) === null || _a2 === void 0 ? void 0 : _a2.forEach((child) => {
-      var _a3;
-      return (_a3 = child.animationState) === null || _a3 === void 0 ? void 0 : _a3.setActive(type2, isActive);
+    (_a = visualElement.variantChildren) === null || _a === void 0 ? void 0 : _a.forEach((child) => {
+      var _a2;
+      return (_a2 = child.animationState) === null || _a2 === void 0 ? void 0 : _a2.setActive(type2, isActive);
     });
-    state[type2].isActive = isActive;
+    state2[type2].isActive = isActive;
     const animations2 = animateChanges(options, type2);
-    for (const key in state) {
-      state[key].protectedKeys = {};
+    for (const key in state2) {
+      state2[key].protectedKeys = {};
     }
     return animations2;
   }
@@ -17002,14 +14672,14 @@ function createAnimationState(visualElement) {
     animateChanges,
     setActive,
     setAnimateFunction,
-    getState: () => state
+    getState: () => state2
   };
 }
-function checkVariantsDidChange(prev, next) {
-  if (typeof next === "string") {
-    return next !== prev;
-  } else if (Array.isArray(next)) {
-    return !shallowCompare(next, prev);
+function checkVariantsDidChange(prev, next2) {
+  if (typeof next2 === "string") {
+    return next2 !== prev;
+  } else if (Array.isArray(next2)) {
+    return !shallowCompare(next2, prev);
   }
   return false;
 }
@@ -17202,13 +14872,13 @@ function calcRelativeBox(target, relative, parent) {
   calcRelativeAxis(target.x, relative.x, parent.x);
   calcRelativeAxis(target.y, relative.y, parent.y);
 }
-function calcRelativeAxisPosition(target, layout, parent) {
-  target.min = layout.min - parent.min;
-  target.max = target.min + calcLength(layout);
+function calcRelativeAxisPosition(target, layout2, parent) {
+  target.min = layout2.min - parent.min;
+  target.max = target.min + calcLength(layout2);
 }
-function calcRelativePosition(target, layout, parent) {
-  calcRelativeAxisPosition(target.x, layout.x, parent.x);
-  calcRelativeAxisPosition(target.y, layout.y, parent.y);
+function calcRelativePosition(target, layout2, parent) {
+  calcRelativeAxisPosition(target.x, layout2.x, parent.x);
+  calcRelativeAxisPosition(target.y, layout2.y, parent.y);
 }
 function applyConstraints(point, { min, max }, elastic) {
   if (min !== void 0 && point < min) {
@@ -17255,13 +14925,13 @@ function calcOrigin(source, target) {
   }
   return clamp(0, 1, origin);
 }
-function rebaseAxisConstraints(layout, constraints) {
+function rebaseAxisConstraints(layout2, constraints) {
   const relativeConstraints = {};
   if (constraints.min !== void 0) {
-    relativeConstraints.min = constraints.min - layout.min;
+    relativeConstraints.min = constraints.min - layout2.min;
   }
   if (constraints.max !== void 0) {
-    relativeConstraints.max = constraints.max - layout.min;
+    relativeConstraints.max = constraints.max - layout2.min;
   }
   return relativeConstraints;
 }
@@ -17310,8 +14980,8 @@ function convertBoundingBoxToBox({ top, left, right, bottom }) {
     y: { min: top, max: bottom }
   };
 }
-function convertBoxToBoundingBox({ x: x2, y: y2 }) {
-  return { top: y2.min, right: x2.max, bottom: y2.max, left: x2.min };
+function convertBoxToBoundingBox({ x: x2, y }) {
+  return { top: y.min, right: x2.max, bottom: y.max, left: x2.min };
 }
 function transformBoxPoints(point, transformPoint2) {
   if (!transformPoint2)
@@ -17355,12 +15025,12 @@ function applyAxisDelta(axis, translate = 0, scale2 = 1, originPoint, boxScale) 
   axis.min = applyPointDelta(axis.min, translate, scale2, originPoint, boxScale);
   axis.max = applyPointDelta(axis.max, translate, scale2, originPoint, boxScale);
 }
-function applyBoxDelta(box, { x: x2, y: y2 }) {
+function applyBoxDelta(box, { x: x2, y }) {
   applyAxisDelta(box.x, x2.translate, x2.scale, x2.originPoint);
-  applyAxisDelta(box.y, y2.translate, y2.scale, y2.originPoint);
+  applyAxisDelta(box.y, y.translate, y.scale, y.originPoint);
 }
 function applyTreeDeltas(box, treeScale, treePath, isSharedTransition = false) {
-  var _a2, _b2;
+  var _a, _b;
   const treeLength = treePath.length;
   if (!treeLength)
     return;
@@ -17370,7 +15040,7 @@ function applyTreeDeltas(box, treeScale, treePath, isSharedTransition = false) {
   for (let i = 0; i < treeLength; i++) {
     node = treePath[i];
     delta = node.projectionDelta;
-    if (((_b2 = (_a2 = node.instance) === null || _a2 === void 0 ? void 0 : _a2.style) === null || _b2 === void 0 ? void 0 : _b2.display) === "contents")
+    if (((_b = (_a = node.instance) === null || _a === void 0 ? void 0 : _a.style) === null || _b === void 0 ? void 0 : _b.display) === "contents")
       continue;
     if (isSharedTransition && node.options.layoutScroll && node.scroll && node !== node.root) {
       transformBox(box, {
@@ -17406,19 +15076,19 @@ function transformAxis(axis, transforms2, [key, scaleKey, originKey]) {
 }
 const xKeys$1 = ["x", "scaleX", "originX"];
 const yKeys$1 = ["y", "scaleY", "originY"];
-function transformBox(box, transform) {
-  transformAxis(box.x, transform, xKeys$1);
-  transformAxis(box.y, transform, yKeys$1);
+function transformBox(box, transform2) {
+  transformAxis(box.x, transform2, xKeys$1);
+  transformAxis(box.y, transform2, yKeys$1);
 }
 function measureViewportBox(instance, transformPoint2) {
   return convertBoundingBoxToBox(transformBoxPoints(instance.getBoundingClientRect(), transformPoint2));
 }
 function measurePageBox(element, rootProjectionNode2, transformPagePoint) {
   const viewportBox = measureViewportBox(element, transformPagePoint);
-  const { scroll } = rootProjectionNode2;
-  if (scroll) {
-    translateAxis(viewportBox.x, scroll.offset.x);
-    translateAxis(viewportBox.y, scroll.offset.y);
+  const { scroll: scroll2 } = rootProjectionNode2;
+  if (scroll2) {
+    translateAxis(viewportBox.x, scroll2.offset.x);
+    translateAxis(viewportBox.y, scroll2.offset.y);
   }
   return viewportBox;
 }
@@ -17444,7 +15114,7 @@ class VisualElementDragControls {
       }
     };
     const onStart = (event, info) => {
-      var _a2;
+      var _a;
       const { drag: drag2, dragPropagation, onDragStart } = this.getProps();
       if (drag2 && !dragPropagation) {
         if (this.openGlobalLock)
@@ -17461,10 +15131,10 @@ class VisualElementDragControls {
         this.visualElement.projection.target = void 0;
       }
       eachAxis((axis) => {
-        var _a3, _b2;
+        var _a2, _b;
         let current = this.getAxisMotionValue(axis).get() || 0;
         if (percent.test(current)) {
-          const measuredAxis = (_b2 = (_a3 = this.visualElement.projection) === null || _a3 === void 0 ? void 0 : _a3.layout) === null || _b2 === void 0 ? void 0 : _b2.layoutBox[axis];
+          const measuredAxis = (_b = (_a2 = this.visualElement.projection) === null || _a2 === void 0 ? void 0 : _a2.layout) === null || _b === void 0 ? void 0 : _b.layoutBox[axis];
           if (measuredAxis) {
             const length = calcLength(measuredAxis);
             current = length * (parseFloat(current) / 100);
@@ -17473,7 +15143,7 @@ class VisualElementDragControls {
         this.originPoint[axis] = current;
       });
       onDragStart === null || onDragStart === void 0 ? void 0 : onDragStart(event, info);
-      (_a2 = this.visualElement.animationState) === null || _a2 === void 0 ? void 0 : _a2.setActive(AnimationType.Drag, true);
+      (_a = this.visualElement.animationState) === null || _a === void 0 ? void 0 : _a.setActive(AnimationType.Drag, true);
     };
     const onMove = (event, info) => {
       const { dragPropagation, dragDirectionLock, onDirectionLock, onDrag } = this.getProps();
@@ -17511,51 +15181,51 @@ class VisualElementDragControls {
     onDragEnd === null || onDragEnd === void 0 ? void 0 : onDragEnd(event, info);
   }
   cancel() {
-    var _a2, _b2;
+    var _a, _b;
     this.isDragging = false;
     if (this.visualElement.projection) {
       this.visualElement.projection.isAnimationBlocked = false;
     }
-    (_a2 = this.panSession) === null || _a2 === void 0 ? void 0 : _a2.end();
+    (_a = this.panSession) === null || _a === void 0 ? void 0 : _a.end();
     this.panSession = void 0;
     const { dragPropagation } = this.getProps();
     if (!dragPropagation && this.openGlobalLock) {
       this.openGlobalLock();
       this.openGlobalLock = null;
     }
-    (_b2 = this.visualElement.animationState) === null || _b2 === void 0 ? void 0 : _b2.setActive(AnimationType.Drag, false);
+    (_b = this.visualElement.animationState) === null || _b === void 0 ? void 0 : _b.setActive(AnimationType.Drag, false);
   }
   updateAxis(axis, _point, offset) {
     const { drag: drag2 } = this.getProps();
     if (!offset || !shouldDrag(axis, drag2, this.currentDirection))
       return;
     const axisValue = this.getAxisMotionValue(axis);
-    let next = this.originPoint[axis] + offset[axis];
+    let next2 = this.originPoint[axis] + offset[axis];
     if (this.constraints && this.constraints[axis]) {
-      next = applyConstraints(next, this.constraints[axis], this.elastic[axis]);
+      next2 = applyConstraints(next2, this.constraints[axis], this.elastic[axis]);
     }
-    axisValue.set(next);
+    axisValue.set(next2);
   }
   resolveConstraints() {
     const { dragConstraints, dragElastic } = this.getProps();
-    const { layout } = this.visualElement.projection || {};
+    const { layout: layout2 } = this.visualElement.projection || {};
     const prevConstraints = this.constraints;
     if (dragConstraints && isRefObject(dragConstraints)) {
       if (!this.constraints) {
         this.constraints = this.resolveRefConstraints();
       }
     } else {
-      if (dragConstraints && layout) {
-        this.constraints = calcRelativeConstraints(layout.layoutBox, dragConstraints);
+      if (dragConstraints && layout2) {
+        this.constraints = calcRelativeConstraints(layout2.layoutBox, dragConstraints);
       } else {
         this.constraints = false;
       }
     }
     this.elastic = resolveDragElastic(dragElastic);
-    if (prevConstraints !== this.constraints && layout && this.constraints && !this.hasMutatedConstraints) {
+    if (prevConstraints !== this.constraints && layout2 && this.constraints && !this.hasMutatedConstraints) {
       eachAxis((axis) => {
         if (this.getAxisMotionValue(axis)) {
-          this.constraints[axis] = rebaseAxisConstraints(layout.layoutBox[axis], this.constraints[axis]);
+          this.constraints[axis] = rebaseAxisConstraints(layout2.layoutBox[axis], this.constraints[axis]);
         }
       });
     }
@@ -17621,10 +15291,10 @@ class VisualElementDragControls {
    * - Otherwise, we apply the delta to the x/y motion values.
    */
   getAxisMotionValue(axis) {
-    var _a2;
+    var _a;
     const dragKey = "_drag" + axis.toUpperCase();
     const externalMotionValue = this.visualElement.getProps()[dragKey];
-    return externalMotionValue ? externalMotionValue : this.visualElement.getValue(axis, ((_a2 = this.visualElement.getProps().initial) === null || _a2 === void 0 ? void 0 : _a2[axis]) || 0);
+    return externalMotionValue ? externalMotionValue : this.visualElement.getValue(axis, ((_a = this.visualElement.getProps().initial) === null || _a === void 0 ? void 0 : _a[axis]) || 0);
   }
   snapToCursor(point) {
     eachAxis((axis) => {
@@ -17645,7 +15315,7 @@ class VisualElementDragControls {
    * relative to where it was before the resize.
    */
   scalePositionWithinConstraints() {
-    var _a2;
+    var _a;
     if (!this.visualElement.current)
       return;
     const { drag: drag2, dragConstraints } = this.getProps();
@@ -17661,9 +15331,9 @@ class VisualElementDragControls {
         boxProgress[axis] = calcOrigin({ min: latest, max: latest }, this.constraints[axis]);
       }
     });
-    const { transformTemplate } = this.visualElement.getProps();
-    this.visualElement.current.style.transform = transformTemplate ? transformTemplate({}, "") : "none";
-    (_a2 = projection.root) === null || _a2 === void 0 ? void 0 : _a2.updateScroll();
+    const { transformTemplate: transformTemplate2 } = this.visualElement.getProps();
+    this.visualElement.current.style.transform = transformTemplate2 ? transformTemplate2({}, "") : "none";
+    (_a = projection.root) === null || _a === void 0 ? void 0 : _a.updateScroll();
     projection.updateLayout();
     this.resolveConstraints();
     eachAxis((axis) => {
@@ -17675,7 +15345,7 @@ class VisualElementDragControls {
     });
   }
   addListeners() {
-    var _a2;
+    var _a;
     if (!this.visualElement.current)
       return;
     elementDragControls.set(this.visualElement, this);
@@ -17693,7 +15363,7 @@ class VisualElementDragControls {
     const { projection } = this.visualElement;
     const stopMeasureLayoutListener = projection.addEventListener("measure", measureDragConstraints);
     if (projection && !projection.layout) {
-      (_a2 = projection.root) === null || _a2 === void 0 ? void 0 : _a2.updateScroll();
+      (_a = projection.root) === null || _a === void 0 ? void 0 : _a.updateScroll();
       projection.updateLayout();
     }
     measureDragConstraints();
@@ -17731,17 +15401,17 @@ class VisualElementDragControls {
     };
   }
 }
-function shouldDrag(direction2, drag2, currentDirection) {
-  return (drag2 === true || drag2 === direction2) && (currentDirection === null || currentDirection === direction2);
+function shouldDrag(direction, drag2, currentDirection) {
+  return (drag2 === true || drag2 === direction) && (currentDirection === null || currentDirection === direction);
 }
 function getCurrentDirection(offset, lockThreshold = 10) {
-  let direction2 = null;
+  let direction = null;
   if (Math.abs(offset.y) > lockThreshold) {
-    direction2 = "y";
+    direction = "y";
   } else if (Math.abs(offset.x) > lockThreshold) {
-    direction2 = "x";
+    direction = "x";
   }
-  return direction2;
+  return direction;
 }
 function useDrag(props) {
   const { dragControls: groupDragControls, visualElement } = props;
@@ -17784,19 +15454,19 @@ function isCSSVariable(value) {
 }
 const cssVariableRegex = /var\((--[a-zA-Z0-9-_]+),? ?([a-zA-Z0-9 ()%#.,-]+)?\)/;
 function parseCSSVariable(current) {
-  const match = cssVariableRegex.exec(current);
-  if (!match)
+  const match2 = cssVariableRegex.exec(current);
+  if (!match2)
     return [,];
-  const [, token, fallback] = match;
-  return [token, fallback];
+  const [, token2, fallback] = match2;
+  return [token2, fallback];
 }
 const maxDepth = 4;
 function getVariableValue(current, element, depth = 1) {
   invariant$2(depth <= maxDepth, `Max CSS variable fallback depth detected in property "${current}". This may indicate a circular fallback dependency.`);
-  const [token, fallback] = parseCSSVariable(current);
-  if (!token)
+  const [token2, fallback] = parseCSSVariable(current);
+  if (!token2)
     return;
-  const resolved = window.getComputedStyle(element).getPropertyValue(token);
+  const resolved = window.getComputedStyle(element).getPropertyValue(token2);
   if (resolved) {
     return resolved.trim();
   } else if (isCSSVariable(fallback)) {
@@ -17859,14 +15529,14 @@ var BoundingBoxDimension;
   BoundingBoxDimension2["bottom"] = "bottom";
 })(BoundingBoxDimension || (BoundingBoxDimension = {}));
 const getPosFromMatrix = (matrix, pos) => parseFloat(matrix.split(", ")[pos]);
-const getTranslateFromMatrix = (pos2, pos3) => (_bbox, { transform }) => {
-  if (transform === "none" || !transform)
+const getTranslateFromMatrix = (pos2, pos3) => (_bbox, { transform: transform2 }) => {
+  if (transform2 === "none" || !transform2)
     return 0;
-  const matrix3d = transform.match(/^matrix3d\((.+)\)$/);
+  const matrix3d = transform2.match(/^matrix3d\((.+)\)$/);
   if (matrix3d) {
     return getPosFromMatrix(matrix3d[1], pos3);
   } else {
-    const matrix = transform.match(/^matrix\((.+)\)$/);
+    const matrix = transform2.match(/^matrix\((.+)\)$/);
     if (matrix) {
       return getPosFromMatrix(matrix[1], pos2);
     } else {
@@ -17892,10 +15562,10 @@ function removeNonTranslationalTransform(visualElement) {
 const positionalValues = {
   // Dimensions
   width: ({ x: x2 }, { paddingLeft = "0", paddingRight = "0" }) => x2.max - x2.min - parseFloat(paddingLeft) - parseFloat(paddingRight),
-  height: ({ y: y2 }, { paddingTop = "0", paddingBottom = "0" }) => y2.max - y2.min - parseFloat(paddingTop) - parseFloat(paddingBottom),
+  height: ({ y }, { paddingTop = "0", paddingBottom = "0" }) => y.max - y.min - parseFloat(paddingTop) - parseFloat(paddingBottom),
   top: (_bbox, { top }) => parseFloat(top),
   left: (_bbox, { left }) => parseFloat(left),
-  bottom: ({ y: y2 }, { top }) => parseFloat(top) + (y2.max - y2.min),
+  bottom: ({ y }, { top }) => parseFloat(top) + (y.max - y.min),
   right: ({ x: x2 }, { left }) => parseFloat(left) + (x2.max - x2.min),
   // Transform
   x: getTranslateFromMatrix(4, 13),
@@ -17933,15 +15603,15 @@ const checkAndConvertChangedValueTypes = (visualElement, target, origin = {}, tr
     const value = visualElement.getValue(key);
     if (!visualElement.hasValue(key))
       return;
-    let from = origin[key];
-    let fromType = findDimensionValueType(from);
+    let from2 = origin[key];
+    let fromType = findDimensionValueType(from2);
     const to = target[key];
     let toType;
     if (isKeyframesTarget(to)) {
       const numKeyframes = to.length;
       const fromIndex = to[0] === null ? 1 : 0;
-      from = to[fromIndex];
-      fromType = findDimensionValueType(from);
+      from2 = to[fromIndex];
+      fromType = findDimensionValueType(from2);
       for (let i = fromIndex; i < numKeyframes; i++) {
         if (!toType) {
           toType = findDimensionValueType(to[i]);
@@ -17964,9 +15634,9 @@ const checkAndConvertChangedValueTypes = (visualElement, target, origin = {}, tr
         } else if (Array.isArray(to) && toType === px) {
           target[key] = to.map(parseFloat);
         }
-      } else if ((fromType === null || fromType === void 0 ? void 0 : fromType.transform) && (toType === null || toType === void 0 ? void 0 : toType.transform) && (from === 0 || to === 0)) {
-        if (from === 0) {
-          value.set(toType.transform(from));
+      } else if ((fromType === null || fromType === void 0 ? void 0 : fromType.transform) && (toType === null || toType === void 0 ? void 0 : toType.transform) && (from2 === 0 || to === 0)) {
+        if (from2 === 0) {
+          value.set(toType.transform(from2));
         } else {
           target[key] = fromType.transform(to);
         }
@@ -18022,10 +15692,10 @@ function initPrefersReducedMotion() {
     prefersReducedMotion.current = false;
   }
 }
-function updateMotionValuesFromProps(element, next, prev) {
-  const { willChange } = next;
-  for (const key in next) {
-    const nextValue = next[key];
+function updateMotionValuesFromProps(element, next2, prev) {
+  const { willChange } = next2;
+  for (const key in next2) {
+    const nextValue = next2[key];
     const prevValue = prev[key];
     if (isMotionValue(nextValue)) {
       element.addValue(key, nextValue);
@@ -18048,10 +15718,10 @@ function updateMotionValuesFromProps(element, next, prev) {
     }
   }
   for (const key in prev) {
-    if (next[key] === void 0)
+    if (next2[key] === void 0)
       element.removeValue(key);
   }
-  return next;
+  return next2;
 }
 const featureNames = Object.keys(featureDefinitions);
 const numFeatures = featureNames.length;
@@ -18123,13 +15793,13 @@ class VisualElement {
     return {};
   }
   mount(instance) {
-    var _a2;
+    var _a;
     this.current = instance;
     if (this.projection) {
       this.projection.mount(instance);
     }
     if (this.parent && this.isVariantNode && !this.isControllingVariants) {
-      this.removeFromVariantTree = (_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.addVariantChild(this);
+      this.removeFromVariantTree = (_a = this.parent) === null || _a === void 0 ? void 0 : _a.addVariantChild(this);
     }
     this.values.forEach((value, key) => this.bindToMotionValue(key, value));
     if (!hasReducedMotionListener.current) {
@@ -18141,13 +15811,13 @@ class VisualElement {
     this.setProps(this.props);
   }
   unmount() {
-    var _a2, _b2, _c2;
-    (_a2 = this.projection) === null || _a2 === void 0 ? void 0 : _a2.unmount();
+    var _a, _b, _c;
+    (_a = this.projection) === null || _a === void 0 ? void 0 : _a.unmount();
     cancelSync.update(this.notifyUpdate);
     cancelSync.render(this.render);
     this.valueSubscriptions.forEach((remove) => remove());
-    (_b2 = this.removeFromVariantTree) === null || _b2 === void 0 ? void 0 : _b2.call(this);
-    (_c2 = this.parent) === null || _c2 === void 0 ? void 0 : _c2.children.delete(this);
+    (_b = this.removeFromVariantTree) === null || _b === void 0 ? void 0 : _b.call(this);
+    (_c = this.parent) === null || _c === void 0 ? void 0 : _c.children.delete(this);
     for (const key in this.events) {
       this.events[key].clear();
     }
@@ -18188,10 +15858,10 @@ class VisualElement {
     }
     if (!this.projection && ProjectionNodeConstructor) {
       this.projection = new ProjectionNodeConstructor(projectionId, this.latestValues, this.parent && this.parent.projection);
-      const { layoutId, layout, drag: drag2, dragConstraints, layoutScroll, layoutRoot } = renderedProps;
+      const { layoutId, layout: layout2, drag: drag2, dragConstraints, layoutScroll, layoutRoot } = renderedProps;
       this.projection.setOptions({
         layoutId,
-        layout,
+        layout: layout2,
         alwaysMeasureLayout: Boolean(drag2) || dragConstraints && isRefObject(dragConstraints),
         visualElement: this,
         scheduleRender: () => this.scheduleRender(),
@@ -18202,7 +15872,7 @@ class VisualElement {
          * ensuring it gets called if there's no potential layout animations.
          *
          */
-        animationType: typeof layout === "string" ? layout : "both",
+        animationType: typeof layout2 === "string" ? layout2 : "both",
         initialPromotionConfig: initialLayoutGroupConfig,
         layoutScroll,
         layoutRoot
@@ -18270,8 +15940,8 @@ class VisualElement {
    * Returns the variant definition with a given name.
    */
   getVariant(name2) {
-    var _a2;
-    return (_a2 = this.props.variants) === null || _a2 === void 0 ? void 0 : _a2[name2];
+    var _a;
+    return (_a = this.props.variants) === null || _a === void 0 ? void 0 : _a[name2];
   }
   /**
    * Returns the defined default transition on this component.
@@ -18283,15 +15953,15 @@ class VisualElement {
     return this.props.transformPagePoint;
   }
   getClosestVariantNode() {
-    var _a2;
-    return this.isVariantNode ? this : (_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.getClosestVariantNode();
+    var _a;
+    return this.isVariantNode ? this : (_a = this.parent) === null || _a === void 0 ? void 0 : _a.getClosestVariantNode();
   }
   getVariantContext(startAtParent = false) {
-    var _a2, _b2;
+    var _a, _b;
     if (startAtParent)
-      return (_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.getVariantContext();
+      return (_a = this.parent) === null || _a === void 0 ? void 0 : _a.getVariantContext();
     if (!this.isControllingVariants) {
-      const context2 = ((_b2 = this.parent) === null || _b2 === void 0 ? void 0 : _b2.getVariantContext()) || {};
+      const context2 = ((_b = this.parent) === null || _b === void 0 ? void 0 : _b.getVariantContext()) || {};
       if (this.props.initial !== void 0) {
         context2.initial = this.props.initial;
       }
@@ -18311,10 +15981,10 @@ class VisualElement {
    * Add a child visual element to our set of children.
    */
   addVariantChild(child) {
-    var _a2;
+    var _a;
     const closestVariantNode = this.getClosestVariantNode();
     if (closestVariantNode) {
-      (_a2 = closestVariantNode.variantChildren) === null || _a2 === void 0 ? void 0 : _a2.add(child);
+      (_a = closestVariantNode.variantChildren) === null || _a === void 0 ? void 0 : _a.add(child);
       return () => closestVariantNode.variantChildren.delete(child);
     }
   }
@@ -18333,9 +16003,9 @@ class VisualElement {
    * Remove a motion value and unbind any active subscriptions.
    */
   removeValue(key) {
-    var _a2;
+    var _a;
     this.values.delete(key);
-    (_a2 = this.valueSubscriptions.get(key)) === null || _a2 === void 0 ? void 0 : _a2();
+    (_a = this.valueSubscriptions.get(key)) === null || _a === void 0 ? void 0 : _a();
     this.valueSubscriptions.delete(key);
     delete this.latestValues[key];
     this.removeValueFromRenderState(key, this.renderState);
@@ -18377,9 +16047,9 @@ class VisualElement {
    * props.
    */
   getBaseTarget(key) {
-    var _a2;
+    var _a;
     const { initial } = this.props;
-    const valueFromInitial = typeof initial === "string" || typeof initial === "object" ? (_a2 = resolveVariantFromProps(this.props, initial)) === null || _a2 === void 0 ? void 0 : _a2[key] : void 0;
+    const valueFromInitial = typeof initial === "string" || typeof initial === "object" ? (_a = resolveVariantFromProps(this.props, initial)) === null || _a === void 0 ? void 0 : _a[key] : void 0;
     if (initial && valueFromInitial !== void 0) {
       return valueFromInitial;
     }
@@ -18395,8 +16065,8 @@ class VisualElement {
     return this.events[eventName].add(callback);
   }
   notify(eventName, ...args) {
-    var _a2;
-    (_a2 = this.events[eventName]) === null || _a2 === void 0 ? void 0 : _a2.notify(...args);
+    var _a;
+    (_a = this.events[eventName]) === null || _a === void 0 ? void 0 : _a.notify(...args);
   }
 }
 const variantProps = ["initial", ...variantPriorityOrder];
@@ -18406,11 +16076,11 @@ class DOMVisualElement extends VisualElement {
     return a.compareDocumentPosition(b) & 2 ? 1 : -1;
   }
   getBaseTargetFromProps(props, key) {
-    var _a2;
-    return (_a2 = props.style) === null || _a2 === void 0 ? void 0 : _a2[key];
+    var _a;
+    return (_a = props.style) === null || _a === void 0 ? void 0 : _a[key];
   }
-  removeValueFromRenderState(key, { vars: vars2, style }) {
-    delete vars2[key];
+  removeValueFromRenderState(key, { vars, style }) {
+    delete vars[key];
     delete style[key];
   }
   makeTargetAnimatableFromInstance({ transition: transition2, transitionEnd, ...target }, { transformValues }, isMounted) {
@@ -18485,9 +16155,9 @@ class SVGVisualElement extends DOMVisualElement {
     return props[key];
   }
   readValueFromInstance(instance, key) {
-    var _a2;
+    var _a;
     if (transformProps.has(key)) {
-      return ((_a2 = getDefaultValueType(key)) === null || _a2 === void 0 ? void 0 : _a2.default) || 0;
+      return ((_a = getDefaultValueType(key)) === null || _a === void 0 ? void 0 : _a.default) || 0;
     }
     key = !camelCaseAttributes.has(key) ? camelToDash(key) : key;
     return instance.getAttribute(key);
@@ -18529,8 +16199,8 @@ const correctBorderRadius = {
       }
     }
     const x2 = pixelsToPercent(latest, node.target.x);
-    const y2 = pixelsToPercent(latest, node.target.y);
-    return `${x2}% ${y2}%`;
+    const y = pixelsToPercent(latest, node.target.y);
+    return `${x2}% ${y}%`;
   }
 };
 const varToken = "_$css";
@@ -18540,8 +16210,8 @@ const correctBoxShadow = {
     const containsCSSVariables = latest.includes("var(");
     const cssVariables = [];
     if (containsCSSVariables) {
-      latest = latest.replace(cssVariableRegex, (match) => {
-        cssVariables.push(match);
+      latest = latest.replace(cssVariableRegex, (match2) => {
+        cssVariables.push(match2);
         return varToken;
       });
     }
@@ -18614,8 +16284,8 @@ class MeasureLayoutWithContext extends React__default.Component {
         projection.promote();
       } else if (!projection.relegate()) {
         sync.postRender(() => {
-          var _a2;
-          if (!((_a2 = projection.getStack()) === null || _a2 === void 0 ? void 0 : _a2.members.length)) {
+          var _a;
+          if (!((_a = projection.getStack()) === null || _a === void 0 ? void 0 : _a.members.length)) {
             this.safeToRemove();
           }
         });
@@ -18675,8 +16345,8 @@ const defaultScaleCorrectors = {
 const layoutFeatures = {
   measureLayout: MeasureLayout
 };
-function animate(from, to, transition2 = {}) {
-  const value = isMotionValue(from) ? from : motionValue(from);
+function animate(from2, to, transition2 = {}) {
+  const value = isMotionValue(from2) ? from2 : motionValue(from2);
   value.start(createMotionValueAnimation("", value, to, transition2));
   return {
     stop: () => value.stop(),
@@ -18727,12 +16397,12 @@ function getRadius(values, radiusName) {
 const easeCrossfadeIn = compress(0, 0.5, circOut);
 const easeCrossfadeOut = compress(0.5, 0.95, noop);
 function compress(min, max, easing) {
-  return (p2) => {
-    if (p2 < min)
+  return (p) => {
+    if (p < min)
       return 0;
-    if (p2 > max)
+    if (p > max)
       return 1;
-    return easing(progress$1(min, max, p2));
+    return easing(progress$1(min, max, p));
   };
 }
 function copyAxisInto(axis, originAxis) {
@@ -18826,7 +16496,7 @@ class NodeStack {
     }
   }
   promote(node, preserveFollowOpacity) {
-    var _a2;
+    var _a;
     const prevLead = this.lead;
     if (node === prevLead)
       return;
@@ -18844,7 +16514,7 @@ class NodeStack {
         node.snapshot = prevLead.snapshot;
         node.snapshot.latestValues = prevLead.animationValues || prevLead.latestValues;
       }
-      if ((_a2 = node.root) === null || _a2 === void 0 ? void 0 : _a2.isUpdating) {
+      if ((_a = node.root) === null || _a === void 0 ? void 0 : _a.isUpdating) {
         node.isLayoutDirty = true;
       }
       const { crossfade } = node.options;
@@ -18855,9 +16525,9 @@ class NodeStack {
   }
   exitAnimationComplete() {
     this.members.forEach((node) => {
-      var _a2, _b2, _c2, _d2, _e2;
-      (_b2 = (_a2 = node.options).onExitComplete) === null || _b2 === void 0 ? void 0 : _b2.call(_a2);
-      (_e2 = (_c2 = node.resumingFrom) === null || _c2 === void 0 ? void 0 : (_d2 = _c2.options).onExitComplete) === null || _e2 === void 0 ? void 0 : _e2.call(_d2);
+      var _a, _b, _c, _d, _e;
+      (_b = (_a = node.options).onExitComplete) === null || _b === void 0 ? void 0 : _b.call(_a);
+      (_e = (_c = node.resumingFrom) === null || _c === void 0 ? void 0 : (_d = _c.options).onExitComplete) === null || _e === void 0 ? void 0 : _e.call(_d);
     });
   }
   scheduleRender() {
@@ -18876,30 +16546,30 @@ class NodeStack {
   }
 }
 function buildProjectionTransform(delta, treeScale, latestTransform) {
-  let transform = "";
+  let transform2 = "";
   const xTranslate = delta.x.translate / treeScale.x;
   const yTranslate = delta.y.translate / treeScale.y;
   if (xTranslate || yTranslate) {
-    transform = `translate3d(${xTranslate}px, ${yTranslate}px, 0) `;
+    transform2 = `translate3d(${xTranslate}px, ${yTranslate}px, 0) `;
   }
   if (treeScale.x !== 1 || treeScale.y !== 1) {
-    transform += `scale(${1 / treeScale.x}, ${1 / treeScale.y}) `;
+    transform2 += `scale(${1 / treeScale.x}, ${1 / treeScale.y}) `;
   }
   if (latestTransform) {
     const { rotate, rotateX, rotateY } = latestTransform;
     if (rotate)
-      transform += `rotate(${rotate}deg) `;
+      transform2 += `rotate(${rotate}deg) `;
     if (rotateX)
-      transform += `rotateX(${rotateX}deg) `;
+      transform2 += `rotateX(${rotateX}deg) `;
     if (rotateY)
-      transform += `rotateY(${rotateY}deg) `;
+      transform2 += `rotateY(${rotateY}deg) `;
   }
   const elementScaleX = delta.x.scale * treeScale.x;
   const elementScaleY = delta.y.scale * treeScale.y;
   if (elementScaleX !== 1 || elementScaleY !== 1) {
-    transform += `scale(${elementScaleX}, ${elementScaleY})`;
+    transform2 += `scale(${elementScaleX}, ${elementScaleY})`;
   }
-  return transform || "none";
+  return transform2 || "none";
 }
 const compareByDepth = (a, b) => a.depth - b.depth;
 class FlatTree {
@@ -18993,19 +16663,19 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
      * Lifecycles
      */
     mount(instance, isLayoutDirty = false) {
-      var _a2;
+      var _a;
       if (this.instance)
         return;
       this.isSVG = instance instanceof SVGElement && instance.tagName !== "svg";
       this.instance = instance;
-      const { layoutId, layout, visualElement } = this.options;
+      const { layoutId, layout: layout2, visualElement } = this.options;
       if (visualElement && !visualElement.current) {
         visualElement.mount(instance);
       }
       this.root.nodes.add(this);
-      (_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.children.add(this);
+      (_a = this.parent) === null || _a === void 0 ? void 0 : _a.children.add(this);
       this.elementId && this.root.potentialNodes.delete(this.elementId);
-      if (isLayoutDirty && (layout || layoutId)) {
+      if (isLayoutDirty && (layout2 || layoutId)) {
         this.isLayoutDirty = true;
       }
       if (attachResizeListener) {
@@ -19024,19 +16694,19 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       if (layoutId) {
         this.root.registerSharedNode(layoutId, this);
       }
-      if (this.options.animate !== false && visualElement && (layoutId || layout)) {
+      if (this.options.animate !== false && visualElement && (layoutId || layout2)) {
         this.addEventListener("didUpdate", ({ delta, hasLayoutChanged, hasRelativeTargetChanged, layout: newLayout }) => {
-          var _a3, _b2, _c2, _d2, _e2;
+          var _a2, _b, _c, _d, _e;
           if (this.isTreeAnimationBlocked()) {
             this.target = void 0;
             this.relativeTarget = void 0;
             return;
           }
-          const layoutTransition = (_b2 = (_a3 = this.options.transition) !== null && _a3 !== void 0 ? _a3 : visualElement.getDefaultTransition()) !== null && _b2 !== void 0 ? _b2 : defaultLayoutTransition;
+          const layoutTransition = (_b = (_a2 = this.options.transition) !== null && _a2 !== void 0 ? _a2 : visualElement.getDefaultTransition()) !== null && _b !== void 0 ? _b : defaultLayoutTransition;
           const { onLayoutAnimationStart, onLayoutAnimationComplete } = visualElement.getProps();
           const targetChanged = !this.targetLayout || !boxEquals(this.targetLayout, newLayout) || hasRelativeTargetChanged;
           const hasOnlyRelativeTargetChanged = !hasLayoutChanged && hasRelativeTargetChanged;
-          if (this.options.layoutRoot || ((_c2 = this.resumeFrom) === null || _c2 === void 0 ? void 0 : _c2.instance) || hasOnlyRelativeTargetChanged || hasLayoutChanged && (targetChanged || !this.currentAnimation)) {
+          if (this.options.layoutRoot || ((_c = this.resumeFrom) === null || _c === void 0 ? void 0 : _c.instance) || hasOnlyRelativeTargetChanged || hasLayoutChanged && (targetChanged || !this.currentAnimation)) {
             if (this.resumeFrom) {
               this.resumingFrom = this.resumeFrom;
               this.resumingFrom.resumingFrom = void 0;
@@ -19056,18 +16726,18 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
             if (!hasLayoutChanged && this.animationProgress === 0) {
               finishAnimation(this);
             }
-            this.isLead() && ((_e2 = (_d2 = this.options).onExitComplete) === null || _e2 === void 0 ? void 0 : _e2.call(_d2));
+            this.isLead() && ((_e = (_d = this.options).onExitComplete) === null || _e === void 0 ? void 0 : _e.call(_d));
           }
           this.targetLayout = newLayout;
         });
       }
     }
     unmount() {
-      var _a2, _b2;
+      var _a, _b;
       this.options.layoutId && this.willUpdate();
       this.root.nodes.remove(this);
-      (_a2 = this.getStack()) === null || _a2 === void 0 ? void 0 : _a2.remove(this);
-      (_b2 = this.parent) === null || _b2 === void 0 ? void 0 : _b2.children.delete(this);
+      (_a = this.getStack()) === null || _a === void 0 ? void 0 : _a.remove(this);
+      (_b = this.parent) === null || _b === void 0 ? void 0 : _b.children.delete(this);
       this.instance = void 0;
       cancelSync.preRender(this.updateProjection);
     }
@@ -19082,26 +16752,26 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       return this.updateManuallyBlocked || this.updateBlockedByResize;
     }
     isTreeAnimationBlocked() {
-      var _a2;
-      return this.isAnimationBlocked || ((_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.isTreeAnimationBlocked()) || false;
+      var _a;
+      return this.isAnimationBlocked || ((_a = this.parent) === null || _a === void 0 ? void 0 : _a.isTreeAnimationBlocked()) || false;
     }
     // Note: currently only running on root node
     startUpdate() {
-      var _a2;
+      var _a;
       if (this.isUpdateBlocked())
         return;
       this.isUpdating = true;
-      (_a2 = this.nodes) === null || _a2 === void 0 ? void 0 : _a2.forEach(resetRotation);
+      (_a = this.nodes) === null || _a === void 0 ? void 0 : _a.forEach(resetRotation);
       this.animationId++;
     }
     getTransformTemplate() {
-      var _a2;
-      return (_a2 = this.options.visualElement) === null || _a2 === void 0 ? void 0 : _a2.getProps().transformTemplate;
+      var _a;
+      return (_a = this.options.visualElement) === null || _a === void 0 ? void 0 : _a.getProps().transformTemplate;
     }
     willUpdate(shouldNotifyListeners = true) {
-      var _a2, _b2, _c2;
+      var _a, _b, _c;
       if (this.root.isUpdateBlocked()) {
-        (_b2 = (_a2 = this.options).onExitComplete) === null || _b2 === void 0 ? void 0 : _b2.call(_a2);
+        (_b = (_a = this.options).onExitComplete) === null || _b === void 0 ? void 0 : _b.call(_a);
         return;
       }
       !this.root.isUpdating && this.root.startUpdate();
@@ -19116,10 +16786,10 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
           node.willUpdate(false);
         }
       }
-      const { layoutId, layout } = this.options;
-      if (layoutId === void 0 && !layout)
+      const { layoutId, layout: layout2 } = this.options;
+      if (layoutId === void 0 && !layout2)
         return;
-      this.prevTransformTemplateValue = (_c2 = this.getTransformTemplate()) === null || _c2 === void 0 ? void 0 : _c2(this.latestValues, "");
+      this.prevTransformTemplateValue = (_c = this.getTransformTemplate()) === null || _c === void 0 ? void 0 : _c(this.latestValues, "");
       this.updateSnapshot();
       shouldNotifyListeners && this.notifyListeners("willUpdate");
     }
@@ -19172,7 +16842,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       this.snapshot = this.measure();
     }
     updateLayout() {
-      var _a2;
+      var _a;
       if (!this.instance)
         return;
       this.updateScroll();
@@ -19191,7 +16861,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       this.isLayoutDirty = false;
       this.projectionDelta = void 0;
       this.notifyListeners("measure", this.layout.layoutBox);
-      (_a2 = this.options.visualElement) === null || _a2 === void 0 ? void 0 : _a2.notify("LayoutMeasure", this.layout.layoutBox, prevLayout === null || prevLayout === void 0 ? void 0 : prevLayout.layoutBox);
+      (_a = this.options.visualElement) === null || _a === void 0 ? void 0 : _a.notify("LayoutMeasure", this.layout.layoutBox, prevLayout === null || prevLayout === void 0 ? void 0 : prevLayout.layoutBox);
     }
     updateScroll(phase = "measure") {
       let needsMeasurement = Boolean(this.options.layoutScroll && this.instance);
@@ -19208,12 +16878,12 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       }
     }
     resetTransform() {
-      var _a2;
+      var _a;
       if (!resetTransform)
         return;
       const isResetRequested = this.isLayoutDirty || this.shouldResetTransform;
       const hasProjection = this.projectionDelta && !isDeltaZero(this.projectionDelta);
-      const transformTemplateValue = (_a2 = this.getTransformTemplate()) === null || _a2 === void 0 ? void 0 : _a2(this.latestValues, "");
+      const transformTemplateValue = (_a = this.getTransformTemplate()) === null || _a === void 0 ? void 0 : _a(this.latestValues, "");
       const transformTemplateHasChanged = transformTemplateValue !== this.prevTransformTemplateValue;
       if (isResetRequested && (hasProjection || hasTransform(this.latestValues) || transformTemplateHasChanged)) {
         resetTransform(this.instance, transformTemplateValue);
@@ -19241,10 +16911,10 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       if (!visualElement)
         return createBox();
       const box = visualElement.measureViewportBox();
-      const { scroll } = this.root;
-      if (scroll) {
-        translateAxis(box.x, scroll.offset.x);
-        translateAxis(box.y, scroll.offset.y);
+      const { scroll: scroll2 } = this.root;
+      if (scroll2) {
+        translateAxis(box.x, scroll2.offset.x);
+        translateAxis(box.y, scroll2.offset.y);
       }
       return box;
     }
@@ -19253,9 +16923,9 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       copyBoxInto(boxWithoutScroll, box);
       for (let i = 0; i < this.path.length; i++) {
         const node = this.path[i];
-        const { scroll, options } = node;
-        if (node !== this.root && scroll && options.layoutScroll) {
-          if (scroll.isRoot) {
+        const { scroll: scroll2, options } = node;
+        if (node !== this.root && scroll2 && options.layoutScroll) {
+          if (scroll2.isRoot) {
             copyBoxInto(boxWithoutScroll, box);
             const { scroll: rootScroll } = this.root;
             if (rootScroll) {
@@ -19263,8 +16933,8 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
               translateAxis(boxWithoutScroll.y, -rootScroll.offset.y);
             }
           }
-          translateAxis(boxWithoutScroll.x, scroll.offset.x);
-          translateAxis(boxWithoutScroll.y, scroll.offset.y);
+          translateAxis(boxWithoutScroll.x, scroll2.offset.x);
+          translateAxis(boxWithoutScroll.y, scroll2.offset.y);
         }
       }
       return boxWithoutScroll;
@@ -19290,7 +16960,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       return withTransforms;
     }
     removeTransform(box) {
-      var _a2;
+      var _a;
       const boxWithoutTransform = createBox();
       copyBoxInto(boxWithoutTransform, box);
       for (let i = 0; i < this.path.length; i++) {
@@ -19303,7 +16973,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
         const sourceBox = createBox();
         const nodeBox = node.measurePageBox();
         copyBoxInto(sourceBox, nodeBox);
-        removeBoxTransforms(boxWithoutTransform, node.latestValues, (_a2 = node.snapshot) === null || _a2 === void 0 ? void 0 : _a2.layoutBox, sourceBox);
+        removeBoxTransforms(boxWithoutTransform, node.latestValues, (_a = node.snapshot) === null || _a === void 0 ? void 0 : _a.layoutBox, sourceBox);
       }
       if (hasTransform(this.latestValues)) {
         removeBoxTransforms(boxWithoutTransform, this.latestValues);
@@ -19338,14 +17008,14 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
      * Frame calculations
      */
     resolveTargetDelta() {
-      var _a2;
+      var _a;
       const lead = this.getLead();
       this.isProjectionDirty || (this.isProjectionDirty = lead.isProjectionDirty);
       this.isTransformDirty || (this.isTransformDirty = lead.isTransformDirty);
       if (!this.isProjectionDirty && !this.attemptToResolveRelativeTarget)
         return;
-      const { layout, layoutId } = this.options;
-      if (!this.layout || !(layout || layoutId))
+      const { layout: layout2, layoutId } = this.options;
+      if (!this.layout || !(layout2 || layoutId))
         return;
       if (!this.targetDelta && !this.relativeTarget) {
         const relativeParent = this.getClosestProjectingParent();
@@ -19365,7 +17035,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
         this.target = createBox();
         this.targetWithTransforms = createBox();
       }
-      if (this.relativeTarget && this.relativeTargetOrigin && ((_a2 = this.relativeParent) === null || _a2 === void 0 ? void 0 : _a2.target)) {
+      if (this.relativeTarget && this.relativeTargetOrigin && ((_a = this.relativeParent) === null || _a === void 0 ? void 0 : _a.target)) {
         calcRelativeBox(this.target, this.relativeTarget, this.relativeParent.target);
       } else if (this.targetDelta) {
         if (Boolean(this.resumingFrom)) {
@@ -19402,7 +17072,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       }
     }
     calcProjection() {
-      var _a2;
+      var _a;
       const { isProjectionDirty, isTransformDirty } = this;
       this.isProjectionDirty = this.isTransformDirty = false;
       const lead = this.getLead();
@@ -19414,12 +17084,12 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
         canSkip = false;
       if (canSkip)
         return;
-      const { layout, layoutId } = this.options;
-      this.isTreeAnimating = Boolean(((_a2 = this.parent) === null || _a2 === void 0 ? void 0 : _a2.isTreeAnimating) || this.currentAnimation || this.pendingAnimation);
+      const { layout: layout2, layoutId } = this.options;
+      this.isTreeAnimating = Boolean(((_a = this.parent) === null || _a === void 0 ? void 0 : _a.isTreeAnimating) || this.currentAnimation || this.pendingAnimation);
       if (!this.isTreeAnimating) {
         this.targetDelta = this.relativeTarget = void 0;
       }
-      if (!this.layout || !(layout || layoutId))
+      if (!this.layout || !(layout2 || layoutId))
         return;
       copyBoxInto(this.layoutCorrected, this.layout.layoutBox);
       applyTreeDeltas(this.layoutCorrected, this.treeScale, this.path, isShared);
@@ -19448,15 +17118,15 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       this.isVisible = true;
     }
     scheduleRender(notifyAll = true) {
-      var _a2, _b2, _c2;
-      (_b2 = (_a2 = this.options).scheduleRender) === null || _b2 === void 0 ? void 0 : _b2.call(_a2);
-      notifyAll && ((_c2 = this.getStack()) === null || _c2 === void 0 ? void 0 : _c2.scheduleRender());
+      var _a, _b, _c;
+      (_b = (_a = this.options).scheduleRender) === null || _b === void 0 ? void 0 : _b.call(_a);
+      notifyAll && ((_c = this.getStack()) === null || _c === void 0 ? void 0 : _c.scheduleRender());
       if (this.resumingFrom && !this.resumingFrom.instance) {
         this.resumingFrom = void 0;
       }
     }
     setAnimationOrigin(delta, hasOnlyRelativeTargetChanged = false) {
-      var _a2, _b2;
+      var _a, _b;
       const snapshot = this.snapshot;
       const snapshotLatestValues = (snapshot === null || snapshot === void 0 ? void 0 : snapshot.latestValues) || {};
       const mixedValues = { ...this.latestValues };
@@ -19466,17 +17136,17 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       }
       this.attemptToResolveRelativeTarget = !hasOnlyRelativeTargetChanged;
       const relativeLayout = createBox();
-      const isSharedLayoutAnimation = (snapshot === null || snapshot === void 0 ? void 0 : snapshot.source) !== ((_a2 = this.layout) === null || _a2 === void 0 ? void 0 : _a2.source);
-      const isOnlyMember = (((_b2 = this.getStack()) === null || _b2 === void 0 ? void 0 : _b2.members.length) || 0) <= 1;
+      const isSharedLayoutAnimation = (snapshot === null || snapshot === void 0 ? void 0 : snapshot.source) !== ((_a = this.layout) === null || _a === void 0 ? void 0 : _a.source);
+      const isOnlyMember = (((_b = this.getStack()) === null || _b === void 0 ? void 0 : _b.members.length) || 0) <= 1;
       const shouldCrossfadeOpacity = Boolean(isSharedLayoutAnimation && !isOnlyMember && this.options.crossfade === true && !this.path.some(hasOpacityCrossfade));
       this.animationProgress = 0;
       this.mixTargetDelta = (latest) => {
-        var _a3;
+        var _a2;
         const progress2 = latest / 1e3;
         mixAxisDelta(targetDelta.x, delta.x, progress2);
         mixAxisDelta(targetDelta.y, delta.y, progress2);
         this.setTargetDelta(targetDelta);
-        if (this.relativeTarget && this.relativeTargetOrigin && this.layout && ((_a3 = this.relativeParent) === null || _a3 === void 0 ? void 0 : _a3.layout)) {
+        if (this.relativeTarget && this.relativeTargetOrigin && this.layout && ((_a2 = this.relativeParent) === null || _a2 === void 0 ? void 0 : _a2.layout)) {
           calcRelativePosition(relativeLayout, this.layout.layoutBox, this.relativeParent.layout.layoutBox);
           mixBox(this.relativeTarget, this.relativeTargetOrigin, relativeLayout, progress2);
         }
@@ -19491,11 +17161,11 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       this.mixTargetDelta(this.options.layoutRoot ? 1e3 : 0);
     }
     startAnimation(options) {
-      var _a2, _b2;
+      var _a, _b;
       this.notifyListeners("animationStart");
-      (_a2 = this.currentAnimation) === null || _a2 === void 0 ? void 0 : _a2.stop();
+      (_a = this.currentAnimation) === null || _a === void 0 ? void 0 : _a.stop();
       if (this.resumingFrom) {
-        (_b2 = this.resumingFrom.currentAnimation) === null || _b2 === void 0 ? void 0 : _b2.stop();
+        (_b = this.resumingFrom.currentAnimation) === null || _b === void 0 ? void 0 : _b.stop();
       }
       if (this.pendingAnimation) {
         cancelSync.update(this.pendingAnimation);
@@ -19506,13 +17176,13 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
         this.currentAnimation = animate(0, animationTarget, {
           ...options,
           onUpdate: (latest) => {
-            var _a3;
+            var _a2;
             this.mixTargetDelta(latest);
-            (_a3 = options.onUpdate) === null || _a3 === void 0 ? void 0 : _a3.call(options, latest);
+            (_a2 = options.onUpdate) === null || _a2 === void 0 ? void 0 : _a2.call(options, latest);
           },
           onComplete: () => {
-            var _a3;
-            (_a3 = options.onComplete) === null || _a3 === void 0 ? void 0 : _a3.call(options);
+            var _a2;
+            (_a2 = options.onComplete) === null || _a2 === void 0 ? void 0 : _a2.call(options);
             this.completeAnimation();
           }
         });
@@ -19523,29 +17193,29 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       });
     }
     completeAnimation() {
-      var _a2;
+      var _a;
       if (this.resumingFrom) {
         this.resumingFrom.currentAnimation = void 0;
         this.resumingFrom.preserveOpacity = void 0;
       }
-      (_a2 = this.getStack()) === null || _a2 === void 0 ? void 0 : _a2.exitAnimationComplete();
+      (_a = this.getStack()) === null || _a === void 0 ? void 0 : _a.exitAnimationComplete();
       this.resumingFrom = this.currentAnimation = this.animationValues = void 0;
       this.notifyListeners("animationComplete");
     }
     finishAnimation() {
-      var _a2;
+      var _a;
       if (this.currentAnimation) {
-        (_a2 = this.mixTargetDelta) === null || _a2 === void 0 ? void 0 : _a2.call(this, animationTarget);
+        (_a = this.mixTargetDelta) === null || _a === void 0 ? void 0 : _a.call(this, animationTarget);
         this.currentAnimation.stop();
       }
       this.completeAnimation();
     }
     applyTransformsToTarget() {
       const lead = this.getLead();
-      let { targetWithTransforms, target, layout, latestValues } = lead;
-      if (!targetWithTransforms || !target || !layout)
+      let { targetWithTransforms, target, layout: layout2, latestValues } = lead;
+      if (!targetWithTransforms || !target || !layout2)
         return;
-      if (this !== lead && this.layout && layout && shouldAnimatePositionOnly(this.options.animationType, this.layout.layoutBox, layout.layoutBox)) {
+      if (this !== lead && this.layout && layout2 && shouldAnimatePositionOnly(this.options.animationType, this.layout.layoutBox, layout2.layoutBox)) {
         target = this.target || createBox();
         const xLength = calcLength(this.layout.layoutBox.x);
         target.x.min = lead.target.x.min;
@@ -19559,15 +17229,15 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       calcBoxDelta(this.projectionDeltaWithTransform, this.layoutCorrected, targetWithTransforms, latestValues);
     }
     registerSharedNode(layoutId, node) {
-      var _a2, _b2, _c2;
+      var _a, _b, _c;
       if (!this.sharedNodes.has(layoutId)) {
         this.sharedNodes.set(layoutId, new NodeStack());
       }
       const stack = this.sharedNodes.get(layoutId);
       stack.add(node);
       node.promote({
-        transition: (_a2 = node.options.initialPromotionConfig) === null || _a2 === void 0 ? void 0 : _a2.transition,
-        preserveFollowOpacity: (_c2 = (_b2 = node.options.initialPromotionConfig) === null || _b2 === void 0 ? void 0 : _b2.shouldPreserveFollowOpacity) === null || _c2 === void 0 ? void 0 : _c2.call(_b2, node)
+        transition: (_a = node.options.initialPromotionConfig) === null || _a === void 0 ? void 0 : _a.transition,
+        preserveFollowOpacity: (_c = (_b = node.options.initialPromotionConfig) === null || _b === void 0 ? void 0 : _b.shouldPreserveFollowOpacity) === null || _c === void 0 ? void 0 : _c.call(_b, node)
       });
     }
     isLead() {
@@ -19575,14 +17245,14 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       return stack ? stack.lead === this : true;
     }
     getLead() {
-      var _a2;
+      var _a;
       const { layoutId } = this.options;
-      return layoutId ? ((_a2 = this.getStack()) === null || _a2 === void 0 ? void 0 : _a2.lead) || this : this;
+      return layoutId ? ((_a = this.getStack()) === null || _a === void 0 ? void 0 : _a.lead) || this : this;
     }
     getPrevLead() {
-      var _a2;
+      var _a;
       const { layoutId } = this.options;
-      return layoutId ? (_a2 = this.getStack()) === null || _a2 === void 0 ? void 0 : _a2.prevLead : void 0;
+      return layoutId ? (_a = this.getStack()) === null || _a === void 0 ? void 0 : _a.prevLead : void 0;
     }
     getStack() {
       const { layoutId } = this.options;
@@ -19634,7 +17304,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       visualElement.scheduleRender();
     }
     getProjectionStyles(styleProp = {}) {
-      var _a2, _b2;
+      var _a, _b;
       const styles2 = {};
       if (!this.instance || this.isSVG)
         return styles2;
@@ -19643,12 +17313,12 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       } else {
         styles2.visibility = "";
       }
-      const transformTemplate = this.getTransformTemplate();
+      const transformTemplate2 = this.getTransformTemplate();
       if (this.needsReset) {
         this.needsReset = false;
         styles2.opacity = "";
         styles2.pointerEvents = resolveMotionValue(styleProp.pointerEvents) || "";
-        styles2.transform = transformTemplate ? transformTemplate(this.latestValues, "") : "none";
+        styles2.transform = transformTemplate2 ? transformTemplate2(this.latestValues, "") : "none";
         return styles2;
       }
       const lead = this.getLead();
@@ -19659,7 +17329,7 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
           emptyStyles.pointerEvents = resolveMotionValue(styleProp.pointerEvents) || "";
         }
         if (this.hasProjected && !hasTransform(this.latestValues)) {
-          emptyStyles.transform = transformTemplate ? transformTemplate({}, "") : "none";
+          emptyStyles.transform = transformTemplate2 ? transformTemplate2({}, "") : "none";
           this.hasProjected = false;
         }
         return emptyStyles;
@@ -19667,13 +17337,13 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
       const valuesToRender = lead.animationValues || lead.latestValues;
       this.applyTransformsToTarget();
       styles2.transform = buildProjectionTransform(this.projectionDeltaWithTransform, this.treeScale, valuesToRender);
-      if (transformTemplate) {
-        styles2.transform = transformTemplate(valuesToRender, styles2.transform);
+      if (transformTemplate2) {
+        styles2.transform = transformTemplate2(valuesToRender, styles2.transform);
       }
-      const { x: x2, y: y2 } = this.projectionDelta;
-      styles2.transformOrigin = `${x2.origin * 100}% ${y2.origin * 100}% 0`;
+      const { x: x2, y } = this.projectionDelta;
+      styles2.transformOrigin = `${x2.origin * 100}% ${y.origin * 100}% 0`;
       if (lead.animationValues) {
-        styles2.opacity = lead === this ? (_b2 = (_a2 = valuesToRender.opacity) !== null && _a2 !== void 0 ? _a2 : this.latestValues.opacity) !== null && _b2 !== void 0 ? _b2 : 1 : this.preserveOpacity ? this.latestValues.opacity : valuesToRender.opacityExit;
+        styles2.opacity = lead === this ? (_b = (_a = valuesToRender.opacity) !== null && _a !== void 0 ? _a : this.latestValues.opacity) !== null && _b !== void 0 ? _b : 1 : this.preserveOpacity ? this.latestValues.opacity : valuesToRender.opacityExit;
       } else {
         styles2.opacity = lead === this ? valuesToRender.opacity !== void 0 ? valuesToRender.opacity : "" : valuesToRender.opacityExit !== void 0 ? valuesToRender.opacityExit : 0;
       }
@@ -19702,8 +17372,8 @@ function createProjectionNode({ attachResizeListener, defaultParent, measureScro
     // Only run on root
     resetTree() {
       this.root.nodes.forEach((node) => {
-        var _a2;
-        return (_a2 = node.currentAnimation) === null || _a2 === void 0 ? void 0 : _a2.stop();
+        var _a;
+        return (_a = node.currentAnimation) === null || _a === void 0 ? void 0 : _a.stop();
       });
       this.root.nodes.forEach(clearMeasurements);
       this.root.sharedNodes.clear();
@@ -19714,33 +17384,33 @@ function updateLayout(node) {
   node.updateLayout();
 }
 function notifyLayoutUpdate(node) {
-  var _a2, _b2, _c2;
-  const snapshot = ((_a2 = node.resumeFrom) === null || _a2 === void 0 ? void 0 : _a2.snapshot) || node.snapshot;
+  var _a, _b, _c;
+  const snapshot = ((_a = node.resumeFrom) === null || _a === void 0 ? void 0 : _a.snapshot) || node.snapshot;
   if (node.isLead() && node.layout && snapshot && node.hasListeners("didUpdate")) {
-    const { layoutBox: layout, measuredBox: measuredLayout } = node.layout;
+    const { layoutBox: layout2, measuredBox: measuredLayout } = node.layout;
     const { animationType } = node.options;
     const isShared = snapshot.source !== node.layout.source;
     if (animationType === "size") {
       eachAxis((axis) => {
         const axisSnapshot = isShared ? snapshot.measuredBox[axis] : snapshot.layoutBox[axis];
         const length = calcLength(axisSnapshot);
-        axisSnapshot.min = layout[axis].min;
+        axisSnapshot.min = layout2[axis].min;
         axisSnapshot.max = axisSnapshot.min + length;
       });
-    } else if (shouldAnimatePositionOnly(animationType, snapshot.layoutBox, layout)) {
+    } else if (shouldAnimatePositionOnly(animationType, snapshot.layoutBox, layout2)) {
       eachAxis((axis) => {
         const axisSnapshot = isShared ? snapshot.measuredBox[axis] : snapshot.layoutBox[axis];
-        const length = calcLength(layout[axis]);
+        const length = calcLength(layout2[axis]);
         axisSnapshot.max = axisSnapshot.min + length;
       });
     }
     const layoutDelta = createDelta();
-    calcBoxDelta(layoutDelta, layout, snapshot.layoutBox);
+    calcBoxDelta(layoutDelta, layout2, snapshot.layoutBox);
     const visualDelta = createDelta();
     if (isShared) {
       calcBoxDelta(visualDelta, node.applyTransform(measuredLayout, true), snapshot.measuredBox);
     } else {
-      calcBoxDelta(visualDelta, layout, snapshot.layoutBox);
+      calcBoxDelta(visualDelta, layout2, snapshot.layoutBox);
     }
     const hasLayoutChanged = !isDeltaZero(layoutDelta);
     let hasRelativeTargetChanged = false;
@@ -19752,7 +17422,7 @@ function notifyLayoutUpdate(node) {
           const relativeSnapshot = createBox();
           calcRelativePosition(relativeSnapshot, snapshot.layoutBox, parentSnapshot.layoutBox);
           const relativeLayout = createBox();
-          calcRelativePosition(relativeLayout, layout, parentLayout.layoutBox);
+          calcRelativePosition(relativeLayout, layout2, parentLayout.layoutBox);
           if (!boxEquals(relativeSnapshot, relativeLayout)) {
             hasRelativeTargetChanged = true;
           }
@@ -19765,7 +17435,7 @@ function notifyLayoutUpdate(node) {
       }
     }
     node.notifyListeners("didUpdate", {
-      layout,
+      layout: layout2,
       snapshot,
       delta: visualDelta,
       layoutDelta,
@@ -19773,7 +17443,7 @@ function notifyLayoutUpdate(node) {
       hasRelativeTargetChanged
     });
   } else if (node.isLead()) {
-    (_c2 = (_b2 = node.options).onExitComplete) === null || _c2 === void 0 ? void 0 : _c2.call(_b2);
+    (_c = (_b = node.options).onExitComplete) === null || _c === void 0 ? void 0 : _c.call(_b);
   }
   node.options.transition = void 0;
 }
@@ -19810,19 +17480,19 @@ function resetRotation(node) {
 function removeLeadSnapshots(stack) {
   stack.removeLeadSnapshot();
 }
-function mixAxisDelta(output, delta, p2) {
-  output.translate = mix(delta.translate, 0, p2);
-  output.scale = mix(delta.scale, 1, p2);
+function mixAxisDelta(output, delta, p) {
+  output.translate = mix(delta.translate, 0, p);
+  output.scale = mix(delta.scale, 1, p);
   output.origin = delta.origin;
   output.originPoint = delta.originPoint;
 }
-function mixAxis(output, from, to, p2) {
-  output.min = mix(from.min, to.min, p2);
-  output.max = mix(from.max, to.max, p2);
+function mixAxis(output, from2, to, p) {
+  output.min = mix(from2.min, to.min, p);
+  output.max = mix(from2.max, to.max, p);
 }
-function mixBox(output, from, to, p2) {
-  mixAxis(output.x, from.x, to.x, p2);
-  mixAxis(output.y, from.y, to.y, p2);
+function mixBox(output, from2, to, p) {
+  mixAxis(output.x, from2.x, to.x, p);
+  mixAxis(output.y, from2.y, to.y, p);
 }
 function hasOpacityCrossfade(node) {
   return node.animationValues && node.animationValues.opacityExit !== void 0;
@@ -19852,8 +17522,8 @@ function roundBox(box) {
   roundAxis(box.x);
   roundAxis(box.y);
 }
-function shouldAnimatePositionOnly(animationType, snapshot, layout) {
-  return animationType === "position" || animationType === "preserve-aspect" && !isNear(aspectRatio(snapshot), aspectRatio(layout), 0.2);
+function shouldAnimatePositionOnly(animationType, snapshot, layout2) {
+  return animationType === "position" || animationType === "preserve-aspect" && !isNear(aspectRatio(snapshot), aspectRatio(layout2), 0.2);
 }
 const DocumentProjectionNode = createProjectionNode({
   attachResizeListener: (ref, notify) => addDomEvent(ref, "resize", notify),
@@ -19915,11 +17585,11 @@ class PopChildMeasure extends React$1.Component {
   getSnapshotBeforeUpdate(prevProps) {
     const element = this.props.childRef.current;
     if (element && prevProps.isPresent && !this.props.isPresent) {
-      const size2 = this.props.sizeRef.current;
-      size2.height = element.offsetHeight || 0;
-      size2.width = element.offsetWidth || 0;
-      size2.top = element.offsetTop;
-      size2.left = element.offsetLeft;
+      const size = this.props.sizeRef.current;
+      size.height = element.offsetHeight || 0;
+      size.width = element.offsetWidth || 0;
+      size.top = element.offsetTop;
+      size.left = element.offsetLeft;
     }
     return null;
   }
@@ -19935,14 +17605,14 @@ class PopChildMeasure extends React$1.Component {
 function PopChild({ children, isPresent: isPresent2 }) {
   const id2 = useId$1();
   const ref = useRef(null);
-  const size2 = useRef({
+  const size = useRef({
     width: 0,
     height: 0,
     top: 0,
     left: 0
   });
   useInsertionEffect(() => {
-    const { width, height, top, left } = size2.current;
+    const { width, height, top, left } = size.current;
     if (isPresent2 || !ref.current || !width || !height)
       return;
     ref.current.dataset.motionPopId = id2;
@@ -19963,9 +17633,9 @@ function PopChild({ children, isPresent: isPresent2 }) {
       document.head.removeChild(style);
     };
   }, [isPresent2]);
-  return React$1.createElement(PopChildMeasure, { isPresent: isPresent2, childRef: ref, sizeRef: size2 }, React$1.cloneElement(children, { ref }));
+  return React$1.createElement(PopChildMeasure, { isPresent: isPresent2, childRef: ref, sizeRef: size }, React$1.cloneElement(children, { ref }));
 }
-const PresenceChild = ({ children, initial, isPresent: isPresent2, onExitComplete, custom, presenceAffectsLayout, mode: mode2 }) => {
+const PresenceChild = ({ children, initial, isPresent: isPresent2, onExitComplete, custom, presenceAffectsLayout, mode }) => {
   const presenceChildren = useConstant(newChildrenMap);
   const id2 = useId$1();
   const context = useMemo(
@@ -20000,7 +17670,7 @@ const PresenceChild = ({ children, initial, isPresent: isPresent2, onExitComplet
   React$1.useEffect(() => {
     !isPresent2 && !presenceChildren.size && onExitComplete && onExitComplete();
   }, [isPresent2]);
-  if (mode2 === "popLayout") {
+  if (mode === "popLayout") {
     children = React$1.createElement(PopChild, { isPresent: isPresent2 }, children);
   }
   return React$1.createElement(PresenceContext.Provider, { value: context }, children);
@@ -20023,9 +17693,9 @@ function onlyElements(children) {
   });
   return filtered;
 }
-const AnimatePresence = ({ children, custom, initial = true, onExitComplete, exitBeforeEnter, presenceAffectsLayout = true, mode: mode2 = "sync" }) => {
+const AnimatePresence = ({ children, custom, initial = true, onExitComplete, exitBeforeEnter, presenceAffectsLayout = true, mode = "sync" }) => {
   if (exitBeforeEnter) {
-    mode2 = "wait";
+    mode = "wait";
   }
   let [forceRender] = useForceUpdate();
   const forceRenderLayoutGroup = useContext(LayoutGroupContext).forceRender;
@@ -20049,7 +17719,7 @@ const AnimatePresence = ({ children, custom, initial = true, onExitComplete, exi
     exiting.clear();
   });
   if (isInitialRender.current) {
-    return React$1.createElement(React$1.Fragment, null, childrenToRender.map((child) => React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: true, initial: initial ? void 0 : false, presenceAffectsLayout, mode: mode2 }, child)));
+    return React$1.createElement(React$1.Fragment, null, childrenToRender.map((child) => React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: true, initial: initial ? void 0 : false, presenceAffectsLayout, mode }, child)));
   }
   childrenToRender = [...childrenToRender];
   const presentKeys = presentChildren.current.map(getChildKey);
@@ -20061,7 +17731,7 @@ const AnimatePresence = ({ children, custom, initial = true, onExitComplete, exi
       exiting.add(key);
     }
   }
-  if (mode2 === "wait" && exiting.size) {
+  if (mode === "wait" && exiting.size) {
     childrenToRender = [];
   }
   exiting.forEach((key) => {
@@ -20084,33 +17754,33 @@ const AnimatePresence = ({ children, custom, initial = true, onExitComplete, exi
         onExitComplete && onExitComplete();
       }
     };
-    childrenToRender.splice(insertionIndex, 0, React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: false, onExitComplete: onExit, custom, presenceAffectsLayout, mode: mode2 }, child));
+    childrenToRender.splice(insertionIndex, 0, React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: false, onExitComplete: onExit, custom, presenceAffectsLayout, mode }, child));
   });
   childrenToRender = childrenToRender.map((child) => {
     const key = child.key;
-    return exiting.has(key) ? child : React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: true, presenceAffectsLayout, mode: mode2 }, child);
+    return exiting.has(key) ? child : React$1.createElement(PresenceChild, { key: getChildKey(child), isPresent: true, presenceAffectsLayout, mode }, child);
   });
   return React$1.createElement(React$1.Fragment, null, exiting.size ? childrenToRender : childrenToRender.map((child) => cloneElement(child)));
 };
 const findById = (arr, id2) => arr.find((toast) => toast.id === id2);
 function findToast(toasts, id2) {
-  const position = getToastPosition(toasts, id2);
-  const index = position ? toasts[position].findIndex((toast) => toast.id === id2) : -1;
+  const position2 = getToastPosition(toasts, id2);
+  const index = position2 ? toasts[position2].findIndex((toast) => toast.id === id2) : -1;
   return {
-    position,
+    position: position2,
     index
   };
 }
 function getToastPosition(toasts, id2) {
-  for (const [position, values] of Object.entries(toasts)) {
+  for (const [position2, values] of Object.entries(toasts)) {
     if (findById(values, id2)) {
-      return position;
+      return position2;
     }
   }
 }
-function getToastStyle(position) {
-  const isRighty = position.includes("right");
-  const isLefty = position.includes("left");
+function getToastStyle(position2) {
+  const isRighty = position2.includes("right");
+  const isLefty = position2.includes("left");
   let alignItems = "center";
   if (isRighty)
     alignItems = "flex-end";
@@ -20122,13 +17792,13 @@ function getToastStyle(position) {
     alignItems
   };
 }
-function getToastListStyle(position) {
-  const isTopOrBottom = position === "top" || position === "bottom";
+function getToastListStyle(position2) {
+  const isTopOrBottom = position2 === "top" || position2 === "bottom";
   const margin = isTopOrBottom ? "0 auto" : void 0;
-  const top = position.includes("top") ? "env(safe-area-inset-top, 0px)" : void 0;
-  const bottom = position.includes("bottom") ? "env(safe-area-inset-bottom, 0px)" : void 0;
-  const right = !position.includes("left") ? "env(safe-area-inset-right, 0px)" : void 0;
-  const left = !position.includes("right") ? "env(safe-area-inset-left, 0px)" : void 0;
+  const top = position2.includes("top") ? "env(safe-area-inset-top, 0px)" : void 0;
+  const bottom = position2.includes("bottom") ? "env(safe-area-inset-bottom, 0px)" : void 0;
+  const right = !position2.includes("left") ? "env(safe-area-inset-right, 0px)" : void 0;
+  const left = !position2.includes("right") ? "env(safe-area-inset-left, 0px)" : void 0;
   return {
     position: "fixed",
     zIndex: "var(--toast-z-index, 5500)",
@@ -20143,7 +17813,7 @@ function getToastListStyle(position) {
   };
 }
 var reactPropsRegex = /^((children|dangerouslySetInnerHTML|key|ref|autoFocus|defaultValue|defaultChecked|innerHTML|suppressContentEditableWarning|suppressHydrationWarning|valueLink|abbr|accept|acceptCharset|accessKey|action|allow|allowUserMedia|allowPaymentRequest|allowFullScreen|allowTransparency|alt|async|autoComplete|autoPlay|capture|cellPadding|cellSpacing|challenge|charSet|checked|cite|classID|className|cols|colSpan|content|contentEditable|contextMenu|controls|controlsList|coords|crossOrigin|data|dateTime|decoding|default|defer|dir|disabled|disablePictureInPicture|disableRemotePlayback|download|draggable|encType|enterKeyHint|fetchpriority|fetchPriority|form|formAction|formEncType|formMethod|formNoValidate|formTarget|frameBorder|headers|height|hidden|high|href|hrefLang|htmlFor|httpEquiv|id|inputMode|integrity|is|keyParams|keyType|kind|label|lang|list|loading|loop|low|marginHeight|marginWidth|max|maxLength|media|mediaGroup|method|min|minLength|multiple|muted|name|nonce|noValidate|open|optimum|pattern|placeholder|playsInline|poster|preload|profile|radioGroup|readOnly|referrerPolicy|rel|required|reversed|role|rows|rowSpan|sandbox|scope|scoped|scrolling|seamless|selected|shape|size|sizes|slot|span|spellCheck|src|srcDoc|srcLang|srcSet|start|step|style|summary|tabIndex|target|title|translate|type|useMap|value|width|wmode|wrap|about|datatype|inlist|prefix|property|resource|typeof|vocab|autoCapitalize|autoCorrect|autoSave|color|incremental|fallback|inert|itemProp|itemScope|itemType|itemID|itemRef|on|option|results|security|unselectable|accentHeight|accumulate|additive|alignmentBaseline|allowReorder|alphabetic|amplitude|arabicForm|ascent|attributeName|attributeType|autoReverse|azimuth|baseFrequency|baselineShift|baseProfile|bbox|begin|bias|by|calcMode|capHeight|clip|clipPathUnits|clipPath|clipRule|colorInterpolation|colorInterpolationFilters|colorProfile|colorRendering|contentScriptType|contentStyleType|cursor|cx|cy|d|decelerate|descent|diffuseConstant|direction|display|divisor|dominantBaseline|dur|dx|dy|edgeMode|elevation|enableBackground|end|exponent|externalResourcesRequired|fill|fillOpacity|fillRule|filter|filterRes|filterUnits|floodColor|floodOpacity|focusable|fontFamily|fontSize|fontSizeAdjust|fontStretch|fontStyle|fontVariant|fontWeight|format|from|fr|fx|fy|g1|g2|glyphName|glyphOrientationHorizontal|glyphOrientationVertical|glyphRef|gradientTransform|gradientUnits|hanging|horizAdvX|horizOriginX|ideographic|imageRendering|in|in2|intercept|k|k1|k2|k3|k4|kernelMatrix|kernelUnitLength|kerning|keyPoints|keySplines|keyTimes|lengthAdjust|letterSpacing|lightingColor|limitingConeAngle|local|markerEnd|markerMid|markerStart|markerHeight|markerUnits|markerWidth|mask|maskContentUnits|maskUnits|mathematical|mode|numOctaves|offset|opacity|operator|order|orient|orientation|origin|overflow|overlinePosition|overlineThickness|panose1|paintOrder|pathLength|patternContentUnits|patternTransform|patternUnits|pointerEvents|points|pointsAtX|pointsAtY|pointsAtZ|preserveAlpha|preserveAspectRatio|primitiveUnits|r|radius|refX|refY|renderingIntent|repeatCount|repeatDur|requiredExtensions|requiredFeatures|restart|result|rotate|rx|ry|scale|seed|shapeRendering|slope|spacing|specularConstant|specularExponent|speed|spreadMethod|startOffset|stdDeviation|stemh|stemv|stitchTiles|stopColor|stopOpacity|strikethroughPosition|strikethroughThickness|string|stroke|strokeDasharray|strokeDashoffset|strokeLinecap|strokeLinejoin|strokeMiterlimit|strokeOpacity|strokeWidth|surfaceScale|systemLanguage|tableValues|targetX|targetY|textAnchor|textDecoration|textRendering|textLength|to|transform|u1|u2|underlinePosition|underlineThickness|unicode|unicodeBidi|unicodeRange|unitsPerEm|vAlphabetic|vHanging|vIdeographic|vMathematical|values|vectorEffect|version|vertAdvY|vertOriginX|vertOriginY|viewBox|viewTarget|visibility|widths|wordSpacing|writingMode|x|xHeight|x1|x2|xChannelSelector|xlinkActuate|xlinkArcrole|xlinkHref|xlinkRole|xlinkShow|xlinkTitle|xlinkType|xmlBase|xmlns|xmlnsXlink|xmlLang|xmlSpace|y|y1|y2|yChannelSelector|z|zoomAndPan|for|class|autofocus)|(([Dd][Aa][Tt][Aa]|[Aa][Rr][Ii][Aa]|x)-.*))$/;
-var isPropValid = /* @__PURE__ */ memoize(
+var isPropValid = /* @__PURE__ */ memoize$1(
   function(prop) {
     return reactPropsRegex.test(prop) || prop.charCodeAt(0) === 111 && prop.charCodeAt(1) === 110 && prop.charCodeAt(2) < 91;
   }
@@ -20440,13 +18110,13 @@ function shouldForwardProp(prop) {
 const emotion_styled = interopDefault(newStyled);
 const toCSSObject = ({ baseStyle: baseStyle2 }) => (props) => {
   const { theme: theme2, css: cssProp, __css, sx, ...restProps } = props;
-  const [styleProps] = splitProps(restProps, isStyleProp);
-  const finalBaseStyle = runIfFn$1(baseStyle2, props);
+  const [styleProps2] = splitProps(restProps, isStyleProp);
+  const finalBaseStyle = runIfFn(baseStyle2, props);
   const finalStyles = assignAfter(
     {},
     __css,
     finalBaseStyle,
-    compact(styleProps),
+    compact$1(styleProps2),
     sx
   );
   const computedCSS = css$2(finalStyles)(props.theme);
@@ -20502,10 +18172,10 @@ function factory() {
 const chakra = factory();
 const toastMotionVariants = {
   initial: (props) => {
-    const { position } = props;
-    const dir = ["top", "bottom"].includes(position) ? "y" : "x";
-    let factor = ["top-right", "bottom-right"].includes(position) ? 1 : -1;
-    if (position === "bottom")
+    const { position: position2 } = props;
+    const dir = ["top", "bottom"].includes(position2) ? "y" : "x";
+    let factor = ["top-right", "bottom-right"].includes(position2) ? 1 : -1;
+    if (position2 === "bottom")
       factor = 1;
     return {
       opacity: 0,
@@ -20538,7 +18208,7 @@ const ToastComponent = memo((props) => {
     onCloseComplete,
     onRequestRemove,
     requestClose = false,
-    position = "bottom",
+    position: position2 = "bottom",
     duration = 5e3,
     containerStyle,
     motionVariants: motionVariants2 = toastMotionVariants,
@@ -20576,7 +18246,7 @@ const ToastComponent = memo((props) => {
     }),
     [containerStyle, toastSpacing]
   );
-  const toastStyle = useMemo(() => getToastStyle(position), [position]);
+  const toastStyle = useMemo(() => getToastStyle(position2), [position2]);
   return /* @__PURE__ */ jsx$1(
     motion.div,
     {
@@ -20588,7 +18258,7 @@ const ToastComponent = memo((props) => {
       exit: "exit",
       onHoverStart: onMouseEnter,
       onHoverEnd: onMouseLeave,
-      custom: { position },
+      custom: { position: position2 },
       style: toastStyle,
       children: /* @__PURE__ */ jsx$1(
         chakra.div,
@@ -20597,7 +18267,7 @@ const ToastComponent = memo((props) => {
           "aria-atomic": "true",
           className: "chakra-toast__inner",
           __css: containerStyles,
-          children: runIfFn$1(message, { id: id2, onClose: close })
+          children: runIfFn(message, { id: id2, onClose: close })
         }
       )
     }
@@ -20627,8 +18297,8 @@ function getBreakpointValue(theme2, value, fallback) {
   if (value == null)
     return value;
   const getValue = (val) => {
-    var _a2, _b2;
-    return (_b2 = (_a2 = theme2.__breakpoints) == null ? void 0 : _a2.asArray) == null ? void 0 : _b2[val];
+    var _a, _b;
+    return (_b = (_a = theme2.__breakpoints) == null ? void 0 : _a.asArray) == null ? void 0 : _b[val];
   };
   return getValue(value) ?? getValue(fallback) ?? fallback;
 }
@@ -20636,39 +18306,39 @@ function getTokenValue(theme2, value, fallback) {
   if (value == null)
     return value;
   const getValue = (val) => {
-    var _a2, _b2;
-    return (_b2 = (_a2 = theme2.__cssMap) == null ? void 0 : _a2[val]) == null ? void 0 : _b2.value;
+    var _a, _b;
+    return (_b = (_a = theme2.__cssMap) == null ? void 0 : _a[val]) == null ? void 0 : _b.value;
   };
   return getValue(value) ?? getValue(fallback) ?? fallback;
 }
-function useToken(scale2, token, fallback) {
+function useToken(scale2, token2, fallback) {
   const theme2 = useTheme();
-  return getToken(scale2, token, fallback)(theme2);
+  return getToken(scale2, token2, fallback)(theme2);
 }
-function getToken(scale2, token, fallback) {
-  const _token = Array.isArray(token) ? token : [token];
+function getToken(scale2, token2, fallback) {
+  const _token = Array.isArray(token2) ? token2 : [token2];
   const _fallback = Array.isArray(fallback) ? fallback : [fallback];
   return (theme2) => {
     const fallbackArr = _fallback.filter(Boolean);
-    const result = _token.map((token2, index) => {
+    const result = _token.map((token22, index) => {
       if (scale2 === "breakpoints") {
-        return getBreakpointValue(theme2, token2, fallbackArr[index] ?? token2);
+        return getBreakpointValue(theme2, token22, fallbackArr[index] ?? token22);
       }
-      const path = `${scale2}.${token2}`;
-      return getTokenValue(theme2, path, fallbackArr[index] ?? token2);
+      const path = `${scale2}.${token22}`;
+      return getTokenValue(theme2, path, fallbackArr[index] ?? token22);
     });
-    return Array.isArray(token) ? result : result[0];
+    return Array.isArray(token2) ? result : result[0];
   };
 }
 function useStyleConfigImpl(themeKey, props = {}) {
   const { styleConfig: styleConfigProp, ...rest } = props;
   const { theme: theme2, colorMode } = useChakra();
-  const themeStyleConfig = themeKey ? memoizedGet(theme2, `components.${themeKey}`) : void 0;
+  const themeStyleConfig = themeKey ? memoizedGet$1(theme2, `components.${themeKey}`) : void 0;
   const styleConfig = styleConfigProp || themeStyleConfig;
   const mergedProps = mergeWith(
     { theme: theme2, colorMode },
     (styleConfig == null ? void 0 : styleConfig.defaultProps) ?? {},
-    compact(omit(rest, ["children"])),
+    compact$1(omit(rest, ["children"])),
     (obj, src) => !obj ? src : void 0
   );
   const stylesRef = useRef({});
@@ -20816,12 +18486,12 @@ const Spinner = forwardRef((props, ref) => {
   );
 });
 Spinner.displayName = "Spinner";
-const [AlertProvider, useAlertContext] = createContext({
+const [AlertProvider, useAlertContext] = createContext$1({
   name: "AlertContext",
   hookName: "useAlertContext",
   providerName: "<Alert />"
 });
-const [AlertStylesProvider, useAlertStyles] = createContext({
+const [AlertStylesProvider, useAlertStyles] = createContext$1({
   name: `AlertStylesContext`,
   hookName: `useAlertStyles`,
   providerName: "<Alert />"
@@ -21030,14 +18700,14 @@ const initialState = {
 };
 const toastStore = createStore(initialState);
 function createStore(initialState2) {
-  let state = initialState2;
+  let state2 = initialState2;
   const listeners = /* @__PURE__ */ new Set();
   const setState = (setStateFn) => {
-    state = setStateFn(state);
+    state2 = setStateFn(state2);
     listeners.forEach((l) => l());
   };
   return {
-    getState: () => state,
+    getState: () => state2,
     subscribe: (listener) => {
       listeners.add(listener);
       return () => {
@@ -21048,23 +18718,23 @@ function createStore(initialState2) {
     /**
      * Delete a toast record at its position
      */
-    removeToast: (id2, position) => {
+    removeToast: (id2, position2) => {
       setState((prevState) => ({
         ...prevState,
         // id may be string or number
         // eslint-disable-next-line eqeqeq
-        [position]: prevState[position].filter((toast) => toast.id != id2)
+        [position2]: prevState[position2].filter((toast) => toast.id != id2)
       }));
     },
     notify: (message, options) => {
       const toast = createToast(message, options);
-      const { position, id: id2 } = toast;
+      const { position: position2, id: id2 } = toast;
       setState((prevToasts) => {
-        const isTop = position.includes("top");
-        const toasts = isTop ? [toast, ...prevToasts[position] ?? []] : [...prevToasts[position] ?? [], toast];
+        const isTop = position2.includes("top");
+        const toasts = isTop ? [toast, ...prevToasts[position2] ?? []] : [...prevToasts[position2] ?? [], toast];
         return {
           ...prevToasts,
-          [position]: toasts
+          [position2]: toasts
         };
       });
       return id2;
@@ -21074,10 +18744,10 @@ function createStore(initialState2) {
         return;
       setState((prevState) => {
         const nextState = { ...prevState };
-        const { position, index } = findToast(nextState, id2);
-        if (position && index !== -1) {
-          nextState[position][index] = {
-            ...nextState[position][index],
+        const { position: position2, index } = findToast(nextState, id2);
+        if (position2 && index !== -1) {
+          nextState[position2][index] = {
+            ...nextState[position2][index],
             ...options,
             message: createRenderToast(options)
           };
@@ -21097,8 +18767,8 @@ function createStore(initialState2) {
         ];
         const positionsToClose = positions ?? allPositions;
         return positionsToClose.reduce(
-          (acc, position) => {
-            acc[position] = prev[position].map((toast) => ({
+          (acc, position2) => {
+            acc[position2] = prev[position2].map((toast) => ({
               ...toast,
               requestClose: true
             }));
@@ -21110,12 +18780,12 @@ function createStore(initialState2) {
     },
     close: (id2) => {
       setState((prevState) => {
-        const position = getToastPosition(prevState, id2);
-        if (!position)
+        const position2 = getToastPosition(prevState, id2);
+        if (!position2)
           return prevState;
         return {
           ...prevState,
-          [position]: prevState[position].map((toast) => {
+          [position2]: prevState[position2].map((toast) => {
             if (toast.id == id2) {
               return {
                 ...toast,
@@ -21134,20 +18804,20 @@ let counter = 0;
 function createToast(message, options = {}) {
   counter += 1;
   const id2 = options.id ?? counter;
-  const position = options.position ?? "bottom";
+  const position2 = options.position ?? "bottom";
   return {
     id: id2,
     message,
-    position,
+    position: position2,
     duration: options.duration,
     onCloseComplete: options.onCloseComplete,
-    onRequestRemove: () => toastStore.removeToast(String(id2), position),
+    onRequestRemove: () => toastStore.removeToast(String(id2), position2),
     status: options.status,
     requestClose: false,
     containerStyle: options.containerStyle
   };
 }
-const [PortalContextProvider, usePortalContext] = createContext({
+const [PortalContextProvider, usePortalContext] = createContext$1({
   strict: false,
   name: "PortalContext"
 });
@@ -21248,12 +18918,12 @@ function Portal(props) {
 Portal.className = PORTAL_CLASSNAME;
 Portal.selector = PORTAL_SELECTOR;
 Portal.displayName = "Portal";
-const [ToastOptionProvider, useToastOptionContext] = createContext({
+const [ToastOptionProvider, useToastOptionContext] = createContext$1({
   name: `ToastOptionsContext`,
   strict: false
 });
 const ToastProvider = (props) => {
-  const state = useSyncExternalStore$1(
+  const state2 = useSyncExternalStore$1(
     toastStore.subscribe,
     toastStore.getState,
     toastStore.getState
@@ -21264,17 +18934,17 @@ const ToastProvider = (props) => {
     portalProps,
     animatePresenceProps
   } = props;
-  const stateKeys = Object.keys(state);
-  const toastList = stateKeys.map((position) => {
-    const toasts = state[position];
+  const stateKeys = Object.keys(state2);
+  const toastList = stateKeys.map((position2) => {
+    const toasts = state2[position2];
     return /* @__PURE__ */ jsx$1(
       "div",
       {
         role: "region",
         "aria-live": "polite",
-        "aria-label": `Notifications-${position}`,
-        id: `chakra-toast-manager-${position}`,
-        style: getToastListStyle(position),
+        "aria-label": `Notifications-${position2}`,
+        id: `chakra-toast-manager-${position2}`,
+        style: getToastListStyle(position2),
         children: /* @__PURE__ */ jsx$1(AnimatePresence, { ...animatePresenceProps, initial: false, children: toasts.map((toast) => /* @__PURE__ */ jsx$1(
           Component,
           {
@@ -21284,7 +18954,7 @@ const ToastProvider = (props) => {
           toast.id
         )) })
       },
-      position
+      position2
     );
   });
   return /* @__PURE__ */ jsx$1(Portal, { ...portalProps, children: toastList });
@@ -21321,16 +18991,16 @@ function sortNodes(nodes) {
 }
 const isElement$1 = (el) => typeof el == "object" && "nodeType" in el && el.nodeType === Node.ELEMENT_NODE;
 function getNextIndex(current, max, loop) {
-  let next = current + 1;
-  if (loop && next >= max)
-    next = 0;
-  return next;
+  let next2 = current + 1;
+  if (loop && next2 >= max)
+    next2 = 0;
+  return next2;
 }
 function getPrevIndex(current, max, loop) {
-  let next = current - 1;
-  if (loop && next < 0)
-    next = max;
-  return next;
+  let next2 = current - 1;
+  if (loop && next2 < 0)
+    next2 = max;
+  return next2;
 }
 const useSafeLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 const cast = (value) => value;
@@ -21395,10 +19065,10 @@ class DescendantsManager {
       return this.enabledItem(lastIndex);
     });
     __publicField$1(this, "indexOf", (node) => {
-      var _a2;
+      var _a;
       if (!node)
         return -1;
-      return ((_a2 = this.descendants.get(node)) == null ? void 0 : _a2.index) ?? -1;
+      return ((_a = this.descendants.get(node)) == null ? void 0 : _a.index) ?? -1;
     });
     __publicField$1(this, "enabledIndexOf", (node) => {
       if (node == null)
@@ -21406,8 +19076,8 @@ class DescendantsManager {
       return this.enabledValues().findIndex((i) => i.node.isSameNode(node));
     });
     __publicField$1(this, "next", (index, loop = true) => {
-      const next = getNextIndex(index, this.count(), loop);
-      return this.item(next);
+      const next2 = getNextIndex(index, this.count(), loop);
+      return this.item(next2);
     });
     __publicField$1(this, "nextEnabled", (index, loop = true) => {
       const item = this.item(index);
@@ -21452,7 +19122,7 @@ class DescendantsManager {
   }
 }
 function createDescendantContext() {
-  const [DescendantsContextProvider, useDescendantsContext] = createContext({
+  const [DescendantsContextProvider, useDescendantsContext] = createContext$1({
     name: "DescendantsProvider",
     errorMessage: "useDescendantsContext must be used within DescendantsProvider"
   });
@@ -21501,12 +19171,12 @@ function createDescendantContext() {
     useDescendant
   ];
 }
-const [AccordionStylesProvider, useAccordionStyles] = createContext({
+const [AccordionStylesProvider, useAccordionStyles] = createContext$1({
   name: "AccordionStylesContext",
   hookName: "useAccordionStyles",
   providerName: "<Accordion />"
 });
-const [AccordionItemProvider, useAccordionItemContext] = createContext({
+const [AccordionItemProvider, useAccordionItemContext] = createContext$1({
   name: "AccordionItemContext",
   hookName: "useAccordionItemContext",
   providerName: "<AccordionItem />"
@@ -21573,13 +19243,13 @@ function useAccordion(props) {
     descendants
   };
 }
-const [AccordionProvider, useAccordionContext] = createContext({
+const [AccordionProvider, useAccordionContext] = createContext$1({
   name: "AccordionContext",
   hookName: "useAccordionContext",
   providerName: "Accordion"
 });
 function useAccordionItem(props) {
-  const { isDisabled, isFocusable: isFocusable2, id: id2, ...htmlProps } = props;
+  const { isDisabled, isFocusable, id: id2, ...htmlProps } = props;
   const { getAccordionItemProps, setFocusedIndex } = useAccordionContext();
   const buttonRef = useRef(null);
   const reactId = useId$1();
@@ -21588,7 +19258,7 @@ function useAccordionItem(props) {
   const panelId = `accordion-panel-${uid}`;
   focusableNotDisabledWarning(props);
   const { register, index, descendants } = useAccordionDescendant({
-    disabled: isDisabled && !isFocusable2
+    disabled: isDisabled && !isFocusable
   });
   const { isOpen, onChange } = getAccordionItemProps(
     index === -1 ? null : index
@@ -21608,8 +19278,8 @@ function useAccordionItem(props) {
     (event) => {
       const keyMap = {
         ArrowDown: () => {
-          const next = descendants.nextEnabled(index);
-          next == null ? void 0 : next.node.focus();
+          const next2 = descendants.nextEnabled(index);
+          next2 == null ? void 0 : next2.node.focus();
         },
         ArrowUp: () => {
           const prev = descendants.prevEnabled(index);
@@ -21677,7 +19347,7 @@ function useAccordionItem(props) {
   return {
     isOpen,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     onOpen,
     onClose,
     getButtonProps,
@@ -22026,7 +19696,7 @@ const AccordionPanel = forwardRef(
   }
 );
 AccordionPanel.displayName = "AccordionPanel";
-const [AvatarStylesProvider, useAvatarStyles] = createContext({
+const [AvatarStylesProvider, useAvatarStyles] = createContext$1({
   name: `AvatarStylesContext`,
   hookName: `useAvatarStyles`,
   providerName: "<Avatar/>"
@@ -22331,13 +20001,13 @@ const Box = chakra("div");
 Box.displayName = "Box";
 const Square = forwardRef(
   function Square2(props, ref) {
-    const { size: size2, centerContent = true, ...rest } = props;
+    const { size, centerContent = true, ...rest } = props;
     const styles2 = centerContent ? { display: "flex", alignItems: "center", justifyContent: "center" } : {};
     return /* @__PURE__ */ jsx$1(
       Box,
       {
         ref,
-        boxSize: size2,
+        boxSize: size,
         __css: {
           ...styles2,
           flexShrink: 0,
@@ -22351,12 +20021,12 @@ const Square = forwardRef(
 Square.displayName = "Square";
 const Circle = forwardRef(
   function Circle2(props, ref) {
-    const { size: size2, ...rest } = props;
-    return /* @__PURE__ */ jsx$1(Square, { size: size2, ref, borderRadius: "9999px", ...rest });
+    const { size, ...rest } = props;
+    return /* @__PURE__ */ jsx$1(Square, { size, ref, borderRadius: "9999px", ...rest });
   }
 );
 Circle.displayName = "Circle";
-const [ButtonGroupProvider, useButtonGroup] = createContext({
+const [ButtonGroupProvider, useButtonGroup] = createContext$1({
   strict: false,
   name: "ButtonGroupContext"
 });
@@ -22384,7 +20054,7 @@ function ButtonSpinner(props) {
   const {
     label,
     placement,
-    spacing: spacing2 = "0.5rem",
+    spacing = "0.5rem",
     children = /* @__PURE__ */ jsx$1(Spinner, { color: "currentColor", width: "1em", height: "1em" }),
     className,
     __css,
@@ -22397,12 +20067,12 @@ function ButtonSpinner(props) {
       display: "flex",
       alignItems: "center",
       position: label ? "relative" : "absolute",
-      [marginProp]: label ? spacing2 : 0,
+      [marginProp]: label ? spacing : 0,
       fontSize: "1em",
       lineHeight: "normal",
       ...__css
     }),
-    [__css, label, marginProp, spacing2]
+    [__css, label, marginProp, spacing]
   );
   return /* @__PURE__ */ jsx$1(chakra.div, { className: _className, ...rest, __css: spinnerStyles, children });
 }
@@ -22428,7 +20098,7 @@ const Button = forwardRef((props, ref) => {
     leftIcon,
     rightIcon,
     loadingText,
-    iconSpacing: iconSpacing2 = "0.5rem",
+    iconSpacing = "0.5rem",
     type: type2,
     spinner,
     spinnerPlacement = "start",
@@ -22457,7 +20127,7 @@ const Button = forwardRef((props, ref) => {
   const contentProps = {
     rightIcon,
     leftIcon,
-    iconSpacing: iconSpacing2,
+    iconSpacing,
     children,
     shouldWrapChildren
   };
@@ -22480,7 +20150,7 @@ const Button = forwardRef((props, ref) => {
             className: "chakra-button__spinner--start",
             label: loadingText,
             placement: "start",
-            spacing: iconSpacing2,
+            spacing: iconSpacing,
             children: spinner
           }
         ),
@@ -22491,7 +20161,7 @@ const Button = forwardRef((props, ref) => {
             className: "chakra-button__spinner--end",
             label: loadingText,
             placement: "end",
-            spacing: iconSpacing2,
+            spacing: iconSpacing,
             children: spinner
           }
         )
@@ -22501,18 +20171,18 @@ const Button = forwardRef((props, ref) => {
 });
 Button.displayName = "Button";
 function ButtonContent(props) {
-  const { leftIcon, rightIcon, children, iconSpacing: iconSpacing2, shouldWrapChildren } = props;
+  const { leftIcon, rightIcon, children, iconSpacing, shouldWrapChildren } = props;
   if (!shouldWrapChildren) {
     return /* @__PURE__ */ jsxs(Fragment, { children: [
-      leftIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginEnd: iconSpacing2, children: leftIcon }),
+      leftIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginEnd: iconSpacing, children: leftIcon }),
       children,
-      rightIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginStart: iconSpacing2, children: rightIcon })
+      rightIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginStart: iconSpacing, children: rightIcon })
     ] });
   }
   return /* @__PURE__ */ jsxs("span", { style: { display: "contents" }, children: [
-    leftIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginEnd: iconSpacing2, children: leftIcon }),
+    leftIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginEnd: iconSpacing, children: leftIcon }),
     children,
-    rightIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginStart: iconSpacing2, children: rightIcon })
+    rightIcon && /* @__PURE__ */ jsx$1(ButtonIcon, { marginStart: iconSpacing, children: rightIcon })
   ] });
 }
 const attachedStyles = {
@@ -22528,21 +20198,21 @@ const attachedStyles = {
   }
 };
 const gapStyles = {
-  horizontal: (spacing2) => ({
-    "& > *:not(style) ~ *:not(style)": { marginStart: spacing2 }
+  horizontal: (spacing) => ({
+    "& > *:not(style) ~ *:not(style)": { marginStart: spacing }
   }),
-  vertical: (spacing2) => ({
-    "& > *:not(style) ~ *:not(style)": { marginTop: spacing2 }
+  vertical: (spacing) => ({
+    "& > *:not(style) ~ *:not(style)": { marginTop: spacing }
   })
 };
 const ButtonGroup = forwardRef(
   function ButtonGroup2(props, ref) {
     const {
-      size: size2,
+      size,
       colorScheme,
       variant,
       className,
-      spacing: spacing2 = "0.5rem",
+      spacing = "0.5rem",
       isAttached,
       isDisabled,
       orientation = "horizontal",
@@ -22550,12 +20220,12 @@ const ButtonGroup = forwardRef(
     } = props;
     const _className = cx("chakra-button__group", className);
     const context = useMemo(
-      () => ({ size: size2, colorScheme, variant, isDisabled }),
-      [size2, colorScheme, variant, isDisabled]
+      () => ({ size, colorScheme, variant, isDisabled }),
+      [size, colorScheme, variant, isDisabled]
     );
     let groupStyles = {
       display: "inline-flex",
-      ...isAttached ? attachedStyles[orientation] : gapStyles[orientation](spacing2)
+      ...isAttached ? attachedStyles[orientation] : gapStyles[orientation](spacing)
     };
     const isVertical = orientation === "vertical";
     return /* @__PURE__ */ jsx$1(ButtonGroupProvider, { value: context, children: /* @__PURE__ */ jsx$1(
@@ -22602,7 +20272,7 @@ const Card = forwardRef(function Card2(props, ref) {
   const {
     className,
     children,
-    direction: direction2 = "column",
+    direction = "column",
     justify,
     align,
     ...rest
@@ -22615,7 +20285,7 @@ const Card = forwardRef(function Card2(props, ref) {
       className: cx("chakra-card", className),
       __css: {
         display: "flex",
-        flexDirection: direction2,
+        flexDirection: direction,
         justifyContent: justify,
         alignItems: align,
         position: "relative",
@@ -22680,7 +20350,7 @@ forwardRef(
     );
   }
 );
-const [CheckboxGroupProvider, useCheckboxGroupContext] = createContext({
+const [CheckboxGroupProvider, useCheckboxGroupContext] = createContext$2({
   name: "CheckboxGroupContext",
   strict: false
 });
@@ -22729,11 +20399,11 @@ function CheckboxIcon(props) {
     }
   ) : null;
 }
-const [FormControlStylesProvider, useFormControlStyles] = createContext({
+const [FormControlStylesProvider, useFormControlStyles] = createContext$1({
   name: `FormControlStylesContext`,
   errorMessage: `useFormControlStyles returned is 'undefined'. Seems you forgot to wrap the components in "<FormControl />" `
 });
-const [FormControlProvider, useFormControlContext] = createContext({
+const [FormControlProvider, useFormControlContext] = createContext$1({
   strict: false,
   name: "FormControlContext"
 });
@@ -22956,7 +20626,7 @@ function useCheckbox(props = {}) {
   const {
     defaultChecked,
     isChecked: checkedProp,
-    isFocusable: isFocusable2,
+    isFocusable,
     onChange,
     isIndeterminate,
     name: name2,
@@ -23035,11 +20705,11 @@ function useCheckbox(props = {}) {
     };
     el.form.addEventListener("reset", formResetListener);
     return () => {
-      var _a2;
-      return (_a2 = el.form) == null ? void 0 : _a2.removeEventListener("reset", formResetListener);
+      var _a;
+      return (_a = el.form) == null ? void 0 : _a.removeEventListener("reset", formResetListener);
     };
   }, []);
-  const trulyDisabled = isDisabled && !isFocusable2;
+  const trulyDisabled = isDisabled && !isFocusable;
   const onKeyDown = useCallback(
     (event) => {
       if (event.key === " ") {
@@ -23145,12 +20815,12 @@ function useCheckbox(props = {}) {
         setRootIsLabelElement(node.tagName === "LABEL");
       }),
       onClick: callAllHandlers(props2.onClick, () => {
-        var _a2;
+        var _a;
         if (!rootIsLabelElement) {
-          (_a2 = inputRef.current) == null ? void 0 : _a2.click();
+          (_a = inputRef.current) == null ? void 0 : _a.click();
           requestAnimationFrame(() => {
-            var _a3;
-            (_a3 = inputRef.current) == null ? void 0 : _a3.focus({ preventScroll: true });
+            var _a2;
+            (_a2 = inputRef.current) == null ? void 0 : _a2.focus({ preventScroll: true });
           });
         }
       }),
@@ -23228,7 +20898,7 @@ function useCheckbox(props = {}) {
     }),
     [isChecked, isDisabled, isInvalid]
   );
-  const state = {
+  const state2 = {
     isInvalid,
     isFocused,
     isChecked,
@@ -23240,7 +20910,7 @@ function useCheckbox(props = {}) {
     isRequired
   };
   return {
-    state,
+    state: state2,
     getRootProps,
     getCheckboxProps,
     getIndicatorProps,
@@ -23312,7 +20982,7 @@ const Checkbox = forwardRef(
     const styles2 = useMultiStyleConfig("Checkbox", mergedProps);
     const ownProps = omitThemingProps(props);
     const {
-      spacing: spacing2 = "0.5rem",
+      spacing = "0.5rem",
       className,
       children,
       iconColor,
@@ -23333,7 +21003,7 @@ const Checkbox = forwardRef(
       onChange = callAll(group.onChange, onChangeProp);
     }
     const {
-      state,
+      state: state2,
       getInputProps,
       getCheckboxProps,
       getLabelProps,
@@ -23344,22 +21014,22 @@ const Checkbox = forwardRef(
       isChecked,
       onChange
     });
-    const shouldAnimate = useInitialAnimationState(state.isChecked);
+    const shouldAnimate = useInitialAnimationState(state2.isChecked);
     const iconStyles = useMemo(
       () => ({
-        animation: !shouldAnimate ? void 0 : state.isIndeterminate ? `${indeterminateOpacityAnim} 20ms linear, ${indeterminateScaleAnim} 200ms linear` : `${checkAnim} 200ms linear`,
+        animation: !shouldAnimate ? void 0 : state2.isIndeterminate ? `${indeterminateOpacityAnim} 20ms linear, ${indeterminateScaleAnim} 200ms linear` : `${checkAnim} 200ms linear`,
         ...styles2.icon,
-        ...compact({
+        ...compact$1({
           fontSize: iconSize,
           color: iconColor
         })
       }),
-      [iconColor, iconSize, shouldAnimate, state.isIndeterminate, styles2.icon]
+      [iconColor, iconSize, shouldAnimate, state2.isIndeterminate, styles2.icon]
     );
     const clonedIcon = cloneElement(icon, {
       __css: iconStyles,
-      isIndeterminate: state.isIndeterminate,
-      isChecked: state.isChecked
+      isIndeterminate: state2.isIndeterminate,
+      isChecked: state2.isChecked
     });
     return /* @__PURE__ */ jsxs(
       chakra.label,
@@ -23390,7 +21060,7 @@ const Checkbox = forwardRef(
               className: "chakra-checkbox__label",
               ...getLabelProps(),
               __css: {
-                marginStart: spacing2,
+                marginStart: spacing,
                 ...styles2.label
               },
               children
@@ -23450,18 +21120,18 @@ function useCheckboxGroup(props = {}) {
   };
 }
 function CheckboxGroup(props) {
-  const { colorScheme, size: size2, variant, children, isDisabled } = props;
+  const { colorScheme, size, variant, children, isDisabled } = props;
   const { value, onChange } = useCheckboxGroup(props);
   const group = useMemo(
     () => ({
-      size: size2,
+      size,
       onChange,
       colorScheme,
       value,
       variant,
       isDisabled
     }),
-    [size2, onChange, colorScheme, value, variant, isDisabled]
+    [size, onChange, colorScheme, value, variant, isDisabled]
   );
   return /* @__PURE__ */ jsx$1(CheckboxGroupProvider, { value: group, children });
 }
@@ -23606,19 +21276,19 @@ function mergeThemeCustomizer(source, override, key, object) {
       return mergeWith({}, sourceValue, overrideValue, mergeThemeCustomizer);
     };
   }
-  if (isArray(source) && isArray(override)) {
+  if (isArray$1(source) && isArray$1(override)) {
     return [...source, ...override];
   }
-  if (isArray(source) && isObject(override)) {
+  if (isArray$1(source) && isObject(override)) {
     return override;
   }
   return void 0;
 }
 const Flex = forwardRef(function Flex2(props, ref) {
-  const { direction: direction2, align, justify, wrap: wrap2, basis, grow, shrink, ...rest } = props;
+  const { direction, align, justify, wrap: wrap2, basis, grow, shrink, ...rest } = props;
   const styles2 = {
     display: "flex",
-    flexDirection: direction2,
+    flexDirection: direction,
     alignItems: align,
     justifyContent: justify,
     flexWrap: wrap2,
@@ -23649,15 +21319,15 @@ const FocusLock = (props) => {
       const focusables = getAllFocusable(contentRef.current);
       if (focusables.length === 0) {
         requestAnimationFrame(() => {
-          var _a2;
-          (_a2 = contentRef.current) == null ? void 0 : _a2.focus();
+          var _a;
+          (_a = contentRef.current) == null ? void 0 : _a.focus();
         });
       }
     }
   }, [initialFocusRef, contentRef]);
   const onDeactivation = useCallback(() => {
-    var _a2;
-    (_a2 = finalFocusRef == null ? void 0 : finalFocusRef.current) == null ? void 0 : _a2.focus();
+    var _a;
+    (_a = finalFocusRef == null ? void 0 : finalFocusRef.current) == null ? void 0 : _a.focus();
   }, [finalFocusRef]);
   const returnFocus = restoreFocus && !finalFocusRef;
   return /* @__PURE__ */ jsx$1(
@@ -23675,7 +21345,7 @@ const FocusLock = (props) => {
   );
 };
 FocusLock.displayName = "FocusLock";
-const [FormErrorStylesProvider, useFormErrorStyles] = createContext({
+const [FormErrorStylesProvider, useFormErrorStyles] = createContext$1({
   name: `FormErrorStylesContext`,
   errorMessage: `useFormErrorStyles returned is 'undefined'. Seems you forgot to wrap the components in "<FormError />" `
 });
@@ -23826,7 +21496,7 @@ const GridItem = forwardRef(
       rowStart,
       ...rest
     } = props;
-    const styles2 = compact({
+    const styles2 = compact$1({
       gridArea: area,
       gridColumn: spanFn(colSpan),
       gridRow: spanFn(rowSpan),
@@ -23841,14 +21511,14 @@ const GridItem = forwardRef(
 GridItem.displayName = "GridItem";
 const SimpleGrid = forwardRef(
   function SimpleGrid2(props, ref) {
-    const { columns, spacingX, spacingY, spacing: spacing2, minChildWidth, ...rest } = props;
+    const { columns, spacingX, spacingY, spacing, minChildWidth, ...rest } = props;
     const theme2 = useTheme();
     const templateColumns = minChildWidth ? widthToColumns(minChildWidth, theme2) : countToColumns(columns);
     return /* @__PURE__ */ jsx$1(
       Grid,
       {
         ref,
-        gap: spacing2,
+        gap: spacing,
         columnGap: spacingX,
         rowGap: spacingY,
         templateColumns,
@@ -23921,10 +21591,10 @@ function createIcon(options) {
     viewBox = "0 0 24 24",
     d: pathDefinition,
     displayName,
-    defaultProps: defaultProps2 = {}
+    defaultProps = {}
   } = options;
   const path = Children.toArray(options.path);
-  const Comp = forwardRef((props, ref) => /* @__PURE__ */ jsx$1(Icon, { ref, viewBox, ...defaultProps2, ...props, children: path.length ? path : /* @__PURE__ */ jsx$1("path", { fill: "currentColor", d: pathDefinition }) }));
+  const Comp = forwardRef((props, ref) => /* @__PURE__ */ jsx$1(Icon, { ref, viewBox, ...defaultProps, ...props, children: path.length ? path : /* @__PURE__ */ jsx$1("path", { fill: "currentColor", d: pathDefinition }) }));
   Comp.displayName = displayName;
   return Comp;
 }
@@ -24013,7 +21683,7 @@ const Input = forwardRef(
 );
 Input.displayName = "Input";
 Input.id = "Input";
-const [InputGroupStylesProvider, useInputGroupStyles] = createContext({
+const [InputGroupStylesProvider, useInputGroupStyles] = createContext$1({
   name: `InputGroupStylesContext`,
   errorMessage: `useInputGroupStyles returned is 'undefined'. Seems you forgot to wrap the components in "<InputGroup />" `
 });
@@ -24042,10 +21712,10 @@ const InputGroup = forwardRef(
       }
     });
     const clones = validChildren.map((child) => {
-      var _a2, _b2;
-      const theming = compact({
-        size: ((_a2 = child.props) == null ? void 0 : _a2.size) || props.size,
-        variant: ((_b2 = child.props) == null ? void 0 : _b2.variant) || props.variant
+      var _a, _b;
+      const theming = compact$1({
+        size: ((_a = child.props) == null ? void 0 : _a.size) || props.size,
+        variant: ((_b = child.props) == null ? void 0 : _b.variant) || props.variant
       });
       return child.type.id !== "Input" ? cloneElement(child, theming) : cloneElement(child, Object.assign(theming, groupStyles, child.props));
     });
@@ -24149,7 +21819,7 @@ const Link = forwardRef(function Link2(props, ref) {
   );
 });
 Link.displayName = "Link";
-const [ListStylesProvider, useListStyles] = createContext({
+const [ListStylesProvider, useListStyles] = createContext$1({
   name: `ListStylesContext`,
   errorMessage: `useListStyles returned is 'undefined'. Seems you forgot to wrap the components in "<List />" `
 });
@@ -24159,12 +21829,12 @@ const List = forwardRef(function List2(props, ref) {
     children,
     styleType = "none",
     stylePosition,
-    spacing: spacing2,
+    spacing,
     ...rest
   } = omitThemingProps(props);
   const validChildren = getValidChildren(children);
   const selector = "& > *:not(style) ~ *:not(style)";
-  const spacingStyle = spacing2 ? { [selector]: { mt: spacing2 } } : {};
+  const spacingStyle = spacing ? { [selector]: { mt: spacing } } : {};
   return /* @__PURE__ */ jsx$1(ListStylesProvider, { value: styles2, children: /* @__PURE__ */ jsx$1(
     chakra.ul,
     {
@@ -24255,7 +21925,7 @@ function useMediaQuery(query, options = {}) {
   return value.map((item) => item.matches);
 }
 function useBreakpoint(arg) {
-  var _a2;
+  var _a;
   const opts = isObject(arg) ? arg : { fallback: arg ?? "base" };
   const theme2 = useTheme();
   const breakpoints2 = theme2.__breakpoints.details.map(
@@ -24270,16 +21940,16 @@ function useBreakpoint(arg) {
     { fallback, ssr: opts.ssr }
   );
   const index = values.findIndex((value) => value == true);
-  return ((_a2 = breakpoints2[index]) == null ? void 0 : _a2.breakpoint) ?? opts.fallback;
+  return ((_a = breakpoints2[index]) == null ? void 0 : _a.breakpoint) ?? opts.fallback;
 }
-function getClosestValue(values, breakpoint, breakpoints$1$1 = breakpoints$1) {
+function getClosestValue(values, breakpoint, breakpoints$1 = breakpoints) {
   let index = Object.keys(values).indexOf(breakpoint);
   if (index !== -1) {
     return values[breakpoint];
   }
-  let stopIndex = breakpoints$1$1.indexOf(breakpoint);
+  let stopIndex = breakpoints$1.indexOf(breakpoint);
   while (stopIndex >= 0) {
-    const key = breakpoints$1$1[stopIndex];
+    const key = breakpoints$1[stopIndex];
     if (values.hasOwnProperty(key)) {
       index = stopIndex;
       break;
@@ -24287,19 +21957,19 @@ function getClosestValue(values, breakpoint, breakpoints$1$1 = breakpoints$1) {
     stopIndex -= 1;
   }
   if (index !== -1) {
-    const key = breakpoints$1$1[index];
+    const key = breakpoints$1[index];
     return values[key];
   }
   return void 0;
 }
 function useBreakpointValue(values, arg) {
-  var _a2;
+  var _a;
   const opts = isObject(arg) ? arg : { fallback: arg ?? "base" };
   const breakpoint = useBreakpoint(opts);
   const theme2 = useTheme();
   if (!breakpoint)
     return;
-  const breakpoints2 = Array.from(((_a2 = theme2.__breakpoints) == null ? void 0 : _a2.keys) || []);
+  const breakpoints2 = Array.from(((_a = theme2.__breakpoints) == null ? void 0 : _a.keys) || []);
   const obj = Array.isArray(values) ? Object.fromEntries(
     Object.entries(arrayToObjectNotation(values, breakpoints2)).map(
       ([key, value]) => [key, value]
@@ -24440,57 +22110,57 @@ const matchWidth = {
   enabled: true,
   phase: "beforeWrite",
   requires: ["computeStyles"],
-  fn: ({ state }) => {
-    state.styles.popper.width = `${state.rects.reference.width}px`;
+  fn: ({ state: state2 }) => {
+    state2.styles.popper.width = `${state2.rects.reference.width}px`;
   },
-  effect: ({ state }) => () => {
-    const reference = state.elements.reference;
-    state.elements.popper.style.width = `${reference.offsetWidth}px`;
+  effect: ({ state: state2 }) => () => {
+    const reference = state2.elements.reference;
+    state2.elements.popper.style.width = `${reference.offsetWidth}px`;
   }
 };
 const transformOrigin = {
   name: "transformOrigin",
   enabled: true,
   phase: "write",
-  fn: ({ state }) => {
-    setTransformOrigin(state);
+  fn: ({ state: state2 }) => {
+    setTransformOrigin(state2);
   },
-  effect: ({ state }) => () => {
-    setTransformOrigin(state);
+  effect: ({ state: state2 }) => () => {
+    setTransformOrigin(state2);
   }
 };
-const setTransformOrigin = (state) => {
-  state.elements.popper.style.setProperty(
+const setTransformOrigin = (state2) => {
+  state2.elements.popper.style.setProperty(
     cssVars.transformOrigin.var,
-    toTransformOrigin(state.placement)
+    toTransformOrigin(state2.placement)
   );
 };
 const positionArrow = {
   name: "positionArrow",
   enabled: true,
   phase: "afterWrite",
-  fn: ({ state }) => {
-    setArrowStyles(state);
+  fn: ({ state: state2 }) => {
+    setArrowStyles(state2);
   }
 };
-const setArrowStyles = (state) => {
-  var _a2;
-  if (!state.placement)
+const setArrowStyles = (state2) => {
+  var _a;
+  if (!state2.placement)
     return;
-  const overrides2 = getArrowStyle$1(state.placement);
-  if (((_a2 = state.elements) == null ? void 0 : _a2.arrow) && overrides2) {
-    Object.assign(state.elements.arrow.style, {
+  const overrides2 = getArrowStyle$1(state2.placement);
+  if (((_a = state2.elements) == null ? void 0 : _a.arrow) && overrides2) {
+    Object.assign(state2.elements.arrow.style, {
       [overrides2.property]: overrides2.value,
       width: cssVars.arrowSize.varRef,
       height: cssVars.arrowSize.varRef,
       zIndex: -1
     });
-    const vars2 = {
+    const vars = {
       [cssVars.arrowSizeHalf.var]: `calc(${cssVars.arrowSize.varRef} / 2 - 1px)`,
       [cssVars.arrowOffset.var]: `calc(${cssVars.arrowSizeHalf.varRef} * -1)`
     };
-    for (const property in vars2) {
-      state.elements.arrow.style.setProperty(property, vars2[property]);
+    for (const property in vars) {
+      state2.elements.arrow.style.setProperty(property, vars[property]);
     }
   }
 };
@@ -24513,22 +22183,22 @@ const innerArrow = {
   enabled: true,
   phase: "main",
   requires: ["arrow"],
-  fn: ({ state }) => {
-    setInnerArrowStyles(state);
+  fn: ({ state: state2 }) => {
+    setInnerArrowStyles(state2);
   },
-  effect: ({ state }) => () => {
-    setInnerArrowStyles(state);
+  effect: ({ state: state2 }) => () => {
+    setInnerArrowStyles(state2);
   }
 };
-const setInnerArrowStyles = (state) => {
-  if (!state.elements.arrow)
+const setInnerArrowStyles = (state2) => {
+  if (!state2.elements.arrow)
     return;
-  const inner = state.elements.arrow.querySelector(
+  const inner = state2.elements.arrow.querySelector(
     "[data-popper-arrow-inner]"
   );
   if (!inner)
     return;
-  const boxShadow = getBoxShadow(state.placement);
+  const boxShadow = getBoxShadow(state2.placement);
   if (boxShadow) {
     inner.style.setProperty("--popper-arrow-default-shadow", boxShadow);
   }
@@ -24561,8 +22231,8 @@ const opposites = {
   "bottom-end": "bottom-start"
 };
 function getPopperPlacement(placement, dir = "ltr") {
-  var _a2;
-  const value = ((_a2 = logicals[placement]) == null ? void 0 : _a2[dir]) || placement;
+  var _a;
+  const value = ((_a = logicals[placement]) == null ? void 0 : _a[dir]) || placement;
   if (dir === "ltr")
     return value;
   return opposites[placement] ?? value;
@@ -24581,19 +22251,19 @@ function usePopper(props = {}) {
     boundary = "clippingParents",
     preventOverflow = true,
     matchWidth: matchWidth$1,
-    direction: direction2 = "ltr"
+    direction = "ltr"
   } = props;
   const reference = useRef(null);
   const popper = useRef(null);
   const instance = useRef(null);
-  const placement = getPopperPlacement(placementProp, direction2);
+  const placement = getPopperPlacement(placementProp, direction);
   const cleanup = useRef(() => {
   });
   const setupPopper = useCallback(() => {
-    var _a2;
+    var _a;
     if (!enabled || !reference.current || !popper.current)
       return;
-    (_a2 = cleanup.current) == null ? void 0 : _a2.call(cleanup);
+    (_a = cleanup.current) == null ? void 0 : _a.call(cleanup);
     instance.current = createPopper(reference.current, popper.current, {
       placement,
       modifiers: [
@@ -24651,9 +22321,9 @@ function usePopper(props = {}) {
   ]);
   useEffect(() => {
     return () => {
-      var _a2;
+      var _a;
       if (!reference.current && !popper.current) {
-        (_a2 = instance.current) == null ? void 0 : _a2.destroy();
+        (_a = instance.current) == null ? void 0 : _a.destroy();
         instance.current = null;
       }
     };
@@ -24693,7 +22363,7 @@ function usePopper(props = {}) {
     [strategy, popperRef, matchWidth$1]
   );
   const getArrowProps = useCallback((props2 = {}, ref = null) => {
-    const { size: size2, shadowColor, bg, style, ...rest } = props2;
+    const { size, shadowColor, bg, style, ...rest } = props2;
     return {
       ...rest,
       ref,
@@ -24711,12 +22381,12 @@ function usePopper(props = {}) {
   );
   return {
     update() {
-      var _a2;
-      (_a2 = instance.current) == null ? void 0 : _a2.update();
+      var _a;
+      (_a = instance.current) == null ? void 0 : _a.update();
     },
     forceUpdate() {
-      var _a2;
-      (_a2 = instance.current) == null ? void 0 : _a2.forceUpdate();
+      var _a;
+      (_a = instance.current) == null ? void 0 : _a.forceUpdate();
     },
     transformOrigin: cssVars.transformOrigin.varRef,
     referenceRef,
@@ -24728,10 +22398,10 @@ function usePopper(props = {}) {
   };
 }
 function getArrowStyle(props) {
-  const { size: size2, shadowColor, bg, style } = props;
+  const { size, shadowColor, bg, style } = props;
   const computedStyle = { ...style, position: "absolute" };
-  if (size2) {
-    computedStyle["--popper-arrow-size"] = size2;
+  if (size) {
+    computedStyle["--popper-arrow-size"] = size;
   }
   if (shadowColor) {
     computedStyle["--popper-arrow-shadow-color"] = shadowColor;
@@ -24766,8 +22436,8 @@ function useEventListeners() {
   return { add: add2, remove };
 }
 function isValidElement(event) {
-  var _a2, _b2;
-  const target = ((_b2 = (_a2 = event.composedPath) == null ? void 0 : _a2.call(event)) == null ? void 0 : _b2[0]) ?? event.target;
+  var _a, _b;
+  const target = ((_b = (_a = event.composedPath) == null ? void 0 : _a.call(event)) == null ? void 0 : _b[0]) ?? event.target;
   const { tagName, isContentEditable } = target;
   return tagName !== "INPUT" && tagName !== "TEXTAREA" && isContentEditable !== true;
 }
@@ -24775,7 +22445,7 @@ function useClickable(props = {}) {
   const {
     ref: htmlRef,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     clickOnEnter = true,
     clickOnSpace = true,
     onMouseDown,
@@ -24799,7 +22469,7 @@ function useClickable(props = {}) {
     }
   };
   const tabIndex = isButton ? tabIndexProp : tabIndexProp || 0;
-  const trulyDisabled = isDisabled && !isFocusable2;
+  const trulyDisabled = isDisabled && !isFocusable;
   const handleClick = useCallback(
     (event) => {
       if (isDisabled) {
@@ -24970,7 +22640,7 @@ const [
   useMenuDescendants,
   useMenuDescendant
 ] = createDescendantContext();
-const [MenuProvider, useMenuContext] = createContext({
+const [MenuProvider, useMenuContext] = createContext$1({
   strict: false,
   name: "MenuContext"
 });
@@ -24995,7 +22665,7 @@ function useMenu(props = {}) {
     onOpen: onOpenProp,
     placement = "bottom-start",
     lazyBehavior = "unmount",
-    direction: direction2,
+    direction,
     computePositionOnMount = false,
     ...popperProps
   } = props;
@@ -25005,17 +22675,17 @@ function useMenu(props = {}) {
   const descendants = useMenuDescendants();
   const focusMenu = useCallback(() => {
     requestAnimationFrame(() => {
-      var _a2;
-      (_a2 = menuRef.current) == null ? void 0 : _a2.focus({ preventScroll: false });
+      var _a;
+      (_a = menuRef.current) == null ? void 0 : _a.focus({ preventScroll: false });
     });
   }, []);
   const focusFirstItem = useCallback(() => {
     const id22 = setTimeout(() => {
-      var _a2, _b2;
+      var _a, _b;
       if (initialFocusRef) {
-        (_a2 = initialFocusRef.current) == null ? void 0 : _a2.focus();
+        (_a = initialFocusRef.current) == null ? void 0 : _a.focus();
       } else if (!descendants.count()) {
-        (_b2 = menuRef.current) == null ? void 0 : _b2.focus({ preventScroll: false });
+        (_b = menuRef.current) == null ? void 0 : _b.focus({ preventScroll: false });
       } else {
         const first = descendants.firstEnabled();
         if (first)
@@ -25026,9 +22696,9 @@ function useMenu(props = {}) {
   }, [descendants, initialFocusRef]);
   const focusLastItem = useCallback(() => {
     const id22 = setTimeout(() => {
-      var _a2;
+      var _a;
       if (!descendants.count()) {
-        (_a2 = menuRef.current) == null ? void 0 : _a2.focus({ preventScroll: false });
+        (_a = menuRef.current) == null ? void 0 : _a.focus({ preventScroll: false });
       } else {
         const last = descendants.lastEnabled();
         if (last)
@@ -25055,9 +22725,9 @@ function useMenu(props = {}) {
     enabled: isOpen && closeOnBlur,
     ref: menuRef,
     handler: (event) => {
-      var _a2, _b2, _c2;
-      const target = ((_b2 = (_a2 = event.composedPath) == null ? void 0 : _a2.call(event)) == null ? void 0 : _b2[0]) ?? event.target;
-      if (!((_c2 = buttonRef.current) == null ? void 0 : _c2.contains(target))) {
+      var _a, _b, _c;
+      const target = ((_b = (_a = event.composedPath) == null ? void 0 : _a.call(event)) == null ? void 0 : _b[0]) ?? event.target;
+      if (!((_c = buttonRef.current) == null ? void 0 : _c.contains(target))) {
         onClose();
       }
     }
@@ -25066,7 +22736,7 @@ function useMenu(props = {}) {
     ...popperProps,
     enabled: isOpen || computePositionOnMount,
     placement,
-    direction: direction2
+    direction
   });
   const [focusedIndex, setFocusedIndex] = useState(-1);
   useFocusOnHide(menuRef, {
@@ -25089,11 +22759,11 @@ function useMenu(props = {}) {
     };
   }, []);
   useUpdateEffect(() => {
-    var _a2;
+    var _a;
     if (isOpen)
       return;
     setFocusedIndex(-1);
-    (_a2 = menuRef.current) == null ? void 0 : _a2.scrollTo(0, 0);
+    (_a = menuRef.current) == null ? void 0 : _a.scrollTo(0, 0);
   }, [isOpen]);
   useUpdateEffect(() => {
     if (!isOpen)
@@ -25103,11 +22773,11 @@ function useMenu(props = {}) {
     }
   }, [focusedIndex, isOpen]);
   useEffect(() => {
-    var _a2;
+    var _a;
     if (!isOpen)
       return;
     const item = descendants.item(focusedIndex);
-    (_a2 = item == null ? void 0 : item.node) == null ? void 0 : _a2.focus({ preventScroll: !scrollIntoViewRef.current });
+    (_a = item == null ? void 0 : item.node) == null ? void 0 : _a.focus({ preventScroll: !scrollIntoViewRef.current });
   }, [descendants, focusedIndex, isOpen]);
   const openAndFocusFirstItem = useCallback(() => {
     onOpen();
@@ -25119,13 +22789,13 @@ function useMenu(props = {}) {
     focusLastItem();
   }, [onOpen, focusLastItem]);
   const refocus = useCallback(() => {
-    var _a2, _b2;
+    var _a, _b;
     const doc = getOwnerDocument(menuRef.current);
-    const hasFocusWithin = (_a2 = menuRef.current) == null ? void 0 : _a2.contains(doc.activeElement);
+    const hasFocusWithin = (_a = menuRef.current) == null ? void 0 : _a.contains(doc.activeElement);
     const shouldRefocus = isOpen && !hasFocusWithin;
     if (!shouldRefocus)
       return;
-    const node = (_b2 = descendants.item(focusedIndex)) == null ? void 0 : _b2.node;
+    const node = (_b = descendants.item(focusedIndex)) == null ? void 0 : _b.node;
     node == null ? void 0 : node.focus({ preventScroll: !scrollIntoViewRef.current });
   }, [isOpen, focusedIndex, descendants]);
   return {
@@ -25197,8 +22867,8 @@ function useMenuButton(props = {}, externalRef = null) {
   };
 }
 function isTargetMenuItem(target) {
-  var _a2;
-  return isHTMLElement(target) && !!((_a2 = target == null ? void 0 : target.getAttribute("role")) == null ? void 0 : _a2.startsWith("menuitem"));
+  var _a;
+  return isHTMLElement(target) && !!((_a = target == null ? void 0 : target.getAttribute("role")) == null ? void 0 : _a.startsWith("menuitem"));
 }
 function useMenuList(props = {}, ref = null) {
   const menu = useMenuContext();
@@ -25236,9 +22906,9 @@ function useMenuList(props = {}, ref = null) {
         },
         ArrowDown: () => {
           scrollIntoViewRef.current = true;
-          const next = descendants.nextEnabled(focusedIndex) ?? descendants.firstEnabled();
-          if (next)
-            setFocusedIndex(next.index);
+          const next2 = descendants.nextEnabled(focusedIndex) ?? descendants.firstEnabled();
+          if (next2)
+            setFocusedIndex(next2.index);
         },
         ArrowUp: () => {
           scrollIntoViewRef.current = true;
@@ -25258,8 +22928,8 @@ function useMenuList(props = {}, ref = null) {
           descendants.values(),
           character,
           (item) => {
-            var _a2;
-            return ((_a2 = item == null ? void 0 : item.node) == null ? void 0 : _a2.textContent) ?? "";
+            var _a;
+            return ((_a = item == null ? void 0 : item.node) == null ? void 0 : _a.textContent) ?? "";
           },
           descendants.item(focusedIndex)
         );
@@ -25324,7 +22994,7 @@ function useMenuItem(props = {}, externalRef = null) {
     onClick: onClickProp,
     onFocus: onFocusProp,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     closeOnSelect,
     type: typeProp,
     ...htmlProps
@@ -25341,7 +23011,7 @@ function useMenuItem(props = {}, externalRef = null) {
   const ref = useRef(null);
   const id2 = `${menuId}-menuitem-${useId$1()}`;
   const { index, register } = useMenuDescendant({
-    disabled: isDisabled && !isFocusable2
+    disabled: isDisabled && !isFocusable
   });
   const onMouseEnter = useCallback(
     (event) => {
@@ -25398,7 +23068,7 @@ function useMenuItem(props = {}, externalRef = null) {
     onMouseLeave,
     ref: mergeRefs(register, ref, externalRef),
     isDisabled,
-    isFocusable: isFocusable2
+    isFocusable
   });
   return {
     ...htmlProps,
@@ -25442,9 +23112,9 @@ function useMenuOptionGroup(props = {}) {
     if (child.type.id !== "MenuItemOption")
       return child;
     const onClick = (event) => {
-      var _a2, _b2;
+      var _a, _b;
       onChange(child.props.value);
-      (_b2 = (_a2 = child.props).onClick) == null ? void 0 : _b2.call(_a2, event);
+      (_b = (_a = child.props).onClick) == null ? void 0 : _b.call(_a, event);
     };
     const isChecked = type2 === "radio" ? child.props.value === value : value.includes(child.props.value);
     return cloneElement(child, {
@@ -25467,7 +23137,7 @@ function isHTMLElement(el) {
 function isElement(el) {
   return el != null && typeof el == "object" && "nodeType" in el && el.nodeType === Node.ELEMENT_NODE;
 }
-const [MenuStylesProvider, useMenuStyles] = createContext({
+const [MenuStylesProvider, useMenuStyles] = createContext$1({
   name: `MenuStylesContext`,
   errorMessage: `useMenuStyles returned is 'undefined'. Seems you forgot to wrap the components in "<Menu />" `
 });
@@ -25475,11 +23145,11 @@ const Menu = (props) => {
   const { children } = props;
   const styles2 = useMultiStyleConfig("Menu", props);
   const ownProps = omitThemingProps(props);
-  const { direction: direction2 } = useTheme();
-  const { descendants, ...ctx } = useMenu({ ...ownProps, direction: direction2 });
+  const { direction } = useTheme();
+  const { descendants, ...ctx } = useMenu({ ...ownProps, direction });
   const context = useMemo(() => ctx, [ctx]);
   const { isOpen, onClose, forceUpdate } = context;
-  return /* @__PURE__ */ jsx$1(MenuDescendantsProvider, { value: descendants, children: /* @__PURE__ */ jsx$1(MenuProvider, { value: context, children: /* @__PURE__ */ jsx$1(MenuStylesProvider, { value: styles2, children: runIfFn$1(children, { isOpen, onClose, forceUpdate }) }) }) });
+  return /* @__PURE__ */ jsx$1(MenuDescendantsProvider, { value: descendants, children: /* @__PURE__ */ jsx$1(MenuProvider, { value: context, children: /* @__PURE__ */ jsx$1(MenuStylesProvider, { value: styles2, children: runIfFn(children, { isOpen, onClose, forceUpdate }) }) }) });
 };
 Menu.displayName = "Menu";
 const StyledMenuButton = forwardRef((props, ref) => {
@@ -25599,7 +23269,7 @@ const StyledMenuItem = forwardRef(
 const MenuItem = forwardRef((props, ref) => {
   const {
     icon,
-    iconSpacing: iconSpacing2 = "0.75rem",
+    iconSpacing = "0.75rem",
     command,
     commandSpacing = "0.75rem",
     children,
@@ -25614,7 +23284,7 @@ const MenuItem = forwardRef((props, ref) => {
       ...menuitemProps,
       className: cx("chakra-menu__menuitem", menuitemProps.className),
       children: [
-        icon && /* @__PURE__ */ jsx$1(MenuIcon, { fontSize: "0.8em", marginEnd: iconSpacing2, children: icon }),
+        icon && /* @__PURE__ */ jsx$1(MenuIcon, { fontSize: "0.8em", marginEnd: iconSpacing, children: icon }),
         _children,
         command && /* @__PURE__ */ jsx$1(MenuCommand, { marginStart: commandSpacing, children: command })
       ]
@@ -25647,7 +23317,7 @@ const motionVariants = {
 const MenuTransition = chakra(motion.div);
 const MenuList = forwardRef(
   function MenuList2(props, ref) {
-    var _a2;
+    var _a;
     const { rootProps, motionProps, ...rest } = props;
     const {
       isOpen,
@@ -25661,7 +23331,7 @@ const MenuList = forwardRef(
       chakra.div,
       {
         ...positionerProps,
-        __css: { zIndex: props.zIndex ?? ((_a2 = styles2.list) == null ? void 0 : _a2.zIndex) },
+        __css: { zIndex: props.zIndex ?? ((_a = styles2.list) == null ? void 0 : _a.zIndex) },
         children: /* @__PURE__ */ jsx$1(
           MenuTransition,
           {
@@ -25846,14 +23516,14 @@ function useIds(idProp, ...prefixes) {
   const reactId = useId$1();
   const id2 = idProp || reactId;
   return useMemo(() => {
-    return prefixes.map((prefix) => `${prefix}-${id2}`);
+    return prefixes.map((prefix2) => `${prefix2}-${id2}`);
   }, [id2, prefixes]);
 }
-const [ModalStylesProvider, useModalStyles] = createContext({
+const [ModalStylesProvider, useModalStyles] = createContext$1({
   name: `ModalStylesContext`,
   errorMessage: `useModalStyles returned is 'undefined'. Seems you forgot to wrap the components in "<Modal />" `
 });
-const [ModalContextProvider, useModalContext] = createContext({
+const [ModalContextProvider, useModalContext] = createContext$1({
   strict: true,
   name: "ModalContext",
   errorMessage: "useModalContext: `context` is undefined. Seems you forgot to wrap modal components in `<Modal />`"
@@ -26341,19 +24011,19 @@ function AlertDialog(props) {
 const AlertDialogContent = forwardRef(
   (props, ref) => /* @__PURE__ */ jsx$1(ModalContent, { ref, role: "alertdialog", ...props })
 );
-const [DrawerContextProvider, useDrawerContext] = createContext();
+const [DrawerContextProvider, useDrawerContext] = createContext$1();
 const placementMap = {
   start: { ltr: "left", rtl: "right" },
   end: { ltr: "right", rtl: "left" }
 };
 function getDrawerPlacement(placement, dir) {
-  var _a2;
+  var _a;
   if (!placement)
     return;
-  return ((_a2 = placementMap[placement]) == null ? void 0 : _a2[dir]) ?? placement;
+  return ((_a = placementMap[placement]) == null ? void 0 : _a[dir]) ?? placement;
 }
 function Drawer(props) {
-  var _a2;
+  var _a;
   const {
     isOpen,
     onClose,
@@ -26362,7 +24032,7 @@ function Drawer(props) {
     ...rest
   } = props;
   const theme2 = useTheme();
-  const drawerStyleConfig = (_a2 = theme2.components) == null ? void 0 : _a2.Drawer;
+  const drawerStyleConfig = (_a = theme2.components) == null ? void 0 : _a.Drawer;
   const placement = getDrawerPlacement(placementProp, theme2.direction);
   return /* @__PURE__ */ jsx$1(DrawerContextProvider, { value: { placement }, children: /* @__PURE__ */ jsx$1(
     Modal,
@@ -26387,16 +24057,16 @@ const defaultTransition = {
   }
 };
 const variants$9 = {
-  exit: ({ direction: direction2, transition: transition2, transitionEnd, delay: delay2 }) => {
-    const { exit: exitStyles } = getSlideTransition({ direction: direction2 });
+  exit: ({ direction, transition: transition2, transitionEnd, delay: delay2 }) => {
+    const { exit: exitStyles } = getSlideTransition({ direction });
     return {
       ...exitStyles,
       transition: (transition2 == null ? void 0 : transition2.exit) ?? withDelay.exit(defaultTransition.exit, delay2),
       transitionEnd: transitionEnd == null ? void 0 : transitionEnd.exit
     };
   },
-  enter: ({ direction: direction2, transitionEnd, transition: transition2, delay: delay2 }) => {
-    const { enter: enterStyles } = getSlideTransition({ direction: direction2 });
+  enter: ({ direction, transitionEnd, transition: transition2, delay: delay2 }) => {
+    const { enter: enterStyles } = getSlideTransition({ direction });
     return {
       ...enterStyles,
       transition: (transition2 == null ? void 0 : transition2.enter) ?? withDelay.enter(defaultTransition.enter, delay2),
@@ -26407,7 +24077,7 @@ const variants$9 = {
 const Slide = forwardRef$1(
   function Slide2(props, ref) {
     const {
-      direction: direction2 = "right",
+      direction = "right",
       style,
       unmountOnExit,
       in: isOpen,
@@ -26419,7 +24089,7 @@ const Slide = forwardRef$1(
       animatePresenceProps,
       ...rest
     } = props;
-    const transitionStyles = getSlideTransition({ direction: direction2 });
+    const transitionStyles = getSlideTransition({ direction });
     const computedStyle = Object.assign(
       { position: "fixed" },
       transitionStyles.position,
@@ -26427,7 +24097,7 @@ const Slide = forwardRef$1(
     );
     const show = unmountOnExit ? isOpen && unmountOnExit : true;
     const animate2 = isOpen || unmountOnExit ? "enter" : "exit";
-    const custom = { transitionEnd, transition: transition2, direction: direction2, delay: delay2 };
+    const custom = { transitionEnd, transition: transition2, direction, delay: delay2 };
     return /* @__PURE__ */ jsx$1(AnimatePresence, { ...animatePresenceProps, custom, children: show && /* @__PURE__ */ jsx$1(
       motion.div,
       {
@@ -26564,7 +24234,7 @@ function getProgressProps(options) {
     value
   };
 }
-const [ProgressStylesProvider, useProgressStyles] = createContext({
+const [ProgressStylesProvider, useProgressStyles] = createContext$1({
   name: `ProgressStylesContext`,
   errorMessage: `useProgressStyles returned is 'undefined'. Seems you forgot to wrap the components in "<Progress />" `
 });
@@ -26596,7 +24266,7 @@ const ProgressFilledTrack = forwardRef(
   }
 );
 const Progress = forwardRef((props, ref) => {
-  var _a2;
+  var _a;
   const {
     value,
     min = 0,
@@ -26614,7 +24284,7 @@ const Progress = forwardRef((props, ref) => {
     ...rest
   } = omitThemingProps(props);
   const styles2 = useMultiStyleConfig("Progress", props);
-  const borderRadius = propBorderRadius ?? ((_a2 = styles2.track) == null ? void 0 : _a2.borderRadius);
+  const borderRadius = propBorderRadius ?? ((_a = styles2.track) == null ? void 0 : _a.borderRadius);
   const stripeAnimation = { animation: `${stripe} 1s linear infinite` };
   const shouldAddStripe = !isIndeterminate && hasStripe;
   const shouldAnimateStripe = shouldAddStripe && isAnimated;
@@ -26672,7 +24342,7 @@ function useRadioGroup(props = {}) {
     defaultValue,
     name: nameProp,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     isNative,
     ...htmlProps
   } = props;
@@ -26743,46 +24413,46 @@ function useRadioGroup(props = {}) {
     value,
     onChange,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     htmlProps
   };
 }
-const [RadioGroupProvider, useRadioGroupContext] = createContext({
+const [RadioGroupProvider, useRadioGroupContext] = createContext$1({
   name: "RadioGroupContext",
   strict: false
 });
 const RadioGroup = forwardRef((props, ref) => {
   const {
     colorScheme,
-    size: size2,
+    size,
     variant,
     children,
     className,
     isDisabled,
-    isFocusable: isFocusable2,
+    isFocusable,
     ...rest
   } = props;
   const { value, onChange, getRootProps, name: name2, htmlProps } = useRadioGroup(rest);
   const group = useMemo(
     () => ({
       name: name2,
-      size: size2,
+      size,
       onChange,
       colorScheme,
       value,
       variant,
       isDisabled,
-      isFocusable: isFocusable2
+      isFocusable
     }),
     [
       name2,
-      size2,
+      size,
       onChange,
       colorScheme,
       value,
       variant,
       isDisabled,
-      isFocusable2
+      isFocusable
     ]
   );
   return /* @__PURE__ */ jsx$1(RadioGroupProvider, { value: group, children: /* @__PURE__ */ jsx$1(
@@ -26799,7 +24469,7 @@ function useRadio(props = {}) {
   const {
     defaultChecked,
     isChecked: isCheckedProp,
-    isFocusable: isFocusable2,
+    isFocusable,
     isDisabled: isDisabledProp,
     isReadOnly: isReadOnlyProp,
     isRequired: isRequiredProp,
@@ -26900,7 +24570,7 @@ function useRadio(props = {}) {
   const { onFocus, onBlur } = formControl ?? {};
   const getInputProps = useCallback(
     (props2 = {}, ref = null) => {
-      const trulyDisabled = isDisabled && !isFocusable2;
+      const trulyDisabled = isDisabled && !isFocusable;
       return {
         ...props2,
         id: id2,
@@ -26935,7 +24605,7 @@ function useRadio(props = {}) {
     },
     [
       isDisabled,
-      isFocusable2,
+      isFocusable,
       id2,
       name2,
       value,
@@ -26967,7 +24637,7 @@ function useRadio(props = {}) {
     "data-checked": dataAttr(isChecked),
     "data-invalid": dataAttr(isInvalid)
   });
-  const state = {
+  const state2 = {
     isInvalid,
     isFocused,
     isChecked,
@@ -26978,7 +24648,7 @@ function useRadio(props = {}) {
     isRequired
   };
   return {
-    state,
+    state: state2,
     getRadioProps,
     getInputProps,
     getLabelProps,
@@ -26996,10 +24666,10 @@ const Radio = forwardRef((props, ref) => {
   const styles2 = useMultiStyleConfig("Radio", { ...group, ...props });
   const ownProps = omitThemingProps(props);
   const {
-    spacing: spacing2 = "0.5rem",
+    spacing = "0.5rem",
     children,
     isDisabled = group == null ? void 0 : group.isDisabled,
-    isFocusable: isFocusable2 = group == null ? void 0 : group.isFocusable,
+    isFocusable = group == null ? void 0 : group.isFocusable,
     inputProps: htmlInputProps,
     ...rest
   } = ownProps;
@@ -27021,7 +24691,7 @@ const Radio = forwardRef((props, ref) => {
   } = useRadio({
     ...rest,
     isChecked,
-    isFocusable: isFocusable2,
+    isFocusable,
     isDisabled,
     onChange,
     name: name2
@@ -27048,7 +24718,7 @@ const Radio = forwardRef((props, ref) => {
   };
   const labelStyles = {
     userSelect: "none",
-    marginStart: spacing2,
+    marginStart: spacing,
     ...styles2.label
   };
   return /* @__PURE__ */ jsxs(chakra.label, { className: "chakra-radio", ...rootProps, __css: rootStyles2, children: [
@@ -27093,8 +24763,8 @@ const StyledSkeleton = chakra("div", {
     }
   }
 });
-const $startColor = cssVar$1("skeleton-start-color");
-const $endColor = cssVar$1("skeleton-end-color");
+const $startColor = cssVar("skeleton-start-color");
+const $endColor = cssVar("skeleton-end-color");
 const fade = keyframes$1({
   from: { opacity: 0 },
   to: { opacity: 1 }
@@ -27190,28 +24860,28 @@ const StackItem = (props) => /* @__PURE__ */ jsx$1(
 );
 StackItem.displayName = "StackItem";
 function getDividerStyles(options) {
-  const { spacing: spacing2, direction: direction2 } = options;
+  const { spacing, direction } = options;
   const dividerStyles = {
     column: {
-      my: spacing2,
+      my: spacing,
       mx: 0,
       borderLeftWidth: 0,
       borderBottomWidth: "1px"
     },
     "column-reverse": {
-      my: spacing2,
+      my: spacing,
       mx: 0,
       borderLeftWidth: 0,
       borderBottomWidth: "1px"
     },
     row: {
-      mx: spacing2,
+      mx: spacing,
       my: 0,
       borderLeftWidth: "1px",
       borderBottomWidth: 0
     },
     "row-reverse": {
-      mx: spacing2,
+      mx: spacing,
       my: 0,
       borderLeftWidth: "1px",
       borderBottomWidth: 0
@@ -27219,7 +24889,7 @@ function getDividerStyles(options) {
   };
   return {
     "&": mapResponsive(
-      direction2,
+      direction,
       (value) => dividerStyles[value]
     )
   };
@@ -27230,7 +24900,7 @@ const Stack = forwardRef((props, ref) => {
     direction: directionProp,
     align,
     justify,
-    spacing: spacing2 = "0.5rem",
+    spacing = "0.5rem",
     wrap: wrap2,
     children,
     divider,
@@ -27238,10 +24908,10 @@ const Stack = forwardRef((props, ref) => {
     shouldWrapChildren,
     ...rest
   } = props;
-  const direction2 = isInline ? "row" : directionProp ?? "column";
+  const direction = isInline ? "row" : directionProp ?? "column";
   const dividerStyle = useMemo(
-    () => getDividerStyles({ spacing: spacing2, direction: direction2 }),
-    [spacing2, direction2]
+    () => getDividerStyles({ spacing, direction }),
+    [spacing, direction]
   );
   const hasDivider = !!divider;
   const shouldUseChildren = !shouldWrapChildren && !hasDivider;
@@ -27282,9 +24952,9 @@ const Stack = forwardRef((props, ref) => {
       display: "flex",
       alignItems: align,
       justifyContent: justify,
-      flexDirection: direction2,
+      flexDirection: direction,
       flexWrap: wrap2,
-      gap: hasDivider ? void 0 : spacing2,
+      gap: hasDivider ? void 0 : spacing,
       className: _className,
       ...rest,
       children: clones
@@ -27296,7 +24966,7 @@ const Switch = forwardRef(
   function Switch2(props, ref) {
     const styles2 = useMultiStyleConfig("Switch", props);
     const {
-      spacing: spacing2 = "0.5rem",
+      spacing = "0.5rem",
       children,
       ...ownProps
     } = omitThemingProps(props);
@@ -27331,10 +25001,10 @@ const Switch = forwardRef(
     const labelStyles = useMemo(
       () => ({
         userSelect: "none",
-        marginStart: spacing2,
+        marginStart: spacing,
         ...styles2.label
       }),
-      [spacing2, styles2.label]
+      [spacing, styles2.label]
     );
     return /* @__PURE__ */ jsxs(
       chakra.label,
@@ -27375,7 +25045,7 @@ const Switch = forwardRef(
   }
 );
 Switch.displayName = "Switch";
-const [TagStylesProvider, useTagStyles] = createContext({
+const [TagStylesProvider, useTagStyles] = createContext$1({
   name: `TagStylesContext`,
   errorMessage: `useTagStyles returned is 'undefined'. Seems you forgot to wrap the components in "<Tag />" `
 });
@@ -27453,16 +25123,16 @@ const Textarea = forwardRef((props, ref) => {
   );
 });
 Textarea.displayName = "Textarea";
-function getToastPlacement(position, dir) {
-  const computedPosition = position ?? "bottom";
+function getToastPlacement(position2, dir) {
+  const computedPosition = position2 ?? "bottom";
   const logicals2 = {
     "top-start": { ltr: "top-left", rtl: "top-right" },
     "top-end": { ltr: "top-right", rtl: "top-left" },
     "bottom-start": { ltr: "bottom-left", rtl: "bottom-right" },
     "bottom-end": { ltr: "bottom-right", rtl: "bottom-left" }
   };
-  const logical = logicals2[computedPosition];
-  return (logical == null ? void 0 : logical[dir]) ?? computedPosition;
+  const logical2 = logicals2[computedPosition];
+  return (logical2 == null ? void 0 : logical2[dir]) ?? computedPosition;
 }
 function createToastFn(dir, defaultOptions2) {
   const normalizeToastOptions = (options) => ({
@@ -27491,13 +25161,13 @@ function createToastFn(dir, defaultOptions2) {
       (data) => toast.update(id2, {
         status: "success",
         duration: 5e3,
-        ...runIfFn$1(options.success, data)
+        ...runIfFn(options.success, data)
       })
     ).catch(
       (error) => toast.update(id2, {
         status: "error",
         duration: 5e3,
-        ...runIfFn$1(options.error, error)
+        ...runIfFn(options.error, error)
       })
     );
   };
@@ -27536,12 +25206,12 @@ const scale = {
   }
 };
 const getDoc = (ref) => {
-  var _a2;
-  return ((_a2 = ref.current) == null ? void 0 : _a2.ownerDocument) || document;
+  var _a;
+  return ((_a = ref.current) == null ? void 0 : _a.ownerDocument) || document;
 };
 const getWin = (ref) => {
-  var _a2, _b2;
-  return ((_b2 = (_a2 = ref.current) == null ? void 0 : _a2.ownerDocument) == null ? void 0 : _b2.defaultView) || window;
+  var _a, _b;
+  return ((_b = (_a = ref.current) == null ? void 0 : _a.ownerDocument) == null ? void 0 : _b.defaultView) || window;
 };
 function useTooltip(props = {}) {
   const {
@@ -27565,7 +25235,7 @@ function useTooltip(props = {}) {
     isDisabled,
     gutter,
     offset,
-    direction: direction2,
+    direction,
     ...htmlProps
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure({
@@ -27581,7 +25251,7 @@ function useTooltip(props = {}) {
     modifiers,
     gutter,
     offset,
-    direction: direction2
+    direction
   });
   const uuid = useId$1();
   const uid = id2 ?? uuid;
@@ -27771,14 +25441,14 @@ const Tooltip = forwardRef((props, ref) => {
     hasArrow,
     bg,
     portalProps,
-    background,
+    background: background2,
     backgroundColor,
     bgColor,
     motionProps,
     animatePresenceProps,
     ...rest
   } = ownProps;
-  const userDefinedBg = background ?? backgroundColor ?? bg ?? bgColor;
+  const userDefinedBg = background2 ?? backgroundColor ?? bg ?? bgColor;
   if (userDefinedBg) {
     styles2.bg = userDefinedBg;
     const bgVar = getCSSVar(theme2, "colors", userDefinedBg);
@@ -27876,7 +25546,7 @@ Heading.displayName = "Heading";
 const Text = forwardRef(function Text2(props, ref) {
   const styles2 = useStyleConfig("Text", props);
   const { className, align, decoration, casing, ...rest } = omitThemingProps(props);
-  const aliasedProps = compact({
+  const aliasedProps = compact$1({
     textAlign: props.align,
     textDecoration: props.decoration,
     textTransform: props.casing
@@ -27903,12 +25573,12 @@ const VisuallyHiddenInput = chakra("input", {
 VisuallyHiddenInput.displayName = "VisuallyHiddenInput";
 const Wrap = forwardRef(function Wrap2(props, ref) {
   const {
-    spacing: spacing2 = "0.5rem",
+    spacing = "0.5rem",
     spacingX,
     spacingY,
     children,
     justify,
-    direction: direction2,
+    direction,
     align,
     className,
     shouldWrapChildren,
@@ -27927,9 +25597,9 @@ const Wrap = forwardRef(function Wrap2(props, ref) {
         flexWrap: "wrap",
         justifyContent: justify,
         alignItems: align,
-        flexDirection: direction2,
+        flexDirection: direction,
         listStyleType: "none",
-        gap: spacing2,
+        gap: spacing,
         columnGap: spacingX,
         rowGap: spacingY,
         padding: "0"
@@ -28056,21 +25726,21 @@ function getDataFromTree(tree, context) {
     renderFunction: renderToStaticMarkup
   });
 }
-function getMarkupFromTree(_a2) {
-  var tree = _a2.tree, _b2 = _a2.context, context = _b2 === void 0 ? {} : _b2, _c2 = _a2.renderFunction, renderFunction = _c2 === void 0 ? renderToStaticMarkup : _c2;
+function getMarkupFromTree(_a) {
+  var tree = _a.tree, _b = _a.context, context = _b === void 0 ? {} : _b, _c = _a.renderFunction, renderFunction = _c === void 0 ? renderToStaticMarkup : _c;
   var renderPromises = new RenderPromises();
-  function process2() {
+  function process() {
     var ApolloContext = getApolloContext();
     return new Promise(function(resolve) {
       var element = React.createElement(ApolloContext.Provider, { value: __assign(__assign({}, context), { renderPromises }) }, tree);
       resolve(renderFunction(element));
     }).then(function(html) {
-      return renderPromises.hasPromises() ? renderPromises.consumeAndAwaitPromises().then(process2) : html;
+      return renderPromises.hasPromises() ? renderPromises.consumeAndAwaitPromises().then(process) : html;
     }).finally(function() {
       renderPromises.stop();
     });
   }
-  return Promise.resolve().then(process2);
+  return Promise.resolve().then(process);
 }
 const styles = {
   global: {
@@ -28989,8 +26659,8 @@ async function handleReCaptchaVerify({
   if (!executeRecaptcha) {
     return;
   }
-  const token = await executeRecaptcha(label);
-  return token;
+  const token2 = await executeRecaptcha(label);
+  return token2;
 }
 const getProfilePrefix = () => `${VITE_FRONTEND_URL}/profile/`;
 function validateProfileSlug(str) {
@@ -29053,14 +26723,14 @@ function deleteCookie(name2) {
 function prepareCreditsFromGQLNodes(nodes) {
   const credits = [];
   nodes.forEach((credit) => {
-    var _a2;
+    var _a;
     if (!credit.id || !credit.title)
       return null;
     const jobs = credit.positions.nodes.filter(
-      (position) => position.parentId !== null
+      (position2) => position2.parentId !== null
     );
     const departments = credit.positions.nodes.filter(
-      (position) => position.parentId === null
+      (position2) => position2.parentId === null
     );
     if ((!departments || !departments.length) && jobs) {
       jobs.forEach((job) => {
@@ -29085,7 +26755,7 @@ function prepareCreditsFromGQLNodes(nodes) {
         departments: departments == null ? void 0 : departments.map((department) => department.id),
         jobs: jobs == null ? void 0 : jobs.map((job) => job.id)
       },
-      skills: (_a2 = credit.skills) == null ? void 0 : _a2.nodes.map((skill) => skill.id)
+      skills: (_a = credit.skills) == null ? void 0 : _a.nodes.map((skill) => skill.id)
     });
     credits.push(newCredit);
   });
@@ -29625,17 +27295,17 @@ const getInitialSearchState = () => ({
   },
   results: []
 });
-const SearchContext = createContext$1({
+const SearchContext = createContext({
   search: getInitialSearchState(),
   searchDispatch: ({}) => {
   }
 });
-function searchContextReducer(state, action) {
-  var _a2, _b2, _c2, _d2, _e2, _f2;
+function searchContextReducer(state2, action) {
+  var _a, _b, _c, _d, _e, _f;
   switch (action.type) {
     case "SET_NAME":
       return {
-        ...state,
+        ...state2,
         filters: {
           ...getInitialSearchState().filters,
           name: action.payload.name ? action.payload.name : ""
@@ -29644,68 +27314,68 @@ function searchContextReducer(state, action) {
         searchWizardActive: false
       };
     case "SET_DEPARTMENTS": {
-      if (!((_a2 = action.payload) == null ? void 0 : _a2.departments))
-        return state;
-      const filterSet = new SearchFilterSet(state.filters.filterSet);
+      if (!((_a = action.payload) == null ? void 0 : _a.departments))
+        return state2;
+      const filterSet = new SearchFilterSet(state2.filters.filterSet);
       filterSet.setDepartments(action.payload.departments);
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           filterSet
         },
         searchWizardActive: true
       };
     }
     case "SET_JOBS": {
-      if (!((_b2 = action.payload) == null ? void 0 : _b2.jobs))
-        return state;
-      const filterSet = new SearchFilterSet(state.filters.filterSet);
+      if (!((_b = action.payload) == null ? void 0 : _b.jobs))
+        return state2;
+      const filterSet = new SearchFilterSet(state2.filters.filterSet);
       filterSet.setJobs(action.payload.jobs);
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           filterSet
         },
         searchWizardActive: true
       };
     }
     case "SET_POSITIONS": {
-      if (!((_c2 = action.payload) == null ? void 0 : _c2.departments) || !((_d2 = action.payload) == null ? void 0 : _d2.jobs))
-        return state;
-      const filterSet = new SearchFilterSet(state.filters.filterSet);
+      if (!((_c = action.payload) == null ? void 0 : _c.departments) || !((_d = action.payload) == null ? void 0 : _d.jobs))
+        return state2;
+      const filterSet = new SearchFilterSet(state2.filters.filterSet);
       filterSet.setDepartments(action.payload.departments);
       filterSet.setJobs(action.payload.jobs);
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           filterSet
         },
         searchWizardActive: true
       };
     }
     case "SET_FILTER": {
-      if (!((_e2 = action.payload) == null ? void 0 : _e2.filter))
-        return state;
+      if (!((_e = action.payload) == null ? void 0 : _e.filter))
+        return state2;
       const { key, value } = action.payload.filter;
-      const filterSet = new SearchFilterSet(state.filters.filterSet);
+      const filterSet = new SearchFilterSet(state2.filters.filterSet);
       filterSet.set(key, value);
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           filterSet
         },
         searchWizardActive: true
       };
     }
     case "SET_ADDITIONAL_FILTERS_ACTIVE": {
-      if (!((_f2 = action.payload) == null ? void 0 : _f2.additionalFiltersActive))
-        return state;
+      if (!((_f = action.payload) == null ? void 0 : _f.additionalFiltersActive))
+        return state2;
       return {
-        ...state,
+        ...state2,
         additionalFiltersActive: action.payload.additionalFiltersActive
       };
     }
@@ -29714,11 +27384,11 @@ function searchContextReducer(state, action) {
         payload: { filterSet, savedSearchId }
       } = action;
       if (!filterSet)
-        return state;
+        return state2;
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           filterSet
         },
         searchWizardActive: true,
@@ -29733,16 +27403,16 @@ function searchContextReducer(state, action) {
         payload: { filterSet, savedSearchId }
       } = action;
       if (!filterSet || !savedSearchId)
-        return state;
+        return state2;
       const filterIndexes = [];
       additionalFilterKeys.forEach((key, index) => {
         if (!!filterSet[key] && filterSet[key].length)
           filterIndexes.push(index);
       });
       return {
-        ...state,
+        ...state2,
         filters: {
-          ...state.filters,
+          ...state2.filters,
           name: "",
           filterSet
         },
@@ -29756,13 +27426,13 @@ function searchContextReducer(state, action) {
     }
     case "SET_RESULTS":
       return {
-        ...state,
+        ...state2,
         results: action.payload.results || []
       };
     case "RESET_SEARCH_FILTERS":
       return getInitialSearchState();
     default:
-      return state;
+      return state2;
   }
 }
 const SearchContextProvider = ({ children }) => {
@@ -29776,7 +27446,7 @@ const defaultSearchDrawerContext = {
   closeDrawer: () => {
   }
 };
-const SearchDrawerContext = createContext$1(defaultSearchDrawerContext);
+const SearchDrawerContext = createContext(defaultSearchDrawerContext);
 var logo = "/assets/RISETHEATREDIRECTORY-white logo-slim-68b03b4a.svg";
 var circleLogo = "/assets/rise-blue-circle-b650602d.png";
 const QUERY_VIEWER = gql`
@@ -29798,7 +27468,7 @@ const QUERY_VIEWER = gql`
 	}
 `;
 const useViewer = () => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_VIEWER);
   const {
     id: loggedInId,
@@ -29809,7 +27479,7 @@ const useViewer = () => {
     username,
     disableProfile,
     starredProfiles: starredProfilesRaw
-  } = ((_a2 = result == null ? void 0 : result.data) == null ? void 0 : _a2.viewer) || {};
+  } = ((_a = result == null ? void 0 : result.data) == null ? void 0 : _a.viewer) || {};
   const starredProfiles = (starredProfilesRaw == null ? void 0 : starredProfilesRaw.nodes.map((node) => node.databaseId)) || [];
   return [
     {
@@ -29906,14 +27576,14 @@ const QUERY_POSITION_TERMS = gql`
 	}
 `;
 const usePositions = (parents = [0]) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_POSITION_TERMS, {
     variables: {
       departments: parents
     },
     skip: !parents.length
   });
-  const preparedResult = (_a2 = result.data) == null ? void 0 : _a2.jobsByDepartments.map(
+  const preparedResult = (_a = result.data) == null ? void 0 : _a.jobsByDepartments.map(
     (term) => new WPItem(term)
   );
   preparedResult == null ? void 0 : preparedResult.sort(sortWPItemsByName);
@@ -30011,14 +27681,14 @@ const QUERY_RELATED_SKILLS = gql`
 	}
 `;
 const useRelatedSkills = (jobs = []) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_RELATED_SKILLS, {
     variables: {
       jobs
     },
     skip: !jobs.length
   });
-  const preparedResult = (_a2 = result.data) == null ? void 0 : _a2.jobSkills.map((skill) => new WPItem(skill));
+  const preparedResult = (_a = result.data) == null ? void 0 : _a.jobSkills.map((skill) => new WPItem(skill));
   preparedResult == null ? void 0 : preparedResult.sort(sortWPItemsByName);
   return [preparedResult, omit$1(result, ["data"])];
 };
@@ -30407,8 +28077,8 @@ const useUserTaxonomies = () => {
     "racialIdentities"
   ];
   const preparedResult = dataKeys.reduce((acc, key) => {
-    var _a2, _b2;
-    acc[key] = (_b2 = (_a2 = result.data) == null ? void 0 : _a2[key].nodes.map((term) => new WPItem(term))) == null ? void 0 : _b2.sort(sortWPItemsByName);
+    var _a, _b;
+    acc[key] = (_b = (_a = result.data) == null ? void 0 : _a[key].nodes.map((term) => new WPItem(term))) == null ? void 0 : _b.sort(sortWPItemsByName);
     return acc;
   }, {});
   return [preparedResult, omit$1(result, ["data"])];
@@ -30565,7 +28235,7 @@ const QUERY_SAVED_SEARCHES = gql`
 	}
 `;
 function useSavedSearches(ids = []) {
-  var _a2, _b2, _c2;
+  var _a, _b, _c;
   const [{ loggedInId }] = useViewer();
   const result = useQuery(QUERY_SAVED_SEARCHES, {
     variables: {
@@ -30573,7 +28243,7 @@ function useSavedSearches(ids = []) {
       in: ids
     }
   });
-  const savedSearches = (_c2 = (_b2 = (_a2 = result.data) == null ? void 0 : _a2.savedSearches) == null ? void 0 : _b2.nodes) == null ? void 0 : _c2.map(
+  const savedSearches = (_c = (_b = (_a = result.data) == null ? void 0 : _a.savedSearches) == null ? void 0 : _b.nodes) == null ? void 0 : _c.map(
     (savedSearch) => {
       const { id: id2, author: author2, title, content } = savedSearch;
       const params = {
@@ -30610,14 +28280,14 @@ const QUERY_TAXONOMY_TERMS = gql`
 	}
 `;
 const useTaxonomyTerms = (ids) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_TAXONOMY_TERMS, {
     variables: {
       include: ids
     }
   });
   const preparedResult = [];
-  if (((_a2 = result.data) == null ? void 0 : _a2.terms.nodes) && result.data.terms.nodes.length > 0)
+  if (((_a = result.data) == null ? void 0 : _a.terms.nodes) && result.data.terms.nodes.length > 0)
     result.data.terms.nodes.forEach((node) => preparedResult.push(new WPItem(node)));
   return [preparedResult, omit$1(result, ["data"])];
 };
@@ -30713,7 +28383,7 @@ const QUERY_PROFILE = gql`
 	}
 `;
 const useUserProfile = (id2, count) => {
-  var _a2, _b2;
+  var _a, _b;
   const result = useQuery(QUERY_PROFILE, {
     variables: {
       id: id2,
@@ -30722,8 +28392,8 @@ const useUserProfile = (id2, count) => {
     },
     skip: id2 === null
   });
-  const credits = ((_a2 = result.data) == null ? void 0 : _a2.credits.nodes) ? prepareCreditsFromGQLNodes(result.data.credits.nodes) : [];
-  const conflictRanges = ((_b2 = result.data) == null ? void 0 : _b2.conflictRanges.nodes) ? prepareUnavailDatesFromGQLNodes(result.data.conflictRanges.nodes) : [];
+  const credits = ((_a = result.data) == null ? void 0 : _a.credits.nodes) ? prepareCreditsFromGQLNodes(result.data.credits.nodes) : [];
+  const conflictRanges = ((_b = result.data) == null ? void 0 : _b.conflictRanges.nodes) ? prepareUnavailDatesFromGQLNodes(result.data.conflictRanges.nodes) : [];
   const preparedProfile = result.data ? new UserProfile(result.data.user, conflictRanges, credits) : null;
   return [preparedProfile, omit$1(result, ["data"])];
 };
@@ -30773,8 +28443,8 @@ const useErrorMessage = (errorCode, defaultMessage = "Error") => {
   }
 };
 const useProfileUrl = (slug) => {
-  const prefix = getProfilePrefix();
-  return `${prefix}${slug}`;
+  const prefix2 = getProfilePrefix();
+  return `${prefix2}${slug}`;
 };
 const useValidateProfileSlug = (slug) => validateProfileSlug(slug);
 const useValidatePassword = (password) => validatePassword(password);
@@ -30904,7 +28574,7 @@ function SearchParamTags({
   tagProps,
   ...props
 }) {
-  var _a2;
+  var _a;
   if (!termIds.length || !termItems.length)
     return null;
   const terms = termIds.map(
@@ -30937,7 +28607,7 @@ function SearchParamTags({
     if (departmentTags.length || jobTags.length || skillTags.length || filterTags.length)
       return [departmentTags, jobTags, skillTags, filterTags];
   };
-  return /* @__PURE__ */ jsx$1(Flex, { flexWrap: "wrap", gap: 1, alignItems: "center", ...props, children: (_a2 = termTags()) == null ? void 0 : _a2.map((tag) => tag) });
+  return /* @__PURE__ */ jsx$1(Flex, { flexWrap: "wrap", gap: 1, alignItems: "center", ...props, children: (_a = termTags()) == null ? void 0 : _a.map((tag) => tag) });
 }
 function ConfirmActionDialog({
   isOpen,
@@ -31533,8 +29203,8 @@ function DepartmentsAutocomplete() {
   const [allDepartments] = usePositions([0]);
   const [allJobs] = usePositions(allDepartments == null ? void 0 : allDepartments.map((job) => job.id));
   const allPositions = {};
-  allDepartments == null ? void 0 : allDepartments.forEach((d2) => {
-    allPositions[d2.id.toString()] = allJobs == null ? void 0 : allJobs.filter((job) => job.parentId === d2.id);
+  allDepartments == null ? void 0 : allDepartments.forEach((d) => {
+    allPositions[d.id.toString()] = allJobs == null ? void 0 : allJobs.filter((job) => job.parentId === d.id);
   });
   const handleAutocompleteSelect = (params) => {
     const {
@@ -31560,7 +29230,7 @@ function DepartmentsAutocomplete() {
       /* @__PURE__ */ jsx$1(AutoCompleteInput, { variant: "filled", placeholder: "Start typing" }),
       /* @__PURE__ */ jsx$1(AutoCompleteList, { children: Object.entries(allPositions).map(([departmentId, positions]) => {
         const department = allDepartments.find(
-          (d2) => d2.id.toString() === departmentId
+          (d) => d.id.toString() === departmentId
         );
         return /* @__PURE__ */ jsxs(AutoCompleteGroup, { showDivider: true, children: [
           /* @__PURE__ */ jsx$1(AutoCompleteGroupTitle, { textTransform: "capitalize", children: department == null ? void 0 : department.name }),
@@ -31840,7 +29510,7 @@ function ProfileNotice({
   const notice = profileNoticeAlerts[code];
   const cookieName = `profile_notice_${code}_dismissed`;
   const dismissedCookieSet = getCookie(cookieName) ? true : false;
-  const { isOpen: isVisible2, onClose } = useDisclosure({ defaultIsOpen: !dismissedCookieSet });
+  const { isOpen: isVisible, onClose } = useDisclosure({ defaultIsOpen: !dismissedCookieSet });
   if (!notice)
     return /* @__PURE__ */ jsx$1(Fragment, {});
   const { title, description, cta } = notice;
@@ -31854,7 +29524,7 @@ function ProfileNotice({
     onClose();
     setCookie(`profile_notice_${code}_dismissed`, 1, dismissExpire);
   };
-  return /* @__PURE__ */ jsx$1(Collapse, { in: isVisible2, unmountOnExit: true, children: /* @__PURE__ */ jsx$1(LightMode, { children: /* @__PURE__ */ jsx$1(
+  return /* @__PURE__ */ jsx$1(Collapse, { in: isVisible, unmountOnExit: true, children: /* @__PURE__ */ jsx$1(LightMode, { children: /* @__PURE__ */ jsx$1(
     Alert,
     {
       status: "warning",
@@ -31946,7 +29616,7 @@ function ToggleOptionSwitch({
   showLabel = true,
   iconLeft,
   iconRight,
-  size: size2 = "lg",
+  size = "lg",
   loading,
   callback,
   children,
@@ -31961,8 +29631,8 @@ function ToggleOptionSwitch({
     callback();
   };
   const sizeProps = {
-    fontSize: size2,
-    iconBoxSize: size2 === "lg" ? 8 : 6
+    fontSize: size,
+    iconBoxSize: size === "lg" ? 8 : 6
   };
   return /* @__PURE__ */ jsxs(FormControl, { display: "flex", alignItems: "center", position: "relative", ...props, children: [
     iconLeft ? /* @__PURE__ */ jsx$1(Icon, { as: iconLeft, boxSize: sizeProps.iconBoxSize, p: 1, color: "inherit" }) : false,
@@ -31996,7 +29666,7 @@ function ToggleOptionSwitch({
   ] });
 }
 function DarkModeToggle({
-  size: size2 = "md",
+  size = "md",
   showLabel = true,
   showHelperText = true,
   ...props
@@ -32012,7 +29682,7 @@ function DarkModeToggle({
       label: "Theme",
       iconLeft: FiSun,
       iconRight: FiMoon,
-      size: size2,
+      size,
       showLabel,
       ...props,
       children: showHelperText ? /* @__PURE__ */ jsx$1(Subtext, { colorMode }) : /* @__PURE__ */ jsx$1(Fragment, {})
@@ -32369,14 +30039,14 @@ const QUERY_CANDIDATES = gql`
 	}
 `;
 function useCandidates(include_ids) {
-  var _a2, _b2, _c2;
+  var _a, _b, _c;
   const result = useQuery(QUERY_CANDIDATES, {
     variables: {
       include: include_ids
     },
     skip: !include_ids.length
   });
-  const preparedCandidates = (_c2 = (_b2 = (_a2 = result.data) == null ? void 0 : _a2.users) == null ? void 0 : _b2.nodes) == null ? void 0 : _c2.map(
+  const preparedCandidates = (_c = (_b = (_a = result.data) == null ? void 0 : _a.users) == null ? void 0 : _b.nodes) == null ? void 0 : _c.map(
     (candidate) => {
       const id2 = Number(candidate.id);
       return new Candidate({ ...candidate, id: id2 });
@@ -32601,8 +30271,8 @@ function StarredProfileList({
     }
   }, [starredProfiles]);
   const renderedProfiles = useMemo(() => {
-    var _a2;
-    return (_a2 = profilesRef.current) == null ? void 0 : _a2.map((id2) => {
+    var _a;
+    return (_a = profilesRef.current) == null ? void 0 : _a.map((id2) => {
       const profile = profiles == null ? void 0 : profiles.find((profile2) => profile2.id === id2);
       if (!profile)
         return null;
@@ -32758,13 +30428,13 @@ const QUERY_GLOBAL_NOTICES = gql`
 	}
 `;
 const useUserNotices = (last = 4) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_GLOBAL_NOTICES, {
     variables: {
       last
     }
   });
-  const preparedNotices = ((_a2 = result.data) == null ? void 0 : _a2.userNotices.nodes.map((notice) => {
+  const preparedNotices = ((_a = result.data) == null ? void 0 : _a.userNotices.nodes.map((notice) => {
     const { __typename: postType, id: id2, title, content } = notice;
     return new WPPost({ postType, id: id2, title, content });
   })) || [];
@@ -32807,6 +30477,93 @@ function DashboardView__Widgets() {
 function Dashboard() {
   return /* @__PURE__ */ jsx$1(Shell, { children: /* @__PURE__ */ jsx$1(DashboardView__Widgets, {}) });
 }
+var f;
+!function(e) {
+  e.SCRIPT_NOT_AVAILABLE = "Recaptcha script is not available";
+}(f || (f = {}));
+var v = createContext({ executeRecaptcha: function() {
+  throw Error("GoogleReCaptcha Context has not yet been implemented, if you are using useGoogleReCaptcha hook, make sure the hook is called inside component wrapped by GoogleRecaptchaProvider");
+} });
+v.Consumer;
+var g = function() {
+  return useContext(v);
+};
+function w(e, t2) {
+  return e(t2 = { exports: {} }, t2.exports), t2.exports;
+  /** @license React v16.13.1
+   * react-is.production.min.js
+   *
+   * Copyright (c) Facebook, Inc. and its affiliates.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+}
+var $ = "function" == typeof Symbol && Symbol.for, C = $ ? Symbol.for("react.element") : 60103, P = $ ? Symbol.for("react.portal") : 60106, x = $ ? Symbol.for("react.fragment") : 60107, E = $ ? Symbol.for("react.strict_mode") : 60108, R = $ ? Symbol.for("react.profiler") : 60114, M = $ ? Symbol.for("react.provider") : 60109, N = $ ? Symbol.for("react.context") : 60110, O = $ ? Symbol.for("react.async_mode") : 60111, _ = $ ? Symbol.for("react.concurrent_mode") : 60111, T = $ ? Symbol.for("react.forward_ref") : 60112, j = $ ? Symbol.for("react.suspense") : 60113, L = $ ? Symbol.for("react.suspense_list") : 60120, k = $ ? Symbol.for("react.memo") : 60115, F = $ ? Symbol.for("react.lazy") : 60116, A = $ ? Symbol.for("react.block") : 60121, V = $ ? Symbol.for("react.fundamental") : 60117, z = $ ? Symbol.for("react.responder") : 60118, G = $ ? Symbol.for("react.scope") : 60119;
+function I(e) {
+  if ("object" == typeof e && null !== e) {
+    var t2 = e.$$typeof;
+    switch (t2) {
+      case C:
+        switch (e = e.type) {
+          case O:
+          case _:
+          case x:
+          case R:
+          case E:
+          case j:
+            return e;
+          default:
+            switch (e = e && e.$$typeof) {
+              case N:
+              case T:
+              case F:
+              case k:
+              case M:
+                return e;
+              default:
+                return t2;
+            }
+        }
+      case P:
+        return t2;
+    }
+  }
+}
+function D(e) {
+  return I(e) === _;
+}
+var q = { AsyncMode: O, ConcurrentMode: _, ContextConsumer: N, ContextProvider: M, Element: C, ForwardRef: T, Fragment: x, Lazy: F, Memo: k, Portal: P, Profiler: R, StrictMode: E, Suspense: j, isAsyncMode: function(e) {
+  return D(e) || I(e) === O;
+}, isConcurrentMode: D, isContextConsumer: function(e) {
+  return I(e) === N;
+}, isContextProvider: function(e) {
+  return I(e) === M;
+}, isElement: function(e) {
+  return "object" == typeof e && null !== e && e.$$typeof === C;
+}, isForwardRef: function(e) {
+  return I(e) === T;
+}, isFragment: function(e) {
+  return I(e) === x;
+}, isLazy: function(e) {
+  return I(e) === F;
+}, isMemo: function(e) {
+  return I(e) === k;
+}, isPortal: function(e) {
+  return I(e) === P;
+}, isProfiler: function(e) {
+  return I(e) === R;
+}, isStrictMode: function(e) {
+  return I(e) === E;
+}, isSuspense: function(e) {
+  return I(e) === j;
+}, isValidElementType: function(e) {
+  return "string" == typeof e || "function" == typeof e || e === x || e === _ || e === R || e === E || e === j || e === L || "object" == typeof e && null !== e && (e.$$typeof === F || e.$$typeof === k || e.$$typeof === M || e.$$typeof === N || e.$$typeof === T || e.$$typeof === V || e.$$typeof === z || e.$$typeof === G || e.$$typeof === A);
+}, typeOf: I }, B = w(function(e, t2) {
+}), J = (B.AsyncMode, B.ConcurrentMode, B.ContextConsumer, B.ContextProvider, B.Element, B.ForwardRef, B.Fragment, B.Lazy, B.Memo, B.Portal, B.Profiler, B.StrictMode, B.Suspense, B.isAsyncMode, B.isConcurrentMode, B.isContextConsumer, B.isContextProvider, B.isElement, B.isForwardRef, B.isFragment, B.isLazy, B.isMemo, B.isPortal, B.isProfiler, B.isStrictMode, B.isSuspense, B.isValidElementType, B.typeOf, w(function(e) {
+  e.exports = q;
+})), H = { $$typeof: true, compare: true, defaultProps: true, displayName: true, propTypes: true, type: true }, Q = {};
+Q[J.ForwardRef] = { $$typeof: true, render: true, defaultProps: true, displayName: true, propTypes: true }, Q[J.Memo] = H;
 const QUERY_PAGES = gql`
 	query PagesQuery($id: Int) {
 		pages(where: { id: $id }) {
@@ -32819,13 +30576,13 @@ const QUERY_PAGES = gql`
 	}
 `;
 const usePageById = (id2) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_PAGES, {
     variables: {
       id: id2
     }
   });
-  if (!((_a2 = result.data) == null ? void 0 : _a2.pages)) {
+  if (!((_a = result.data) == null ? void 0 : _a.pages)) {
     return [null, omit$1(result, ["data"])];
   }
   const { id: postId, title, content } = result.data.pages.nodes[0];
@@ -32898,12 +30655,12 @@ function LoginView$1({ alert, alertStatus, signInTitle }) {
   };
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    handleReCaptchaVerify({ label: "login", executeRecaptcha }).then((token) => {
-      if (!token) {
+    handleReCaptchaVerify({ label: "login", executeRecaptcha }).then((token2) => {
+      if (!token2) {
         setErrorCode("recaptcha_error");
         return;
       }
-      loginMutation({ ...credentials, reCaptchaToken: token }).catch(
+      loginMutation({ ...credentials, reCaptchaToken: token2 }).catch(
         (errors) => {
           setErrorCode(errors.message);
         }
@@ -33103,12 +30860,12 @@ function LoginView() {
   const errorMessage = useErrorMessage(errorCode);
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleReCaptchaVerify({ label: "resetPassword", executeRecaptcha }).then((token) => {
-      if (!token) {
+    handleReCaptchaVerify({ label: "resetPassword", executeRecaptcha }).then((token2) => {
+      if (!token2) {
         setErrorCode("recaptcha_error");
         return;
       }
-      sendPasswordResetEmailMutation({ username, reCaptchaToken: token }).then(() => {
+      sendPasswordResetEmailMutation({ username, reCaptchaToken: token2 }).then(() => {
         toast({
           title: "Email sent",
           description: "Please check your inbox for reset instructions.",
@@ -33175,7 +30932,7 @@ const useResetUserPassword = () => {
   };
   return { resetUserPasswordMutation, results: results2 };
 };
-function ResetPasswordView({ token, login }) {
+function ResetPasswordView({ token: token2, login }) {
   const [userFields, setUserFields] = useState({
     newPassword: "",
     confirmPassword: ""
@@ -33218,9 +30975,9 @@ function ResetPasswordView({ token, login }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!token || !login || !newPassword || !passwordsMatch)
+    if (!token2 || !login || !newPassword || !passwordsMatch)
       return;
-    resetUserPasswordMutation(token, login, newPassword).then(() => {
+    resetUserPasswordMutation(token2, login, newPassword).then(() => {
       toast({
         title: "Success!",
         description: "Please login with your new password.",
@@ -33404,12 +31161,12 @@ function RegisterView() {
   const errorMessage = useErrorMessage(errorCode);
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleReCaptchaVerify({ label: "registerUser", executeRecaptcha }).then((token) => {
-      if (!token) {
+    handleReCaptchaVerify({ label: "registerUser", executeRecaptcha }).then((token2) => {
+      if (!token2) {
         setErrorCode("recaptcha_error");
         return;
       }
-      registerUserMutation({ ...userFields, reCaptchaToken: token }).then(() => {
+      registerUserMutation({ ...userFields, reCaptchaToken: token2 }).then(() => {
         toast({
           title: "Account created!",
           description: "Please check your inbox for confirmation.",
@@ -34347,31 +32104,31 @@ function Profile() {
     }
   );
 }
-const EditProfileContext = createContext$1({
+const EditProfileContext = createContext({
   editProfile: new UserProfile(),
   editProfileDispatch: ({}) => {
   }
 });
-function editProfileContextReducer(state, action) {
+function editProfileContextReducer(state2, action) {
   switch (action.type) {
     case "UPDATE_INPUT": {
       if (!action.payload.name)
-        return state;
-      const current = cloneInstance(state);
+        return state2;
+      const current = cloneInstance(state2);
       current.set(action.payload.name, action.payload.value);
       return current;
     }
     case "UPDATE_BOOLEAN_INPUT": {
       if (!action.payload.name || [void 0, null].includes(action.payload.value))
-        return state;
-      const current = cloneInstance(state);
+        return state2;
+      const current = cloneInstance(state2);
       current.set(action.payload.name, sanitizeBoolean(action.payload.value));
       return current;
     }
     case "UPDATE_PERSONAL_LINKS_INPUT": {
       if (!action.payload.name)
-        return state;
-      const current = cloneInstance(state);
+        return state2;
+      const current = cloneInstance(state2);
       current.set(
         "socials",
         new PersonalLinks({ ...current.socials, [action.payload.name]: action.payload.value })
@@ -34380,13 +32137,13 @@ function editProfileContextReducer(state, action) {
     }
     case "ADD_NEW_CREDIT": {
       return {
-        ...state,
+        ...state2,
         credits: [
-          ...state.credits,
+          ...state2.credits,
           new Credit({
             id: generateRandomString(8),
             isNew: true,
-            index: state.credits.length,
+            index: state2.credits.length,
             positions: { departments: [], jobs: [] }
           })
         ]
@@ -34398,13 +32155,13 @@ function editProfileContextReducer(state, action) {
     }
     case "DEBOUNCED_UPDATE_INPUT": {
       if (!action.payload.name)
-        return state;
-      const current = cloneInstance(state);
+        return state2;
+      const current = cloneInstance(state2);
       current.set(action.payload.name, action.payload.value);
       return current;
     }
     default:
-      return state;
+      return state2;
   }
 }
 const EditProfileContextProvider = ({ initialState: initialState2, children }) => {
@@ -34730,46 +32487,46 @@ const useUpdateCredit = () => {
   };
   return { updateCreditMutation, results: results2 };
 };
-function editCreditReducer(state, action) {
+function editCreditReducer(state2, action) {
   switch (action.type) {
     case "UPDATE_INPUT":
       return {
-        ...state,
+        ...state2,
         [action.payload.name]: action.payload.value
       };
     case "UPDATE_DEPARTMENTS":
       return {
-        ...state,
+        ...state2,
         positions: {
-          ...state.positions,
+          ...state2.positions,
           departments: action.payload.value.map((item) => item)
         }
       };
     case "UPDATE_JOBS":
       return {
-        ...state,
+        ...state2,
         positions: {
-          ...state.positions,
+          ...state2.positions,
           jobs: action.payload.value.map((item) => item)
         }
       };
     case "UPDATE_SKILLS":
       return {
-        ...state,
+        ...state2,
         skills: action.payload.value.map((item) => item)
       };
     case "INIT":
     case "RESET":
       return action.payload;
     default:
-      return state;
+      return state2;
   }
 }
 function EditCreditView({ creditId, onClose: closeModal }) {
-  var _a2;
+  var _a;
   const [{ loggedInId }] = useViewer();
   const { editProfile } = useContext(EditProfileContext);
-  const credit = (_a2 = editProfile.credits) == null ? void 0 : _a2.find((credit2) => credit2.id === creditId);
+  const credit = (_a = editProfile.credits) == null ? void 0 : _a.find((credit2) => credit2.id === creditId);
   const [editCredit, editCreditDispatch] = useReducer(editCreditReducer, credit);
   const toast = useToast();
   const {
@@ -34811,7 +32568,7 @@ function EditCreditView({ creditId, onClose: closeModal }) {
     setRequirementsMet(allFilled);
   }, [editCredit]);
   const refetchAndSetJobs = async (departmentIds) => {
-    var _a3;
+    var _a2;
     if (departmentIds.length === 0) {
       setJobs([]);
       return [];
@@ -34819,7 +32576,7 @@ function EditCreditView({ creditId, onClose: closeModal }) {
     const jobData = await getJobs({
       variables: { departments: departmentIds }
     });
-    const jobsByDept = (_a3 = jobData == null ? void 0 : jobData.data) == null ? void 0 : _a3.jobsByDepartments;
+    const jobsByDept = (_a2 = jobData == null ? void 0 : jobData.data) == null ? void 0 : _a2.jobsByDepartments;
     if (jobsByDept) {
       setJobs(jobsByDept.map((item) => new WPItem(item)).sort(sortWPItemsByName));
       const jobsByDeptIds = jobsByDept.map((j2) => Number(j2.id));
@@ -34830,7 +32587,7 @@ function EditCreditView({ creditId, onClose: closeModal }) {
     }
   };
   const refetchAndSetSkills = async (jobIds) => {
-    var _a3;
+    var _a2;
     if (jobIds.length === 0) {
       setSkills([]);
       return [];
@@ -34838,10 +32595,10 @@ function EditCreditView({ creditId, onClose: closeModal }) {
     const skillData = await getRelatedSkills({
       variables: { jobs: jobIds }
     });
-    const relatedSkills = (_a3 = skillData == null ? void 0 : skillData.data) == null ? void 0 : _a3.jobSkills;
+    const relatedSkills = (_a2 = skillData == null ? void 0 : skillData.data) == null ? void 0 : _a2.jobSkills;
     if (relatedSkills) {
       setSkills(relatedSkills.map((item) => new WPItem(item)).sort(sortWPItemsByName));
-      const relatedSkillIds = relatedSkills.map((s2) => Number(s2.id));
+      const relatedSkillIds = relatedSkills.map((s) => Number(s.id));
       return relatedSkillIds;
     } else {
       setSkills([]);
@@ -35192,7 +32949,7 @@ const useToggleDisableProfile = () => {
   return { toggleDisableProfileMutation, result };
 };
 function DisableProfileToggle({
-  size: size2 = "md",
+  size = "md",
   showLabel,
   showHelperText,
   ...props
@@ -35234,7 +32991,7 @@ function DisableProfileToggle({
       label: `Privacy ${disableProfile ? "On" : "Off"}`,
       iconRight: FiEyeOff,
       iconLeft: FiEye,
-      size: size2,
+      size,
       loading,
       showLabel,
       ...props,
@@ -35377,8 +33134,8 @@ function EditConflictDateRangeModal({
   const { id: id2, startDate, endDate } = conflictRange;
   const toast = useToast();
   useEffect(() => {
-    var _a2;
-    if (((_a2 = data == null ? void 0 : data.updateOrCreateConflictRange) == null ? void 0 : _a2.id) && !loading) {
+    var _a;
+    if (((_a = data == null ? void 0 : data.updateOrCreateConflictRange) == null ? void 0 : _a.id) && !loading) {
       onClose();
       toast({
         title: "Success!",
@@ -35445,8 +33202,8 @@ function EditConflictDateRanges() {
   const [conflictRange, setDateRange] = useState(new DateRange());
   const toast = useToast();
   useEffect(() => {
-    var _a2;
-    if (((_a2 = deleteData == null ? void 0 : deleteData.deleeOwnConflictRange) == null ? void 0 : _a2.result) === true && !deleteLoading) {
+    var _a;
+    if (((_a = deleteData == null ? void 0 : deleteData.deleeOwnConflictRange) == null ? void 0 : _a.result) === true && !deleteLoading) {
       toast({
         title: "Success!",
         description: "Dates deleted.",
@@ -36158,7 +33915,7 @@ function EditProfileView({ profile }) {
     ) });
   };
   const NewCreditButton = () => {
-    var _a2;
+    var _a;
     const newCredit = credits.find((credit) => credit.isNew);
     const max = 5;
     const limit = newCredit ? max + 1 : max;
@@ -36168,7 +33925,7 @@ function EditProfileView({ profile }) {
         "aria-label": "Add a new credit",
         leftIcon: /* @__PURE__ */ jsx$1(FiPlus, {}),
         onClick: handleNewCredit,
-        isDisabled: ((_a2 = editProfile.credits) == null ? void 0 : _a2.length) === limit,
+        isDisabled: ((_a = editProfile.credits) == null ? void 0 : _a.length) === limit,
         children: "New Credit"
       }
     );
@@ -36847,8 +34604,8 @@ function SearchResultsView() {
     setResultsCount(results2.length);
   }, [results2.length]);
   useEffect(() => {
-    var _a2;
-    const title = (_a2 = savedSearches == null ? void 0 : savedSearches.find((search) => search.id === savedSearchId)) == null ? void 0 : _a2.title;
+    var _a;
+    const title = (_a = savedSearches == null ? void 0 : savedSearches.find((search) => search.id === savedSearchId)) == null ? void 0 : _a.title;
     setSavedSearchTitle(title ? title : "");
     return () => {
       setSavedSearchTitle("");
@@ -37623,14 +35380,14 @@ const QUERY_JOBS = gql`
 	}
 `;
 const useJobPosts = (id2 = 0) => {
-  var _a2, _b2, _c2, _d2, _e2;
+  var _a, _b, _c, _d, _e;
   const result = useQuery(QUERY_JOBS, {
     variables: { id: id2 }
   });
-  if (!((_b2 = (_a2 = result == null ? void 0 : result.data) == null ? void 0 : _a2.jobs) == null ? void 0 : _b2.nodes)) {
+  if (!((_b = (_a = result == null ? void 0 : result.data) == null ? void 0 : _a.jobs) == null ? void 0 : _b.nodes)) {
     return [[], omit$1(result, ["data"])];
   }
-  const jobs = ((_e2 = (_d2 = (_c2 = result == null ? void 0 : result.data) == null ? void 0 : _c2.jobs) == null ? void 0 : _d2.nodes) == null ? void 0 : _e2.map((node) => {
+  const jobs = ((_e = (_d = (_c = result == null ? void 0 : result.data) == null ? void 0 : _c.jobs) == null ? void 0 : _d.nodes) == null ? void 0 : _e.map((node) => {
     const {
       id: id22,
       title,
@@ -37775,24 +35532,24 @@ const QUERY_NETWORK_PARTNERS = gql`
 	}
 `;
 const useNetworkPartners = (id2 = 0) => {
-  var _a2, _b2, _c2;
+  var _a, _b, _c;
   const result = useQuery(QUERY_NETWORK_PARTNERS, {
     variables: { id: id2 }
   });
-  if (!((_b2 = (_a2 = result == null ? void 0 : result.data) == null ? void 0 : _a2.networkPartners) == null ? void 0 : _b2.nodes)) {
+  if (!((_b = (_a = result == null ? void 0 : result.data) == null ? void 0 : _a.networkPartners) == null ? void 0 : _b.nodes)) {
     return [[], omit$1(result, ["data"])];
   }
-  const preparedPartners = ((_c2 = result.data) == null ? void 0 : _c2.networkPartners.nodes.map((partner) => {
-    var _a3, _b3, _c3;
+  const preparedPartners = ((_c = result.data) == null ? void 0 : _c.networkPartners.nodes.map((partner) => {
+    var _a2, _b2, _c2;
     const { id: id22, slug, title, featuredImage, excerpt, content } = partner;
     return new WPPost({
       id: id22,
       slug,
       title,
       featuredImage: new WPAttachment({
-        id: (_a3 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _a3.featuredImageId,
-        srcSet: (_b3 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _b3.srcSet,
-        title: (_c3 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _c3.title
+        id: (_a2 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _a2.featuredImageId,
+        srcSet: (_b2 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _b2.srcSet,
+        title: (_c2 = featuredImage == null ? void 0 : featuredImage.node) == null ? void 0 : _c2.title
       }),
       excerpt,
       content
@@ -37986,13 +35743,13 @@ const QUERY_PAGE_BY_SLUG = gql`
 	}
 `;
 const usePageBySlug = (slug) => {
-  var _a2;
+  var _a;
   const result = useQuery(QUERY_PAGE_BY_SLUG, {
     variables: {
       slug
     }
   });
-  const { id: id2, title, content, uri } = ((_a2 = result.data) == null ? void 0 : _a2.pages.nodes[0]) || {};
+  const { id: id2, title, content, uri } = ((_a = result.data) == null ? void 0 : _a.pages.nodes[0]) || {};
   const preparedPage = new WPPost({
     id: id2,
     title,
@@ -38223,37 +35980,55 @@ function App() {
     }
   ) });
 }
-const { VITE_BACKEND_URL, VITE_RECAPTCHA_SITE_KEY } = { "VITE_FRONTEND_URL": "http://localhost:3000", "VITE_BACKEND_URL": "https://dev.risetheatre.org/graphql", "VITE_RECAPTCHA_SITE_KEY": "6Ld7k6UmAAAAAKtdro6-WCKInHPiJxuIfcUYL_3b", "VITE_RISE_VERSION": "v1.1.9-dev", "VITE_DEV_MODE": "true", "VITE_UW_ACCOUNT": "512EhPw1RR", "BASE_URL": "/", "MODE": "production", "DEV": false, "PROD": true, "SSR": true };
+const { VITE_BACKEND_URL } = { "VITE_FRONTEND_URL": "http://localhost:3000", "VITE_BACKEND_URL": "https://dev.risetheatre.org/graphql", "VITE_RECAPTCHA_SITE_KEY": "6Ld7k6UmAAAAAKtdro6-WCKInHPiJxuIfcUYL_3b", "VITE_RISE_VERSION": "v1.1.9-dev", "VITE_DEV_MODE": "true", "VITE_UW_ACCOUNT": "512EhPw1RR", "BASE_URL": "/", "MODE": "production", "DEV": false, "PROD": true, "SSR": true };
 async function render(url) {
   const client = new ApolloClient({
     ssrMode: true,
     link: createUploadLink({
       uri: VITE_BACKEND_URL,
-      credentials: "include"
+      credentials: "include",
+      headers: {
+        "X-SSR": "1"
+        // Add header to identify SSR requests
+      }
     }),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache({
+      addTypename: true
+    }),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: "cache-first"
+      }
+    }
   });
   const AppTree = /* @__PURE__ */ jsxs(StrictMode, { children: [
     /* @__PURE__ */ jsx$1(ColorModeScript, { initialColorMode: theme.config.initialColorMode }),
-    /* @__PURE__ */ jsx$1(h, { reCaptchaKey: VITE_RECAPTCHA_SITE_KEY, children: /* @__PURE__ */ jsx$1(StaticRouter, { location: url, children: /* @__PURE__ */ jsx$1(ApolloProvider, { client, children: /* @__PURE__ */ jsxs(ChakraProvider, { resetCSS: true, theme, children: [
+    /* @__PURE__ */ jsx$1(StaticRouter, { location: url, children: /* @__PURE__ */ jsx$1(ApolloProvider, { client, children: /* @__PURE__ */ jsxs(ChakraProvider, { resetCSS: true, theme, children: [
       /* @__PURE__ */ jsx$1(Fonts, {}),
       /* @__PURE__ */ jsx$1(App, {})
-    ] }) }) }) })
+    ] }) }) })
   ] });
-  console.debug("🎭 Server Render Debug:", {
-    url,
-    initialState: client.extract()
-  });
-  await getDataFromTree(AppTree);
-  const html = ReactDOMServer.renderToString(AppTree);
-  const state = JSON.stringify(client.extract());
-  console.debug("🎭 After Server Render:", {
-    html: html.slice(0, 200) + "...",
-    // First 200 chars
-    stateSize: state.length,
-    finalState: client.extract()
-  });
-  return { html, state };
+  try {
+    await getDataFromTree(AppTree);
+    const html = ReactDOMServer.renderToString(AppTree);
+    const state2 = JSON.stringify(client.extract());
+    console.debug("🎭 SSR Complete:", {
+      url,
+      stateSize: state2.length,
+      queries: client.extract()
+    });
+    return {
+      html,
+      state: state2
+    };
+  } catch (error) {
+    console.error("🎭 SSR Error:", error);
+    const html = ReactDOMServer.renderToString(AppTree);
+    return {
+      html,
+      state: JSON.stringify({})
+    };
+  }
 }
 export {
   render
