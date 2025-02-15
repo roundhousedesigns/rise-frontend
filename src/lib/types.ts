@@ -20,7 +20,8 @@ export interface WPItemParams {
  */
 export interface WPAttachmentParams {
 	id: number;
-	srcSet: string;
+	srcSet?: string;
+	sourceUrl?: string;
 	title?: string;
 }
 

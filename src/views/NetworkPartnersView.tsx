@@ -1,4 +1,4 @@
-import { Box, Container, useColorMode, useToken } from '@chakra-ui/react';
+import { Box, Container, Text, useColorMode, useToken } from '@chakra-ui/react';
 import NetworkPartnerList from '@routes/NetworkPartnerList';
 import PageView from '@views/PageView';
 
@@ -43,6 +43,11 @@ export default function NetworkPartnersView() {
 						fontSize='xl'
 						maxW='full'
 					/>
+					<Box w='full' bg='brand.green' h='150px'>
+						<Text fontSize='2xl' textAlign='center' mb={1} py={6}>
+							~~ CATEGORY LINKS ~~
+						</Text>
+					</Box>
 				</Box>
 			</Box>
 
@@ -57,7 +62,7 @@ export default function NetworkPartnersView() {
 					bg: dark,
 				}}
 			>
-				<Container maxW={{ base: 'full', md: '5xl' }} px={4}>
+				<Container maxW={{ base: 'full', md: '4xl' }} px={4}>
 					<NetworkPartnerList />
 				</Container>
 			</Box>

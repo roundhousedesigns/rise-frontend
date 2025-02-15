@@ -32,7 +32,7 @@ export default function Shell({
 	...props
 }: Props & ContainerProps): JSX.Element {
 	const fullWidthTitleProps = {
-		maxWidth: '5xl',
+		maxWidth: '4xl',
 		mx: 'auto',
 	};
 
@@ -42,8 +42,8 @@ export default function Shell({
 		</Center>
 	) : (
 		<Container
-			maxWidth={fullWidthTemplate ? 'full' : '5xl'}
-			pt={fullWidthTemplate ? 4 : 0}
+			maxWidth={fullWidthTemplate ? 'none' : '4xl'}
+			pt={fullWidthTemplate ? 0 : 4}
 			px={0}
 			mx='auto'
 			mt={fullWidthTemplate ? 0 : 3}
@@ -88,7 +88,7 @@ export default function Shell({
 				</Text>
 			) : null}
 
-			<Box px={4} mx='auto'>
+			<Box px={fullWidthTemplate ? 0 : 4} mx='auto'>
 				{children}
 			</Box>
 		</Container>

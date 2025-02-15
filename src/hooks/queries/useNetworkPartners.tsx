@@ -3,7 +3,7 @@
  */
 import { gql, useQuery } from '@apollo/client';
 import { omit } from 'lodash';
-import { WPAttachment, WPPost } from '@lib/classes';
+import { WPAttachment, WPNetworkPartner } from '@lib/classes';
 
 export const QUERY_NETWORK_PARTNERS = gql`
 	query QueryNetworkPartners($id: Int = 0) {
@@ -12,6 +12,9 @@ export const QUERY_NETWORK_PARTNERS = gql`
 				id: databaseId
 				slug
 				title
+				excerpt(format: RAW)
+				content(format: RENDERED)
+				externalUrl
 				featuredImage {
 					node {
 						featuredImageId: databaseId
@@ -19,8 +22,12 @@ export const QUERY_NETWORK_PARTNERS = gql`
 						title
 					}
 				}
-				excerpt(format: RAW)
-				content(format: RENDERED)
+				coverBg {
+					node {
+						databaseId
+						sourceUrl(size: COVER)
+					}
+				}
 			}
 		}
 	}
@@ -32,7 +39,7 @@ export const QUERY_NETWORK_PARTNERS = gql`
  * @param {number} id - Optional ID to query a specific network partner
  * @returns A tuple of a prepared data array and a query result object.
  */
-const useNetworkPartners = (id: number = 0): [WPPost[], any] => {
+const useNetworkPartners = (id: number = 0): [WPNetworkPartner[], any] => {
 	const result = useQuery(QUERY_NETWORK_PARTNERS, {
 		variables: { id },
 	});
@@ -43,9 +50,9 @@ const useNetworkPartners = (id: number = 0): [WPPost[], any] => {
 
 	const preparedPartners =
 		result.data?.networkPartners.nodes.map((partner: any) => {
-			const { id, slug, title, featuredImage, excerpt, content } = partner;
+			const { id, slug, title, featuredImage, excerpt, content, coverBg, externalUrl } = partner;
 
-			return new WPPost({
+			return new WPNetworkPartner({
 				id,
 				slug,
 				title,
@@ -54,8 +61,13 @@ const useNetworkPartners = (id: number = 0): [WPPost[], any] => {
 					srcSet: featuredImage?.node?.srcSet,
 					title: featuredImage?.node?.title,
 				}),
+				coverBg: new WPAttachment({
+					id: coverBg?.node?.databaseId,
+					sourceUrl: coverBg?.node?.sourceUrl,
+				}),
 				excerpt,
 				content,
+				externalUrl,
 			});
 		}) || [];
 

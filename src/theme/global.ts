@@ -38,7 +38,7 @@ export const styles = {
 		},
 		'.wp-post-content': {
 			a: {
-				'&:not(.wp-block-button__link), &:not(.wp-element-button)': {
+				'&:not(.wp-block-button__link), &:not(.wp-element-button), &:not(.chakra-button)': {
 					textDecoration: 'underline',
 					color: 'brand.blue',
 				},
@@ -59,6 +59,15 @@ export const styles = {
 			'.wp-block-group': {
 				'*': {
 					flex: 1,
+				},
+			},
+			'&.network-partner': {
+				'.content': {
+					'*': {
+						textAlign: 'center',
+						mx: 'auto',
+						display: 'block',
+					},
 				},
 			},
 		},

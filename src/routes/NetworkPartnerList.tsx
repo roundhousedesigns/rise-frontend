@@ -9,6 +9,9 @@ import {
 	Link,
 	SimpleGrid,
 	SimpleGridProps,
+	ChakraBaseProvider,
+	chakra,
+	Heading,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -66,7 +69,7 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 							>
 								<Box>
 									{partner.featuredImage && (
-										<Box flex='0 0 200px'>
+										<chakra.figure flex='0 0 200px'>
 											<Image
 												srcSet={partner.featuredImage.srcSet}
 												alt={`Logo for ${partner.title || ''}`}
@@ -78,8 +81,11 @@ export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.E
 												_dark={{ borderColor: 'gray.700' }}
 												mb={4}
 											/>
-										</Box>
+										</chakra.figure>
 									)}
+									<Heading as='h3' size='md' textAlign='center' color='brand.blue' my={3}>
+										{partner.title}
+									</Heading>
 									{partner.excerpt && (
 										<Text variant='postExcerpt' textAlign='center'>
 											{parse(partner.excerpt)}

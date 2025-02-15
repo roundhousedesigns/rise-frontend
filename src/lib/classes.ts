@@ -596,7 +596,7 @@ export class WPItem implements WPItemParams {
 }
 
 /**
- * A WordPress post.
+ * A WordPress Post.
  */
 export class WPPost extends WPItem {
 	postType: string;
@@ -621,14 +621,29 @@ export class WPPost extends WPItem {
 }
 
 /**
- * A WordPress attachment.
+ * A WordPress Network Partner.
+ */
+export class WPNetworkPartner extends WPPost {
+	coverBg?: WPAttachment;
+
+	constructor(params: WPItemParams) {
+		super(params);
+
+		this.coverBg = params.coverBg ? new WPAttachment(params.coverBg) : undefined;
+	}
+}
+
+/**
+ * A WordPress Attachment.
  */
 export class WPAttachment extends WPItem {
-	srcSet: string;
+	srcSet?: string;
+	sourceUrl?: string;
 
 	constructor(params: WPAttachmentParams) {
 		super(params);
 
 		this.srcSet = params.srcSet;
+		this.sourceUrl = params.sourceUrl;
 	}
 }
