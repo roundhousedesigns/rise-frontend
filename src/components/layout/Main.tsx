@@ -15,8 +15,8 @@ import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
-import Partners from '@routes/Partners';
-import Partner from '@routes/Partner';
+import NetworkPartners from '@routes/NetworkPartners';
+import NetworkPartner from '@routes/NetworkPartner';
 import Page from '@routes/Page';
 
 import LoggedIn from '@components/LoggedIn';
@@ -83,7 +83,7 @@ export default function Main({ ...props }: BoxProps) {
 			path: '/partners',
 			element: (
 				<LoggedIn>
-					<Partners />
+					<NetworkPartners />
 				</LoggedIn>
 			),
 		},
@@ -91,7 +91,7 @@ export default function Main({ ...props }: BoxProps) {
 			path: '/partners/:slug',
 			element: (
 				<LoggedIn>
-					<Partner />
+					<NetworkPartner />
 				</LoggedIn>
 			),
 		},

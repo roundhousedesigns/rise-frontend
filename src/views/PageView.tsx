@@ -1,4 +1,4 @@
-import usePageById from '@@/src/hooks/queries/usePageById';
+import usePageById from '@queries/usePageById';
 import { ContainerProps, Container, Heading, HeadingProps } from '@chakra-ui/react';
 import { WPPost } from '@lib/classes';
 import parse from 'html-react-parser';

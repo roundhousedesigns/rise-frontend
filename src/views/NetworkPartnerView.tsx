@@ -11,10 +11,12 @@ import {
 	Link,
 	Button,
 	Stack,
+	useMediaQuery,
+	Divider,
 } from '@chakra-ui/react';
 import parse from 'html-react-parser';
 import { WPNetworkPartner } from '@lib/classes';
-import useNetworkPartners from '../hooks/queries/useNetworkPartners';
+import useNetworkPartners from '@queries/useNetworkPartners';
 import { useEffect, useState } from 'react';
 
 interface Props {
@@ -30,6 +32,8 @@ export default function NetworkPartnerView({
 	const [pages] = useNetworkPartners(Number(postId));
 	const [page, setPage] = useState<WPNetworkPartner | null>(null);
 
+	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');
+
 	useEffect(() => {
 		if (pages.length > 0 && !page) {
 			setPage(pages[0]);
@@ -44,7 +48,7 @@ export default function NetworkPartnerView({
 				w='full'
 				px={0}
 				mx={0}
-				h='40vh'
+				h='50vh'
 				bgImage={page?.coverBg?.sourceUrl}
 				bgSize='cover'
 				bgPosition='center'
@@ -64,6 +68,7 @@ export default function NetworkPartnerView({
 					borderRadius='md'
 					color='white'
 					bg='brand.blue'
+					maxWidth='80vw'
 				>
 					{page?.title}
 				</Heading>
@@ -84,9 +89,10 @@ export default function NetworkPartnerView({
 				{...props}
 				mt={4}
 				px={4}
+				fontSize='lg'
 			>
-				<Flex gap={4}>
-					<Stack flex='auto' maxW='200px'>
+				<Flex gap={4} flexDirection={{ base: 'column-reverse', md: 'row' }}>
+					<Stack flex='auto' maxW='200px' mx={{ base: 'auto', md: 0 }}>
 						<chakra.figure>
 							<Image srcSet={page?.featuredImage?.srcSet} alt={page?.title} />
 						</chakra.figure>
@@ -104,6 +110,9 @@ export default function NetworkPartnerView({
 							</Button>
 						) : null}
 					</Stack>
+
+					{!isLargerThanMd && <Divider />}
+
 					<Box flex='1' className='content'>
 						{content}
 					</Box>
