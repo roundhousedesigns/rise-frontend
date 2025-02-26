@@ -29,7 +29,7 @@ export default function NetworkPartnerView({
 	titleProps,
 	...props
 }: Props & ContainerProps) {
-	const [pages] = useNetworkPartners(Number(postId));
+	const [pages] = useNetworkPartners({ id: Number(postId) });
 	const [page, setPage] = useState<WPNetworkPartner | null>(null);
 
 	const [isLargerThanMd] = useMediaQuery('(min-width: 48rem)');

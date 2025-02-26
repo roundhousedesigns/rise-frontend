@@ -6,8 +6,11 @@ import { omit } from 'lodash';
 import { WPAttachment, WPNetworkPartner } from '@lib/classes';
 
 export const QUERY_NETWORK_PARTNERS = gql`
-	query QueryNetworkPartners($id: Int = 0) {
-		networkPartners(where: { id: $id }, last: 999) {
+	query QueryNetworkPartners($id: Int = 0, $networkPartnerCategories: [String] = "") {
+		networkPartners(
+			where: { id: $id, networkPartnerCategories: $networkPartnerCategories }
+			last: 999
+		) {
 			nodes {
 				id: databaseId
 				slug
@@ -33,15 +36,24 @@ export const QUERY_NETWORK_PARTNERS = gql`
 	}
 `;
 
+interface UseNetworkPartnersProps {
+	id?: number;
+	networkPartnerCategories?: string[];
+}
+
 /**
  * Query to retrieve network partner posts.
  *
  * @param {number} id - Optional ID to query a specific network partner
+ * @param {string[]} networkPartnerCategories - Optional network partner categories to query
  * @returns A tuple of a prepared data array and a query result object.
  */
-const useNetworkPartners = (id: number = 0): [WPNetworkPartner[], any] => {
+const useNetworkPartners = ({
+	id = 0,
+	networkPartnerCategories = [],
+}: UseNetworkPartnersProps = {}): [WPNetworkPartner[], any] => {
 	const result = useQuery(QUERY_NETWORK_PARTNERS, {
-		variables: { id },
+		variables: { id, networkPartnerCategories },
 	});
 
 	if (!result?.data?.networkPartners?.nodes) {

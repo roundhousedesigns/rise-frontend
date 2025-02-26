@@ -8,23 +8,23 @@ import {
 	Text,
 	Link,
 	SimpleGrid,
-	SimpleGridProps,
-	ChakraBaseProvider,
 	chakra,
 	Heading,
+	SimpleGridProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import parse from 'html-react-parser';
-import useNetworkPartners from '@queries/useNetworkPartners';
-import ErrorAlert from '@common/ErrorAlert';
+import { WPPost } from '@lib/classes';
 
-export default function NetworkPartnerList({ ...props }: SimpleGridProps): JSX.Element {
-	const [partners, { loading, error }] = useNetworkPartners();
+interface NetworkPartnerListProps {
+	partners: WPPost[];
+}
 
-	if (loading) return <Spinner />;
-	if (error) return <ErrorAlert message={error.message} />;
-
+export default function NetworkPartnerList({
+	partners,
+	...props
+}: NetworkPartnerListProps & SimpleGridProps): JSX.Element {
 	return (
 		<SimpleGrid as={List} spacing={6} minChildWidth='300px' maxWidth='5xl' mx='auto' {...props}>
 			<AnimatePresence>
