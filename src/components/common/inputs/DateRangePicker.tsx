@@ -91,11 +91,7 @@ export default function DateRangePicker({
 				)}
 				<>
 					<Spacer />
-					<Button
-						onClick={handleSave}
-						colorScheme='blue'
-						isDisabled={!newStartDate || !newEndDate}
-					>
+					<Button onClick={handleSave} colorScheme='blue' isDisabled={!newStartDate || !newEndDate}>
 						Save
 					</Button>
 				</>
