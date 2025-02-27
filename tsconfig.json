@@ -1,79 +1,83 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
-      "ES2017",
+      "ES2020",
       "DOM",
-      "DOM.Iterable",
-      "ESNext"
+      "DOM.Iterable"
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
     "paths": {
+      "@/*": [
+        "src/*"
+      ],
       "@@/*": [
         "./*"
       ],
-      "@/*": [
-        "./src/*"
+      "@theme/*": [
+        "src/theme/*"
       ],
       "@dev/*": [
-        "./src/dev/*"
-      ],
-      "@theme/*": [
-        "./src/theme/*"
+        "src/dev/*"
       ],
       "@assets/*": [
-        "./src/assets/*"
+        "src/assets/*"
       ],
       "@components/*": [
-        "./src/components/*"
+        "src/components/*"
       ],
       "@common/*": [
-        "./src/components/common/*"
+        "src/components/common/*"
       ],
       "@layout/*": [
-        "./src/components/layout/*"
+        "src/components/layout/*"
       ],
       "@context/*": [
-        "./src/context/*"
+        "src/context/*"
       ],
       "@hooks/*": [
-        "./src/hooks/*"
+        "src/hooks/*"
       ],
       "@queries/*": [
-        "./src/hooks/queries/*"
+        "src/hooks/queries/*"
       ],
       "@mutations/*": [
-        "./src/hooks/mutations/*"
+        "src/hooks/mutations/*"
       ],
       "@lib/*": [
-        "./src/lib/*"
+        "src/lib/*"
       ],
       "@routes/*": [
-        "./src/routes/*"
+        "src/routes/*"
       ],
       "@views/*": [
-        "./src/views/*"
+        "src/views/*"
       ]
     },
     "types": [
+      "vite/client",
       "@cloudflare/workers-types"
     ]
   },
   "include": [
     "src",
-    "testSetup.ts"
+    "functions"
   ],
   "references": [
     {

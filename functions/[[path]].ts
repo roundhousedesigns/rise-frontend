@@ -1,5 +1,5 @@
-import type { PagesFunction, EventContext } from '@cloudflare/workers-types';
-import { render } from '../dist/entry-server';
+import { ExecutionContext } from '@cloudflare/workers-types';
+import { render } from '../src/entry-server';
 import { isPublicRoute } from '../src/lib/routeUtils';
 
 // Base HTML template with proper asset references
@@ -12,6 +12,7 @@ const getBaseHtml = (content: string = '', initialState: string = '') => `
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="description" content="RISE Theatre Directory" />
 		<title>RISE Theatre Directory</title>
+		<link rel="stylesheet" href="/assets/index.css" />
 		${initialState ? `<script>window.__APOLLO_STATE__=${initialState}</script>` : ''}
 	</head>
 	<body>
@@ -21,14 +22,28 @@ const getBaseHtml = (content: string = '', initialState: string = '') => `
 </html>
 `;
 
-export const onRequest = (async ({ request }: EventContext<unknown, any, unknown>) => {
-	const url = new URL(request.url);
-	console.log('📥 Incoming request:', {
-		path: url.pathname,
-		method: request.method,
-	});
+export interface Env {
+	// Add your environment variables here
+}
 
+export const onRequest = async (
+	_context: ExecutionContext,
+	request: Request,
+	_env: Env
+): Promise<Response> => {
 	try {
+		const url = new URL(request.url);
+		console.log('📥 Incoming request:', {
+			path: url.pathname,
+			method: request.method,
+		});
+
+		// Handle static assets
+		if (url.pathname.startsWith('/assets/')) {
+			// Let Cloudflare Pages handle static assets
+			return fetch(request);
+		}
+
 		// Only use SSR for public routes
 		if (!isPublicRoute(url.pathname)) {
 			// Return the client-side app shell for non-public routes
@@ -79,4 +94,4 @@ export const onRequest = (async ({ request }: EventContext<unknown, any, unknown
 			}
 		) as Response & { webSocket: null };
 	}
-}) as unknown as PagesFunction;
+};
