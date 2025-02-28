@@ -6,7 +6,6 @@
 
 # Yarn
 .yarn/*
-.pnp.*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
