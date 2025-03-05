@@ -51,7 +51,7 @@ export default function ToggleOptionSwitch({
 
 	const sizeProps = {
 		fontSize: size,
-		iconBoxSize: size === 'lg' ? 8 : 'md' ? 6 : 'sm' ? 4 : 8,
+		iconBoxSize: size === 'lg' ? 8 : size === 'md' ? 6 : size === 'sm' ? 4 : 8,
 	};
 
 	return (
