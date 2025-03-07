@@ -721,7 +721,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<Spinner thickness='5px' speed={'.8s'} color={'blue.500'} size='xl' />
 	);
 
-	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
+	const EditProfileSidebar = ({ ...props }: { [prop: string]: any }) => (
 		<Box {...props}>
 			<Box>
 				<Heading variant='pageSubtitle' my={0}>
@@ -950,7 +950,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				</ProfileStackItem>
 				<ProfileStackItem>
 					<Flex alignItems={'flex-start'} flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <Sidebar mb={2} width={'30%'} minWidth='300px' mr={4} /> : false}
+						{isLargerThanMd ? <EditProfileSidebar mb={2} width={'30%'} minWidth='300px' mr={4} /> : false}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems={'flex-end'} gap={2} flexWrap='wrap' w='full'>
@@ -1033,7 +1033,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							</ProfileStackItem>
 							{!isLargerThanMd ? (
 								<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
-									<Sidebar />
+									<EditProfileSidebar />
 								</ProfileStackItem>
 							) : (
 								false

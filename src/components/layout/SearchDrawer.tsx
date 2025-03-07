@@ -110,7 +110,13 @@ export default function SearchDrawer({ isOpen, onClose }: Props) {
 
 	return (
 		<>
-			<Drawer isOpen={isOpen} onClose={onClose} placement='top' isFullHeight={name ? false : true}>
+			<Drawer
+				isOpen={isOpen}
+				onClose={onClose}
+				placement='left'
+				size={{ base: 'full', md: 'lg' }}
+				isFullHeight={name ? false : true}
+			>
 				<DrawerOverlay />
 				<DrawerContent display='flex' flexDirection='column' height={'100%'}>
 					<DrawerHeader

@@ -6,8 +6,6 @@ const Fonts = () => {
 
 	if (loading || error) return null;
 
-	console.info(`${stylesheetDirectoryUri}/assets/fonts/VictorSerif-50Medium.woff2`);
-
 	return (
 		<Global
 			styles={`

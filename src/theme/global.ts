@@ -5,6 +5,9 @@
 export const styles = {
 	global: {
 		html: { fontSize: '18px' },
+		body: {
+			backgroundColor: 'bg.dark',
+		},
 		textarea: { underline: 'none !important' },
 		p: {
 			marginTop: '0.5em',

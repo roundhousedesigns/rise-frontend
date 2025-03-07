@@ -10,7 +10,7 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from '@theme/index';
 import Fonts from '@theme/Fonts';
 import App from '@/App';
-
+import WordPressStyles from '@components/WordPressStyles';
 import reportWebVitals from '@/reportWebVitals';
 
 // Env vars
@@ -42,6 +42,7 @@ root.render(
 				<ApolloProvider client={client}>
 					<ChakraProvider resetCSS={true} theme={theme}>
 						<Fonts />
+						<WordPressStyles />
 						<App />
 					</ChakraProvider>
 				</ApolloProvider>

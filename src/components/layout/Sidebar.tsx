@@ -45,10 +45,6 @@ export default function Sidebar() {
 			height='100%'
 			bg={textDark}
 			color={textLight}
-			position='absolute'
-			top='0'
-			left='0'
-			zIndex={1000}
 		>
 			<Container centerContent w='full' maxW='9xl' p={2}>
 				<Flex w='full' justifyContent='center'>

@@ -9,7 +9,7 @@ interface Props {
 	titleProps?: HeadingProps;
 }
 
-export default function PageView({
+export default function PageContent({
 	postId,
 	pageObject,
 	titleProps,

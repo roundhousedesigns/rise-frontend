@@ -621,19 +621,6 @@ export class WPPost extends WPItem {
 }
 
 /**
- * A WordPress Network Partner.
- */
-export class WPNetworkPartner extends WPPost {
-	coverBg?: WPAttachment;
-
-	constructor(params: WPItemParams) {
-		super(params);
-
-		this.coverBg = params.coverBg ? new WPAttachment(params.coverBg) : undefined;
-	}
-}
-
-/**
  * A WordPress Attachment.
  */
 export class WPAttachment extends WPItem {
