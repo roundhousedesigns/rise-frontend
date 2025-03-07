@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
@@ -38,7 +38,7 @@ root.render(
 	<StrictMode>
 		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
 		<GoogleReCaptchaProvider reCaptchaKey={VITE_RECAPTCHA_SITE_KEY}>
-			<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+			<HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
 				<ApolloProvider client={client}>
 					<ChakraProvider resetCSS={true} theme={theme}>
 						<Fonts />
@@ -46,7 +46,7 @@ root.render(
 						<App />
 					</ChakraProvider>
 				</ApolloProvider>
-			</BrowserRouter>
+			</HashRouter>
 		</GoogleReCaptchaProvider>
 	</StrictMode>
 );
