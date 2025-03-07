@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import { Box, BoxProps, Container } from '@chakra-ui/react';
+import { Box, BoxProps, Container, Flex, Text, chakra } from '@chakra-ui/react';
 import Dashboard from '@routes/Dashboard';
 import Login from '@routes/Login';
 import LostPassword from '@routes/LostPassword';
@@ -18,8 +18,11 @@ import Job from '@routes/Job';
 import NetworkPartners from '@routes/NetworkPartners';
 import NetworkPartner from '@routes/NetworkPartner';
 import Page from '@routes/Page';
-
 import LoggedIn from '@components/LoggedIn';
+import DevMode from '@dev/DevMode';
+
+import pkgJSON from '@@/package.json';
+const __APP_VERSION__ = `v${pkgJSON.version}`;
 
 export default function Main({ ...props }: BoxProps) {
 	const routes = useRoutes([
@@ -147,6 +150,7 @@ export default function Main({ ...props }: BoxProps) {
 			w='full'
 			h='auto'
 			py={2}
+			pl='100px'
 			background='none'
 			justifyContent='center'
 			alignItems='center'
@@ -156,6 +160,17 @@ export default function Main({ ...props }: BoxProps) {
 			<Container w='full' maxW='none' pt={0} pb={4} px={0}>
 				{routes}
 			</Container>
+
+			<DevMode>
+				<Box w='100%' textAlign='center' m={0} py={2} px={4} bgColor='brand.blue' fontSize='xs'>
+					<Text>
+						{`Development Branch: `}
+						<chakra.span as={chakra.code} pl={1}>
+							{__APP_VERSION__}
+						</chakra.span>
+					</Text>
+				</Box>
+			</DevMode>
 		</Box>
 	);
 }

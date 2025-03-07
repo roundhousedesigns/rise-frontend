@@ -3,19 +3,21 @@
  */
 
 import { gql, useQuery, QueryResult } from '@apollo/client';
-import { omit } from 'lodash';
+import { omit, String } from 'lodash';
 
 // TODO: Figure out why this is needed
 import '@assets/css/wordpress.css';
 
-const QUERY_WP_GLOBAL = gql`
-	query WpGlobalQuery {
-		wpGlobalStylesheet
+const QUERY_WP_CORE = gql`
+	query WpCoreQuery {
+		globalStylesheet: wpGlobalStylesheet
+		stylesheetDirectoryUri: wpStylesheetDirectoryUri
 	}
 `;
 
-interface WpGlobalQueryResult {
-	wpGlobalStylesheet: string | null;
+interface WpCoreQueryResult {
+	globalStylesheet?: string;
+	stylesheetDirectoryUri?: string;
 }
 
 /**
@@ -23,12 +25,17 @@ interface WpGlobalQueryResult {
  *
  * @returns A tuple of the stylesheet string and a query result object.
  */
-const useWp = (): [string | null, Omit<QueryResult<WpGlobalQueryResult>, 'data'>] => {
-	const result = useQuery<WpGlobalQueryResult>(QUERY_WP_GLOBAL);
+const useWp = (): [WpCoreQueryResult, Omit<QueryResult<WpCoreQueryResult>, 'data'>] => {
+	const result = useQuery<WpCoreQueryResult>(QUERY_WP_CORE);
 
-	const { wpGlobalStylesheet = null } = result.data || {};
+	const { globalStylesheet = undefined, stylesheetDirectoryUri = undefined } = result.data || {};
 
-	return [wpGlobalStylesheet, omit(result, ['data'])];
+	const wp = {
+		globalStylesheet,
+		stylesheetDirectoryUri,
+	};
+
+	return [wp, omit(result, ['data'])];
 };
 
 export default useWp;

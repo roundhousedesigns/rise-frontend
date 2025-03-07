@@ -300,3 +300,11 @@ export interface JobPostParams {
 	isInternship?: boolean;
 	isUnion?: boolean;
 }
+
+/**
+ * The data shape for a WordPress core settings query result.
+ */
+export interface WpCoreQueryResult {
+	wpGlobalStylesheet?: string;
+	wpStylesheetDirectoryUri?: string;
+}

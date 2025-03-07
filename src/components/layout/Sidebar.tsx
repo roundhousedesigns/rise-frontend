@@ -1,22 +1,7 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-	Box,
-	Image,
-	Container,
-	Link,
-	Badge,
-	Spacer,
-	forwardRef,
-	BoxProps,
-	Flex,
-	useBreakpointValue,
-	ButtonGroup,
-	useToken,
-} from '@chakra-ui/react';
+import { Box, Container, Badge, BoxProps, Flex, useToken } from '@chakra-ui/react';
 import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiLink } from 'react-icons/fi';
-import logo from '@assets/images/RISETHEATREDIRECTORY-white logo-slim.svg';
-import circleLogo from '@assets/images/rise-blue-circle.png';
 import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
@@ -28,7 +13,7 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import MainMenu from '@components/MainMenu';
 import RiseStar from '../common/icons/RiseStar';
 
-const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
+export default function Sidebar() {
 	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
 	const [savedSearches] = useSavedSearches();
 
@@ -40,100 +25,46 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, blue, gray, textLight, textDark] = useToken('colors', [
+	const [orange, gray, textLight, textDark] = useToken('colors', [
 		'brand.orange',
-		'brand.blue',
 		'gray.400',
 		'text.light',
 		'text.dark',
 	]);
-	const isLargerThanMd = useBreakpointValue(
-		{
-			base: false,
-			md: true,
-		},
-		{ ssr: false }
-	);
 
 	const handleDrawerOpen = () => {
 		openDrawer();
 	};
 
-	const StarSeparator = () => (
-		<RiseStar fontSize='sm' color={gray} />
-	);
+	const StarSeparator = () => <RiseStar fontSize='sm' color={gray} my={2} />;
 
-	return (
+	return loggedInId ? (
 		<Box
-			ref={ref}
-			id='header'
-			w='full'
+			id='sidebar'
+			w='100px'
+			height='100%'
 			bg={textDark}
 			color={textLight}
-			position='fixed'
+			position='absolute'
 			top='0'
-			borderBottomWidth={2}
-			borderBottomColor={textLight}
+			left='0'
 			zIndex={1000}
 		>
 			<Container centerContent w='full' maxW='9xl' p={2}>
-				<Flex w='full' justifyContent={'space-between'} align='center'>
-					<Link
-						as={RouterLink}
-						to={'/'}
-						my={0}
-						w='auto'
-						display='block'
-						maxW={{ base: '50%', md: '350px' }}
-						position='relative'
-					>
-						<Image
-							src={logo}
-							alt={'RISE logo'}
-							loading='eager'
-							h='auto'
-							position='relative'
-							display='block'
-							ml={{ base: 1, md: 4 }}
-							pr={3}
-							mt={1}
-						/>
-					</Link>
-
-					<Spacer />
-
-					{/* Not logged in */}
-					{!loggedInId ? (
-						<Link
-							as={RouterLink}
-							to={'https://risetheatre.org'}
-							my={0}
-							isExternal
-							flex={'0 0 auto'}
-						>
-							<Image src={circleLogo} alt={'RISE icon'} loading='eager' h={12} />
-						</Link>
-					) : (
-						false
-					)}
-
-					{/* Logged in */}
+				<Flex w='full' justifyContent='center'>
 					{loggedInId ? (
-						<Flex alignItems='center' gap={0}>
-							<ButtonGroup
+						<Flex flexDirection='column' alignItems='center'>
+							<Box mb={2}>
+								<MainMenu />
+							</Box>
+
+							<Flex
 								color={'text.light'}
 								mx={{ base: 0, md: 2 }}
-								flex={'1 0 auto'}
-								justifyContent={'flex-end'}
-								size='md'
+								flexDirection='column'
+								alignItems='center'
+								gap={2}
 							>
-								<TooltipIconButton
-									icon={<FiLink />}
-									label={'Network Partners'}
-									as={RouterLink}
-									to={'/partners'}
-								/>
-
 								<TooltipIconButton
 									icon={<FiBriefcase />}
 									label='Jobs'
@@ -177,14 +108,17 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 								) : (
 									false
 								)}
-							</ButtonGroup>
-							{isLargerThanMd ? <StarSeparator /> : null}
-							<ButtonGroup
+							</Flex>
+
+							<StarSeparator />
+
+							<Flex
 								color={'text.light'}
 								mx={2}
-								flex={'1 0 auto'}
 								justifyContent={'flex-end'}
-								size='md'
+								flexDirection='column'
+								alignItems='center'
+								gap={2}
 							>
 								<TooltipIconButton
 									icon={<FiSearch />}
@@ -193,22 +127,14 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 									colorScheme='green'
 								/>
 
-								{isLargerThanMd ? (
-									<TooltipIconButton
-										icon={<FiUser />}
-										as={RouterLink}
-										label={'My Profile'}
-										colorScheme='blue'
-										to={`/profile/${loggedInSlug}`}
-									/>
-								) : null}
-							</ButtonGroup>
-
-							{isLargerThanMd ? <StarSeparator /> : null}
-
-							<Box ml={1.5}>
-								<MainMenu />
-							</Box>
+								<TooltipIconButton
+									icon={<FiUser />}
+									as={RouterLink}
+									label={'My Profile'}
+									colorScheme='blue'
+									to={`/profile/${loggedInSlug}`}
+								/>
+							</Flex>
 						</Flex>
 					) : (
 						false
@@ -220,7 +146,5 @@ const Header = forwardRef<BoxProps, 'div'>((props, ref) => {
 
 			{profile ? <ProfileNotices /> : false}
 		</Box>
-	);
-});
-
-export default Header;
+	) : null;
+}
