@@ -20,13 +20,13 @@ import {
 import { FiZoomIn, FiDownload } from 'react-icons/fi';
 
 interface ModalProps {
-	resumePreview: string;
+	resumePreviewSrc?: string;
 	resumeLink: string;
 	previewIcon?: boolean;
 }
 
 export default function ResumePreviewModal({
-	resumePreview,
+	resumePreviewSrc,
 	resumeLink,
 	previewIcon = true,
 	...props
@@ -34,7 +34,7 @@ export default function ResumePreviewModal({
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const { colorMode } = useColorMode();
 
-	return resumePreview && resumeLink ? (
+	return resumePreviewSrc && resumeLink ? (
 		<>
 			<Box pos='relative' {...props}>
 				{previewIcon ? (
@@ -60,7 +60,8 @@ export default function ResumePreviewModal({
 					false
 				)}
 				<Image
-					src={resumePreview}
+					src={resumePreviewSrc}
+					sizes='100vw'
 					alt={'Resume preview'}
 					w='full'
 					h='auto'
@@ -79,7 +80,7 @@ export default function ResumePreviewModal({
 					<ModalCloseButton />
 					<ModalBody bgColor={colorMode === 'dark' ? 'gray' : 'blackAlpha.200'} pt={4}>
 						<Image
-							src={resumePreview}
+							src={resumePreviewSrc}
 							alt={`Profile picture`}
 							loading='eager'
 							fit='cover'

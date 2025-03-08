@@ -37,17 +37,15 @@ const client = new ApolloClient({
 root.render(
 	<StrictMode>
 		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-		<GoogleReCaptchaProvider reCaptchaKey={VITE_RECAPTCHA_SITE_KEY}>
-			<HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-				<ApolloProvider client={client}>
-					<ChakraProvider resetCSS={true} theme={theme}>
-						<Fonts />
-						<WordPressStyles />
-						<App />
-					</ChakraProvider>
-				</ApolloProvider>
-			</HashRouter>
-		</GoogleReCaptchaProvider>
+		<HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+			<ApolloProvider client={client}>
+				<ChakraProvider resetCSS={true} theme={theme}>
+					<Fonts />
+					<WordPressStyles />
+					<App />
+				</ChakraProvider>
+			</ApolloProvider>
+		</HashRouter>
 	</StrictMode>
 );
 

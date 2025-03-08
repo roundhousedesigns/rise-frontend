@@ -22,6 +22,7 @@ export interface WPAttachmentParams {
 	id: number;
 	srcSet?: string;
 	sourceUrl?: string;
+	sizes?: string;
 	title?: string;
 }
 

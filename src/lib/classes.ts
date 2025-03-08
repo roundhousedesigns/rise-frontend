@@ -577,7 +577,7 @@ export class DateRange implements DateRangeParams {
  */
 export class WPItem implements WPItemParams {
 	id: number;
-	name: string;
+	name?: string;
 	slug?: string;
 	parentId?: number;
 	parent?: WPItem;

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Container, Badge, BoxProps, Flex, useToken } from '@chakra-ui/react';
+import { Box, Container, Badge, Flex } from '@chakra-ui/react';
 import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiLink } from 'react-icons/fi';
 import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
@@ -10,8 +10,8 @@ import useUserProfile from '@queries/useUserProfile';
 import useSavedSearches from '@queries/useSavedSearches';
 import ProfileNotices from '@common/ProfileNotices';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
+import RiseStar from '@common/icons/RiseStar';
 import MainMenu from '@components/MainMenu';
-import RiseStar from '../common/icons/RiseStar';
 
 export default function Sidebar() {
 	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
@@ -25,27 +25,14 @@ export default function Sidebar() {
 		search: { results },
 	} = useContext(SearchContext);
 
-	const [orange, gray, textLight, textDark] = useToken('colors', [
-		'brand.orange',
-		'gray.400',
-		'text.light',
-		'text.dark',
-	]);
-
 	const handleDrawerOpen = () => {
 		openDrawer();
 	};
 
-	const StarSeparator = () => <RiseStar fontSize='sm' color={gray} my={2} />;
+	const StarSeparator = () => <RiseStar fontSize='sm' color='gray.400' my={2} />;
 
 	return loggedInId ? (
-		<Box
-			id='sidebar'
-			w='100px'
-			height='100%'
-			bg={textDark}
-			color={textLight}
-		>
+		<Box id='sidebar' w='100px' height='100%' pt={2} bg='text.dark' color='text.light'>
 			<Container centerContent w='full' maxW='9xl' p={2}>
 				<Flex w='full' justifyContent='center'>
 					{loggedInId ? (
@@ -70,7 +57,9 @@ export default function Sidebar() {
 
 								<TooltipIconButton
 									icon={
-										<FiStar fill={starredProfiles && starredProfiles.length ? orange : 'none'} />
+										<FiStar
+											fill={starredProfiles && starredProfiles.length ? 'brand.orange' : 'none'}
+										/>
 									}
 									label={'Starred profiles'}
 									as={RouterLink}
@@ -78,7 +67,7 @@ export default function Sidebar() {
 								/>
 
 								<TooltipIconButton
-									icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
+									icon={<FiFolder fill={savedSearches?.length ? 'brand.orange' : 'none'} />}
 									as={RouterLink}
 									label={'Saved searches'}
 									to={'/searches'}

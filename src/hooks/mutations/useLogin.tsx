@@ -20,6 +20,7 @@ const useLogin = () => {
 	const [mutation, results] = useMutation(MUTATE_LOGIN);
 
 	const loginMutation = ({ login, password, reCaptchaToken }: LoginInput) => {
+		console.info(login, password, reCaptchaToken);
 		return mutation({
 			variables: {
 				clientMutationId: 'loginMutation',

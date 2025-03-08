@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import { List, ListItem, Flex, Divider, ListProps } from '@chakra-ui/react';
+import { List, ListItem, Flex, Divider, ListProps, Text } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { FiAlertCircle, FiCalendar, FiCheckCircle } from 'react-icons/fi';
 import { DateRange } from '@lib/classes';
@@ -87,9 +87,11 @@ export default function ConflictDateRanges({
 								iconProps={{
 									color: color,
 									title: title,
+									my: 1,
 								}}
+								alignItems='flex-start'
 							>
-								{conflictRange.toString('long')}
+								<Text m={0}>{conflictRange.toString('long')}</Text>
 							</WrapWithIcon>
 						</ListItem>
 					);
