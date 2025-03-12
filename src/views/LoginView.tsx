@@ -65,22 +65,27 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	const handleLoginSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		handleReCaptchaVerify({ label: 'login', executeRecaptcha })
-			.then((token) => {
-				if (!token) {
-					setErrorCode('recaptcha_error');
-					return;
-				}
+		loginMutation({ ...credentials }).catch((errors: { message: string }) => {
+			setErrorCode(errors.message);
+		});
 
-				loginMutation({ ...credentials, reCaptchaToken: token }).catch(
-					(errors: { message: string }) => {
-						setErrorCode(errors.message);
-					}
-				);
-			})
-			.catch(() => {
-				setErrorCode('recaptcha_error');
-			});
+		// RECAPTCHA IS DISABLED FOR NOW
+		// handleReCaptchaVerify({ label: 'login', executeRecaptcha })
+		// 	.then((token) => {
+		// 		if (!token) {
+		// 			setErrorCode('recaptcha_error');
+		// 			return;
+		// 		}
+
+		// 		loginMutation({ ...credentials, reCaptchaToken: token }).catch(
+		// 			(errors: { message: string }) => {
+		// 				setErrorCode(errors.message);
+		// 			}
+		// 		);
+		// 	})
+		// 	.catch(() => {
+		// 		setErrorCode('recaptcha_error');
+		// 	});
 	};
 
 	const sanitizedAlertStatus = alertStatus === 'error' ? 'error' : 'success';

@@ -44,6 +44,7 @@ export default function MainMenu() {
 	 */
 	const logout = (): void => {
 		logoutMutation().then(() => {
+			// TODO Fix logout redirect
 			window.location.href = '/login';
 		});
 	};

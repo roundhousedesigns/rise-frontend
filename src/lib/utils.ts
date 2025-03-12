@@ -242,8 +242,8 @@ export function validateProfileSlug(str: string): boolean {
  * @returns The sort order.
  */
 export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
-	const nameA = a.name.toLowerCase();
-	const nameB = b.name.toLowerCase();
+	const nameA = a.name?.toLowerCase() || '';
+	const nameB = b.name?.toLowerCase() || '';
 
 	if (nameA < nameB) {
 		return -1;

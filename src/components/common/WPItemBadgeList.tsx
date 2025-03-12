@@ -17,7 +17,7 @@ export default function WPItemBadgeList({
 		<Wrap spacing={2} justify={{ base: 'left', md: 'right' }} {...props}>
 			{items?.map((item: WPItem) => (
 				<WPItemBadgeListItem key={item.id} id={item.id.toString()} colorScheme={colorScheme}>
-					{decodeString(item.name)}
+					{decodeString(item.name || '')}
 				</WPItemBadgeListItem>
 			))}
 		</Wrap>
