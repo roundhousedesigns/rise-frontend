@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import {
 	searchFilterSetsAreEqual,
-	getProfilePrefix,
 	validateEmail,
 	validatePassword,
 	validateProfileSlug,
@@ -130,8 +129,7 @@ export const useErrorMessage = (errorCode?: string, defaultMessage: string = 'Er
  * @returns The user profile URL.
  */
 export const useProfileUrl = (slug: string): string => {
-	const prefix = getProfilePrefix();
-	return `${prefix}${slug}`;
+	return `profile/${slug}`;
 };
 
 /**

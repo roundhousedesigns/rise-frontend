@@ -271,7 +271,7 @@ export default function SavedSearchItem({
 				{id ? (
 					<Box p={2}>
 						{showControls ? (
-							<ButtonGroup size='sm'>
+							<ButtonGroup size='xs'>
 								<TooltipIconButton
 									icon={<FiSearch />}
 									aria-label={'Load these filters'}

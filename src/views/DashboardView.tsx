@@ -21,7 +21,7 @@ export default function DashboardView__Widgets() {
 			<GridItem as={Stack} spacing={6} id={'dashboard-secondary'}>
 				<Widget>
 					{profile ? (
-						<MiniProfileView profile={profile} allowStar={false} />
+						<MiniProfileView profile={profile} />
 					) : loading ? (
 						<Spinner />
 					) : (

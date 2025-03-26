@@ -2,12 +2,12 @@
   "name": "rise-theatre-directory",
   "author": "Roundhouse Designs <nick@roundhouse-designs.com> (https://roundhouse-designs.com)",
   "private": true,
-  "version": "1.2-theme",
+  "version": "1.2-dev",
   "type": "module",
   "engines": {
     "node": ">=20.12.0"
   },
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.7.0",
   "copyright": "Copyright (c) 2024 Maestra Music and Roundhouse Designs. All rights reserved.",
   "scripts": {
     "dev": "vite",
