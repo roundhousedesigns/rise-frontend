@@ -12,7 +12,7 @@ export default function ShortPost({ post, ...props }: Props & CardProps): JSX.El
 	const { colorMode } = useColorMode();
 
 	return (
-		<Card id={id.toString()} pt={0} px={0} gap={2} {...props}>
+		<Card id={id.toString()} pt={0} px={0} my={0} gap={2} {...props}>
 			<CardHeader px={3} py={2} bg={colorMode === 'dark' ? 'blackAlpha.300' : 'blackAlpha.100'}>
 				<Heading variant='contentSubtitle' my={0}>
 					{title ? title : ' '}

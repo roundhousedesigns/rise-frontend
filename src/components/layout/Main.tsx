@@ -14,6 +14,7 @@ import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
+import ProfileNotices from '@common/ProfileNotices';
 import LoggedIn from '@components/LoggedIn';
 import DevMode from '@dev/DevMode';
 
@@ -115,6 +116,8 @@ export default function Main() {
 	return (
 		<Box w='full' h='auto' minH='100%' background='none' flex={'1 1 auto'}>
 			{routes}
+
+			<ProfileNotices />
 
 			<DevMode>
 				<Box

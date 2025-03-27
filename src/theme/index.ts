@@ -27,6 +27,7 @@ import spinnerTheme from '@theme/components/Spinner';
 import textTheme from '@theme/components/Text';
 import tooltipTheme from '@theme/components/Tooltip';
 import containerTheme from '@theme/components/Container';
+import tagTheme from '@theme/components/Tag';
 // Config
 const config = {
 	initialColorMode: 'dark',
@@ -58,6 +59,7 @@ const overrides = {
 		Text: textTheme,
 		Tooltip: tooltipTheme,
 		Container: containerTheme,
+		Tag: tagTheme,
 	},
 };
 

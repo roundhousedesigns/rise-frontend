@@ -69,7 +69,7 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 	};
 
 	return profile ? (
-		<Card px={4} align='center' {...props}>
+		<Card px={4} m={0} align='center' {...props}>
 			<Stack direction='column' lineHeight={1} w='full'>
 				{image ? (
 					<Box textAlign='center'>
@@ -82,14 +82,10 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 					alignItems='center'
 				>
 					<Flex justifyContent='center' flexWrap='wrap' gap={2}>
-						<Heading size='lg' m={0} fontWeight='bold' lineHeight='none'>
+						<Heading size='md' m={0} fontWeight='bold' lineHeight='none'>
 							{profile.fullName()}
 						</Heading>
-						{pronouns ? (
-							<Tag colorScheme='blue' size='md'>
-								{pronouns}
-							</Tag>
-						) : null}
+						{pronouns ? <Tag size='xs'>{pronouns}</Tag> : null}
 					</Flex>
 				</Box>
 
