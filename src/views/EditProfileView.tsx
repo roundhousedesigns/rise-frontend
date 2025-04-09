@@ -214,8 +214,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		onClose: creditModalOnClose,
 	} = useDisclosure();
 
-	const { mediaItem } = useResumePreview(resume ? resume : '');
-	const { sourceUrl: retrievedResumePreview } = mediaItem || '';
+	const { attachment } = useResumePreview(resume);
 
 	useEffect(() => {
 		// Remove resumePreview from state when the resume is removed.
@@ -225,12 +224,12 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		}
 
 		// Save the retrieved resumePreview to state when it is retrieved.
-		if (retrievedResumePreview) {
-			setResumePreview(retrievedResumePreview);
+		if (attachment?.sourceUrl) {
+			setResumePreview(attachment.sourceUrl);
 		} else if (uploadedResumePreview) {
 			setResumePreview(uploadedResumePreview);
 		}
-	}, [resume, retrievedResumePreview]);
+	}, [resume, attachment]);
 
 	// Set the original profile to the current profile when it is loaded.
 	useEffect(() => {
@@ -721,7 +720,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<Spinner thickness='5px' speed={'.8s'} color={'blue.500'} size='xl' />
 	);
 
-	const Sidebar = ({ ...props }: { [prop: string]: any }) => (
+	const EditProfileSidebar = ({ ...props }: { [prop: string]: any }) => (
 		<Box {...props}>
 			<Box>
 				<Heading variant='pageSubtitle' my={0}>
@@ -950,7 +949,11 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 				</ProfileStackItem>
 				<ProfileStackItem>
 					<Flex alignItems={'flex-start'} flexWrap='wrap' mt={2}>
-						{isLargerThanMd ? <Sidebar mb={2} width={'30%'} minWidth='300px' mr={4} /> : false}
+						{isLargerThanMd ? (
+							<EditProfileSidebar mb={2} width={'30%'} minWidth='300px' mr={4} />
+						) : (
+							false
+						)}
 						<Stack flex='1' px={{ base: 0, md: 4 }} w='full'>
 							<ProfileStackItem title='Name'>
 								<Flex alignItems={'flex-end'} gap={2} flexWrap='wrap' w='full'>
@@ -1033,7 +1036,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 							</ProfileStackItem>
 							{!isLargerThanMd ? (
 								<ProfileStackItem display='flex' flexWrap='wrap' gap={4}>
-									<Sidebar />
+									<EditProfileSidebar />
 								</ProfileStackItem>
 							) : (
 								false
@@ -1220,10 +1223,10 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 								Resume
 							</Heading>
 							{!resume && <Heading variant='contentSubtitle'>PDF or image</Heading>}
-							{resume && resumePreview ? (
+							{resume && attachment?.sourceUrl ? (
 								<Flex flexWrap='wrap'>
 									<ResumePreviewModal
-										resumePreview={resumePreview}
+										resumePreviewSrc={attachment.sourceUrl}
 										resumeLink={resume}
 										w={'100%'}
 										maxW='300px'
@@ -1440,9 +1443,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 
 				<ProfileStackItem title='Media' centerlineColor={'brand.blue'}>
 					<>
-						<Heading variant='contentSubtitle'>
-							Showcase your work with images and videos.
-						</Heading>
+						<Heading variant='contentSubtitle'>Showcase your work with images and videos.</Heading>
 						<Box>
 							<Heading variant='contentTitle'>Videos</Heading>
 							<SimpleGrid columns={[1, 2]} spacing={8}>

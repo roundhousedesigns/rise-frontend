@@ -20,7 +20,9 @@ export interface WPItemParams {
  */
 export interface WPAttachmentParams {
 	id: number;
-	srcSet: string;
+	srcSet?: string;
+	sourceUrl?: string;
+	sizes?: string;
 	title?: string;
 }
 
@@ -298,4 +300,12 @@ export interface JobPostParams {
 	description?: string;
 	isInternship?: boolean;
 	isUnion?: boolean;
+}
+
+/**
+ * The data shape for a WordPress core settings query result.
+ */
+export interface WpCoreQueryResult {
+	wpGlobalStylesheet?: string;
+	wpStylesheetDirectoryUri?: string;
 }

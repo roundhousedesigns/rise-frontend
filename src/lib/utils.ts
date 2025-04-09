@@ -14,7 +14,6 @@ import {
 import { DateRangeParams, SearchFilterSetParams, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
 import { passwordStrength } from 'check-password-strength';
-const { VITE_FRONTEND_URL } = import.meta.env;
 
 /**
  * Additional filter keys. Affects display order.
@@ -215,13 +214,6 @@ export async function handleReCaptchaVerify({
 }
 
 /**
- * Get the URL prefix for a user profile. Includes the trailing slash.
- *
- * @returns string The user profile URL prefix with trailing slash.
- */
-export const getProfilePrefix = (): string => `${VITE_FRONTEND_URL}/profile/`;
-
-/**
  * Validate a profile slug string.
  *
  * @param {str} The string to validate.
@@ -242,8 +234,8 @@ export function validateProfileSlug(str: string): boolean {
  * @returns The sort order.
  */
 export const sortWPItemsByName = (a: WPItem, b: WPItem): number => {
-	const nameA = a.name.toLowerCase();
-	const nameB = b.name.toLowerCase();
+	const nameA = a.name?.toLowerCase() || '';
+	const nameB = b.name?.toLowerCase() || '';
 
 	if (nameA < nameB) {
 		return -1;

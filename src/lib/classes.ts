@@ -577,7 +577,7 @@ export class DateRange implements DateRangeParams {
  */
 export class WPItem implements WPItemParams {
 	id: number;
-	name: string;
+	name?: string;
 	slug?: string;
 	parentId?: number;
 	parent?: WPItem;
@@ -596,7 +596,7 @@ export class WPItem implements WPItemParams {
 }
 
 /**
- * A WordPress post.
+ * A WordPress Post.
  */
 export class WPPost extends WPItem {
 	postType: string;
@@ -621,14 +621,16 @@ export class WPPost extends WPItem {
 }
 
 /**
- * A WordPress attachment.
+ * A WordPress Attachment.
  */
 export class WPAttachment extends WPItem {
-	srcSet: string;
+	srcSet?: string;
+	sourceUrl?: string;
 
 	constructor(params: WPAttachmentParams) {
 		super(params);
 
 		this.srcSet = params.srcSet;
+		this.sourceUrl = params.sourceUrl;
 	}
 }

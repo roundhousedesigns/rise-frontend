@@ -8,6 +8,7 @@ import useSavedSearches from '@queries/useSavedSearches';
 import Widget from '@common/Widget';
 import ShortPost from '@components/ShortPost';
 import SavedSearchItemList from '@components/SavedSearchItemList';
+import HeadingCenterline from '../components/common/HeadingCenterline';
 
 export default function DashboardView__Widgets() {
 	const [{ loggedInId, starredProfiles }] = useViewer();
@@ -17,16 +18,10 @@ export default function DashboardView__Widgets() {
 	const [profile, { loading }] = useUserProfile(loggedInId);
 
 	return (
-		<Grid templateColumns={{ base: '1fr', md: '1fr 2fr' }} gap={8} w='full' maxW='none'>
-			<GridItem as={Stack} spacing={6} id={'dashboard-secondary'}>
+		<Grid templateColumns={{ base: '1fr', md: '1fr 3fr' }} gap={8} w='full' maxW='none'>
+			<GridItem as={Stack} spacing={4} id={'dashboard-secondary'}>
 				<Widget>
-					{profile ? (
-						<MiniProfileView profile={profile} allowStar={false} />
-					) : loading ? (
-						<Spinner />
-					) : (
-						<></>
-					)}
+					{profile ? <MiniProfileView profile={profile} /> : loading ? <Spinner /> : <></>}
 				</Widget>
 				{savedSearches?.length ? (
 					<Widget>
@@ -39,16 +34,16 @@ export default function DashboardView__Widgets() {
 					</Widget>
 				) : null}
 			</GridItem>
-			<GridItem as={Stack} spacing={6} id={'dashboard-primary'}>
+			<GridItem as={Stack} spacing={2} id={'dashboard-primary'} justifyContent='flex-start'>
 				{notices.length > 0 ? (
 					<Widget>
 						<>
-							<Heading as='h2' hidden>
+							<HeadingCenterline lineColor='brand.orange' headingProps={{ fontSize: '2xl' }}>
 								News
-							</Heading>
+							</HeadingCenterline>
 							<List spacing={4}>
 								{notices.map((notice: any) => (
-									<ListItem key={notice.id}>
+									<ListItem key={notice.id} mt={0}>
 										<ShortPost post={notice} mb={4} as={Card} />
 									</ListItem>
 								))}
@@ -60,9 +55,9 @@ export default function DashboardView__Widgets() {
 				{starredProfiles?.length ? (
 					<Widget>
 						<>
-							<Heading as='h2' variant='contentTitle'>
+							<HeadingCenterline lineColor='brand.orange' headingProps={{ fontSize: '2xl' }}>
 								Following
-							</Heading>
+							</HeadingCenterline>
 							<StarredProfileList showToggle={false} />
 						</>
 					</Widget>

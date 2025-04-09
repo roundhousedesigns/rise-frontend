@@ -20,7 +20,7 @@ export default function Login() {
 	});
 
 	return (
-		<Shell title={'Sign in to RISE'}>
+		<Shell title={'Sign in to RISE'} mx='auto'>
 			<LoginView alert={alert ? alert : ''} alertStatus={alertStatus ? alertStatus : ''} />
 		</Shell>
 	);

@@ -5,6 +5,9 @@
 export const styles = {
 	global: {
 		html: { fontSize: '18px' },
+		body: {
+			backgroundColor: 'bg.dark',
+		},
 		textarea: { underline: 'none !important' },
 		p: {
 			marginTop: '0.5em',
@@ -37,6 +40,12 @@ export const styles = {
 			fontSize: '3rem',
 		},
 		'.wp-post-content': {
+			a: {
+				'&:not(.wp-block-button__link), &:not(.wp-element-button), &:not(.chakra-button)': {
+					textDecoration: 'underline',
+					color: 'brand.blue',
+				},
+			},
 			p: {
 				marginTop: '1em',
 				marginBottom: '1em',
@@ -50,10 +59,18 @@ export const styles = {
 					marginBottom: 0,
 				},
 			},
-			a: {
-				'&:not(.wp-block-button__link), &:not(.wp-element-button)': {
-					textDecoration: 'underline',
-					color: 'brand.blue',
+			'.wp-block-group': {
+				'*': {
+					flex: 1,
+				},
+			},
+			'&.network-partner': {
+				'.content': {
+					'*': {
+						textAlign: 'center',
+						mx: 'auto',
+						display: 'block',
+					},
 				},
 			},
 		},

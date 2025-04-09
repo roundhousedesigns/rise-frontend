@@ -2,6 +2,8 @@
  * Deprecated functionality.
  */
 
+const { VITE_FRONTEND_URL } = import.meta.env;
+
 /**
  * Format a login error message.
  *
@@ -222,3 +224,11 @@ export function toggleArrayItem(array: any[], item: any): any[] {
 
 	return [...array, item];
 }
+
+/**
+ * Get the URL prefix for a user profile. Includes the trailing slash.
+ *
+ * @deprecated v1.2
+ * @returns string The user profile URL prefix with trailing slash.
+ */
+export const getProfilePrefix = (): string => `${VITE_FRONTEND_URL}/profile/`;

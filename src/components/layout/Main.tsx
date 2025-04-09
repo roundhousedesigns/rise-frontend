@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-import { Box, BoxProps, Container } from '@chakra-ui/react';
+import { Box, Text, chakra } from '@chakra-ui/react';
 import Dashboard from '@routes/Dashboard';
 import Login from '@routes/Login';
 import LostPassword from '@routes/LostPassword';
@@ -10,18 +10,18 @@ import EditProfile from '@routes/EditProfile';
 import Results from '@routes/Results';
 import StarredProfiles from '@routes/StarredProfiles';
 import Settings from '@routes/Settings';
-import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
-import Partners from '@routes/Partners';
-import Partner from '@routes/Partner';
-import Page from '@routes/Page';
-
+import ProfileNotices from '@common/ProfileNotices';
 import LoggedIn from '@components/LoggedIn';
+import DevMode from '@dev/DevMode';
 
-export default function Main({ ...props }: BoxProps) {
+import pkgJSON from '@@/package.json';
+const __APP_VERSION__ = `v${pkgJSON.version}`;
+
+export default function Main() {
 	const routes = useRoutes([
 		{
 			path: '/',
@@ -80,34 +80,10 @@ export default function Main({ ...props }: BoxProps) {
 			),
 		},
 		{
-			path: '/partners',
-			element: (
-				<LoggedIn>
-					<Partners />
-				</LoggedIn>
-			),
-		},
-		{
-			path: '/partners/:slug',
-			element: (
-				<LoggedIn>
-					<Partner />
-				</LoggedIn>
-			),
-		},
-		{
 			path: '/settings',
 			element: (
 				<LoggedIn>
 					<Settings />
-				</LoggedIn>
-			),
-		},
-		{
-			path: '/help',
-			element: (
-				<LoggedIn>
-					<Help />
 				</LoggedIn>
 			),
 		},
@@ -132,30 +108,41 @@ export default function Main({ ...props }: BoxProps) {
 			element: <Job />,
 		},
 		{
-			path: '/:slug',
-			element: <Page />,
-		},
-		{
 			path: '*',
 			element: <NotFound />,
 		},
 	]);
 
 	return (
-		<Box
-			id='main'
-			w='full'
-			h='auto'
-			py={2}
-			background='none'
-			justifyContent='center'
-			alignItems='center'
-			flex={'1 1 auto'}
-			{...props}
-		>
-			<Container w='full' maxW='none' pt={0} pb={4} px={0}>
-				{routes}
-			</Container>
+		<Box w='full' h='auto' minH='100%' background='none' flex={'1 1 auto'}>
+			<ProfileNotices />
+
+			<Box px={4}>{routes}</Box>
+
+			<DevMode>
+				<Box
+					w='100%'
+					textAlign='center'
+					m={0}
+					px={4}
+					bgColor='brand.blue'
+					lineHeight='shorter'
+					fontSize='2xs'
+					position='fixed'
+					bottom={0}
+					left={0}
+					right={0}
+					borderTop='1px solid var(--chakra-colors-bg-dark)'
+					zIndex={1000}
+				>
+					<Text my={0.5}>
+						{`Development Branch: `}
+						<chakra.span as={chakra.code} pl={1}>
+							{__APP_VERSION__}
+						</chakra.span>
+					</Text>
+				</Box>
+			</DevMode>
 		</Box>
 	);
 }

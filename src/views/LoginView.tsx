@@ -26,7 +26,7 @@ import {
 import { FiExternalLink, FiX } from 'react-icons/fi';
 import { decodeString, handleReCaptchaVerify } from '@lib/utils';
 import { LoginInput } from '@lib/types';
-import PageView from '@views/PageView';
+import PageContent from '@views/PageContent';
 import { useErrorMessage } from '@hooks/hooks';
 import useLogin from '@mutations/useLogin';
 import TextInput from '@common/inputs/TextInput';
@@ -65,132 +65,135 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 	const handleLoginSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		handleReCaptchaVerify({ label: 'login', executeRecaptcha })
-			.then((token) => {
-				if (!token) {
-					setErrorCode('recaptcha_error');
-					return;
-				}
+		loginMutation({ ...credentials }).catch((errors: { message: string }) => {
+			setErrorCode(errors.message);
+		});
 
-				loginMutation({ ...credentials, reCaptchaToken: token }).catch(
-					(errors: { message: string }) => {
-						setErrorCode(errors.message);
-					}
-				);
-			})
-			.catch(() => {
-				setErrorCode('recaptcha_error');
-			});
+		// RECAPTCHA IS DISABLED FOR NOW
+		// handleReCaptchaVerify({ label: 'login', executeRecaptcha })
+		// 	.then((token) => {
+		// 		if (!token) {
+		// 			setErrorCode('recaptcha_error');
+		// 			return;
+		// 		}
+
+		// 		loginMutation({ ...credentials, reCaptchaToken: token }).catch(
+		// 			(errors: { message: string }) => {
+		// 				setErrorCode(errors.message);
+		// 			}
+		// 		);
+		// 	})
+		// 	.catch(() => {
+		// 		setErrorCode('recaptcha_error');
+		// 	});
 	};
 
 	const sanitizedAlertStatus = alertStatus === 'error' ? 'error' : 'success';
 
 	return (
 		<>
-			<Box>
-				<Flex alignItems='center' gap={8} flexWrap='wrap'>
-					<Box flex='1'>
-						<Box maxWidth='md'>
-							{signInTitle ? (
-								<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
-									Sign in to RISE
-								</Heading>
-							) : (
-								false
-							)}
-							<Text fontSize='lg'>
-								You'll need an account to create a profile or to search for candidates.
-							</Text>
-							<Divider my={4} />
-							<Box flex={'1 1 auto'}>
-								{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
-								<chakra.form onSubmit={handleLoginSubmit}>
-									<TextInput
-										value={credentials.login}
-										name='login'
-										label='Email'
-										autoComplete='username'
-										isRequired
-										onChange={handleInputChange}
-										error={
-											['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
-												? errorMessage
-												: ''
-										}
-										inputProps={{
-											autoComplete: 'username',
-											fontSize: 'lg',
-										}}
-									/>
-									<TextInput
-										value={credentials.password}
-										name='password'
-										label='Password'
-										isRequired
-										onChange={handleInputChange}
-										error={errorCode === 'incorrect_password' ? errorMessage : ''}
-										inputProps={{
-											type: 'password',
-											autoComplete: 'current-password',
-											fontSize: 'lg',
-										}}
-									/>
-									<Flex
-										gap={4}
-										alignItems='center'
-										justifyContent={'space-between'}
-										mt={4}
-										flexWrap='wrap'
+			<Flex alignItems='center' gap={8} flexWrap='wrap' maxW='4xl' mx='auto'>
+				<Box flex='1'>
+					<Box maxWidth='md'>
+						{signInTitle ? (
+							<Heading variant='pageTitle' as='h1' my={0} lineHeight='normal'>
+								Sign in to RISE
+							</Heading>
+						) : (
+							false
+						)}
+						<Text fontSize='lg'>
+							You'll need an account to create a profile or to search for candidates.
+						</Text>
+						<Divider my={4} />
+						<Box flex={'1 1 auto'}>
+							{alert ? <Alert status={sanitizedAlertStatus}>{alert}</Alert> : false}
+							<chakra.form onSubmit={handleLoginSubmit}>
+								<TextInput
+									value={credentials.login}
+									name='login'
+									label='Email'
+									autoComplete='username'
+									isRequired
+									onChange={handleInputChange}
+									error={
+										['invalid_username', 'invalid_email', 'invalid_account'].includes(errorCode)
+											? errorMessage
+											: ''
+									}
+									inputProps={{
+										autoComplete: 'username',
+										fontSize: 'lg',
+									}}
+								/>
+								<TextInput
+									value={credentials.password}
+									name='password'
+									label='Password'
+									isRequired
+									onChange={handleInputChange}
+									error={errorCode === 'incorrect_password' ? errorMessage : ''}
+									inputProps={{
+										type: 'password',
+										autoComplete: 'current-password',
+										fontSize: 'lg',
+									}}
+								/>
+								<Flex
+									gap={4}
+									alignItems='center'
+									justifyContent={'space-between'}
+									mt={4}
+									flexWrap='wrap'
+								>
+									<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
+										Sign In
+									</Button>
+									<Link as={RouterLink} to={'/lost-password'} fontSize='sm'>
+										Lost your password?
+									</Link>
+								</Flex>
+								<Box id={'recaptcha-badge'} />
+								<Divider />
+								<Box textAlign='center' flex='1'>
+									<Heading variant='pageSubtitle' fontSize='xl'>
+										Don't have an account?
+									</Heading>
+									<Button
+										as={RouterLink}
+										to={'/register'}
+										borderRadius={{ base: 'md', md: 'lg' }}
+										colorScheme='green'
+										color={'text.dark'}
+										size='lg'
 									>
-										<Button type='submit' colorScheme='blue' px={6} isLoading={!!submitLoading}>
-											Sign In
-										</Button>
-										<Link as={RouterLink} to={'/lost-password'} fontSize='sm'>
-											Lost your password?
-										</Link>
-									</Flex>
-									<Box id={'recaptcha-badge'} />
-									<Divider />
-									<Box textAlign='center' flex='1'>
-										<Heading variant='pageSubtitle' fontSize='xl'>
-											Don't have an account?
-										</Heading>
-										<Button
-											as={RouterLink}
-											to={'/register'}
-											borderRadius={{ base: 'md', md: 'lg' }}
-											colorScheme='green'
-											color={'text.dark'}
-											size='lg'
-										>
-											Join Now
-										</Button>
-									</Box>
-								</chakra.form>
-							</Box>
+										Join Now
+									</Button>
+								</Box>
+							</chakra.form>
 						</Box>
 					</Box>
-					{!isLargerThanMd ? <Divider my={0} /> : false}
-					<Box textAlign='center' flex='1' pb={2}>
-						<Stack textAlign='center' gap={6}>
-							<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
-								<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
-									Find your next project
-								</Highlight>
-								<br />
-								<Highlight query={['team']} styles={{ bg: 'green.200' }}>
-									Discover your next team
-								</Highlight>
-							</Heading>
-							<Box>
-								<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
-									{`What is RISE? ${decodeString('&raquo;')}`}
-								</Button>
-							</Box>
-						</Stack>
-					</Box>
-				</Flex>
-			</Box>
+				</Box>
+				{!isLargerThanMd ? <Divider my={0} /> : false}
+				<Box textAlign='center' flex='1' pb={2}>
+					<Stack textAlign='center' gap={6}>
+						<Heading as='h2' my={0} fontSize={{ base: '2xl', md: '3xl' }}>
+							<Highlight query={['project']} styles={{ bg: 'blue.200' }}>
+								Find your next project
+							</Highlight>
+							<br />
+							<Highlight query={['team']} styles={{ bg: 'green.200' }}>
+								Discover your next team
+							</Highlight>
+						</Heading>
+						<Box>
+							<Button onClick={onOpen} size='xxl' colorScheme='yellow'>
+								{`What is RISE? ${decodeString('&raquo;')}`}
+							</Button>
+						</Box>
+					</Stack>
+				</Box>
+			</Flex>
 			<Drawer
 				placement='right'
 				size={{ base: 'full', md: 'md' }}
@@ -212,7 +215,7 @@ export default function LoginView({ alert, alertStatus, signInTitle }: Props) {
 					</DrawerHeader>
 					<DrawerBody py={0} pb={2}>
 						<Box textAlign='center'>
-							<PageView postId='12238' mt={0} pt={0} />
+							<PageContent postId='12238' mt={0} pt={0} />
 							<Button
 								as={Link}
 								href={'https://risetheatre.org'}

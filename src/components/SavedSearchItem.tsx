@@ -227,104 +227,102 @@ export default function SavedSearchItem({
 		<Card p={0} my={0} {...props}>
 			<Flex justifyContent={'space-between'}>
 				<Stack w='auto' alignItems={'space-between'} p={2}>
-					<Box>
-						<Flex alignItems={'flex-end'}>
-							<LinkWithIcon
-								onClick={handleEditTitleClick}
-								icon={FiEdit2}
-								fontSize='lg'
-								mb={1}
-								flex={1}
-								iconSide='left'
-								color='inherit'
-								borderBottomWidth='2px'
-								borderBottomStyle='dotted'
-								textDecoration={'none !important'}
-								transition={'border 150ms ease'}
-								_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
-								_light={{
-									borderBottomColor: 'gray.300',
-									_hover: { borderBottomColor: 'gray.500' },
-								}}
-								_dark={{
-									borderBottomColor: 'gray.600',
-									_hover: { borderBottomColor: 'gray.500' },
-								}}
-								iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
-							>
-								{title ? (
-									title
+					<Flex alignItems={'flex-end'}>
+						<LinkWithIcon
+							onClick={handleEditTitleClick}
+							icon={FiEdit2}
+							fontSize='lg'
+							mb={1}
+							flex={1}
+							iconSide='left'
+							color='inherit'
+							borderBottomWidth='2px'
+							borderBottomStyle='dotted'
+							textDecoration={'none !important'}
+							transition={'border 150ms ease'}
+							_hover={{ borderBottomStyle: 'dotted', borderBottomWidth: '2px' }}
+							_light={{
+								borderBottomColor: 'gray.300',
+								_hover: { borderBottomColor: 'gray.500' },
+							}}
+							_dark={{
+								borderBottomColor: 'gray.600',
+								_hover: { borderBottomColor: 'gray.500' },
+							}}
+							iconProps={{ boxSize: 4, mb: '2px', ml: 1, position: 'relative', top: '2px' }}
+						>
+							{title ? (
+								title
+							) : (
+								<Text as='span' opacity={'0.5'} lineHeight='normal'>
+									Save this search
+								</Text>
+							)}
+						</LinkWithIcon>
+						{id ? (
+							<Box p={2}>
+								{showControls ? (
+									<ButtonGroup size='xs' spacing={1}>
+										<TooltipIconButton
+											icon={<FiSearch />}
+											aria-label={'Load these filters'}
+											label={'Load these filters'}
+											colorScheme='green'
+											onClick={handleSearchClick}
+										>
+											Search
+										</TooltipIconButton>
+										<TooltipIconButton
+											icon={<FiDelete />}
+											aria-label={'Delete this search'}
+											label={'Delete this search'}
+											colorScheme='red'
+											onClick={deleteOnOpen}
+										>
+											Delete
+										</TooltipIconButton>
+									</ButtonGroup>
+								) : savedSearchFiltersChanged ? (
+									<Stack textAlign='center'>
+										<Button
+											colorScheme='yellow'
+											leftIcon={<FiSave />}
+											aria-label={'Update saved filters'}
+											title={'Update saved filters'}
+											onClick={handleUpdateClick}
+											size='sm'
+											isLoading={saveLoading && whichButtonClicked === 'update'}
+											isDisabled={saveLoading}
+										>
+											Update
+										</Button>
+										<Button
+											colorScheme='blue'
+											leftIcon={<FiPlusCircle />}
+											aria-label={'Update saved filters'}
+											title={'Update saved filters'}
+											onClick={handleSaveNewSearchClick}
+											size='sm'
+											isLoading={saveLoading && whichButtonClicked === 'new'}
+											isDisabled={saveLoading}
+										>
+											Save New
+										</Button>
+									</Stack>
 								) : (
-									<Text as='span' opacity={'0.5'} lineHeight='normal'>
-										Save this search
-									</Text>
+									false
 								)}
-							</LinkWithIcon>
-						</Flex>
-					</Box>
-					<Box as={Flex} w='full' justifyContent={'space-between'} flexWrap='wrap' gap={6}>
-						<Skeleton isLoaded={!!terms.length}>
-							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
-						</Skeleton>
-					</Box>
-				</Stack>
-				{id ? (
-					<Box p={2}>
-						{showControls ? (
-							<ButtonGroup size='sm'>
-								<TooltipIconButton
-									icon={<FiSearch />}
-									aria-label={'Load these filters'}
-									label={'Load these filters'}
-									colorScheme='green'
-									onClick={handleSearchClick}
-								>
-									Search
-								</TooltipIconButton>
-								<TooltipIconButton
-									icon={<FiDelete />}
-									aria-label={'Delete this search'}
-									label={'Delete this search'}
-									colorScheme='red'
-									onClick={deleteOnOpen}
-								>
-									Delete
-								</TooltipIconButton>
-							</ButtonGroup>
-						) : savedSearchFiltersChanged ? (
-							<Stack textAlign='center'>
-								<Button
-									colorScheme='yellow'
-									leftIcon={<FiSave />}
-									aria-label={'Update saved filters'}
-									title={'Update saved filters'}
-									onClick={handleUpdateClick}
-									size='sm'
-									isLoading={saveLoading && whichButtonClicked === 'update'}
-									isDisabled={saveLoading}
-								>
-									Update
-								</Button>
-								<Button
-									colorScheme='blue'
-									leftIcon={<FiPlusCircle />}
-									aria-label={'Update saved filters'}
-									title={'Update saved filters'}
-									onClick={handleSaveNewSearchClick}
-									size='sm'
-									isLoading={saveLoading && whichButtonClicked === 'new'}
-									isDisabled={saveLoading}
-								>
-									Save New
-								</Button>
-							</Stack>
+							</Box>
 						) : (
 							false
 						)}
-					</Box>
-				) : (
-					false
-				)}
+					</Flex>
+					<Flex w='full' justifyContent={'space-between'} flexWrap='wrap' gap={6}>
+						<Skeleton isLoaded={!!terms.length}>
+							<SearchParamTags termIds={termIds} termItems={terms} flex='1' />
+						</Skeleton>
+					</Flex>
+				</Stack>
 			</Flex>
 
 			<EditSavedSearchModal

@@ -71,9 +71,9 @@ export default function ProfileNotice({
 					colorScheme={colorScheme}
 					color={color}
 					variant='subtle'
-					fontSize='sm'
+					fontSize='xs'
 					borderRadius={0}
-					py={2}
+					py={0}
 					my={0}
 					justifyContent={'space-between'}
 					{...props}
@@ -122,9 +122,9 @@ const profileNoticeAlerts: { [code: string]: ProfileNoticeAlert } = {
 		description: (
 			<>
 				<Link as={RouterLink} to={'/settings'} color={'text.dark'} textDecorationColor='initial'>
-					Take your profile public
-				</Link>{' '}
-				to appear in searches.
+					Go public
+				</Link>
+				{'.'}
 			</>
 		),
 	},

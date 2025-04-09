@@ -1,3 +1,8 @@
+/*
+ * @deprecated
+ * This component is no longer used.
+ */
+
 import {
 	Flex,
 	IconButton,
@@ -44,6 +49,7 @@ export default function MainMenu() {
 	 */
 	const logout = (): void => {
 		logoutMutation().then(() => {
+			// TODO Fix logout redirect
 			window.location.href = '/login';
 		});
 	};

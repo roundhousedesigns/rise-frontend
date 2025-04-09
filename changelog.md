@@ -19,7 +19,7 @@ with 1.0.0beta.
 - Improve: `prepareUserProfileForGraphQL()` --> `prepareUserProfileForGQL()` for naming convention.
 - Improve: Update Props TS from Index Signature (e.g. `[key: string]: any;`) format to intersection types \(`Props & ListProps`\) where possible.
 - Improve: Minor styling tweaks
-- Improve: Make WP Post retrieval more robust. `ContentView` --> is now `PageView` and `usePostContent` is now `usePage`, which returns a `WPPost` item. This pattern can be reused for other post types!
+- Improve: Make WP Post retrieval more robust. `ContentView` --> is now `PageContent` and `usePostContent` is now `usePage`, which returns a `WPPost` item. This pattern can be reused for other post types!
 - Improve: Use the Rise 'star' glyph more liberally.
 - Improve: Global style fixes (ahhh branch drift......)
 

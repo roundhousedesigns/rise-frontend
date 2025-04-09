@@ -14,8 +14,6 @@ import {
 interface Props {
 	title?: string;
 	description?: string | JSX.Element;
-	fullWidthTemplate?: boolean;
-	titleContainerWidth?: string;
 	actions?: ReactNode;
 	loading?: boolean;
 	children: ReactNode;
@@ -27,31 +25,16 @@ export default function Shell({
 	description,
 	actions,
 	loading,
-	fullWidthTemplate,
-	titleContainerWidth,
 	children,
 	titleProps,
 	...props
 }: Props & ContainerProps): JSX.Element {
-	const fullWidthTitleProps = {
-		maxWidth: titleContainerWidth || '5xl',
-		mx: 'auto',
-	};
-
 	return loading ? (
 		<Center>
 			<Spinner position='relative' top={12} />
 		</Center>
 	) : (
-		<Container
-			maxWidth={fullWidthTemplate ? 'full' : '5xl'}
-			pt={fullWidthTemplate ? 4 : 0}
-			px={0}
-			mx='auto'
-			mt={fullWidthTemplate ? 0 : 3}
-			mb={4}
-			{...props}
-		>
+		<Box maxWidth='4xl' pt={4} px={0} mt={3} mb={4} {...props}>
 			{!!title || !!actions ? (
 				<Flex
 					justifyContent={'space-between'}
@@ -59,16 +42,18 @@ export default function Shell({
 					gap={2}
 					flexWrap='wrap'
 					m={0}
-					p={0}
-					{...(fullWidthTemplate ? fullWidthTitleProps : {})}
+					py={0}
+					px={4}
 				>
 					{title ? (
 						<Heading
 							variant='pageTitle'
 							as='h1'
+							flex='1'
 							my={0}
-							px={4}
+							px={0}
 							lineHeight='normal'
+							w='full'
 							{...titleProps}
 						>
 							{title}
@@ -92,6 +77,6 @@ export default function Shell({
 			<Box px={4} mx='auto'>
 				{children}
 			</Box>
-		</Container>
+		</Box>
 	);
 }

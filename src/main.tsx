@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import ReactGA from 'react-ga4';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
@@ -10,7 +10,7 @@ import { ChakraProvider, ColorModeScript } from '@chakra-ui/react';
 import theme from '@theme/index';
 import Fonts from '@theme/Fonts';
 import App from '@/App';
-
+import WordPressStyles from '@components/WordPressStyles';
 import reportWebVitals from '@/reportWebVitals';
 
 // Env vars
@@ -37,16 +37,15 @@ const client = new ApolloClient({
 root.render(
 	<StrictMode>
 		<ColorModeScript initialColorMode={theme.config.initialColorMode} />
-		<GoogleReCaptchaProvider reCaptchaKey={VITE_RECAPTCHA_SITE_KEY}>
-			<BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-				<ApolloProvider client={client}>
-					<ChakraProvider resetCSS={true} theme={theme}>
-						<Fonts />
-						<App />
-					</ChakraProvider>
-				</ApolloProvider>
-			</BrowserRouter>
-		</GoogleReCaptchaProvider>
+		<HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+			<ApolloProvider client={client}>
+				<ChakraProvider resetCSS={true} theme={theme}>
+					<Fonts />
+					<WordPressStyles />
+					<App />
+				</ChakraProvider>
+			</ApolloProvider>
+		</HashRouter>
 	</StrictMode>
 );
 
