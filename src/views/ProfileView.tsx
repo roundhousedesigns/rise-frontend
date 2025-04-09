@@ -28,7 +28,6 @@ import {
 	FiUser,
 	FiLink,
 	FiMap,
-	FiDownload,
 	FiExternalLink,
 	FiGlobe,
 } from 'react-icons/fi';
@@ -188,7 +187,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 		};
 
 		return (
-			<Heading as='h2' size='md' mt={2} fontWeight='medium' {...props}>
+			<Heading as='h2' size='sm' fontWeight='medium' {...props}>
 				{selfTitle && homebase ? (
 					<>
 						<SelfTitle /> based in <HomeBase />
@@ -202,7 +201,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 
 	return profile ? (
 		<Stack direction='column' flexWrap='nowrap' gap={6}>
-			<ProfileStackItem as={Card} p={4}>
+			<ProfileStackItem as={Card} p={4} mt={2}>
 				{id && allowStar && !isLargerThanMd ? (
 					<StarToggleIcon id={id} mx={{ base: 0 }} borderRadius='md' size='lg' />
 				) : null}
@@ -214,14 +213,48 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 					{isLargerThanMd ? (
 						<Stack direction='column' w={'40%'} minW='160px' maxW='400px' textAlign='center'>
 							{image ? (
-								<Box>
+								<Box position='relative'>
+									<Box
+										bg='brand.orange'
+										borderRadius='md'
+										w='full'
+										h='full'
+										transform='translate(12px, 12px)'
+										position='absolute'
+										top={0}
+										left={0}
+									/>
+									<Box
+										bg='brand.yellow'
+										borderRadius='md'
+										w='full'
+										h='full'
+										transform='translate(8px, 8px)'
+										position='absolute'
+										top={0}
+										left={0}
+									/>
+									<Box
+										bg='brand.blue'
+										borderRadius='md'
+										w='full'
+										h='full'
+										transform='translate(4px, 4px)'
+										position='absolute'
+										top={0}
+										left={0}
+									/>
 									<Image
 										src={image}
 										alt={`${profile.fullName()}'s picture`}
 										borderRadius='md'
+										border='2px text.light'
+										_dark={{ borderColor: 'brand.green' }}
+										_light={{ borderColor: 'brand.yellow' }}
 										loading='eager'
 										fit='cover'
 										w='full'
+										transform='translate(0, 0)'
 									/>
 								</Box>
 							) : (
@@ -319,13 +352,19 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 								justifyContent={{ base: 'center', md: 'space-between' }}
 								w='full'
 								flexWrap='wrap'
-								alignItems='center'
+								alignItems='flex-end'
 							>
 								<Heading as='h1' size='xl' pt={4} mr={2} my={0} fontWeight='bold' lineHeight='none'>
 									{profile.fullName()}
 								</Heading>
 								{pronouns ? (
-									<Tag colorScheme='blue' size='md' mt={{ base: 2, md: 'initial' }}>
+									<Tag
+										colorScheme='blue'
+										size='md'
+										mt={{ base: 2, md: 'initial' }}
+										position='relative'
+										bottom={{ base: 0, md: 1 }}
+									>
 										{pronouns}
 									</Tag>
 								) : null}

@@ -4,7 +4,7 @@
 
 import { Box, Flex, useDisclosure } from '@chakra-ui/react';
 import { SearchContextProvider } from '@context/SearchContext';
-import SearchDrawerContext from '@context/SearchDrawerContext'
+import SearchDrawerContext from '@context/SearchDrawerContext';
 import Sidebar from '@layout/Sidebar';
 import Main from '@layout/Main';
 
@@ -26,7 +26,7 @@ export default function App() {
 			<SearchContextProvider>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
 					<Box w='full' h='100%' overflow='auto' justifyContent={'space-between'} gap={0}>
-						<Flex w='full' h='100%' justifyContent='flex-start' gap={4}>
+						<Flex w='full' h='100%' justifyContent='flex-start'>
 							<Sidebar />
 							<Main />
 						</Flex>

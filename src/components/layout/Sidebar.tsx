@@ -1,14 +1,21 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Container, Badge, Flex } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiLink } from 'react-icons/fi';
+import {
+	FiSearch,
+	FiUser,
+	FiStar,
+	FiFolder,
+	FiBriefcase,
+	FiLink,
+	FiSettings,
+} from 'react-icons/fi';
 import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@queries/useViewer';
 import useSavedSearches from '@queries/useSavedSearches';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
-import MainMenu from '@components/MainMenu';
 
 export default function Sidebar() {
 	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
@@ -28,10 +35,6 @@ export default function Sidebar() {
 		<Box id='sidebar' w='100px' height='100%' pt={2} bg='text.dark' color='text.light'>
 			<Container centerContent w='full' maxW='9xl' p={2}>
 				<Flex flexDirection='column' alignItems='center'>
-					<Box mb={2}>
-						<MainMenu />
-					</Box>
-
 					<Flex
 						color={'text.light'}
 						mx={{ base: 0, md: 2 }}
@@ -39,6 +42,21 @@ export default function Sidebar() {
 						alignItems='center'
 						gap={2}
 					>
+						<TooltipIconButton
+							icon={<FiSearch />}
+							onClick={handleDrawerOpen}
+							label='Search'
+							colorScheme='green'
+						/>
+
+						<TooltipIconButton
+							icon={<FiUser />}
+							as={RouterLink}
+							label={'My Profile'}
+							colorScheme='blue'
+							to={`/profile/${loggedInSlug}`}
+						/>
+
 						<TooltipIconButton icon={<FiBriefcase />} label='Jobs' as={RouterLink} to={'/jobs'} />
 
 						<TooltipIconButton
@@ -75,18 +93,11 @@ export default function Sidebar() {
 						)}
 
 						<TooltipIconButton
-							icon={<FiSearch />}
-							onClick={handleDrawerOpen}
-							label='Search'
-							colorScheme='green'
-						/>
-
-						<TooltipIconButton
-							icon={<FiUser />}
+							icon={<FiSettings />}
 							as={RouterLink}
-							label={'My Profile'}
-							colorScheme='blue'
-							to={`/profile/${loggedInSlug}`}
+							label={'Settings'}
+							colorScheme='yellow'
+							to={`/settings`}
 						/>
 					</Flex>
 				</Flex>

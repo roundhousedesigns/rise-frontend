@@ -1,3 +1,8 @@
+/*
+ * @deprecated
+ * This component is no longer used.
+ */
+
 import {
 	Flex,
 	IconButton,

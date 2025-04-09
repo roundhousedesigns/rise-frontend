@@ -42,14 +42,16 @@ export default function Shell({
 					gap={2}
 					flexWrap='wrap'
 					m={0}
-					p={0}
+					py={0}
+					px={4}
 				>
 					{title ? (
 						<Heading
 							variant='pageTitle'
 							as='h1'
+							flex='1'
 							my={0}
-							px={4}
+							px={0}
 							lineHeight='normal'
 							w='full'
 							{...titleProps}

@@ -78,8 +78,8 @@ export default function SettingsView() {
 
 			<SettingsSection title={'Close your account'}>
 				<Text m={0}>
-					If you'd like to remove your account entirely, please use the button below. You can always
-					re-register at any time.
+					If you'd like to remove your account entirely and delete your data, please use the button
+					below. You can re-register at any time.
 				</Text>
 				<ButtonGroup>
 					<Button colorScheme='red' onClick={onOpenDeleteAccount}>

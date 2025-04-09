@@ -115,9 +115,9 @@ export default function Main() {
 
 	return (
 		<Box w='full' h='auto' minH='100%' background='none' flex={'1 1 auto'}>
-			{routes}
-
 			<ProfileNotices />
+
+			<Box px={4}>{routes}</Box>
 
 			<DevMode>
 				<Box
