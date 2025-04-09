@@ -213,7 +213,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 					{isLargerThanMd ? (
 						<Stack direction='column' w={'40%'} minW='160px' maxW='400px' textAlign='center'>
 							{image ? (
-								<Box position='relative'>
+								<Box position='relative' mb={2}>
 									<Box
 										bg='brand.orange'
 										borderRadius='md'
