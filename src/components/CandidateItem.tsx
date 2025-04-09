@@ -42,6 +42,7 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 				as={RouterLink}
 				to={`/profile/${slug}`}
 				variant='listItem'
+				textDecoration='none'
 				{...props}
 			>
 				<Flex

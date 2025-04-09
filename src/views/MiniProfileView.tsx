@@ -60,7 +60,7 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 					<Box>
 						{percentComplete < 100 ? <ProfilePercentComplete colorScheme='blue' /> : null}
 
-						<ButtonGroup size='xs' mt={2}>
+						<ButtonGroup size='xs' spacing={1} mt={2} display='flex' justifyContent='flex-end'>
 							<TooltipIconButton
 								as={RouterLink}
 								icon={<FiUser />}

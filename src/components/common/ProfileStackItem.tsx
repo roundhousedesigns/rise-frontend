@@ -27,7 +27,7 @@ export default function ProfileStackItem({
 	};
 
 	return (
-		<Box mb={2} {...props}>
+		<Box {...props}>
 			{title ? <SectionTitle /> : false}
 			{children}
 		</Box>

@@ -213,7 +213,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 					{isLargerThanMd ? (
 						<Stack direction='column' w={'40%'} minW='160px' maxW='400px' textAlign='center'>
 							{image ? (
-								<Box position='relative' mb={2}>
+								<Box position='relative' m={1}>
 									<Box
 										bg='brand.orange'
 										borderRadius='md'
@@ -229,7 +229,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										borderRadius='md'
 										w='full'
 										h='full'
-										transform='translate(8px, 8px)'
+										transform='translate(7px, 7px)'
 										position='absolute'
 										top={0}
 										left={0}
@@ -239,7 +239,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										borderRadius='md'
 										w='full'
 										h='full'
-										transform='translate(4px, 4px)'
+										transform='translate(3px, 3px)'
 										position='absolute'
 										top={0}
 										left={0}
@@ -248,9 +248,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 										src={image}
 										alt={`${profile.fullName()}'s picture`}
 										borderRadius='md'
-										border='2px text.light'
-										_dark={{ borderColor: 'brand.green' }}
-										_light={{ borderColor: 'brand.yellow' }}
+										borderWidth='2px'
+										borderStyle='solid'
+										borderColor='brand.blue'
 										loading='eager'
 										fit='cover'
 										w='full'
