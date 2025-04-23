@@ -10,8 +10,8 @@ import { JobPostParams } from '@lib/types';
 // TODO update Job class props to match the query
 
 export const QUERY_JOBS = gql`
-	query JobsQuery($id: Int = 0) {
-		jobs(where: { id: $id }) {
+	query JobsQuery($ids: [ID] = []) {
+		jobs(where: { in: $ids }) {
 			nodes {
 				id: databaseId
 				companyName(format: RAW)
@@ -36,12 +36,17 @@ export const QUERY_JOBS = gql`
 	}
 `;
 
-const useJobPosts = (id: number = 0): [JobPost[], any] => {
+const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 	const result = useQuery(QUERY_JOBS, {
-		variables: { id },
+		variables: {
+			ids: ids.map((id) => id.toString()), // Convert numbers to strings for ID type
+		},
+		fetchPolicy: 'cache-and-network',
+		// Skip the query entirely if we have no IDs
+		skip: ids.length === 0,
 	});
 
-	if (!result?.data?.jobs?.nodes) {
+	if (!result?.data?.jobs?.nodes || ids.length === 0) {
 		return [[], omit(result, ['data'])];
 	}
 

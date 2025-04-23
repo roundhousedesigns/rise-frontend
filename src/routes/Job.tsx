@@ -6,12 +6,10 @@ import Shell from '@layout/Shell';
 export default function Jobs() {
 	const params = useParams();
 	const id = params.id ? params.id : '';
-	const [job, { loading }] = useJobPosts(parseInt(id));
-
-	const title = !job.length ? '' : job[0].title;
+	const [job, { loading }] = useJobPosts([parseInt(id)]);
 
 	return (
-		<Shell title={title} loading={!!loading}>
+		<Shell loading={!!loading}>
 			<JobView job={job[0]} />
 		</Shell>
 	);

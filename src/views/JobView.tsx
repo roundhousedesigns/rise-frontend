@@ -35,6 +35,7 @@ interface Props {
  */
 export default function JobView({ job }: Props): JSX.Element | null {
 	const {
+		title,
 		companyName,
 		contactEmail,
 		contactName,
@@ -61,43 +62,49 @@ export default function JobView({ job }: Props): JSX.Element | null {
 	const parsedInstructions = instructions ? parse(instructions) : '';
 
 	return (
-		<Box>
+		<>
+			<HeadingCenterline lineColor='brand.blue' mt={2}>
+				{title}
+			</HeadingCenterline>
 			<Wrap>
 				<Heading as='h2' fontSize='xl' my={0}>
 					{companyName}
 				</Heading>
-				<Flex alignItems='center' gap={2}>
+				<Flex alignItems='flex-end' gap={2}>
+					{isUnion && (
+						<Tag colorScheme='orange' size='sm'>
+							Union
+						</Tag>
+					)}
 					{isInternship && (
 						<Tag colorScheme='yellow' size='sm'>
 							Internship
 						</Tag>
 					)}
-					{isUnion && (
-						<Tag colorScheme='red' size='sm'>
-							Union
-						</Tag>
-					)}
 				</Flex>
 			</Wrap>
 
-			<Stack gap={6}>
-				<Flex gap={4} flexWrap='wrap'>
-					<Card gap={0}>
+			<Box w='full'>
+				<Flex gap={4} flexWrap='wrap' w='100%'>
+					<Card gap={0} flex='0 0 250px'>
 						{parsedCompanyAddress ? (
-							<>
-								<WrapWithIcon icon={FiMap}>
-									<Tag size='lg' whiteSpace={'pre-wrap'} px={2} py={1}>
+							<Stack gap={2}>
+								<WrapWithIcon icon={FiMap} my={0}>
+									<Text whiteSpace={'pre-wrap'} my={0} lineHeight='short'>
 										{parsedCompanyAddress}
-									</Tag>
+									</Text>
 								</WrapWithIcon>
 								<WrapWithIcon icon={FiCalendar}>
-									<Tag colorScheme='green'>{`${startDate}${endDate ? ` - ${endDate}` : ''}`}</Tag>
+									<Wrap>
+										<Text as='span' m={0}>
+											{`Starts on ${startDate}${endDate ? ` - ${endDate}` : ''}`}
+										</Text>
+									</Wrap>
 								</WrapWithIcon>
-							</>
+							</Stack>
 						) : null}
 					</Card>
-
-					<Card flex={1}>
+					<Card flex='1'>
 						<Stack gap={2}>
 							<WrapWithIcon icon={FiUser} my={0}>
 								{contactName}
@@ -159,18 +166,13 @@ export default function JobView({ job }: Props): JSX.Element | null {
 						) : null}
 
 						{applicationEmail ? (
-							<Button
-								as='a'
-								href={`mailto:${applicationEmail}`}
-								leftIcon={<FiMail />}
-								size='md'
-							>
+							<Button as='a' href={`mailto:${applicationEmail}`} leftIcon={<FiMail />} size='md'>
 								Email to Apply: {applicationEmail}
 							</Button>
 						) : null}
 					</ButtonGroup>
 				</Box>
-			</Stack>
-		</Box>
+			</Box>
+		</>
 	);
 }

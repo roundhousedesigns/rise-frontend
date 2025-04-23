@@ -25,12 +25,10 @@ export default function App() {
 		>
 			<SearchContextProvider>
 				<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
-					<Box w='full' h='100%' overflow='auto' justifyContent={'space-between'} gap={0}>
-						<Flex w='full' h='100%' justifyContent='flex-start'>
-							<Sidebar />
-							<Main />
-						</Flex>
-					</Box>
+					<Flex w='full' h='100%' justifyContent='flex-start'>
+						<Sidebar />
+						<Main />
+					</Flex>
 				</SearchDrawerContext.Provider>
 			</SearchContextProvider>
 		</Box>

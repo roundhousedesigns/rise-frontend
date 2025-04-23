@@ -974,6 +974,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 										placeholder='Last'
 										value={lastName}
 										name='lastName'
+										label={'Last name'}
 										isRequired
 										onChange={handleInputChange}
 										flex='1'

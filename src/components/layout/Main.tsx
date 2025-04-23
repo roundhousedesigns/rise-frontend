@@ -117,14 +117,14 @@ export default function Main() {
 		<Box w='full' h='auto' minH='100%' background='none' flex={'1 1 auto'}>
 			<ProfileNotices />
 
-			<Box px={4}>{routes}</Box>
+			<Box px={2}>{routes}</Box>
 
 			<DevMode>
 				<Box
 					w='100%'
 					textAlign='center'
 					m={0}
-					px={4}
+					px={0}
 					bgColor='brand.blue'
 					lineHeight='shorter'
 					fontSize='2xs'
