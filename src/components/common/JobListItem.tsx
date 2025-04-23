@@ -23,7 +23,16 @@ export default function JobListItem({ job }: JobListItemProps): JSX.Element {
 	const datesString = endDate ? `${startDate} - ${endDate}` : `Starts ${startDate}`;
 
 	return (
-		<Card variant='listItem' as={RouterLink} to={`/job/${id}`} textDecoration='none'>
+		<Card
+			variant='listItem'
+			as={RouterLink}
+			to={`/job/${id}`}
+			textDecoration='none'
+			mx={0}
+			px={4}
+			pt={0}
+			pb={2}
+		>
 			<Stack gap={2}>
 				<Heading as='h3' fontSize='3xl' my={0}>
 					<Text as='span' mr={4}>

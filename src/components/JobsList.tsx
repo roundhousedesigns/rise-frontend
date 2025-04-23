@@ -1,4 +1,4 @@
-import { List, ListItem, ListProps, Tag } from '@chakra-ui/react';
+import { List, ListItem, ListProps, Text } from '@chakra-ui/react';
 import { JobPost } from '@lib/classes';
 import JobListItem from '@common/JobListItem';
 
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function JobsList({ jobs, ...props }: Props & ListProps) {
-	return (
+	return jobs.length > 0 ? (
 		<List {...props}>
 			{jobs.map((job) => (
 				<ListItem key={job.id}>
@@ -15,5 +15,7 @@ export default function JobsList({ jobs, ...props }: Props & ListProps) {
 				</ListItem>
 			))}
 		</List>
+	) : (
+		<Text>No jobs found matching your filters.</Text>
 	);
 }

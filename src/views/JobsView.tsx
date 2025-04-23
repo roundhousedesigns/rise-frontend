@@ -25,17 +25,8 @@ export default function JobsView() {
 
 	return (
 		<Stack spacing={4} py={4}>
-			<Flex
-				w='full'
-				border={'1px solid gray'}
-				bg={'gray.500'}
-				h='70px'
-				textAlign='center'
-				alignItems='center'
-				justifyContent='center'
-			>
-				<JobsFilters onFilterChange={setFilters} />
-			</Flex>
+			<JobsFilters onFilterChange={setFilters} />
+
 			{loading && (
 				<Flex justify='center' align='center' py={8}>
 					<Spinner size='xl' />
