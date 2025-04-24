@@ -9,7 +9,6 @@ import {
 	CreditOutput,
 	DateRangeParams,
 	SearchFilterSetParams,
-	JobPostParams,
 	WPAttachmentParams,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
@@ -483,43 +482,6 @@ export class Credit implements CreditParams {
 }
 
 /**
- * A job.
- */
-export class JobPost implements JobPostParams {
-	id: number;
-	title: string;
-	companyName: string;
-	companyAddress: string;
-	contactName: string;
-	contactEmail: string;
-	startDate: string;
-	endDate?: string;
-	contactPhone?: string;
-	instructions: string;
-	compensation?: string;
-	applicationUrl?: string;
-	applicationPhone?: string;
-	applicationEmail?: string;
-	description?: string;
-	isInternship?: boolean;
-	isPaid?: boolean;
-	isUnion?: boolean;
-
-	constructor(params: JobPostParams) {
-		this.id = params.id;
-		this.title = params.title;
-		this.companyName = params.companyName;
-		this.companyAddress = params.companyAddress;
-		this.contactEmail = params.contactEmail;
-		this.contactName = params.contactName;
-		this.startDate = params.startDate;
-		this.instructions = params.instructions;
-
-		Object.assign(this, params);
-	}
-}
-
-/**
  * A range of dates that the Candidate is unavailable for work.
  */
 export class DateRange implements DateRangeParams {
@@ -617,19 +579,6 @@ export class WPPost extends WPItem {
 		this.content = params.content ? unescape(params.content) : undefined;
 		this.uri = params.uri ? params.uri : undefined;
 		this.featuredImage = params.featuredImage ? new WPAttachment(params.featuredImage) : undefined;
-	}
-}
-
-/**
- * A WordPress Network Partner.
- */
-export class WPNetworkPartner extends WPPost {
-	coverBg?: WPAttachment;
-
-	constructor(params: WPItemParams) {
-		super(params);
-
-		this.coverBg = params.coverBg ? new WPAttachment(params.coverBg) : undefined;
 	}
 }
 

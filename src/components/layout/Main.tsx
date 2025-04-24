@@ -13,10 +13,6 @@ import Settings from '@routes/Settings';
 import Help from '@routes/Help';
 import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
-import Jobs from '@routes/Jobs';
-import Job from '@routes/Job';
-import NetworkPartners from '@routes/NetworkPartners';
-import NetworkPartner from '@routes/NetworkPartner';
 import Page from '@routes/Page';
 
 import LoggedIn from '@components/LoggedIn';
@@ -80,22 +76,6 @@ export default function Main({ ...props }: BoxProps) {
 			),
 		},
 		{
-			path: '/partners',
-			element: (
-				<LoggedIn>
-					<NetworkPartners />
-				</LoggedIn>
-			),
-		},
-		{
-			path: '/partners/:slug',
-			element: (
-				<LoggedIn>
-					<NetworkPartner />
-				</LoggedIn>
-			),
-		},
-		{
 			path: '/settings',
 			element: (
 				<LoggedIn>
@@ -122,14 +102,6 @@ export default function Main({ ...props }: BoxProps) {
 		{
 			path: '/register',
 			element: <Register />,
-		},
-		{
-			path: '/jobs',
-			element: <Jobs />,
-		},
-		{
-			path: '/job/:id',
-			element: <Job />,
 		},
 		{
 			path: '/:slug',

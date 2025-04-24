@@ -277,26 +277,3 @@ export interface ViewerData {
 	disableProfile?: boolean;
 	starredProfiles?: number[];
 }
-
-/**
- * The data shape for a Job.
- */
-export interface JobPostParams {
-	id: number;
-	title: string;
-	companyName: string;
-	companyAddress: string;
-	contactName: string;
-	contactEmail: string;
-	contactPhone?: string;
-	startDate: string;
-	endDate?: string;
-	instructions: string;
-	compensation?: string;
-	applicationUrl?: string;
-	applicationPhone?: string;
-	applicationEmail?: string;
-	description?: string;
-	isInternship?: boolean;
-	isUnion?: boolean;
-}
