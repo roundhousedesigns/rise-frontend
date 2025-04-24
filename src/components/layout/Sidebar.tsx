@@ -1,15 +1,7 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Container, Badge, Flex } from '@chakra-ui/react';
-import {
-	FiSearch,
-	FiUser,
-	FiStar,
-	FiFolder,
-	FiBriefcase,
-	FiLink,
-	FiSettings,
-} from 'react-icons/fi';
+import { Box, Container, Badge, Flex, useToken } from '@chakra-ui/react';
+import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiSettings } from 'react-icons/fi';
 import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
@@ -20,6 +12,7 @@ import TooltipIconButton from '@common/inputs/TooltipIconButton';
 export default function Sidebar() {
 	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
 	const [savedSearches] = useSavedSearches();
+	const [orange] = useToken('colors', ['brand.orange']);
 
 	const { drawerIsOpen, openDrawer, closeDrawer } = useContext(SearchDrawerContext);
 
@@ -32,7 +25,7 @@ export default function Sidebar() {
 	};
 
 	return loggedInId ? (
-		<Box id='sidebar' w='100px' height='100%' pt={2} bg='text.dark' color='text.light'>
+		<Box id='sidebar' w='100px' pt={2} pb={4} bg='blackAlpha.700' color='text.light'>
 			<Container centerContent w='full' maxW='9xl' p={2}>
 				<Flex flexDirection='column' alignItems='center'>
 					<Flex
@@ -47,6 +40,7 @@ export default function Sidebar() {
 							onClick={handleDrawerOpen}
 							label='Search'
 							colorScheme='green'
+							size='sm'
 						/>
 
 						<TooltipIconButton
@@ -55,26 +49,31 @@ export default function Sidebar() {
 							label={'My Profile'}
 							colorScheme='blue'
 							to={`/profile/${loggedInSlug}`}
+							size='sm'
 						/>
 
-						<TooltipIconButton icon={<FiBriefcase />} label='Jobs' as={RouterLink} to={'/jobs'} />
+						<TooltipIconButton
+							icon={<FiBriefcase />}
+							label='Jobs'
+							as={RouterLink}
+							to={'/jobs'}
+							size='sm'
+						/>
 
 						<TooltipIconButton
-							icon={
-								<FiStar
-									fill={starredProfiles && starredProfiles.length ? 'brand.orange' : 'none'}
-								/>
-							}
+							icon={<FiStar fill={starredProfiles ? orange : 'none'} />}
 							label={'Starred profiles'}
 							as={RouterLink}
 							to={'/stars'}
+							size='sm'
 						/>
 
 						<TooltipIconButton
-							icon={<FiFolder fill={savedSearches?.length ? 'brand.orange' : 'none'} />}
+							icon={<FiFolder fill={savedSearches?.length ? orange : 'none'} />}
 							as={RouterLink}
 							label={'Saved searches'}
 							to={'/searches'}
+							size='sm'
 						/>
 
 						{results.length ? (
@@ -87,6 +86,7 @@ export default function Sidebar() {
 									</Badge>
 								}
 								label={'Search results'}
+								size='sm'
 							/>
 						) : (
 							false
@@ -98,6 +98,7 @@ export default function Sidebar() {
 							label={'Settings'}
 							colorScheme='yellow'
 							to={`/settings`}
+							size='sm'
 						/>
 					</Flex>
 				</Flex>

@@ -24,7 +24,7 @@ export default function JobsView() {
 	const [jobs, { loading, error }] = useJobPosts(jobPostIds);
 
 	return (
-		<Stack spacing={4} py={4}>
+		<Stack spacing={4}>
 			<JobsFilters onFilterChange={setFilters} />
 
 			{loading && (

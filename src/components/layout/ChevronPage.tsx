@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { Box, useColorMode, useToken } from '@chakra-ui/react';
 
 export default function ChevronPage({ children }: { children: ReactNode }) {
-	const [light, dark, blue, yellow] = useToken('colors', [
+	const [light, dark, yellow] = useToken('colors', [
 		'bg.light',
 		'bg.dark',
 		'brand.blue',

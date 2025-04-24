@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Checkbox, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text, VisuallyHidden } from '@chakra-ui/react';
+import CheckboxButton from './common/inputs/CheckboxButton';
 
 interface JobsFiltersProps {
 	onFilterChange: (filters: { internships: boolean; union: boolean; paid: boolean }) => void;
@@ -22,31 +23,33 @@ export default function JobsFilters({ onFilterChange }: JobsFiltersProps) {
 	};
 
 	return (
-		<Flex
-			w='full'
-			border={'1px solid gray'}
-			borderRadius={'md'}
-			textAlign='center'
-			alignItems='center'
-			justifyContent='center'
-		>
-			<Flex gap={4} alignItems='center'>
+		<Box>
+			<VisuallyHidden>
 				<Text fontWeight='bold'>Filters:</Text>
-				<Flex gap={6}>
-					<Checkbox
-						isChecked={filters.internships}
-						onChange={() => handleFilterChange('internships')}
-					>
-						Internships
-					</Checkbox>
-					<Checkbox isChecked={filters.union} onChange={() => handleFilterChange('union')}>
-						Union Jobs
-					</Checkbox>
-					<Checkbox isChecked={filters.paid} onChange={() => handleFilterChange('paid')}>
-						Paid Positions
-					</Checkbox>
-				</Flex>
+			</VisuallyHidden>
+			<Flex gap={4}>
+				<CheckboxButton
+					isChecked={filters.internships}
+					onChange={() => handleFilterChange('internships')}
+					size='sm'
+				>
+					Internships
+				</CheckboxButton>
+				<CheckboxButton
+					isChecked={filters.union}
+					onChange={() => handleFilterChange('union')}
+					size='sm'
+				>
+					Union Jobs
+				</CheckboxButton>
+				<CheckboxButton
+					isChecked={filters.paid}
+					onChange={() => handleFilterChange('paid')}
+					size='sm'
+				>
+					Paid Positions
+				</CheckboxButton>
 			</Flex>
-		</Flex>
+		</Box>
 	);
 }
