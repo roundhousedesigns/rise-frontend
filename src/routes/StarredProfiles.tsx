@@ -10,6 +10,7 @@ export default function StarredProfiles() {
 			text={'Click the star button next to a profile to pin or unpin it.'}
 			query='star'
 			description='star'
+			fontSize='md'
 		/>
 	);
 
