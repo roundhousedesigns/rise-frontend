@@ -7,6 +7,7 @@ import {
 	AlertIcon,
 	AlertTitle,
 	AlertDescription,
+	Divider,
 } from '@chakra-ui/react';
 import JobsFilters from '@components/JobsFilters';
 import { useState } from 'react';
@@ -25,13 +26,16 @@ export default function JobsView() {
 
 	return (
 		<Stack spacing={4}>
-			<JobsFilters onFilterChange={setFilters} />
+			<JobsFilters onFilterChange={setFilters} mt={4} />
+
+			<Divider my={1} />
 
 			{loading && (
 				<Flex justify='center' align='center' py={8}>
 					<Spinner size='xl' />
 				</Flex>
 			)}
+
 			{error && (
 				<Alert status='error'>
 					<AlertIcon />

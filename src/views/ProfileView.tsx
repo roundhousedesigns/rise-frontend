@@ -31,7 +31,7 @@ import {
 	FiExternalLink,
 	FiGlobe,
 } from 'react-icons/fi';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lazy';
 import { getWPItemsFromIds } from '@lib/utils';
 import { Credit, UserProfile, WPItem } from '@lib/classes';
 import useUserTaxonomies from '@queries/useUserTaxonomies';

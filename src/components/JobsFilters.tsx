@@ -4,9 +4,10 @@ import CheckboxButton from './common/inputs/CheckboxButton';
 
 interface JobsFiltersProps {
 	onFilterChange: (filters: { internships: boolean; union: boolean; paid: boolean }) => void;
+	[prop: string]: any;
 }
 
-export default function JobsFilters({ onFilterChange }: JobsFiltersProps) {
+export default function JobsFilters({ onFilterChange, ...props }: JobsFiltersProps) {
 	const [filters, setFilters] = useState({
 		internships: false,
 		union: false,
@@ -23,10 +24,8 @@ export default function JobsFilters({ onFilterChange }: JobsFiltersProps) {
 	};
 
 	return (
-		<Box>
-			<VisuallyHidden>
-				<Text fontWeight='bold'>Filters:</Text>
-			</VisuallyHidden>
+		<Box {...props}>
+			<Text fontWeight='bold'>I'm looking for:</Text>
 			<Flex gap={4}>
 				<CheckboxButton
 					isChecked={filters.internships}
