@@ -1,13 +1,12 @@
 /**
- * useFilteredJobPosts hook. Query to retrieve jobs.
+ * useFilteredJobPosts hook. Query to retrieve job posts.
  */
 
 import { omit } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
-import { JobPost } from '@lib/classes';
 
-export const QUERY_FILTERED_JOB_IDS = gql`
-	query FilteredJobIdsQuery($internships: Boolean, $paid: Boolean, $union: Boolean) {
+export const QUERY_FILTERED_JOB_POST_IDS = gql`
+	query FilteredJobPostIdsQuery($internships: Boolean, $paid: Boolean, $union: Boolean) {
 		filteredJobPostIds(internships: $internships, paid: $paid, union: $union)
 	}
 `;
@@ -19,7 +18,7 @@ interface FilteredJobPostsParams {
 }
 
 const useFilteredJobPosts = (filters: FilteredJobPostsParams = {}): [number[], any] => {
-	const result = useQuery(QUERY_FILTERED_JOB_IDS, {
+	const result = useQuery(QUERY_FILTERED_JOB_POST_IDS, {
 		variables: filters,
 	});
 

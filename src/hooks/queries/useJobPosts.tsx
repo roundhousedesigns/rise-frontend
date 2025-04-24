@@ -1,5 +1,5 @@
 /**
- * useJobPosts hook. Query to retrieve jobs.
+ * useJobPosts hook. Query to retrieve job posts.
  */
 
 import { omit } from 'lodash';
@@ -9,9 +9,9 @@ import { JobPostParams } from '@lib/types';
 
 // TODO update Job class props to match the query
 
-export const QUERY_JOBS = gql`
-	query JobsQuery($ids: [ID] = []) {
-		jobs(where: { in: $ids }) {
+export const QUERY_JOB_POSTS = gql`
+	query JobPostsQuery($ids: [ID] = []) {
+		jobPosts(where: { in: $ids }) {
 			nodes {
 				id: databaseId
 				companyName(format: RAW)
@@ -37,7 +37,7 @@ export const QUERY_JOBS = gql`
 `;
 
 const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
-	const result = useQuery(QUERY_JOBS, {
+	const result = useQuery(QUERY_JOB_POSTS, {
 		variables: {
 			ids: ids.map((id) => id.toString()), // Convert numbers to strings for ID type
 		},
@@ -46,12 +46,12 @@ const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 		skip: ids.length === 0,
 	});
 
-	if (!result?.data?.jobs?.nodes || ids.length === 0) {
+	if (!result?.data?.jobPosts?.nodes || ids.length === 0) {
 		return [[], omit(result, ['data'])];
 	}
 
-	const jobs: JobPost[] =
-		result?.data?.jobs?.nodes?.map((node: JobPostParams) => {
+	const jobPosts: JobPost[] =
+		result?.data?.jobPosts?.nodes?.map((node: JobPostParams) => {
 			const {
 				id,
 				title,
@@ -81,7 +81,7 @@ const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 			return job;
 		}) ?? [];
 
-	return [jobs, omit(result, ['data'])];
+	return [jobPosts, omit(result, ['data'])];
 };
 
 export default useJobPosts;
