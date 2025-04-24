@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import type { As } from '@chakra-ui/system';
 import { useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lazy';
 import {
 	FiFacebook,
 	FiGlobe,
