@@ -63,7 +63,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 	const isLargerThanMd = useBreakpointValue(
 		{
 			base: false,
-			md: true,
+			sm: true,
 		},
 		{ ssr: false }
 	);
@@ -207,8 +207,8 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 				) : null}
 				<Flex
 					gap={6}
-					flexWrap={{ base: 'wrap', md: 'nowrap' }}
-					justifyContent={{ base: 'center', md: 'flex-start' }}
+					flexWrap={{ base: 'wrap', sm: 'nowrap' }}
+					justifyContent={{ base: 'center', sm: 'flex-start' }}
 				>
 					{isLargerThanMd ? (
 						<Stack direction='column' w={'40%'} minW='160px' maxW='400px' textAlign='center'>
@@ -349,7 +349,7 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 					>
 						<Box>
 							<Flex
-								justifyContent={{ base: 'center', md: 'space-between' }}
+								justifyContent={{ base: 'center', sm: 'space-between' }}
 								w='full'
 								flexWrap='wrap'
 								alignItems='flex-end'
@@ -361,9 +361,9 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 									<Tag
 										colorScheme='blue'
 										size='md'
-										mt={{ base: 2, md: 'initial' }}
+										mt={{ base: 2, sm: 'initial' }}
 										position='relative'
-										bottom={{ base: 0, md: 1 }}
+										bottom={{ base: 0, sm: 1 }}
 									>
 										{pronouns}
 									</Tag>
