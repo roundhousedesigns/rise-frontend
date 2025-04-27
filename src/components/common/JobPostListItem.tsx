@@ -1,20 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Card, Heading, Stack, Tag, Text, Wrap, IconButton } from '@chakra-ui/react';
+import {
+	Box,
+	Card,
+	Flex,
+	Heading,
+	ListItem,
+	Spacer,
+	Stack,
+	StackItem,
+	Tag,
+	Text,
+	Wrap,
+} from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { JobPost } from '@lib/classes';
-import useViewer from '@queries/useViewer';
-import { FiEdit2 } from 'react-icons/fi';
 
 interface JobPostListItemProps {
 	job: JobPost;
+	[prop: string]: any;
 }
 
-export default function JobPostListItem({ job }: JobPostListItemProps): JSX.Element {
-	const [{ loggedInId }] = useViewer();
-
+export default function JobPostListItem({ job, ...props }: JobPostListItemProps): JSX.Element {
 	const {
 		id,
-		author,
 		title,
 		companyName,
 		isInternship,
@@ -25,64 +32,58 @@ export default function JobPostListItem({ job }: JobPostListItemProps): JSX.Elem
 		endDate,
 	} = job;
 
-	const [isAuthor, setIsAuthor] = useState(false);
-
-	useEffect(() => {
-		setIsAuthor(loggedInId === author);
-	}, [loggedInId, author]);
-
 	const datesString = endDate ? `${startDate} - ${endDate}` : `Starts ${startDate}`;
 
 	return (
-		<Card
-			variant='listItem'
-			as={RouterLink}
-			to={`/job/${id}`}
-			textDecoration='none'
-			mx={0}
-			px={4}
-			pt={0}
-			pb={2}
-		>
-			<Stack gap={2}>
-				<Heading as='h3' fontSize='3xl' my={0}>
-					<Text as='span' mr={4}>
-						{title}
-					</Text>
-					<Text as='span' fontSize='xl'>
-						{companyName}
-					</Text>
-				</Heading>
-				{isAuthor && (
-					<IconButton
-						as={RouterLink}
-						to={`/jobs/edit/${id}`}
-						aria-label={`Edit ${job.title}`}
-						icon={<FiEdit2 />}
-					/>
-				)}
-				<Wrap>
-					{isInternship && (
-						<Tag colorScheme='yellow' size='sm'>
-							Internship
-						</Tag>
-					)}
-					{isPaid && (
-						<Tag colorScheme='green' size='sm'>
-							Paid
-						</Tag>
-					)}
-					{isUnion && (
-						<Tag colorScheme='red' size='sm'>
-							Union
-						</Tag>
-					)}
-				</Wrap>
-
-				{compensation ? <Text>{compensation}</Text> : null}
-
-				<Text my={0}>{datesString}</Text>
-			</Stack>
-		</Card>
+		<ListItem {...props}>
+			<Card
+				variant='listItem'
+				as={RouterLink}
+				to={`/job/${id}`}
+				textDecoration='none'
+				mx={0}
+				px={4}
+				py={2}
+			>
+				<Flex gap={2} alignItems='center'>
+					<Box flex='0 0 33%'>
+						<Heading as='h3' fontSize='lg' my={0} mb={0}>
+							{title}
+						</Heading>
+						<Text fontSize='sm' color='gray.500' lineHeight='normal' my={0}>
+							{companyName}
+						</Text>
+					</Box>
+					<Box fontSize='sm'>
+						{compensation ? (
+							<Text my={0} lineHeight='short'>
+								{compensation}
+							</Text>
+						) : null}
+						<Text my={0} lineHeight='short'>
+							{datesString}
+						</Text>
+					</Box>
+					<Spacer />
+					<Wrap>
+						{isInternship && (
+							<Tag colorScheme='yellow' size='xs'>
+								Internship
+							</Tag>
+						)}
+						{isPaid && (
+							<Tag colorScheme='green' size='xs'>
+								Paid
+							</Tag>
+						)}
+						{isUnion && (
+							<Tag colorScheme='red' size='xs'>
+								Union
+							</Tag>
+						)}
+					</Wrap>
+				</Flex>
+			</Card>
+		</ListItem>
 	);
 }

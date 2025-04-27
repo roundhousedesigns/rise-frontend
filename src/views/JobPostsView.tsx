@@ -11,10 +11,10 @@ import {
 } from '@chakra-ui/react';
 import useFilteredJobPostIds from '@queries/useFilteredJobPostIds';
 import useJobPosts from '@queries/useJobPosts';
-import JobsFilters from '@components/JobsFilters';
+import JobPostFilters from '@components/JobPostFilters';
 import JobPostsList from '@components/JobPostsList';
 
-export default function JobsView() {
+export default function JobPostsView() {
 	const [filters, setFilters] = useState({
 		internships: false,
 		union: false,
@@ -26,7 +26,7 @@ export default function JobsView() {
 
 	return (
 		<Stack spacing={4}>
-			<JobsFilters onFilterChange={setFilters} mt={4} />
+			<JobPostFilters onFilterChange={setFilters} mt={4} />
 
 			<Divider my={1} />
 

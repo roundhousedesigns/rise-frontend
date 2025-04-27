@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Box, Flex, Text, VisuallyHidden } from '@chakra-ui/react';
 import CheckboxButton from './common/inputs/CheckboxButton';
 
-interface JobsFiltersProps {
+interface JobPostFiltersProps {
 	onFilterChange: (filters: { internships: boolean; union: boolean; paid: boolean }) => void;
 	[prop: string]: any;
 }
 
-export default function JobsFilters({ onFilterChange, ...props }: JobsFiltersProps) {
+export default function JobPostFilters({ onFilterChange, ...props }: JobPostFiltersProps) {
 	const [filters, setFilters] = useState({
 		internships: false,
 		union: false,

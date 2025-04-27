@@ -33,7 +33,7 @@ interface Props {
  * @param {UserProfile} profile The user profile data.
  * @returns {JSX.Element} The Props component.
  */
-export default function JobView({ job }: Props): JSX.Element | null {
+export default function JobPostView({ job }: Props): JSX.Element | null {
 	const {
 		title,
 		companyName,

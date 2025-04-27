@@ -567,6 +567,7 @@ export class WPPost extends WPItem {
 	title?: string;
 	excerpt?: string;
 	content?: string;
+	status?: string;
 	uri?: string;
 	featuredImage?: WPAttachment;
 

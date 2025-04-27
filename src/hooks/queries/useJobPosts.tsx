@@ -14,6 +14,7 @@ export const QUERY_JOB_POSTS = gql`
 		jobPosts(where: { in: $ids }) {
 			nodes {
 				id: databaseId
+				status
 				companyName(format: RAW)
 				companyAddress(format: RAW)
 				contactEmail(format: RAW)
@@ -59,6 +60,7 @@ const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 		result?.data?.jobPosts?.nodes?.map((node: JobPostParams) => {
 			const {
 				id,
+				status,
 				title,
 				description,
 				companyName,
@@ -82,6 +84,7 @@ const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 			const job = new JobPost({
 				id,
 				author,
+				status,
 				title,
 				description,
 				companyName,

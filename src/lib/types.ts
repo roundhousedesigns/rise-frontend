@@ -290,6 +290,7 @@ export interface JobPostParams {
 		};
 	};
 	author?: number;
+	status?: string;
 	title: string;
 	companyName: string;
 	companyAddress: string;

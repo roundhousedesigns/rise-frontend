@@ -12,8 +12,8 @@ import StarredProfiles from '@routes/StarredProfiles';
 import Settings from '@routes/Settings';
 import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
-import Jobs from '@routes/Jobs';
-import Job from '@routes/Job';
+import JobPosts from '@routes/JobPosts';
+import JobPost from '@routes/JobPost';
 import ManageJobPosts from '@routes/ManageJobPosts';
 import EditJobPost from '@routes/EditJobPost';
 import ProfileNotices from '@common/ProfileNotices';
@@ -103,11 +103,11 @@ export default function Main() {
 		},
 		{
 			path: '/jobs',
-			element: <Jobs />,
+			element: <JobPosts />,
 		},
 		{
 			path: '/job/:id',
-			element: <Job />,
+			element: <JobPost />,
 		},
 		{
 			path: '/jobs/manage',

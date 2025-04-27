@@ -4,9 +4,9 @@ import { createMultiStyleConfigHelpers, defineStyle } from '@chakra-ui/react';
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(tagAnatomy.keys);
 
 const xs = defineStyle({
-	px: '1',
-	py: '0',
-	fontSize: 'xs',
+	px: '2',
+	py: '1',
+	fontSize: '2xs',
 });
 
 const sizes = {

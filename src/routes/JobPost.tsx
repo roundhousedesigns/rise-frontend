@@ -1,16 +1,16 @@
 import { useParams } from 'react-router-dom';
-import JobView from '@views/JobView';
-import useJobPosts from '@queries/useJobPosts';
 import Shell from '@layout/Shell';
+import JobPostView from '@views/JobPostView';
+import useJobPosts from '@queries/useJobPosts';
 
-export default function Jobs() {
+export default function JobPost() {
 	const params = useParams();
 	const id = params.id ? params.id : '';
 	const [job, { loading }] = useJobPosts([parseInt(id)]);
 
 	return (
 		<Shell loading={!!loading}>
-			<JobView job={job[0]} />
+			<JobPostView job={job[0]} />
 		</Shell>
 	);
 }
