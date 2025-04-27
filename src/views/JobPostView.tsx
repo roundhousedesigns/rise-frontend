@@ -14,8 +14,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import parse from 'html-react-parser';
 import { JobPost } from '@lib/classes';
-import HeadingCenterline from '../components/common/HeadingCenterline';
-import WrapWithIcon from '../components/common/WrapWithIcon';
+import HeadingCenterline from '@common/HeadingCenterline';
+import WrapWithIcon from '@common/WrapWithIcon';
 import {
 	FiCalendar,
 	FiDollarSign,
