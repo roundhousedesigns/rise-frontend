@@ -20,7 +20,7 @@ export const QUERY_JOB_POSTS = gql`
 				contactName(format: RAW)
 				contactPhone(format: RAW)
 				startDate
-				description: content
+				description(format: RAW)
 				compensation
 				isInternship
 				isPaid
@@ -31,6 +31,11 @@ export const QUERY_JOB_POSTS = gql`
 				applicationPhone
 				applicationEmail
 				title
+				authorNode: author {
+					node {
+						databaseId
+					}
+				}
 			}
 		}
 	}
@@ -55,25 +60,44 @@ const useJobPosts = (ids: number[] = []): [JobPost[], any] => {
 			const {
 				id,
 				title,
+				description,
 				companyName,
 				contactEmail,
 				contactName,
 				compensation,
 				startDate,
+				endDate,
 				companyAddress,
 				instructions,
+				isInternship,
+				isPaid,
+				isUnion,
+				applicationUrl,
+				applicationPhone,
+				applicationEmail,
 			} = node;
+
+			const author = node?.authorNode?.node?.databaseId;
 
 			const job = new JobPost({
 				id,
+				author,
 				title,
+				description,
 				companyName,
 				contactEmail,
 				contactName,
 				compensation,
 				startDate,
+				endDate,
 				companyAddress,
 				instructions,
+				isInternship,
+				isPaid,
+				isUnion,
+				applicationUrl,
+				applicationPhone,
+				applicationEmail,
 			});
 
 			Object.assign(job, node);

@@ -284,6 +284,12 @@ export interface ViewerData {
  */
 export interface JobPostParams {
 	id: number;
+	authorNode?: {
+		node: {
+			databaseId: number;
+		};
+	};
+	author?: number;
 	title: string;
 	companyName: string;
 	companyAddress: string;
@@ -300,6 +306,7 @@ export interface JobPostParams {
 	description?: string;
 	isInternship?: boolean;
 	isUnion?: boolean;
+	isPaid?: boolean;
 }
 
 /**
@@ -308,4 +315,29 @@ export interface JobPostParams {
 export interface WpCoreQueryResult {
 	wpGlobalStylesheet?: string;
 	wpStylesheetDirectoryUri?: string;
+}
+
+/**
+ * The data shape for a Job Post Output.
+ */
+export interface JobPostOutput {
+	id?: number;
+	author?: number;
+	title: string;
+	companyName: string;
+	companyAddress: string;
+	contactName: string;
+	contactEmail: string;
+	contactPhone?: string;
+	startDate: string;
+	endDate?: string;
+	instructions: string;
+	compensation?: string;
+	applicationUrl?: string;
+	applicationPhone?: string;
+	applicationEmail?: string;
+	description?: string;
+	isPaid?: boolean;
+	isInternship?: boolean;
+	isUnion?: boolean;
 }

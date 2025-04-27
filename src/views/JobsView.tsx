@@ -1,4 +1,4 @@
-import JobsList from '@components/JobsList';
+import { useState } from 'react';
 import {
 	Flex,
 	Stack,
@@ -9,10 +9,10 @@ import {
 	AlertDescription,
 	Divider,
 } from '@chakra-ui/react';
-import JobsFilters from '@components/JobsFilters';
-import { useState } from 'react';
 import useFilteredJobPostIds from '@queries/useFilteredJobPostIds';
 import useJobPosts from '@queries/useJobPosts';
+import JobsFilters from '@components/JobsFilters';
+import JobPostsList from '@components/JobPostsList';
 
 export default function JobsView() {
 	const [filters, setFilters] = useState({
@@ -43,7 +43,7 @@ export default function JobsView() {
 					<AlertDescription>{error.message}</AlertDescription>
 				</Alert>
 			)}
-			{!loading && !error && <JobsList jobs={jobs} mt={2} />}
+			{!loading && !error && <JobPostsList jobs={jobs} mt={2} />}
 		</Stack>
 	);
 }

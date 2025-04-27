@@ -483,43 +483,6 @@ export class Credit implements CreditParams {
 }
 
 /**
- * A job.
- */
-export class JobPost implements JobPostParams {
-	id: number;
-	title: string;
-	companyName: string;
-	companyAddress: string;
-	contactName: string;
-	contactEmail: string;
-	startDate: string;
-	endDate?: string;
-	contactPhone?: string;
-	instructions: string;
-	compensation?: string;
-	applicationUrl?: string;
-	applicationPhone?: string;
-	applicationEmail?: string;
-	description?: string;
-	isInternship?: boolean;
-	isPaid?: boolean;
-	isUnion?: boolean;
-
-	constructor(params: JobPostParams) {
-		this.id = params.id;
-		this.title = params.title;
-		this.companyName = params.companyName;
-		this.companyAddress = params.companyAddress;
-		this.contactEmail = params.contactEmail;
-		this.contactName = params.contactName;
-		this.startDate = params.startDate;
-		this.instructions = params.instructions;
-
-		Object.assign(this, params);
-	}
-}
-
-/**
  * A range of dates that the Candidate is unavailable for work.
  */
 export class DateRange implements DateRangeParams {
@@ -632,5 +595,41 @@ export class WPAttachment extends WPItem {
 
 		this.srcSet = params.srcSet;
 		this.sourceUrl = params.sourceUrl;
+	}
+}
+
+/**
+ * A Job Post.
+ */
+export class JobPost extends WPPost {
+	description?: string;
+	companyName: string;
+	companyAddress: string;
+	contactName: string;
+	contactEmail: string;
+	startDate: string;
+	endDate?: string;
+	contactPhone?: string;
+	instructions: string;
+	compensation?: string;
+	applicationUrl?: string;
+	applicationPhone?: string;
+	applicationEmail?: string;
+	isInternship?: boolean;
+	isPaid?: boolean;
+	isUnion?: boolean;
+
+	constructor(params: JobPostParams) {
+		super(params);
+
+		this.author = params.author;
+		this.companyName = params.companyName;
+		this.companyAddress = params.companyAddress;
+		this.contactEmail = params.contactEmail;
+		this.contactName = params.contactName;
+		this.startDate = params.startDate;
+		this.instructions = params.instructions;
+
+		Object.assign(this, params);
 	}
 }

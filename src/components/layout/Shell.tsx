@@ -34,7 +34,7 @@ export default function Shell({
 			<Spinner position='relative' top={12} />
 		</Center>
 	) : (
-		<Box maxWidth='4xl' px={0} pt={4} pb={8} mt={0} mb={0} {...props}>
+		<Box pt={4} pr={0} pb={8} pl={0} mt={0} mb={0} {...props}>
 			{!!title || !!actions ? (
 				<Flex
 					justifyContent={'space-between'}

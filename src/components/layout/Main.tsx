@@ -14,6 +14,8 @@ import NotFound from '@routes/NotFound';
 import SavedSearches from '@routes/SavedSearches';
 import Jobs from '@routes/Jobs';
 import Job from '@routes/Job';
+import ManageJobPosts from '@routes/ManageJobPosts';
+import EditJobPost from '@routes/EditJobPost';
 import ProfileNotices from '@common/ProfileNotices';
 import LoggedIn from '@components/LoggedIn';
 import DevMode from '@dev/DevMode';
@@ -106,6 +108,18 @@ export default function Main() {
 		{
 			path: '/job/:id',
 			element: <Job />,
+		},
+		{
+			path: '/jobs/manage',
+			element: <ManageJobPosts />,
+		},
+		{
+			path: '/jobs/new',
+			element: <EditJobPost />,
+		},
+		{
+			path: '/jobs/edit/:id',
+			element: <EditJobPost />,
 		},
 		{
 			path: '*',

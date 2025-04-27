@@ -1,15 +1,20 @@
-import { ReactNode } from 'react';
-import { Card, Heading, Stack, Tag, Text, Wrap } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { Card, Heading, Stack, Tag, Text, Wrap, IconButton } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { JobPost } from '@lib/classes';
+import useViewer from '@queries/useViewer';
+import { FiEdit2 } from 'react-icons/fi';
 
-interface JobListItemProps {
+interface JobPostListItemProps {
 	job: JobPost;
 }
 
-export default function JobListItem({ job }: JobListItemProps): JSX.Element {
+export default function JobPostListItem({ job }: JobPostListItemProps): JSX.Element {
+	const [{ loggedInId }] = useViewer();
+
 	const {
 		id,
+		author,
 		title,
 		companyName,
 		isInternship,
@@ -19,6 +24,12 @@ export default function JobListItem({ job }: JobListItemProps): JSX.Element {
 		startDate,
 		endDate,
 	} = job;
+
+	const [isAuthor, setIsAuthor] = useState(false);
+
+	useEffect(() => {
+		setIsAuthor(loggedInId === author);
+	}, [loggedInId, author]);
 
 	const datesString = endDate ? `${startDate} - ${endDate}` : `Starts ${startDate}`;
 
@@ -42,6 +53,14 @@ export default function JobListItem({ job }: JobListItemProps): JSX.Element {
 						{companyName}
 					</Text>
 				</Heading>
+				{isAuthor && (
+					<IconButton
+						as={RouterLink}
+						to={`/jobs/edit/${id}`}
+						aria-label={`Edit ${job.title}`}
+						icon={<FiEdit2 />}
+					/>
+				)}
 				<Wrap>
 					{isInternship && (
 						<Tag colorScheme='yellow' size='sm'>
