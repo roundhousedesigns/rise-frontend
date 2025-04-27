@@ -6,9 +6,9 @@ import useViewer from '@queries/useViewer';
 import useUserNotices from '@queries/useUserNotices';
 import useSavedSearches from '@queries/useSavedSearches';
 import Widget from '@common/Widget';
+import HeadingCenterline from '@common/HeadingCenterline';
 import ShortPost from '@components/ShortPost';
 import SavedSearchItemList from '@components/SavedSearchItemList';
-import HeadingCenterline from '../components/common/HeadingCenterline';
 
 export default function DashboardView__Widgets() {
 	const [{ loggedInId, starredProfiles }] = useViewer();

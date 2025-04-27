@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import { JobPostOutput } from '@lib/types';
 import useUpdateJobPost from '@mutations/useUpdateJobPost';
-import CheckboxButton from './common/inputs/CheckboxButton';
+import CheckboxButton from '@common/inputs/CheckboxButton';
 import { useNavigate } from 'react-router-dom';
 
 interface EditJobFormProps {

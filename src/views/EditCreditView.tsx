@@ -21,10 +21,10 @@ import useLazyRelatedSkills from '@queries/useLazyRelatedSkills';
 import useViewer from '@queries/useViewer';
 import useUpdateCredit from '@mutations/useUpdateCredit';
 import ProfileCheckboxGroup from '@common/inputs/ProfileCheckboxGroup';
-import TextInput from '@common/inputs/TextInput';
 import RequiredAsterisk from '@common/RequiredAsterisk';
+import TextInput from '@common/inputs/TextInput';
 import ProfileRadioGroup from '@common/inputs/ProfileRadioGroup';
-import TooltipIconButton from '../components/common/inputs/TooltipIconButton';
+import TooltipIconButton from '@common/inputs/TooltipIconButton';
 
 function editCreditReducer(state: CreditParams, action: { type: string; payload: any }) {
 	switch (action.type) {
@@ -190,9 +190,7 @@ export default function EditCreditView({ creditId, onClose: closeModal }: Props)
 		}
 	};
 
-	const handleInputChange = (
-		event: ChangeEvent<HTMLInputElement>
-	) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 
 		editCreditDispatch({
