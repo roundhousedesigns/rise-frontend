@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react';
 import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
@@ -63,7 +63,7 @@ export default defineConfig({
 				replacement: fileURLToPath(new URL('./src/hooks/queries', import.meta.url)),
 			},
 			{
-				find : '@mutations',
+				find: '@mutations',
 				replacement: fileURLToPath(new URL('./src/hooks/mutations', import.meta.url)),
 			},
 			{

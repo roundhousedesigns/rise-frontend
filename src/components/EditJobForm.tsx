@@ -11,10 +11,10 @@ import {
 	Wrap,
 	Flex,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { JobPostOutput } from '@lib/types';
 import useUpdateJobPost from '@mutations/useUpdateJobPost';
 import CheckboxButton from '@common/inputs/CheckboxButton';
-import { useNavigate } from 'react-router-dom';
 
 interface EditJobFormProps {
 	initialData?: JobPostOutput;
