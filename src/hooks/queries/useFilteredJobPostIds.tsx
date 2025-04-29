@@ -6,8 +6,13 @@ import { omit } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
 
 export const QUERY_FILTERED_JOB_POST_IDS = gql`
-	query FilteredJobPostIdsQuery($internships: Boolean, $paid: Boolean, $union: Boolean) {
-		filteredJobPostIds(internships: $internships, paid: $paid, union: $union)
+	query FilteredJobPostIdsQuery(
+		$internships: Boolean
+		$paid: Boolean
+		$union: Boolean
+		$status: [String]
+	) {
+		filteredJobPostIds(internships: $internships, paid: $paid, union: $union, status: $status)
 	}
 `;
 
@@ -15,6 +20,7 @@ interface FilteredJobPostsParams {
 	internships?: boolean;
 	union?: boolean;
 	paid?: boolean;
+	status?: string[];
 }
 
 const useFilteredJobPosts = (filters: FilteredJobPostsParams = {}): [number[], any] => {

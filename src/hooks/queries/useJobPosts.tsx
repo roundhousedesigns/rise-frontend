@@ -10,8 +10,8 @@ import { JobPostParams } from '@lib/types';
 // TODO update Job class props to match the query
 
 export const QUERY_JOB_POSTS = gql`
-	query JobPostsQuery($ids: [ID] = []) {
-		jobPosts(where: { in: $ids }) {
+	query JobPostsQuery($ids: [ID] = [], $stati: [PostStatusEnum] = [PENDING, PUBLISH]) {
+		jobPosts(where: { in: $ids, stati: $stati }) {
 			nodes {
 				id: databaseId
 				status
