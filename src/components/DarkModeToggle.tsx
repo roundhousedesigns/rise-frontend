@@ -1,4 +1,4 @@
-import { Text, useColorMode, Highlight, FormControlProps } from '@chakra-ui/react';
+import { Text, useColorMode, Highlight, FormControlProps, VisuallyHidden } from '@chakra-ui/react';
 import ToggleOptionSwitch from '@common/ToggleOptionSwitch';
 import { FiMoon, FiSun } from 'react-icons/fi';
 
@@ -22,14 +22,14 @@ export default function DarkModeToggle({
 			aria-label={`Switch to ${colorMode === 'dark' ? 'light' : 'dark'} mode`}
 			checked={colorMode === 'dark'}
 			callback={toggleColorMode}
-			label='Theme'
+			label='Dark/Light Theme'
 			iconLeft={FiSun}
 			iconRight={FiMoon}
 			size={size}
 			showLabel={showLabel}
 			{...props}
 		>
-			{showHelperText ? <Subtext colorMode={colorMode} /> : <></>}
+			{showHelperText ? <Subtext colorMode={colorMode} /> : ''}
 		</ToggleOptionSwitch>
 	);
 }

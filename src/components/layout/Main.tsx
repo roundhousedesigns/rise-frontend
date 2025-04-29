@@ -103,15 +103,27 @@ export default function Main() {
 		},
 		{
 			path: '/jobs',
-			element: <JobPosts />,
+			element: (
+				<LoggedIn>
+					<JobPosts />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '/job/:id',
-			element: <JobPost />,
+			element: (
+				<LoggedIn>
+					<JobPost />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '/jobs/manage',
-			element: <ManageJobPosts />,
+			element: (
+				<LoggedIn>
+					<ManageJobPosts />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '/jobs/new',
@@ -119,7 +131,11 @@ export default function Main() {
 		},
 		{
 			path: '/jobs/edit/:id',
-			element: <EditJobPost />,
+			element: (
+				<LoggedIn>
+					<EditJobPost />
+				</LoggedIn>
+			),
 		},
 		{
 			path: '*',

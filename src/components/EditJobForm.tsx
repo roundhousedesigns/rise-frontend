@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import {
-	Box,
+	chakra,
 	Button,
 	FormControl,
 	FormLabel,
 	Input,
 	Textarea,
-	VStack,
 	useToast,
-	Wrap,
 	Flex,
+	Stack,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import { JobPostOutput } from '@lib/types';
 import useUpdateJobPost from '@mutations/useUpdateJobPost';
 import CheckboxButton from '@common/inputs/CheckboxButton';
+
+// TODO implement recaptcha
+// import { executeRecaptcha } from '@hooks/useGoogleReCaptcha';
+// import { handleReCaptchaVerify } from '@lib/utils';
 
 interface EditJobFormProps {
 	initialData?: JobPostOutput;
@@ -144,8 +147,8 @@ export default function EditJobForm({ initialData }: EditJobFormProps) {
 	};
 
 	return (
-		<Box as='form' onSubmit={handleSubmit} width='100%'>
-			<VStack spacing={4} align='stretch'>
+		<chakra.form onSubmit={handleSubmit} width='100%'>
+			<Stack spacing={4} justifyContent='space-between' flexWrap='wrap'>
 				<FormControl isRequired>
 					<FormLabel>Job Title</FormLabel>
 					<Input
@@ -176,38 +179,40 @@ export default function EditJobForm({ initialData }: EditJobFormProps) {
 					/>
 				</FormControl>
 
-				<FormControl isRequired>
-					<FormLabel>Contact Name</FormLabel>
-					<Input
-						name='contactName'
-						value={formData.contactName}
-						onChange={handleChange}
-						placeholder='Enter contact name'
-					/>
-				</FormControl>
+				<FormRow>
+					<FormControl isRequired>
+						<FormLabel>Contact Name</FormLabel>
+						<Input
+							name='contactName'
+							value={formData.contactName}
+							onChange={handleChange}
+							placeholder='Enter contact name'
+						/>
+					</FormControl>
 
-				<FormControl isRequired>
-					<FormLabel>Contact Email</FormLabel>
-					<Input
-						name='contactEmail'
-						type='email'
-						value={formData.contactEmail}
-						onChange={handleChange}
-						placeholder='Enter contact email'
-					/>
-				</FormControl>
+					<FormControl isRequired>
+						<FormLabel>Contact Email</FormLabel>
+						<Input
+							name='contactEmail'
+							type='email'
+							value={formData.contactEmail}
+							onChange={handleChange}
+							placeholder='Enter contact email'
+						/>
+					</FormControl>
 
-				<FormControl>
-					<FormLabel>Contact Phone</FormLabel>
-					<Input
-						name='contactPhone'
-						value={formData.contactPhone || ''}
-						onChange={handleChange}
-						placeholder='Enter contact phone'
-					/>
-				</FormControl>
+					<FormControl>
+						<FormLabel>Contact Phone</FormLabel>
+						<Input
+							name='contactPhone'
+							value={formData.contactPhone || ''}
+							onChange={handleChange}
+							placeholder='Enter contact phone'
+						/>
+					</FormControl>
+				</FormRow>
 
-				<Flex gap={4} flexWrap='wrap'>
+				<FormRow>
 					<FormControl isRequired>
 						<FormLabel>Start Date</FormLabel>
 						<Input
@@ -227,27 +232,7 @@ export default function EditJobForm({ initialData }: EditJobFormProps) {
 							onChange={handleChange}
 						/>
 					</FormControl>
-				</Flex>
-
-				<FormControl isRequired>
-					<FormLabel>Description</FormLabel>
-					<Textarea
-						name='description'
-						value={formData.description || ''}
-						onChange={handleChange}
-						placeholder='Enter job description'
-					/>
-				</FormControl>
-
-				<FormControl isRequired>
-					<FormLabel>Instructions</FormLabel>
-					<Textarea
-						name='instructions'
-						value={formData.instructions}
-						onChange={handleChange}
-						placeholder='Enter application instructions'
-					/>
-				</FormControl>
+				</FormRow>
 
 				<FormControl>
 					<FormLabel>Compensation</FormLabel>
@@ -259,79 +244,121 @@ export default function EditJobForm({ initialData }: EditJobFormProps) {
 					/>
 				</FormControl>
 
-				<FormControl>
-					<FormLabel>Application URL</FormLabel>
-					<Input
-						name='applicationUrl'
-						type='url'
-						value={formData.applicationUrl || ''}
-						onChange={handleChange}
-						placeholder='Enter application URL'
-					/>
-				</FormControl>
+				<FormRow>
+					<FormControl isRequired flex={'1'}>
+						<FormLabel>Job Description</FormLabel>
+						<Textarea
+							name='description'
+							value={formData.description || ''}
+							onChange={handleChange}
+							minHeight='144px'
+							placeholder='Enter job description'
+						/>
+					</FormControl>
 
-				<FormControl>
-					<FormLabel>Application Phone</FormLabel>
-					<Input
-						name='applicationPhone'
-						value={formData.applicationPhone || ''}
-						onChange={handleChange}
-						placeholder='Enter application phone'
-					/>
-				</FormControl>
-
-				<FormControl>
-					<FormLabel>Application Email</FormLabel>
-					<Input
-						name='applicationEmail'
-						type='email'
-						value={formData.applicationEmail || ''}
-						onChange={handleChange}
-						placeholder='Enter application email'
-					/>
-				</FormControl>
-
-				<Wrap>
-					<FormControl>
+					<Stack direction='column' justifyContent='flex-start' flex={'0 1 auto'}>
+						<FormLabel mb={0}>Job Type</FormLabel>
 						<CheckboxButton
 							name='isPaid'
 							value={formData.isPaid ? 'true' : 'false'}
 							onChange={handleChange}
+							size='sm'
 						>
-							This is a paid position
+							Paid position
 						</CheckboxButton>
-					</FormControl>
-
-					<FormControl>
 						<CheckboxButton
 							name='isInternship'
 							value={formData.isInternship ? 'true' : 'false'}
 							onChange={handleChange}
+							size='sm'
 						>
-							This is an internship position
+							Internship
 						</CheckboxButton>
-					</FormControl>
-
-					<FormControl>
 						<CheckboxButton
 							name='isUnion'
 							value={formData.isUnion ? 'true' : 'false'}
 							onChange={handleChange}
+							size='sm'
 						>
-							This is a union position
+							Union position
 						</CheckboxButton>
-					</FormControl>
-				</Wrap>
+					</Stack>
+				</FormRow>
 
-				<Button
-					type='submit'
-					colorScheme='blue'
-					isLoading={isSubmitting}
-					loadingText='Submitting...'
-				>
-					{initialData ? 'Update Job' : 'Create Job'}
-				</Button>
-			</VStack>
-		</Box>
+				<FormRow pt={4} pb={6} px={6} borderRadius={'md'} _dark={{ bg: 'whiteAlpha.50' }}>
+					<FormControl isRequired flex={'0 0 100%'}>
+						<FormLabel>Application Instructions</FormLabel>
+						<Textarea
+							name='instructions'
+							value={formData.instructions}
+							onChange={handleChange}
+							placeholder='Enter application instructions'
+						/>
+					</FormControl>
+
+					<FormControl>
+						<FormLabel>Application URL</FormLabel>
+						<Input
+							name='applicationUrl'
+							type='url'
+							value={formData.applicationUrl || ''}
+							onChange={handleChange}
+							placeholder='Enter application URL'
+						/>
+					</FormControl>
+
+					<FormControl>
+						<FormLabel>Application Phone</FormLabel>
+						<Input
+							name='applicationPhone'
+							value={formData.applicationPhone || ''}
+							onChange={handleChange}
+							placeholder='Enter application phone'
+						/>
+					</FormControl>
+
+					<FormControl>
+						<FormLabel>Application Email</FormLabel>
+						<Input
+							name='applicationEmail'
+							type='email'
+							value={formData.applicationEmail || ''}
+							onChange={handleChange}
+							placeholder='Enter application email'
+						/>
+					</FormControl>
+				</FormRow>
+			</Stack>
+
+			<Button
+				type='submit'
+				colorScheme='blue'
+				isLoading={isSubmitting}
+				loadingText='Submitting...'
+				my={4}
+			>
+				{initialData ? 'Update Job' : 'Submit for Review'}
+			</Button>
+		</chakra.form>
 	);
 }
+
+const FormRow = ({ children, ...props }: { children: React.ReactNode; [prop: string]: any }) => {
+	return (
+		<Flex
+			gap={4}
+			justifyContent='space-between'
+			flexWrap='wrap'
+			w='full'
+			sx={{
+				'& > *': {
+					flex: '1 0 200px',
+					w: 'auto',
+				},
+			}}
+			{...props}
+		>
+			{children}
+		</Flex>
+	);
+};
