@@ -24,7 +24,7 @@ const InlineIconText = ({
 		return (
 			<IconButton
 				icon={icon}
-				variant='sampleIconButton'
+				variant='inlineIcon'
 				title='Search'
 				mx={1}
 				position='relative'

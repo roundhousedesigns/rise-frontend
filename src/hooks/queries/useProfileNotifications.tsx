@@ -13,6 +13,7 @@ export const QUERY_UNREAD_PROFILE_NOTIFICATIONS = gql`
 	query UnreadProfNotificationsQuery($authorId: Int = 10) {
 		unreadProfileNotifications(authorId: $authorId) {
 			id
+			title
 			notificationType
 			value
 		}
@@ -25,6 +26,7 @@ const useUnreadProfileNotifications = (authorId: number): [ProfileNotification[]
 			authorId,
 		},
 		fetchPolicy: 'cache-and-network',
+		pollInterval: 20000,
 	});
 
 	if (!result?.data?.unreadProfileNotifications) {
@@ -33,10 +35,11 @@ const useUnreadProfileNotifications = (authorId: number): [ProfileNotification[]
 
 	const profileNotifications: ProfileNotification[] =
 		result?.data?.unreadProfileNotifications?.map((node: ProfileNotificationParams) => {
-			const { id, notificationType, value } = node;
+			const { id, title, notificationType, value } = node;
 
 			const profileNotification = new ProfileNotification({
 				id,
+				title,
 				notificationType,
 				value,
 			});

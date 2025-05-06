@@ -353,6 +353,7 @@ export type NotificationType = 'starred_profile_updated' | 'job_posted';
  */
 export interface ProfileNotificationParams {
 	id: number;
+	title: string;
 	notificationType: NotificationType;
 	value: string;
 }

@@ -642,11 +642,13 @@ export class JobPost extends WPPost {
  */
 export class ProfileNotification implements ProfileNotificationParams {
 	id: number;
+	title: string;
 	notificationType: NotificationType;
 	value: string;
 
 	constructor(params: ProfileNotificationParams) {
 		this.id = params.id;
+		this.title = params.title;
 		this.notificationType = params.notificationType;
 		this.value = params.value;
 	}

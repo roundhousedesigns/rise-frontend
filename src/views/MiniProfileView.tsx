@@ -15,6 +15,9 @@ import {
 	MenuButton,
 	MenuList,
 	MenuItem,
+	Icon,
+	Badge,
+	Circle,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { FiUser, FiEdit3, FiBell } from 'react-icons/fi';
@@ -81,7 +84,7 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 					size='xs'
 					spacing={1}
 					opacity={isHovered ? 1 : 0}
-					transition='opacity 0.2s ease-in-out'
+					transition='opacity 200ms ease'
 				>
 					<TooltipIconButton
 						as={RouterLink}
@@ -106,8 +109,15 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 				</ButtonGroup>
 
 				{unreadProfileNotifications.length > 0 && (
-					<Menu isLazy>
-						<MenuButton as={IconButton} icon={<FiBell />} size='xs' colorScheme='orange' />
+					<Menu>
+						<MenuButton
+							as={IconButton}
+							icon={<ProfileNotificationsIcon number={unreadProfileNotifications.length} />}
+							size='sm'
+							colorScheme='orange'
+							borderRadius='full'
+							pos='relative'
+						/>
 						<MenuList>
 							{unreadProfileNotifications.map((notification) => (
 								<ProfileNotificationMenuItem key={notification.id} notification={notification} />
@@ -153,3 +163,34 @@ export default function MiniProfileView({ profile, ...props }: Props & CardProps
 		<></>
 	);
 }
+
+const ProfileNotificationsIcon = ({ number }: { number: number }) => {
+	return (
+		<Circle position='relative'>
+			<Icon as={FiBell} color='text.dark' />
+			<Flex
+				borderRadius='full'
+				position='absolute'
+				bottom={-5}
+				right={-3}
+				bg='gray.700'
+				justifyContent='center'
+				alignItems='center'
+				textAlign='center'
+			>
+				<Circle
+					color='text.dark'
+					bg='brand.yellow'
+					m={0.5}
+					py={0.5}
+					px={1}
+					minW='1.5em'
+					fontSize='2xs'
+					textAlign='center'
+				>
+					{number}
+				</Circle>
+			</Flex>
+		</Circle>
+	);
+};

@@ -20,7 +20,7 @@ const variants = {
 			background: 'transparent',
 		},
 	}),
-	sampleIconButton: defineStyle({
+	inlineIcon: defineStyle({
 		cursor: 'default !important',
 		alignItems: 'center',
 		borderRadius: 'full',
