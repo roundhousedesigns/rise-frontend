@@ -13,6 +13,7 @@ import {
 	CardProps,
 } from '@chakra-ui/react';
 import { isEqual } from 'lodash';
+import { MotionProps } from 'framer-motion';
 import { FiSearch, FiDelete, FiEdit2, FiSave, FiPlusCircle } from 'react-icons/fi';
 import { extractSearchTermIds } from '@lib/utils';
 import { WPItemParams } from '@lib/types';
@@ -30,7 +31,6 @@ import ConfirmActionDialog from '@common/ConfirmActionDialog';
 import LinkWithIcon from '@common/LinkWithIcon';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
 import EditSavedSearchModal from '@components/EditSavedSearchModal';
-import { HTMLMotionProps } from 'framer-motion';
 
 interface Props {
 	id: number;
@@ -38,8 +38,6 @@ interface Props {
 	searchTerms: SearchFilterSet;
 	showControls?: boolean;
 	showSaveButton?: boolean;
-	// Using motion and Card props here, so let's not be stingy.
-	[prop: string]: any;
 }
 
 export default function SavedSearchItem({
@@ -49,7 +47,7 @@ export default function SavedSearchItem({
 	showControls = true,
 	showSaveButton = false,
 	...props
-}: Props): JSX.Element | null {
+}: Props & MotionProps & Omit<CardProps, 'id'>): JSX.Element | null {
 	const [{ loggedInId }] = useViewer();
 	const [_ignored, { data: { filteredCandidates } = [] }] = useCandidateSearch();
 	const {

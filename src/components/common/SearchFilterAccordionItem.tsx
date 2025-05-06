@@ -9,6 +9,7 @@ import {
 	Text,
 	AccordionPanelProps,
 	AccordionButtonProps,
+	AccordionItemProps,
 } from '@chakra-ui/react';
 
 interface Props {
@@ -17,7 +18,6 @@ interface Props {
 	panelProps?: Partial<AccordionPanelProps>;
 	children: ReactNode;
 	isDisabled?: boolean;
-	[prop: string]: any;
 }
 
 export default function SearchFilterAccordionItem({
@@ -27,7 +27,7 @@ export default function SearchFilterAccordionItem({
 	children,
 	isDisabled,
 	...props
-}: Props) {
+}: Props & AccordionItemProps) {
 	const HeadingContent = (): JSX.Element =>
 		typeof heading === 'object' ? (
 			heading

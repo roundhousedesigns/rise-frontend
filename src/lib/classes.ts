@@ -24,7 +24,7 @@ export class User implements UserParams {
 	slug: string | null = null;
 	firstName?: string;
 	lastName?: string;
-	[prop: string]: any;
+	[prop: string]: any; // TODO Check why this is needed
 
 	constructor(params?: UserParams) {
 		if (params) {

@@ -3,15 +3,15 @@
 All notable changes to this project will be documented in this file, starting
 with 1.0.0beta.
 
+## [1.2-notifications] Unmerged (branched from `1.2-dev`)
+
+- Add: Notifications with count badge for displaying if a a starred profile has been updated.
+
 ## [1.2-structure] Unmerged (branched from `1.2-dev`)
 
 - Change: `<Page>` is now `<Shell>` so we can call WP static pages "Pages."
 - Improve: Page and template structure and styling.
 - Improve: Stop using silly `prop={'some-string'}` notation. Just do normal quotes: `prop='some-string'`.
-
-## [1.2-network-partners] Unmerged (branched from `1.2-dev`)
-
-- Improve: Page template padding, to allow for full-width page elements.
 
 ## [1.2-jobs] - Unmerged (branched from `1.2-dev`)
 
@@ -22,14 +22,6 @@ with 1.0.0beta.
 - Improve: Make WP Post retrieval more robust. `ContentView` --> is now `PageContent` and `usePostContent` is now `usePage`, which returns a `WPPost` item. This pattern can be reused for other post types!
 - Improve: Use the Rise 'star' glyph more liberally.
 - Improve: Global style fixes (ahhh branch drift......)
-
-- TODO: Jobs listing (in progress)
-- TODO: Jobs filtering and search
-- TODO: Single job layout
-- TODO: Job creation
-- TODO: Job edit
-- TODO: Job manage
-- TODO: Refine page content styling ('/help' as example)
 
 ## \[1.2-dev] - Unreleased
 

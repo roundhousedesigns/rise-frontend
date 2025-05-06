@@ -7,21 +7,22 @@ import {
 	LinkOverlay,
 	ListItem,
 	Spacer,
-	Stack,
-	StackItem,
 	Tag,
 	Text,
 	Wrap,
+	ListItemProps,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { JobPost } from '@lib/classes';
 
 interface JobPostListItemProps {
 	job: JobPost;
-	[prop: string]: any;
 }
 
-export default function JobPostListItem({ job, ...props }: JobPostListItemProps): JSX.Element {
+export default function JobPostListItem({
+	job,
+	...props
+}: JobPostListItemProps & ListItemProps): JSX.Element {
 	const {
 		id,
 		title,

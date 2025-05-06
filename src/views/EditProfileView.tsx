@@ -720,7 +720,7 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		<Spinner thickness='5px' speed={'.8s'} color={'blue.500'} size='xl' />
 	);
 
-	const EditProfileSidebar = ({ ...props }: { [prop: string]: any }) => (
+	const EditProfileSidebar = ({ ...props }: BoxProps) => (
 		<Box {...props}>
 			<Box>
 				<Heading variant='pageSubtitle' my={0}>
@@ -774,7 +774,6 @@ export default function EditProfileView({ profile }: Props): JSX.Element | null 
 		icon?: As | null;
 		allowPdf?: boolean;
 		iconProps?: { [key: string]: any };
-		[prop: string]: any;
 	}
 
 	// TODO Move to component
