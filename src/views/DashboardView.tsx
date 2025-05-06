@@ -18,8 +18,13 @@ export default function DashboardView__Widgets() {
 	const [profile, { loading }] = useUserProfile(loggedInId);
 
 	return (
-		<Grid templateColumns={{ base: '1fr', md: '1fr 3fr' }} gap={8} w='full' maxW='none'>
-			<GridItem as={Stack} spacing={4} id={'dashboard-secondary'}>
+		<Grid
+			templateColumns={{ base: '1fr', md: 'minmax(300px, 1fr) auto' }}
+			gap={8}
+			w='full'
+			maxW='6xl'
+		>
+			<GridItem as={Stack} spacing={4} id={'dashboard-secondary'} maxW='300px'>
 				<Widget>
 					{profile ? <MiniProfileView profile={profile} /> : loading ? <Spinner /> : <></>}
 				</Widget>
