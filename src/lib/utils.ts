@@ -10,6 +10,7 @@ import {
 	UserProfile,
 	WPItem,
 	SearchFilterSet,
+	ProfileNotification,
 } from '@lib/classes';
 import { DateRangeParams, SearchFilterSetParams, SearchResultCandidate } from '@lib/types';
 import Cookies from 'js-cookie';
@@ -511,6 +512,12 @@ export function dateRangesOverlap(jobDates: DateRange, conflictRange: DateRange)
 	return rangeStart <= jobEnd && rangeEnd >= jobStart;
 }
 
+/**
+ * Clone an instance of an object.
+ *
+ * @param {object} instance The instance to clone.
+ * @returns The cloned instance.
+ */
 export function cloneInstance(instance: object): any {
 	// Create a new object with the same prototype as the instance
 	const newInstance = Object.create(Object.getPrototypeOf(instance));

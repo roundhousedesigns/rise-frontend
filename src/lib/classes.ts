@@ -11,6 +11,8 @@ import {
 	SearchFilterSetParams,
 	JobPostParams,
 	WPAttachmentParams,
+	ProfileNotificationParams,
+	NotificationType,
 } from '@lib/types';
 import { dateRangesOverlap, decodeString } from '@lib/utils';
 
@@ -632,5 +634,20 @@ export class JobPost extends WPPost {
 		this.instructions = params.instructions;
 
 		Object.assign(this, params);
+	}
+}
+
+/**
+ * A Profile Notification.
+ */
+export class ProfileNotification implements ProfileNotificationParams {
+	id: number;
+	notificationType: NotificationType;
+	value: string;
+
+	constructor(params: ProfileNotificationParams) {
+		this.id = params.id;
+		this.notificationType = params.notificationType;
+		this.value = params.value;
 	}
 }

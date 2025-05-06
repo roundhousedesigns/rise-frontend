@@ -1,5 +1,14 @@
 import { useContext } from 'react';
-import { Card, Avatar, Text, Flex, Heading, CardProps } from '@chakra-ui/react';
+import {
+	Card,
+	Avatar,
+	Text,
+	Flex,
+	Heading,
+	CardProps,
+	LinkBox,
+	LinkOverlay,
+} from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Candidate } from '@lib/classes';
 import { SearchContext } from '@context/SearchContext';
@@ -35,63 +44,64 @@ const CandidateItem = ({ candidate, showToggle = true, ...props }: Props & CardP
 		<Flex alignItems='center'>
 			{showToggle ? <StarToggleIcon id={id} isDisabled={loggedInId === id} /> : null}
 
-			<Card
+			<LinkBox
 				role='article'
 				aria-labelledby={`candidate-${id}`}
 				flex={1}
-				as={RouterLink}
-				to={`/profile/${slug}`}
-				variant='listItem'
 				textDecoration='none'
 				{...props}
 			>
-				<Flex
-					direction='row'
-					justifyContent={'flex-start'}
-					alignItems='center'
-					flexWrap={{ base: 'wrap', md: 'nowrap' }}
-					gap={{ base: 'initial', md: 0 }}
-				>
-					<Avatar
-						size='md'
-						name={candidate.fullName()}
-						flex={'0 0 auto'}
-						mr={2}
-						src={image}
-						ignoreFallback={image ? true : false}
-						aria-label={candidate.fullName() || 'Profile picture'}
+				<Card variant='listItem'>
+					<Flex
+						direction='row'
+						justifyContent={'flex-start'}
+						alignItems='center'
+						flexWrap={{ base: 'wrap', md: 'nowrap' }}
+						gap={{ base: 'initial', md: 0 }}
 					>
-						<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
-					</Avatar>
-					<Flex flex='1' alignItems='center' flexWrap='wrap'>
-						<Heading
-							as='h3'
-							id={`candidate-${id}`}
-							fontSize='lg'
-							fontWeight='normal'
-							textAlign='left'
-							flex={{ base: '0 0 100%', md: '1' }}
-							mt={0}
-							mb={{ base: '4px', md: 0 }}
+						<Avatar
+							size='md'
+							name={candidate.fullName()}
+							flex={'0 0 auto'}
+							mr={2}
+							src={image}
+							ignoreFallback={image ? true : false}
+							aria-label={candidate.fullName() || 'Profile picture'}
 						>
-							{candidate.fullName() ? candidate.fullName() : 'No name'}
-						</Heading>
-						<Text
-							textAlign={{ base: 'left', md: 'right' }}
-							ml={{ base: '0 !important', lg: 'initial' }}
-							my={0}
-							lineHeight={{ base: 'normal' }}
-							fontSize='sm'
-							noOfLines={2}
-							flex={{ base: '0 0 100%', md: '1' }} // '1'}
-							style={{ hyphens: 'auto' }}
-							wordBreak={'break-word'}
-						>
-							{selfTitle}
-						</Text>
+							<CandidateAvatarBadge reason={hasDateConflict ? 'dateConflict' : undefined} />
+						</Avatar>
+						<Flex flex='1' alignItems='center' flexWrap='wrap'>
+							<Heading
+								as='h3'
+								id={`candidate-${id}`}
+								fontSize='lg'
+								fontWeight='normal'
+								textAlign='left'
+								flex={{ base: '0 0 100%', md: '1' }}
+								mt={0}
+								mb={{ base: '4px', md: 0 }}
+							>
+								<LinkOverlay as={RouterLink} to={`/profile/${slug}`} textDecoration='none'>
+									{candidate.fullName() ? candidate.fullName() : 'No name'}
+								</LinkOverlay>
+							</Heading>
+							<Text
+								textAlign={{ base: 'left', md: 'right' }}
+								ml={{ base: '0 !important', lg: 'initial' }}
+								my={0}
+								lineHeight={{ base: 'normal' }}
+								fontSize='sm'
+								noOfLines={2}
+								flex={{ base: '0 0 100%', md: '1' }} // '1'}
+								style={{ hyphens: 'auto' }}
+								wordBreak={'break-word'}
+							>
+								{selfTitle}
+							</Text>
+						</Flex>
 					</Flex>
-				</Flex>
-			</Card>
+				</Card>
+			</LinkBox>
 		</Flex>
 	) : (
 		<></>

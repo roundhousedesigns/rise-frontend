@@ -1,18 +1,17 @@
 import { useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Container, Badge, Flex, useToken, Spacer, Stack } from '@chakra-ui/react';
-import { FiSearch, FiUser, FiStar, FiFolder, FiBriefcase, FiSettings } from 'react-icons/fi';
+import { Box, Badge, Flex, useToken, Spacer } from '@chakra-ui/react';
+import { FiSearch, FiStar, FiFolder, FiBriefcase, FiSettings, FiHome } from 'react-icons/fi';
 import SearchDrawer from '@layout/SearchDrawer';
 import { SearchContext } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
 import useViewer from '@queries/useViewer';
 import useSavedSearches from '@queries/useSavedSearches';
 import TooltipIconButton from '@common/inputs/TooltipIconButton';
-import DarkModeToggle from '../DarkModeToggle';
-import DisableProfileToggle from '../DisableProfileToggle';
+import DarkModeToggle from '@components/DarkModeToggle';
 
 export default function Sidebar() {
-	const [{ loggedInId, loggedInSlug, starredProfiles }] = useViewer();
+	const [{ loggedInId, starredProfiles }] = useViewer();
 	const [savedSearches] = useSavedSearches();
 	const [orange] = useToken('colors', ['brand.orange']);
 
@@ -40,17 +39,17 @@ export default function Sidebar() {
 				gap={2}
 			>
 				<TooltipIconButton
+					icon={<FiHome />}
+					as={RouterLink}
+					label={'Homebase'}
+					colorScheme='blue'
+					to={`/`}
+				/>
+				<TooltipIconButton
 					icon={<FiSearch />}
 					onClick={handleDrawerOpen}
 					label='Search'
 					colorScheme='green'
-				/>
-				<TooltipIconButton
-					icon={<FiUser />}
-					as={RouterLink}
-					label={'My Profile'}
-					colorScheme='blue'
-					to={`/profile/${loggedInSlug}`}
 				/>
 				<TooltipIconButton icon={<FiBriefcase />} label='Jobs' as={RouterLink} to={'/jobs'} />
 				<TooltipIconButton

@@ -211,7 +211,14 @@ export default function ProfileView({ profile, allowStar = true }: Props): JSX.E
 					justifyContent={{ base: 'center', sm: 'flex-start' }}
 				>
 					{isLargerThanMd ? (
-						<Stack direction='column' w={'40%'} minW='160px' maxW='400px' textAlign='center'>
+						<Stack
+							direction='column'
+							w={'40%'}
+							minW='160px'
+							maxW='400px'
+							textAlign='center'
+							gap={4}
+						>
 							{image ? (
 								<Box position='relative' m={1}>
 									<Box

@@ -100,6 +100,7 @@ export const QUERY_PROFILE = gql`
  * Query to retrieve one User by database ID.
  *
  * @param {id} User ID
+ * @param {count} Number of credits to retrieve
  * @returns A tuple of a prepared data object and a query result object.
  */
 const useUserProfile = (id: number | null, count?: number): [UserProfile | null, any] => {
@@ -107,7 +108,7 @@ const useUserProfile = (id: number | null, count?: number): [UserProfile | null,
 		variables: {
 			id,
 			author: id,
-			last: count,
+			lastCredits: count,
 		},
 		skip: id === null,
 	});

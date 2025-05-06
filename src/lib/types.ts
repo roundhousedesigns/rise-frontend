@@ -342,3 +342,17 @@ export interface JobPostOutput {
 	isInternship?: boolean;
 	isUnion?: boolean;
 }
+
+/**
+ * Supported notification types for profile notifications.
+ */
+export type NotificationType = 'starred_profile_updated' | 'job_posted';
+
+/**
+ * The data shape for a Profile Notification.
+ */
+export interface ProfileNotificationParams {
+	id: number;
+	notificationType: NotificationType;
+	value: string;
+}
