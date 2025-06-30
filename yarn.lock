@@ -382,10 +382,10 @@
     "@types/lodash.mergewith" "4.6.9"
     lodash.mergewith "4.6.2"
 
-"@choc-ui/chakra-autocomplete@^5.8.0":
-  version "5.8.2"
-  resolved "https://registry.yarnpkg.com/@choc-ui/chakra-autocomplete/-/chakra-autocomplete-5.8.2.tgz#74622fe738b2579621e1d757cebccc8528a4c3bd"
-  integrity sha512-zT00IFTeuDcRUZ3dhBKGnQnA6gQbCT+zQ9RfGUwmRU1rJXp8zj3hbBCQxp4rWsSlGxg5nP+pHZmtf4ZU/CZirQ==
+"@choc-ui/chakra-autocomplete@^5.8.4":
+  version "5.9.0"
+  resolved "https://registry.yarnpkg.com/@choc-ui/chakra-autocomplete/-/chakra-autocomplete-5.9.0.tgz#a871557c5cf5e050942b66524f46965f0ebaef60"
+  integrity sha512-knk3LP3mrw8AmhXvTVNGbNE7a1Muex9PojTjYqJ8U6FYfubxFjdh5igpoSXKf3gItP0I0LeBa4Ic0z6tCfi1rQ==
   dependencies:
     react-nanny "2.15.0"
 
