@@ -3,7 +3,18 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Flex, Spacer, Stack, Text, chakra, useDisclosure } from '@chakra-ui/react';
+import {
+	Box,
+	Container,
+	Flex,
+	Spacer,
+	Stack,
+	Text,
+	chakra,
+	Image,
+	useDisclosure,
+	Heading,
+} from '@chakra-ui/react';
 import pkgJSON from '@@/package.json';
 import { SearchContextProvider } from '@context/SearchContext';
 import SearchDrawerContext from '@context/SearchDrawerContext';
@@ -44,7 +55,28 @@ export default function App() {
 	return (
 		<>
 			<WordPressStyles />
-			<SearchContextProvider>
+
+			<Container h='100%' minH='500px' maxW='4xl' textAlign='center'>
+				<Stack alignItems='center' justifyContent='center' w='full' py={10}>
+					<Image
+						src='https://images.squarespace-cdn.com/content/v1/6465b16bb5778d6753b1c77e/7eeb8b35-5e67-4903-a6ac-0891ad2dbd29/RISE-white.png?format=1500w'
+						alt='RISE Theatre Directory'
+						w='100%'
+						maxW='600px'
+						mb={10}
+					/>
+					<Heading as='h2' variant='pageTitle' fontSize='6xl'>
+						We'll Be Right Back!
+					</Heading>
+					<Text fontSize='2xl'>
+						We're hard at work upgrading the RISE Theatre Directory.
+						<br /> Thanks for your patience...we won't be long!
+					</Text>
+				</Stack>
+			</Container>
+
+			{/*
+			{<SearchContextProvider>
 				<Box
 					minH={'-webkit-fill-available'}
 					_dark={{
@@ -59,7 +91,7 @@ export default function App() {
 					<SearchDrawerContext.Provider value={{ drawerIsOpen, openDrawer, closeDrawer }}>
 						<Stack h='100vh' w='full' overflow='auto' justifyContent={'space-between'} gap={0}>
 							<Header ref={headerRef} />
-							<Box h='auto' w='full' /* paddingTop={`${headerHeight}px`} */>
+							<Box h='auto' w='full'>
 								<Main pt={`${headerHeight}px`} />
 							</Box>
 							<Spacer />
@@ -85,7 +117,7 @@ export default function App() {
 						</Flex>
 					</DevMode>
 				</Box>
-			</SearchContextProvider>
+			</SearchContextProvider> */}
 		</>
 	);
 }
